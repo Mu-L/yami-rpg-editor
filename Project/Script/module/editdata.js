@@ -95,19 +95,27 @@ const EditDataInstance = new (class {
 	parseJSON(text) {
 		try {
 			const vaild = JSON.parse(text)
-			if (vaild.id && vaild.params)
-				return new (class {
+			if (vaild.id && vaild.params) {
+				const result = new (class {
 					id = vaild.id
 					params = vaild.params
 				})()
+				if (vaild.commands) {
+					result.commands = vaild.commands
+				}
+				return result
+			}
 			if (Array.isArray(vaild) && vaild.every((v) => v.id && v.params)) {
-				return vaild.map(
-					(v) =>
-						new (class {
-							id = v.id
-							params = v.params
-						})()
-				)
+				return vaild.map((v) => {
+					const result = new (class {
+						id = v.id
+						params = v.params
+					})()
+					if (v.commands) {
+						result.commands = v.commands
+					}
+					return result
+				})
 			}
 			return null
 		} catch {
@@ -128,26 +136,15 @@ const EditDataInstance = new (class {
 				const changeContent = parse[ind]
 				if (JSON.stringify(value) === JSON.stringify(changeContent))
 					continue // 内容没修改
-				const parent = node.dataParent
+
+				// 找到元素在 elements 数组中的索引
+				const elementIndex = this.eventListDom.elements.indexOf(node)
+				if (elementIndex === -1) continue // 元素不存在
+
+				// 直接修改 dataList 中的数据
 				const list = node.dataList
-
-				const buffer = this.eventListDom.createCommandBuffer(
-					list,
-					node.dataIndex,
-					node.dataIndent,
-					parent
-				)
-				Object.defineProperty(changeContent, 'buffer', {
-					value: buffer,
-					configurable: true
-				})
-
-				this.eventListDom.start = node.dataIndex
-				this.eventListDom.end = node.dataIndex
-				this.eventListDom.inserting = false
-				this.eventListDom.save(changeContent)
-
-				delete changeContent.buffer // 强制清除buffer，确保能更新
+				const dataIndex = node.dataIndex
+				list[dataIndex] = changeContent
 			}
 			this.eventListDom.update()
 			this.eventListDom.select(originalStart, originalEnd)
@@ -155,27 +152,16 @@ const EditDataInstance = new (class {
 			JSON.stringify(this.currentContent.value) !== JSON.stringify(parse)
 		) {
 			const node = this.currentContent.node
-			const parent = node.dataParent
+
+			// 找到元素在 elements 数组中的索引
+			const elementIndex = this.eventListDom.elements.indexOf(node)
+			if (elementIndex === -1) return // 元素不存在
+
+			// 直接修改 dataList 中的数据
 			const list = node.dataList
+			const dataIndex = node.dataIndex
+			list[dataIndex] = parse
 
-			const buffer = this.eventListDom.createCommandBuffer(
-				list,
-				node.dataIndex,
-				node.dataIndent,
-				parent
-			)
-			Object.defineProperty(parse, 'buffer', {
-				value: buffer,
-				configurable: true
-			})
-			this.currentContent.node.dataItem = parse
-
-			this.eventListDom.start = node.dataIndex
-			this.eventListDom.end = node.dataIndex
-			this.eventListDom.inserting = false
-			this.eventListDom.save(parse)
-
-			delete parse.buffer // 强制清除buffer，确保能更新
 			this.eventListDom.update()
 			this.eventListDom.select(originalStart, originalEnd)
 		}
