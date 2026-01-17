@@ -129,7 +129,11 @@ const EditDataInstance = new (class {
 		if (!parse) return
 		const originalStart = this.eventListDom.start
 		const originalEnd = this.eventListDom.end
+
+		let hasChanges = false
+
 		if (Array.isArray(this.currentContent)) {
+			// 批量修改
 			for (const ind in this.currentContent) {
 				const { node, value } = this.currentContent[ind]
 				if (!(ind in parse)) continue // 索引不存在
@@ -137,34 +141,49 @@ const EditDataInstance = new (class {
 				if (JSON.stringify(value) === JSON.stringify(changeContent))
 					continue // 内容没修改
 
-				// 找到元素在 elements 数组中的索引
-				const elementIndex = this.eventListDom.elements.indexOf(node)
-				if (elementIndex === -1) continue // 元素不存在
-
 				// 直接修改 dataList 中的数据
 				const list = node.dataList
 				const dataIndex = node.dataIndex
+
+				// 删除旧对象的 buffer（在替换之前）
+				if (list[dataIndex].buffer !== undefined) {
+					delete list[dataIndex].buffer
+				}
+
+				// 替换数据
 				list[dataIndex] = changeContent
+				hasChanges = true
 			}
-			this.eventListDom.update()
-			this.eventListDom.select(originalStart, originalEnd)
 		} else if (
 			JSON.stringify(this.currentContent.value) !== JSON.stringify(parse)
 		) {
+			// 单个修改
 			const node = this.currentContent.node
-
-			// 找到元素在 elements 数组中的索引
-			const elementIndex = this.eventListDom.elements.indexOf(node)
-			if (elementIndex === -1) return // 元素不存在
 
 			// 直接修改 dataList 中的数据
 			const list = node.dataList
 			const dataIndex = node.dataIndex
-			list[dataIndex] = parse
 
-			this.eventListDom.update()
-			this.eventListDom.select(originalStart, originalEnd)
+			// 删除旧对象的 buffer（在替换之前）
+			if (list[dataIndex].buffer !== undefined) {
+				delete list[dataIndex].buffer
+			}
+
+			// 替换数据
+			list[dataIndex] = parse
+			hasChanges = true
 		}
+
+		// 如果有修改，触发 change 事件以标记数据需要保存
+		if (hasChanges) {
+			this.eventListDom.dispatchEvent(
+				new Event('change', { bubbles: true })
+			)
+		}
+
+		// 更新显示
+		this.eventListDom.update()
+		this.eventListDom.select(originalStart, originalEnd)
 
 		this.currentContent = null
 		this.setChangeState(false)
