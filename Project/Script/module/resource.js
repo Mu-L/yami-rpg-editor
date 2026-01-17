@@ -2,18 +2,36 @@ const Resources = new (class {
 	isStart = false // 首次启动显示
 	window = $('#resource')
 	content = $('#resource-content')
+	nodeInfoBox = $('#resource-node-info')
+	currentNodeText = $('#resource-current-node')
+	nodePingText = $('#resource-node-ping')
 	fastGithubArray = [
 		'https://cdn.gh-proxy.com/',
 		'https://proxy.pipers.cn/',
 		'https://gh.jasonzeng.dev/',
-		'https://hub.gitmirror.com/',
 		'https://ghfast.top/'
 	]
 	get fastGithubPrefix() {
-		return this.fastGithubArray[
-			Math.floor(Math.random() * this.fastGithubArray.length)
-		]
-	} // 加速github
+		const config = SettingConfig.config?.github?.accelerationNode || 'auto'
+
+		switch (config) {
+			case 'auto':
+				return this.fastGithubArray[
+					Math.floor(Math.random() * this.fastGithubArray.length)
+				]
+			case 'none':
+				return ''
+			default:
+				const match = config.match(/^node(\d+)$/)
+				if (match) {
+					const index = parseInt(match[1]) - 1
+					if (index >= 0 && index < this.fastGithubArray.length) {
+						return this.fastGithubArray[index]
+					}
+				}
+				return this.fastGithubArray[0]
+		}
+	}
 	loaded = false
 	constructor() {
 		$('#resource-check-version').on('click', () => this.checkVersion())
@@ -29,6 +47,108 @@ const Resources = new (class {
 		$('#resource-open-dir').textContent = Local.get(
 			'confirmation.resource-open-dir'
 		)
+
+		// 更新节点信息
+		this.updateNodeInfo()
+	}
+
+	getCurrentNodeInfo() {
+		const config = SettingConfig.config?.github?.accelerationNode || 'auto'
+		const get = Local.createGetter('confirmation')
+
+		let nodeName = ''
+		let nodeUrl = ''
+
+		switch (config) {
+			case 'auto':
+				nodeName = get('github-acceleration-auto') || '自动选择'
+				nodeUrl = this.fastGithubPrefix
+				break
+			case 'none':
+				nodeName = get('github-acceleration-none') || '不使用加速'
+				nodeUrl = 'https://raw.githubusercontent.com/'
+				break
+			default:
+				const match = config.match(/^node(\d+)$/)
+				if (match) {
+					const index = parseInt(match[1]) - 1
+					if (index >= 0 && index < this.fastGithubArray.length) {
+						nodeUrl = this.fastGithubArray[index]
+						const domain = nodeUrl
+							.replace(/^https?:\/\//, '')
+							.replace(/\/$/, '')
+						const nodeLabel =
+							get('github-acceleration-node') || '节点'
+						nodeName = `${nodeLabel} ${index + 1} (${domain})`
+					}
+				}
+				break
+		}
+
+		return { nodeName, nodeUrl }
+	}
+
+	// 测试节点 ping
+	async pingNode(url) {
+		if (!url) return -1
+
+		const startTime = Date.now()
+		try {
+			// 使用 HEAD 请求测试连接速度
+			const testUrl =
+				url +
+				'https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json'
+			const response = await fetch(testUrl, {
+				method: 'HEAD',
+				cache: 'no-cache'
+			})
+
+			if (response.ok) {
+				return Date.now() - startTime
+			}
+			return -1
+		} catch (error) {
+			console.error('Ping failed:', error)
+			return -1
+		}
+	}
+
+	// 更新节点信息显示
+	async updateNodeInfo() {
+		const { nodeName, nodeUrl } = this.getCurrentNodeInfo()
+		const get = Local.createGetter('confirmation')
+
+		// 更新节点名称
+		const nodeLabel = get('resource-current-node-label') || '当前节点'
+		this.currentNodeText.textContent = `${nodeLabel}: ${nodeName}`
+		this.currentNodeText.style.display = 'block'
+		this.currentNodeText.style.visibility = 'visible'
+
+		// 显示测试中
+		const testingLabel = get('resource-node-ping-testing') || '测试中'
+		this.nodePingText.textContent = `Ping: ${testingLabel}...`
+		this.nodePingText.style.color = '#888'
+		this.nodePingText.style.display = 'block'
+		this.nodePingText.style.visibility = 'visible'
+
+		// 测试 ping
+		const ping = await this.pingNode(nodeUrl)
+
+		if (ping >= 0) {
+			let color = '#4caf50' // 绿色
+			if (ping > 1000) {
+				color = '#f44336' // 红色
+			} else if (ping > 500) {
+				color = '#ff9800' // 橙色
+			}
+
+			this.nodePingText.textContent = `Ping: ${ping}ms`
+			this.nodePingText.style.color = color
+		} else {
+			const failedLabel = get('resource-node-ping-failed') || '失败'
+			this.nodePingText.textContent = `Ping: ${failedLabel}`
+			this.nodePingText.style.color = '#f44336' // 红色
+		}
 	}
 
 	/** 
@@ -272,6 +392,7 @@ const Resources = new (class {
 	async open(val) {
 		this.isStart = val
 		Window.open('resource')
+		this.updateNodeInfo() // 更新节点信息
 		this.load()
 	}
 })()

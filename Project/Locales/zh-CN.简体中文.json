@@ -1687,7 +1687,13 @@
       "resource-download":"下载",
       "resource-decompression":"解压",
       "resource-check-version":"检查更新",
-      "resource-open-dir":"打开模板目录"
+      "resource-open-dir":"打开模板目录",
+      "resource-current-node-label":"当前节点",
+      "resource-node-ping-testing":"测试中",
+      "resource-node-ping-failed":"失败",
+      "github-acceleration-node":"节点",
+      "github-acceleration-auto":"自动选择",
+      "github-acceleration-none":"不使用加速"
     }
   },
   "components": {
@@ -2822,6 +2828,8 @@
     "setting-signed-signedApkPath": {"label": "签名后APK路径", "tip": "签名后的APK文件输出路径"},
     "setting-title-other": {"content": "其他"},
     "setting-other-copyAsTextKeepEmptyLine": {"label": "保留空行", "tip": "复制到文本 是否保留空行"},
+    "setting-title-github": {"content": "GitHub"},
+    "setting-github-accelerationNode": {"label": "加速节点", "tip": "选择GitHub资源下载的加速节点"},
 
     "[comment]": "********** 自动图块 **********",
     "autoTile": {"title": "自动图块"},
