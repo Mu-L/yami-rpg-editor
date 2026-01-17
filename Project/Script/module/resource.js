@@ -192,6 +192,41 @@ const Resources = new (class {
 		)
 	}
 
+	// 格式化文件大小
+	formatFileSize(bytes) {
+		if (bytes < 1024) {
+			return `${bytes} B`
+		} else if (bytes < 1024 * 1024) {
+			return `${(bytes / 1024).toFixed(2)} KB`
+		} else if (bytes < 1024 * 1024 * 1024) {
+			return `${(bytes / 1024 / 1024).toFixed(2)} MB`
+		} else {
+			return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`
+		}
+	}
+
+	// 获取文件大小
+	async getFileSize(resourceName) {
+		try {
+			const url = `https://github.com/Open-Yami-Community/yami-rpg-editor/releases/download/win/${resourceName}_pack.zip`
+			const downloadurl = `${this.fastGithubPrefix}${url}`
+
+			const response = await fetch(downloadurl, {
+				method: 'HEAD',
+				cache: 'no-cache'
+			})
+
+			if (response.ok) {
+				const contentLength = response.headers.get('content-length')
+				return contentLength ? parseInt(contentLength) : 0
+			}
+			return 0
+		} catch (error) {
+			console.error('Failed to get file size:', error)
+			return 0
+		}
+	}
+
 	// 读取本地 tempalte.json
 	readTemplate() {
 		const tempPath = Path.resolve(TemplatesPath, 'template.json')
@@ -299,11 +334,24 @@ const Resources = new (class {
 		const get = Local.createGetter('confirmation')
 
 		const domPase = new DOMParser().parseFromString(
-			`<box id="resource-item-${value}" class='resource-item'>
-        <text>${value}:&emsp;</text>
-        <text-box></text-box>
-        <button id='resource-item-${value}-download' name='resource-download'></button>
-        <button id='resource-item-${value}-delete' name='delete'></button>
+			`<box id="resource-item-${value}" class='resource-item' style="display: flex; flex-direction: column; padding: 10px; margin: 5px 0; border: 1px solid var(--border-color); border-radius: 4px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <text style="flex: 0 0 auto;">${value}:&emsp;</text>
+          <text-box style="flex: 1;"></text-box>
+          <button id='resource-item-${value}-download' name='resource-download'></button>
+          <button id='resource-item-${value}-pause' name='pause' style="display: none;">暂停</button>
+          <button id='resource-item-${value}-delete' name='delete'></button>
+        </div>
+        <div id='resource-item-${value}-progress' style="display: none; flex-direction: column; gap: 4px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="flex: 1; height: 20px; background: var(--panel-background); border: 1px solid var(--border-color); border-radius: 3px; overflow: hidden;">
+              <div id='resource-item-${value}-progress-bar' style="height: 100%; background: linear-gradient(90deg, #4caf50, #66bb6a); transition: width 0.3s; width: 0%;"></div>
+            </div>
+            <text id='resource-item-${value}-progress-text' style="flex: 0 0 auto; min-width: 50px; text-align: right;">0%</text>
+          </div>
+          <text id='resource-item-${value}-speed' style="font-size: 12px; color: #888;">速度: 0 KB/s</text>
+        </div>
+        <text id='resource-item-${value}-size' style="font-size: 12px; color: #888; margin-top: 4px;">大小: 获取中...</text>
         </box>`,
 			'text/html'
 		)
@@ -312,55 +360,206 @@ const Resources = new (class {
 		const textbox = boxDom.querySelector('text-box')
 		textbox.disable()
 		textbox.input.readOnly = true
+
 		const button = boxDom.querySelector(`#resource-item-${value}-download`)
+		const pauseButton = boxDom.querySelector(
+			`#resource-item-${value}-pause`
+		)
+		const progressContainer = boxDom.querySelector(
+			`#resource-item-${value}-progress`
+		)
+		const progressBar = boxDom.querySelector(
+			`#resource-item-${value}-progress-bar`
+		)
+		const progressText = boxDom.querySelector(
+			`#resource-item-${value}-progress-text`
+		)
+		const speedText = boxDom.querySelector(`#resource-item-${value}-speed`)
+		const sizeText = boxDom.querySelector(`#resource-item-${value}-size`)
+
 		button.textContent = Local.get('confirmation.resource-download')
+
+		// 获取文件大小
+		this.getFileSize(val)
+			.then((size) => {
+				const get = Local.createGetter('confirmation')
+				const sizeLabel = get('resource-size-label') || '大小'
+				if (size > 0) {
+					sizeText.textContent = `${sizeLabel}: ${this.formatFileSize(size)}`
+				} else {
+					sizeText.textContent = `${sizeLabel}: ${get('resource-size-unknown') || '未知'}`
+				}
+			})
+			.catch(() => {
+				const get = Local.createGetter('confirmation')
+				const sizeLabel = get('resource-size-label') || '大小'
+				sizeText.textContent = `${sizeLabel}: ${get('resource-size-unknown') || '未知'}`
+			})
+
+		// 下载状态管理
+		let cancelDownload = null
+		let isDownloading = false
+		let isDecompressing = false
+		let lastLoaded = 0
+		let lastTime = Date.now()
+
 		// 绑定下载
 		button.on('click', () => {
+			// 防止重复点击
+			if (isDownloading || isDecompressing) return
 			const url = `https://github.com/Open-Yami-Community/yami-rpg-editor/releases/download/win/${val}_pack.zip`
 			const downloadurl = `${this.fastGithubPrefix}${url}`
+
+			isDownloading = true
 			button.disable()
-			button.textContent = Local.get('confirmation.resource-download')
+			pauseButton.style.display = 'inline-block'
+			pauseButton.textContent =
+				Local.get('confirmation.resource-pause') || '暂停'
+			progressContainer.style.display = 'flex'
+
+			// 重置进度
+			progressBar.style.width = '0%'
+			progressText.textContent = '0%'
+			speedText.textContent =
+				Local.get('confirmation.resource-speed') || '速度: 0 KB/s'
+			lastLoaded = 0
+			lastTime = Date.now()
+
 			Net.downloadFileWithProgress({
 				url: downloadurl,
 				outputPath: targetPath,
+				onCancelToken: (cancel) => {
+					cancelDownload = cancel
+				},
 				onProgress: (progressEvent) => {
+					if (!isDownloading) return
+
 					const percent = Math.round(
 						(progressEvent.loaded / progressEvent.total) * 100
 					)
-					button.textContent = `${Local.get('confirmation.resource-download')}:${percent}%`
+
+					// 更新进度条和百分比
+					progressBar.style.width = `${percent}%`
+					progressText.textContent = `${percent}%`
+
+					// 计算速度
+					const now = Date.now()
+					const timeDiff = (now - lastTime) / 1000 // 秒
+					const loadedDiff = progressEvent.loaded - lastLoaded
+
+					if (timeDiff > 0.5) {
+						// 每0.5秒更新一次速度
+						const speed = loadedDiff / timeDiff // 字节/秒
+						let speedText_str = ''
+
+						if (speed < 1024) {
+							speedText_str = `${speed.toFixed(0)} B/s`
+						} else if (speed < 1024 * 1024) {
+							speedText_str = `${(speed / 1024).toFixed(2)} KB/s`
+						} else {
+							speedText_str = `${(speed / 1024 / 1024).toFixed(2)} MB/s`
+						}
+
+						const speedLabel =
+							Local.get('confirmation.resource-speed-label') ||
+							'速度'
+						speedText.textContent = `${speedLabel}: ${speedText_str}`
+
+						lastLoaded = progressEvent.loaded
+						lastTime = now
+					}
 				}
 			})
 				.then(() => {
+					isDownloading = false
+					isDecompressing = true
+					progressContainer.style.display = 'none'
+					pauseButton.style.display = 'none'
+
+					// 开始解压
+					button.textContent = Local.get(
+						'confirmation.resource-decompression'
+					)
+					button.disable()
+					progressContainer.style.display = 'flex'
+					progressBar.style.background =
+						'linear-gradient(90deg, #2196f3, #42a5f5)'
+
 					unzipWithProgress({
 						zipPath: targetPath,
 						outputDir: Path.resolve(Path.dirname(targetPath), val),
 						onProgress: (percent) => {
-							button.textContent = `${Local.get('confirmation.resource-decompression')}:${percent}%`
+							progressBar.style.width = `${percent}%`
+							progressText.textContent = `${percent}%`
 						}
-					}).then(async () => {
-						// 更新template.json本地版本号
-						const remoteData = (await this.downloadNetMeta()).data
-						const j = this.readTemplate()
-						j[val] =
-							remoteData.find((v) => val === v.path)?.version ??
-							'1.0.0'
-						this.writeTemplate(j)
-						// 下载完成，也解压完成
-						PackMeta = this.readTemplate() // 重新读取本地模板信息
-						_check()
-						button.textContent = Local.get(
-							'confirmation.resource-download'
-						)
 					})
+						.then(async () => {
+							// 更新template.json本地版本号
+							const remoteData = (await this.downloadNetMeta())
+								.data
+							const j = this.readTemplate()
+							j[val] =
+								remoteData.find((v) => val === v.path)
+									?.version ?? '1.0.0'
+							this.writeTemplate(j)
+							// 下载完成，也解压完成
+							PackMeta = this.readTemplate() // 重新读取本地模板信息
+							isDecompressing = false
+							_check()
+							button.textContent = Local.get(
+								'confirmation.resource-download'
+							)
+							progressContainer.style.display = 'none'
+							progressBar.style.background =
+								'linear-gradient(90deg, #4caf50, #66bb6a)'
+						})
+						.catch((e) => {
+							// 解压失败
+							isDecompressing = false
+							button.enable()
+							progressContainer.style.display = 'none'
+							progressBar.style.background =
+								'linear-gradient(90deg, #4caf50, #66bb6a)'
+
+							Window.confirm({ message: e.message }, [
+								{
+									label: get('yes')
+								}
+							])
+						})
 				})
 				.catch((e) => {
+					isDownloading = false
+					isDecompressing = false
 					button.enable()
-					Window.confirm({ message: e.message }, [
-						{
-							label: get('yes')
-						}
-					])
+					pauseButton.style.display = 'none'
+					progressContainer.style.display = 'none'
+
+					if (!axios.isCancel(e)) {
+						Window.confirm({ message: e.message }, [
+							{
+								label: get('yes')
+							}
+						])
+					}
 				})
+		})
+
+		// 绑定暂停
+		pauseButton.on('click', () => {
+			// 防止重复点击
+			if (!isDownloading) return
+
+			// 取消下载
+			if (cancelDownload) {
+				cancelDownload()
+				cancelDownload = null
+			}
+
+			isDownloading = false
+			button.enable()
+			pauseButton.style.display = 'none'
+			progressContainer.style.display = 'none'
 		})
 
 		const buttonDelete = boxDom.querySelector(
