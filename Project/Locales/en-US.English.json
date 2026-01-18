@@ -386,6 +386,7 @@
     "menuCommandList": {
       "script": "Script",
       "copy-as-text": "Copy as Text",
+      "copy-as-js": "Copy as JS Code",
       "edit-data": "Edit Data",
       "open-event": "Open Event"
     },
@@ -4794,7 +4795,7 @@
     "downloadFile-callback": {"label": "Callback", "tip": "callback function after request completion, @code represents the return value (error is -1), @response represents the response Blob data, @download function represents the download function (can pass in the file name)"},
     "downloadFile-rateCallback": {"label": "Progress Callback", "tip": "download progress callback function, @event represents the progress event object"},
     "downloadFile-isBackground": {"label": "Background Storage", "tip": "whether to download and store the file in the background"},
-    "downloadFile-isBackground-path": {"label": "File Path", "tip": "file path for background download and storage"}
+    "downloadFile-isBackground-path": {"label": "File Path", "tip": "file path for background download and storage"},
     
     "[comment]": "********** Instruction - Request - keyValue **********",
     "request-keyValue": {"title": "Key Value Data Group"},

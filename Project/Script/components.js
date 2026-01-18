@@ -11297,6 +11297,57 @@ class CommandList extends HTMLElement {
 		}
 	}
 
+	// 复制为JS代码
+	copyAsJSCode() {
+		if (this.start !== null) {
+			const { start, end, elements } = this
+			const commands = []
+
+			for (let i = start; i <= end; i++) {
+				const element = elements[i]
+				if (element.contents !== null) {
+					this.updateCommandElement(element)
+				}
+
+				const dataItem = element.dataItem
+				if (dataItem === null) continue
+
+				const command = {
+					id: dataItem.id,
+					params: dataItem.params
+				}
+
+				if (dataItem.commands) {
+					command.commands = dataItem.commands
+				}
+
+				commands.push(command)
+			}
+
+			// 生成可执行的JS代码
+			let jsCode = this.generateExecutableCode(commands)
+			navigator.clipboard.writeText(jsCode)
+		}
+	}
+
+	// 生成可执行的JS代码
+	generateExecutableCode(commands) {
+		const commandsJson = JSON.stringify(commands, null, 2)
+
+		const code = `const commands = ${commandsJson};
+try {
+	if (typeof Command === 'undefined' || typeof EventHandler === 'undefined') {
+		throw new Error('运行环境不完整');
+	}
+	const event = new EventHandler(Command.compile(commands));
+	EventHandler.call(event);
+	console.log('✓ 指令执行完成');
+} catch (err) {
+	console.error('✗ 执行出错:', err.message);
+}`
+		return code
+	}
+
 	// 粘贴项目
 	paste() {
 		if (this.start !== null) {
@@ -12255,6 +12306,13 @@ class CommandList extends HTMLElement {
 							enabled: valid,
 							click: () => {
 								this.copyAsText()
+							}
+						},
+						{
+							label: get('copy-as-js'),
+							enabled: valid,
+							click: () => {
+								this.copyAsJSCode()
 							}
 						},
 						{

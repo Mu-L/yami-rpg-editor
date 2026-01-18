@@ -386,6 +386,7 @@
     "menuCommandList": {
       "script": "脚本",
       "copy-as-text": "复制为文本",
+      "copy-as-js": "复制为JS代码",
       "edit-data": "编辑数据",
       "open-event": "打开事件"
     },
