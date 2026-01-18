@@ -281,7 +281,7 @@ UI.list.paste = function (_, callback) {
 // 主界面 - 版本号
 const homeElem = $('#home-version')
 
-homeElem.textContent = `当社区版本：${CommunityVersion} 当前编辑器版本：${Updater.latestEditorVersion} 
+homeElem.textContent = `当前社区版本：${CommunityVersion} 当前编辑器版本：${Updater.latestEditorVersion} 
 当前项目版本：${Updater.latestProjectVersion}`
 ;(() => {
 	PackMeta['Editor'] = Updater.latestEditorVersion
@@ -327,4 +327,141 @@ AutoTile.templateList.update = function () {
 		countElem.textContent = count
 		item.element.append(countElem)
 	}
+}
+
+// ================================ 更新日志窗口 - 切换公告功能 ================================
+
+UpdateLog.currentMode = 'internal' // 'internal' or 'community'
+UpdateLog.internalItems = []
+UpdateLog.communityItems = []
+
+const UpdateLogInitializeOrigin = UpdateLog.initialize
+
+UpdateLog.initialize = function () {
+	UpdateLogInitializeOrigin.call(this)
+
+	// 使用事件委托处理标签页按钮点击
+	const tabsContainer = $('#update-log-tabs')
+	if (tabsContainer) {
+		tabsContainer.addEventListener('click', (event) => {
+			const btn = event.target.closest('.update-log-tab')
+			if (btn) {
+				if (btn.id === 'update-log-tab-internal') {
+					UpdateLog.switchMode('internal')
+				} else if (btn.id === 'update-log-tab-community') {
+					UpdateLog.switchMode('community')
+				}
+			}
+		})
+	}
+}
+
+const UpdateLogOpenOrigin = UpdateLog.open
+UpdateLog.open = function (items = null) {
+	if (items instanceof Array) {
+		Window.open('update-log')
+		this.internalItems = items
+		this.currentMode = 'internal'
+		this.update(items)
+		// 异步加载社区版公告
+		this.loadCommunityReleases()
+	} else {
+		UpdateLogOpenOrigin.call(this)
+	}
+}
+
+const UpdateLogUpdateOrigin = UpdateLog.update
+UpdateLog.update = function (items) {
+	if (this.currentMode === 'internal') {
+		UpdateLogUpdateOrigin.call(this, items)
+	} else {
+		// 显示社区版公告
+		this.content.clear()
+		const communityItems = this.communityItems
+
+		for (const item of communityItems) {
+			if (item.title) {
+				const title = document.createElement('text')
+				title.textContent = item.title
+				title.addClass('update-log-title')
+				this.content.appendChild(title)
+			}
+			if (item.major) {
+				const major = document.createElement('text')
+				major.textContent = item.major
+				major.addClass('update-log-major')
+				this.content.appendChild(major)
+			}
+			if (item.minor) {
+				const minor = document.createElement('text')
+				minor.textContent = item.minor
+				minor.addClass('update-log-minor')
+				this.content.appendChild(minor)
+			}
+		}
+	}
+}
+
+UpdateLog.switchMode = function (mode) {
+	if (mode === this.currentMode) return
+	this.currentMode = mode
+
+	if (mode === 'internal') {
+		this.update(this.internalItems)
+	} else {
+		this.update()
+	}
+
+	// 更新按钮状态
+	const tabInternal = $('#update-log-tab-internal')
+	const tabCommunity = $('#update-log-tab-community')
+
+	if (mode === 'internal') {
+		if (tabInternal) tabInternal.addClass('active')
+		if (tabCommunity) tabCommunity.removeClass('active')
+	} else {
+		if (tabInternal) tabInternal.removeClass('active')
+		if (tabCommunity) tabCommunity.addClass('active')
+	}
+}
+
+// 加载社区版公告
+UpdateLog.loadCommunityReleases = async function () {
+	try {
+		const response = await fetch(
+			'https://api.github.com/repos/Open-Yami-Community/yami-rpg-editor/releases'
+		)
+		if (!response.ok) throw new Error('Failed to fetch releases')
+		const releases = await response.json()
+		this.communityItems = this.parseCommunityReleases(releases)
+	} catch (error) {
+		console.error('Failed to load community releases:', error)
+		this.communityItems = [
+			{
+				title: 'Error',
+				major: 'Failed to load community releases from GitHub'
+			}
+		]
+	}
+}
+
+// 解析社区版公告
+UpdateLog.parseCommunityReleases = function (releases) {
+	const items = []
+	for (const release of releases) {
+		items.push({
+			title: release.tag_name,
+			major: release.body || 'No description provided'
+		})
+	}
+	return items
+}
+
+const UpdateLogWindowClosedOrigin = UpdateLog.windowClosed
+
+UpdateLog.windowClosed = function () {
+	UpdateLogWindowClosedOrigin.call(this)
+	UpdateLog.internalItems = []
+	UpdateLog.communityItems = []
+	UpdateLog.currentMode = 'internal'
 }
