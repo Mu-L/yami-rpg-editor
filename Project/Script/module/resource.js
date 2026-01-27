@@ -179,7 +179,12 @@ const Resources = new (class {
 	// 下载远程资源信息
 	async downloadNetMeta() {
 		const json = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`
-		return await Net.get(json)
+		return await Net.get(json, {
+			Headers: {
+				type: 'application/json',
+				'Cache-Control': 'no-cache'
+			}
+		})
 	}
 
 	checkResources() {
