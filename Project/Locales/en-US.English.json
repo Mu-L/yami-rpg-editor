@@ -779,6 +779,7 @@
       "setNumber.object.trigger-angle": "Angle",
       "setNumber.object.tilemap-width": "Width",
       "setNumber.object.tilemap-height": "Height",
+      "setNumber.object.tilemap-tag": "Tile Tag",
       "setNumber.object.list-length": "ListLength",
       "setNumber.element.element-x": "Element.X",
       "setNumber.element.element-y": "Element.Y",
@@ -1830,6 +1831,7 @@
     "[comment]": "********** Inspector - File - Tileset **********",
     "palette-scroll": {"tip": "$Vertical Scroll Mode\nOn: Slide the mouse wheel to scroll up and down the tileset\nOff: Slide the mouse wheel to zoom in and out the tileset"},
     "palette-priority": {"tip": "$Priority\nSorting priority of tiles when rendering on the object layer.\nTiles below always overlay those above.\nPriority = -1: shift sort up by one tile.\nPriority = 1: shift sort down by one tile."},
+    "palette-tag": {"tip": "$Tile Tag\nEdit tile tags by double-clicking tiles"},
     "palette-terrain": {"tip": "$Terrain\nLand: Actors with \"land\" or \"unrestricted\" passage terrain can move here\nWater: Actors with \"water\" or \"unrestricted\" passage terrain can move here\nWall: Actors with \"unrestricted\" passage terrain can move here, it can also prevent triggers from passing"},
     "palette-edit": {"tip": "$Edit Auto Tiles\nIf a file of auto tile is open, switch to edit mode and enable the context menu for tiles"},
     "palette-flip": {"tip": "$Flip normal tiles\nFlip selected normal tiles horizontally (does not change auto tiles)"},
@@ -3324,6 +3326,10 @@
     "setQuantity": {"title": "Set Quantity"},
     "setQuantity-quantity": {"label": "Quantity", "tip": "Enter the item quantity"},
 
+    "[comment]": "********** Set Tile Tag **********",
+    "setTileTag": {"title": "Set Tile Tag"},
+    "setTileTag-tag": {"label": "Tag", "tip": "Enter the tile tag (0-99999)"},
+
     "[comment]": "********** Search - String **********",
     "event-search-string": {"title": "Search String"},
     "event-search-string-search": {"label": "Content：", "tip": "Enter the search content"},
@@ -3688,6 +3694,7 @@
       "trigger-angle": {"name": "Trigger - Angle", "tip": "Get the angle of the trigger"},
       "tilemap-width": {"name": "Tilemap - Width", "tip": "Get the width of the tilemap"},
       "tilemap-height": {"name": "Tilemap - Height", "tip": "Get the height of the tilemap"},
+      "tilemap-tag": {"name": "Tilemap - Tile Tag", "tip": "Get the tag value at the specified tilemap position (0-99999)"},
       "list-length": {"name": "List - Length", "tip": "Get the number of data in the list"}
     }},
     "setNumber-operand-element-property": {"label": "Property", "tip": "Retrieve element property value", "options": {
@@ -3730,6 +3737,7 @@
     "setNumber-operand-common-item": {"label": "Item", "tip": "Retrieve relevant data of this item"},
     "setNumber-operand-common-trigger": {"label": "Trigger", "tip": "Retrieve relevant data of this trigger"},
     "setNumber-operand-common-tilemap": {"label": "Tilemap", "tip": "Retrieve relevant data of this tilemap"},
+    "setNumber-operand-tilemapPosition": {"label": "Tilemap Position", "tip": "The tilemap coordinates"},
     "setNumber-operand-object-itemId": {"label": "Item", "tip": "Input the item file ID"},
     "setNumber-operand-object-equipmentId": {"label": "Equipment", "tip": "Input the equipment file ID"},
     "setNumber-operand-string-search": {"label": "Search String", "tip": "Target string for search location"},

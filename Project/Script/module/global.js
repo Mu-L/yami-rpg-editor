@@ -2,7 +2,7 @@
 const fs = require('fs-extra')
 const yauzl = require('yauzl')
 
-const CommunityVersion = '26012701' // 社区编辑器版本
+const CommunityVersion = '26013001' // 社区编辑器版本
 
 EventBus.once('editor_loaded', () => {
 	// 更新项目数据
@@ -465,3 +465,36 @@ UpdateLog.windowClosed = function () {
 	UpdateLog.communityItems = []
 	UpdateLog.currentMode = 'internal'
 }
+
+/* 设置图块标签 */
+const SetTileTag = {
+	// properties
+	callback: null,
+	// methods
+	initialize: null,
+	open: null,
+	// events
+	windowClosed: null,
+	confirm: null
+}
+
+SetTileTag.initialize = function () {
+	$('#setTileTag').on('closed', this.windowClosed)
+	$('#setTileTag-confirm').on('click', this.confirm)
+}
+
+SetTileTag.open = function (tag, callback) {
+	this.callback = callback
+	Window.open('setTileTag')
+	$('#setTileTag-tag').write(tag)
+	$('#setTileTag-tag').getFocus('all')
+}
+
+SetTileTag.windowClosed = function (event) {
+	this.callback = null
+}.bind(SetTileTag)
+
+SetTileTag.confirm = function (event) {
+	this.callback($('#setTileTag-tag').read())
+	Window.close('setTileTag')
+}.bind(SetTileTag)

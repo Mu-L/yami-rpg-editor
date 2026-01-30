@@ -6150,6 +6150,20 @@ anim-dir.selected {
 	background-color: rgba(255, 255, 0, 0.4);
 }
 
+#palette-info {
+	position: absolute;
+	left: 0;
+	top: 0;
+	padding: 0 4px;
+	line-height: 20px;
+	color: white;
+	overflow: hidden;
+	white-space: pre;
+	text-overflow: ellipsis;
+	text-shadow: var(--stage-info-text-shadow);
+	pointer-events: none;
+}
+
 #fileTileset-general-detail:not([open]) > detail-summary {
 	margin-bottom: 0;
 	height: 21px;
@@ -12421,6 +12435,25 @@ text.export-apk-major {
 }
 
 #setQuantity-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置图块标签窗口
+ * --------------------------------
+ */
+#setTileTag {
+	width: 324px;
+	height: 98px;
+}
+
+#setTileTag-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTileTag-cancel {
 	right: 10px;
 	bottom: 10px;
 }

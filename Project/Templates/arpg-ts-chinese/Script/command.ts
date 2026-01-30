@@ -2109,6 +2109,39 @@ let Command = new class CommandCompiler {
 							const getTilemap = Command.compileTilemap(operand.tilemap);
 							return () => getTilemap()?.height;
 						}
+						case "tilemap-tag": {
+							const getTilemap = Command.compileTilemap(operand.tilemap);
+							const positionTypes = new Set([
+								"absolute",
+								"relative",
+								"actor",
+								"trigger",
+								"light",
+								"region",
+								"object",
+								"mouse",
+							]);
+							if (
+								operand.tilemapPosition &&
+								typeof operand.tilemapPosition === "object" &&
+								positionTypes.has(operand.tilemapPosition.type)
+							) {
+								const getPosition = Command.compilePosition(
+									operand.tilemapPosition as PositionGetter
+								);
+								return () => {
+									const tilemap = getTilemap();
+									const position = getPosition();
+									if (tilemap && position) {
+										return tilemap.getTileTag(
+											Math.floor(position.x),
+											Math.floor(position.y)
+										);
+									}
+								};
+							}
+							return () => 0;
+						}
 						case "list-length": {
 							const getList = Command.compileVariable(
 								operand.variable,

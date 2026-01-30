@@ -779,6 +779,7 @@
       "setNumber.object.trigger-angle": "角度",
       "setNumber.object.tilemap-width": "宽度",
       "setNumber.object.tilemap-height": "高度",
+      "setNumber.object.tilemap-tag": "图块标签",
       "setNumber.object.list-length": "列表长度",
       "setNumber.element.element-x": "元素.X",
       "setNumber.element.element-y": "元素.Y",
@@ -1831,6 +1832,7 @@
     "[comment]": "********** 检查器 - 文件 - 图块组 **********",
     "palette-scroll": {"tip": "$垂直滚动模式\n开启：滑动鼠标滚轮垂直滚动图块组\n关闭：滑动鼠标滚轮放大缩小图块组"},
     "palette-priority": {"tip": "$优先级\n图块在瓦片地图对象层渲染时的排序优先级，\n位置在下方的图块总是会遮挡上方的图块。\n优先级 = -1：排序位置向上偏移一个图块的距离\n优先级 = 1：排序位置向下偏移一个图块的距离"},
+    "palette-tag": {"tip": "$图块标签\n双击图块可编辑图块标签"},
     "palette-terrain": {"tip": "$地形\n地面：通行区域为\"地面\"或\"不受限制\"的角色可以在这里移动\n水面：通行区域为\"水面\"或\"不受限制\"的角色可以在这里移动\n墙块：通行区域为\"不受限制\"的角色可以在这里移动，可阻挡触发器"},
     "palette-edit": {"tip": "$编辑自动图块\n如果打开的是自动图块文件，则进入编辑模式，启用图块右键菜单"},
     "palette-flip": {"tip": "$翻转普通图块\n水平翻转选中的普通图块（不改变自动图块）"},
@@ -3324,6 +3326,10 @@
     "[comment]": "********** 设置数量 **********",
     "setQuantity": {"title": "设置数量"},
     "setQuantity-quantity": {"label": "数量", "tip": "输入项目数量"},
+
+    "[comment]": "********** 设置图块标签 **********",
+    "setTileTag": {"title": "设置图块标签"},
+    "setTileTag-tag": {"label": "标签", "tip": "输入图块标签(0-99999)"},
     
     "[comment]": "********** 搜索 - 字符串 **********",
     "event-search-string": {"title": "搜索字符串"},
@@ -3689,6 +3695,7 @@
       "trigger-angle": {"name": "触发器 - 角度", "tip": "获取触发器的角度"},
       "tilemap-width": {"name": "瓦片地图 - 宽度", "tip": "获取瓦片地图的宽度"},
       "tilemap-height": {"name": "瓦片地图 - 高度", "tip": "获取瓦片地图的高度"},
+      "tilemap-tag": {"name": "瓦片地图 - 图块标签", "tip": "获取指定瓦片地图位置的图块标签值(0-99999)"},
       "list-length": {"name": "列表 - 长度", "tip": "获取列表中数据的数量"}
     }},
     "setNumber-operand-element-property": {"label": "属性", "tip": "获取元素属性值", "options": {
@@ -3731,6 +3738,7 @@
     "setNumber-operand-common-item": {"label": "物品", "tip": "获取这个物品的相关数据"},
     "setNumber-operand-common-trigger": {"label": "触发器", "tip": "获取这个触发器的相关数据"},
     "setNumber-operand-common-tilemap": {"label": "瓦片地图", "tip": "获取这个瓦片地图的相关数据"},
+    "setNumber-operand-tilemapPosition": {"label": "瓦片地图坐标", "tip": "瓦片的坐标"},
     "setNumber-operand-object-itemId": {"label": "物品", "tip": "输入物品文件ID"},
     "setNumber-operand-object-equipmentId": {"label": "装备", "tip": "输入装备文件ID"},
     "setNumber-operand-string-search": {"label": "搜索字符串", "tip": "要搜索位置的目标字符串"},

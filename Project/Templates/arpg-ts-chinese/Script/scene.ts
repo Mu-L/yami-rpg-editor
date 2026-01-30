@@ -1046,6 +1046,10 @@ class SceneContext {
     this.parallax.getTileTerrain(x, y)
   }
 
+  public getTileTag(x: number, y: number): number {
+    return this.parallax.getTileTag(x, y)
+  }
+
   /**
    * 加载子场景
    * @param sceneId 场景ID
@@ -2121,6 +2125,14 @@ class SceneParallaxManager {
     return 0
   }
 
+  public getTileTag(x: number, y: number): number {
+    for (const tilemap of this.tilemaps as Array<SceneTilemap>) {
+      const tag = tilemap.getTileTag(x, y)
+      if (tag !== 0) return tag
+    }
+    return 0
+  }
+
   /** 重新加载地形障碍 */
   private reloadTerrains(): void {
     if (!this.reloadingTerrains) {
@@ -2790,6 +2802,16 @@ class SceneTilemap {
       const ty = y - this.tileStartY
       const tile = this.tiles[tx + ty * this.width]
       return this.tileData[tile & 0xffffff00]?.terrain ?? 0
+    }
+    return 0
+  }
+
+  public getTileTag(x: number, y: number): number {
+    if (x >= this.tileStartX && x < this.tileEndX && y >= this.tileStartY && y < this.tileEndY) {
+      const tx = x - this.tileStartX
+      const ty = y - this.tileStartY
+      const tile = this.tiles[tx + ty * this.width]
+      return this.tileData[tile & 0xffffff00]?.tag ?? 0
     }
     return 0
   }

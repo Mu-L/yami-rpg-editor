@@ -16536,6 +16536,7 @@ NumberOperand.initialize = function () {
 		{ name: 'Trigger - Angle', value: 'trigger-angle' },
 		{ name: 'Tilemap - Width', value: 'tilemap-width' },
 		{ name: 'Tilemap - Height', value: 'tilemap-height' },
+		{ name: 'Tilemap - Tag', value: 'tilemap-tag' },
 		{ name: 'List - Length', value: 'list-length' }
 	])
 
@@ -16626,6 +16627,13 @@ NumberOperand.initialize = function () {
 			{
 				case: ['tilemap-width', 'tilemap-height'],
 				targets: [$('#setNumber-operand-common-tilemap')]
+			},
+			{
+				case: 'tilemap-tag',
+				targets: [
+					$('#setNumber-operand-common-tilemap'),
+					$('#setNumber-operand-tilemapPosition')
+				]
 			},
 			{
 				case: 'list-length',
@@ -16928,6 +16936,16 @@ NumberOperand.parseObjectProperty = function (operand) {
 			return (
 				Command.parseTilemap(operand.tilemap) + Token(' -> ') + property
 			)
+		case 'tilemap-tag': {
+			return (
+				Command.parseTilemap(operand.tilemap) +
+				Token(' -> ') +
+				property +
+				Token('(') +
+				Command.parsePosition(operand.tilemapPosition) +
+				Token(')')
+			)
+		}
 		case 'list-length':
 			return (
 				Command.parseVariable(operand.variable, 'object') +
@@ -17113,6 +17131,7 @@ NumberOperand.open = function (
 	let commonItem = { type: 'trigger' }
 	let commonTrigger = { type: 'trigger' }
 	let commonTilemap = { type: 'trigger' }
+	let tilemapPosition = { type: 'absolute', x: 0, y: 0 }
 	let cooldownKey = Enum.getDefStringId('cooldown-key')
 	let listIndex = 0
 	let parameterKey = ''
@@ -17152,6 +17171,7 @@ NumberOperand.open = function (
 			commonItem = operand.item ?? commonItem
 			commonTrigger = operand.trigger ?? commonTrigger
 			commonTilemap = operand.tilemap ?? commonTilemap
+			tilemapPosition = operand.tilemapPosition ?? tilemapPosition
 			cooldownKey = operand.key ?? cooldownKey
 			commonVariable = operand.variable ?? commonVariable
 			break
@@ -17193,6 +17213,7 @@ NumberOperand.open = function (
 	write('common-item', commonItem)
 	write('common-trigger', commonTrigger)
 	write('common-tilemap', commonTilemap)
+	write('tilemapPosition', tilemapPosition)
 	write('string-search', stringSearch)
 	write('math-decimals', mathDecimals)
 	write('math-min', mathMin)
@@ -17396,6 +17417,18 @@ NumberOperand.save = function () {
 				case 'tilemap-height': {
 					const tilemap = read('common-tilemap')
 					operand = { operation, type, property, tilemap }
+					break
+				}
+				case 'tilemap-tag': {
+					const tilemap = read('common-tilemap')
+					const tilemapPosition = read('tilemapPosition')
+					operand = {
+						operation,
+						type,
+						property,
+						tilemap,
+						tilemapPosition
+					}
 					break
 				}
 				case 'list-length': {
