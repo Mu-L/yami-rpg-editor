@@ -731,7 +731,7 @@ let Data = new class DataManager {
    */
   public async saveGameData(index: number, meta: AttributeMap): Promise<void> {
     const suffix = index.toString().padStart(2, '0')
-    const data = {
+    let data = {
       playTime: Time.playTime,
       actors: ActorManager.saveData(),
       party: Party.saveData(),
@@ -740,6 +740,11 @@ let Data = new class DataManager {
       camera: Camera.saveData(),
       variables: Variable.saveData(0),
       selfVariables: SelfVariable.saveData(),
+      plugins: {},
+    }
+    const beforeSaveData = EventManager.emit('beforesave', {argument: data})
+    if (beforeSaveData !== undefined) {
+      data = beforeSaveData
     }
     switch (Stats.shell) {
       case 'electron': {
@@ -804,6 +809,13 @@ let Data = new class DataManager {
         data = await IDB.getItem(key)
         break
       }
+    }
+    if (data && data.plugins === undefined) {
+      data.plugins = {}
+    }
+    const beforeLoadData = EventManager.emit('beforeload', {argument: data})
+    if (beforeLoadData !== undefined) {
+      data = beforeLoadData
     }
     Game.reset()
     Time.playTime = data.playTime

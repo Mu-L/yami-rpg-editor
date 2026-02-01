@@ -333,6 +333,23 @@ type GlobalSaveData = {
   variables: AttributeMap
 }
 
+type PluginSaveData = HashMap<AttributeMap>
+
+type GameSaveData = {
+  playTime: number
+  actors: Array<ActorSaveData>
+  party: PartySaveData
+  team: TeamSaveData
+  scene: SceneManagerSaveData
+  camera: CameraSaveData
+  variables: AttributeMap
+  selfVariables: AttributeMap
+  plugins: PluginSaveData
+}
+
+/** 定义存档数据 */
+type PluginSaveDefine = (key: string, value: AttributeValue) => void
+
 /** 存档元数据 */
 type SaveMeta = {
   index: number
