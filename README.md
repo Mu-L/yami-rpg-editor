@@ -1,5 +1,19 @@
 # Yami rpg editor 社区分支
 
+![](https://flat.badgen.net/github/license/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/forks/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/stars/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/commits/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/issues/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/open-issues/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/closed-issues/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/prs/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/open-prs/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/closed-prs/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/merged-prs/Open-Yami-Community/yami-rpg-editor)
+
+<hr>
+
 Yami rpg editor 是一款以用户友好性著称的 2D RPG 编辑器
 
 Yami rpg editor is 2D rpg editor on user-friendliness.
@@ -80,6 +94,13 @@ pnpm run build:linux
 
 欢迎提出您宝贵的 **issue**，我们将会处理。
 
+## 捐赠
+
+社区版项目都是徐然一个人在维护，不管您捐赠一角还是一分，都是**徐然维护项目**的**动力**，加油，干就完了！！！
+
+<p align="center">
+<img width="500" src="https://github.com/user-attachments/assets/4733d260-991a-4edb-aaa1-483dd3ef5d91" alt="1abcd7e53e8c72cf7b3b7770b48c001d_720">
+</p>
 # LICENSE
 
 [you can see this](./LICENSE)
