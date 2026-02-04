@@ -7,7 +7,6 @@
 ![](https://flat.badgen.net/github/issues/Open-Yami-Community/yami-rpg-editor)
 ![](https://flat.badgen.net/github/open-issues/Open-Yami-Community/yami-rpg-editor)
 ![](https://flat.badgen.net/github/closed-issues/Open-Yami-Community/yami-rpg-editor)
-![](https://flat.badgen.net/github/prs/Open-Yami-Community/yami-rpg-editor)
 ![](https://flat.badgen.net/github/open-prs/Open-Yami-Community/yami-rpg-editor)
 ![](https://flat.badgen.net/github/closed-prs/Open-Yami-Community/yami-rpg-editor)
 ![](https://flat.badgen.net/github/merged-prs/Open-Yami-Community/yami-rpg-editor)
@@ -101,6 +100,7 @@ pnpm run build:linux
 <p align="center">
 <img width="500" src="https://github.com/user-attachments/assets/4733d260-991a-4edb-aaa1-483dd3ef5d91" alt="1abcd7e53e8c72cf7b3b7770b48c001d_720">
 </p>
+
 # LICENSE
 
 [you can see this](./LICENSE)
