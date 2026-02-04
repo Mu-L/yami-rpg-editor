@@ -4328,13 +4328,13 @@ let Command = new class CommandCompiler {
 							getTag = () => tag;
 						}
 						const commandList = Command.compileIndependent(commands!);
-						commandList.type = type!;
+						commandList.type = Enum.getValue(type!) || type!;
 						commandList.enabled = true;
 						commandList.priority = priority ?? false;
 						return () => {
 							const copy = Object.create(commandList) as CommandFunctionList;
 							copy.inheritance = CurrentEvent;
-							EventManager.register(getTag(), type!, copy);
+							EventManager.register(getTag(), Enum.getValue(type!) || type!, copy);
 							return true;
 						};
 					}
@@ -4356,18 +4356,18 @@ let Command = new class CommandCompiler {
 					case "register": {
 						const getActor = Command.compileActor(actor!);
 						const commandList = Command.compileIndependent(commands!);
-						commandList.type = type!;
+						commandList.type = Enum.getValue(type!) || type!;
 						return () => {
 							const copy = Object.create(commandList) as CommandFunctionList;
 							copy.inheritance = CurrentEvent;
-							getActor()?.register(type!, copy);
+							getActor()?.register(Enum.getValue(type!) || type!, copy);
 							return true;
 						};
 					}
 					case "unregister": {
 						const getActor = Command.compileActor(actor!);
 						return () => {
-							getActor()?.unregister(type!);
+							getActor()?.unregister(Enum.getValue(type!) || type!);
 							return true;
 						};
 					}
@@ -4384,18 +4384,18 @@ let Command = new class CommandCompiler {
 					case "register": {
 						const getElement = Command.compileElement(element!);
 						const commandList = Command.compileIndependent(commands!);
-						commandList.type = type!;
+						commandList.type = Enum.getValue(type!) || type!;
 						return () => {
 							const copy = Object.create(commandList) as CommandFunctionList;
 							copy.inheritance = CurrentEvent;
-							getElement()?.register(type!, copy);
+							getElement()?.register(Enum.getValue(type!) || type!, copy);
 							return true;
 						};
 					}
 					case "unregister": {
 						const getElement = Command.compileElement(element!);
 						return () => {
-							getElement()?.unregister(type!);
+							getElement()?.unregister(Enum.getValue(type!) || type!);
 							return true;
 						};
 					}

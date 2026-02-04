@@ -5176,7 +5176,7 @@ Command.cases.registerEvent = {
 			const registerType = 'register_' + type
 			const eventTypes = Enum.getMergedItems(
 				EventEditor.types[registerType],
-				registerType + '-event'
+				type + '-event'
 			)
 			this.switchTypeAndTagInput()
 			// 加载事件类型选项
