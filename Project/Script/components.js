@@ -245,17 +245,7 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 				}
 				break
 			case 'open':
-				if (target === this) {
-					const x = event.clientX
-					const y = event.clientY
-					const l = rect.left
-					const r = rect.right
-					const t = rect.top
-					const b = rect.bottom
-					if (x >= l && x < r && y >= t && y < b) {
-						close()
-					}
-				} else {
+				if (target !== this) {
 					close()
 				}
 				break
@@ -264,9 +254,28 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 
 	// 指针离开事件
 	const pointerleave = function (event) {
+		if (
+			!(
+				event.relatedTarget instanceof HTMLElement &&
+				tooltip.contains(event.relatedTarget)
+			)
+		) {
+			target = null
+			close()
+		}
+	}
+
+	tooltip.on('pointerleave', (event) => {
+		if (
+			target &&
+			event.relatedTarget instanceof HTMLElement &&
+			target.contains(event.relatedTarget)
+		) {
+			return
+		}
 		target = null
 		close()
-	}
+	})
 
 	return function (tip) {
 		if ('tip' in this === false) {

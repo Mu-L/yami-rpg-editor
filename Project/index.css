@@ -744,7 +744,8 @@ spacing {
 	background-color: var(--tooltip-background);
 	border: var(--tooltip-border);
 	border-radius: 2px;
-	overflow: hidden;
+	overflow: auto;
+	max-height: calc(100vh - 30px);
 	white-space: pre;
 	pointer-events: none;
 	z-index: 10;
@@ -752,6 +753,7 @@ spacing {
 
 #tooltip.open {
 	display: block;
+	pointer-events: auto;
 }
 
 #tooltip > b {
