@@ -4181,6 +4181,7 @@ Command.cases.callEvent = {
 					type + '-event'
 				)
 				elEventType.loadItems(eventTypes)
+				elEventType.createTooltip()
 				elEventType.write(eventTypes[0].value)
 			}
 			// 显示或隐藏全局事件参数和返回值元素组件
@@ -5021,6 +5022,7 @@ Command.cases.stopEvent = {
 					type + '-event'
 				)
 				elEventType.loadItems(eventTypes)
+				elEventType.createTooltip()
 				elEventType.write(eventTypes[0].value)
 			}
 		})
@@ -5181,6 +5183,7 @@ Command.cases.registerEvent = {
 			this.switchTypeAndTagInput()
 			// 加载事件类型选项
 			elEventType.loadItems(eventTypes)
+			elEventType.createTooltip()
 			elEventType.write(eventTypes[0].value)
 		})
 

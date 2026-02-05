@@ -1157,10 +1157,14 @@ class EnumerationContext {
 					let item = itemCache[string.id]
 					if (item === undefined) {
 						item = itemCache[string.id] = {
-							name: GameLocal.replace(string.name),
 							value: string.id
 						}
 					}
+					const name = GameLocal.replace(string.name)
+					item.name = name
+					item.tip = string.note
+						? Local.parseTip(string.note, name)
+						: undefined
 					items.push(item)
 				}
 			}
@@ -1194,10 +1198,14 @@ class EnumerationContext {
 					let item = itemCache[string.id]
 					if (item === undefined) {
 						item = itemCache[string.id] = {
-							name: GameLocal.replace(string.name),
 							value: string.id
 						}
 					}
+					const name = GameLocal.replace(string.name)
+					item.name = name
+					item.tip = string.note
+						? Local.parseTip(string.note, name)
+						: undefined
 					items.push(item)
 				}
 			}
