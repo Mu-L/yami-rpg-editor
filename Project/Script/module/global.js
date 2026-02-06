@@ -86,7 +86,8 @@ NewProject.confirm = function () {
 		(template == 'arpg-ts-english' &&
 			NoResourceObj['arpg-ts-english'].check) ||
 		(template == 'arpg-ts-chinese' &&
-			NoResourceObj['arpg-ts-chinese'].check)
+			NoResourceObj['arpg-ts-chinese'].check) ||
+		template != ['arpg-ts-english', 'arpg-ts-chinese']
 	) {
 		TitleConfirmOld.call(Title)
 	} else {
