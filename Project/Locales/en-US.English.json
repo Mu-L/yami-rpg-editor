@@ -1703,7 +1703,8 @@
       "resource-size-unknown": "Unknown",
       "github-acceleration-node": "Node",
       "github-acceleration-auto": "Auto Select",
-      "github-acceleration-none": "No Acceleration"
+      "github-acceleration-none": "No Acceleration",
+      "resource-not-found":"Resource pack not found"
     }
   },
   "components": {

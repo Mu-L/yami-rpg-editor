@@ -1930,6 +1930,10 @@ select-item.selected {
 	background-color: var(--selected-background);
 }
 
+select-item.disabled {
+	color: var(--text-color-disabled);
+}
+
 /* --------------------------------
  * 菜单列表
  * --------------------------------

@@ -583,9 +583,6 @@ const Resources = new (class {
 	// 加载列表
 	load() {
 		NoResourceObj = isNoResource()
-		if (this.isStart) {
-			if (this.window) this.window.querySelector('close')?.remove()
-		}
 		this.content.innerHTML = ''
 		const list = Object.keys(NoResourceObj)
 		for (let i of list) {

@@ -1703,7 +1703,8 @@
       "resource-size-unknown":"未知",
       "github-acceleration-node":"节点",
       "github-acceleration-auto":"自动选择",
-      "github-acceleration-none":"不使用加速"
+      "github-acceleration-none":"不使用加速",
+      "resource-not-found":"未找到资源包"
     }
   },
   "components": {

@@ -73,11 +73,24 @@ window.addEventListener('localize', () => {
 	Resources.loaded = true // 已检查过资源
 })
 
-const TitleNewProjectOld = Title.newProject
-Title.newProject = function () {
-	if (!Resources.loaded || !Resources.checkResources()) return // 未初始化不可创建项目
-	TitleNewProjectOld.call(Title)
+/* 新项目确认 */
+$('#newProject-confirm').off('click', NewProject.confirm)
+const TitleConfirmOld = NewProject.confirm
+NewProject.confirm = function () {
+	const template = $('#newProject-template').read()
+	NoResourceObj = isNoResource()
+	if (
+		(template == 'arpg-ts-english' &&
+			NoResourceObj['arpg-ts-english'].check) ||
+		(template == 'arpg-ts-chinese' &&
+			NoResourceObj['arpg-ts-chinese'].check)
+	) {
+		TitleConfirmOld.call(Title)
+	} else {
+		alert(Local.get('confirmation.resource-not-found'))
+	}
 }
+$('#newProject-confirm').off('click', NewProject.confirm)
 
 // 解压zip
 const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
