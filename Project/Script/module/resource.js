@@ -330,11 +330,6 @@ const Resources = new (class {
 			}
 			// 判断目录下是否有zip文件，有则删除它节省空间
 			if (fs.existsSync(targetPath)) fs.unlink(targetPath)
-			if (this.isStart && this.checkResources()) {
-				this.window
-					.querySelector('title-bar')
-					.append(document.createElement('close'))
-			}
 		}
 		const get = Local.createGetter('confirmation')
 

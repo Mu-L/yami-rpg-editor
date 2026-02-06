@@ -64,7 +64,10 @@ let NoResourceObj = isNoResource()
 
 window.addEventListener('localize', () => {
 	Resources.initialize() // 初始化
-	if (!Resources.checkResources()) {
+	if (
+		!NoResourceObj['arpg-ts-english'].check &&
+		!NoResourceObj['arpg-ts-chinese'].check
+	) {
 		Resources.open(true)
 		Resources.checkEditorVersion() // 只检测编辑器版本
 	} else {
