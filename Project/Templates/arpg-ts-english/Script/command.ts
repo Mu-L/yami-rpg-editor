@@ -4304,6 +4304,7 @@ let Command = new class CommandCompiler {
 		operation,
 		type,
 		priority,
+		namespace,
 		tag,
 		commands,
 	}: {
@@ -4314,6 +4315,7 @@ let Command = new class CommandCompiler {
 		operation: "register" | "unregister" | "reset";
 		type?: string;
 		priority?: boolean;
+		namespace?: boolean;
 		commands?: CommandDataList;
 	}): CommandFunction {
 		switch (target) {
@@ -4333,7 +4335,7 @@ let Command = new class CommandCompiler {
 						commandList.priority = priority ?? false;
 						return () => {
 							const copy = Object.create(commandList) as CommandFunctionList;
-							copy.inheritance = CurrentEvent;
+							if(!namespace) copy.inheritance = CurrentEvent;
 							EventManager.register(getTag(), Enum.getValue(type!) || type!, copy);
 							return true;
 						};
@@ -4359,7 +4361,7 @@ let Command = new class CommandCompiler {
 						commandList.type = Enum.getValue(type!) || type!;
 						return () => {
 							const copy = Object.create(commandList) as CommandFunctionList;
-							copy.inheritance = CurrentEvent;
+							if(!namespace) copy.inheritance = CurrentEvent;
 							getActor()?.register(Enum.getValue(type!) || type!, copy);
 							return true;
 						};
@@ -4387,7 +4389,7 @@ let Command = new class CommandCompiler {
 						commandList.type = Enum.getValue(type!) || type!;
 						return () => {
 							const copy = Object.create(commandList) as CommandFunctionList;
-							copy.inheritance = CurrentEvent;
+							if(!namespace) copy.inheritance = CurrentEvent;
 							getElement()?.register(Enum.getValue(type!) || type!, copy);
 							return true;
 						};

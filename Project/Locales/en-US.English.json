@@ -1038,6 +1038,7 @@
       "registerEvent.alias.register": "Register",
       "registerEvent.alias.unregister": "Unregister",
       "registerEvent.alias.reset": "Reset",
+      "registerEvent.namespace": "Namespace",
       "registerEvent.reset.global-event": "GlobalEvent",
       "registerEvent.reset.global-events": "GlobalEvents",
       "registerEvent.reset.events": "Events",
@@ -4304,6 +4305,7 @@
     }},
     "registerEvent-type": {"label": "Event", "tip": "Choose the event type for the object"},
     "registerEvent-priority": {"label": "Priority", "tip": "Trigger before element events, unaffected by \"Pause Game\" and \"Prevent Scene Input\" commands"},
+    "registerEvent-namespace": {"label": "Namespace", "tip": "Enable: use an independent variable scope\nDisable: share variable scope with the current event"},
     "registerEvent-tag": {"label": "Tag", "tip": "A label for unloading this event later"},
 
     "[comment]": "********** Command - Set Event **********",

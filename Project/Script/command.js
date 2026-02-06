@@ -292,6 +292,7 @@ Command.fetchVariables = function (commands) {
 			const { id, params } = command
 			// 跳过关闭的指令
 			if (id[0] === '!') continue
+			Command.currentCommand = command
 			// 遍历调用事件中的全局事件指令列表
 			if (id === 'callEvent') {
 				if (
@@ -323,6 +324,7 @@ Command.fetchVariables = function (commands) {
 				}
 			}
 		}
+		Command.currentCommand = null
 	}
 	// 获取变量
 	fetchParameters(eventId)
@@ -354,7 +356,8 @@ Command.parseVariable = function (
 						comment: Command.eventName,
 						evIndex: Command.eventIndex,
 						isLeftValue: isLeftValue,
-						refCount: 0
+						refCount: 0,
+						command: Command.currentCommand
 					})
 				}
 			}
@@ -5198,6 +5201,7 @@ Command.cases.registerEvent = {
 		$('#registerEvent-operation').on('write', () => {
 			this.switchTypeAndTagInput()
 			this.switchPriority()
+			this.switchNamespace()
 		})
 
 		// 事件类型 - 写入事件
@@ -5285,6 +5289,17 @@ Command.cases.registerEvent = {
 			this.priorityEnabled = false
 		}
 	},
+	switchNamespace: function () {
+		const namespace = $('#registerEvent-namespace')
+		const operation = $('#registerEvent-operation').read()
+		if (operation === 'register') {
+			namespace.previousElementSibling.show()
+			namespace.show()
+		} else {
+			namespace.previousElementSibling.hide()
+			namespace.hide()
+		}
+	},
 	parse: function ({
 		target,
 		actor,
@@ -5293,7 +5308,8 @@ Command.cases.registerEvent = {
 		type,
 		priority,
 		tag,
-		commands
+		commands,
+		namespace
 	}) {
 		const words = Command.words
 		switch (target) {
@@ -5373,6 +5389,10 @@ Command.cases.registerEvent = {
 				}
 				break
 		}
+		if (operation === 'register' && namespace) {
+			words.push(Local.get('command.registerEvent.namespace'))
+		}
+
 		const contents = [
 			{ color: 'flow' },
 			{
@@ -5399,6 +5419,7 @@ Command.cases.registerEvent = {
 		operation = 'register',
 		type = 'autorun',
 		priority = false,
+		namespace = false,
 		tag = '',
 		commands = []
 	}) {
@@ -5409,8 +5430,10 @@ Command.cases.registerEvent = {
 		write('operation', operation)
 		write('type', type)
 		write('priority', priority)
+		write('namespace', namespace)
 		write('tag', tag)
 		Command.cases.registerEvent.commands = commands
+		this.switchNamespace()
 		$('#registerEvent-target').getFocus()
 	},
 	save: function () {
@@ -5419,6 +5442,7 @@ Command.cases.registerEvent = {
 		const operation = read('operation')
 		const type = read('type')
 		const commands = Command.cases.registerEvent.commands
+		const namespace = read('namespace')
 		switch (target) {
 			case 'global':
 				switch (operation) {
@@ -5436,6 +5460,7 @@ Command.cases.registerEvent = {
 							operation,
 							type,
 							priority,
+							namespace,
 							tag,
 							commands
 						})
@@ -5466,6 +5491,7 @@ Command.cases.registerEvent = {
 							actor,
 							operation,
 							type,
+							namespace,
 							commands
 						})
 						break
@@ -5487,6 +5513,7 @@ Command.cases.registerEvent = {
 							element,
 							operation,
 							type,
+							namespace,
 							commands
 						})
 						break
@@ -21751,8 +21778,7 @@ VariableGetter.createDefaultForPlugin = function () {
 // 创建本地变量列表生成器
 VariableGetter.createVarListGenerator = function (filterObject) {
 	return function () {
-		const commands = EventEditor.commandList.read()
-		if (!commands) return []
+		if (!EventEditor.commandList.read()) return []
 
 		// 生成过滤字符串
 		const filter = filterObject.filter.includes('boolean')
@@ -21765,11 +21791,69 @@ VariableGetter.createVarListGenerator = function (filterObject) {
 						? 'object'
 						: 'any'
 
-		return EventEditor.commandList.varList.filter((item) => {
+		const list = EventEditor.commandList
+		const elements = list.elements
+		const count = elements.count ?? 0
+		const parentMap = new Map()
+		const stack = []
+		for (let i = 0; i < count; i++) {
+			const element = elements[i]
+			if (element.dataKey === true && element.dataItem) {
+				const indent = element.dataIndent ?? 0
+				while (
+					stack.length > 0 &&
+					stack[stack.length - 1].indent >= indent
+				) {
+					stack.pop()
+				}
+				const parent =
+					stack.length > 0 ? stack[stack.length - 1].command : null
+				if (!parentMap.has(element.dataItem)) {
+					parentMap.set(element.dataItem, parent)
+				}
+				stack.push({ command: element.dataItem, indent })
+			}
+		}
+		const getNamespaceRoot = (command) => {
+			let current = command
+			while (current) {
+				if (
+					current.id === 'registerEvent' &&
+					current.params?.namespace &&
+					current.params?.operation === 'register'
+				) {
+					return current
+				}
+				current = parentMap.get(current)
+			}
+			return null
+		}
+		const activeIndex = list.active
+		const activeElement =
+			activeIndex !== null && activeIndex !== undefined
+				? elements[activeIndex]
+				: null
+		const activeCommand =
+			activeElement?.dataItem ?? activeElement?.dataParent ?? null
+		const activeNamespace = activeCommand
+			? getNamespaceRoot(activeCommand)
+			: null
+
+		return (list.varList ?? []).filter((item) => {
 			// 过滤类型不匹配的变量
-			return (
-				filter === 'any' || item.type === 'any' || filter === item.type
-			)
+			if (
+				filter !== 'any' &&
+				item.type !== 'any' &&
+				filter !== item.type
+			) {
+				return false
+			}
+			// 过滤作用域不匹配的变量
+			const itemCommand = item.command
+			const itemNamespace = itemCommand
+				? getNamespaceRoot(itemCommand)
+				: null
+			return itemNamespace === activeNamespace
 		})
 	}
 }

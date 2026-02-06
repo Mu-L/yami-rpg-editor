@@ -1038,6 +1038,7 @@
       "registerEvent.alias.register": "注册",
       "registerEvent.alias.unregister": "卸载",
       "registerEvent.alias.reset": "重置",
+      "registerEvent.namespace": "命名空间",
       "registerEvent.reset.global-event": "全局事件",
       "registerEvent.reset.global-events": "全局事件",
       "registerEvent.reset.events": "事件",
@@ -4304,6 +4305,7 @@
     }},
     "registerEvent-type": {"label": "事件", "tip": "选择对象的事件类型"},
     "registerEvent-priority": {"label": "优先级", "tip": "提前到元素事件之前触发，不受\"暂停游戏\"和\"阻止场景输入事件\"指令的影响"},
+    "registerEvent-namespace": {"label": "命名空间", "tip": "开启：使用独立的变量环境\n关闭：与当前事件共享变量环境"},
     "registerEvent-tag": {"label": "标签", "tip": "以后用来卸载该事件的标记"},
 
     "[comment]": "********** 指令 - 设置事件 **********",
