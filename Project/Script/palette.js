@@ -1095,7 +1095,7 @@ Palette.drawTags = function () {
 				for (let y = by; y < ey; y++) {
 					for (let x = bx; x < ex; x++) {
 						const i = x + y * tro
-						const tag = tags[i]
+						const tag = (tags[i] ??= 0)
 						if (tag === 0) continue
 						const position =
 							positions[tag] ??
