@@ -301,7 +301,12 @@ const Resources = new (class {
 		const get = Local.createGetter('confirmation')
 		if (isReOpen) {
 			Window.close('resource')
-			Resources.open(true)
+			if (
+				!NoResourceObj['arpg-ts-english'].check &&
+				!NoResourceObj['arpg-ts-chinese'].check
+			) {
+				Resources.open(true)
+			}
 
 			Window.confirm({ message: versionString }, [
 				{
