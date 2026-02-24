@@ -1951,6 +1951,20 @@ class ImageElement extends UIElement {
         }
         GL.maskTexture.binding = this
         GL.bindFBO(GL.maskTexture.fbo)
+        const [x1, y1, x2, y2] = this.computeBoundingRectangle()
+        const sl = Math.max(Math.floor(x1 - 1), 0)
+        const st = Math.max(Math.floor(y1 - 1), 0)
+        const sr = Math.min(Math.ceil(x2 + 1), GL.maskTexture.width)
+        const sb = Math.min(Math.ceil(y2 + 1), GL.maskTexture.height)
+        const sw = sr - sl
+        const sh = sb - st
+        if (sw > 0 && sh > 0) {
+          GL.enable(GL.SCISSOR_TEST)
+          GL.scissor(sl, st, sw, sh)
+          GL.clearColor(0, 0, 0, 0)
+          GL.clear(GL.COLOR_BUFFER_BIT)
+          GL.disable(GL.SCISSOR_TEST)
+        }
         GL.alpha = 1
         GL.blend = 'normal'
       } else {
@@ -5858,7 +5872,7 @@ class WindowElement extends UIElement {
         this.drawChildren()
         break
       case 'hidden':
-        const matrix = GL.matrix.set(this.matrix)
+       	const matrix = GL.matrix.set(this.matrix)
 				const L = this.x
 				const T = this.y
 				const R = L + this.width
