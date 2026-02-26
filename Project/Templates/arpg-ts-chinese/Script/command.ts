@@ -828,6 +828,13 @@ let Command = new class CommandCompiler {
 					return Scene.entity.get(presetId) as SceneTilemap | undefined;
 				};
 			}
+			case "variable": {
+				const getTilemap = Command.compileVariable(
+					tilemap.variable,
+					Attribute.OBJECT_GET
+				);
+				return () => Command.filterValidObject(getTilemap());
+			}
 		}
 	}
 

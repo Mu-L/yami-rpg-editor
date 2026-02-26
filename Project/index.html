@@ -1790,18 +1790,19 @@
             </detail-box>
           </page-frame>
 
-        <!-- 动画 - 粒子层 -->
-        <page-frame value="animParticleLayer">
-          <detail-box open>
-            <detail-summary>Particle Layer</detail-summary>
-            <detail-grid id="animParticleLayer-properties-grid">
-              <text>Particle</text><custom-box id="animParticleLayer-particleId" type="file" filter="particle"></custom-box>
-              <text>Position</text><select-box id="animParticleLayer-position"></select-box>
-              <text>Angle</text><select-box id="animParticleLayer-angle"></select-box>
-              <text>Order</text><select-box id="animParticleLayer-order"></select-box>
-            </detail-grid>
-          </detail-box>
-        </page-frame>
+          <!-- 动画 - 粒子层 -->
+          <page-frame value="animParticleLayer">
+            <detail-box open>
+              <detail-summary>Particle Layer</detail-summary>
+              <detail-grid id="animParticleLayer-properties-grid">
+                <text>Particle</text><custom-box id="animParticleLayer-particleId" type="file"
+                  filter="particle"></custom-box>
+                <text>Position</text><select-box id="animParticleLayer-position"></select-box>
+                <text>Angle</text><select-box id="animParticleLayer-angle"></select-box>
+                <text>Order</text><select-box id="animParticleLayer-order"></select-box>
+              </detail-grid>
+            </detail-box>
+          </page-frame>
 
           <!-- 动画 - 粒子帧 -->
           <page-frame id="animParticleFrame" value="animParticleFrame">
@@ -3030,15 +3031,17 @@
     </content-frame>
   </window-frame>
 
-<!-- 资源选择器 -->
-<window-frame id="selector" mode="center">
-  <title-bar>Select File<maximize></maximize><close></close></title-bar>
-  <content-frame>
-    <file-browser id="selector-browser"></file-browser>
-    <button id="selector-confirm" name="confirm">Confirm</button>
-    <button id="selector-cancel" name="cancel">Cancel</button>
-  </content-frame>
-</window-frame>
+  <!-- 资源选择器 -->
+  <window-frame id="selector" mode="center">
+    <title-bar>Select File<maximize></maximize>
+      <close></close>
+    </title-bar>
+    <content-frame>
+      <file-browser id="selector-browser"></file-browser>
+      <button id="selector-confirm" name="confirm">Confirm</button>
+      <button id="selector-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
 
   <!-- 图像剪辑窗口 -->
   <window-frame id="imageClip">
@@ -3551,6 +3554,7 @@
       <grid-box>
         <text>Type</text><select-box id="tilemapGetter-type"></select-box>
         <text>Tilemap</text><custom-box id="tilemapGetter-presetId" type="preset-object" filter="tilemap"></custom-box>
+        <text>Variable</text><custom-box id="tilemapGetter-variable" type="variable" filter="object"></custom-box>
       </grid-box>
       <button id="tilemapGetter-confirm" name="confirm">Confirm</button>
       <button id="tilemapGetter-cancel" name="cancel">Cancel</button>
@@ -4630,9 +4634,12 @@
     </title-bar>
     <content-frame>
       <box style="display: flex; flex-direction: column; height: 100%;">
-        <box id="resource-node-info" style="padding: 12px; margin: 10px; background: var(--panel-background); border: 1px solid var(--border-color); border-radius: 4px; flex-shrink: 0;">
-          <div id="resource-current-node" style="font-size: 13px; line-height: 1.8; color: var(--text-color); margin-bottom: 4px;">当前节点: 加载中...</div>
-          <div id="resource-node-ping" style="font-size: 13px; line-height: 1.8; color: var(--text-color-weak);">Ping: --</div>
+        <box id="resource-node-info"
+          style="padding: 12px; margin: 10px; background: var(--panel-background); border: 1px solid var(--border-color); border-radius: 4px; flex-shrink: 0;">
+          <div id="resource-current-node"
+            style="font-size: 13px; line-height: 1.8; color: var(--text-color); margin-bottom: 4px;">当前节点: 加载中...</div>
+          <div id="resource-node-ping" style="font-size: 13px; line-height: 1.8; color: var(--text-color-weak);">Ping:
+            --</div>
         </box>
         <box id="resource-content" style="flex: 1; overflow: auto;"></box>
         <grid-box style="flex-shrink: 0;">
@@ -4916,7 +4923,8 @@
         <text>Motion</text><select-box id="playAnimation-motion"></select-box>
         <text>Rotatable</text><select-box id="playAnimation-rotatable"></select-box>
         <text>Priority</text><number-box id="playAnimation-priority" min="-100" max="100"></number-box>
-        <text>Offset Y</text><number-var id="playAnimation-offsetY" min="-1000000000" max="1000000000" unit="px"></number-var>
+        <text>Offset Y</text><number-var id="playAnimation-offsetY" min="-1000000000" max="1000000000"
+          unit="px"></number-var>
         <text>Angle</text><number-var id="playAnimation-angle" min="-360" max="360" decimals="4"
           unit="deg"></number-var>
         <text>Speed</text><number-var id="playAnimation-speed" min="0.1" max="10" step="0.1" decimals="4"></number-var>

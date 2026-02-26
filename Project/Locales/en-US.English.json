@@ -3520,9 +3520,11 @@
     "tilemapGetter": {"title": "Tilemap"},
     "tilemapGetter-type": {"label": "Type", "tip": "How to get a tilemap", "options": {
       "trigger": {"name": "Event Trigger Tilemap", "tip": "Tilemap that triggered this event"},
-      "by-id": {"name": "By Tilemap ID", "tip": "Get a preset scene tilemap"}
+      "by-id": {"name": "By Tilemap ID", "tip": "Get a preset scene tilemap"},
+      "variable": {"name": "Variable", "tip": "Get the tilemap from the specified variable"}
     }},
     "tilemapGetter-presetId": {"label": "Data ID", "tip": "Get the preset tilemap in the scene"},
+    "tilemapGetter-variable": {"label": "Variable", "tip": "Get the tilemap object from the variable"},
 
     "[comment]": "********** Scene Object Accessor **********",
     "objectGetter": {"title": "Scene Object"},

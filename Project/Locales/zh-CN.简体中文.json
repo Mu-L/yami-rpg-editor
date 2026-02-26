@@ -3521,9 +3521,11 @@
     "tilemapGetter": {"title": "瓦片地图"},
     "tilemapGetter-type": {"label": "类型", "tip": "如何获取瓦片地图", "options": {
       "trigger": {"name": "事件触发地图", "tip": "触发这个事件的瓦片地图"},
-      "by-id": {"name": "指定地图ID", "tip": "获取场景中预设的瓦片地图"}
+      "by-id": {"name": "指定地图ID", "tip": "获取场景中预设的瓦片地图"},
+      "variable": {"name": "指定变量", "tip": "获取变量中的瓦片地图"}
     }},
     "tilemapGetter-presetId": {"label": "数据ID", "tip": "获取场景中预设的瓦片地图"},
+    "tilemapGetter-variable": {"label": "变量", "tip": "要获取的瓦片地图变量"},
 
     "[comment]": "********** 场景对象访问器 **********",
     "objectGetter": {"title": "场景对象"},

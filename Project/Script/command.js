@@ -1053,6 +1053,8 @@ Command.parseTilemap = function (tilemap) {
 			)
 		case 'by-id':
 			return Command.parsePresetObject(tilemap.presetId)
+		case 'variable':
+			return Command.parseVariable(tilemap.variable, 'object')
 	}
 }
 
@@ -23362,13 +23364,17 @@ TilemapGetter.initialize = function () {
 	// 创建访问器类型选项
 	$('#tilemapGetter-type').loadItems([
 		{ name: 'Event Trigger Tilemap', value: 'trigger' },
-		{ name: 'By Tilemap ID', value: 'by-id' }
+		{ name: 'By Tilemap ID', value: 'by-id' },
+		{ name: 'Variable', value: 'variable' }
 	])
 
 	// 设置关联元素
 	$('#tilemapGetter-type')
 		.enableHiddenMode()
-		.relate([{ case: 'by-id', targets: [$('#tilemapGetter-presetId')] }])
+		.relate([
+			{ case: 'by-id', targets: [$('#tilemapGetter-presetId')] },
+			{ case: 'variable', targets: [$('#tilemapGetter-variable')] }
+		])
 
 	// 侦听事件
 	$('#tilemapGetter-confirm').on('click', this.confirm)
@@ -23380,6 +23386,7 @@ TilemapGetter.open = function (target) {
 	Window.open('tilemapGetter')
 
 	let presetId = PresetObject.getDefaultPresetId('tilemap')
+	let variable = { type: 'local', key: '' }
 	const tilemap = target.dataValue
 	switch (tilemap.type) {
 		case 'trigger':
@@ -23387,9 +23394,13 @@ TilemapGetter.open = function (target) {
 		case 'by-id':
 			presetId = tilemap.presetId
 			break
+		case 'variable':
+			variable = tilemap.variable
+			break
 	}
 	$('#tilemapGetter-type').write(tilemap.type)
 	$('#tilemapGetter-presetId').write(presetId)
+	$('#tilemapGetter-variable').write(variable)
 	$('#tilemapGetter-type').getFocus()
 }
 
@@ -23408,6 +23419,14 @@ TilemapGetter.confirm = function (event) {
 				return $('#tilemapGetter-presetId').getFocus()
 			}
 			getter = { type, presetId }
+			break
+		}
+		case 'variable': {
+			const variable = read('variable')
+			if (VariableGetter.isNone(variable)) {
+				return $('#tilemapGetter-variable').getFocus()
+			}
+			getter = { type, variable }
 			break
 		}
 	}
