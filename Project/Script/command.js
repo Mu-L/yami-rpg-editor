@@ -13382,6 +13382,7 @@ Command.cases.script = {
 		tabSize: 2,
 		theme: ''
 	},
+	typesDispose: [],
 	isMaximized: function () {
 		return $('#script').hasClass('maximized')
 	},
@@ -13459,6 +13460,7 @@ Command.cases.script = {
 			}
 		})
 	},
+
 	parse: function ({ script }) {
 		const contents = [{ script: script }]
 		if (script.includes('\n')) {
@@ -13474,6 +13476,16 @@ Command.cases.script = {
 		this.editor.setScrollTop(0)
 		this.editor.revealLine(9999)
 		this.editor.getFocus()
+		// 加载类型定义文件
+		if (!this.typesDispose) {
+			this.typesDispose.forEach((item) => item())
+		}
+		const projectDir = path.dirname(Editor.config.project)
+		this.typesDispose = loadDtsFolder(
+			path.join(projectDir, 'Script'),
+			monaco,
+			true
+		)
 	},
 	save: async function () {
 		let script = this.model.getValue()

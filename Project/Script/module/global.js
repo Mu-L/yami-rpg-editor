@@ -515,3 +515,58 @@ SetTileTag.confirm = function (event) {
 	this.callback($('#setTileTag-tag').read())
 	Window.close('setTileTag')
 }.bind(SetTileTag)
+
+function loadDtsFolder(folderPath, monaco, recursive = true) {
+	const disposables = []
+
+	function walkDirectory(currentPath) {
+		try {
+			const files = fs.readdirSync(currentPath)
+
+			files.forEach((file) => {
+				const fullPath = path.join(currentPath, file)
+
+				const stat = fs.statSync(fullPath)
+
+				if (stat.isDirectory()) {
+					if (recursive) {
+						walkDirectory(fullPath)
+					}
+				} else if (file.endsWith('.ts')) {
+					try {
+						const content = fs.readFileSync(fullPath, 'utf-8')
+
+						const normalizedPath = fullPath.replace(/\\/g, '/')
+						const fileUri = 'file://' + normalizedPath
+
+						disposables.push(
+							monaco.languages.typescript.javascriptDefaults.addExtraLib(
+								content,
+								fileUri
+							)
+						)
+						disposables.push(
+							monaco.languages.typescript.typescriptDefaults.addExtraLib(
+								content,
+								fileUri
+							)
+						)
+
+						console.log(`[Monaco] Loaded d.ts: ${fileUri}`)
+					} catch (readErr) {
+						console.error(
+							`Failed to read file: ${fullPath}`,
+							readErr
+						)
+					}
+				}
+			})
+		} catch (err) {
+			console.error(`Failed to read directory: ${currentPath}`, err)
+		}
+	}
+
+	walkDirectory(folderPath)
+
+	return disposables
+}
