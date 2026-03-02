@@ -13572,7 +13572,7 @@ Command.cases.script = {
 			overviewRulerBorder: false,
 			hideCursorInOverviewRuler: true,
 			automaticLayout: false,
-			hover: false,
+			hover: true,
 			lightbulb: {
 				enabled: false
 			},
