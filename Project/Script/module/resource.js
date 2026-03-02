@@ -32,6 +32,7 @@ const Resources = new (class {
 				return this.fastGithubArray[0]
 		}
 	}
+
 	loaded = false
 	constructor() {
 		$('#resource-check-version').on('click', () => this.checkVersion())
@@ -39,6 +40,7 @@ const Resources = new (class {
 			require('electron').ipcRenderer.send('open-path', GlobalPath)
 		)
 	}
+
 	initialize() {
 		// 更新本地化
 		$('#resource-check-version').textContent = Local.get(
@@ -86,6 +88,60 @@ const Resources = new (class {
 		}
 
 		return { nodeName, nodeUrl }
+	}
+
+	// 获得最新版本编辑器远程公告
+	async getRemoteAnnouncement() {
+		// 加载社区版公告
+		try {
+			const response = await fetch(
+				'https://api.github.com/repos/Open-Yami-Community/yami-rpg-editor/releases'
+			)
+			if (!response.ok) throw new Error('Failed to fetch announcement')
+			const [{ body }] = await response.json()
+			console.log('徐然', body)
+			return body
+		} catch (error) {
+			console.error('Failed to load community announcement:', error)
+			return ''
+		}
+	}
+
+	// 获取第一个公告
+	getFirstAnnouncementContent(text) {
+		if (!text) return ''
+
+		// 按换行符分割文本
+		const lines = text.split('\n')
+		const contentLines = []
+		let foundFirstDate = false
+
+		// 正则表达式匹配日期格式：YYYY-MM-DD
+		const dateRegex = /^\s*\d{4}-\d{2}-\d{2}/
+
+		for (const line of lines) {
+			// 检查当前行是否是日期行
+			const isDateLine = dateRegex.test(line)
+
+			if (isDateLine) {
+				if (!foundFirstDate) {
+					// 找到第一个日期行，标记开始记录内容
+					foundFirstDate = true
+					continue // 跳过日期行本身
+				} else {
+					// 找到第二个日期行，停止记录
+					break
+				}
+			}
+
+			// 如果已经找到了第一个日期行，且当前行不是日期行，则收集内容
+			if (foundFirstDate) {
+				contentLines.push(line)
+			}
+		}
+
+		// 将收集到的行合并，并去除首尾空白
+		return contentLines.join('\n').trim()
 	}
 
 	// 测试节点 ping
@@ -241,6 +297,7 @@ const Resources = new (class {
 		}
 		return JSON.parse(fs.readFileSync(tempPath))
 	}
+
 	// 写入本地 tempalte.json
 	writeTemplate(val) {
 		const tempPath = Path.resolve(TemplatesPath, 'template.json')
@@ -265,9 +322,13 @@ const Resources = new (class {
 			isUpdate = true
 		}
 		if (isUpdate) {
+			const updateText = this.getFirstAnnouncementContent(
+				await this.getRemoteAnnouncement()
+			)
+			const updateMessage = `${text} \n${'——'.repeat(20)}\n\n${updateText}`
 			Window.confirm(
 				{
-					message: `${text} \n 编辑器本体需要更新 \n 请到指定地址重新下载编辑器`
+					message: `${updateMessage} \n${'——'.repeat(20)}\n 编辑器本体需要更新 \n 请到指定地址重新下载编辑器`
 				},
 				[
 					{
