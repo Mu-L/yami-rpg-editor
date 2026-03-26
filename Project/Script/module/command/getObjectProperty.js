@@ -10,13 +10,20 @@ const IndexBind = {
 	parse(item) {
 		return `${item.text}`
 	},
-	open() {
+	open(item) {
 		Window.open('ObjectProperty-index')
 		$('#ObjectProperty-index-name').getFocus()
+		if (item) {
+			$('#ObjectProperty-index-name').write(item.text)
+		} else {
+			$('#ObjectProperty-index-name').write('')
+		}
 	},
 	save() {
 		const read = getElementReader('ObjectProperty-index')
 		const data = { text: read('name') }
+		// 清空输入框
+		$('#ObjectProperty-index-name').write('')
 		Window.close('ObjectProperty-index')
 		return data
 	},
