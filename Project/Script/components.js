@@ -266,13 +266,6 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 	}
 
 	tooltip.on('pointerleave', (event) => {
-		if (
-			target &&
-			event.relatedTarget instanceof HTMLElement &&
-			target.contains(event.relatedTarget)
-		) {
-			return
-		}
 		target = null
 		close()
 	})
