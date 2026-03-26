@@ -40,20 +40,16 @@ Command.cases.getObjectProperty = {
 	parse: function ({ variable, saveVariable, properties }) {
 		const contents = []
 		for (const i of properties) {
-			contents.push(
-				{ text: ' , ' },
-				{ color: 'normal' },
-				{ text: i.text }
-			)
+			contents.push({ text: '.' }, { color: 'normal' }, { text: i.text })
 		}
 		return [
 			{ color: 'variable' },
 			{ text: Local.get('command.getObjectProperty') + ' ' },
-			{ text: Command.parseVariable(variable, 'any') + ' -> ' }
+			{ text: Command.parseVariable(variable, 'any') + '.' }
 		]
 			.concat(contents.slice(1))
 			.concat([
-				{ text: ' -> ' + Command.parseVariable(saveVariable, 'any') }
+				{ text: '=' + Command.parseVariable(saveVariable, 'any') }
 			])
 	},
 	load: function ({
@@ -102,20 +98,16 @@ Command.cases.setObjectProperty = {
 	parse: function ({ variable, valueVariable, properties }) {
 		const contents = []
 		for (const i of properties) {
-			contents.push(
-				{ text: ' , ' },
-				{ color: 'normal' },
-				{ text: i.text }
-			)
+			contents.push({ text: '.' }, { color: 'normal' }, { text: i.text })
 		}
 		return [
 			{ color: 'variable' },
 			{ text: Local.get('command.setObjectProperty') + ' ' },
-			{ text: Command.parseVariable(variable, 'any') + ' -> ' }
+			{ text: Command.parseVariable(variable, 'any') + '.' }
 		]
 			.concat(contents.slice(1))
 			.concat([
-				{ text: ' -> ' + Command.parseVariable(valueVariable, 'any') }
+				{ text: '=' + Command.parseVariable(valueVariable, 'any') }
 			])
 	},
 	load: function ({
