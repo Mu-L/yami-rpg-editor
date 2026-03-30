@@ -52,12 +52,9 @@ Command.cases.getObjectProperty = {
 		return [
 			{ color: 'variable' },
 			{ text: Local.get('command.getObjectProperty') + ' ' },
+			{ text: Command.parseVariable(saveVariable, 'any') + '=' },
 			{ text: Command.parseVariable(variable, 'any') + '.' }
-		]
-			.concat(contents.slice(1))
-			.concat([
-				{ text: '=' + Command.parseVariable(saveVariable, 'any') }
-			])
+		].concat(contents.slice(1))
 	},
 	load: function ({
 		variable = { type: 'local', key: '' },
