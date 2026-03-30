@@ -15052,6 +15052,7 @@ EventEditor.initialize = function () {
 			types.deselect,
 			types.focus,
 			types.blur,
+			types.input,
 			types.end,
 			types.destroy,
 			types.gamepadbuttonpress,
@@ -15520,6 +15521,12 @@ EventEditor.openCommandList = function (item) {
 
 	const { commands, filter } = item
 
+	console.log(
+		'徐然',
+		this.types,
+		filter,
+		Enum.getMergedItems(this.types[filter], filter + '-event')
+	)
 	// 创建类型选项
 	$('#event-type').loadItems(
 		Enum.getMergedItems(this.types[filter], filter + '-event')
