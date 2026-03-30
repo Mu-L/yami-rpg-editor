@@ -7,7 +7,7 @@ const Resources = new (class {
 	nodePingText = $('#resource-node-ping')
 	fastGithubArray = [
 		'https://cdn.gh-proxy.com/',
-		'https://proxy.pipers.cn/',
+		'http://kr1-proxy.gitwarp.top:8081/',
 		'https://gh.jasonzeng.dev/',
 		'https://ghfast.top/'
 	]
