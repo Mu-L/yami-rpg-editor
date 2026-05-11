@@ -3221,19 +3221,35 @@ Command.cases.setList = {
 				{ case: 'set-strings', targets: [$('#setList-strings')] },
 				{
 					case: 'set-boolean',
-					targets: [$('#setList-index'), $('#setList-boolean')]
+					targets: [
+						$('#setList-index'),
+						$('#setList-index-skip-check'),
+						$('#setList-boolean')
+					]
 				},
 				{
 					case: 'set-number',
-					targets: [$('#setList-index'), $('#setList-number')]
+					targets: [
+						$('#setList-index'),
+						$('#setList-index-skip-check'),
+						$('#setList-number')
+					]
 				},
 				{
 					case: 'set-string',
-					targets: [$('#setList-index'), $('#setList-string')]
+					targets: [
+						$('#setList-index'),
+						$('#setList-index-skip-check'),
+						$('#setList-string')
+					]
 				},
 				{
 					case: 'set-variable',
-					targets: [$('#setList-index'), $('#setList-operand')]
+					targets: [
+						$('#setList-index'),
+						$('#setList-index-skip-check'),
+						$('#setList-operand')
+					]
 				},
 				{
 					case: 'split-string',
@@ -3266,7 +3282,8 @@ Command.cases.setList = {
 		operand,
 		separator,
 		groupId,
-		actor
+		actor,
+		skipCheck = true
 	}) {
 		let info
 		let isLeftValue = true
@@ -3317,11 +3334,17 @@ Command.cases.setList = {
 				info = `${varName}${
 					Token('[') + Command.parseVariableNumber(index) + Token(']')
 				} ${equal} ${Command.setBooleanColor(constant)}`
+				if (skipCheck) {
+					info += `, ${Local.get('command.setList.skipCheck')}`
+				}
 				break
 			case 'set-number':
 				info = `${varName}${
 					Token('[') + Command.parseVariableNumber(index) + Token(']')
 				} ${equal} ${Command.setNumberColor(constant)}`
+				if (skipCheck) {
+					info += `, ${Local.get('command.setList.skipCheck')}`
+				}
 				break
 			case 'set-string': {
 				const string = Command.setStringColor(
@@ -3330,12 +3353,18 @@ Command.cases.setList = {
 				info = `${varName}${
 					Token('[') + Command.parseVariableNumber(index) + Token(']')
 				} ${equal} ${string}`
+				if (skipCheck) {
+					info += `, ${Local.get('command.setList.skipCheck')}`
+				}
 				break
 			}
 			case 'set-variable':
 				info = `${varName}${
 					Token('[') + Command.parseVariableNumber(index) + Token(']')
 				} ${equal} ${Command.parseVariable(operand, 'any')}`
+				if (skipCheck) {
+					info += `, ${Local.get('command.setList.skipCheck')}`
+				}
 				break
 			case 'split-string': {
 				const label = Local.get('command.setList.split-string')
@@ -3396,7 +3425,8 @@ Command.cases.setList = {
 		operand = { type: 'local', key: '' },
 		separator = '',
 		groupId = '',
-		actor = { type: 'trigger' }
+		actor = { type: 'trigger' },
+		skipCheck = true
 	}) {
 		let numbers = []
 		let strings = []
@@ -3444,6 +3474,7 @@ Command.cases.setList = {
 		write('attribute-groupId', attrGroupId)
 		write('enum-groupId', enumGroupId)
 		write('actor', actor)
+		write('index-skip-check', skipCheck)
 		$('#setList-variable').getFocus()
 	},
 	save: function () {
@@ -3475,29 +3506,51 @@ Command.cases.setList = {
 			}
 			case 'set-boolean': {
 				const index = read('index')
+				const skipCheck = read('index-skip-check')
 				const constant = read('boolean')
-				Command.save({ variable, operation, index, constant })
+				Command.save({
+					variable,
+					operation,
+					index,
+					constant,
+					skipCheck
+				})
 				break
 			}
 			case 'set-number': {
 				const index = read('index')
+				const skipCheck = read('index-skip-check')
 				const constant = read('number')
-				Command.save({ variable, operation, index, constant })
+				Command.save({
+					variable,
+					operation,
+					index,
+					constant,
+					skipCheck
+				})
 				break
 			}
 			case 'set-string': {
 				const index = read('index')
+				const skipCheck = read('index-skip-check')
 				const constant = read('string')
-				Command.save({ variable, operation, index, constant })
+				Command.save({
+					variable,
+					operation,
+					index,
+					constant,
+					skipCheck
+				})
 				break
 			}
 			case 'set-variable': {
 				const index = read('index')
+				const skipCheck = read('index-skip-check')
 				const operand = read('operand')
 				if (VariableGetter.isNone(operand)) {
 					return $('#setList-operand').getFocus()
 				}
-				Command.save({ variable, operation, index, operand })
+				Command.save({ variable, operation, index, operand, skipCheck })
 				break
 			}
 			case 'split-string': {

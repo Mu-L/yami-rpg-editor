@@ -2795,6 +2795,7 @@ let Command = new class CommandCompiler {
 			separator,
 			groupId,
 			actor,
+			skipCheck
 		}: {
 			variable: VariableGetter;
 			operation: string;
@@ -2805,6 +2806,7 @@ let Command = new class CommandCompiler {
 			separator?: string | VariableGetter;
 			groupId?: string;
 			actor?: ActorGetter;
+			skipCheck?: boolean;
 		}): CommandFunction {
 			switch (operation) {
 				case "set-empty": {
@@ -2831,7 +2833,9 @@ let Command = new class CommandCompiler {
 						const list = getList();
 						const index = getIndex();
 						// @ts-ignore
-						if (list?.length >= index) {
+						if (skipCheck && list?.length >= index) {
+							list[index!] = constant;
+						}else{
 							list[index!] = constant;
 						}
 						return true;
@@ -2846,7 +2850,9 @@ let Command = new class CommandCompiler {
 						const index = getIndex();
 						const value = getValue();
 						// @ts-ignore
-						if (list?.length >= index && value !== undefined) {
+						if (skipCheck && list?.length >= index && value !== undefined) {
+							list[index!] = value;
+						} else if(value !== undefined){
 							list[index!] = value;
 						}
 						return true;

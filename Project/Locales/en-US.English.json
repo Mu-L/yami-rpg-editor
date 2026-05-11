@@ -895,6 +895,7 @@
       "setList.get-enum-names": "GetEnumNames",
       "setList.get-enum-values": "GetEnumValues",
       "setList.get-actor-targets": "GetActorTargets",
+      "setList.skipCheck": "Boundary Limit",
       "deleteVariable": "Delete Variable",
       "deleteVariable.alias": "Delete",
       "deleteVariable.desc": "Delete a variable that is no longer needed",
@@ -3946,6 +3947,7 @@
     "setList-attribute-groupId": {"label": "Attribute Group", "tip": "Select an attribute group"},
     "setList-enum-groupId": {"label": "Enum Group", "tip": "Select an enum group"},
     "setList-actor": {"label": "Actor", "tip": "Select an actor object"},
+    "setListIndexSkipCheck": {"label": "Boundary Limit", "tip": "When enabled, if [list].length is less than index, no content will be added"},
 
     "[comment]": "********** Command - Delete Variable **********",
     "deleteVariable": {"title": "Delete Variable"},

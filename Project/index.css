@@ -7749,7 +7749,7 @@ node-item.related-event {
  */
 #setList {
 	width: 324px;
-	height: 194px;
+	height: calc(194px + 24px);
 }
 
 #setList-string,

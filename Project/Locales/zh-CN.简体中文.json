@@ -895,6 +895,7 @@
       "setList.get-enum-names": "获取枚举名称",
       "setList.get-enum-values": "获取枚举值",
       "setList.get-actor-targets": "获取角色目标池",
+      "setList.skipCheck": "边界限制",
       "deleteVariable": "删除变量",
       "deleteVariable.alias": "删除",
       "deleteVariable.desc": "删除不再需要的变量",
@@ -3947,6 +3948,7 @@
     "setList-attribute-groupId": {"label": "属性群组", "tip": "选择一个属性群组"},
     "setList-enum-groupId": {"label": "枚举群组", "tip": "选择一个枚举群组"},
     "setList-actor": {"label": "角色", "tip": "选择一个角色对象"},
+    "setList-index-skip-check": {"label": "边界限制", "tip": "开启后如果[列表].length < index，则不会添加内容"},
 
     "[comment]": "********** 指令 - 删除变量 **********",
     "deleteVariable": {"title": "删除变量"},
