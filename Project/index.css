@@ -12057,7 +12057,10 @@ text.update-log-title {
 	display: block;
 	color: var(--plugin-name-color);
 	font-size: 1.5em;
-	line-height: 2.5em;
+}
+
+text.update-log-title p {
+	margin: 0 auto;
 }
 
 text.update-log-major {
@@ -12069,6 +12072,17 @@ text.update-log-major {
 text.update-log-minor {
 	display: block;
 	opacity: 0.5;
+}
+
+/* markdown-it 样式 */
+
+code {
+	white-space: break-spaces;
+	background-color: #818b981f;
+	border-radius: 6px;
+	margin: 0;
+	padding: 0.2em 0.4em;
+	font-size: 85%;
 }
 
 /* --------------------------------

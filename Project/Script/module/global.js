@@ -387,6 +387,11 @@ UpdateLog.open = function (items = null) {
 	}
 }
 
+function markndownToHtml(markdown) {
+	var md = new require('markdown-it')()
+	return md.render(markdown)
+}
+
 const UpdateLogUpdateOrigin = UpdateLog.update
 UpdateLog.update = function (items) {
 	if (this.currentMode === 'internal') {
@@ -399,19 +404,19 @@ UpdateLog.update = function (items) {
 		for (const item of communityItems) {
 			if (item.title) {
 				const title = document.createElement('text')
-				title.textContent = item.title
+				title.innerHTML = markndownToHtml(item.title)
 				title.addClass('update-log-title')
 				this.content.appendChild(title)
 			}
 			if (item.major) {
 				const major = document.createElement('text')
-				major.textContent = item.major
+				major.innerHTML = markndownToHtml(item.major)
 				major.addClass('update-log-major')
 				this.content.appendChild(major)
 			}
 			if (item.minor) {
 				const minor = document.createElement('text')
-				minor.textContent = item.minor
+				minor.innerHTML = markndownToHtml(item.minor)
 				minor.addClass('update-log-minor')
 				this.content.appendChild(minor)
 			}
@@ -467,7 +472,7 @@ UpdateLog.parseCommunityReleases = function (releases) {
 	const items = []
 	for (const release of releases) {
 		items.push({
-			title: release.tag_name,
+			title: release.name,
 			major: release.body || 'No description provided'
 		})
 	}
