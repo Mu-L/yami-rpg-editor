@@ -844,6 +844,11 @@ Localization.apply = function (event) {
 // 导入Excel按钮 - 鼠标点击事件
 Localization.fromExcel = async function (event) {
 	const items = await require('electron').ipcRenderer.invoke('from-excel')
+	if (
+		JSON.stringify(items) == JSON.stringify(Data.localization.list) ||
+		!items.length
+	)
+		return
 	Data.localization.list = items
 	Localization.windowClose(event)
 	Localization.windowClosed(event)
