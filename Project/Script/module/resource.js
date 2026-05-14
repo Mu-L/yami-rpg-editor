@@ -99,7 +99,6 @@ const Resources = new (class {
 			)
 			if (!response.ok) throw new Error('Failed to fetch announcement')
 			const [{ body }] = await response.json()
-			console.log('徐然', body)
 			return body
 		} catch (error) {
 			console.error('Failed to load community announcement:', error)
