@@ -305,10 +305,11 @@ const Resources = new (class {
 
 	async checkEditorVersion() {
 		const get = Local.createGetter('confirmation')
-		const url = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/Project/Script/module/packmeta.json`
+		const url = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/Project/Script/module/packmeta.json?t=${Date.parse(new Date()) / 1000}`
 		const jsonParse = await Net.get(url, {
 			Headers: {
-				type: 'application/json'
+				type: 'application/json',
+				cache: 'no-cache'
 			}
 		})
 		if (!jsonParse) return
