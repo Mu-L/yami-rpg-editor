@@ -2401,6 +2401,7 @@ const Zoom = {
 Zoom.initialize = function () {
 	// 侦听事件
 	$('#zoom-confirm').on('click', this.confirm)
+	require('electron').webFrame.setZoomFactor(Editor.config.zoom ?? 1)
 }
 
 // 打开窗口
