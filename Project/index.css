@@ -12007,7 +12007,7 @@ log-strong {
 }
 
 .update-log-tab {
-	padding: 6px 16px;
+	padding: 2px 16px;
 	background-color: var(--tab-item-background);
 	border-right: var(--tab-item-border);
 	color: var(--text-color);
@@ -12072,6 +12072,30 @@ text.update-log-major {
 text.update-log-minor {
 	display: block;
 	opacity: 0.5;
+}
+
+/* 捐赠名单样式 */
+.donation-list {
+	display: block;
+	margin-top: 15px;
+	padding: 10px;
+	border: 1px solid var(--plugin-name-color);
+	border-radius: 4px;
+}
+
+.donation-item {
+	display: block;
+	padding: 5px 0;
+	border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.donation-item a {
+	color: var(--plugin-name-color);
+	text-decoration: none;
+}
+
+.donation-item a:hover {
+	text-decoration: underline;
 }
 
 /* markdown-it 样式 */

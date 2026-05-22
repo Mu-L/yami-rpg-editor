@@ -368,6 +368,9 @@
       "updateLog": "更新日志"
     },
     "menuOpenYami": {
+      "update-log-tab-internal": "原始公告",
+      "update-log-tab-community": "社区公告",
+      "update-log-tab-donation": "捐赠名单",
       "setting":"设置",
       "qr": "QR Code",
       "export_apk": "构建APK",

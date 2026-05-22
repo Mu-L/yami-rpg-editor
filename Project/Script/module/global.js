@@ -353,7 +353,24 @@ UpdateLog.internalItems = []
 UpdateLog.communityItems = []
 
 const UpdateLogInitializeOrigin = UpdateLog.initialize
-
+window.on('localize', () => {
+	// 设置标签页按钮的本地化文本
+	const tabInternal = $('#update-log-tab-internal')
+	const tabCommunity = $('#update-log-tab-community')
+	const tabDonation = $('#update-log-tab-donation')
+	if (tabInternal)
+		tabInternal.innerHTML = Local.get(
+			'menuOpenYami.update-log-tab-internal'
+		)
+	if (tabCommunity)
+		tabCommunity.textContent = Local.get(
+			'menuOpenYami.update-log-tab-community'
+		)
+	if (tabDonation)
+		tabDonation.textContent = Local.get(
+			'menuOpenYami.update-log-tab-donation'
+		)
+})
 UpdateLog.initialize = function () {
 	UpdateLogInitializeOrigin.call(this)
 
@@ -367,6 +384,8 @@ UpdateLog.initialize = function () {
 					UpdateLog.switchMode('internal')
 				} else if (btn.id === 'update-log-tab-community') {
 					UpdateLog.switchMode('community')
+				} else if (btn.id === 'update-log-tab-donation') {
+					UpdateLog.switchMode('donation')
 				}
 			}
 		})
@@ -430,20 +449,29 @@ UpdateLog.switchMode = function (mode) {
 
 	if (mode === 'internal') {
 		this.update(this.internalItems)
-	} else {
+	} else if (mode === 'community') {
 		this.update()
+	} else if (mode === 'donation') {
+		this.displayDonationList()
 	}
 
 	// 更新按钮状态
 	const tabInternal = $('#update-log-tab-internal')
 	const tabCommunity = $('#update-log-tab-community')
+	const tabDonation = $('#update-log-tab-donation')
 
 	if (mode === 'internal') {
 		if (tabInternal) tabInternal.addClass('active')
 		if (tabCommunity) tabCommunity.removeClass('active')
-	} else {
+		if (tabDonation) tabDonation.removeClass('active')
+	} else if (mode === 'community') {
 		if (tabInternal) tabInternal.removeClass('active')
 		if (tabCommunity) tabCommunity.addClass('active')
+		if (tabDonation) tabDonation.removeClass('active')
+	} else if (mode === 'donation') {
+		if (tabInternal) tabInternal.removeClass('active')
+		if (tabCommunity) tabCommunity.removeClass('active')
+		if (tabDonation) tabDonation.addClass('active')
 	}
 }
 
@@ -465,6 +493,48 @@ UpdateLog.loadCommunityReleases = async function () {
 			}
 		]
 	}
+}
+
+// 显示捐赠名单
+UpdateLog.displayDonationList = function () {
+	this.content.clear()
+	const donationData = [
+		{
+			name: '刀里个刀(420488038)',
+			amount: 200,
+			link: 'tencent://message/?uin=420488038&Site=qq&Menu=yes'
+		},
+		{
+			name: 'ya(332685057)',
+			amount: 100,
+			link: 'tencent://message/?uin=332685057&Site=qq&Menu=yes'
+		}
+	]
+
+	const donationTitle = document.createElement('text')
+	donationTitle.innerHTML = '<b>感谢以下捐赠者对项目的支持！</b>'
+	donationTitle.addClass('update-log-title')
+	this.content.appendChild(donationTitle)
+
+	const donationList = document.createElement('box')
+	donationList.addClass('donation-list')
+
+	for (const donor of donationData) {
+		const donorItem = document.createElement('text')
+		const link = document.createElement('a')
+		link.href = '#'
+		link.textContent = donor.name
+		link.addEventListener('click', (e) => {
+			e.preventDefault()
+			require('electron').shell.openExternal(donor.link)
+		})
+		donorItem.appendChild(link)
+		donorItem.append(`: ￥${donor.amount.toFixed(2)}`)
+		donorItem.addClass('donation-item')
+		donationList.appendChild(donorItem)
+	}
+
+	this.content.appendChild(donationList)
 }
 
 // 解析社区版公告

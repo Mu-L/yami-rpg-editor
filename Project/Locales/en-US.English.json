@@ -368,6 +368,9 @@
       "updateLog": "Update Log"
     },
     "menuOpenYami": {
+      "update-log-tab-internal": "Original Release",
+      "update-log-tab-community": "Community Release",
+      "update-log-tab-donation": "Donation List",
       "setting":"Setting",
       "qr": "QR Code",
       "export_apk": "Build APK",
