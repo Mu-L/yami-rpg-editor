@@ -97,6 +97,11 @@ pnpm run build:linux
 
 社区版项目都是徐然一个人在维护，不管您捐赠一角还是一分，都是**徐然维护项目**的**动力**，加油，干就完了！！！
 
+| 捐赠人   | QQ        | 金额 |
+| :------- | --------- | ---: |
+| 刀里个刀 | 420488038 |  200 |
+| ya       | 332685057 |  100 |
+
 <p align="center">
 <img width="500" src="https://github.com/user-attachments/assets/4733d260-991a-4edb-aaa1-483dd3ef5d91" alt="1abcd7e53e8c72cf7b3b7770b48c001d_720">
 </p>
