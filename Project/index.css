@@ -6571,7 +6571,7 @@ anim-dir.selected {
  */
 #deployment {
 	width: 448px;
-	height: 146px;
+	height: 166px;
 }
 
 #deployment-folder {
@@ -6579,6 +6579,9 @@ anim-dir.selected {
 }
 
 #deployment-location {
+	width: 300px;
+}
+#deployment-compress {
 	width: 300px;
 }
 

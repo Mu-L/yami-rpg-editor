@@ -2911,7 +2911,8 @@
     "deployment-location-box": {"label": "Output Location"},
     "deployment-location": {"tip": "$Output Location\nCreate an output folder at this location"},
     "deployment-choose": {"tip": "$Choose Folder\nOpen the operating system dialog to select a folder as the path"},
-
+    "deployment-compress": {"label": "Obfuscation Compression", "tip": "Enable Obfuscation Compression\nAfter enabling, the obfuscated compressed code will be used to reduce the file size, but it will increase the compilation time"},
+    
     "[comment]": "********** Copy Progress **********",
     "copyProgress": {"title": "Copy Progress"},
     "copyProgress-box": {"label": "Copying Files..."},

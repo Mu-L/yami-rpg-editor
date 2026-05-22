@@ -2911,6 +2911,7 @@
     "deployment-location-box": {"label": "输出位置"},
     "deployment-location": {"tip": "$输出位置\n在这个位置新建一个输出文件夹"},
     "deployment-choose": {"tip": "$选择文件夹\n打开操作系统的会话框，选择一个文件夹作为路径"},
+    "deployment-compress": {"label": "混淆压缩", "tip": "开启混淆压缩\n开启后，将使用混淆压缩代码，减小体积，但会增加编译时间"},
 
     "[comment]": "********** 复制进度 **********",
     "copyProgress": {"title": "复制进度"},
