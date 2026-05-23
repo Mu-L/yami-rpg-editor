@@ -1,53 +1,73 @@
 const Resources = new (class {
-	isStart = false // 首次启动显示
 	window = $('#resource')
 	content = $('#resource-content')
 	nodeInfoBox = $('#resource-node-info')
 	currentNodeText = $('#resource-current-node')
 	nodePingText = $('#resource-node-ping')
-	fastGithubArray = [
-		'https://cdn.gh-proxy.com/',
-		'http://kr1-proxy.gitwarp.top:8081/',
-		'https://gh.jasonzeng.dev/',
-		'https://ghfast.top/'
-	]
+	_fastGithubArray = []
 	get fastGithubPrefix() {
 		const config = SettingConfig.config?.github?.accelerationNode || 'auto'
 
 		switch (config) {
 			case 'auto':
-				return this.fastGithubArray[
-					Math.floor(Math.random() * this.fastGithubArray.length)
-				]
+				return (
+					this._fastGithubArray[
+						Math.floor(Math.random() * this._fastGithubArray.length)
+					] ?? ''
+				)
 			case 'none':
 				return ''
 			default:
 				const match = config.match(/^node(\d+)$/)
 				if (match) {
 					const index = parseInt(match[1]) - 1
-					if (index >= 0 && index < this.fastGithubArray.length) {
-						return this.fastGithubArray[index]
+					if (index >= 0 && index < this._fastGithubArray.length) {
+						return this._fastGithubArray[index]
 					}
 				}
-				return this.fastGithubArray[0]
+				return this._fastGithubArray[0] ?? ''
 		}
 	}
 
 	loaded = false
+
 	constructor() {
-		$('#resource-check-version').on('click', () => this.checkVersion())
-		$('#resource-open-dir').on('click', () =>
-			require('electron').ipcRenderer.send('open-path', GlobalPath)
-		)
+		this.updateFastGithubArray().then((data) => {
+			this._fastGithubArray = data
+		})
 	}
 
-	initialize() {
+	async updateFastGithubArray() {
+		const url =
+			'https://cdn.jsdelivr.net/gh/Open-Yami-Community/yami-rpg-editor@main/jsons/fastGithubArray.json'
+		try {
+			const response = await fetch(url, {
+				cache: 'no-cache',
+				headers: {
+					Accept: 'application/json'
+				}
+			})
+
+			if (!response.ok) return []
+			return await response.json()
+		} catch (err) {
+			console.warn('获取失败', err)
+			return []
+		}
+	}
+
+	async initialize() {
 		// 更新本地化
 		$('#resource-check-version').textContent = Local.get(
 			'confirmation.resource-check-version'
 		)
 		$('#resource-open-dir').textContent = Local.get(
 			'confirmation.resource-open-dir'
+		)
+
+		$('#resource-check-version').on('click', () => this.checkVersion())
+		$('#resource-open-dir').on('click', () =>
+			require('electron').ipcRenderer.send('open-path', GlobalPath)
 		)
 
 		// 更新节点信息
@@ -150,9 +170,7 @@ const Resources = new (class {
 		const startTime = Date.now()
 		try {
 			// 使用 HEAD 请求测试连接速度
-			const testUrl =
-				url +
-				'https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json'
+			const testUrl = `${url}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`
 			const response = await fetch(testUrl, {
 				method: 'HEAD',
 				cache: 'no-cache'
@@ -233,13 +251,16 @@ const Resources = new (class {
 
 	// 下载远程资源信息
 	async downloadNetMeta() {
+		await this.updateFastGithubArray().then((data) => {
+			this._fastGithubArray = data
+		})
 		const json = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`
 		return await Net.get(json, {
-			Headers: {
-				type: 'application/json',
-				'Cache-Control': 'no-cache'
-			}
-		})
+			headers: {
+				type: 'application/json'
+			},
+			cache: 'no-cache'
+		}).catch(() => console.log('downloadNetMeta error'))
 	}
 
 	checkResources() {
@@ -305,9 +326,9 @@ const Resources = new (class {
 
 	async checkEditorVersion() {
 		const get = Local.createGetter('confirmation')
-		const url = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/Project/Script/module/packmeta.json?t=${Date.parse(new Date()) / 1000}`
+		const url = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/Project/Script/module/packmeta.json`
 		const jsonParse = await Net.get(url, {
-			Headers: {
+			headers: {
 				type: 'application/json',
 				cache: 'no-cache'
 			}
@@ -366,7 +387,7 @@ const Resources = new (class {
 				!NoResourceObj['arpg-ts-english'].check &&
 				!NoResourceObj['arpg-ts-chinese'].check
 			) {
-				Resources.open(true)
+				Resources.open()
 			}
 
 			Window.confirm({ message: versionString }, [
@@ -651,8 +672,7 @@ const Resources = new (class {
 		}
 	}
 
-	async open(val) {
-		this.isStart = val
+	async open() {
 		Window.open('resource')
 		this.updateNodeInfo() // 更新节点信息
 		this.load()

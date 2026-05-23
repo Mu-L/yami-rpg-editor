@@ -68,7 +68,7 @@ window.addEventListener('localize', () => {
 		!NoResourceObj['arpg-ts-english'].check &&
 		!NoResourceObj['arpg-ts-chinese'].check
 	) {
-		Resources.open(true)
+		Resources.open()
 		Resources.checkEditorVersion() // 只检测编辑器版本
 	} else {
 		Resources.checkVersion()

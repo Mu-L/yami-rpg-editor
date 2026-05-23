@@ -1387,7 +1387,7 @@ Deployment.readTsOutDir = function () {
 	if (match) {
 		outDir = Path.normalize(match[1])
 	}
-	if (!/\/$/.test(outDir)) {
+	if (!outDir.endsWith('/')) {
 		outDir += '/'
 	}
 	return outDir
@@ -1494,7 +1494,7 @@ Deployment.copyFilesTo = function (dirPath) {
 		}
 		this.timer = new Timer({
 			duration: Infinity,
-			update: (timer) => {
+			update: () => {
 				const percent = Math.round((count / total) * 100)
 				progressBar.style.width = `${percent}%`
 				progressInfo.textContent = info
@@ -1544,7 +1544,7 @@ Deployment.compressJavaScript = function (srcPath, dstPath) {
 						throw result.error
 					}
 					return resolve(FSP.writeFile(dstPath, result.code))
-				} catch (e) {
+				} catch {
 					// If minification fails, fall back to copying the original file
 					FSP.copyFile(srcPath, dstPath).then(resolve, reject)
 				}

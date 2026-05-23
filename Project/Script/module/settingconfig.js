@@ -174,7 +174,7 @@ const SettingConfig = new (class {
 		}
 		this.config = patch(this.defaultConfig, this.config)
 	}
-	update() {
+	async update() {
 		const get = Local.createGetter('confirmation')
 		const githubNodes = [
 			{
@@ -183,8 +183,9 @@ const SettingConfig = new (class {
 			}
 		]
 
-		if (typeof Resources !== 'undefined' && Resources.fastGithubArray) {
-			Resources.fastGithubArray.forEach((url, index) => {
+		if (typeof Resources !== 'undefined' && Resources._fastGithubArray) {
+			Resources._fastGithubArray = await Resources.updateFastGithubArray()
+			Resources._fastGithubArray.forEach((url, index) => {
 				const nodeNumber = index + 1
 				const domain = url
 					.replace(/^https?:\/\//, '')
