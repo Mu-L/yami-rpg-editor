@@ -15,6 +15,7 @@
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",
 		"format": "prettier --write . --config prettierrc.json",
+		"commitlint": "commitlint --config commitlint.config.js --edit ",
 		"build:win": "electron-builder --dir --win --x64",
 		"build:winexe": "electron-builder --win --x64",
 		"build:linux": "electron-builder --dir --linux --x64",
@@ -27,12 +28,14 @@
 		"build:universalexe": "electron-builder --mac --universal"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^21.0.1",
+		"@commitlint/config-conventional": "^21.0.1",
 		"@types/node": "^22.13.10",
 		"archiver": "^7.0.1",
 		"electron": "^20.3.12",
 		"electron-builder": "^25.1.8",
 		"husky": "^9.1.7",
-		"lint-staged": "^16.1.2",
+		"lint-staged": "^16.4.0",
 		"prettier": "^3.6.2"
 	},
 	"dependencies": {
@@ -58,12 +61,6 @@
 		"onlyBuiltDependencies": [
 			"electron",
 			"sharp"
-		]
-	},
-	"lint-staged": {
-		"*.{js,css}": [
-			"prettier --write --config .prettierrc.json --ignore-path .prettierignore",
-			"git add -u"
 		]
 	},
 	"build": {

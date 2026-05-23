@@ -1,0 +1,2 @@
+#!/bin/bash
+pnpm dlx commitlint --config commitlint.config.js --edit $1

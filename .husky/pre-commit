@@ -1,2 +1,2 @@
 #!/bin/bash
-pnpx lint-staged
+pnpm dlx lint-staged --config lint-staged.config.js
