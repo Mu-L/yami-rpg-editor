@@ -1,5 +1,7 @@
 # Yami rpg editor 社区分支
 
+[English](./README.en.md)
+
 ![](https://flat.badgen.net/github/license/Open-Yami-Community/yami-rpg-editor)
 ![](https://flat.badgen.net/github/forks/Open-Yami-Community/yami-rpg-editor)
 ![](https://flat.badgen.net/github/stars/Open-Yami-Community/yami-rpg-editor)
@@ -37,9 +39,6 @@ pnpm install
 
 将“Runtime/electron-packages.zip”解压到“Project”中，作为游戏部署的依赖项。
 由于部分文件超过 100MB，已将其拆分为多个卷。
-
-Extract "Runtime/electron-packages.zip" to "Project" as dependencies for game deployment.
-Since some files exceed 100MB, they have been split into multiple volumes.
 
 ## 运行
 
