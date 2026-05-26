@@ -447,16 +447,19 @@ const createEditorWindow = function () {
 	editor.on('leave-full-screen', (event) => editor.send('leave-full-screen'))
 
 	// 加载配置文件并设置缩放系数
-	const configPath = path.resolve(dirname, 'config.json')
+	const configPath = path.resolve(
+		path.join(os.homedir(), '.openyami'),
+		'config.json'
+	)
 	const promise = require('fs').promises.readFile(configPath)
-	editor.once('ready-to-show', (event) => {
+	editor.once('ready-to-show', () => {
 		// 窗口最大化
 		editor.maximize()
 		promise
 			.then((config) => {
 				editor.webContents.setZoomFactor(JSON.parse(config).zoom)
 			})
-			.catch((error) => {
+			.catch(() => {
 				editor.webContents.setZoomFactor(1)
 			})
 	})
