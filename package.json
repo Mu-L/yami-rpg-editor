@@ -6,11 +6,8 @@
 	"productName": "Yami RPG Editor",
 	"author": "Yami",
 	"description": "2D Game Editor",
-	"bin": {
-		"buildres": "./bin/buildres.js"
-	},
 	"scripts": {
-		"buildres": "node bin/buildres.js",
+		"buildres": "node scripts/buildres.js",
 		"prepare": "husky",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",
