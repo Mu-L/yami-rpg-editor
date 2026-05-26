@@ -106,6 +106,9 @@ pnpm run build:linux
 <img width="500" src="https://github.com/user-attachments/assets/4733d260-991a-4edb-aaa1-483dd3ef5d91" alt="1abcd7e53e8c72cf7b3b7770b48c001d_720">
 </p>
 
-# LICENSE
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/Open-Yami-Community/yami-rpg-editor.svg?variant=adaptive)](https://starchart.cc/Open-Yami-Community/yami-rpg-editor)
+
+## LICENSE
 
 [you can see this](./LICENSE)
