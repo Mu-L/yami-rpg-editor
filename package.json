@@ -8,6 +8,7 @@
 	"description": "2D Game Editor",
 	"scripts": {
 		"buildres": "node scripts/buildres.js",
+		"buildtime": "node scripts/buildRuntime.js",
 		"prepare": "husky",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",

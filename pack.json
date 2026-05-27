@@ -27,17 +27,17 @@
     "path": "electron-mac-universal.app",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-mac-universal.app",
     "version": "1.0.1",
-    "md5": "b6deeb9fb9bbbb16fbab4fd20c88ac60",
-    "sha1": "b0cbbe30260c504643e2d03ea286a81bba249196",
-    "sha256": "beec107ad121120086ad4d871848166f28d1827a793c19137fb77056b1942180"
+    "md5": "b415fd88bcf51aafc956cdddd3313ded",
+    "sha1": "b7857d157666ca5d8cd4f8af9cbb657a8f4ef90a",
+    "sha256": "a52ca22c06807cb68f57f8c6bc13b24a3a2adf3f97c50e11457f5c4f14eb27f1"
   },
   {
     "path": "electron-win-x64",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-win-x64",
     "version": "1.0.1",
-    "md5": "5dfc181f43d5c58bc4858778cb4413e9",
-    "sha1": "25e7d962963321ba11d8feea7fb75cb14f729158",
-    "sha256": "2a0a1fade45b090c6a1a2aac2db5c5d462559f039823738f18f2948c4a73c662"
+    "md5": "58a2e8b65e23b086cfd68a28b3e15a44",
+    "sha1": "2d708f797884a47611bd07a66b4da0df7d3e3c12",
+    "sha256": "156b48c08ebf6fa77dae9c26f2f09ee1d5d7b7f2a1ea964cd8d82b1f2b228cce"
   },
   {
     "path": "script",
