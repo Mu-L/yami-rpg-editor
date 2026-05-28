@@ -13,6 +13,7 @@ const Palette = {
 	context: null,
 	screen: $('#palette-screen'),
 	marquee: $('#palette-marquee'),
+	info: $('#palette-info'),
 	symbol: null,
 	meta: null,
 	tileset: null,
@@ -68,7 +69,10 @@ const Palette = {
 	updateCamera: null,
 	updateTransform: null,
 	updateBackground: null,
+	updateInfo: null,
 	createMarkCanvas: null,
+	rebuildMarkCanvas: null,
+	ensureMarkPosition: null,
 	drawTileset: null,
 	drawTiles: null,
 	drawTileGrid: null,
@@ -84,6 +88,7 @@ const Palette = {
 	flipTiles: null,
 	openSelection: null,
 	editSelection: null,
+	editTagAt: null,
 	scrollToSelection: null,
 	requestRendering: null,
 	renderingFunction: null,
@@ -681,6 +686,25 @@ Palette.updateBackground = function () {
 	}
 }
 
+Palette.updateInfo = function (index = this.activeIndex) {
+	const info = this.info
+	if (!info) return
+	const tileset = this.tileset
+	if (!tileset || index === null || index === undefined) {
+		info.textContent = ''
+		return
+	}
+	const width = tileset.width
+	if (index < 0 || index >= tileset.tags.length) {
+		info.textContent = ''
+		return
+	}
+	const x = index % width
+	const y = (index / width) | 0
+	const tag = tileset.tags[index]
+	info.textContent = `${x},${y} tag:${tag}`
+}
+
 // 创建标记画布
 Palette.createMarkCanvas = function () {
 	let canvas = this.markCanvas
@@ -690,9 +714,12 @@ Palette.createMarkCanvas = function () {
 		canvas.width = 0
 		canvas.height = size * 3
 		canvas.fontSize = size
+		canvas.entries = []
+		canvas.totalWidth = 0
 		const positions = (canvas.positions = {})
 		const context = canvas.getContext('2d')
 		const font = `${size}px sans-serif`
+		canvas.font = font
 		context.font = font
 
 		// 计算优先级标记位置
@@ -702,43 +729,71 @@ Palette.createMarkCanvas = function () {
 			const width = Math.ceil(context.measureText(text).width)
 			const aspectRatio = width / size
 			positions[i] = { text, start, width, aspectRatio }
+			canvas.entries.push({ text, start, width })
 			start += width
 		}
 
 		// 计算添加标记位置
 		const width = Math.ceil(context.measureText('+').width)
+		const addStart = start
 		positions.add = {
 			text: '+',
-			start: start,
+			start: addStart,
 			width: width,
 			aspectRatio: width / size
 		}
 		start += width
+		canvas.entries.push({ text: '+', start: addStart, width })
+		canvas.totalWidth = start
 
 		// 设置画布宽度并绘制内容
-		canvas.width = start
-		context.font = font
-		context.textAlign = 'center'
-		context.textBaseline = 'middle'
-		context.shadowColor = '#000000'
-		context.shadowBlur = size / 32
-		context.shadowOffsetY = size / 32
-		for (const position of Object.values(positions)) {
-			const { text, start, width } = position
-			const x = start + width / 2
-			context.fillStyle = '#ffffff'
-			context.fillText(text, x, size * 0.5)
-			context.fillStyle = '#ffd700'
-			context.fillText(text, x, size * 1.5)
-			context.fillStyle = '#00ff00'
-			context.fillText(text, x, size * 2.5)
-		}
+		this.rebuildMarkCanvas(canvas)
 		this.markCanvas = canvas
 		// canvas.style.display = 'block'
 		// canvas.style.position = 'fixed'
 		// document.body.appendChild(canvas)
 	}
 	return canvas
+}
+
+Palette.rebuildMarkCanvas = function (canvas) {
+	const size = canvas.fontSize
+	canvas.width = canvas.totalWidth
+	canvas.height = size * 3
+	const context = canvas.getContext('2d')
+	context.font = canvas.font
+	context.textAlign = 'center'
+	context.textBaseline = 'middle'
+	context.shadowColor = '#000000'
+	context.shadowBlur = size / 32
+	context.shadowOffsetY = size / 32
+	for (const entry of canvas.entries) {
+		const { text, start, width } = entry
+		const x = start + width / 2
+		context.fillStyle = '#ffffff'
+		context.fillText(text, x, size * 0.5)
+		context.fillStyle = '#ffd700'
+		context.fillText(text, x, size * 1.5)
+		context.fillStyle = '#00ff00'
+		context.fillText(text, x, size * 2.5)
+	}
+}
+
+Palette.ensureMarkPosition = function (canvas, text, key = text) {
+	const positions = canvas.positions
+	const existing = positions[key]
+	if (existing) return existing
+	const context = canvas.getContext('2d')
+	context.font = canvas.font
+	const width = Math.ceil(context.measureText(text).width)
+	const start = canvas.totalWidth
+	const aspectRatio = width / canvas.fontSize
+	const position = { text, start, width, aspectRatio }
+	positions[key] = position
+	canvas.entries.push({ text, start, width })
+	canvas.totalWidth += width
+	this.rebuildMarkCanvas(canvas)
+	return position
 }
 
 // 绘制图块组
@@ -1040,9 +1095,11 @@ Palette.drawTags = function () {
 				for (let y = by; y < ey; y++) {
 					for (let x = bx; x < ex; x++) {
 						const i = x + y * tro
-						const tag = tags[i]
+						const tag = (tags[i] ??= 0)
 						if (tag === 0) continue
-						const position = positions[tag]
+						const position =
+							positions[tag] ??
+							this.ensureMarkPosition(mark, tag.toString(), tag)
 						const { start, width, aspectRatio } = position
 						const dw = fs * aspectRatio
 						const dx = (x + 0.5) * tw - dw / 2
@@ -1070,7 +1127,9 @@ Palette.drawTags = function () {
 						const tile = tiles[i]
 						const tag = tags[i]
 						if (tile === 0 || tag === 0) continue
-						const position = positions[tag]
+						const position =
+							positions[tag] ??
+							this.ensureMarkPosition(mark, tag.toString(), tag)
 						const { start, width, aspectRatio } = position
 						const dw = fs * aspectRatio
 						const dx = (x + 0.5) * tw - dw / 2
@@ -1380,6 +1439,22 @@ Palette.editSelection = function () {
 	}
 }
 
+Palette.editTagAt = function (x, y) {
+	const tileset = this.tileset
+	const tags = tileset?.tags
+	if (!tags) return
+	const i = x + y * tileset.width
+	if (i < 0 || i >= tags.length) return
+	SetTileTag.open(tags[i], (tag) => {
+		if (tags[i] === tag) return
+		tags[i] = tag
+		this.updateInfo()
+		this.requestRendering()
+		Scene.requestRendering()
+		File.planToSave(this.meta)
+	})
+}
+
 // 滚动到选中位置
 Palette.scrollToSelection = function (shiftKey) {
 	const marquee = this.marquee
@@ -1517,7 +1592,7 @@ Palette.switchTag = (function IIFE() {
 		if (enabled) {
 			itemTag.addClass('selected')
 			this.marquee.visible && this.marquee.selection.hide()
-			this.marquee.off('doubleclick', this.marqueeDoubleclick)
+			this.marquee.on('doubleclick', this.marqueeDoubleclick)
 			this.marquee.on('pointermove', this.marqueePointermove)
 			this.marquee.on('pointerleave', this.marqueePointerleave)
 		} else {
@@ -2081,6 +2156,7 @@ Palette.marqueePointermove = function (event) {
 		const index = x + y * this.tileset.width
 		if (this.activeIndex !== index) {
 			this.activeIndex = index
+			this.updateInfo(index)
 			this.requestRendering()
 		}
 	}
@@ -2090,12 +2166,18 @@ Palette.marqueePointermove = function (event) {
 Palette.marqueePointerleave = function (event) {
 	if (this.activeIndex !== null) {
 		this.activeIndex = null
+		this.updateInfo(null)
 		this.requestRendering()
 	}
 }.bind(Palette)
 
 // 选框 - 鼠标双击事件
 Palette.marqueeDoubleclick = function (event) {
+	if (this.mode === 'tag') {
+		const { x, y } = this.getTileCoords(event, true)
+		this.editTagAt(x, y)
+		return
+	}
 	this.openSelection()
 }.bind(Palette)
 
@@ -2204,15 +2286,6 @@ Palette.pointerup = function (event) {
 				break
 			case 'increase-tag':
 			case 'ready-to-decrease-tag':
-				if (dragging.active) {
-					const { tags } = dragging
-					const i = dragging.startIndex
-					const step = event.button === 0 ? 1 : 9
-					tags[i] = (tags[i] + step) % 10
-					this.requestRendering()
-					Scene.requestRendering()
-					File.planToSave(this.meta)
-				}
 				break
 			case 'ready-to-increase-terrain':
 				this.setTerrain(dragging.startX, dragging.startY, 1)

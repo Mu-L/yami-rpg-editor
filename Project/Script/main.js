@@ -78,6 +78,7 @@ Editor.initialize = async function () {
 		Rename.initialize()
 		SetKey.initialize()
 		SetQuantity.initialize()
+		SetTileTag.initialize()
 		PresetObject.initialize()
 		PresetElement.initialize()
 		ArrayList.initialize()

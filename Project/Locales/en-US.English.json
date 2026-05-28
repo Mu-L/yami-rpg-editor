@@ -368,6 +368,9 @@
       "updateLog": "Update Log"
     },
     "menuOpenYami": {
+      "update-log-tab-internal": "Original Release",
+      "update-log-tab-community": "Community Release",
+      "update-log-tab-donation": "Donation List",
       "setting":"Setting",
       "qr": "QR Code",
       "export_apk": "Build APK",
@@ -386,6 +389,7 @@
     "menuCommandList": {
       "script": "Script",
       "copy-as-text": "Copy as Text",
+      "copy-as-js": "Copy as JS Code",
       "edit-data": "Edit Data",
       "open-event": "Open Event"
     },
@@ -778,6 +782,7 @@
       "setNumber.object.trigger-angle": "Angle",
       "setNumber.object.tilemap-width": "Width",
       "setNumber.object.tilemap-height": "Height",
+      "setNumber.object.tilemap-tag": "Tile Tag",
       "setNumber.object.list-length": "ListLength",
       "setNumber.element.element-x": "Element.X",
       "setNumber.element.element-y": "Element.Y",
@@ -893,6 +898,7 @@
       "setList.get-enum-names": "GetEnumNames",
       "setList.get-enum-values": "GetEnumValues",
       "setList.get-actor-targets": "GetActorTargets",
+      "setList.skipCheck": "Boundary Limit",
       "deleteVariable": "Delete Variable",
       "deleteVariable.alias": "Delete",
       "deleteVariable.desc": "Delete a variable that is no longer needed",
@@ -1036,6 +1042,7 @@
       "registerEvent.alias.register": "Register",
       "registerEvent.alias.unregister": "Unregister",
       "registerEvent.alias.reset": "Reset",
+      "registerEvent.namespace": "Namespace",
       "registerEvent.reset.global-event": "GlobalEvent",
       "registerEvent.reset.global-events": "GlobalEvents",
       "registerEvent.reset.events": "Events",
@@ -1687,7 +1694,21 @@
       "resource-download": "Download",
       "resource-decompression": "Decompress",
       "resource-check-version": "Check for Updates",
-      "resource-open-dir": "Open Template Directory"
+      "resource-open-dir": "Open Template Directory",
+      "resource-pause": "Pause",
+      "resource-resume": "Resume",
+      "resource-cancel": "Cancel",
+      "resource-speed": "Speed",
+      "resource-speed-label": "Speed",
+      "resource-current-node-label": "Current Node",
+      "resource-node-ping-testing": "Testing",
+      "resource-node-ping-failed": "Failed",
+      "resource-size-label": "Size",
+      "resource-size-unknown": "Unknown",
+      "github-acceleration-node": "Node",
+      "github-acceleration-auto": "Auto Select",
+      "github-acceleration-none": "No Acceleration",
+      "resource-not-found":"Resource pack not found"
     }
   },
   "components": {
@@ -1816,6 +1837,7 @@
     "[comment]": "********** Inspector - File - Tileset **********",
     "palette-scroll": {"tip": "$Vertical Scroll Mode\nOn: Slide the mouse wheel to scroll up and down the tileset\nOff: Slide the mouse wheel to zoom in and out the tileset"},
     "palette-priority": {"tip": "$Priority\nSorting priority of tiles when rendering on the object layer.\nTiles below always overlay those above.\nPriority = -1: shift sort up by one tile.\nPriority = 1: shift sort down by one tile."},
+    "palette-tag": {"tip": "$Tile Tag\nEdit tile tags by double-clicking tiles"},
     "palette-terrain": {"tip": "$Terrain\nLand: Actors with \"land\" or \"unrestricted\" passage terrain can move here\nWater: Actors with \"water\" or \"unrestricted\" passage terrain can move here\nWall: Actors with \"unrestricted\" passage terrain can move here, it can also prevent triggers from passing"},
     "palette-edit": {"tip": "$Edit Auto Tiles\nIf a file of auto tile is open, switch to edit mode and enable the context menu for tiles"},
     "palette-flip": {"tip": "$Flip normal tiles\nFlip selected normal tiles horizontally (does not change auto tiles)"},
@@ -2822,6 +2844,8 @@
     "setting-signed-signedApkPath": {"label": "Signed APK Path", "tip": "The output path for the signed APK file"},
     "setting-title-other": {"content": "Other"},
     "setting-other-copyAsTextKeepEmptyLine": {"label": "Keep Empty Lines", "tip": "Copy to text - Whether to keep empty lines"},
+    "setting-title-github": {"content": "GitHub"},
+    "setting-github-accelerationNode": {"label": "Acceleration Node", "tip": "Select the acceleration node for GitHub resource downloads"},
 
     "[comment]": "********** Auto Tile **********",
     "autoTile": {"title": "Auto Tile"},
@@ -2887,7 +2911,8 @@
     "deployment-location-box": {"label": "Output Location"},
     "deployment-location": {"tip": "$Output Location\nCreate an output folder at this location"},
     "deployment-choose": {"tip": "$Choose Folder\nOpen the operating system dialog to select a folder as the path"},
-
+    "deployment-compress": {"label": "Obfuscation Compression", "tip": "Enable Obfuscation Compression\nAfter enabling, the obfuscated compressed code will be used to reduce the file size, but it will increase the compilation time"},
+    
     "[comment]": "********** Copy Progress **********",
     "copyProgress": {"title": "Copy Progress"},
     "copyProgress-box": {"label": "Copying Files..."},
@@ -3308,6 +3333,10 @@
     "setQuantity": {"title": "Set Quantity"},
     "setQuantity-quantity": {"label": "Quantity", "tip": "Enter the item quantity"},
 
+    "[comment]": "********** Set Tile Tag **********",
+    "setTileTag": {"title": "Set Tile Tag"},
+    "setTileTag-tag": {"label": "Tag", "tip": "Enter the tile tag (0-99999)"},
+
     "[comment]": "********** Search - String **********",
     "event-search-string": {"title": "Search String"},
     "event-search-string-search": {"label": "Content：", "tip": "Enter the search content"},
@@ -3496,9 +3525,11 @@
     "tilemapGetter": {"title": "Tilemap"},
     "tilemapGetter-type": {"label": "Type", "tip": "How to get a tilemap", "options": {
       "trigger": {"name": "Event Trigger Tilemap", "tip": "Tilemap that triggered this event"},
-      "by-id": {"name": "By Tilemap ID", "tip": "Get a preset scene tilemap"}
+      "by-id": {"name": "By Tilemap ID", "tip": "Get a preset scene tilemap"},
+      "variable": {"name": "Variable", "tip": "Get the tilemap from the specified variable"}
     }},
     "tilemapGetter-presetId": {"label": "Data ID", "tip": "Get the preset tilemap in the scene"},
+    "tilemapGetter-variable": {"label": "Variable", "tip": "Get the tilemap object from the variable"},
 
     "[comment]": "********** Scene Object Accessor **********",
     "objectGetter": {"title": "Scene Object"},
@@ -3672,6 +3703,7 @@
       "trigger-angle": {"name": "Trigger - Angle", "tip": "Get the angle of the trigger"},
       "tilemap-width": {"name": "Tilemap - Width", "tip": "Get the width of the tilemap"},
       "tilemap-height": {"name": "Tilemap - Height", "tip": "Get the height of the tilemap"},
+      "tilemap-tag": {"name": "Tilemap - Tile Tag", "tip": "Get the tag value at the specified tilemap position (0-99999)"},
       "list-length": {"name": "List - Length", "tip": "Get the number of data in the list"}
     }},
     "setNumber-operand-element-property": {"label": "Property", "tip": "Retrieve element property value", "options": {
@@ -3714,6 +3746,7 @@
     "setNumber-operand-common-item": {"label": "Item", "tip": "Retrieve relevant data of this item"},
     "setNumber-operand-common-trigger": {"label": "Trigger", "tip": "Retrieve relevant data of this trigger"},
     "setNumber-operand-common-tilemap": {"label": "Tilemap", "tip": "Retrieve relevant data of this tilemap"},
+    "setNumber-operand-tilemapPosition": {"label": "Tilemap Position", "tip": "The tilemap coordinates"},
     "setNumber-operand-object-itemId": {"label": "Item", "tip": "Input the item file ID"},
     "setNumber-operand-object-equipmentId": {"label": "Equipment", "tip": "Input the equipment file ID"},
     "setNumber-operand-string-search": {"label": "Search String", "tip": "Target string for search location"},
@@ -3918,6 +3951,7 @@
     "setList-attribute-groupId": {"label": "Attribute Group", "tip": "Select an attribute group"},
     "setList-enum-groupId": {"label": "Enum Group", "tip": "Select an enum group"},
     "setList-actor": {"label": "Actor", "tip": "Select an actor object"},
+    "setListIndexSkipCheck": {"label": "Boundary Limit", "tip": "When enabled, if [list].length is less than index, no content will be added"},
 
     "[comment]": "********** Command - Delete Variable **********",
     "deleteVariable": {"title": "Delete Variable"},
@@ -4280,6 +4314,7 @@
     }},
     "registerEvent-type": {"label": "Event", "tip": "Choose the event type for the object"},
     "registerEvent-priority": {"label": "Priority", "tip": "Trigger before element events, unaffected by \"Pause Game\" and \"Prevent Scene Input\" commands"},
+    "registerEvent-namespace": {"label": "Namespace", "tip": "Enable: use an independent variable scope\nDisable: share variable scope with the current event"},
     "registerEvent-tag": {"label": "Tag", "tip": "A label for unloading this event later"},
 
     "[comment]": "********** Command - Set Event **********",
@@ -4779,7 +4814,7 @@
     "downloadFile-callback": {"label": "Callback", "tip": "callback function after request completion, @code represents the return value (error is -1), @response represents the response Blob data, @download function represents the download function (can pass in the file name)"},
     "downloadFile-rateCallback": {"label": "Progress Callback", "tip": "download progress callback function, @event represents the progress event object"},
     "downloadFile-isBackground": {"label": "Background Storage", "tip": "whether to download and store the file in the background"},
-    "downloadFile-isBackground-path": {"label": "File Path", "tip": "file path for background download and storage"}
+    "downloadFile-isBackground-path": {"label": "File Path", "tip": "file path for background download and storage"},
     
     "[comment]": "********** Instruction - Request - keyValue **********",
     "request-keyValue": {"title": "Key Value Data Group"},

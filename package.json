@@ -6,15 +6,14 @@
 	"productName": "Yami RPG Editor",
 	"author": "Yami",
 	"description": "2D Game Editor",
-	"bin": {
-		"buildres": "./bin/buildres.js"
-	},
 	"scripts": {
-		"buildres": "node bin/buildres.js",
+		"buildres": "node scripts/buildres.js",
+		"buildtime": "node scripts/buildRuntime.js",
 		"prepare": "husky",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",
 		"format": "prettier --write . --config prettierrc.json",
+		"commitlint": "commitlint --config commitlint.config.js --edit ",
 		"build:win": "electron-builder --dir --win --x64",
 		"build:winexe": "electron-builder --win --x64",
 		"build:linux": "electron-builder --dir --linux --x64",
@@ -27,26 +26,30 @@
 		"build:universalexe": "electron-builder --mac --universal"
 	},
 	"devDependencies": {
-		"@types/node": "^22.13.10",
+		"@commitlint/cli": "^21.0.1",
+		"@commitlint/config-conventional": "^21.0.1",
+		"@types/node": "^22.19.19",
 		"archiver": "^7.0.1",
 		"electron": "^20.3.12",
 		"electron-builder": "^25.1.8",
 		"husky": "^9.1.7",
-		"lint-staged": "^16.1.2",
-		"prettier": "^3.6.2"
+		"lint-staged": "^16.4.0",
+		"prettier": "^3.8.3"
 	},
 	"dependencies": {
-		"axios": "^1.11.0",
+		"axios": "^1.16.1",
 		"exceljs": "^4.4.0",
-		"fs-extra": "^11.3.1",
-		"koa": "^3.0.0",
-		"mime-types": "^3.0.1",
+		"fs-extra": "^11.3.5",
+		"koa": "^3.2.1",
+		"markdown-it": "^14.2.0",
+		"mime-types": "^3.0.2",
 		"qrcode": "^1.5.4",
-		"sharp": "^0.34.2",
+		"sharp": "^0.34.5",
 		"steamworks.js": "^0.4.0",
-		"typescript": "^5.8.2",
+		"typescript": "^5.9.3",
+		"uglify-js": "^3.19.3",
 		"xml2js": "^0.6.2",
-		"yauzl": "^3.2.0"
+		"yauzl": "^3.3.1"
 	},
 	"repository": {
 		"type": "git",
@@ -56,12 +59,6 @@
 		"onlyBuiltDependencies": [
 			"electron",
 			"sharp"
-		]
-	},
-	"lint-staged": {
-		"*.{js,css}": [
-			"prettier --write --config .prettierrc.json --ignore-path .prettierignore",
-			"git add -u"
 		]
 	},
 	"build": {

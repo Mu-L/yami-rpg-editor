@@ -95,19 +95,27 @@ const EditDataInstance = new (class {
 	parseJSON(text) {
 		try {
 			const vaild = JSON.parse(text)
-			if (vaild.id && vaild.params)
-				return new (class {
+			if (vaild.id && vaild.params) {
+				const result = new (class {
 					id = vaild.id
 					params = vaild.params
 				})()
+				if (vaild.commands) {
+					result.commands = vaild.commands
+				}
+				return result
+			}
 			if (Array.isArray(vaild) && vaild.every((v) => v.id && v.params)) {
-				return vaild.map(
-					(v) =>
-						new (class {
-							id = v.id
-							params = v.params
-						})()
-				)
+				return vaild.map((v) => {
+					const result = new (class {
+						id = v.id
+						params = v.params
+					})()
+					if (v.commands) {
+						result.commands = v.commands
+					}
+					return result
+				})
 			}
 			return null
 		} catch {
@@ -121,64 +129,61 @@ const EditDataInstance = new (class {
 		if (!parse) return
 		const originalStart = this.eventListDom.start
 		const originalEnd = this.eventListDom.end
+
+		let hasChanges = false
+
 		if (Array.isArray(this.currentContent)) {
+			// 批量修改
 			for (const ind in this.currentContent) {
 				const { node, value } = this.currentContent[ind]
 				if (!(ind in parse)) continue // 索引不存在
 				const changeContent = parse[ind]
 				if (JSON.stringify(value) === JSON.stringify(changeContent))
 					continue // 内容没修改
-				const parent = node.dataParent
+
+				// 直接修改 dataList 中的数据
 				const list = node.dataList
+				const dataIndex = node.dataIndex
 
-				const buffer = this.eventListDom.createCommandBuffer(
-					list,
-					node.dataIndex,
-					node.dataIndent,
-					parent
-				)
-				Object.defineProperty(changeContent, 'buffer', {
-					value: buffer,
-					configurable: true
-				})
+				// 删除旧对象的 buffer（在替换之前）
+				if (list[dataIndex].buffer !== undefined) {
+					delete list[dataIndex].buffer
+				}
 
-				this.eventListDom.start = node.dataIndex
-				this.eventListDom.end = node.dataIndex
-				this.eventListDom.inserting = false
-				this.eventListDom.save(changeContent)
-
-				delete changeContent.buffer // 强制清除buffer，确保能更新
+				// 替换数据
+				list[dataIndex] = changeContent
+				hasChanges = true
 			}
-			this.eventListDom.update()
-			this.eventListDom.select(originalStart, originalEnd)
 		} else if (
 			JSON.stringify(this.currentContent.value) !== JSON.stringify(parse)
 		) {
+			// 单个修改
 			const node = this.currentContent.node
-			const parent = node.dataParent
+
+			// 直接修改 dataList 中的数据
 			const list = node.dataList
+			const dataIndex = node.dataIndex
 
-			const buffer = this.eventListDom.createCommandBuffer(
-				list,
-				node.dataIndex,
-				node.dataIndent,
-				parent
-			)
-			Object.defineProperty(parse, 'buffer', {
-				value: buffer,
-				configurable: true
-			})
-			this.currentContent.node.dataItem = parse
+			// 删除旧对象的 buffer（在替换之前）
+			if (list[dataIndex].buffer !== undefined) {
+				delete list[dataIndex].buffer
+			}
 
-			this.eventListDom.start = node.dataIndex
-			this.eventListDom.end = node.dataIndex
-			this.eventListDom.inserting = false
-			this.eventListDom.save(parse)
-
-			delete parse.buffer // 强制清除buffer，确保能更新
-			this.eventListDom.update()
-			this.eventListDom.select(originalStart, originalEnd)
+			// 替换数据
+			list[dataIndex] = parse
+			hasChanges = true
 		}
+
+		// 如果有修改，触发 change 事件以标记数据需要保存
+		if (hasChanges) {
+			this.eventListDom.dispatchEvent(
+				new Event('change', { bubbles: true })
+			)
+		}
+
+		// 更新显示
+		this.eventListDom.update()
+		this.eventListDom.select(originalStart, originalEnd)
 
 		this.currentContent = null
 		this.setChangeState(false)

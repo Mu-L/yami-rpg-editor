@@ -176,15 +176,16 @@ ipcMain.handle('from-excel', async (event) => {
 		await workbook.xlsx.readFile(filePath)
 
 		const worksheet = workbook.getWorksheet('open-yami')
-
 		if (!worksheet) return []
 
-		// 解析表头获取语言列
+		// 解析表头：建立列标题到列号的映射
 		const headerRow = worksheet.getRow(1)
-		const headers = headerRow.values.slice(1) // 跳过第一个空值
-		const langColumns = headers.filter(
-			(header) => !['ID', 'Name', 'parentID', 'isDir'].includes(header)
-		)
+		const colMap = {}
+		headerRow.eachCell((cell, colNumber) => {
+			const value = String(cell.value || '').trim()
+			if (value) colMap[value] = colNumber
+		})
+
 		// 构建数据结构
 		const dataMap = new Map()
 		const rootNodes = []
@@ -192,33 +193,33 @@ ipcMain.handle('from-excel', async (event) => {
 		// 从第二行开始遍历数据
 		for (let rowIndex = 2; rowIndex <= worksheet.rowCount; rowIndex++) {
 			const row = worksheet.getRow(rowIndex)
-			const isDir = row.getCell(headers.indexOf('isDir') + 1).value === 1
+			const isDirCell = row.getCell(colMap['isDir'])
+			const isDir = isDirCell && isDirCell.value === 1
+
 			const rowData = isDir
 				? {
 						class: 'folder',
-						id: row.getCell(headers.indexOf('ID') + 1).value,
-						name:
-							row.getCell(headers.indexOf('Name') + 1).value ||
-							'',
-						parentID: row.getCell(headers.indexOf('parentID') + 1)
-							.value,
+						id: row.getCell(colMap['ID']).value,
+						name: row.getCell(colMap['Name']).value || '',
+						parentID: row.getCell(colMap['parentID']).value,
 						expanded: false,
 						children: []
 					}
 				: {
-						id: row.getCell(headers.indexOf('ID') + 1).value,
-						name: row.getCell(headers.indexOf('Name') + 1).value,
-						parentID: row.getCell(headers.indexOf('parentID') + 1)
-							.value,
+						id: row.getCell(colMap['ID']).value,
+						name: row.getCell(colMap['Name']).value,
+						parentID: row.getCell(colMap['parentID']).value,
 						contents: {}
 					}
+
 			if (!isDir) {
-				// 收集多语言内容
-				langColumns.forEach((lang) => {
-					const cellValue = row.getCell(
-						headers.indexOf(lang) + 1
-					).value
-					rowData.contents[lang] = cellValue !== null ? cellValue : ''
+				// 收集多语言内容（排除系统列）
+				Object.keys(colMap).forEach((key) => {
+					if (!['ID', 'Name', 'parentID', 'isDir'].includes(key)) {
+						const cellValue = row.getCell(colMap[key]).value
+						rowData.contents[key] =
+							cellValue !== null ? cellValue : ''
+					}
 				})
 			}
 
@@ -261,12 +262,16 @@ ipcMain.on('get-dir-path-sync', (event, location) => {
 	switch (location) {
 		case 'app-data':
 			event.returnValue = app.getPath('appData')
+			break
 		case 'documents':
 			event.returnValue = app.getPath('documents')
+			break
 		case 'desktop':
 			event.returnValue = app.getPath('desktop')
+			break
 		case 'local':
 			event.returnValue = app.getAppPath()
+			break
 	}
 })
 
@@ -442,16 +447,19 @@ const createEditorWindow = function () {
 	editor.on('leave-full-screen', (event) => editor.send('leave-full-screen'))
 
 	// 加载配置文件并设置缩放系数
-	const configPath = path.resolve(dirname, 'config.json')
+	const configPath = path.resolve(
+		path.join(os.homedir(), '.openyami'),
+		'config.json'
+	)
 	const promise = require('fs').promises.readFile(configPath)
-	editor.once('ready-to-show', (event) => {
+	editor.once('ready-to-show', () => {
 		// 窗口最大化
 		editor.maximize()
 		promise
 			.then((config) => {
 				editor.webContents.setZoomFactor(JSON.parse(config).zoom)
 			})
-			.catch((error) => {
+			.catch(() => {
 				editor.webContents.setZoomFactor(1)
 			})
 	})

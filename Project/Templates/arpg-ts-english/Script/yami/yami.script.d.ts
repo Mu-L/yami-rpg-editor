@@ -47,6 +47,14 @@ interface YamiPluginScript {
    * 准备就绪后触发
    */
   onStart?(): void
+  /**
+   * 加载存档时触发
+   */
+  onBeforeLoad?(data: GameSaveData, define: PluginSaveDefine): GameSaveData | void
+  /**
+   * 保存存档时触发
+   */
+  onBeforeSave?(data: GameSaveData, define: PluginSaveDefine): GameSaveData | void
 }
 
 /** 事件脚本接口 */

@@ -292,6 +292,7 @@ Command.fetchVariables = function (commands) {
 			const { id, params } = command
 			// 跳过关闭的指令
 			if (id[0] === '!') continue
+			Command.currentCommand = command
 			// 遍历调用事件中的全局事件指令列表
 			if (id === 'callEvent') {
 				if (
@@ -323,6 +324,7 @@ Command.fetchVariables = function (commands) {
 				}
 			}
 		}
+		Command.currentCommand = null
 	}
 	// 获取变量
 	fetchParameters(eventId)
@@ -354,7 +356,8 @@ Command.parseVariable = function (
 						comment: Command.eventName,
 						evIndex: Command.eventIndex,
 						isLeftValue: isLeftValue,
-						refCount: 0
+						refCount: 0,
+						command: Command.currentCommand
 					})
 				}
 			}
@@ -1050,6 +1053,8 @@ Command.parseTilemap = function (tilemap) {
 			)
 		case 'by-id':
 			return Command.parsePresetObject(tilemap.presetId)
+		case 'variable':
+			return Command.parseVariable(tilemap.variable, 'object')
 	}
 }
 
@@ -3216,19 +3221,35 @@ Command.cases.setList = {
 				{ case: 'set-strings', targets: [$('#setList-strings')] },
 				{
 					case: 'set-boolean',
-					targets: [$('#setList-index'), $('#setList-boolean')]
+					targets: [
+						$('#setList-index'),
+						$('#setList-index-skip-check'),
+						$('#setList-boolean')
+					]
 				},
 				{
 					case: 'set-number',
-					targets: [$('#setList-index'), $('#setList-number')]
+					targets: [
+						$('#setList-index'),
+						$('#setList-index-skip-check'),
+						$('#setList-number')
+					]
 				},
 				{
 					case: 'set-string',
-					targets: [$('#setList-index'), $('#setList-string')]
+					targets: [
+						$('#setList-index'),
+						$('#setList-index-skip-check'),
+						$('#setList-string')
+					]
 				},
 				{
 					case: 'set-variable',
-					targets: [$('#setList-index'), $('#setList-operand')]
+					targets: [
+						$('#setList-index'),
+						$('#setList-index-skip-check'),
+						$('#setList-operand')
+					]
 				},
 				{
 					case: 'split-string',
@@ -3261,7 +3282,8 @@ Command.cases.setList = {
 		operand,
 		separator,
 		groupId,
-		actor
+		actor,
+		skipCheck = true
 	}) {
 		let info
 		let isLeftValue = true
@@ -3312,11 +3334,17 @@ Command.cases.setList = {
 				info = `${varName}${
 					Token('[') + Command.parseVariableNumber(index) + Token(']')
 				} ${equal} ${Command.setBooleanColor(constant)}`
+				if (skipCheck) {
+					info += `, ${Local.get('command.setList.skipCheck')}`
+				}
 				break
 			case 'set-number':
 				info = `${varName}${
 					Token('[') + Command.parseVariableNumber(index) + Token(']')
 				} ${equal} ${Command.setNumberColor(constant)}`
+				if (skipCheck) {
+					info += `, ${Local.get('command.setList.skipCheck')}`
+				}
 				break
 			case 'set-string': {
 				const string = Command.setStringColor(
@@ -3325,12 +3353,18 @@ Command.cases.setList = {
 				info = `${varName}${
 					Token('[') + Command.parseVariableNumber(index) + Token(']')
 				} ${equal} ${string}`
+				if (skipCheck) {
+					info += `, ${Local.get('command.setList.skipCheck')}`
+				}
 				break
 			}
 			case 'set-variable':
 				info = `${varName}${
 					Token('[') + Command.parseVariableNumber(index) + Token(']')
 				} ${equal} ${Command.parseVariable(operand, 'any')}`
+				if (skipCheck) {
+					info += `, ${Local.get('command.setList.skipCheck')}`
+				}
 				break
 			case 'split-string': {
 				const label = Local.get('command.setList.split-string')
@@ -3391,7 +3425,8 @@ Command.cases.setList = {
 		operand = { type: 'local', key: '' },
 		separator = '',
 		groupId = '',
-		actor = { type: 'trigger' }
+		actor = { type: 'trigger' },
+		skipCheck = true
 	}) {
 		let numbers = []
 		let strings = []
@@ -3439,6 +3474,7 @@ Command.cases.setList = {
 		write('attribute-groupId', attrGroupId)
 		write('enum-groupId', enumGroupId)
 		write('actor', actor)
+		write('index-skip-check', skipCheck)
 		$('#setList-variable').getFocus()
 	},
 	save: function () {
@@ -3470,29 +3506,51 @@ Command.cases.setList = {
 			}
 			case 'set-boolean': {
 				const index = read('index')
+				const skipCheck = read('index-skip-check')
 				const constant = read('boolean')
-				Command.save({ variable, operation, index, constant })
+				Command.save({
+					variable,
+					operation,
+					index,
+					constant,
+					skipCheck
+				})
 				break
 			}
 			case 'set-number': {
 				const index = read('index')
+				const skipCheck = read('index-skip-check')
 				const constant = read('number')
-				Command.save({ variable, operation, index, constant })
+				Command.save({
+					variable,
+					operation,
+					index,
+					constant,
+					skipCheck
+				})
 				break
 			}
 			case 'set-string': {
 				const index = read('index')
+				const skipCheck = read('index-skip-check')
 				const constant = read('string')
-				Command.save({ variable, operation, index, constant })
+				Command.save({
+					variable,
+					operation,
+					index,
+					constant,
+					skipCheck
+				})
 				break
 			}
 			case 'set-variable': {
 				const index = read('index')
+				const skipCheck = read('index-skip-check')
 				const operand = read('operand')
 				if (VariableGetter.isNone(operand)) {
 					return $('#setList-operand').getFocus()
 				}
-				Command.save({ variable, operation, index, operand })
+				Command.save({ variable, operation, index, operand, skipCheck })
 				break
 			}
 			case 'split-string': {
@@ -4181,6 +4239,7 @@ Command.cases.callEvent = {
 					type + '-event'
 				)
 				elEventType.loadItems(eventTypes)
+				elEventType.createTooltip()
 				elEventType.write(eventTypes[0].value)
 			}
 			// 显示或隐藏全局事件参数和返回值元素组件
@@ -5021,6 +5080,7 @@ Command.cases.stopEvent = {
 					type + '-event'
 				)
 				elEventType.loadItems(eventTypes)
+				elEventType.createTooltip()
 				elEventType.write(eventTypes[0].value)
 			}
 		})
@@ -5176,11 +5236,12 @@ Command.cases.registerEvent = {
 			const registerType = 'register_' + type
 			const eventTypes = Enum.getMergedItems(
 				EventEditor.types[registerType],
-				registerType + '-event'
+				type + '-event'
 			)
 			this.switchTypeAndTagInput()
 			// 加载事件类型选项
 			elEventType.loadItems(eventTypes)
+			elEventType.createTooltip()
 			elEventType.write(eventTypes[0].value)
 		})
 
@@ -5195,6 +5256,7 @@ Command.cases.registerEvent = {
 		$('#registerEvent-operation').on('write', () => {
 			this.switchTypeAndTagInput()
 			this.switchPriority()
+			this.switchNamespace()
 		})
 
 		// 事件类型 - 写入事件
@@ -5282,6 +5344,17 @@ Command.cases.registerEvent = {
 			this.priorityEnabled = false
 		}
 	},
+	switchNamespace: function () {
+		const namespace = $('#registerEvent-namespace')
+		const operation = $('#registerEvent-operation').read()
+		if (operation === 'register') {
+			namespace.previousElementSibling.show()
+			namespace.show()
+		} else {
+			namespace.previousElementSibling.hide()
+			namespace.hide()
+		}
+	},
 	parse: function ({
 		target,
 		actor,
@@ -5290,7 +5363,8 @@ Command.cases.registerEvent = {
 		type,
 		priority,
 		tag,
-		commands
+		commands,
+		namespace
 	}) {
 		const words = Command.words
 		switch (target) {
@@ -5370,6 +5444,10 @@ Command.cases.registerEvent = {
 				}
 				break
 		}
+		if (operation === 'register' && namespace) {
+			words.push(Local.get('command.registerEvent.namespace'))
+		}
+
 		const contents = [
 			{ color: 'flow' },
 			{
@@ -5396,6 +5474,7 @@ Command.cases.registerEvent = {
 		operation = 'register',
 		type = 'autorun',
 		priority = false,
+		namespace = false,
 		tag = '',
 		commands = []
 	}) {
@@ -5406,8 +5485,10 @@ Command.cases.registerEvent = {
 		write('operation', operation)
 		write('type', type)
 		write('priority', priority)
+		write('namespace', namespace)
 		write('tag', tag)
 		Command.cases.registerEvent.commands = commands
+		this.switchNamespace()
 		$('#registerEvent-target').getFocus()
 	},
 	save: function () {
@@ -5416,6 +5497,7 @@ Command.cases.registerEvent = {
 		const operation = read('operation')
 		const type = read('type')
 		const commands = Command.cases.registerEvent.commands
+		const namespace = read('namespace')
 		switch (target) {
 			case 'global':
 				switch (operation) {
@@ -5433,6 +5515,7 @@ Command.cases.registerEvent = {
 							operation,
 							type,
 							priority,
+							namespace,
 							tag,
 							commands
 						})
@@ -5463,6 +5546,7 @@ Command.cases.registerEvent = {
 							actor,
 							operation,
 							type,
+							namespace,
 							commands
 						})
 						break
@@ -5484,6 +5568,7 @@ Command.cases.registerEvent = {
 							element,
 							operation,
 							type,
+							namespace,
 							commands
 						})
 						break
@@ -13352,6 +13437,7 @@ Command.cases.script = {
 		tabSize: 2,
 		theme: ''
 	},
+	typesDispose: [],
 	isMaximized: function () {
 		return $('#script').hasClass('maximized')
 	},
@@ -13429,6 +13515,7 @@ Command.cases.script = {
 			}
 		})
 	},
+
 	parse: function ({ script }) {
 		const contents = [{ script: script }]
 		if (script.includes('\n')) {
@@ -13444,6 +13531,16 @@ Command.cases.script = {
 		this.editor.setScrollTop(0)
 		this.editor.revealLine(9999)
 		this.editor.getFocus()
+		// 加载类型定义文件
+		if (!this.typesDispose) {
+			this.typesDispose.forEach((item) => item())
+		}
+		const projectDir = path.dirname(Editor.config.project)
+		this.typesDispose = loadDtsFolder(
+			path.join(projectDir, 'Script'),
+			monaco,
+			true
+		)
 	},
 	save: async function () {
 		let script = this.model.getValue()
@@ -13528,7 +13625,7 @@ Command.cases.script = {
 			overviewRulerBorder: false,
 			hideCursorInOverviewRuler: true,
 			automaticLayout: false,
-			hover: false,
+			hover: true,
 			lightbulb: {
 				enabled: false
 			},
@@ -15008,6 +15105,7 @@ EventEditor.initialize = function () {
 			types.deselect,
 			types.focus,
 			types.blur,
+			types.input,
 			types.end,
 			types.destroy,
 			types.gamepadbuttonpress,
@@ -16536,6 +16634,7 @@ NumberOperand.initialize = function () {
 		{ name: 'Trigger - Angle', value: 'trigger-angle' },
 		{ name: 'Tilemap - Width', value: 'tilemap-width' },
 		{ name: 'Tilemap - Height', value: 'tilemap-height' },
+		{ name: 'Tilemap - Tag', value: 'tilemap-tag' },
 		{ name: 'List - Length', value: 'list-length' }
 	])
 
@@ -16626,6 +16725,13 @@ NumberOperand.initialize = function () {
 			{
 				case: ['tilemap-width', 'tilemap-height'],
 				targets: [$('#setNumber-operand-common-tilemap')]
+			},
+			{
+				case: 'tilemap-tag',
+				targets: [
+					$('#setNumber-operand-common-tilemap'),
+					$('#setNumber-operand-tilemapPosition')
+				]
 			},
 			{
 				case: 'list-length',
@@ -16928,6 +17034,16 @@ NumberOperand.parseObjectProperty = function (operand) {
 			return (
 				Command.parseTilemap(operand.tilemap) + Token(' -> ') + property
 			)
+		case 'tilemap-tag': {
+			return (
+				Command.parseTilemap(operand.tilemap) +
+				Token(' -> ') +
+				property +
+				Token('(') +
+				Command.parsePosition(operand.tilemapPosition) +
+				Token(')')
+			)
+		}
 		case 'list-length':
 			return (
 				Command.parseVariable(operand.variable, 'object') +
@@ -17113,6 +17229,7 @@ NumberOperand.open = function (
 	let commonItem = { type: 'trigger' }
 	let commonTrigger = { type: 'trigger' }
 	let commonTilemap = { type: 'trigger' }
+	let tilemapPosition = { type: 'absolute', x: 0, y: 0 }
 	let cooldownKey = Enum.getDefStringId('cooldown-key')
 	let listIndex = 0
 	let parameterKey = ''
@@ -17152,6 +17269,7 @@ NumberOperand.open = function (
 			commonItem = operand.item ?? commonItem
 			commonTrigger = operand.trigger ?? commonTrigger
 			commonTilemap = operand.tilemap ?? commonTilemap
+			tilemapPosition = operand.tilemapPosition ?? tilemapPosition
 			cooldownKey = operand.key ?? cooldownKey
 			commonVariable = operand.variable ?? commonVariable
 			break
@@ -17193,6 +17311,7 @@ NumberOperand.open = function (
 	write('common-item', commonItem)
 	write('common-trigger', commonTrigger)
 	write('common-tilemap', commonTilemap)
+	write('tilemapPosition', tilemapPosition)
 	write('string-search', stringSearch)
 	write('math-decimals', mathDecimals)
 	write('math-min', mathMin)
@@ -17396,6 +17515,18 @@ NumberOperand.save = function () {
 				case 'tilemap-height': {
 					const tilemap = read('common-tilemap')
 					operand = { operation, type, property, tilemap }
+					break
+				}
+				case 'tilemap-tag': {
+					const tilemap = read('common-tilemap')
+					const tilemapPosition = read('tilemapPosition')
+					operand = {
+						operation,
+						type,
+						property,
+						tilemap,
+						tilemapPosition
+					}
 					break
 				}
 				case 'list-length': {
@@ -21715,8 +21846,7 @@ VariableGetter.createDefaultForPlugin = function () {
 // 创建本地变量列表生成器
 VariableGetter.createVarListGenerator = function (filterObject) {
 	return function () {
-		const commands = EventEditor.commandList.read()
-		if (!commands) return []
+		if (!EventEditor.commandList.read()) return []
 
 		// 生成过滤字符串
 		const filter = filterObject.filter.includes('boolean')
@@ -21729,11 +21859,69 @@ VariableGetter.createVarListGenerator = function (filterObject) {
 						? 'object'
 						: 'any'
 
-		return EventEditor.commandList.varList.filter((item) => {
+		const list = EventEditor.commandList
+		const elements = list.elements
+		const count = elements.count ?? 0
+		const parentMap = new Map()
+		const stack = []
+		for (let i = 0; i < count; i++) {
+			const element = elements[i]
+			if (element.dataKey === true && element.dataItem) {
+				const indent = element.dataIndent ?? 0
+				while (
+					stack.length > 0 &&
+					stack[stack.length - 1].indent >= indent
+				) {
+					stack.pop()
+				}
+				const parent =
+					stack.length > 0 ? stack[stack.length - 1].command : null
+				if (!parentMap.has(element.dataItem)) {
+					parentMap.set(element.dataItem, parent)
+				}
+				stack.push({ command: element.dataItem, indent })
+			}
+		}
+		const getNamespaceRoot = (command) => {
+			let current = command
+			while (current) {
+				if (
+					current.id === 'registerEvent' &&
+					current.params?.namespace &&
+					current.params?.operation === 'register'
+				) {
+					return current
+				}
+				current = parentMap.get(current)
+			}
+			return null
+		}
+		const activeIndex = list.active
+		const activeElement =
+			activeIndex !== null && activeIndex !== undefined
+				? elements[activeIndex]
+				: null
+		const activeCommand =
+			activeElement?.dataItem ?? activeElement?.dataParent ?? null
+		const activeNamespace = activeCommand
+			? getNamespaceRoot(activeCommand)
+			: null
+
+		return (list.varList ?? []).filter((item) => {
 			// 过滤类型不匹配的变量
-			return (
-				filter === 'any' || item.type === 'any' || filter === item.type
-			)
+			if (
+				filter !== 'any' &&
+				item.type !== 'any' &&
+				filter !== item.type
+			) {
+				return false
+			}
+			// 过滤作用域不匹配的变量
+			const itemCommand = item.command
+			const itemNamespace = itemCommand
+				? getNamespaceRoot(itemCommand)
+				: null
+			return itemNamespace === activeNamespace
 		})
 	}
 }
@@ -23230,13 +23418,17 @@ TilemapGetter.initialize = function () {
 	// 创建访问器类型选项
 	$('#tilemapGetter-type').loadItems([
 		{ name: 'Event Trigger Tilemap', value: 'trigger' },
-		{ name: 'By Tilemap ID', value: 'by-id' }
+		{ name: 'By Tilemap ID', value: 'by-id' },
+		{ name: 'Variable', value: 'variable' }
 	])
 
 	// 设置关联元素
 	$('#tilemapGetter-type')
 		.enableHiddenMode()
-		.relate([{ case: 'by-id', targets: [$('#tilemapGetter-presetId')] }])
+		.relate([
+			{ case: 'by-id', targets: [$('#tilemapGetter-presetId')] },
+			{ case: 'variable', targets: [$('#tilemapGetter-variable')] }
+		])
 
 	// 侦听事件
 	$('#tilemapGetter-confirm').on('click', this.confirm)
@@ -23248,6 +23440,7 @@ TilemapGetter.open = function (target) {
 	Window.open('tilemapGetter')
 
 	let presetId = PresetObject.getDefaultPresetId('tilemap')
+	let variable = { type: 'local', key: '' }
 	const tilemap = target.dataValue
 	switch (tilemap.type) {
 		case 'trigger':
@@ -23255,9 +23448,13 @@ TilemapGetter.open = function (target) {
 		case 'by-id':
 			presetId = tilemap.presetId
 			break
+		case 'variable':
+			variable = tilemap.variable
+			break
 	}
 	$('#tilemapGetter-type').write(tilemap.type)
 	$('#tilemapGetter-presetId').write(presetId)
+	$('#tilemapGetter-variable').write(variable)
 	$('#tilemapGetter-type').getFocus()
 }
 
@@ -23276,6 +23473,14 @@ TilemapGetter.confirm = function (event) {
 				return $('#tilemapGetter-presetId').getFocus()
 			}
 			getter = { type, presetId }
+			break
+		}
+		case 'variable': {
+			const variable = read('variable')
+			if (VariableGetter.isNone(variable)) {
+				return $('#tilemapGetter-variable').getFocus()
+			}
+			getter = { type, variable }
 			break
 		}
 	}

@@ -25,7 +25,7 @@ const GlobalPath = Path.resolve(GlobalPathForDir, ConfigDir)
 	window.config = require('fs')
 		.promises.readFile(path, 'utf8')
 		.then((json) => JSON.parse(json))
-		.catch((error) => {
+		.catch(() => {
 			// 如果不存在配置文件或加载出错
 			return File.get({
 				local: 'default.json',

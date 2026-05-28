@@ -35,6 +35,9 @@ const SettingConfig = new (class {
 			},
 			other: {
 				copyAsTextKeepEmptyLine: true // 复制到文本 是否保留空行
+			},
+			github: {
+				accelerationNode: 'auto' // GitHub加速节点: auto, node..., none
 			}
 		}
 	}
@@ -43,6 +46,7 @@ const SettingConfig = new (class {
 		$('#setting').on('closed', () => {
 			SettingConfig.close()
 		})
+
 		const InputEvent = (e, summary, name) => {
 			if (Reflect.has(e.target, 'value'))
 				SettingConfig.config[summary][name] = e.target.value
@@ -137,6 +141,9 @@ const SettingConfig = new (class {
 		$('#setting-other-copyAsTextKeepEmptyLine').on('input', (e) =>
 			InputEvent(e, 'other', 'copyAsTextKeepEmptyLine')
 		)
+		$('#setting-github-accelerationNode').on('input', (e) =>
+			InputEvent(e, 'github', 'accelerationNode')
+		)
 		this.update()
 	}
 	close() {
@@ -167,7 +174,37 @@ const SettingConfig = new (class {
 		}
 		this.config = patch(this.defaultConfig, this.config)
 	}
-	update() {
+	async update() {
+		const get = Local.createGetter('confirmation')
+		const githubNodes = [
+			{
+				name: get('github-acceleration-auto') || '自动选择',
+				value: 'auto'
+			}
+		]
+
+		if (typeof Resources !== 'undefined' && Resources._fastGithubArray) {
+			Resources._fastGithubArray = await Resources.updateFastGithubArray()
+			Resources._fastGithubArray.forEach((url, index) => {
+				const nodeNumber = index + 1
+				const domain = url
+					.replace(/^https?:\/\//, '')
+					.replace(/\/$/, '')
+				const nodeLabel = get('github-acceleration-node') || '节点'
+				githubNodes.push({
+					name: `${nodeLabel} ${nodeNumber} (${domain})`,
+					value: `node${nodeNumber}`
+				})
+			})
+		}
+
+		githubNodes.push({
+			name: get('github-acceleration-none') || '不使用加速',
+			value: 'none'
+		})
+
+		$('#setting-github-accelerationNode').loadItems(githubNodes)
+
 		const write = getElementWriter('setting-server')
 		write('port', this.config.server.port)
 		write('auto', this.config.server.auto)
@@ -188,6 +225,8 @@ const SettingConfig = new (class {
 			'copyAsTextKeepEmptyLine',
 			this.config.other.copyAsTextKeepEmptyLine
 		)
+		const write5 = getElementWriter('setting-github')
+		write5('accelerationNode', this.config.github.accelerationNode)
 	}
 	save() {
 		if (!fs.existsSync(this.configPath)) {

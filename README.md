@@ -1,5 +1,20 @@
 # Yami rpg editor 社区分支
 
+[English](./README.en.md)
+
+![](https://flat.badgen.net/github/license/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/forks/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/stars/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/commits/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/issues/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/open-issues/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/closed-issues/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/open-prs/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/closed-prs/Open-Yami-Community/yami-rpg-editor)
+![](https://flat.badgen.net/github/merged-prs/Open-Yami-Community/yami-rpg-editor)
+
+<hr>
+
 Yami rpg editor 是一款以用户友好性著称的 2D RPG 编辑器
 
 Yami rpg editor is 2D rpg editor on user-friendliness.
@@ -24,9 +39,6 @@ pnpm install
 
 将“Runtime/electron-packages.zip”解压到“Project”中，作为游戏部署的依赖项。
 由于部分文件超过 100MB，已将其拆分为多个卷。
-
-Extract "Runtime/electron-packages.zip" to "Project" as dependencies for game deployment.
-Since some files exceed 100MB, they have been split into multiple volumes.
 
 ## 运行
 
@@ -80,6 +92,22 @@ pnpm run build:linux
 
 欢迎提出您宝贵的 **issue**，我们将会处理。
 
-# LICENSE
+## 捐赠
+
+社区版项目都是徐然一个人在维护，不管您捐赠一角还是一分，都是**徐然维护项目**的**动力**，加油，干就完了！！！
+
+| 捐赠人   | QQ        | 金额 |
+| :------- | --------- | ---: |
+| 刀里个刀 | 420488038 |  200 |
+| ya       | 332685057 |  100 |
+
+<p align="center">
+<img width="500" src="https://github.com/user-attachments/assets/4733d260-991a-4edb-aaa1-483dd3ef5d91" alt="1abcd7e53e8c72cf7b3b7770b48c001d_720">
+</p>
+
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/Open-Yami-Community/yami-rpg-editor.svg?variant=adaptive)](https://starchart.cc/Open-Yami-Community/yami-rpg-editor)
+
+## LICENSE
 
 [you can see this](./LICENSE)

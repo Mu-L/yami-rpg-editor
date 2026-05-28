@@ -744,7 +744,8 @@ spacing {
 	background-color: var(--tooltip-background);
 	border: var(--tooltip-border);
 	border-radius: 2px;
-	overflow: hidden;
+	overflow: auto;
+	max-height: calc(100vh - 30px);
 	white-space: pre;
 	pointer-events: none;
 	z-index: 10;
@@ -752,6 +753,7 @@ spacing {
 
 #tooltip.open {
 	display: block;
+	pointer-events: auto;
 }
 
 #tooltip > b {
@@ -1926,6 +1928,10 @@ select-item {
 select-item.selected {
 	color: white;
 	background-color: var(--selected-background);
+}
+
+select-item.disabled {
+	color: var(--text-color-disabled);
 }
 
 /* --------------------------------
@@ -6150,6 +6156,20 @@ anim-dir.selected {
 	background-color: rgba(255, 255, 0, 0.4);
 }
 
+#palette-info {
+	position: absolute;
+	left: 0;
+	top: 0;
+	padding: 0 4px;
+	line-height: 20px;
+	color: white;
+	overflow: hidden;
+	white-space: pre;
+	text-overflow: ellipsis;
+	text-shadow: var(--stage-info-text-shadow);
+	pointer-events: none;
+}
+
 #fileTileset-general-detail:not([open]) > detail-summary {
 	margin-bottom: 0;
 	height: 21px;
@@ -6551,7 +6571,7 @@ anim-dir.selected {
  */
 #deployment {
 	width: 448px;
-	height: 146px;
+	height: 166px;
 }
 
 #deployment-folder {
@@ -6559,6 +6579,9 @@ anim-dir.selected {
 }
 
 #deployment-location {
+	width: 300px;
+}
+#deployment-compress {
 	width: 300px;
 }
 
@@ -7729,7 +7752,7 @@ node-item.related-event {
  */
 #setList {
 	width: 324px;
-	height: 194px;
+	height: calc(194px + 24px);
 }
 
 #setList-string,
@@ -8071,7 +8094,7 @@ node-item.related-event {
  */
 #registerEvent {
 	width: 324px;
-	height: 194px;
+	height: 212px;
 }
 
 #registerEvent-confirm {
@@ -11976,22 +11999,59 @@ log-strong {
 	height: 700px;
 }
 
+#update-log-tabs {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	height: 32px;
+	display: flex;
+	border-bottom: var(--tab-item-border);
+}
+
+.update-log-tab {
+	padding: 2px 16px;
+	background-color: var(--tab-item-background);
+	border-right: var(--tab-item-border);
+	color: var(--text-color);
+	cursor: pointer;
+	font-size: 0.9em;
+	transition: all 0.2s ease;
+	flex-shrink: 0;
+	border: none;
+	font-family: inherit;
+	position: relative;
+}
+
+.update-log-tab:first-child {
+	border-left: var(--tab-item-border);
+}
+
+.update-log-tab:hover:not(.active) {
+	background-color: var(--tab-item-background-hover);
+}
+
+.update-log-tab.active {
+	background-color: var(--tab-item-background-selected);
+	color: var(--toolbar-item-color-highlight);
+}
+
 #update-log-container {
 	position: absolute;
-	left: 10px;
-	top: 10px;
-	right: 10px;
-	bottom: 10px;
+	left: 0;
+	top: 32px;
+	right: 0;
+	bottom: 0;
 	background-color: var(--input-background);
-	border: var(--input-border);
-	border-radius: 2px;
+	border: none;
+	border-radius: 0;
 	overflow-x: hidden;
 	overflow-y: auto;
+	padding: 10px;
 }
 
 #update-log-content {
 	display: block;
-	padding: 0 10px;
 	white-space: pre-wrap;
 	user-select: text;
 }
@@ -12000,7 +12060,10 @@ text.update-log-title {
 	display: block;
 	color: var(--plugin-name-color);
 	font-size: 1.5em;
-	line-height: 2.5em;
+}
+
+text.update-log-title p {
+	margin: 0 auto;
 }
 
 text.update-log-major {
@@ -12012,6 +12075,41 @@ text.update-log-major {
 text.update-log-minor {
 	display: block;
 	opacity: 0.5;
+}
+
+/* 捐赠名单样式 */
+.donation-list {
+	display: block;
+	margin-top: 15px;
+	padding: 10px;
+	border: 1px solid var(--plugin-name-color);
+	border-radius: 4px;
+}
+
+.donation-item {
+	display: block;
+	padding: 5px 0;
+	border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.donation-item a {
+	color: var(--plugin-name-color);
+	text-decoration: none;
+}
+
+.donation-item a:hover {
+	text-decoration: underline;
+}
+
+/* markdown-it 样式 */
+
+code {
+	white-space: break-spaces;
+	background-color: #818b981f;
+	border-radius: 6px;
+	margin: 0;
+	padding: 0.2em 0.4em;
+	font-size: 85%;
 }
 
 /* --------------------------------
@@ -12384,6 +12482,25 @@ text.export-apk-major {
 }
 
 #setQuantity-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置图块标签窗口
+ * --------------------------------
+ */
+#setTileTag {
+	width: 324px;
+	height: 98px;
+}
+
+#setTileTag-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTileTag-cancel {
 	right: 10px;
 	bottom: 10px;
 }

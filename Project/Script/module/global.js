@@ -2,7 +2,7 @@
 const fs = require('fs-extra')
 const yauzl = require('yauzl')
 
-const CommunityVersion = '25112201' // 社区编辑器版本
+const CommunityVersion = '26052501' // 社区编辑器版本
 
 EventBus.once('editor_loaded', () => {
 	// 更新项目数据
@@ -64,8 +64,11 @@ let NoResourceObj = isNoResource()
 
 window.addEventListener('localize', () => {
 	Resources.initialize() // 初始化
-	if (!Resources.checkResources()) {
-		Resources.open(true)
+	if (
+		!NoResourceObj['arpg-ts-english'].check &&
+		!NoResourceObj['arpg-ts-chinese'].check
+	) {
+		Resources.open()
 		Resources.checkEditorVersion() // 只检测编辑器版本
 	} else {
 		Resources.checkVersion()
@@ -73,11 +76,25 @@ window.addEventListener('localize', () => {
 	Resources.loaded = true // 已检查过资源
 })
 
-const TitleNewProjectOld = Title.newProject
-Title.newProject = function () {
-	if (!Resources.loaded || !Resources.checkResources()) return // 未初始化不可创建项目
-	TitleNewProjectOld.call(Title)
+/* 新项目确认 */
+$('#newProject-confirm').off('click', NewProject.confirm)
+const TitleConfirmOld = NewProject.confirm
+NewProject.confirm = function () {
+	const template = $('#newProject-template').read()
+	NoResourceObj = isNoResource()
+	if (
+		(template == 'arpg-ts-english' &&
+			NoResourceObj['arpg-ts-english'].check) ||
+		(template == 'arpg-ts-chinese' &&
+			NoResourceObj['arpg-ts-chinese'].check) ||
+		template != ['arpg-ts-english', 'arpg-ts-chinese']
+	) {
+		TitleConfirmOld.call(Title)
+	} else {
+		alert(Local.get('confirmation.resource-not-found'))
+	}
 }
+$('#newProject-confirm').off('click', NewProject.confirm)
 
 // 解压zip
 const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
@@ -281,7 +298,7 @@ UI.list.paste = function (_, callback) {
 // 主界面 - 版本号
 const homeElem = $('#home-version')
 
-homeElem.textContent = `当社区版本：${CommunityVersion} 当前编辑器版本：${Updater.latestEditorVersion} 
+homeElem.textContent = `当前社区版本：${CommunityVersion} 当前编辑器版本：${Updater.latestEditorVersion} 
 当前项目版本：${Updater.latestProjectVersion}`
 ;(() => {
 	PackMeta['Editor'] = Updater.latestEditorVersion
@@ -327,4 +344,304 @@ AutoTile.templateList.update = function () {
 		countElem.textContent = count
 		item.element.append(countElem)
 	}
+}
+
+// ================================ 更新日志窗口 - 切换公告功能 ================================
+
+UpdateLog.currentMode = 'internal' // 'internal' or 'community'
+UpdateLog.internalItems = []
+UpdateLog.communityItems = []
+
+const UpdateLogInitializeOrigin = UpdateLog.initialize
+window.on('localize', () => {
+	// 设置标签页按钮的本地化文本
+	const tabInternal = $('#update-log-tab-internal')
+	const tabCommunity = $('#update-log-tab-community')
+	const tabDonation = $('#update-log-tab-donation')
+	if (tabInternal)
+		tabInternal.innerHTML = Local.get(
+			'menuOpenYami.update-log-tab-internal'
+		)
+	if (tabCommunity)
+		tabCommunity.textContent = Local.get(
+			'menuOpenYami.update-log-tab-community'
+		)
+	if (tabDonation)
+		tabDonation.textContent = Local.get(
+			'menuOpenYami.update-log-tab-donation'
+		)
+})
+UpdateLog.initialize = function () {
+	UpdateLogInitializeOrigin.call(this)
+
+	// 使用事件委托处理标签页按钮点击
+	const tabsContainer = $('#update-log-tabs')
+	if (tabsContainer) {
+		tabsContainer.addEventListener('click', (event) => {
+			const btn = event.target.closest('.update-log-tab')
+			if (btn) {
+				if (btn.id === 'update-log-tab-internal') {
+					UpdateLog.switchMode('internal')
+				} else if (btn.id === 'update-log-tab-community') {
+					UpdateLog.switchMode('community')
+				} else if (btn.id === 'update-log-tab-donation') {
+					UpdateLog.switchMode('donation')
+				}
+			}
+		})
+	}
+}
+
+const UpdateLogOpenOrigin = UpdateLog.open
+UpdateLog.open = function (items = null) {
+	if (items instanceof Array) {
+		Window.open('update-log')
+		this.internalItems = items
+		this.currentMode = 'internal'
+		this.update(items)
+		// 异步加载社区版公告
+		this.loadCommunityReleases()
+	} else {
+		UpdateLogOpenOrigin.call(this)
+	}
+}
+
+function markndownToHtml(markdown) {
+	var md = new require('markdown-it')()
+	return md.render(markdown)
+}
+
+const UpdateLogUpdateOrigin = UpdateLog.update
+UpdateLog.update = function (items) {
+	if (this.currentMode === 'internal') {
+		UpdateLogUpdateOrigin.call(this, items)
+	} else {
+		// 显示社区版公告
+		this.content.clear()
+		const communityItems = this.communityItems
+
+		for (const item of communityItems) {
+			if (item.title) {
+				const title = document.createElement('text')
+				title.innerHTML = markndownToHtml(item.title)
+				title.addClass('update-log-title')
+				this.content.appendChild(title)
+			}
+			if (item.major) {
+				const major = document.createElement('text')
+				major.innerHTML = markndownToHtml(item.major)
+				major.addClass('update-log-major')
+				this.content.appendChild(major)
+			}
+			if (item.minor) {
+				const minor = document.createElement('text')
+				minor.innerHTML = markndownToHtml(item.minor)
+				minor.addClass('update-log-minor')
+				this.content.appendChild(minor)
+			}
+		}
+	}
+}
+
+UpdateLog.switchMode = function (mode) {
+	if (mode === this.currentMode) return
+	this.currentMode = mode
+
+	if (mode === 'internal') {
+		this.update(this.internalItems)
+	} else if (mode === 'community') {
+		this.update()
+	} else if (mode === 'donation') {
+		this.displayDonationList()
+	}
+
+	// 更新按钮状态
+	const tabInternal = $('#update-log-tab-internal')
+	const tabCommunity = $('#update-log-tab-community')
+	const tabDonation = $('#update-log-tab-donation')
+
+	if (mode === 'internal') {
+		if (tabInternal) tabInternal.addClass('active')
+		if (tabCommunity) tabCommunity.removeClass('active')
+		if (tabDonation) tabDonation.removeClass('active')
+	} else if (mode === 'community') {
+		if (tabInternal) tabInternal.removeClass('active')
+		if (tabCommunity) tabCommunity.addClass('active')
+		if (tabDonation) tabDonation.removeClass('active')
+	} else if (mode === 'donation') {
+		if (tabInternal) tabInternal.removeClass('active')
+		if (tabCommunity) tabCommunity.removeClass('active')
+		if (tabDonation) tabDonation.addClass('active')
+	}
+}
+
+// 加载社区版公告
+UpdateLog.loadCommunityReleases = async function () {
+	try {
+		const response = await fetch(
+			'https://api.github.com/repos/Open-Yami-Community/yami-rpg-editor/releases'
+		)
+		if (!response.ok) throw new Error('Failed to fetch releases')
+		const releases = await response.json()
+		this.communityItems = this.parseCommunityReleases(releases)
+	} catch (error) {
+		console.error('Failed to load community releases:', error)
+		this.communityItems = [
+			{
+				title: 'Error',
+				major: 'Failed to load community releases from GitHub'
+			}
+		]
+	}
+}
+
+// 显示捐赠名单
+UpdateLog.displayDonationList = function () {
+	this.content.clear()
+	const donationData = [
+		{
+			name: '刀里个刀(420488038)',
+			amount: 200,
+			link: 'tencent://message/?uin=420488038&Site=qq&Menu=yes'
+		},
+		{
+			name: 'ya(332685057)',
+			amount: 100,
+			link: 'tencent://message/?uin=332685057&Site=qq&Menu=yes'
+		}
+	]
+
+	const donationTitle = document.createElement('text')
+	donationTitle.innerHTML = '<b>感谢以下捐赠者对项目的支持！</b>'
+	donationTitle.addClass('update-log-title')
+	this.content.appendChild(donationTitle)
+
+	const donationList = document.createElement('box')
+	donationList.addClass('donation-list')
+
+	for (const donor of donationData) {
+		const donorItem = document.createElement('text')
+		const link = document.createElement('a')
+		link.href = '#'
+		link.textContent = donor.name
+		link.addEventListener('click', (e) => {
+			e.preventDefault()
+			require('electron').shell.openExternal(donor.link)
+		})
+		donorItem.appendChild(link)
+		donorItem.append(`: ￥${donor.amount.toFixed(2)}`)
+		donorItem.addClass('donation-item')
+		donationList.appendChild(donorItem)
+	}
+
+	this.content.appendChild(donationList)
+}
+
+// 解析社区版公告
+UpdateLog.parseCommunityReleases = function (releases) {
+	const items = []
+	for (const release of releases) {
+		items.push({
+			title: release.name,
+			major: release.body || 'No description provided'
+		})
+	}
+	return items
+}
+
+const UpdateLogWindowClosedOrigin = UpdateLog.windowClosed
+
+UpdateLog.windowClosed = function () {
+	UpdateLogWindowClosedOrigin.call(this)
+	UpdateLog.internalItems = []
+	UpdateLog.communityItems = []
+	UpdateLog.currentMode = 'internal'
+}
+
+/* 设置图块标签 */
+const SetTileTag = {
+	// properties
+	callback: null,
+	// methods
+	initialize: null,
+	open: null,
+	// events
+	windowClosed: null,
+	confirm: null
+}
+
+SetTileTag.initialize = function () {
+	$('#setTileTag').on('closed', this.windowClosed)
+	$('#setTileTag-confirm').on('click', this.confirm)
+}
+
+SetTileTag.open = function (tag, callback) {
+	this.callback = callback
+	Window.open('setTileTag')
+	$('#setTileTag-tag').write(tag)
+	$('#setTileTag-tag').getFocus('all')
+}
+
+SetTileTag.windowClosed = function (event) {
+	this.callback = null
+}.bind(SetTileTag)
+
+SetTileTag.confirm = function (event) {
+	this.callback($('#setTileTag-tag').read())
+	Window.close('setTileTag')
+}.bind(SetTileTag)
+
+function loadDtsFolder(folderPath, monaco, recursive = true) {
+	const disposables = []
+
+	function walkDirectory(currentPath) {
+		try {
+			const files = fs.readdirSync(currentPath)
+
+			files.forEach((file) => {
+				const fullPath = path.join(currentPath, file)
+
+				const stat = fs.statSync(fullPath)
+
+				if (stat.isDirectory()) {
+					if (recursive) {
+						walkDirectory(fullPath)
+					}
+				} else if (file.endsWith('.ts')) {
+					try {
+						const content = fs.readFileSync(fullPath, 'utf-8')
+
+						const normalizedPath = fullPath.replace(/\\/g, '/')
+						const fileUri = 'file://' + normalizedPath
+
+						disposables.push(
+							monaco.languages.typescript.javascriptDefaults.addExtraLib(
+								content,
+								fileUri
+							)
+						)
+						disposables.push(
+							monaco.languages.typescript.typescriptDefaults.addExtraLib(
+								content,
+								fileUri
+							)
+						)
+
+						console.log(`[Monaco] Loaded d.ts: ${fileUri}`)
+					} catch (readErr) {
+						console.error(
+							`Failed to read file: ${fullPath}`,
+							readErr
+						)
+					}
+				}
+			})
+		} catch (err) {
+			console.error(`Failed to read directory: ${currentPath}`, err)
+		}
+	}
+
+	walkDirectory(folderPath)
+
+	return disposables
 }

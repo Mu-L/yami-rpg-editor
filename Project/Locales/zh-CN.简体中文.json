@@ -368,6 +368,9 @@
       "updateLog": "更新日志"
     },
     "menuOpenYami": {
+      "update-log-tab-internal": "原始公告",
+      "update-log-tab-community": "社区公告",
+      "update-log-tab-donation": "捐赠名单",
       "setting":"设置",
       "qr": "QR Code",
       "export_apk": "构建APK",
@@ -386,6 +389,7 @@
     "menuCommandList": {
       "script": "脚本",
       "copy-as-text": "复制为文本",
+      "copy-as-js": "复制为JS代码",
       "edit-data": "编辑数据",
       "open-event": "打开事件"
     },
@@ -778,6 +782,7 @@
       "setNumber.object.trigger-angle": "角度",
       "setNumber.object.tilemap-width": "宽度",
       "setNumber.object.tilemap-height": "高度",
+      "setNumber.object.tilemap-tag": "图块标签",
       "setNumber.object.list-length": "列表长度",
       "setNumber.element.element-x": "元素.X",
       "setNumber.element.element-y": "元素.Y",
@@ -893,6 +898,7 @@
       "setList.get-enum-names": "获取枚举名称",
       "setList.get-enum-values": "获取枚举值",
       "setList.get-actor-targets": "获取角色目标池",
+      "setList.skipCheck": "边界限制",
       "deleteVariable": "删除变量",
       "deleteVariable.alias": "删除",
       "deleteVariable.desc": "删除不再需要的变量",
@@ -1036,6 +1042,7 @@
       "registerEvent.alias.register": "注册",
       "registerEvent.alias.unregister": "卸载",
       "registerEvent.alias.reset": "重置",
+      "registerEvent.namespace": "命名空间",
       "registerEvent.reset.global-event": "全局事件",
       "registerEvent.reset.global-events": "全局事件",
       "registerEvent.reset.events": "事件",
@@ -1687,7 +1694,21 @@
       "resource-download":"下载",
       "resource-decompression":"解压",
       "resource-check-version":"检查更新",
-      "resource-open-dir":"打开模板目录"
+      "resource-open-dir":"打开模板目录",
+      "resource-pause":"暂停",
+      "resource-resume":"恢复",
+      "resource-cancel":"取消",
+      "resource-speed":"速度",
+      "resource-speed-label":"速度",
+      "resource-current-node-label":"当前节点",
+      "resource-node-ping-testing":"测试中",
+      "resource-node-ping-failed":"失败",
+      "resource-size-label":"大小",
+      "resource-size-unknown":"未知",
+      "github-acceleration-node":"节点",
+      "github-acceleration-auto":"自动选择",
+      "github-acceleration-none":"不使用加速",
+      "resource-not-found":"未找到资源包"
     }
   },
   "components": {
@@ -1817,6 +1838,7 @@
     "[comment]": "********** 检查器 - 文件 - 图块组 **********",
     "palette-scroll": {"tip": "$垂直滚动模式\n开启：滑动鼠标滚轮垂直滚动图块组\n关闭：滑动鼠标滚轮放大缩小图块组"},
     "palette-priority": {"tip": "$优先级\n图块在瓦片地图对象层渲染时的排序优先级，\n位置在下方的图块总是会遮挡上方的图块。\n优先级 = -1：排序位置向上偏移一个图块的距离\n优先级 = 1：排序位置向下偏移一个图块的距离"},
+    "palette-tag": {"tip": "$图块标签\n双击图块可编辑图块标签"},
     "palette-terrain": {"tip": "$地形\n地面：通行区域为\"地面\"或\"不受限制\"的角色可以在这里移动\n水面：通行区域为\"水面\"或\"不受限制\"的角色可以在这里移动\n墙块：通行区域为\"不受限制\"的角色可以在这里移动，可阻挡触发器"},
     "palette-edit": {"tip": "$编辑自动图块\n如果打开的是自动图块文件，则进入编辑模式，启用图块右键菜单"},
     "palette-flip": {"tip": "$翻转普通图块\n水平翻转选中的普通图块（不改变自动图块）"},
@@ -2822,6 +2844,8 @@
     "setting-signed-signedApkPath": {"label": "签名后APK路径", "tip": "签名后的APK文件输出路径"},
     "setting-title-other": {"content": "其他"},
     "setting-other-copyAsTextKeepEmptyLine": {"label": "保留空行", "tip": "复制到文本 是否保留空行"},
+    "setting-title-github": {"content": "GitHub"},
+    "setting-github-accelerationNode": {"label": "加速节点", "tip": "选择GitHub资源下载的加速节点"},
 
     "[comment]": "********** 自动图块 **********",
     "autoTile": {"title": "自动图块"},
@@ -2887,6 +2911,7 @@
     "deployment-location-box": {"label": "输出位置"},
     "deployment-location": {"tip": "$输出位置\n在这个位置新建一个输出文件夹"},
     "deployment-choose": {"tip": "$选择文件夹\n打开操作系统的会话框，选择一个文件夹作为路径"},
+    "deployment-compress": {"label": "混淆压缩", "tip": "开启混淆压缩\n开启后，将使用混淆压缩代码，减小体积，但会增加编译时间"},
 
     "[comment]": "********** 复制进度 **********",
     "copyProgress": {"title": "复制进度"},
@@ -3308,6 +3333,10 @@
     "[comment]": "********** 设置数量 **********",
     "setQuantity": {"title": "设置数量"},
     "setQuantity-quantity": {"label": "数量", "tip": "输入项目数量"},
+
+    "[comment]": "********** 设置图块标签 **********",
+    "setTileTag": {"title": "设置图块标签"},
+    "setTileTag-tag": {"label": "标签", "tip": "输入图块标签(0-99999)"},
     
     "[comment]": "********** 搜索 - 字符串 **********",
     "event-search-string": {"title": "搜索字符串"},
@@ -3497,9 +3526,11 @@
     "tilemapGetter": {"title": "瓦片地图"},
     "tilemapGetter-type": {"label": "类型", "tip": "如何获取瓦片地图", "options": {
       "trigger": {"name": "事件触发地图", "tip": "触发这个事件的瓦片地图"},
-      "by-id": {"name": "指定地图ID", "tip": "获取场景中预设的瓦片地图"}
+      "by-id": {"name": "指定地图ID", "tip": "获取场景中预设的瓦片地图"},
+      "variable": {"name": "指定变量", "tip": "获取变量中的瓦片地图"}
     }},
     "tilemapGetter-presetId": {"label": "数据ID", "tip": "获取场景中预设的瓦片地图"},
+    "tilemapGetter-variable": {"label": "变量", "tip": "要获取的瓦片地图变量"},
 
     "[comment]": "********** 场景对象访问器 **********",
     "objectGetter": {"title": "场景对象"},
@@ -3673,6 +3704,7 @@
       "trigger-angle": {"name": "触发器 - 角度", "tip": "获取触发器的角度"},
       "tilemap-width": {"name": "瓦片地图 - 宽度", "tip": "获取瓦片地图的宽度"},
       "tilemap-height": {"name": "瓦片地图 - 高度", "tip": "获取瓦片地图的高度"},
+      "tilemap-tag": {"name": "瓦片地图 - 图块标签", "tip": "获取指定瓦片地图位置的图块标签值(0-99999)"},
       "list-length": {"name": "列表 - 长度", "tip": "获取列表中数据的数量"}
     }},
     "setNumber-operand-element-property": {"label": "属性", "tip": "获取元素属性值", "options": {
@@ -3715,6 +3747,7 @@
     "setNumber-operand-common-item": {"label": "物品", "tip": "获取这个物品的相关数据"},
     "setNumber-operand-common-trigger": {"label": "触发器", "tip": "获取这个触发器的相关数据"},
     "setNumber-operand-common-tilemap": {"label": "瓦片地图", "tip": "获取这个瓦片地图的相关数据"},
+    "setNumber-operand-tilemapPosition": {"label": "瓦片地图坐标", "tip": "瓦片的坐标"},
     "setNumber-operand-object-itemId": {"label": "物品", "tip": "输入物品文件ID"},
     "setNumber-operand-object-equipmentId": {"label": "装备", "tip": "输入装备文件ID"},
     "setNumber-operand-string-search": {"label": "搜索字符串", "tip": "要搜索位置的目标字符串"},
@@ -3919,6 +3952,7 @@
     "setList-attribute-groupId": {"label": "属性群组", "tip": "选择一个属性群组"},
     "setList-enum-groupId": {"label": "枚举群组", "tip": "选择一个枚举群组"},
     "setList-actor": {"label": "角色", "tip": "选择一个角色对象"},
+    "setList-index-skip-check": {"label": "边界限制", "tip": "开启后如果[列表].length < index，则不会添加内容"},
 
     "[comment]": "********** 指令 - 删除变量 **********",
     "deleteVariable": {"title": "删除变量"},
@@ -4280,6 +4314,7 @@
     }},
     "registerEvent-type": {"label": "事件", "tip": "选择对象的事件类型"},
     "registerEvent-priority": {"label": "优先级", "tip": "提前到元素事件之前触发，不受\"暂停游戏\"和\"阻止场景输入事件\"指令的影响"},
+    "registerEvent-namespace": {"label": "命名空间", "tip": "开启：使用独立的变量环境\n关闭：与当前事件共享变量环境"},
     "registerEvent-tag": {"label": "标签", "tip": "以后用来卸载该事件的标记"},
 
     "[comment]": "********** 指令 - 设置事件 **********",

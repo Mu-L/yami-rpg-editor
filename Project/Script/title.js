@@ -998,6 +998,7 @@ const Deployment = {
 	state: 'passed',
 	gamedir: '',
 	timer: null,
+	compress: false,
 	// methods
 	initialize: null,
 	open: null,
@@ -1006,6 +1007,7 @@ const Deployment = {
 	readFileList: null,
 	readTsOutDir: null,
 	copyFilesTo: null,
+	compressJavaScript: null,
 	// events
 	platformInput: null,
 	folderBeforeinput: null,
@@ -1033,6 +1035,9 @@ Deployment.initialize = function () {
 	$('#deployment-location').on('input', this.locationInput)
 	$('#deployment-choose').on('click', this.chooseClick)
 	$('#deployment-confirm').on('click', this.confirm)
+	$('#deployment-compress').on('change', (e) => {
+		Deployment.compress = e.target.read()
+	})
 }
 
 // 打开窗口
@@ -1382,7 +1387,7 @@ Deployment.readTsOutDir = function () {
 	if (match) {
 		outDir = Path.normalize(match[1])
 	}
-	if (!/\/$/.test(outDir)) {
+	if (!outDir.endsWith('/')) {
 		outDir += '/'
 	}
 	return outDir
@@ -1449,6 +1454,31 @@ Deployment.copyFilesTo = function (dirPath) {
 									})()
 								)
 								continue
+							case 'script':
+								if (
+									this.compress &&
+									!srcPath.includes('.min.')
+								) {
+									promises.push(
+										this.compressJavaScript(
+											srcPath,
+											dstPath
+										).then(() => {
+											count++
+											info = newPath
+										})
+									)
+								} else {
+									promises.push(
+										FSP.copyFile(srcPath, dstPath).then(
+											() => {
+												count++
+												info = newPath
+											}
+										)
+									)
+								}
+								continue
 						}
 						// 复制文件
 						promises.push(
@@ -1464,13 +1494,62 @@ Deployment.copyFilesTo = function (dirPath) {
 		}
 		this.timer = new Timer({
 			duration: Infinity,
-			update: (timer) => {
+			update: () => {
 				const percent = Math.round((count / total) * 100)
 				progressBar.style.width = `${percent}%`
 				progressInfo.textContent = info
 			}
 		}).add()
 		return Promise.all(promises)
+	})
+}
+
+// 压缩JavaScript文件
+Deployment.compressJavaScript = function (srcPath, dstPath) {
+	let uglifyJS
+	try {
+		uglifyJS = require('uglify-js')
+	} catch (e) {
+		uglifyJS = null
+	}
+
+	return new Promise((resolve, reject) => {
+		if (!uglifyJS) {
+			// If uglify-js is not available, just copy the file
+			FSP.copyFile(srcPath, dstPath).then(resolve, reject)
+			return
+		}
+		FSP.readFile(srcPath, 'utf8')
+			.then((code) => {
+				try {
+					const result = uglifyJS.minify(code, {
+						mangle: {
+							toplevel: false, // 混淆顶层变量
+							eval: true, // 混淆eval中的变量
+							keep_fnames: false // 不保留函数名
+						},
+						compress: {
+							sequences: true, // 合并多个语句
+							properties: true, // 优化属性访问
+							booleans: true, // 优化布尔表达式
+							if_return: true, // 优化if/return
+							join_vars: true // 合并变量声明
+						},
+						output: {
+							beautify: false
+						}
+					})
+					if (result.error) {
+						reject(result.error)
+						throw result.error
+					}
+					return resolve(FSP.writeFile(dstPath, result.code))
+				} catch {
+					// If minification fails, fall back to copying the original file
+					FSP.copyFile(srcPath, dstPath).then(resolve, reject)
+				}
+			})
+			.catch(reject)
 	})
 }
 

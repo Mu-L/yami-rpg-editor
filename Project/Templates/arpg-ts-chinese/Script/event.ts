@@ -258,7 +258,7 @@ let EventManager = new class GlobalEventManager {
    * @param type 全局事件类型
    * @param options 全局事件选项
    */
-  public emit(type: string, options: GlobalEventOptions = {}): void {
+  public emit(type: string, options: GlobalEventOptions = {}): any {
     for (const commands of this.typeMap[type] ?? []) {
       if (commands.enabled && (!('priority' in options) ||
         commands.priority === options.priority)) {
@@ -278,7 +278,7 @@ let EventManager = new class GlobalEventManager {
     }
     // 执行脚本事件(默认为高优先级)
     if (options.priority !== false) {
-      this.script.emit(type, options.argument)
+      return this.script.emit(type, options.argument)
     }
   }
 
@@ -836,18 +836,75 @@ class ScriptManager {
    * @param type 事件类型
    * @param argument 传递参数
    */
-  public emit(type: string, argument?: any): void {
+  public emit(type: string, argument?: any): any {
     // 将事件类型映射到脚本事件方法名称
     const method = ScriptManager.eventTypeMap[type] ?? ''
+    const isSaveEvent = type === 'beforeload' || type === 'beforesave'
+    const isObject = argument !== null && typeof argument === 'object'
+    let pluginsContainer = isObject ? argument.plugins : undefined
+    if (!pluginsContainer || typeof pluginsContainer !== 'object') {
+      pluginsContainer = {}
+      if (isObject) {
+        argument.plugins = pluginsContainer
+      }
+    }
+    const readonlyPlugins = isSaveEvent
+    ? ScriptManager.createReadOnlyProxy(pluginsContainer)
+    : undefined
     // 调用每个脚本对象的事件方法，并传递参数
     for (const instance of this.instances) {
       if (method in instance) {
-        instance[method](argument)
+        if (isSaveEvent) {
+          if (argument !== null && typeof argument === 'object') {
+            Object.defineProperty(argument, 'plugins', {
+              value: readonlyPlugins,
+              writable: false,
+              enumerable: true,
+              configurable: true,
+            })
+          }
+          const define = ScriptManager.createSaveDefine(instance, pluginsContainer)
+          const previous = argument
+          try {
+            const returned = instance[method](argument, define)
+            if (returned !== undefined) {
+              argument = returned
+              if (argument !== null && typeof argument === 'object') {
+                if (!argument.plugins || typeof argument.plugins !== 'object') {
+                  argument.plugins = pluginsContainer
+                }
+                Object.defineProperty(argument, 'plugins', {
+                  value: readonlyPlugins,
+                  writable: false,
+                  enumerable: true,
+                  configurable: true,
+                })
+              }
+            }
+          } catch (error) {
+            argument = previous
+          }
+        } else if (Array.isArray(argument)) {
+          instance[method](...argument)
+        } else {
+          instance[method](argument)
+        }
         // 如果事件停止传递，跳出
         if (type in Input.listeners && Input.bubbles.get() === false) {
           return
         }
       }
+    }
+    if (isSaveEvent) {
+      if (argument !== null && typeof argument === 'object') {
+        Object.defineProperty(argument, 'plugins', {
+          value: pluginsContainer,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        })
+      }
+      return argument
     }
   }
 
@@ -907,6 +964,56 @@ class ScriptManager {
     ScriptManager.deferredLoading = false
   }
 
+  private static createSaveDefine(instance: any, pluginsContainer: any): (key: string, value: AttributeValue) => void {
+    const guid = instance?.constructor?.guid
+    return (key: string, value: AttributeValue): void => {
+      if (typeof key !== 'string' || typeof guid !== 'string' || guid === '') {
+        return
+      }
+      const plugins = pluginsContainer ??= {}
+      const pluginData = plugins[guid] ??= {}
+      pluginData[key] = value
+    }
+  }
+
+  private static createReadOnlyProxy<T extends object>(target: T, cache: WeakMap<object, any> = new WeakMap()): T {
+    if (target === null || typeof target !== 'object') {
+      return target
+    }
+    const cached = cache.get(target)
+    if (cached) {
+      return cached
+    }
+    const proxy = new Proxy(target, {
+      get(t, prop, receiver) {
+        const value = Reflect.get(t, prop, receiver)
+        if (value !== null && typeof value === 'object') {
+          return ScriptManager.createReadOnlyProxy(value, cache)
+        }
+        return value
+      },
+      set() {
+        console.warn('The property is read-only.')
+        return false
+      },
+      deleteProperty() {
+        console.warn('The property is read-only.')
+        return false
+      },
+      defineProperty() {
+        console.warn('The property is read-only.')
+        return false
+      },
+      setPrototypeOf() {
+        console.warn('The property is read-only.')
+        return false
+      },
+    })
+    cache.set(target, proxy)
+    return proxy
+  }
+
+
   /**
    * 创建脚本管理器(使用脚本数据)
    * @param owner 脚本宿主对象
@@ -936,6 +1043,27 @@ class ScriptManager {
         }
         // 创建脚本对象实例，并传递脚本参数
         const instance = new script.constructor(owner)
+        const guid = script.constructor.guid
+        if (typeof guid === 'string' && guid !== '') {
+          const constructorDescriptor = Object.getOwnPropertyDescriptor(script.constructor, 'guid')
+          if (!constructorDescriptor || constructorDescriptor.configurable !== false || constructorDescriptor.writable !== false) {
+            Object.defineProperty(script.constructor, 'guid', {
+              value: guid,
+              writable: false,
+              enumerable: true,
+              configurable: false,
+            })
+          }
+          const instanceDescriptor = Object.getOwnPropertyDescriptor(instance, 'guid')
+          if (!instanceDescriptor || instanceDescriptor.configurable !== false || instanceDescriptor.writable !== false || instanceDescriptor.value !== guid) {
+            Object.defineProperty(instance, 'guid', {
+              value: guid,
+              writable: false,
+              enumerable: true,
+              configurable: false,
+            })
+          }
+        }
         const length = parameters.length
         for (let i = 0; i < length; i += 2) {
           const key = parameters[i]
@@ -1205,7 +1333,9 @@ class ScriptManager {
     startup: 'onStartup',
     createscene: 'onSceneCreate',
     loadscene: 'onSceneLoad',
+    beforeload: 'onBeforeLoad',
     loadsave: 'onSaveLoad',
+    beforesave: 'onBeforeSave',
     preload: 'onPreload',
   }
 }

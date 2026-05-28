@@ -10,13 +10,20 @@ const IndexBind = {
 	parse(item) {
 		return `${item.text}`
 	},
-	open() {
+	open(item) {
 		Window.open('ObjectProperty-index')
 		$('#ObjectProperty-index-name').getFocus()
+		if (item) {
+			$('#ObjectProperty-index-name').write(item.text)
+		} else {
+			$('#ObjectProperty-index-name').write('')
+		}
 	},
 	save() {
 		const read = getElementReader('ObjectProperty-index')
 		const data = { text: read('name') }
+		// 清空输入框
+		$('#ObjectProperty-index-name').write('')
 		Window.close('ObjectProperty-index')
 		return data
 	},
@@ -40,21 +47,14 @@ Command.cases.getObjectProperty = {
 	parse: function ({ variable, saveVariable, properties }) {
 		const contents = []
 		for (const i of properties) {
-			contents.push(
-				{ text: ' , ' },
-				{ color: 'normal' },
-				{ text: i.text }
-			)
+			contents.push({ text: '.' }, { color: 'normal' }, { text: i.text })
 		}
 		return [
 			{ color: 'variable' },
 			{ text: Local.get('command.getObjectProperty') + ' ' },
-			{ text: Command.parseVariable(variable, 'any') + ' -> ' }
-		]
-			.concat(contents.slice(1))
-			.concat([
-				{ text: ' -> ' + Command.parseVariable(saveVariable, 'any') }
-			])
+			{ text: Command.parseVariable(saveVariable, 'any') + '=' },
+			{ text: Command.parseVariable(variable, 'any') + '.' }
+		].concat(contents.slice(1))
 	},
 	load: function ({
 		variable = { type: 'local', key: '' },
@@ -102,20 +102,16 @@ Command.cases.setObjectProperty = {
 	parse: function ({ variable, valueVariable, properties }) {
 		const contents = []
 		for (const i of properties) {
-			contents.push(
-				{ text: ' , ' },
-				{ color: 'normal' },
-				{ text: i.text }
-			)
+			contents.push({ text: '.' }, { color: 'normal' }, { text: i.text })
 		}
 		return [
 			{ color: 'variable' },
 			{ text: Local.get('command.setObjectProperty') + ' ' },
-			{ text: Command.parseVariable(variable, 'any') + ' -> ' }
+			{ text: Command.parseVariable(variable, 'any') + '.' }
 		]
 			.concat(contents.slice(1))
 			.concat([
-				{ text: ' -> ' + Command.parseVariable(valueVariable, 'any') }
+				{ text: '=' + Command.parseVariable(valueVariable, 'any') }
 			])
 	},
 	load: function ({

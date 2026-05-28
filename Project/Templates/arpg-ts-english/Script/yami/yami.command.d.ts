@@ -411,6 +411,9 @@ type TilemapGetter =
 {
   type: 'by-id'
   presetId: string
+}|{
+  type: 'variable'
+  variable: ObjectVariableGetter
 }
 
 /** 脚本瓦片地图访问器 */

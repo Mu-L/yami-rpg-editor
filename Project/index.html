@@ -419,7 +419,7 @@
               <box id="palette-head-start">
                 <item id="palette-scroll" class="toolbar-item" value="scroll"></item>
                 <item id="palette-priority" class="toolbar-item" value="priority"></item>
-                <item id="palette-tag" class="toolbar-item hidden" value="tag"></item>
+                <item id="palette-tag" class="toolbar-item" value="tag"></item>
                 <item id="palette-terrain" class="toolbar-item" value="terrain"></item>
                 <item id="palette-edit" class="toolbar-item" value="edit"></item>
                 <item id="palette-flip" class="toolbar-item" value="flip" hotkey="F"></item>
@@ -433,6 +433,7 @@
                   <marquee-area id="palette-marquee"></marquee-area>
                 </box>
               </box>
+              <text id="palette-info"></text>
             </box>
             <detail-box id="fileTileset-general-detail" open>
               <detail-summary>Tileset</detail-summary>
@@ -1789,18 +1790,19 @@
             </detail-box>
           </page-frame>
 
-        <!-- 动画 - 粒子层 -->
-        <page-frame value="animParticleLayer">
-          <detail-box open>
-            <detail-summary>Particle Layer</detail-summary>
-            <detail-grid id="animParticleLayer-properties-grid">
-              <text>Particle</text><custom-box id="animParticleLayer-particleId" type="file" filter="particle"></custom-box>
-              <text>Position</text><select-box id="animParticleLayer-position"></select-box>
-              <text>Angle</text><select-box id="animParticleLayer-angle"></select-box>
-              <text>Order</text><select-box id="animParticleLayer-order"></select-box>
-            </detail-grid>
-          </detail-box>
-        </page-frame>
+          <!-- 动画 - 粒子层 -->
+          <page-frame value="animParticleLayer">
+            <detail-box open>
+              <detail-summary>Particle Layer</detail-summary>
+              <detail-grid id="animParticleLayer-properties-grid">
+                <text>Particle</text><custom-box id="animParticleLayer-particleId" type="file"
+                  filter="particle"></custom-box>
+                <text>Position</text><select-box id="animParticleLayer-position"></select-box>
+                <text>Angle</text><select-box id="animParticleLayer-angle"></select-box>
+                <text>Order</text><select-box id="animParticleLayer-order"></select-box>
+              </detail-grid>
+            </detail-box>
+          </page-frame>
 
           <!-- 动画 - 粒子帧 -->
           <page-frame id="animParticleFrame" value="animParticleFrame">
@@ -2191,6 +2193,8 @@
         <text></text><text-box id="setting-signed-signedApkPath"></text-box>
         <text id="setting-title-other" class="setting-title">other</text>
         <text></text><check-box id="setting-other-copyAsTextKeepEmptyLine" class="standard"></check-box>
+        <text id="setting-title-github" class="setting-title">GitHub</text>
+        <text></text><select-box id="setting-github-accelerationNode"></select-box>
       </grid-box>
       <button id="setting-confirm" name="confirm">Confirm</button>
       <button id="setting-cancel" name="cancel">Cancel</button>
@@ -2349,24 +2353,26 @@
     </content-frame>
   </window-frame>
 
-  <!-- 部署项目窗口 -->
-  <window-frame id="deployment">
-    <title-bar>Deployment<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Platform</text><select-box id="deployment-platform"></select-box>
-        <text>Folder</text><text-box id="deployment-folder"></text-box>
-        <text>Output Location</text>
-        <flex-box id="deployment-location-box">
-          <text-box id="deployment-location"></text-box>
-          <button id="deployment-choose">…</button>
-        </flex-box>
-      </grid-box>
-      <text id="deployment-warning"></text>
-      <button id="deployment-confirm" name="confirm">Confirm</button>
-      <button id="deployment-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
+   <!-- 部署项目窗口 -->
+   <window-frame id="deployment">
+     <title-bar>Deployment<close></close></title-bar>
+     <content-frame>
+       <grid-box>
+         <text>Platform</text><select-box id="deployment-platform"></select-box>
+         <text>Folder</text><text-box id="deployment-folder"></text-box>
+         <text>Output Location</text>
+         <flex-box id="deployment-location-box">
+           <text-box id="deployment-location"></text-box>
+           <button id="deployment-choose">…</button>
+         </flex-box>
+         <text>Compress Resources</text>
+         <check-box id="deployment-compress" class="standard"></check-box>
+       </grid-box>
+       <text id="deployment-warning"></text>
+       <button id="deployment-confirm" name="confirm">Confirm</button>
+       <button id="deployment-cancel" name="cancel">Cancel</button>
+     </content-frame>
+   </window-frame>
 
   <!-- 复制进度窗口 -->
   <window-frame id="copyProgress">
@@ -2929,6 +2935,11 @@
   <window-frame id="update-log">
     <title-bar>Update Log<close></close></title-bar>
     <content-frame>
+<box id="update-log-tabs">
+  <button id="update-log-tab-internal" class="update-log-tab active">Origin</button>
+  <button id="update-log-tab-community" class="update-log-tab">Community</button>
+  <button id="update-log-tab-donation" class="update-log-tab">捐赠名单</button>
+</box>
       <box id="update-log-container">
         <box id="update-log-content"></box>
       </box>
@@ -3023,15 +3034,17 @@
     </content-frame>
   </window-frame>
 
-<!-- 资源选择器 -->
-<window-frame id="selector" mode="center">
-  <title-bar>Select File<maximize></maximize><close></close></title-bar>
-  <content-frame>
-    <file-browser id="selector-browser"></file-browser>
-    <button id="selector-confirm" name="confirm">Confirm</button>
-    <button id="selector-cancel" name="cancel">Cancel</button>
-  </content-frame>
-</window-frame>
+  <!-- 资源选择器 -->
+  <window-frame id="selector" mode="center">
+    <title-bar>Select File<maximize></maximize>
+      <close></close>
+    </title-bar>
+    <content-frame>
+      <file-browser id="selector-browser"></file-browser>
+      <button id="selector-confirm" name="confirm">Confirm</button>
+      <button id="selector-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
 
   <!-- 图像剪辑窗口 -->
   <window-frame id="imageClip">
@@ -3278,6 +3291,17 @@
       </grid-box>
       <button id="setQuantity-confirm" name="confirm">Confirm</button>
       <button id="setQuantity-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <window-frame id="setTileTag">
+    <title-bar>Set Tile Tag<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Tag</text><number-box id="setTileTag-tag" min="0" max="99999"></number-box>
+      </grid-box>
+      <button id="setTileTag-confirm" name="confirm">Confirm</button>
+      <button id="setTileTag-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
 
@@ -3533,6 +3557,7 @@
       <grid-box>
         <text>Type</text><select-box id="tilemapGetter-type"></select-box>
         <text>Tilemap</text><custom-box id="tilemapGetter-presetId" type="preset-object" filter="tilemap"></custom-box>
+        <text>Variable</text><custom-box id="tilemapGetter-variable" type="variable" filter="object"></custom-box>
       </grid-box>
       <button id="tilemapGetter-confirm" name="confirm">Confirm</button>
       <button id="tilemapGetter-cancel" name="cancel">Cancel</button>
@@ -3705,6 +3730,7 @@
         <text>Item</text><custom-box id="setNumber-operand-common-item" type="item"></custom-box>
         <text>Trigger</text><custom-box id="setNumber-operand-common-trigger" type="trigger"></custom-box>
         <text>Tilemap</text><custom-box id="setNumber-operand-common-tilemap" type="tilemap"></custom-box>
+        <text>Tilemap Position</text><custom-box id="setNumber-operand-tilemapPosition" type="position"></custom-box>
         <text>Item</text><file-var id="setNumber-operand-object-itemId" type="file" filter="item"></file-var>
         <text>Equipment</text><file-var id="setNumber-operand-object-equipmentId" type="file"
           filter="equipment"></file-var>
@@ -3825,6 +3851,7 @@
         <text>Attribute Group</text><custom-box id="setList-attribute-groupId" type="attribute-group"></custom-box>
         <text>Enum Group</text><custom-box id="setList-enum-groupId" type="enum-group"></custom-box>
         <text>Actor</text><custom-box id="setList-actor" type="actor"></custom-box>
+        <text>Default</text><check-box id="setList-index-skip-check" class="standard"></check-box>
       </grid-box>
       <button id="setList-confirm" name="confirm">Confirm</button>
       <button id="setList-cancel" name="cancel">Cancel</button>
@@ -4103,6 +4130,7 @@
         <text>Operation</text><select-box id="registerEvent-operation"></select-box>
         <text>Type</text><select-box id="registerEvent-type"></select-box>
         <text>Priority</text><check-box id="registerEvent-priority" class="standard large"></check-box>
+        <text>Namespace</text><check-box id="registerEvent-namespace" class="standard large"></check-box>
         <text>Tag Name</text><string-var id="registerEvent-tag"></string-var>
       </grid-box>
       <button id="registerEvent-confirm" name="confirm">Confirm</button>
@@ -4609,9 +4637,16 @@
       <close></close>
     </title-bar>
     <content-frame>
-      <box>
-        <box id="resource-content"></box>
-        <grid-box>
+      <box style="display: flex; flex-direction: column; height: 100%;">
+        <box id="resource-node-info"
+          style="padding: 12px; margin: 10px; background: var(--panel-background); border: 1px solid var(--border-color); border-radius: 4px; flex-shrink: 0;">
+          <div id="resource-current-node"
+            style="font-size: 13px; line-height: 1.8; color: var(--text-color); margin-bottom: 4px;">当前节点: 加载中...</div>
+          <div id="resource-node-ping" style="font-size: 13px; line-height: 1.8; color: var(--text-color-weak);">Ping:
+            --</div>
+        </box>
+        <box id="resource-content" style="flex: 1; overflow: auto;"></box>
+        <grid-box style="flex-shrink: 0;">
           <button id="resource-check-version">check version</button>
           <button id="resource-open-dir">open dir</button>
         </grid-box>
@@ -4892,7 +4927,8 @@
         <text>Motion</text><select-box id="playAnimation-motion"></select-box>
         <text>Rotatable</text><select-box id="playAnimation-rotatable"></select-box>
         <text>Priority</text><number-box id="playAnimation-priority" min="-100" max="100"></number-box>
-        <text>Offset Y</text><number-var id="playAnimation-offsetY" unit="px"></number-var>
+        <text>Offset Y</text><number-var id="playAnimation-offsetY" min="-1000000000" max="1000000000"
+          unit="px"></number-var>
         <text>Angle</text><number-var id="playAnimation-angle" min="-360" max="360" decimals="4"
           unit="deg"></number-var>
         <text>Speed</text><number-var id="playAnimation-speed" min="0.1" max="10" step="0.1" decimals="4"></number-var>
