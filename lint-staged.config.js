@@ -3,7 +3,7 @@
  * @type {import('lint-staged').Configuration}
  */
 module.exports = {
-	'*.{js,css}': [
+	'*.{js,ts,css}': [
 		'prettier --write --config .prettierrc.json --ignore-path .prettierignore',
 		'git add -u'
 	]

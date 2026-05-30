@@ -1649,6 +1649,16 @@
       "setResolution.desc": "改变画布尺寸、场景缩放系数和界面缩放系数",
       "script": "脚本",
       "script.desc": "编译并执行Javascript",
+      "commandLine":"启动参数",
+      "commandLine.desc":"对应用的启动参数进行操作",
+      "commandLine.variable":"保存到变量",
+      "commandLine.has":"是否存在启动参数",
+      "commandLine.get":"获取启动参数",
+      "commandLine.rm":"移除启动参数",
+      "commandLine.set":"设置启动参数",
+      "relaunchApp":"重启应用",
+      "relaunchApp.desc": "重启启动应用，会继承当前进程的启动参数并重新启动",
+      
 
       "network": "网络",
       "requestURL": "请求链接",
@@ -5618,8 +5628,21 @@
     "setResolution-sceneScale": {"label": "场景缩放系数", "tip": "按比例缩放显示场景对象（部署后自动保存）"},
     "setResolution-uiScale": {"label": "界面缩放系数", "tip": "按比例缩放显示用户界面（部署后自动保存）"},
 
+    "[comment]": "********** 指令 - 启动参数 **********",
+    "commandLine": {"title": "启动参数"},
+    "commandLine-type": {"label": "操作", "options": {
+      "get": {"name": "获取启动参数", "tip": "获取启动参数的值"},
+      "rm": {"name": "移除启动参数", "tip": "移除启动参数"},
+      "set": {"name": "设置启动参数", "tip": "设置启动参数的值"},
+      "has": {"name": "是否存在启动参数", "tip": "检查是否存在启动参数"}
+    }},
+    "commandLine-key": {"label": "参数名称", "tip": "启动参数名称"},
+    "commandLine-value": {"label": "参数值", "tip": "启动参数值"},
+    "commandLine-variable": {"label": "保存到", "tip": "返回值保存到变量中"},
+
     "[comment]": "********** 指令 - 脚本 **********",
     "script": {"title": "脚本"},
+    
 
     "[comment]": "********** 编辑数据 **********",
     "edit-data": {"title": "编辑数据"},

@@ -1649,6 +1649,15 @@
       "setResolution.desc": "Change the canvas size, scene scaling factor, and UI scaling factor.",
       "script": "Script",
       "script.desc": "Compile and execute JavaScript.",
+      "commandLine": "Startup parameters",
+      "commandLine.desc": "Operate on the startup parameters of the application",
+      "commandLine.variable": "Save to variable",
+      "commandLine.has": "Does the startup parameters exist",
+      "commandLine.get": "Get startup parameters",
+      "commandLine.rm": "Remove startup parameters",
+      "commandLine.set": "Set startup parameters",
+      "relaunchApp": "Restart application",
+      "relaunchApp.desc": "Restart the application. It will inherit the current process's startup parameters and restart.",
 
       "network": "Network",
       "requestURL": "Request link",
@@ -5618,6 +5627,18 @@
     "setResolution-height": {"label": "Height", "tip": "Actual game canvas height, auto-scaled by window size (saved after deployment)"},
     "setResolution-sceneScale": {"label": "Scene Scale", "tip": "Display scene objects proportionally (automatically saved after deployment)"},
     "setResolution-uiScale": {"label": "UI Scale", "tip": "Display UI elements proportionally (automatically saved after deployment)"},
+    "[comment]": "********** Instruction - Startup Parameters **********",
+    "commandLine": {"title": "Startup Parameters"},
+    "commandLine-type": {"label": "Operation", "options": {
+    "get": {"name": "Get Startup Parameters", "tip": "Retrieve the value of the startup parameters"},
+    "rm": {"name": "Remove Startup Parameter", "tip": "Remove Startup Parameter"},
+    "set": {"name": "Set Startup Parameters", "tip": "Set the value of the startup parameters"},
+    "has": {"name": "Check for Existence of Startup Parameters", "tip": "Verify if there are any startup parameters"}
+    }},
+    "commandLine-key": {"label": "Parameter Name", "tip": "Start Parameter Name"},
+    "commandLine-value": {"label": "Parameter Value", "tip": "Start Parameter Value"},
+    "commandLine-variable": {"label": "Saved To", "tip": "Return Value Saved in Variable"},
+
 
     "[comment]": "********** Command - Script **********",
     "script": {"title": "Script"},

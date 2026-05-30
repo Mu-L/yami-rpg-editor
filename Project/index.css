@@ -10712,6 +10712,25 @@ node-item.related-event {
 }
 
 /* --------------------------------
+ * 启动参数
+ * --------------------------------
+ */
+#commandLine {
+	width: 324px;
+	height: 146px;
+}
+
+#commandLine-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#commandLine-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
  * 编辑数据
  * --------------------------------
  */

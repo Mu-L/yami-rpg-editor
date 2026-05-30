@@ -13,7 +13,9 @@ Project/Apk/
 Project/Fonts/
 Project/Images/
 Project/Locales/
-Project/Templates/
+Project/Templates/**/*
+!Project/Templates/**/
+!Project/Templates/**/*.ts
 Project/index.html
 prettierrc.json
 Runtime/

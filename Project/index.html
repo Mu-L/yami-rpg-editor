@@ -38,6 +38,8 @@
 
   <!-- 社区- start -->
   <!-- 指令 -->
+  <script src="Script/module/command/relaunchApp.js" defer></script>
+  <script src="Script/module/command/commandLine.js" defer></script>
   <script src="Script/module/command/getObjectProperty.js" defer></script>
   <script src="Script/module/command/requestURL.js" defer></script>
   <script src="Script/module/command/downloadFile.js" defer></script>
@@ -2353,26 +2355,26 @@
     </content-frame>
   </window-frame>
 
-   <!-- 部署项目窗口 -->
-   <window-frame id="deployment">
-     <title-bar>Deployment<close></close></title-bar>
-     <content-frame>
-       <grid-box>
-         <text>Platform</text><select-box id="deployment-platform"></select-box>
-         <text>Folder</text><text-box id="deployment-folder"></text-box>
-         <text>Output Location</text>
-         <flex-box id="deployment-location-box">
-           <text-box id="deployment-location"></text-box>
-           <button id="deployment-choose">…</button>
-         </flex-box>
-         <text>Compress Resources</text>
-         <check-box id="deployment-compress" class="standard"></check-box>
-       </grid-box>
-       <text id="deployment-warning"></text>
-       <button id="deployment-confirm" name="confirm">Confirm</button>
-       <button id="deployment-cancel" name="cancel">Cancel</button>
-     </content-frame>
-   </window-frame>
+  <!-- 部署项目窗口 -->
+  <window-frame id="deployment">
+    <title-bar>Deployment<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Platform</text><select-box id="deployment-platform"></select-box>
+        <text>Folder</text><text-box id="deployment-folder"></text-box>
+        <text>Output Location</text>
+        <flex-box id="deployment-location-box">
+          <text-box id="deployment-location"></text-box>
+          <button id="deployment-choose">…</button>
+        </flex-box>
+        <text>Compress Resources</text>
+        <check-box id="deployment-compress" class="standard"></check-box>
+      </grid-box>
+      <text id="deployment-warning"></text>
+      <button id="deployment-confirm" name="confirm">Confirm</button>
+      <button id="deployment-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
 
   <!-- 复制进度窗口 -->
   <window-frame id="copyProgress">
@@ -2935,11 +2937,11 @@
   <window-frame id="update-log">
     <title-bar>Update Log<close></close></title-bar>
     <content-frame>
-<box id="update-log-tabs">
-  <button id="update-log-tab-internal" class="update-log-tab active">Origin</button>
-  <button id="update-log-tab-community" class="update-log-tab">Community</button>
-  <button id="update-log-tab-donation" class="update-log-tab">捐赠名单</button>
-</box>
+      <box id="update-log-tabs">
+        <button id="update-log-tab-internal" class="update-log-tab active">Origin</button>
+        <button id="update-log-tab-community" class="update-log-tab">Community</button>
+        <button id="update-log-tab-donation" class="update-log-tab">捐赠名单</button>
+      </box>
       <box id="update-log-container">
         <box id="update-log-content"></box>
       </box>
@@ -6255,6 +6257,21 @@
       </grid-box>
       <button id="setResolution-confirm" name="confirm">Confirm</button>
       <button id="setResolution-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 启动参数 -->
+  <window-frame id="commandLine">
+    <title-bar>Command Line<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Type</text><select-box id="commandLine-type"></select-box>
+        <text>Key</text><string-var id="commandLine-key"></string-var>
+        <text>Value</text><string-var id="commandLine-value"></string-var>
+        <text>Variable</text><custom-box id="commandLine-variable" type="variable" filter="object"></custom-box>
+      </grid-box>
+      <button id="commandLine-confirm" name="confirm">Confirm</button>
+      <button id="commandLine-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
 

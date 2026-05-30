@@ -685,10 +685,11 @@ const createPlayerWindow = function (parent, projectDir) {
 
 	// 侦听窗口关闭事件
 	player.once('closed', () => {
-		if (!parent.isDestroyed()) {
+		if (parent && !parent?.isDestroyed()) {
 			parent.send('player-window-closed')
 		}
 	})
+	return player
 }
 
 // ******************************** 进程通信 ********************************
@@ -761,10 +762,13 @@ ipcMain.on('show-item-in-folder', (event, filePath) => {
 	shell.showItemInFolder(path.normalize(filePath))
 })
 
+let currentprojectPath = ''
+let currentPlayerWindow = null
 // 创建播放器窗口
 ipcMain.on('create-player-window', (event, projectPath) => {
 	const window = getWindowFromEvent(event)
-	createPlayerWindow(window, projectPath)
+	currentprojectPath = projectPath
+	currentPlayerWindow = createPlayerWindow(window, projectPath)
 })
 
 // 更新最大小化图标
@@ -843,5 +847,55 @@ ipcMain.on('set-display-mode', (event, display) => {
 				window.setFullScreen(true)
 			}
 			break
+	}
+})
+
+/* commandLine */
+// 获取
+ipcMain.on('get-command-line-switch', (event, name) => {
+	event.returnValue = app.commandLine.getSwitchValue(name)
+})
+
+// 添加
+ipcMain.on('add-command-line-switch', (event, name, value) => {
+	if (value) {
+		app.commandLine.appendSwitch(name, value)
+	} else {
+		app.commandLine.appendSwitch(name)
+	}
+})
+
+// 删除
+ipcMain.on('remove-command-line-switch', (event, name) => {
+	app.commandLine.removeSwitch(name)
+})
+
+// 是否存在
+ipcMain.on('has-command-line-switch', (event, name) => {
+	event.returnValue = app.commandLine.hasSwitch(name)
+})
+
+// 重启应用
+ipcMain.handle('relaunch-app', async (event) => {
+	try {
+		// 如果有窗口，等待它真正关闭
+		if (currentPlayerWindow) {
+			return await new Promise((resolve) => {
+				// 监听窗口关闭完成
+				currentPlayerWindow.once('closed', () => {
+					currentPlayerWindow = createPlayerWindow(
+						window,
+						currentprojectPath
+					)
+					resolve({ success: true })
+				})
+				currentPlayerWindow.destroy()
+			})
+		}
+		const window = getWindowFromEvent(event)
+		currentPlayerWindow = createPlayerWindow(window, currentprojectPath)
+		return { success: true }
+	} catch (error) {
+		return { success: false, message: error.message }
 	}
 })

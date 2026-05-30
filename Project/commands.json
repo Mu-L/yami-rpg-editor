@@ -677,6 +677,14 @@
 				"class": "system",
 				"value": "script",
 				"keywords": "javascript"
+			},
+			{
+				"class": "system",
+				"value": "commandLine"
+			},
+			{
+				"class": "system",
+				"value": "relaunchApp"
 			}
 		]
 	}
