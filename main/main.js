@@ -8,10 +8,9 @@ const ExcelJS = require('exceljs')
 const apkProcessor = require('./apk.js')
 const { app, Menu, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const fs = require('fs')
-const { fork } = require('child_process')
+const { spawn } = require('child_process')
 const path = require('path')
 const os = require('os')
-const ts = require('typescript')
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true' // 关闭警告
 
@@ -105,7 +104,7 @@ ipcMain.handle('to-qrcode', (event, url) => {
 		})
 })
 
-ipcMain.handle('get-local-ip', (event) => {
+ipcMain.handle('get-local-ip', () => {
 	return getLocalIpAddress()
 })
 
@@ -295,7 +294,7 @@ ipcMain.handle('write-file', (event, filePath, text, check) => {
 })
 
 // 等待写入文件
-ipcMain.handle('wait-write-file', (event) => {
+ipcMain.handle('wait-write-file', () => {
 	return Promise.allSettled(promises)
 })
 
@@ -441,10 +440,10 @@ const createEditorWindow = function () {
 	editor.loadFile(path.resolve(dirname, 'index.html'))
 
 	// 侦听窗口模式切换事件
-	editor.on('maximize', (event) => editor.send('maximize'))
-	editor.on('unmaximize', (event) => editor.send('unmaximize'))
-	editor.on('enter-full-screen', (event) => editor.send('enter-full-screen'))
-	editor.on('leave-full-screen', (event) => editor.send('leave-full-screen'))
+	editor.on('maximize', () => editor.send('maximize'))
+	editor.on('unmaximize', () => editor.send('unmaximize'))
+	editor.on('enter-full-screen', () => editor.send('enter-full-screen'))
+	editor.on('leave-full-screen', () => editor.send('leave-full-screen'))
 
 	// 加载配置文件并设置缩放系数
 	const configPath = path.resolve(
@@ -540,7 +539,7 @@ const createEditorWindow = function () {
 	})
 
 	// 停止构建APK
-	ipcMain.handle('stop-build-apk', (event) => {
+	ipcMain.handle('stop-build-apk', () => {
 		apkProcessor.abortBuild()
 	})
 
@@ -550,24 +549,97 @@ const createEditorWindow = function () {
 	})
 
 	// 停止TSC事件
-	ipcMain.on('stop-tsc', (event) => {
+	ipcMain.on('stop-tsc', () => {
 		stopTSC()
 	})
 
-	// 编译TS代码
-	ipcMain.handle('tsc-file', (event, code) => {
-		let res
-		let error
+	// 获取tsgo原生可执行文件路径
+	// 参考 @typescript/native-preview/lib/getExePath.js 的逻辑
+	function getTsgoExePath() {
+		const platform = process.platform
+		const arch = process.arch
+		const expectedPackage = 'native-preview-' + platform + '-' + arch
+		const platformPackageName = '@typescript/' + expectedPackage
+		let exeDir
 		try {
-			res = ts.transpileModule(code, {
-				target: ts.ScriptTarget.ES2022, // 编译目标版本
-				module: ts.ModuleKind.ESNext, // 模块系统
-				strict: true // 启用严格模式
+			// 尝试通过 require.resolve 解析平台包路径
+			const packageJsonPath = require.resolve(
+				platformPackageName + '/package.json'
+			)
+			exeDir = path.join(path.dirname(packageJsonPath), 'lib')
+		} catch {
+			try {
+				const nativePreviewDir = path.dirname(
+					require.resolve('@typescript/native-preview/package.json')
+				)
+				exeDir = path.join(
+					nativePreviewDir,
+					'..',
+					expectedPackage,
+					'lib'
+				)
+			} catch {
+				const nodeModulesDir = path.resolve(
+					__dirname,
+					'../node_modules'
+				)
+				exeDir = path.join(nodeModulesDir, platformPackageName, 'lib')
+			}
+		}
+		let exe = path.join(exeDir, 'tsgo')
+		if (platform === 'win32') {
+			exe += '.exe'
+			if (exe.length >= 248) {
+				exe = '\\\\?\\' + exe
+			}
+		}
+		if (!fs.existsSync(exe)) {
+			throw new Error('Executable not found: ' + exe)
+		}
+		return exe
+	}
+
+	// 编译TS代码
+	ipcMain.handle('tsc-file', async (event, code) => {
+		let res, error
+		try {
+			// 使用tsgo可执行文件编译，通过标准输入/输出处理代码
+			const tsgo = spawn(
+				getTsgoExePath(),
+				['--target', 'ES2022', '--module', 'ESNext', '--outFile', '-'],
+				{
+					stdio: ['pipe', 'pipe', 'pipe']
+				}
+			)
+
+			let stdout = '',
+				stderr = ''
+			tsgo.stdout.on('data', (data) => {
+				stdout += data.toString()
+			})
+			tsgo.stderr.on('data', (data) => {
+				stderr += data.toString()
+			})
+
+			// 将代码写入标准输入
+			tsgo.stdin.write(code)
+			tsgo.stdin.end()
+
+			await new Promise((resolve, reject) => {
+				tsgo.on('close', (code) => {
+					if (code !== 0) {
+						error = new Error(stderr || 'Compilation failed')
+					} else {
+						res = stdout
+					}
+					resolve()
+				})
+				tsgo.on('error', reject)
 			})
 		} catch (e) {
 			error = e
 		}
-		return Promise.resolve({ res: res.outputText, error })
+		return { res, error }
 	})
 
 	let tscProcess = null
@@ -578,18 +650,10 @@ const createEditorWindow = function () {
 			stopTSC(() => startTSC(projectDir))
 			return
 		}
-		// 启动'tsc --watch'进程
-		const tscPath = path.join(
-			__dirname,
-			'../node_modules',
-			'typescript',
-			'lib',
-			'tsc.js'
-		)
-		tscProcess = fork(tscPath, ['--watch'], {
-			stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
-			cwd: projectDir,
-			execPath: process.execPath
+		const tsgoExe = getTsgoExePath()
+		tscProcess = spawn(tsgoExe, ['--watch'], {
+			stdio: ['ignore', 'pipe', 'pipe'],
+			cwd: projectDir
 		})
 		// 监听 stdout（正常输出）
 		tscProcess.stdout.on('data', (data) => {
@@ -654,7 +718,7 @@ const createPlayerWindow = function (parent, projectDir) {
 	player.loadFile(`${projectDir}index.html`)
 
 	// 设置窗口模式
-	player.once('ready-to-show', (event) => {
+	player.once('ready-to-show', () => {
 		player.show()
 		switch (window.display) {
 			case 'windowed':
@@ -878,6 +942,7 @@ ipcMain.on('has-command-line-switch', (event, name) => {
 // 重启应用
 ipcMain.handle('relaunch-app', async (event) => {
 	try {
+		const window = getWindowFromEvent(event)
 		// 如果有窗口，等待它真正关闭
 		if (currentPlayerWindow) {
 			return await new Promise((resolve) => {
@@ -892,7 +957,6 @@ ipcMain.handle('relaunch-app', async (event) => {
 				currentPlayerWindow.destroy()
 			})
 		}
-		const window = getWindowFromEvent(event)
 		currentPlayerWindow = createPlayerWindow(window, currentprojectPath)
 		return { success: true }
 	} catch (error) {
