@@ -83,7 +83,7 @@ pnpm run build:linux
 ![GitHub contributors](https://img.shields.io/github/contributors/Open-Yami-Community/yami-rpg-editor)
 
 <a href="https://github.com/Open-Yami-Community/yami-rpg-editor/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Open-Yami-Community/yami-rpg-editor">
+  <img src="https://stg.contrib.rocks/image?repo=Open-Yami-Community/yami-rpg-editor">
 </a>
 
 For contributions, please refer to [CONTRIBUTING](./CONTRIBUTING.md)
