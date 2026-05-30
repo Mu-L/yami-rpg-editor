@@ -751,20 +751,23 @@ let Command = new (class CommandCompiler {
 	/**
 	 * 编译角度对象
 	 * @param angle 角度访问器
+	 * @param fallback 角度访问器
 	 * @returns 角度访问器函数(弧度)
 	 */
-	private compileAngle(angle: AngleGetter): (origin?: any) => number {
+	private compileAngle(
+		angle: AngleGetter
+	): (origin?: any, fallback?: any) => number {
 		switch (angle.type) {
 			case 'position': {
 				const getPoint = Command.compilePosition(angle.position)
-				return (origin) => {
+				return (origin, fallback) => {
 					const point = getPoint()
 					if (point) {
 						const distY = point.y - origin.y
 						const distX = point.x - origin.x
 						return Math.atan2(distY, distX)
 					}
-					return origin.angle ?? 0
+					return origin.angle ?? fallback?.angle ?? 0
 				}
 			}
 			case 'absolute': {
@@ -773,8 +776,9 @@ let Command = new (class CommandCompiler {
 			}
 			case 'relative': {
 				const getDegrees = Command.compileNumber(angle.degrees)
-				return (origin) =>
-					(origin.angle ?? 0) + Math.radians(getDegrees())
+				return (origin, fallback) =>
+					(origin.angle ?? fallback?.angle ?? 0) +
+					Math.radians(getDegrees())
 			}
 			case 'direction': {
 				const radians = Math.radians(angle.degrees)
@@ -8355,7 +8359,7 @@ let Command = new (class CommandCompiler {
 			const caster = getCaster()
 			const origin = getOrigin()
 			if (data && caster && origin) {
-				const angle = getAngle(origin)
+				const angle = getAngle(origin, caster)
 				const cos = Math.cos(angle)
 				const sin = Math.sin(angle)
 				const trigger = new Trigger(data)
