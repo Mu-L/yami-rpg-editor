@@ -26,7 +26,7 @@ const runtimeConfig = {
 			zipPath: 'Templates/electron-mac-universal.app'
 		}
 	],
-	output: 'Runtime/electron-packages.zip',
+	output: 'Runtime/electron-packages',
 	splitSizeMB: 100
 }
 
