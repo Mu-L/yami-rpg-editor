@@ -1537,7 +1537,8 @@ Deployment.compressJavaScript = function (srcPath, dstPath) {
 						},
 						output: {
 							beautify: false
-						}
+						},
+						sourceMap: false
 					})
 					if (result.error) {
 						reject(result.error)
@@ -2789,6 +2790,12 @@ Home.windowResize = function (event) {
 Home.parseRecentProjects = function () {
 	const nodes = $('.home-recent-item')
 	const items = Editor.config.recent
+	// 获取统计模式配置，默认为'count'（只统计数量）
+	const statsMode =
+		typeof SettingConfig !== 'undefined' && SettingConfig.config.recent
+			? SettingConfig.config.recent.statsMode
+			: 'count'
+
 	for (let i = 0; i < nodes.length; i++) {
 		const node = nodes[i].clear()
 		const item = items[i]
@@ -2849,7 +2856,13 @@ Home.parseRecentProjects = function () {
 				// 设置标题文本
 				const { window } = JSON.parse(data)
 				eTitle.textContent = window.title
-				return this.readFileList(dirname)
+
+				// 根据配置选择使用readFileList或countFileList
+				if (statsMode === 'size') {
+					return this.readFileList(dirname)
+				} else {
+					return this.countFileList(dirname)
+				}
 			})
 			.then((list) => {
 				const counts = {
@@ -2901,18 +2914,18 @@ Home.parseRecentProjects = function () {
 					const size = File.parseFileSize(sizes[type])
 
 					// 创建统计文本
-					const eText1 = document.createElement('text')
-					const eText2 = document.createElement('text')
-					const eText3 = document.createElement('text')
-					eText1.addClass('home-recent-data')
-					eText2.addClass('home-recent-data')
-					eText3.addClass('home-recent-data')
-					eText1.textContent = name
-					eText2.textContent = size
-					eText3.textContent = `(${count})`
-					eStat.appendChild(eText1)
-					eStat.appendChild(eText2)
-					eStat.appendChild(eText3)
+					const eText = document.createElement('text')
+					eText.addClass('home-recent-data')
+
+					// 根据统计模式显示不同的信息
+					if (statsMode === 'size') {
+						// 只显示大小
+						eText.textContent = `${name}: ${size}`
+					} else {
+						// 只显示数量
+						eText.textContent = `${name}: ${count}`
+					}
+					eStat.appendChild(eText)
 				}
 				node.show()
 			})
@@ -2953,6 +2966,83 @@ Home.removeRecentProject = function (index) {
 }
 
 // 读取文件列表
+Home.countFileList = (function IIFE() {
+	const extnameToTypeMap = {
+		// 数据类型
+		'.actor': 'data',
+		'.skill': 'data',
+		'.trigger': 'data',
+		'.item': 'data',
+		'.equip': 'data',
+		'.state': 'data',
+		'.event': 'data',
+		'.scene': 'data',
+		'.tile': 'data',
+		'.ui': 'data',
+		'.anim': 'data',
+		'.particle': 'data',
+		'.json': 'data',
+		// 脚本类型
+		'.js': 'script',
+		'.ts': 'script',
+		// 图像类型
+		'.png': 'image',
+		'.jpg': 'image',
+		'.jpeg': 'image',
+		'.cur': 'image',
+		'.webp': 'image',
+		// 媒体类型
+		'.mp3': 'media',
+		'.m4a': 'media',
+		'.ogg': 'media',
+		'.wav': 'media',
+		'.flac': 'media',
+		'.mp4': 'media',
+		'.mkv': 'media',
+		'.webm': 'media',
+		// 其他类型
+		'.ttf': 'other',
+		'.otf': 'other',
+		'.woff': 'other',
+		'.woff2': 'other'
+	}
+	const options = { withFileTypes: true }
+	const read = (path, list) => {
+		return FSP.readdir(path, options).then(async (files) => {
+			if (path) {
+				path += '/'
+			}
+			const promises = []
+			for (const file of files) {
+				const name = file.name
+				const newPath = `${path}${name}`
+				if (file.isDirectory()) {
+					list.push({
+						type: 'folder',
+						size: 0
+					})
+					promises.push(read(newPath, list))
+				} else {
+					const extname = Path.extname(name)
+					const type =
+						extnameToTypeMap[extname.toLowerCase()] ?? 'other'
+					list.push({
+						type: type,
+						size: 0
+					})
+				}
+			}
+			if (promises.length !== 0) {
+				await Promise.all(promises)
+			}
+			return list
+		})
+	}
+	return function (path) {
+		return read(path, [])
+	}
+})()
+
 Home.readFileList = (function IIFE() {
 	const extnameToTypeMap = {
 		// 数据类型

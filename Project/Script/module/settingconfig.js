@@ -37,6 +37,9 @@ const SettingConfig = new (class {
 				copyAsTextKeepEmptyLine: true, // 复制到文本 是否保留空行
 				browserSearchHistoryLimit: 9 // 项目浏览器搜索历史显示数量
 			},
+			recent: {
+				statsMode: 'count' // 最近项目统计方式: count(只统计数量) 或 size(计算大小)
+			},
 			github: {
 				accelerationNode: 'auto' // GitHub加速节点: auto, node..., none
 			}
@@ -145,6 +148,9 @@ const SettingConfig = new (class {
 		$('#setting-other-browserSearchHistoryLimit').on('input', (e) =>
 			InputEvent(e, 'other', 'browserSearchHistoryLimit')
 		)
+		$('#setting-recent-statsMode').on('input', (e) =>
+			InputEvent(e, 'recent', 'statsMode')
+		)
 		$('#setting-github-accelerationNode').on('input', (e) =>
 			InputEvent(e, 'github', 'accelerationNode')
 		)
@@ -226,9 +232,50 @@ const SettingConfig = new (class {
 			}
 		)
 
+		const recentStatsModeItems = [
+			{
+				name: get('recent-statsMode-count') || 'Count (只统计数量)',
+				value: 'count'
+			},
+			{
+				name: get('recent-statsMode-size') || 'Size (计算大小)',
+				value: 'size'
+			}
+		]
+
 		$('#setting-other-browserSearchHistoryLimit').loadItems(
 			browserSearchHistoryLimitItems
 		)
+		$('#setting-recent-statsMode').loadItems(recentStatsModeItems)
+
+		// 设置本地化文本
+		$('#setting-title-recent').textContent =
+			get('setting-title-recent') || 'Recent Projects'
+		$('#setting-recent-statsMode-label').textContent =
+			get('setting-recent-statsMode-label') || 'Stats Mode'
+
+		// 监听本地化事件，更新文本
+		window.on('localize', () => {
+			const get = Local.createGetter('confirmation')
+			$('#setting-title-recent').textContent =
+				get('setting-title-recent') || 'Recent Projects'
+			$('#setting-recent-statsMode-label').textContent =
+				get('setting-recent-statsMode-label') || 'Stats Mode'
+
+			// 更新下拉选项
+			const recentStatsModeItems = [
+				{
+					name: get('recent-statsMode-count') || 'Count Only',
+					value: 'count'
+				},
+				{
+					name: get('recent-statsMode-size') || 'Calculate Size',
+					value: 'size'
+				}
+			]
+			$('#setting-recent-statsMode').loadItems(recentStatsModeItems)
+			$('#setting-recent-statsMode').write(this.config.recent.statsMode)
+		})
 		$('#setting-github-accelerationNode').loadItems(githubNodes)
 
 		const write = getElementWriter('setting-server')
@@ -255,8 +302,10 @@ const SettingConfig = new (class {
 			'browserSearchHistoryLimit',
 			this.config.other.browserSearchHistoryLimit
 		)
-		const write5 = getElementWriter('setting-github')
-		write5('accelerationNode', this.config.github.accelerationNode)
+		const write5 = getElementWriter('setting-recent')
+		write5('statsMode', this.config.recent.statsMode)
+		const write6 = getElementWriter('setting-github')
+		write6('accelerationNode', this.config.github.accelerationNode)
 	}
 	save() {
 		if (!fs.existsSync(this.configPath)) {

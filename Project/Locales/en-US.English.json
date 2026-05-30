@@ -1717,7 +1717,11 @@
       "github-acceleration-node": "Node",
       "github-acceleration-auto": "Auto Select",
       "github-acceleration-none": "No Acceleration",
-      "resource-not-found":"Resource pack not found"
+      "resource-not-found":"Resource pack not found",
+      "setting-title-recent":"Recent Projects",
+      "setting-recent-statsMode-label":"Stats Mode",
+      "recent-statsMode-count":"Count Only",
+      "recent-statsMode-size":"Calculate Size"
     }
   },
   "components": {

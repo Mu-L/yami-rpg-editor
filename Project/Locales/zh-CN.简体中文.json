@@ -1718,7 +1718,11 @@
       "github-acceleration-node":"节点",
       "github-acceleration-auto":"自动选择",
       "github-acceleration-none":"不使用加速",
-      "resource-not-found":"未找到资源包"
+      "resource-not-found":"未找到资源包",
+      "setting-title-recent":"最近项目",
+      "setting-recent-statsMode-label":"统计方式",
+      "recent-statsMode-count":"只统计数量",
+      "recent-statsMode-size":"计算大小"
     }
   },
   "components": {
