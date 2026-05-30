@@ -3949,22 +3949,21 @@ body.maximized > #title > #title-buttons > #title-maximize::after {
 }
 
 .home-recent-stat {
-	display: grid;
+	display: flex;
 	position: absolute;
 	left: 10px;
 	right: 10px;
 	top: 60px;
-	grid-auto-flow: column;
-	grid-column-gap: 4px;
-	grid-template-columns: repeat(6, 1fr);
-	grid-template-rows: repeat(3, auto);
+	flex-wrap: wrap;
+	gap: 4px;
 	pointer-events: none;
+	overflow: hidden;
 }
 
 .home-recent-data {
+	flex: 0 0 calc(50% - 2px);
 	line-height: 14px;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	white-space: normal;
 	color: var(--recent-card-stat-color);
 }
 
