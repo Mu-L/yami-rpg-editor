@@ -2853,6 +2853,7 @@
     "setting-signed-signedApkPath": {"label": "Signed APK Path", "tip": "The output path for the signed APK file"},
     "setting-title-other": {"content": "Other"},
     "setting-other-copyAsTextKeepEmptyLine": {"label": "Keep Empty Lines", "tip": "Copy to text - Whether to keep empty lines"},
+    "setting-other-browserSearchHistoryLimit": {"label": "Project Search History Limit", "tip": "Maximum number of search history entries shown in the project browser search dropdown"},
     "setting-title-github": {"content": "GitHub"},
     "setting-github-accelerationNode": {"label": "Acceleration Node", "tip": "Select the acceleration node for GitHub resource downloads"},
 

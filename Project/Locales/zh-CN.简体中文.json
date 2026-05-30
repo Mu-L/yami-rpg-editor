@@ -2854,6 +2854,7 @@
     "setting-signed-signedApkPath": {"label": "签名后APK路径", "tip": "签名后的APK文件输出路径"},
     "setting-title-other": {"content": "其他"},
     "setting-other-copyAsTextKeepEmptyLine": {"label": "保留空行", "tip": "复制到文本 是否保留空行"},
+    "setting-other-browserSearchHistoryLimit": {"label": "项目搜索历史上限", "tip": "项目浏览器搜索框下拉列表最多显示的历史记录条数"},
     "setting-title-github": {"content": "GitHub"},
     "setting-github-accelerationNode": {"label": "加速节点", "tip": "选择GitHub资源下载的加速节点"},
 

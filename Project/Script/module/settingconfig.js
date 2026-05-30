@@ -34,7 +34,8 @@ const SettingConfig = new (class {
 				signedApkPath: '$/app-debug-signed.apk' // 签名后APK路径
 			},
 			other: {
-				copyAsTextKeepEmptyLine: true // 复制到文本 是否保留空行
+				copyAsTextKeepEmptyLine: true, // 复制到文本 是否保留空行
+				browserSearchHistoryLimit: 9 // 项目浏览器搜索历史显示数量
 			},
 			github: {
 				accelerationNode: 'auto' // GitHub加速节点: auto, node..., none
@@ -141,6 +142,9 @@ const SettingConfig = new (class {
 		$('#setting-other-copyAsTextKeepEmptyLine').on('input', (e) =>
 			InputEvent(e, 'other', 'copyAsTextKeepEmptyLine')
 		)
+		$('#setting-other-browserSearchHistoryLimit').on('input', (e) =>
+			InputEvent(e, 'other', 'browserSearchHistoryLimit')
+		)
 		$('#setting-github-accelerationNode').on('input', (e) =>
 			InputEvent(e, 'github', 'accelerationNode')
 		)
@@ -173,6 +177,14 @@ const SettingConfig = new (class {
 			return _t_obj
 		}
 		this.config = patch(this.defaultConfig, this.config)
+		const browserSearchHistoryLimit = Math.floor(
+			Number(this.config.other.browserSearchHistoryLimit)
+		)
+		this.config.other.browserSearchHistoryLimit = Number.isFinite(
+			browserSearchHistoryLimit
+		)
+			? Math.min(Math.max(browserSearchHistoryLimit, 1), 9)
+			: 9
 	}
 	async update() {
 		const get = Local.createGetter('confirmation')
@@ -203,6 +215,20 @@ const SettingConfig = new (class {
 			value: 'none'
 		})
 
+		const browserSearchHistoryLimitItems = Array.from(
+			{ length: 9 },
+			(_, index) => {
+				const value = index + 1
+				return {
+					name: String(value),
+					value
+				}
+			}
+		)
+
+		$('#setting-other-browserSearchHistoryLimit').loadItems(
+			browserSearchHistoryLimitItems
+		)
 		$('#setting-github-accelerationNode').loadItems(githubNodes)
 
 		const write = getElementWriter('setting-server')
@@ -224,6 +250,10 @@ const SettingConfig = new (class {
 		write4(
 			'copyAsTextKeepEmptyLine',
 			this.config.other.copyAsTextKeepEmptyLine
+		)
+		write4(
+			'browserSearchHistoryLimit',
+			this.config.other.browserSearchHistoryLimit
 		)
 		const write5 = getElementWriter('setting-github')
 		write5('accelerationNode', this.config.github.accelerationNode)
