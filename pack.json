@@ -2,18 +2,18 @@
   {
     "path": "arpg-ts-chinese",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-chinese",
-    "version": "1.0.18",
-    "md5": "65c5896f9c0b9125ab79ca81d0718ae9",
-    "sha1": "5e11afd9c3e095792319e9063c3cc74010b52b9d",
-    "sha256": "ffe82da53ea04af7402156da3101729cfd1372e383452e122794ff535ea56c49"
+    "version": "1.0.19",
+    "md5": "1b55a581033c94c1106dfb48b5b62b69",
+    "sha1": "580d60af4d49bfa984b8791f034e7bd434b168d5",
+    "sha256": "4490bdb06e9b0235c71e54d97bbb97b4b2135f1762df37847edc18a5b8b2ebfe"
   },
   {
     "path": "arpg-ts-english",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-english",
-    "version": "1.0.18",
-    "md5": "9176755364f6c975ad54ead10c4ccf7a",
-    "sha1": "6271462e761cf9ae1715afe9812e67c8eef8b8d5",
-    "sha256": "8690ddaaec73c3bd10f14ba6980fd99ab1483b3eb1c11565bb1a9977ac68dce1"
+    "version": "1.0.19",
+    "md5": "b5aa89edf372ac7f98358598c91c42c7",
+    "sha1": "908ee539dd8c802a15f6c92b3228636b94f6cb9d",
+    "sha256": "b2f939377d6bbe2cd23c3e2590f9083632861eedbd96d8f139831d7d1b53642f"
   },
   {
     "path": "arpg-ts-update",
@@ -26,18 +26,18 @@
   {
     "path": "electron-mac-universal.app",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-mac-universal.app",
-    "version": "1.0.1",
-    "md5": "c5e42117bb13b61c8317aefab6073776",
-    "sha1": "aa9969fc6557fd8a1fb21cface61a42947a827dc",
-    "sha256": "78daf665f6f7cd2a22bee62620da5e7ca4b4b797795581e697100f5a3f62faea"
+    "version": "1.0.2",
+    "md5": "0dcf0bf877b1058b7c7d7772ec3c491b",
+    "sha1": "6cd25f5240b2791ed3c53b790099b94ba14f1f1d",
+    "sha256": "91524b3a6a389c6cc402ee61b3eb288d71c2dbd4ae44317b845c88ea5a933c32"
   },
   {
     "path": "electron-win-x64",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-win-x64",
-    "version": "1.0.1",
-    "md5": "0f1a5c0e7c39d926dbc448802cbd43a6",
-    "sha1": "abecae41d44f6b397dab3edcd5fdcc92a641a960",
-    "sha256": "adf533eb0ec6ed883604326112b3288abf6cc70b5fc659a9920e495897a99af2"
+    "version": "1.0.2",
+    "md5": "75f982340e950c3e2d607ca0b86f2ca7",
+    "sha1": "4e3d4367695e3ccc709907fd449a803a4d1f0b91",
+    "sha256": "15301381c2ec2de9bdcf8dbb01bdb83da5ede821090aeebde8ef5718b8fa7e82"
   },
   {
     "path": "script",
