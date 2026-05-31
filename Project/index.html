@@ -7,56 +7,102 @@
   <meta name="viewport" content="width=device-width" />
   <link rel="stylesheet" href="index.css" />
   <link rel='stylesheet' href='vs/editor/editor.main.css' />
-  <script src="Script/module/eventbus.js" defer></script>
-  <script src="Script/util.js" defer></script>
-  <script src="Script/file.js" defer></script>
-  <script src="Script/components.js" defer></script>
-  <script src="Script/codec.js" defer></script>
-  <script src="Script/webgl.js" defer></script>
-  <script src="Script/audio.js" defer></script>
-  <script src="Script/printer.js" defer></script>
-  <script src="Script/data.js" defer></script>
-  <script src="Script/plugin.js" defer></script>
-  <script src="Script/variable.js" defer></script>
-  <script src="Script/attribute.js" defer></script>
-  <script src="Script/enum.js" defer></script>
-  <script src="Script/local.js" defer></script>
-  <script src="Script/tools.js" defer></script>
-  <script src="Script/title.js" defer></script>
-  <script src="Script/layout.js" defer></script>
-  <script src="Script/scene.js" defer></script>
-  <script src="Script/ui.js" defer></script>
-  <script src="Script/animation.js" defer></script>
-  <script src="Script/particle.js" defer></script>
-  <script src="Script/palette.js" defer></script>
-  <script src="Script/sprite.js" defer></script>
-  <script src="Script/browser.js" defer></script>
-  <script src="Script/inspector.js" defer></script>
-  <script src="Script/command.js" defer></script>
-  <script src="Script/log.js" defer></script>
-  <script src="Script/update.js" defer></script>
+  <script>
+    (function loadScripts() {
+      // 核心模块
+      const scripts = [
+        'Script/module/eventbus.js',
+        // 普通
+        'Script/util.js',
+        'Script/file.js',
+        'Script/components.js',
+        'Script/codec.js',
+        'Script/webgl.js',
+        'Script/audio.js',
+        'Script/printer.js',
+        'Script/data.js',
+        'Script/plugin.js',
+        'Script/variable.js',
+        'Script/attribute.js',
+        'Script/enum.js',
+        'Script/local.js',
+        'Script/tools.js',
+        'Script/title.js',
+        'Script/layout.js',
+        'Script/scene.js',
+        'Script/ui.js',
+        'Script/animation.js',
+        'Script/particle.js',
+        'Script/palette.js',
+        'Script/sprite.js',
+        'Script/browser.js',
+        'Script/inspector.js',
+        'Script/command.js',
+        'Script/log.js',
+        'Script/update.js'
+      ];
 
-  <!-- 社区- start -->
-  <!-- 指令 -->
-  <script src="Script/module/command/relaunchApp.js" defer></script>
-  <script src="Script/module/command/commandLine.js" defer></script>
-  <script src="Script/module/command/getObjectProperty.js" defer></script>
-  <script src="Script/module/command/requestURL.js" defer></script>
-  <script src="Script/module/command/downloadFile.js" defer></script>
-  <!-- 模块 -->
-  <script src="Script/module/editdata.js" defer></script>
-  <script src="Script/module/resource.js" defer></script>
-  <script src="Script/module/net.js" defer></script>
-  <script src="Script/module/global.js" defer></script>
-  <script src="Script/module/searchstring.js" defer></script>
-  <script src="Script/module/settingconfig.js" defer></script>
-  <script src="Script/module/browserSearchHistory.js" defer></script>
-  <script src="Script/module/webserver.js" defer></script>
-  <script src="Script/module/apkbuilder.js" defer></script>
-  <script src="Script/module/eslints.js" defer></script>
-  <!-- 社区 - end -->
+      // 社区模块
+      const communityScripts = [
+        //  <!-- 指令 -->
+        'Script/module/command/relaunchApp.js',
+        'Script/module/command/commandLine.js',
+        'Script/module/command/getObjectProperty.js',
+        'Script/module/command/requestURL.js',
+        'Script/module/command/downloadFile.js',
+        //  <!-- 模块 -->
+        'Script/module/editdata.js',
+        'Script/module/resource.js',
+        'Script/module/net.js',
+        'Script/module/global.js',
+        'Script/module/searchstring.js',
+        'Script/module/settingconfig.js',
+        'Script/module/browserSearchHistory.js',
+        'Script/module/webserver.js',
+        'Script/module/apkbuilder.js',
+        'Script/module/eslints.js'
+      ];
 
-  <script src="Script/main.js" defer></script>
+      let loadedCount = 0;
+      const totalScripts = scripts.length + communityScripts.length;
+
+      function loadScript(scriptPath) {
+        return new Promise(function (resolve, reject) {
+          const script = document.createElement('script');
+          script.src = scriptPath;
+          script.defer = true;
+          script.async = false;
+          script.onload = function () {
+            loadedCount++;
+            resolve();
+          };
+          script.onerror = function () {
+            reject(new Error('Failed to load script: ' + scriptPath));
+          };
+          document.head.appendChild(script);
+        });
+      }
+
+      async function loadAllScripts() {
+        try {
+
+          for (const script of scripts) {
+            await loadScript(script);
+          }
+
+          for (const script of communityScripts) {
+            await loadScript(script);
+          }
+
+          await loadScript('Script/main.js');
+        } catch (error) {
+          console.error('[Script Loader] Failed to load scripts:', error);
+        }
+      }
+
+      loadAllScripts();
+    })();
+  </script>
   <script src='vs/loader.js' defer></script>
   <script src='vs/editor/editor.main.nls.js' defer></script>
   <script src='vs/editor/editor.main.js' defer></script>
