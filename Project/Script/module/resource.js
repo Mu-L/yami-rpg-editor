@@ -7,6 +7,7 @@ const Resources = new (class {
 	_fastGithubArray = []
 	get fastGithubPrefix() {
 		const config = SettingConfig.config?.github?.accelerationNode || 'auto'
+		if (!this.fastGithubArray) return ''
 
 		switch (config) {
 			case 'auto':
@@ -76,6 +77,7 @@ const Resources = new (class {
 
 	getCurrentNodeInfo() {
 		const config = SettingConfig.config?.github?.accelerationNode || 'auto'
+		if (!this.fastGithubArray) return ''
 		const get = Local.createGetter('confirmation')
 
 		let nodeName = ''

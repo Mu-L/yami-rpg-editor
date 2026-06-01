@@ -1,3 +1,4 @@
+// oxlint-disable no-unused-vars
 /* 小改动或者不确定放哪的都可以放这 */
 const fs = require('fs-extra')
 const yauzl = require('yauzl')
@@ -113,7 +114,7 @@ const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
 				const destPath = Path.join(outputDir, entry.fileName)
 
 				// 如果是目录，创建目录
-				if (/\/$/.test(entry.fileName)) {
+				if (entry.fileName.endsWith('/')) {
 					fs.ensureDirSync(destPath)
 					zipfile.readEntry()
 					return
@@ -215,7 +216,7 @@ Scene.list.paste = function (dItem, callback) {
 }
 
 // 列表 - 粘贴
-Enum.list.paste = function (dItem) {
+Enum.list.paste = function () {
 	const copy = Clipboard.read('yami.data.enumeration')
 	if (copy) {
 		// 只有冲突时进行更换ID
@@ -233,7 +234,7 @@ Enum.list.paste = function (dItem) {
 }
 
 // 列表 - 粘贴
-Variable.list.paste = function (dItem) {
+Variable.list.paste = function () {
 	const copy = Clipboard.read('yami.data.variable')
 	if (copy) {
 		// 只有冲突时进行更换ID
@@ -251,7 +252,7 @@ Variable.list.paste = function (dItem) {
 }
 
 // 列表 - 粘贴
-Attribute.list.paste = function (dItem) {
+Attribute.list.paste = function () {
 	const copy = Clipboard.read('yami.data.attribute')
 	if (copy) {
 		// 只有冲突时进行更换ID
@@ -269,7 +270,7 @@ Attribute.list.paste = function (dItem) {
 }
 
 // 列表 - 粘贴
-Localization.list.paste = function (dItem) {
+Localization.list.paste = function () {
 	const copy = Clipboard.read('yami.data.localization')
 	if (copy) {
 		// 只有冲突时进行更换ID
@@ -582,11 +583,11 @@ SetTileTag.open = function (tag, callback) {
 	$('#setTileTag-tag').getFocus('all')
 }
 
-SetTileTag.windowClosed = function (event) {
+SetTileTag.windowClosed = function () {
 	this.callback = null
 }.bind(SetTileTag)
 
-SetTileTag.confirm = function (event) {
+SetTileTag.confirm = function () {
 	this.callback($('#setTileTag-tag').read())
 	Window.close('setTileTag')
 }.bind(SetTileTag)
