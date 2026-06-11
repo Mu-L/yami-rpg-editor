@@ -1,0 +1,168 @@
+﻿'use strict'
+
+// ******************************** 文件 - 动画页面 ********************************
+
+{
+	const FileAnimation = {
+		// properties
+		button: $('#animation-switch-settings'),
+		owner: null,
+		target: null,
+		sprites: null,
+		// methods
+		initialize: null,
+		create: null,
+		open: null,
+		close: null
+	}
+
+	// 初始化
+	FileAnimation.initialize = function () {
+		// 创建所有者代理
+		this.owner = {
+			setTarget: (target) => {
+				if (this.target !== target) {
+					Inspector.open('fileAnimation', target)
+				}
+			},
+			planToSave: () => {
+				Animation.planToSave()
+			},
+			get history() {
+				return Animation.history
+			}
+		}
+
+		// 绑定精灵图列表
+		$('#fileAnimation-sprites').bind(this.sprites)
+
+		// 侦听事件
+		$('#fileAnimation-sprites').on('change', Animation.listChange)
+	}
+
+	// 创建动画
+	FileAnimation.create = function () {
+		return {
+			sprites: [],
+			motions: []
+		}
+	}
+
+	// 打开数据
+	FileAnimation.open = function (animation) {
+		if (this.target !== animation) {
+			this.target = animation
+
+			// 更新按钮样式
+			this.button.addClass('selected')
+
+			// 写入数据
+			const write = getElementWriter('fileAnimation', animation)
+			write('sprites')
+		}
+	}
+
+	// 关闭数据
+	FileAnimation.close = function () {
+		if (this.target) {
+			this.target = null
+
+			// 更新按钮样式
+			this.button.removeClass('selected')
+		}
+	}
+
+	// 精灵图列表接口
+	FileAnimation.sprites = {
+		list: null,
+		spriteId: '',
+		initialize: function (list) {
+			$('#fileAnimation-sprite-confirm').on('click', () => list.save())
+
+			// 引用列表元素
+			this.list = list
+
+			// 创建参数历史操作
+			this.history = new Inspector.ParamHistory(
+				FileAnimation,
+				FileAnimation.owner,
+				list
+			)
+
+			// 重载动画纹理 - 改变事件
+			list.on('change', (event) => {
+				if (Animation.sprites) {
+					if (Animation.sprites.listItems) {
+						Animation.sprites.listItems = undefined
+					}
+					Animation.loadTextures()
+				}
+			})
+		},
+		parse: function ({ name, image, hframes, vframes }) {
+			const fileName = Command.removeTextTags(
+				Command.parseFileName(image)
+			)
+			return [name, `${fileName} [${hframes}x${vframes}]`]
+		},
+		createExclusionMap: function () {
+			const exclusions = {}
+			for (const sprite of this.list.data) {
+				exclusions[sprite.id] = true
+			}
+			return exclusions
+		},
+		createSpriteId: function (exclusions = this.createExclusionMap()) {
+			let id
+			do {
+				id = GUID.generate64bit()
+			} while (exclusions[id])
+			return id
+		},
+		open: function ({
+			name = '',
+			id = this.createSpriteId(),
+			image = '',
+			hframes = 1,
+			vframes = 1
+		} = {}) {
+			Window.open('fileAnimation-sprite')
+			const write = getElementWriter('fileAnimation-sprite')
+			write('name', name)
+			write('image', image)
+			write('hframes', hframes)
+			write('vframes', vframes)
+			this.spriteId = id
+			if (!name) {
+				$('#fileAnimation-sprite-name').getFocus()
+			} else {
+				$('#fileAnimation-sprite-image').getFocus()
+			}
+		},
+		save: function () {
+			const read = getElementReader('fileAnimation-sprite')
+			const name = read('name').trim()
+			if (!name) {
+				return $('#fileAnimation-sprite-name').getFocus()
+			}
+			const image = read('image')
+			const hframes = read('hframes')
+			const vframes = read('vframes')
+			const id = this.spriteId
+			Window.close('fileAnimation-sprite')
+			return { name, id, image, hframes, vframes }
+		},
+		onPaste: function (list, copies) {
+			const exclusions = this.createExclusionMap()
+			for (const sprite of copies) {
+				if (sprite.id in exclusions) {
+					const id = this.createSpriteId(exclusions)
+					sprite.id = id
+				}
+				exclusions[sprite.id] = true
+			}
+		}
+	}
+
+	Inspector.fileAnimation = FileAnimation
+}
