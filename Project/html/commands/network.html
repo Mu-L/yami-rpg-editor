@@ -1,0 +1,31 @@
+  <window-frame id="requestURL">
+    <title-bar>requestURL<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>URL</text><string-var id="requestURL-url"></string-var>
+        <text>Header</text><param-list id="requestURL-header"></param-list>
+        <text>Method</text><select-box id="requestURL-method"></select-box>
+        <text>Data</text><param-list id="requestURL-data"></param-list>
+        <text>CallBack</text><custom-box id="requestURL-callback" type="file" filter="event"></custom-box>
+      </grid-box>
+      <button id="requestURL-confirm" name="confirm">Confirm</button>
+      <button id="requestURL-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="downloadFile">
+    <title-bar>downloadFile<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>URL</text><string-var id="downloadFile-url"></string-var>
+        <text>Header</text><param-list id="downloadFile-header"></param-list>
+        <text>Method</text><select-box id="downloadFile-method"></select-box>
+        <text>Data</text><param-list id="downloadFile-data"></param-list>
+        <text>CallBack</text><custom-box id="downloadFile-callback" type="file" filter="event"></custom-box>
+        <text>RateCallBack</text><custom-box id="downloadFile-rateCallback" type="file" filter="event"></custom-box>
+        <text>IsBackground</text><check-box class="standard" id="downloadFile-isBackground"></check-box>
+        <text>Path</text><string-var id="downloadFile-isBackground-path"></string-var>
+      </grid-box>
+      <button id="downloadFile-confirm" name="confirm">Confirm</button>
+      <button id="downloadFile-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>

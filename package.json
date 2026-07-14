@@ -10,6 +10,7 @@
 		"buildres": "node scripts/buildres.js",
 		"buildtime": "node scripts/buildRuntime.js",
 		"prepare": "husky",
+		"prestart": "node scripts/build-html.js",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",
 		"format": "prettier --write . --config prettierrc.json",

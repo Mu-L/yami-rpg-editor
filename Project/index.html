@@ -1,3 +1,4 @@
+<!-- 此文件由 build-html.js 自动生成。请编辑 index.src.html 和 html/ 下的 partial 文件，不要直接编辑本文件。 -->
 <!DOCTYPE html>
 <html class="dark">
 
@@ -2447,7 +2448,6 @@
       </page-frame>
     </page-manager>
   </box>
-
   <!-- Open设置窗口 -->
   <window-frame id="setting">
     <title-bar id="setting-title">Setting<maximize></maximize>
@@ -3921,72 +3921,14 @@
   </window-frame>
 
   <!-- 显示文本 -->
-  <window-frame id="showText">
-    <title-bar>Show Text<close></close></title-bar>
-    <content-frame>
-      <custom-box id="showText-target" type="actor"></custom-box>
-      <text-box id="showText-parameters"></text-box>
-      <text-area id="showText-content" menu="tag-local-var tag-global-var tag-localization"></text-area>
-      <button id="showText-confirm" name="confirm">Confirm</button>
-      <button id="showText-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 显示选项 -->
-  <window-frame id="showChoices">
-    <title-bar>Show Choices<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Choices</text><param-list id="showChoices-choices"></param-list>
-        <text>Parameters</text><text-box id="showChoices-parameters"></text-box>
-      </grid-box>
-      <button id="showChoices-confirm" name="confirm">Confirm</button>
-      <button id="showChoices-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 注释 -->
-  <window-frame id="comment">
-    <title-bar>Comment<close></close></title-bar>
-    <content-frame>
-      <text-area id="comment-comment"></text-area>
-      <button id="comment-confirm" name="confirm">Confirm</button>
-      <button id="comment-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置布尔值 -->
-  <window-frame id="setBoolean">
-    <title-bar>Set Boolean<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setBoolean-variable" type="variable"
-          filter="writable-boolean"></custom-box>
-        <text>Operation</text><select-box id="setBoolean-operation"></select-box>
-        <text>Type</text><select-box id="setBoolean-operand-type"></select-box>
-        <text>Constant</text><select-box id="setBoolean-constant-value"></select-box>
-        <text>Variable</text><custom-box id="setBoolean-common-variable" type="variable" filter="all"></custom-box>
-        <text>Index</text><number-var id="setBoolean-list-index" min="0" max="1000000000"></number-var>
-        <text>Param Name</text><string-var id="setBoolean-parameter-key"></string-var>
-        <text>Script</text><text-box id="setBoolean-script"></text-box>
-      </grid-box>
-      <button id="setBoolean-confirm" name="confirm">Confirm</button>
-      <button id="setBoolean-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置数值 -->
-  <window-frame id="setNumber">
-    <title-bar>Set Number<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setNumber-variable" type="variable" filter="writable-number"></custom-box>
-        <text>Expression</text><param-list id="setNumber-operands"></param-list>
-      </grid-box>
-      <button id="setNumber-confirm" name="confirm">Confirm</button>
-      <button id="setNumber-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置数值 - 操作数 -->
   <window-frame id="setNumber-operand">
@@ -4036,151 +3978,16 @@
   </window-frame>
 
   <!-- 设置字符串 -->
-  <window-frame id="setString">
-    <title-bar>Set String<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setString-variable" type="variable" filter="writable-string"></custom-box>
-        <text>Operation</text><select-box id="setString-operation"></select-box>
-        <text>Type</text><select-box id="setString-operand-type"></select-box>
-        <text>String</text><text-area id="setString-operand-common-value"
-          menu="tag-local-var tag-global-var tag-localization"></text-area>
-        <text>String Method</text><select-box id="setString-operand-string-method"></select-box>
-        <text>Variable</text><custom-box id="setString-operand-common-variable" type="variable"
-          filter="all"></custom-box>
-        <text>Index</text><number-var id="setString-operand-string-char-index" min="0" max="1000000000"></number-var>
-        <text>Begin Index</text><number-var id="setString-operand-string-slice-begin" min="-1000000000"
-          max="1000000000"></number-var>
-        <text>End Index</text><number-var id="setString-operand-string-slice-end" min="-1000000000"
-          max="1000000000"></number-var>
-        <text>Target Length</text><number-box id="setString-operand-string-pad-start-length" min="2"
-          max="10"></number-box>
-        <text>Pad String</text><text-box id="setString-operand-string-pad-start-pad"></text-box>
-        <text>Substring</text><string-var id="setString-operand-string-replace-pattern"></string-var>
-        <text>Replacement</text><string-var id="setString-operand-string-replace-replacement"></string-var>
-        <text>Attribute Key</text><custom-box id="setString-operand-attribute-attributeId"
-          type="attribute"></custom-box>
-        <text>Enum String</text><custom-box id="setString-operand-enum-stringId" type="enum-string"></custom-box>
-        <text>Property</text><select-box id="setString-operand-object-property"></select-box>
-        <text>Property</text><select-box id="setString-operand-element-property"></select-box>
-        <text>Element</text><custom-box id="setString-operand-element-element" type="element"></custom-box>
-        <text>Actor</text><custom-box id="setString-operand-common-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="setString-operand-common-skill" type="skill"></custom-box>
-        <text>Trigger</text><custom-box id="setString-operand-common-trigger" type="trigger"></custom-box>
-        <text>State</text><custom-box id="setString-operand-common-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="setString-operand-common-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="setString-operand-common-item" type="item"></custom-box>
-        <text>File</text><custom-box id="setString-operand-object-fileId" type="file"></custom-box>
-        <text>Index</text><number-var id="setString-operand-list-index" min="0" max="1000000000"></number-var>
-        <text>Param Name</text><string-var id="setString-operand-parameter-key"></string-var>
-        <text>Script</text><text-box id="setString-operand-script"></text-box>
-        <text>Data</text><select-box id="setString-operand-other-data"></select-box>
-        <text>Choice Index</text><number-var id="setString-operand-showChoices-content-choiceIndex" min="0"
-          max="255"></number-var>
-        <text>Timestamp</text><custom-box id="setString-operand-parse-timestamp-variable" type="variable"
-          filter="number"></custom-box>
-        <text>Date Format</text><text-box id="setString-operand-parse-timestamp-format"></text-box>
-        <text>Image Width</text><number-box id="setString-operand-screenshot-width" min="64" max="7680"
-          unit="px"></number-box>
-        <text>Image Height</text><number-box id="setString-operand-screenshot-height" min="64" max="7680"
-          unit="px"></number-box>
-      </grid-box>
-      <button id="setString-confirm" name="confirm">Confirm</button>
-      <button id="setString-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置对象 -->
-  <window-frame id="setObject">
-    <title-bar>Set Object<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setObject-variable" type="variable" filter="object"></custom-box>
-        <text>Type</text><select-box id="setObject-operand-type"></select-box>
-        <text>Actor</text><custom-box id="setObject-operand-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="setObject-operand-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="setObject-operand-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="setObject-operand-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="setObject-operand-item" type="item"></custom-box>
-        <text>Trigger</text><custom-box id="setObject-operand-trigger" type="trigger"></custom-box>
-        <text>Light</text><custom-box id="setObject-operand-light" type="light"></custom-box>
-        <text>Object</text><custom-box id="setObject-operand-object" type="object"></custom-box>
-        <text>Element</text><custom-box id="setObject-operand-element" type="element"></custom-box>
-        <text>Variable</text><custom-box id="setObject-operand-variable" type="variable" filter="object"></custom-box>
-        <text>Index</text><number-var id="setObject-operand-list-index" min="0" max="1000000000"></number-var>
-      </grid-box>
-      <button id="setObject-confirm" name="confirm">Confirm</button>
-      <button id="setObject-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置列表 -->
-  <window-frame id="setList">
-    <title-bar>Set List<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setList-variable" type="variable" filter="object"></custom-box>
-        <text>Operation</text><select-box id="setList-operation"></select-box>
-        <text>Numbers</text><custom-box id="setList-numbers" type="array" filter="number"></custom-box>
-        <text>Strings</text><custom-box id="setList-strings" type="array" filter="string"></custom-box>
-        <text>Index</text><number-var id="setList-index" min="0" max="1000000000"></number-var>
-        <text>Boolean</text><select-box id="setList-boolean"></select-box>
-        <text>Number</text><number-box id="setList-number" min="-1000000000" max="1000000000"
-          decimals="10"></number-box>
-        <text>String</text><text-area id="setList-string"></text-area>
-        <text>Variable</text><custom-box id="setList-operand" type="variable" filter="all"></custom-box>
-        <text>Separator</text><text-area-var id="setList-separator"></text-area-var>
-        <text>Attribute Group</text><custom-box id="setList-attribute-groupId" type="attribute-group"></custom-box>
-        <text>Enum Group</text><custom-box id="setList-enum-groupId" type="enum-group"></custom-box>
-        <text>Actor</text><custom-box id="setList-actor" type="actor"></custom-box>
-        <text>Default</text><check-box id="setList-index-skip-check" class="standard"></check-box>
-      </grid-box>
-      <button id="setList-confirm" name="confirm">Confirm</button>
-      <button id="setList-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 删除变量 -->
-  <window-frame id="deleteVariable">
-    <title-bar>Delete Variable<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="deleteVariable-variable" type="variable" filter="deletable"></custom-box>
-      </grid-box>
-      <button id="deleteVariable-confirm" name="confirm">Confirm</button>
-      <button id="deleteVariable-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 获取对象属性 -->
-  <window-frame id="getObjectProperty">
-    <title-bar>getObjectProperty<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="getObjectProperty-variable" type="variable" filter="object"></custom-box>
-        <text>getObjectProperty</text><param-list id="getObjectProperty-list"></param-list>
-        <text>saveVariable</text><custom-box id="getObjectProperty-save-variable" type="variable"
-          filter="object"></custom-box>
-      </grid-box>
-      <button id="getObjectProperty-confirm" name="confirm">Confirm</button>
-      <button id="getObjectProperty-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置对象属性 -->
-  <window-frame id="setObjectProperty">
-    <title-bar>setObjectProperty<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setObjectProperty-variable" type="variable" filter="object"></custom-box>
-        <text>setObjectProperty</text><param-list id="setObjectProperty-list"></param-list>
-        <text>valueVariable</text><custom-box id="setObjectProperty-value-variable" type="variable"
-          filter="all"></custom-box>
-      </grid-box>
-      <button id="setObjectProperty-confirm" name="confirm">Confirm</button>
-      <button id="setObjectProperty-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 操作对象属性 - 属性索引 -->
   <window-frame id="ObjectProperty-index">
@@ -4195,17 +4002,6 @@
   </window-frame>
 
   <!-- 条件分支 -->
-  <window-frame id="if">
-    <title-bar>If<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Branches</text><param-list id="if-branches"></param-list>
-      </grid-box>
-      <check-box id="if-else" class="standard"><text id="if-else-label">Else</text></check-box>
-      <button id="if-confirm" name="confirm">Confirm</button>
-      <button id="if-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 条件分支 - 分支 -->
   <window-frame id="if-branch">
@@ -4275,18 +4071,6 @@
   </window-frame>
 
   <!-- 匹配 -->
-  <window-frame id="switch">
-    <title-bar>Switch<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="switch-variable" type="variable" filter="all"></custom-box>
-        <text>Branches</text><param-list id="switch-branches"></param-list>
-      </grid-box>
-      <check-box id="switch-default" class="standard"><text id="switch-default-label">Default</text></check-box>
-      <button id="switch-confirm" name="confirm">Confirm</button>
-      <button id="switch-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 匹配 - 分支 -->
   <window-frame id="switch-branch">
@@ -4324,233 +4108,32 @@
   </window-frame>
 
   <!-- 循环 -->
-  <window-frame id="loop">
-    <title-bar>Loop<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Mode</text><select-box id="loop-mode"></select-box>
-        <text>Conditions</text><param-list id="loop-conditions"></param-list>
-      </grid-box>
-      <button id="loop-confirm" name="confirm">Confirm</button>
-      <button id="loop-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 遍历 -->
-  <window-frame id="forEach">
-    <title-bar>For Each<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Data</text><select-box id="forEach-data"></select-box>
-        <text>List Variable</text><custom-box id="forEach-list" type="variable" filter="object"></custom-box>
-        <text>Actor</text><custom-box id="forEach-actor" type="actor"></custom-box>
-        <text>Parent Element</text><custom-box id="forEach-element" type="element"></custom-box>
-        <text>Attribute Group</text><custom-box id="forEach-attribute-groupId" type="attribute-group"></custom-box>
-        <text>Enum Group</text><custom-box id="forEach-enum-groupId" type="enum-group"></custom-box>
-        <text>Write to Variable</text><custom-box id="forEach-variable" type="variable" filter="object"></custom-box>
-        <text>Write Save Index</text><custom-box id="forEach-saveIndex" type="variable" filter="number"></custom-box>
-        <text>Touch Id</text><custom-box id="forEach-touchId" type="variable" filter="number"></custom-box>
-      </grid-box>
-      <button id="forEach-confirm" name="confirm">Confirm</button>
-      <button id="forEach-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 调用事件 -->
-  <window-frame id="callEvent">
-    <title-bar>Call Event<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="callEvent-type"></select-box>
-        <text>Actor</text><custom-box id="callEvent-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="callEvent-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="callEvent-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="callEvent-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="callEvent-item" type="item"></custom-box>
-        <text>Light</text><custom-box id="callEvent-light" type="light"></custom-box>
-        <text>Element</text><custom-box id="callEvent-element" type="element"></custom-box>
-        <text>Event</text><custom-box id="callEvent-eventId" type="file" filter="event"></custom-box>
-        <text>Event</text><select-box id="callEvent-eventType"></select-box>
-      </grid-box>
-      <button id="callEvent-confirm" name="confirm">Confirm</button>
-      <button id="callEvent-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 返回值 -->
-  <window-frame id="return">
-    <title-bar>Return<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="return-type"></select-box>
-        <text>Boolean</text><select-box id="return-boolean"></select-box>
-        <text>Number</text><number-var id="return-number" min="-1000000000" max="1000000000" decimals="10"></number-var>
-        <text>String</text><string-var id="return-string"></string-var>
-        <text>Object</text><custom-box id="return-object" type="variable" filter="object"></custom-box>
-        <text>Actor</text><custom-box id="return-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="return-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="return-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="return-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="return-item" type="item"></custom-box>
-        <text>Trigger</text><custom-box id="return-trigger" type="trigger"></custom-box>
-        <text>Light</text><custom-box id="return-light" type="light"></custom-box>
-        <text>Element</text><custom-box id="return-element" type="element"></custom-box>
-      </grid-box>
-      <button id="return-confirm" name="confirm">Confirm</button>
-      <button id="return-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 注册事件 -->
-  <window-frame id="registerEvent">
-    <title-bar>Register Event<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Target</text><select-box id="registerEvent-target"></select-box>
-        <text>Actor</text><custom-box id="registerEvent-actor" type="actor"></custom-box>
-        <text>Element</text><custom-box id="registerEvent-element" type="element"></custom-box>
-        <text>Operation</text><select-box id="registerEvent-operation"></select-box>
-        <text>Type</text><select-box id="registerEvent-type"></select-box>
-        <text>Priority</text><check-box id="registerEvent-priority" class="standard large"></check-box>
-        <text>Namespace</text><check-box id="registerEvent-namespace" class="standard large"></check-box>
-        <text>Tag Name</text><string-var id="registerEvent-tag"></string-var>
-      </grid-box>
-      <button id="registerEvent-confirm" name="confirm">Confirm</button>
-      <button id="registerEvent-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 停止事件 -->
-  <window-frame id="stopEvent">
-    <title-bar>Stop Event<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="stopEvent-type"></select-box>
-        <text>Actor</text><custom-box id="stopEvent-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="stopEvent-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="stopEvent-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="stopEvent-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="stopEvent-item" type="item"></custom-box>
-        <text>Light</text><custom-box id="stopEvent-light" type="light"></custom-box>
-        <text>Element</text><custom-box id="stopEvent-element" type="element"></custom-box>
-        <text>Event</text><custom-box id="stopEvent-eventId" type="file" filter="event"></custom-box>
-        <text>Event</text><select-box id="stopEvent-eventType"></select-box>
-      </grid-box>
-      <button id="stopEvent-confirm" name="confirm">Confirm</button>
-      <button id="stopEvent-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置事件 -->
-  <window-frame id="setEvent">
-    <title-bar>Set Event<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="setEvent-operation"></select-box>
-        <text>Variable</text><custom-box id="setEvent-variable" type="variable" filter="object"></custom-box>
-        <text>Event</text><custom-box id="setEvent-eventId" type="file" filter="event"></custom-box>
-        <text>Choice Index</text><number-var id="setEvent-choiceIndex" min="0" max="255"></number-var>
-      </grid-box>
-      <button id="setEvent-confirm" name="confirm">Confirm</button>
-      <button id="setEvent-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 过渡 -->
-  <window-frame id="transition">
-    <title-bar>Transition<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Write to Variable</text><custom-box id="transition-variable" type="variable" filter="number"></custom-box>
-        <text>Start Value</text><number-var id="transition-start" min="-1000000000" max="1000000000"
-          decimals="10"></number-var>
-        <text>End Value</text><number-var id="transition-end" min="-1000000000" max="1000000000"
-          decimals="10"></number-var>
-        <text>Easing</text><select-box id="transition-easingId" name="easing"></select-box>
-        <text>Duration</text><number-var id="transition-duration" name="duration" min="0" max="3600000"
-          unit="ms"></number-var>
-      </grid-box>
-      <button id="transition-confirm" name="confirm">Confirm</button>
-      <button id="transition-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 指令块 -->
-  <window-frame id="block">
-    <title-bar>Block<close></close></title-bar>
-    <content-frame>
-      <text-box id="block-note"></text-box>
-      <check-box id="block-asynchronous" class="standard"><text
-          id="block-asynchronous-label">Asynchronous</text></check-box>
-      <button id="block-confirm" name="confirm">Confirm</button>
-      <button id="block-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 标签 -->
-  <window-frame id="label">
-    <title-bar>Label<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Label Name</text><text-box id="label-name"></text-box>
-      </grid-box>
-      <button id="label-confirm" name="confirm">Confirm</button>
-      <button id="label-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 跳转到 -->
-  <window-frame id="jumpTo">
-    <title-bar>Jump to<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="jumpTo-operation"></select-box>
-        <text>Label Name</text><text-box id="jumpTo-label"></text-box>
-      </grid-box>
-      <button id="jumpTo-confirm" name="confirm">Confirm</button>
-      <button id="jumpTo-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 等待 -->
-  <window-frame id="wait">
-    <title-bar>Wait<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Duration</text><number-var id="wait-duration" min="1" max="3600000" unit="ms"></number-var>
-      </grid-box>
-      <button id="wait-confirm" name="confirm">Confirm</button>
-      <button id="wait-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 创建元素 -->
-  <window-frame id="createElement">
-    <title-bar>Create Element<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="createElement-operation"></select-box>
-        <text>Parent</text><custom-box id="createElement-parent" type="element"></custom-box>
-        <text>UI Elements</text><custom-box id="createElement-uiId" type="file" filter="ui"></custom-box>
-        <text>UI Element</text><custom-box id="createElement-presetId" type="preset-element"></custom-box>
-      </grid-box>
-      <button id="createElement-confirm" name="confirm">Confirm</button>
-      <button id="createElement-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置图像 -->
-  <window-frame id="setImage">
-    <title-bar>Set Image<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setImage-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setImage-properties"></param-list>
-      </grid-box>
-      <button id="setImage-confirm" name="confirm">Confirm</button>
-      <button id="setImage-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置图像 - 属性 -->
   <window-frame id="setImage-property">
@@ -4575,59 +4158,10 @@
   </window-frame>
 
   <!-- 加载图像 -->
-  <window-frame id="loadImage">
-    <title-bar>Load Image<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="loadImage-element" type="element"></custom-box>
-        <text>Type</text><select-box id="loadImage-type"></select-box>
-        <text>Actor</text><custom-box id="loadImage-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="loadImage-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="loadImage-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="loadImage-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="loadImage-item" type="item"></custom-box>
-        <text>Shortcut Key</text><select-var id="loadImage-key"></select-var>
-        <text>Base64 Coding</text><custom-box id="loadImage-variable" type="variable" filter="string"></custom-box>
-      </grid-box>
-      <button id="loadImage-confirm" name="confirm">Confirm</button>
-      <button id="loadImage-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 改变图像色调 -->
-  <window-frame id="tintImage">
-    <title-bar>Tint Image<close></close></title-bar>
-    <content-frame>
-      <grid-box id="tintImage-grid-box">
-        <text>Element</text><custom-box id="tintImage-element" type="element"></custom-box>
-        <text>Mode</text><select-box id="tintImage-mode"></select-box>
-        <text>Tint - Red</text><number-box id="tintImage-tint-0" min="-255" max="255" step="5"></number-box>
-        <text>Tint - Green</text><number-box id="tintImage-tint-1" min="-255" max="255" step="5"></number-box>
-        <text>Tint - Blue</text><number-box id="tintImage-tint-2" min="-255" max="255" step="5"></number-box>
-        <text>Tint - Grayscale</text><number-box id="tintImage-tint-3" min="0" max="255" step="5"></number-box>
-        <text>Easing</text><select-box id="tintImage-easingId" name="easing"></select-box>
-        <text>Duration</text><number-box id="tintImage-duration" name="duration" min="0" max="3600000"
-          unit="ms"></number-box>
-        <text>Wait</text><select-box id="tintImage-wait" name="wait"></select-box>
-      </grid-box>
-      <filter-box id="tintImage-filter" width="96" height="208"></filter-box>
-      <button id="tintImage-confirm" name="confirm">Confirm</button>
-      <button id="tintImage-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置文本 -->
-  <window-frame id="setText">
-    <title-bar>Set Text<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setText-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setText-properties"></param-list>
-      </grid-box>
-      <button id="setText-confirm" name="confirm">Confirm</button>
-      <button id="setText-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置文本 - 属性 -->
   <window-frame id="setText-property">
@@ -4660,17 +4194,6 @@
   </window-frame>
 
   <!-- 设置文本框 -->
-  <window-frame id="setTextBox">
-    <title-bar>Set Text Box<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setTextBox-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setTextBox-properties"></param-list>
-      </grid-box>
-      <button id="setTextBox-confirm" name="confirm">Confirm</button>
-      <button id="setTextBox-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置文本框 - 属性 -->
   <window-frame id="setTextBox-property">
@@ -4695,17 +4218,6 @@
   </window-frame>
 
   <!-- 设置对话框 -->
-  <window-frame id="setDialogBox">
-    <title-bar>Set Dialog Box<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setDialogBox-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setDialogBox-properties"></param-list>
-      </grid-box>
-      <button id="setDialogBox-confirm" name="confirm">Confirm</button>
-      <button id="setDialogBox-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置对话框 - 属性 -->
   <window-frame id="setDialogBox-property">
@@ -4739,30 +4251,8 @@
   </window-frame>
 
   <!-- 控制对话框 -->
-  <window-frame id="controlDialog">
-    <title-bar>Control Dialog<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="controlDialog-element" type="element"></custom-box>
-        <text>Operation</text><select-box id="controlDialog-operation"></select-box>
-      </grid-box>
-      <button id="controlDialog-confirm" name="confirm">Confirm</button>
-      <button id="controlDialog-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置进度条 -->
-  <window-frame id="setProgressBar">
-    <title-bar>Set Progress Bar<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setProgressBar-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setProgressBar-properties"></param-list>
-      </grid-box>
-      <button id="setProgressBar-confirm" name="confirm">Confirm</button>
-      <button id="setProgressBar-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置进度条 - 属性 -->
   <window-frame id="setProgressBar-property">
@@ -4792,17 +4282,6 @@
   </window-frame>
 
   <!-- 设置按钮 -->
-  <window-frame id="setButton">
-    <title-bar>Set Button<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setButton-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setButton-properties"></param-list>
-      </grid-box>
-      <button id="setButton-confirm" name="confirm">Confirm</button>
-      <button id="setButton-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置按钮 - 属性 -->
   <window-frame id="setButton-property">
@@ -4839,30 +4318,8 @@
   </window-frame>
 
   <!-- 控制按钮 -->
-  <window-frame id="controlButton">
-    <title-bar>Control Button<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="controlButton-operation"></select-box>
-        <text>Element</text><custom-box id="controlButton-element" type="element"></custom-box>
-      </grid-box>
-      <button id="controlButton-confirm" name="confirm">Confirm</button>
-      <button id="controlButton-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置动画 -->
-  <window-frame id="setAnimation">
-    <title-bar>Set Animation<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setAnimation-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setAnimation-properties"></param-list>
-      </grid-box>
-      <button id="setAnimation-confirm" name="confirm">Confirm</button>
-      <button id="setAnimation-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置动画 - 属性 -->
   <window-frame id="setAnimation-property">
@@ -4883,17 +4340,6 @@
   </window-frame>
 
   <!-- 设置视频 -->
-  <window-frame id="setVideo">
-    <title-bar>Set Video<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setVideo-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setVideo-properties"></param-list>
-      </grid-box>
-      <button id="setVideo-confirm" name="confirm">Confirm</button>
-      <button id="setVideo-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置视频 - 属性 -->
   <window-frame id="setVideo-property">
@@ -4937,17 +4383,6 @@
   </window-frame>
 
   <!-- 设置窗口 -->
-  <window-frame id="setWindow">
-    <title-bar>Set Window<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setWindow-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="setWindow-properties"></param-list>
-      </grid-box>
-      <button id="setWindow-confirm" name="confirm">Confirm</button>
-      <button id="setWindow-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置窗口 - 属性 -->
   <window-frame id="setWindow-property">
@@ -4971,59 +4406,12 @@
   </window-frame>
 
   <!-- 等待视频结束 -->
-  <window-frame id="waitForVideo">
-    <title-bar>Wait For Video<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="waitForVideo-element" type="element"></custom-box>
-      </grid-box>
-      <button id="waitForVideo-confirm" name="confirm">Confirm</button>
-      <button id="waitForVideo-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置元素 -->
-  <window-frame id="setElement">
-    <title-bar>Set Element<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="setElement-element" type="element"></custom-box>
-        <text>Operation</text><select-box id="setElement-operation"></select-box>
-      </grid-box>
-      <button id="setElement-confirm" name="confirm">Confirm</button>
-      <button id="setElement-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 嵌套元素 -->
-  <window-frame id="nestElement">
-    <title-bar>Nest Element<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Parent Element</text><custom-box id="nestElement-parent" type="element"></custom-box>
-        <text>Child Element</text><custom-box id="nestElement-child" type="element"></custom-box>
-      </grid-box>
-      <button id="nestElement-confirm" name="confirm">Confirm</button>
-      <button id="nestElement-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 移动元素 -->
-  <window-frame id="moveElement">
-    <title-bar>Move Element<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Element</text><custom-box id="moveElement-element" type="element"></custom-box>
-        <text>Properties</text><param-list id="moveElement-properties"></param-list>
-        <text>Easing</text><select-box id="moveElement-easingId" name="easing"></select-box>
-        <text>Duration</text><number-box id="moveElement-duration" name="duration" min="0" max="3600000"
-          unit="ms"></number-box>
-        <text>Wait</text><select-box id="moveElement-wait" name="wait"></select-box>
-      </grid-box>
-      <button id="moveElement-confirm" name="confirm">Confirm</button>
-      <button id="moveElement-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 移动元素 - 属性 -->
   <window-frame id="moveElement-property">
@@ -5070,75 +4458,14 @@
   </window-frame>
 
   <!-- 删除元素 -->
-  <window-frame id="deleteElement">
-    <title-bar>Delete Element<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="deleteElement-operation"></select-box>
-        <text>Element</text><custom-box id="deleteElement-element" type="element"></custom-box>
-      </grid-box>
-      <button id="deleteElement-confirm" name="confirm">Confirm</button>
-      <button id="deleteElement-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置指针事件根元素 -->
-  <window-frame id="setPointerEventRoot">
-    <title-bar>Set Pointer Event Root<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="setPointerEventRoot-operation"></select-box>
-        <text>Element</text><custom-box id="setPointerEventRoot-element" type="element"></custom-box>
-      </grid-box>
-      <button id="setPointerEventRoot-confirm" name="confirm">Confirm</button>
-      <button id="setPointerEventRoot-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 设置焦点 -->
-  <window-frame id="setFocus">
-    <title-bar>Set Focus<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="setFocus-operation"></select-box>
-        <text>Element</text><custom-box id="setFocus-element" type="element"></custom-box>
-        <text>Mode</text><select-box id="setFocus-mode"></select-box>
-        <text>Cancelable</text><check-box id="setFocus-cancelable" class="standard large"></check-box>
-      </grid-box>
-      <button id="setFocus-confirm" name="confirm">Confirm</button>
-      <button id="setFocus-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 创建对象 -->
-  <window-frame id="createObject">
-    <title-bar>Create Object<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Object</text><custom-box id="createObject-presetId" type="preset-object" filter="any"></custom-box>
-        <text>Position</text><custom-box id="createObject-position" type="position"></custom-box>
-      </grid-box>
-      <button id="createObject-confirm" name="confirm">Confirm</button>
-      <button id="createObject-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 移动光源 -->
-  <window-frame id="moveLight">
-    <title-bar>Move Light<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Light</text><custom-box id="moveLight-light" type="light"></custom-box>
-        <text>Properties</text><param-list id="moveLight-properties"></param-list>
-        <text>Easing</text><select-box id="moveLight-easingId" name="easing"></select-box>
-        <text>Duration</text><number-box id="moveLight-duration" name="duration" min="0" max="3600000"
-          unit="ms"></number-box>
-        <text>Wait</text><select-box id="moveLight-wait" name="wait"></select-box>
-      </grid-box>
-      <button id="moveLight-confirm" name="confirm">Confirm</button>
-      <button id="moveLight-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
 
   <!-- 移动光源 - 属性 -->
   <window-frame id="moveLight-property">
@@ -5172,6 +4499,896 @@
   </window-frame>
 
   <!-- 删除对象 -->
+
+  <!-- 设置状态 -->
+
+  <!-- 播放动画 -->
+
+  <!-- 设置对象动画 -->
+
+  <!-- 播放音频 -->
+
+  <!-- 停止播放音频 -->
+
+  <!-- 设置音量 -->
+
+  <!-- 设置声像 -->
+
+  <!-- 设置混响 -->
+
+  <!-- 设置循环 -->
+
+  <!-- 保存音频 -->
+
+  <!-- 恢复音频 -->
+
+  <!-- 创建角色 -->
+
+  <!-- 移动角色 -->
+
+  <!-- 跟随角色 -->
+
+  <!-- 平移角色 -->
+
+  <!-- 增减仇恨值 -->
+
+  <!-- 设置体重 -->
+
+  <!-- 设置移动速度 -->
+
+  <!-- 设置角度 -->
+
+  <!-- 固定角度 -->
+
+  <!-- 设置激活状态 -->
+
+  <!-- 获取角色 -->
+
+  <!-- 获取多个角色 -->
+
+  <!-- 删除角色 -->
+
+  <!-- 设置玩家角色 -->
+
+  <!-- 设置队伍成员 -->
+
+  <!-- 改变通行区域 -->
+
+  <!-- 改变角色队伍 -->
+
+  <!-- 改变角色状态 -->
+
+  <!-- 改变角色装备 -->
+
+  <!-- 改变角色技能 -->
+
+  <!-- 改变角色头像 -->
+
+  <!-- 改变角色动画 -->
+
+  <!-- 改变角色精灵图 -->
+
+  <!-- 改变角色动作 -->
+
+  <!-- 播放角色动画 -->
+
+  <!-- 停止角色动画 -->
+
+  <!-- 添加动画组件 -->
+
+  <!-- 设置动画组件 -->
+
+  <!-- 移除动画组件 -->
+
+  <!-- 创建全局角色 -->
+
+  <!-- 转移全局角色 -->
+
+  <!-- 删除全局角色 -->
+
+  <!-- 设置目标 -->
+
+  <!-- 获取目标 -->
+
+  <!-- 添加目标 -->
+
+  <!-- 移除目标 -->
+
+  <!-- 探测目标 -->
+
+  <!-- 放弃目标 -->
+
+  <!-- 重置目标列表 -->
+
+  <!-- 渲染轮廓 -->
+
+  <!-- 施放技能 -->
+
+  <!-- 设置技能 -->
+
+  <!-- 创建触发器 -->
+
+  <!-- 设置触发器速度 -->
+
+  <!-- 设置触发器角度 -->
+
+  <!-- 设置触发器持续时间 -->
+
+  <!-- 设置触发器动作 -->
+
+  <!-- 设置库存 -->
+
+  <!-- 使用物品 -->
+
+  <!-- 设置物品 -->
+
+  <!-- 设置冷却时间 -->
+
+  <!-- 设置快捷键 -->
+
+  <!-- 激活场景 -->
+
+  <!-- 加载场景 -->
+
+  <!-- 加载子场景 -->
+
+  <!-- 卸载子场景 -->
+
+  <!-- 限制摄像机边界 -->
+
+  <!-- 移动摄像机 -->
+
+  <!-- 设置缩放率 -->
+
+  <!-- 设置环境光 -->
+
+  <!-- 改变画面色调 -->
+
+  <!-- 屏幕震动 -->
+
+  <!-- 设置图块 -->
+
+  <!-- 删除图块 -->
+
+  <!-- 设置地形 -->
+
+  <!-- 请求URL -->
+
+  <!-- 请求 - keyValue -->
+  <window-frame id="request-keyValue">
+    <title-bar>Header<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>key</text><string-var id="request-keyValue-key"></string-var>
+        <text>value</text><string-var id="request-keyValue-value"></string-var>
+      </grid-box>
+      <button id="request-keyValue-confirm" name="confirm">Confirm</button>
+      <button id="request-keyValue-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 下载文件 -->
+
+  <!-- 设置游戏速度 -->
+
+  <!-- 设置鼠标指针 -->
+
+  <!-- 设置队伍关系 -->
+
+  <!-- 开关碰撞系统 -->
+
+  <!-- 游戏数据 -->
+
+  <!-- 模拟按键 -->
+
+  <!-- 设置语言 -->
+
+  <!-- 设置分辨率 -->
+
+  <!-- 启动参数 -->
+
+  <!-- 执行脚本 -->
+
+  <!-- 编辑数据 -->
+  <window-frame id="edit-data">
+    <title-bar>edit data<text id='edit-data-mark' class='hidden'>✱</text>
+      <maximize id="edit-data-maximize"></maximize>
+      <close></close>
+    </title-bar>
+    <content-frame>
+      <box id='edit-data-current'>
+      </box>
+      <button id="edit-data-confirm" name="confirm">Confirm</button>
+      <button id="edit-data-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 脚本指令 -->
+  <window-frame id="scriptCommand">
+    <title-bar>Custom Command<close></close></title-bar>
+    <content-frame>
+      <parameter-pane id="scriptCommand-parameter-pane">
+        <detail-box id="scriptCommand-parameter-detail" open>
+          <detail-grid id="scriptCommand-parameter-grid"></detail-grid>
+        </detail-box>
+      </parameter-pane>
+      <button id="scriptCommand-confirm" name="confirm">Confirm</button>
+      <button id="scriptCommand-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="showText">
+    <title-bar>Show Text<close></close></title-bar>
+    <content-frame>
+      <custom-box id="showText-target" type="actor"></custom-box>
+      <text-box id="showText-parameters"></text-box>
+      <text-area id="showText-content" menu="tag-local-var tag-global-var tag-localization"></text-area>
+      <button id="showText-confirm" name="confirm">Confirm</button>
+      <button id="showText-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="showChoices">
+    <title-bar>Show Choices<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Choices</text><param-list id="showChoices-choices"></param-list>
+        <text>Parameters</text><text-box id="showChoices-parameters"></text-box>
+      </grid-box>
+      <button id="showChoices-confirm" name="confirm">Confirm</button>
+      <button id="showChoices-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="comment">
+    <title-bar>Comment<close></close></title-bar>
+    <content-frame>
+      <text-area id="comment-comment"></text-area>
+      <button id="comment-confirm" name="confirm">Confirm</button>
+      <button id="comment-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setBoolean">
+    <title-bar>Set Boolean<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="setBoolean-variable" type="variable"
+          filter="writable-boolean"></custom-box>
+        <text>Operation</text><select-box id="setBoolean-operation"></select-box>
+        <text>Type</text><select-box id="setBoolean-operand-type"></select-box>
+        <text>Constant</text><select-box id="setBoolean-constant-value"></select-box>
+        <text>Variable</text><custom-box id="setBoolean-common-variable" type="variable" filter="all"></custom-box>
+        <text>Index</text><number-var id="setBoolean-list-index" min="0" max="1000000000"></number-var>
+        <text>Param Name</text><string-var id="setBoolean-parameter-key"></string-var>
+        <text>Script</text><text-box id="setBoolean-script"></text-box>
+      </grid-box>
+      <button id="setBoolean-confirm" name="confirm">Confirm</button>
+      <button id="setBoolean-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setNumber">
+    <title-bar>Set Number<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="setNumber-variable" type="variable" filter="writable-number"></custom-box>
+        <text>Expression</text><param-list id="setNumber-operands"></param-list>
+      </grid-box>
+      <button id="setNumber-confirm" name="confirm">Confirm</button>
+      <button id="setNumber-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setString">
+    <title-bar>Set String<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="setString-variable" type="variable" filter="writable-string"></custom-box>
+        <text>Operation</text><select-box id="setString-operation"></select-box>
+        <text>Type</text><select-box id="setString-operand-type"></select-box>
+        <text>String</text><text-area id="setString-operand-common-value"
+          menu="tag-local-var tag-global-var tag-localization"></text-area>
+        <text>String Method</text><select-box id="setString-operand-string-method"></select-box>
+        <text>Variable</text><custom-box id="setString-operand-common-variable" type="variable"
+          filter="all"></custom-box>
+        <text>Index</text><number-var id="setString-operand-string-char-index" min="0" max="1000000000"></number-var>
+        <text>Begin Index</text><number-var id="setString-operand-string-slice-begin" min="-1000000000"
+          max="1000000000"></number-var>
+        <text>End Index</text><number-var id="setString-operand-string-slice-end" min="-1000000000"
+          max="1000000000"></number-var>
+        <text>Target Length</text><number-box id="setString-operand-string-pad-start-length" min="2"
+          max="10"></number-box>
+        <text>Pad String</text><text-box id="setString-operand-string-pad-start-pad"></text-box>
+        <text>Substring</text><string-var id="setString-operand-string-replace-pattern"></string-var>
+        <text>Replacement</text><string-var id="setString-operand-string-replace-replacement"></string-var>
+        <text>Attribute Key</text><custom-box id="setString-operand-attribute-attributeId"
+          type="attribute"></custom-box>
+        <text>Enum String</text><custom-box id="setString-operand-enum-stringId" type="enum-string"></custom-box>
+        <text>Property</text><select-box id="setString-operand-object-property"></select-box>
+        <text>Property</text><select-box id="setString-operand-element-property"></select-box>
+        <text>Element</text><custom-box id="setString-operand-element-element" type="element"></custom-box>
+        <text>Actor</text><custom-box id="setString-operand-common-actor" type="actor"></custom-box>
+        <text>Skill</text><custom-box id="setString-operand-common-skill" type="skill"></custom-box>
+        <text>Trigger</text><custom-box id="setString-operand-common-trigger" type="trigger"></custom-box>
+        <text>State</text><custom-box id="setString-operand-common-state" type="state"></custom-box>
+        <text>Equipment</text><custom-box id="setString-operand-common-equipment" type="equipment"></custom-box>
+        <text>Item</text><custom-box id="setString-operand-common-item" type="item"></custom-box>
+        <text>File</text><custom-box id="setString-operand-object-fileId" type="file"></custom-box>
+        <text>Index</text><number-var id="setString-operand-list-index" min="0" max="1000000000"></number-var>
+        <text>Param Name</text><string-var id="setString-operand-parameter-key"></string-var>
+        <text>Script</text><text-box id="setString-operand-script"></text-box>
+        <text>Data</text><select-box id="setString-operand-other-data"></select-box>
+        <text>Choice Index</text><number-var id="setString-operand-showChoices-content-choiceIndex" min="0"
+          max="255"></number-var>
+        <text>Timestamp</text><custom-box id="setString-operand-parse-timestamp-variable" type="variable"
+          filter="number"></custom-box>
+        <text>Date Format</text><text-box id="setString-operand-parse-timestamp-format"></text-box>
+        <text>Image Width</text><number-box id="setString-operand-screenshot-width" min="64" max="7680"
+          unit="px"></number-box>
+        <text>Image Height</text><number-box id="setString-operand-screenshot-height" min="64" max="7680"
+          unit="px"></number-box>
+      </grid-box>
+      <button id="setString-confirm" name="confirm">Confirm</button>
+      <button id="setString-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setObject">
+    <title-bar>Set Object<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="setObject-variable" type="variable" filter="object"></custom-box>
+        <text>Type</text><select-box id="setObject-operand-type"></select-box>
+        <text>Actor</text><custom-box id="setObject-operand-actor" type="actor"></custom-box>
+        <text>Skill</text><custom-box id="setObject-operand-skill" type="skill"></custom-box>
+        <text>State</text><custom-box id="setObject-operand-state" type="state"></custom-box>
+        <text>Equipment</text><custom-box id="setObject-operand-equipment" type="equipment"></custom-box>
+        <text>Item</text><custom-box id="setObject-operand-item" type="item"></custom-box>
+        <text>Trigger</text><custom-box id="setObject-operand-trigger" type="trigger"></custom-box>
+        <text>Light</text><custom-box id="setObject-operand-light" type="light"></custom-box>
+        <text>Object</text><custom-box id="setObject-operand-object" type="object"></custom-box>
+        <text>Element</text><custom-box id="setObject-operand-element" type="element"></custom-box>
+        <text>Variable</text><custom-box id="setObject-operand-variable" type="variable" filter="object"></custom-box>
+        <text>Index</text><number-var id="setObject-operand-list-index" min="0" max="1000000000"></number-var>
+      </grid-box>
+      <button id="setObject-confirm" name="confirm">Confirm</button>
+      <button id="setObject-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setList">
+    <title-bar>Set List<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="setList-variable" type="variable" filter="object"></custom-box>
+        <text>Operation</text><select-box id="setList-operation"></select-box>
+        <text>Numbers</text><custom-box id="setList-numbers" type="array" filter="number"></custom-box>
+        <text>Strings</text><custom-box id="setList-strings" type="array" filter="string"></custom-box>
+        <text>Index</text><number-var id="setList-index" min="0" max="1000000000"></number-var>
+        <text>Boolean</text><select-box id="setList-boolean"></select-box>
+        <text>Number</text><number-box id="setList-number" min="-1000000000" max="1000000000"
+          decimals="10"></number-box>
+        <text>String</text><text-area id="setList-string"></text-area>
+        <text>Variable</text><custom-box id="setList-operand" type="variable" filter="all"></custom-box>
+        <text>Separator</text><text-area-var id="setList-separator"></text-area-var>
+        <text>Attribute Group</text><custom-box id="setList-attribute-groupId" type="attribute-group"></custom-box>
+        <text>Enum Group</text><custom-box id="setList-enum-groupId" type="enum-group"></custom-box>
+        <text>Actor</text><custom-box id="setList-actor" type="actor"></custom-box>
+        <text>Default</text><check-box id="setList-index-skip-check" class="standard"></check-box>
+      </grid-box>
+      <button id="setList-confirm" name="confirm">Confirm</button>
+      <button id="setList-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="deleteVariable">
+    <title-bar>Delete Variable<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="deleteVariable-variable" type="variable" filter="deletable"></custom-box>
+      </grid-box>
+      <button id="deleteVariable-confirm" name="confirm">Confirm</button>
+      <button id="deleteVariable-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="getObjectProperty">
+    <title-bar>getObjectProperty<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="getObjectProperty-variable" type="variable" filter="object"></custom-box>
+        <text>getObjectProperty</text><param-list id="getObjectProperty-list"></param-list>
+        <text>saveVariable</text><custom-box id="getObjectProperty-save-variable" type="variable"
+          filter="object"></custom-box>
+      </grid-box>
+      <button id="getObjectProperty-confirm" name="confirm">Confirm</button>
+      <button id="getObjectProperty-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setObjectProperty">
+    <title-bar>setObjectProperty<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="setObjectProperty-variable" type="variable" filter="object"></custom-box>
+        <text>setObjectProperty</text><param-list id="setObjectProperty-list"></param-list>
+        <text>valueVariable</text><custom-box id="setObjectProperty-value-variable" type="variable"
+          filter="all"></custom-box>
+      </grid-box>
+      <button id="setObjectProperty-confirm" name="confirm">Confirm</button>
+      <button id="setObjectProperty-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="if">
+    <title-bar>If<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Branches</text><param-list id="if-branches"></param-list>
+      </grid-box>
+      <check-box id="if-else" class="standard"><text id="if-else-label">Else</text></check-box>
+      <button id="if-confirm" name="confirm">Confirm</button>
+      <button id="if-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="switch">
+    <title-bar>Switch<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="switch-variable" type="variable" filter="all"></custom-box>
+        <text>Branches</text><param-list id="switch-branches"></param-list>
+      </grid-box>
+      <check-box id="switch-default" class="standard"><text id="switch-default-label">Default</text></check-box>
+      <button id="switch-confirm" name="confirm">Confirm</button>
+      <button id="switch-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="loop">
+    <title-bar>Loop<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Mode</text><select-box id="loop-mode"></select-box>
+        <text>Conditions</text><param-list id="loop-conditions"></param-list>
+      </grid-box>
+      <button id="loop-confirm" name="confirm">Confirm</button>
+      <button id="loop-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="forEach">
+    <title-bar>For Each<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Data</text><select-box id="forEach-data"></select-box>
+        <text>List Variable</text><custom-box id="forEach-list" type="variable" filter="object"></custom-box>
+        <text>Actor</text><custom-box id="forEach-actor" type="actor"></custom-box>
+        <text>Parent Element</text><custom-box id="forEach-element" type="element"></custom-box>
+        <text>Attribute Group</text><custom-box id="forEach-attribute-groupId" type="attribute-group"></custom-box>
+        <text>Enum Group</text><custom-box id="forEach-enum-groupId" type="enum-group"></custom-box>
+        <text>Write to Variable</text><custom-box id="forEach-variable" type="variable" filter="object"></custom-box>
+        <text>Write Save Index</text><custom-box id="forEach-saveIndex" type="variable" filter="number"></custom-box>
+        <text>Touch Id</text><custom-box id="forEach-touchId" type="variable" filter="number"></custom-box>
+      </grid-box>
+      <button id="forEach-confirm" name="confirm">Confirm</button>
+      <button id="forEach-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="callEvent">
+    <title-bar>Call Event<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Type</text><select-box id="callEvent-type"></select-box>
+        <text>Actor</text><custom-box id="callEvent-actor" type="actor"></custom-box>
+        <text>Skill</text><custom-box id="callEvent-skill" type="skill"></custom-box>
+        <text>State</text><custom-box id="callEvent-state" type="state"></custom-box>
+        <text>Equipment</text><custom-box id="callEvent-equipment" type="equipment"></custom-box>
+        <text>Item</text><custom-box id="callEvent-item" type="item"></custom-box>
+        <text>Light</text><custom-box id="callEvent-light" type="light"></custom-box>
+        <text>Element</text><custom-box id="callEvent-element" type="element"></custom-box>
+        <text>Event</text><custom-box id="callEvent-eventId" type="file" filter="event"></custom-box>
+        <text>Event</text><select-box id="callEvent-eventType"></select-box>
+      </grid-box>
+      <button id="callEvent-confirm" name="confirm">Confirm</button>
+      <button id="callEvent-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="return">
+    <title-bar>Return<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Type</text><select-box id="return-type"></select-box>
+        <text>Boolean</text><select-box id="return-boolean"></select-box>
+        <text>Number</text><number-var id="return-number" min="-1000000000" max="1000000000" decimals="10"></number-var>
+        <text>String</text><string-var id="return-string"></string-var>
+        <text>Object</text><custom-box id="return-object" type="variable" filter="object"></custom-box>
+        <text>Actor</text><custom-box id="return-actor" type="actor"></custom-box>
+        <text>Skill</text><custom-box id="return-skill" type="skill"></custom-box>
+        <text>State</text><custom-box id="return-state" type="state"></custom-box>
+        <text>Equipment</text><custom-box id="return-equipment" type="equipment"></custom-box>
+        <text>Item</text><custom-box id="return-item" type="item"></custom-box>
+        <text>Trigger</text><custom-box id="return-trigger" type="trigger"></custom-box>
+        <text>Light</text><custom-box id="return-light" type="light"></custom-box>
+        <text>Element</text><custom-box id="return-element" type="element"></custom-box>
+      </grid-box>
+      <button id="return-confirm" name="confirm">Confirm</button>
+      <button id="return-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="registerEvent">
+    <title-bar>Register Event<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Target</text><select-box id="registerEvent-target"></select-box>
+        <text>Actor</text><custom-box id="registerEvent-actor" type="actor"></custom-box>
+        <text>Element</text><custom-box id="registerEvent-element" type="element"></custom-box>
+        <text>Operation</text><select-box id="registerEvent-operation"></select-box>
+        <text>Type</text><select-box id="registerEvent-type"></select-box>
+        <text>Priority</text><check-box id="registerEvent-priority" class="standard large"></check-box>
+        <text>Namespace</text><check-box id="registerEvent-namespace" class="standard large"></check-box>
+        <text>Tag Name</text><string-var id="registerEvent-tag"></string-var>
+      </grid-box>
+      <button id="registerEvent-confirm" name="confirm">Confirm</button>
+      <button id="registerEvent-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="stopEvent">
+    <title-bar>Stop Event<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Type</text><select-box id="stopEvent-type"></select-box>
+        <text>Actor</text><custom-box id="stopEvent-actor" type="actor"></custom-box>
+        <text>Skill</text><custom-box id="stopEvent-skill" type="skill"></custom-box>
+        <text>State</text><custom-box id="stopEvent-state" type="state"></custom-box>
+        <text>Equipment</text><custom-box id="stopEvent-equipment" type="equipment"></custom-box>
+        <text>Item</text><custom-box id="stopEvent-item" type="item"></custom-box>
+        <text>Light</text><custom-box id="stopEvent-light" type="light"></custom-box>
+        <text>Element</text><custom-box id="stopEvent-element" type="element"></custom-box>
+        <text>Event</text><custom-box id="stopEvent-eventId" type="file" filter="event"></custom-box>
+        <text>Event</text><select-box id="stopEvent-eventType"></select-box>
+      </grid-box>
+      <button id="stopEvent-confirm" name="confirm">Confirm</button>
+      <button id="stopEvent-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setEvent">
+    <title-bar>Set Event<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="setEvent-operation"></select-box>
+        <text>Variable</text><custom-box id="setEvent-variable" type="variable" filter="object"></custom-box>
+        <text>Event</text><custom-box id="setEvent-eventId" type="file" filter="event"></custom-box>
+        <text>Choice Index</text><number-var id="setEvent-choiceIndex" min="0" max="255"></number-var>
+      </grid-box>
+      <button id="setEvent-confirm" name="confirm">Confirm</button>
+      <button id="setEvent-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="transition">
+    <title-bar>Transition<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Write to Variable</text><custom-box id="transition-variable" type="variable" filter="number"></custom-box>
+        <text>Start Value</text><number-var id="transition-start" min="-1000000000" max="1000000000"
+          decimals="10"></number-var>
+        <text>End Value</text><number-var id="transition-end" min="-1000000000" max="1000000000"
+          decimals="10"></number-var>
+        <text>Easing</text><select-box id="transition-easingId" name="easing"></select-box>
+        <text>Duration</text><number-var id="transition-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-var>
+      </grid-box>
+      <button id="transition-confirm" name="confirm">Confirm</button>
+      <button id="transition-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="block">
+    <title-bar>Block<close></close></title-bar>
+    <content-frame>
+      <text-box id="block-note"></text-box>
+      <check-box id="block-asynchronous" class="standard"><text
+          id="block-asynchronous-label">Asynchronous</text></check-box>
+      <button id="block-confirm" name="confirm">Confirm</button>
+      <button id="block-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="label">
+    <title-bar>Label<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Label Name</text><text-box id="label-name"></text-box>
+      </grid-box>
+      <button id="label-confirm" name="confirm">Confirm</button>
+      <button id="label-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="jumpTo">
+    <title-bar>Jump to<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="jumpTo-operation"></select-box>
+        <text>Label Name</text><text-box id="jumpTo-label"></text-box>
+      </grid-box>
+      <button id="jumpTo-confirm" name="confirm">Confirm</button>
+      <button id="jumpTo-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="wait">
+    <title-bar>Wait<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Duration</text><number-var id="wait-duration" min="1" max="3600000" unit="ms"></number-var>
+      </grid-box>
+      <button id="wait-confirm" name="confirm">Confirm</button>
+      <button id="wait-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="createElement">
+    <title-bar>Create Element<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="createElement-operation"></select-box>
+        <text>Parent</text><custom-box id="createElement-parent" type="element"></custom-box>
+        <text>UI Elements</text><custom-box id="createElement-uiId" type="file" filter="ui"></custom-box>
+        <text>UI Element</text><custom-box id="createElement-presetId" type="preset-element"></custom-box>
+      </grid-box>
+      <button id="createElement-confirm" name="confirm">Confirm</button>
+      <button id="createElement-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setImage">
+    <title-bar>Set Image<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setImage-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setImage-properties"></param-list>
+      </grid-box>
+      <button id="setImage-confirm" name="confirm">Confirm</button>
+      <button id="setImage-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="loadImage">
+    <title-bar>Load Image<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="loadImage-element" type="element"></custom-box>
+        <text>Type</text><select-box id="loadImage-type"></select-box>
+        <text>Actor</text><custom-box id="loadImage-actor" type="actor"></custom-box>
+        <text>Skill</text><custom-box id="loadImage-skill" type="skill"></custom-box>
+        <text>State</text><custom-box id="loadImage-state" type="state"></custom-box>
+        <text>Equipment</text><custom-box id="loadImage-equipment" type="equipment"></custom-box>
+        <text>Item</text><custom-box id="loadImage-item" type="item"></custom-box>
+        <text>Shortcut Key</text><select-var id="loadImage-key"></select-var>
+        <text>Base64 Coding</text><custom-box id="loadImage-variable" type="variable" filter="string"></custom-box>
+      </grid-box>
+      <button id="loadImage-confirm" name="confirm">Confirm</button>
+      <button id="loadImage-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="tintImage">
+    <title-bar>Tint Image<close></close></title-bar>
+    <content-frame>
+      <grid-box id="tintImage-grid-box">
+        <text>Element</text><custom-box id="tintImage-element" type="element"></custom-box>
+        <text>Mode</text><select-box id="tintImage-mode"></select-box>
+        <text>Tint - Red</text><number-box id="tintImage-tint-0" min="-255" max="255" step="5"></number-box>
+        <text>Tint - Green</text><number-box id="tintImage-tint-1" min="-255" max="255" step="5"></number-box>
+        <text>Tint - Blue</text><number-box id="tintImage-tint-2" min="-255" max="255" step="5"></number-box>
+        <text>Tint - Grayscale</text><number-box id="tintImage-tint-3" min="0" max="255" step="5"></number-box>
+        <text>Easing</text><select-box id="tintImage-easingId" name="easing"></select-box>
+        <text>Duration</text><number-box id="tintImage-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-box>
+        <text>Wait</text><select-box id="tintImage-wait" name="wait"></select-box>
+      </grid-box>
+      <filter-box id="tintImage-filter" width="96" height="208"></filter-box>
+      <button id="tintImage-confirm" name="confirm">Confirm</button>
+      <button id="tintImage-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setText">
+    <title-bar>Set Text<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setText-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setText-properties"></param-list>
+      </grid-box>
+      <button id="setText-confirm" name="confirm">Confirm</button>
+      <button id="setText-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setTextBox">
+    <title-bar>Set Text Box<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setTextBox-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setTextBox-properties"></param-list>
+      </grid-box>
+      <button id="setTextBox-confirm" name="confirm">Confirm</button>
+      <button id="setTextBox-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setDialogBox">
+    <title-bar>Set Dialog Box<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setDialogBox-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setDialogBox-properties"></param-list>
+      </grid-box>
+      <button id="setDialogBox-confirm" name="confirm">Confirm</button>
+      <button id="setDialogBox-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="controlDialog">
+    <title-bar>Control Dialog<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="controlDialog-element" type="element"></custom-box>
+        <text>Operation</text><select-box id="controlDialog-operation"></select-box>
+      </grid-box>
+      <button id="controlDialog-confirm" name="confirm">Confirm</button>
+      <button id="controlDialog-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setProgressBar">
+    <title-bar>Set Progress Bar<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setProgressBar-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setProgressBar-properties"></param-list>
+      </grid-box>
+      <button id="setProgressBar-confirm" name="confirm">Confirm</button>
+      <button id="setProgressBar-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setButton">
+    <title-bar>Set Button<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setButton-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setButton-properties"></param-list>
+      </grid-box>
+      <button id="setButton-confirm" name="confirm">Confirm</button>
+      <button id="setButton-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="controlButton">
+    <title-bar>Control Button<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="controlButton-operation"></select-box>
+        <text>Element</text><custom-box id="controlButton-element" type="element"></custom-box>
+      </grid-box>
+      <button id="controlButton-confirm" name="confirm">Confirm</button>
+      <button id="controlButton-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setAnimation">
+    <title-bar>Set Animation<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setAnimation-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setAnimation-properties"></param-list>
+      </grid-box>
+      <button id="setAnimation-confirm" name="confirm">Confirm</button>
+      <button id="setAnimation-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setVideo">
+    <title-bar>Set Video<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setVideo-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setVideo-properties"></param-list>
+      </grid-box>
+      <button id="setVideo-confirm" name="confirm">Confirm</button>
+      <button id="setVideo-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setWindow">
+    <title-bar>Set Window<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setWindow-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="setWindow-properties"></param-list>
+      </grid-box>
+      <button id="setWindow-confirm" name="confirm">Confirm</button>
+      <button id="setWindow-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="waitForVideo">
+    <title-bar>Wait For Video<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="waitForVideo-element" type="element"></custom-box>
+      </grid-box>
+      <button id="waitForVideo-confirm" name="confirm">Confirm</button>
+      <button id="waitForVideo-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setElement">
+    <title-bar>Set Element<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="setElement-element" type="element"></custom-box>
+        <text>Operation</text><select-box id="setElement-operation"></select-box>
+      </grid-box>
+      <button id="setElement-confirm" name="confirm">Confirm</button>
+      <button id="setElement-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="nestElement">
+    <title-bar>Nest Element<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Parent Element</text><custom-box id="nestElement-parent" type="element"></custom-box>
+        <text>Child Element</text><custom-box id="nestElement-child" type="element"></custom-box>
+      </grid-box>
+      <button id="nestElement-confirm" name="confirm">Confirm</button>
+      <button id="nestElement-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="moveElement">
+    <title-bar>Move Element<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Element</text><custom-box id="moveElement-element" type="element"></custom-box>
+        <text>Properties</text><param-list id="moveElement-properties"></param-list>
+        <text>Easing</text><select-box id="moveElement-easingId" name="easing"></select-box>
+        <text>Duration</text><number-box id="moveElement-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-box>
+        <text>Wait</text><select-box id="moveElement-wait" name="wait"></select-box>
+      </grid-box>
+      <button id="moveElement-confirm" name="confirm">Confirm</button>
+      <button id="moveElement-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="deleteElement">
+    <title-bar>Delete Element<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="deleteElement-operation"></select-box>
+        <text>Element</text><custom-box id="deleteElement-element" type="element"></custom-box>
+      </grid-box>
+      <button id="deleteElement-confirm" name="confirm">Confirm</button>
+      <button id="deleteElement-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setPointerEventRoot">
+    <title-bar>Set Pointer Event Root<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="setPointerEventRoot-operation"></select-box>
+        <text>Element</text><custom-box id="setPointerEventRoot-element" type="element"></custom-box>
+      </grid-box>
+      <button id="setPointerEventRoot-confirm" name="confirm">Confirm</button>
+      <button id="setPointerEventRoot-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setFocus">
+    <title-bar>Set Focus<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="setFocus-operation"></select-box>
+        <text>Element</text><custom-box id="setFocus-element" type="element"></custom-box>
+        <text>Mode</text><select-box id="setFocus-mode"></select-box>
+        <text>Cancelable</text><check-box id="setFocus-cancelable" class="standard large"></check-box>
+      </grid-box>
+      <button id="setFocus-confirm" name="confirm">Confirm</button>
+      <button id="setFocus-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="createObject">
+    <title-bar>Create Object<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Object</text><custom-box id="createObject-presetId" type="preset-object" filter="any"></custom-box>
+        <text>Position</text><custom-box id="createObject-position" type="position"></custom-box>
+      </grid-box>
+      <button id="createObject-confirm" name="confirm">Confirm</button>
+      <button id="createObject-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="moveLight">
+    <title-bar>Move Light<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Light</text><custom-box id="moveLight-light" type="light"></custom-box>
+        <text>Properties</text><param-list id="moveLight-properties"></param-list>
+        <text>Easing</text><select-box id="moveLight-easingId" name="easing"></select-box>
+        <text>Duration</text><number-box id="moveLight-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-box>
+        <text>Wait</text><select-box id="moveLight-wait" name="wait"></select-box>
+      </grid-box>
+      <button id="moveLight-confirm" name="confirm">Confirm</button>
+      <button id="moveLight-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
   <window-frame id="deleteObject">
     <title-bar>Delete Object<close></close></title-bar>
     <content-frame>
@@ -5182,8 +5399,6 @@
       <button id="deleteObject-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置状态 -->
   <window-frame id="setState">
     <title-bar>Set State<close></close></title-bar>
     <content-frame>
@@ -5196,8 +5411,6 @@
       <button id="setState-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 播放动画 -->
   <window-frame id="playAnimation">
     <title-bar>Play Animation<close></close></title-bar>
     <content-frame>
@@ -5220,8 +5433,6 @@
       <button id="playAnimation-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置对象动画 -->
   <window-frame id="setObjectAnimation">
     <title-bar>Set Object Animation<close></close></title-bar>
     <content-frame>
@@ -5250,8 +5461,6 @@
       <button id="setObjectAnimation-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 播放音频 -->
   <window-frame id="playAudio">
     <title-bar>Play Audio<close></close></title-bar>
     <content-frame>
@@ -5265,8 +5474,6 @@
       <button id="playAudio-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 停止播放音频 -->
   <window-frame id="stopAudio">
     <title-bar>Stop Audio<close></close></title-bar>
     <content-frame>
@@ -5277,8 +5484,6 @@
       <button id="stopAudio-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置音量 -->
   <window-frame id="setVolume">
     <title-bar>Set Volume<close></close></title-bar>
     <content-frame>
@@ -5294,8 +5499,6 @@
       <button id="setVolume-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置声像 -->
   <window-frame id="setPan">
     <title-bar>Set Pan<close></close></title-bar>
     <content-frame>
@@ -5311,8 +5514,6 @@
       <button id="setPan-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置混响 -->
   <window-frame id="setReverb">
     <title-bar>Set Reverb<close></close></title-bar>
     <content-frame>
@@ -5329,8 +5530,6 @@
       <button id="setReverb-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置循环 -->
   <window-frame id="setLoop">
     <title-bar>Set Loop<close></close></title-bar>
     <content-frame>
@@ -5342,8 +5541,6 @@
       <button id="setLoop-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 保存音频 -->
   <window-frame id="saveAudio">
     <title-bar>Save Audio<close></close></title-bar>
     <content-frame>
@@ -5354,8 +5551,6 @@
       <button id="saveAudio-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 恢复音频 -->
   <window-frame id="restoreAudio">
     <title-bar>Restore Audio<close></close></title-bar>
     <content-frame>
@@ -5366,8 +5561,6 @@
       <button id="restoreAudio-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 创建角色 -->
   <window-frame id="createActor">
     <title-bar>Create Actor<close></close></title-bar>
     <content-frame>
@@ -5381,8 +5574,6 @@
       <button id="createActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 移动角色 -->
   <window-frame id="moveActor">
     <title-bar>Move Actor<close></close></title-bar>
     <content-frame>
@@ -5397,8 +5588,6 @@
       <button id="moveActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 跟随角色 -->
   <window-frame id="followActor">
     <title-bar>Follow Actor<close></close></title-bar>
     <content-frame>
@@ -5425,8 +5614,6 @@
       <button id="followActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 平移角色 -->
   <window-frame id="translateActor">
     <title-bar>Translate Actor<close></close></title-bar>
     <content-frame>
@@ -5444,8 +5631,6 @@
       <button id="translateActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 增减仇恨值 -->
   <window-frame id="changeThreat">
     <title-bar>Change Threat<close></close></title-bar>
     <content-frame>
@@ -5459,8 +5644,6 @@
       <button id="changeThreat-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置体重 -->
   <window-frame id="setWeight">
     <title-bar>Set Weight<close></close></title-bar>
     <content-frame>
@@ -5472,8 +5655,6 @@
       <button id="setWeight-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置移动速度 -->
   <window-frame id="setMovementSpeed">
     <title-bar>Set Movement Speed<close></close></title-bar>
     <content-frame>
@@ -5488,8 +5669,6 @@
       <button id="setMovementSpeed-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置角度 -->
   <window-frame id="setAngle">
     <title-bar>Set Angle<close></close></title-bar>
     <content-frame>
@@ -5505,8 +5684,6 @@
       <button id="setAngle-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 固定角度 -->
   <window-frame id="fixAngle">
     <title-bar>Fix Angle<close></close></title-bar>
     <content-frame>
@@ -5518,8 +5695,6 @@
       <button id="fixAngle-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置激活状态 -->
   <window-frame id="setActive">
     <title-bar>Set Active<close></close></title-bar>
     <content-frame>
@@ -5531,8 +5706,6 @@
       <button id="setActive-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 获取角色 -->
   <window-frame id="getActor">
     <title-bar>Get Actor<close></close></title-bar>
     <content-frame>
@@ -5556,8 +5729,6 @@
       <button id="getActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 获取多个角色 -->
   <window-frame id="getMultipleActors">
     <title-bar>Get Actor<close></close></title-bar>
     <content-frame>
@@ -5580,8 +5751,6 @@
       <button id="getMultipleActors-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 删除角色 -->
   <window-frame id="deleteActor">
     <title-bar>Delete Actor<close></close></title-bar>
     <content-frame>
@@ -5592,8 +5761,6 @@
       <button id="deleteActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置玩家角色 -->
   <window-frame id="setPlayerActor">
     <title-bar>Set Player Actor<close></close></title-bar>
     <content-frame>
@@ -5604,8 +5771,6 @@
       <button id="setPlayerActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置队伍成员 -->
   <window-frame id="setPartyMember">
     <title-bar>Set Party Member<close></close></title-bar>
     <content-frame>
@@ -5617,8 +5782,6 @@
       <button id="setPartyMember-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变通行区域 -->
   <window-frame id="changePassableTerrain">
     <title-bar>Change Passable Terrain<close></close></title-bar>
     <content-frame>
@@ -5630,8 +5793,6 @@
       <button id="changePassableTerrain-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变角色队伍 -->
   <window-frame id="changeActorTeam">
     <title-bar>Change Actor Team<close></close></title-bar>
     <content-frame>
@@ -5643,8 +5804,6 @@
       <button id="changeActorTeam-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变角色状态 -->
   <window-frame id="changeActorState">
     <title-bar>Change Actor State<close></close></title-bar>
     <content-frame>
@@ -5658,8 +5817,6 @@
       <button id="changeActorState-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变角色装备 -->
   <window-frame id="changeActorEquipment">
     <title-bar>Change Actor Equipment<close></close></title-bar>
     <content-frame>
@@ -5675,8 +5832,6 @@
       <button id="changeActorEquipment-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变角色技能 -->
   <window-frame id="changeActorSkill">
     <title-bar>Change Actor Skill<close></close></title-bar>
     <content-frame>
@@ -5690,8 +5845,6 @@
       <button id="changeActorSkill-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变角色头像 -->
   <window-frame id="changeActorPortrait">
     <title-bar>Change Actor Portrait<close></close></title-bar>
     <content-frame>
@@ -5706,8 +5859,6 @@
       <button id="changeActorPortrait-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变角色动画 -->
   <window-frame id="changeActorAnimation">
     <title-bar>Change Actor Animation<close></close></title-bar>
     <content-frame>
@@ -5720,8 +5871,6 @@
       <button id="changeActorAnimation-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变角色精灵图 -->
   <window-frame id="changeActorSprite">
     <title-bar>Change Actor Sprite<close></close></title-bar>
     <content-frame>
@@ -5736,8 +5885,6 @@
       <button id="changeActorSprite-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变角色动作 -->
   <window-frame id="changeActorMotion">
     <title-bar>Change Actor Motion<close></close></title-bar>
     <content-frame>
@@ -5750,8 +5897,6 @@
       <button id="changeActorMotion-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 播放角色动画 -->
   <window-frame id="playActorAnimation">
     <title-bar>Play Actor Animation<close></close></title-bar>
     <content-frame>
@@ -5766,8 +5911,6 @@
       <button id="playActorAnimation-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 停止角色动画 -->
   <window-frame id="stopActorAnimation">
     <title-bar>Stop Actor Animation<close></close></title-bar>
     <content-frame>
@@ -5778,8 +5921,6 @@
       <button id="stopActorAnimation-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 添加动画组件 -->
   <window-frame id="addAnimationComponent">
     <title-bar>Add Animation Component<close></close></title-bar>
     <content-frame>
@@ -5797,8 +5938,6 @@
       <button id="addAnimationComponent-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置动画组件 -->
   <window-frame id="setAnimationComponent">
     <title-bar>Set Animation Component<close></close></title-bar>
     <content-frame>
@@ -5826,8 +5965,6 @@
       <button id="setAnimationComponent-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 移除动画组件 -->
   <window-frame id="removeAnimationComponent">
     <title-bar>Remove Animation Component<close></close></title-bar>
     <content-frame>
@@ -5841,8 +5978,6 @@
       <button id="removeAnimationComponent-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 创建全局角色 -->
   <window-frame id="createGlobalActor">
     <title-bar>Create Global Actor<close></close></title-bar>
     <content-frame>
@@ -5854,8 +5989,6 @@
       <button id="createGlobalActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 转移全局角色 -->
   <window-frame id="transferGlobalActor">
     <title-bar>Transfer Global Actor<close></close></title-bar>
     <content-frame>
@@ -5867,8 +6000,6 @@
       <button id="transferGlobalActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 删除全局角色 -->
   <window-frame id="deleteGlobalActor">
     <title-bar>Delete Global Actor<close></close></title-bar>
     <content-frame>
@@ -5879,8 +6010,6 @@
       <button id="deleteGlobalActor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置目标 -->
   <window-frame id="setTarget">
     <title-bar>Set Target<close></close></title-bar>
     <content-frame>
@@ -5891,8 +6020,6 @@
       <button id="setTarget-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 获取目标 -->
   <window-frame id="getTarget">
     <title-bar>Get Target<close></close></title-bar>
     <content-frame>
@@ -5907,8 +6034,6 @@
       <button id="getTarget-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 添加目标 -->
   <window-frame id="appendTarget">
     <title-bar>Append Target<close></close></title-bar>
     <content-frame>
@@ -5920,8 +6045,6 @@
       <button id="appendTarget-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 移除目标 -->
   <window-frame id="removeTarget">
     <title-bar>Remove Target<close></close></title-bar>
     <content-frame>
@@ -5933,8 +6056,6 @@
       <button id="removeTarget-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 探测目标 -->
   <window-frame id="detectTargets">
     <title-bar>Detect Targets<close></close></title-bar>
     <content-frame>
@@ -5949,8 +6070,6 @@
       <button id="detectTargets-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 放弃目标 -->
   <window-frame id="discardTargets">
     <title-bar>Discard Targets<close></close></title-bar>
     <content-frame>
@@ -5964,8 +6083,6 @@
       <button id="discardTargets-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 重置目标列表 -->
   <window-frame id="resetTargets">
     <title-bar>Reset Targets<close></close></title-bar>
     <content-frame>
@@ -5976,8 +6093,6 @@
       <button id="resetTargets-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 渲染轮廓 -->
   <window-frame id="renderOutline">
     <title-bar>Render Outline<close></close></title-bar>
     <content-frame>
@@ -5990,8 +6105,6 @@
       <button id="renderOutline-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 施放技能 -->
   <window-frame id="castSkill">
     <title-bar>Cast Skill<close></close></title-bar>
     <content-frame>
@@ -6007,8 +6120,6 @@
       <button id="castSkill-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置技能 -->
   <window-frame id="setSkill">
     <title-bar>Set Skill<close></close></title-bar>
     <content-frame>
@@ -6021,8 +6132,6 @@
       <button id="setSkill-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 创建触发器 -->
   <window-frame id="createTrigger">
     <title-bar>Create Trigger<close></close></title-bar>
     <content-frame>
@@ -6041,8 +6150,6 @@
       <button id="createTrigger-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置触发器速度 -->
   <window-frame id="setTriggerSpeed">
     <title-bar>Set Trigger Speed<close></close></title-bar>
     <content-frame>
@@ -6054,8 +6161,6 @@
       <button id="setTriggerSpeed-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置触发器角度 -->
   <window-frame id="setTriggerAngle">
     <title-bar>Set Trigger Angle<close></close></title-bar>
     <content-frame>
@@ -6067,8 +6172,6 @@
       <button id="setTriggerAngle-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置触发器持续时间 -->
   <window-frame id="setTriggerDuration">
     <title-bar>Set Trigger Duration<close></close></title-bar>
     <content-frame>
@@ -6081,8 +6184,6 @@
       <button id="setTriggerDuration-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置触发器动作 -->
   <window-frame id="setTriggerMotion">
     <title-bar>Set Trigger Motion<close></close></title-bar>
     <content-frame>
@@ -6094,8 +6195,6 @@
       <button id="setTriggerMotion-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置库存 -->
   <window-frame id="setInventory">
     <title-bar>Set Inventory<close></close></title-bar>
     <content-frame>
@@ -6115,8 +6214,6 @@
       <button id="setInventory-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 使用物品 -->
   <window-frame id="useItem">
     <title-bar>Use Item<close></close></title-bar>
     <content-frame>
@@ -6132,8 +6229,6 @@
       <button id="useItem-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置物品 -->
   <window-frame id="setItem">
     <title-bar>Set Item<close></close></title-bar>
     <content-frame>
@@ -6146,8 +6241,6 @@
       <button id="setItem-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置冷却时间 -->
   <window-frame id="setCooldown">
     <title-bar>Set Cooldown<close></close></title-bar>
     <content-frame>
@@ -6161,8 +6254,6 @@
       <button id="setCooldown-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置快捷键 -->
   <window-frame id="setShortcut">
     <title-bar>Set Shortcut<close></close></title-bar>
     <content-frame>
@@ -6178,8 +6269,6 @@
       <button id="setShortcut-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 激活场景 -->
   <window-frame id="activateScene">
     <title-bar>Activate Scene<close></close></title-bar>
     <content-frame>
@@ -6190,8 +6279,6 @@
       <button id="activateScene-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 加载场景 -->
   <window-frame id="loadScene">
     <title-bar>Load Scene<close></close></title-bar>
     <content-frame>
@@ -6205,8 +6292,6 @@
       <button id="loadScene-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 加载子场景 -->
   <window-frame id="loadSubscene">
     <title-bar>Load Subscene<close></close></title-bar>
     <content-frame>
@@ -6219,8 +6304,6 @@
       <button id="loadSubscene-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 卸载子场景 -->
   <window-frame id="unloadSubscene">
     <title-bar>Unload Subscene<close></close></title-bar>
     <content-frame>
@@ -6231,8 +6314,6 @@
       <button id="unloadSubscene-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 限制摄像机边界 -->
   <window-frame id="clampCamera">
     <title-bar>Clamp Camera<close></close></title-bar>
     <content-frame>
@@ -6248,8 +6329,6 @@
       <button id="clampCamera-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 移动摄像机 -->
   <window-frame id="moveCamera">
     <title-bar>Move Camera<close></close></title-bar>
     <content-frame>
@@ -6266,8 +6345,6 @@
       <button id="moveCamera-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置缩放率 -->
   <window-frame id="setZoomFactor">
     <title-bar>Set Zoom Factor<close></close></title-bar>
     <content-frame>
@@ -6283,8 +6360,6 @@
       <button id="setZoomFactor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置环境光 -->
   <window-frame id="setAmbientLight">
     <title-bar>Set Ambient Light<close></close></title-bar>
     <content-frame>
@@ -6301,8 +6376,6 @@
       <button id="setAmbientLight-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 改变画面色调 -->
   <window-frame id="tintScreen">
     <title-bar>Tint Screen<close></close></title-bar>
     <content-frame>
@@ -6321,8 +6394,6 @@
       <button id="tintScreen-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 屏幕震动 -->
   <window-frame id="shakeScreen">
     <title-bar>Tint Screen<close></close></title-bar>
     <content-frame>
@@ -6339,8 +6410,6 @@
       <button id="shakeScreen-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置图块 -->
   <window-frame id="setTile">
     <title-bar>Set Tile<close></close></title-bar>
     <content-frame>
@@ -6356,8 +6425,6 @@
       <button id="setTile-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 删除图块 -->
   <window-frame id="deleteTile">
     <title-bar>Delete Tile<close></close></title-bar>
     <content-frame>
@@ -6370,8 +6437,6 @@
       <button id="deleteTile-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置地形 -->
   <window-frame id="setTerrain">
     <title-bar>Set Terrain<close></close></title-bar>
     <content-frame>
@@ -6383,8 +6448,6 @@
       <button id="setTerrain-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 请求URL -->
   <window-frame id="requestURL">
     <title-bar>requestURL<close></close></title-bar>
     <content-frame>
@@ -6399,21 +6462,6 @@
       <button id="requestURL-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 请求 - keyValue -->
-  <window-frame id="request-keyValue">
-    <title-bar>Header<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>key</text><string-var id="request-keyValue-key"></string-var>
-        <text>value</text><string-var id="request-keyValue-value"></string-var>
-      </grid-box>
-      <button id="request-keyValue-confirm" name="confirm">Confirm</button>
-      <button id="request-keyValue-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-
-  <!-- 下载文件 -->
   <window-frame id="downloadFile">
     <title-bar>downloadFile<close></close></title-bar>
     <content-frame>
@@ -6431,8 +6479,6 @@
       <button id="downloadFile-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置游戏速度 -->
   <window-frame id="setGameSpeed">
     <title-bar>Set Game Speed<close></close></title-bar>
     <content-frame>
@@ -6447,8 +6493,6 @@
       <button id="setGameSpeed-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置鼠标指针 -->
   <window-frame id="setCursor">
     <title-bar>Set Cursor<close></close></title-bar>
     <content-frame>
@@ -6459,8 +6503,6 @@
       <button id="setCursor-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置队伍关系 -->
   <window-frame id="setTeamRelation">
     <title-bar>Change Team Relation<close></close></title-bar>
     <content-frame>
@@ -6473,8 +6515,6 @@
       <button id="setTeamRelation-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 开关碰撞系统 -->
   <window-frame id="switchCollisionSystem">
     <title-bar>Switch Collision System<close></close></title-bar>
     <content-frame>
@@ -6485,8 +6525,6 @@
       <button id="switchCollisionSystem-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 游戏数据 -->
   <window-frame id="gameData">
     <title-bar>Game Data<close></close></title-bar>
     <content-frame>
@@ -6499,8 +6537,6 @@
       <button id="gameData-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 模拟按键 -->
   <window-frame id="simulateKey">
     <title-bar>Simulate Key<close></close></title-bar>
     <content-frame>
@@ -6512,8 +6548,6 @@
       <button id="simulateKey-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置语言 -->
   <window-frame id="setLanguage">
     <title-bar>Set Language<close></close></title-bar>
     <content-frame>
@@ -6524,8 +6558,6 @@
       <button id="setLanguage-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 设置分辨率 -->
   <window-frame id="setResolution">
     <title-bar>Set Resolution<close></close></title-bar>
     <content-frame>
@@ -6539,8 +6571,6 @@
       <button id="setResolution-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 启动参数 -->
   <window-frame id="commandLine">
     <title-bar>Command Line<close></close></title-bar>
     <content-frame>
@@ -6554,8 +6584,6 @@
       <button id="commandLine-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
-
-  <!-- 执行脚本 -->
   <window-frame id="script">
     <title-bar>Script<text id='script-mark' class='hidden'>✱</text>
       <button id="script-change" name="script-change-ts">切换为TS</button>
@@ -6567,34 +6595,6 @@
       </box>
       <button id="script-confirm" name="confirm">Confirm</button>
       <button id="script-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-
-  <!-- 编辑数据 -->
-  <window-frame id="edit-data">
-    <title-bar>edit data<text id='edit-data-mark' class='hidden'>✱</text>
-      <maximize id="edit-data-maximize"></maximize>
-      <close></close>
-    </title-bar>
-    <content-frame>
-      <box id='edit-data-current'>
-      </box>
-      <button id="edit-data-confirm" name="confirm">Confirm</button>
-      <button id="edit-data-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-
-  <!-- 脚本指令 -->
-  <window-frame id="scriptCommand">
-    <title-bar>Custom Command<close></close></title-bar>
-    <content-frame>
-      <parameter-pane id="scriptCommand-parameter-pane">
-        <detail-box id="scriptCommand-parameter-detail" open>
-          <detail-grid id="scriptCommand-parameter-grid"></detail-grid>
-        </detail-box>
-      </parameter-pane>
-      <button id="scriptCommand-confirm" name="confirm">Confirm</button>
-      <button id="scriptCommand-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
 </body>

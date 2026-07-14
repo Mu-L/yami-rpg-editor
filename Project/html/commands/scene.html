@@ -1,0 +1,179 @@
+  <window-frame id="activateScene">
+    <title-bar>Activate Scene<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Scene</text><select-box id="activateScene-pointer"></select-box>
+      </grid-box>
+      <button id="activateScene-confirm" name="confirm">Confirm</button>
+      <button id="activateScene-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="loadScene">
+    <title-bar>Load Scene<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Scene</text><file-var id="loadScene-sceneId" type="file" filter="scene"></file-var>
+        <text>Transfer Player</text><select-box id="loadScene-transfer"></select-box>
+        <text>X</text><number-var id="loadScene-x" min="0" max="512" step="0.5" decimals="4"></number-var>
+        <text>Y</text><number-var id="loadScene-y" min="0" max="512" step="0.5" decimals="4"></number-var>
+      </grid-box>
+      <button id="loadScene-confirm" name="confirm">Confirm</button>
+      <button id="loadScene-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="loadSubscene">
+    <title-bar>Load Subscene<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Scene</text><file-var id="loadSubscene-sceneId" type="file" filter="scene"></file-var>
+        <text>Shift X</text><number-var id="loadSubscene-shiftX" min="0" max="512"></number-var>
+        <text>Shift Y</text><number-var id="loadSubscene-shiftY" min="0" max="512"></number-var>
+      </grid-box>
+      <button id="loadSubscene-confirm" name="confirm">Confirm</button>
+      <button id="loadSubscene-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="unloadSubscene">
+    <title-bar>Unload Subscene<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Scene</text><file-var id="unloadSubscene-sceneId" type="file" filter="scene"></file-var>
+      </grid-box>
+      <button id="unloadSubscene-confirm" name="confirm">Confirm</button>
+      <button id="unloadSubscene-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="clampCamera">
+    <title-bar>Clamp Camera<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Left</text><number-var id="clampCamera-left" min="-1000" max="1000" step="0.1" decimals="4"></number-var>
+        <text>Top</text><number-var id="clampCamera-top" min="-1000" max="1000" step="0.1" decimals="4"></number-var>
+        <text>Right</text><number-var id="clampCamera-right" min="-1000" max="1000" step="0.1"
+          decimals="4"></number-var>
+        <text>Bottom</text><number-var id="clampCamera-bottom" min="-1000" max="1000" step="0.1"
+          decimals="4"></number-var>
+      </grid-box>
+      <button id="clampCamera-confirm" name="confirm">Confirm</button>
+      <button id="clampCamera-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="moveCamera">
+    <title-bar>Move Camera<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Mode</text><select-box id="moveCamera-mode"></select-box>
+        <text>Position</text><custom-box id="moveCamera-position" type="position"></custom-box>
+        <text>Actor</text><custom-box id="moveCamera-actor" type="actor"></custom-box>
+        <text>Easing</text><select-box id="moveCamera-easingId" name="easing"></select-box>
+        <text>Duration</text><number-box id="moveCamera-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-box>
+        <text>Wait</text><select-box id="moveCamera-wait" name="wait"></select-box>
+      </grid-box>
+      <button id="moveCamera-confirm" name="confirm">Confirm</button>
+      <button id="moveCamera-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setZoomFactor">
+    <title-bar>Set Zoom Factor<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Zoom Factor</text><number-var id="setZoomFactor-zoom" min="1" max="8" step="0.1"
+          decimals="4"></number-var>
+        <text>Easing</text><select-box id="setZoomFactor-easingId" name="easing"></select-box>
+        <text>Duration</text><number-var id="setZoomFactor-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-var>
+        <text>Wait</text><select-box id="setZoomFactor-wait" name="wait"></select-box>
+      </grid-box>
+      <button id="setZoomFactor-confirm" name="confirm">Confirm</button>
+      <button id="setZoomFactor-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setAmbientLight">
+    <title-bar>Set Ambient Light<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Red</text><number-var id="setAmbientLight-red" min="0" max="255" step="5"></number-var>
+        <text>Green</text><number-var id="setAmbientLight-green" min="0" max="255" step="5"></number-var>
+        <text>Blue</text><number-var id="setAmbientLight-blue" min="0" max="255" step="5"></number-var>
+        <text>Easing</text><select-box id="setAmbientLight-easingId" name="easing"></select-box>
+        <text>Duration</text><number-var id="setAmbientLight-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-var>
+        <text>Wait</text><select-box id="setAmbientLight-wait" name="wait"></select-box>
+      </grid-box>
+      <button id="setAmbientLight-confirm" name="confirm">Confirm</button>
+      <button id="setAmbientLight-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="tintScreen">
+    <title-bar>Tint Screen<close></close></title-bar>
+    <content-frame>
+      <grid-box id="tintScreen-grid-box">
+        <text>Tint - Red</text><number-box id="tintScreen-tint-0" min="-255" max="255" step="5"></number-box>
+        <text>Tint - Green</text><number-box id="tintScreen-tint-1" min="-255" max="255" step="5"></number-box>
+        <text>Tint - Blue</text><number-box id="tintScreen-tint-2" min="-255" max="255" step="5"></number-box>
+        <text>Tint - Grayscale</text><number-box id="tintScreen-tint-3" min="0" max="255" step="5"></number-box>
+        <text>Easing</text><select-box id="tintScreen-easingId" name="easing"></select-box>
+        <text>Duration</text><number-box id="tintScreen-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-box>
+        <text>Wait</text><select-box id="tintScreen-wait" name="wait"></select-box>
+      </grid-box>
+      <filter-box id="tintScreen-filter" width="96" height="160"></filter-box>
+      <button id="tintScreen-confirm" name="confirm">Confirm</button>
+      <button id="tintScreen-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="shakeScreen">
+    <title-bar>Tint Screen<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Shake Mode</text><select-box id="shakeScreen-mode"></select-box>
+        <text>Power</text><number-box id="shakeScreen-power" min="1" max="10"></number-box>
+        <text>Speed</text><number-box id="shakeScreen-speed" min="1" max="10"></number-box>
+        <text>Easing</text><select-box id="shakeScreen-easingId" name="easing"></select-box>
+        <text>Duration</text><number-box id="shakeScreen-duration" name="duration" min="1" max="3600000"
+          unit="ms"></number-box>
+        <text>Wait</text><select-box id="shakeScreen-wait" name="wait"></select-box>
+      </grid-box>
+      <button id="shakeScreen-confirm" name="confirm">Confirm</button>
+      <button id="shakeScreen-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setTile">
+    <title-bar>Set Tile<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Tilemap</text><custom-box id="setTile-tilemap" type="tilemap"></custom-box>
+        <text>Tilemap X</text><number-var id="setTile-tilemapX" min="0" max="511"></number-var>
+        <text>Tilemap Y</text><number-var id="setTile-tilemapY" min="0" max="511"></number-var>
+        <text>Tileset</text><custom-box id="setTile-tilesetId" type="file" filter="tileset"></custom-box>
+        <text>Tileset X</text><number-var id="setTile-tilesetX" min="0" max="255"></number-var>
+        <text>Tileset Y</text><number-var id="setTile-tilesetY" min="0" max="255"></number-var>
+      </grid-box>
+      <button id="setTile-confirm" name="confirm">Confirm</button>
+      <button id="setTile-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="deleteTile">
+    <title-bar>Delete Tile<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Tilemap</text><custom-box id="deleteTile-tilemap" type="tilemap"></custom-box>
+        <text>Tilemap X</text><number-var id="deleteTile-tilemapX" min="0" max="511"></number-var>
+        <text>Tilemap Y</text><number-var id="deleteTile-tilemapY" min="0" max="511"></number-var>
+      </grid-box>
+      <button id="deleteTile-confirm" name="confirm">Confirm</button>
+      <button id="deleteTile-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setTerrain">
+    <title-bar>Set Terrain<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Position</text><custom-box id="setTerrain-position" type="position"></custom-box>
+        <text>Terrain</text><select-box id="setTerrain-terrain"></select-box>
+      </grid-box>
+      <button id="setTerrain-confirm" name="confirm">Confirm</button>
+      <button id="setTerrain-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>

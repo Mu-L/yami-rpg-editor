@@ -1,0 +1,118 @@
+  <window-frame id="setGameSpeed">
+    <title-bar>Set Game Speed<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Speed</text><number-var id="setGameSpeed-speed" min="0" max="10" step="0.1" decimals="4"></number-var>
+        <text>Easing</text><select-box id="setGameSpeed-easingId" name="easing"></select-box>
+        <text>Duration</text><number-var id="setGameSpeed-duration" name="duration" min="0" max="3600000"
+          unit="ms"></number-var>
+        <text>Wait</text><select-box id="setGameSpeed-wait" name="wait"></select-box>
+      </grid-box>
+      <button id="setGameSpeed-confirm" name="confirm">Confirm</button>
+      <button id="setGameSpeed-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setCursor">
+    <title-bar>Set Cursor<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Image</text><custom-box id="setCursor-image" type="file" filter="image"></custom-box>
+      </grid-box>
+      <button id="setCursor-confirm" name="confirm">Confirm</button>
+      <button id="setCursor-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setTeamRelation">
+    <title-bar>Change Team Relation<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Team A</text><select-box id="setTeamRelation-teamId1"></select-box>
+        <text>Team B</text><select-box id="setTeamRelation-teamId2"></select-box>
+        <text>Relation</text><select-box id="setTeamRelation-relation"></select-box>
+      </grid-box>
+      <button id="setTeamRelation-confirm" name="confirm">Confirm</button>
+      <button id="setTeamRelation-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="switchCollisionSystem">
+    <title-bar>Switch Collision System<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="switchCollisionSystem-operation"></select-box>
+      </grid-box>
+      <button id="switchCollisionSystem-confirm" name="confirm">Confirm</button>
+      <button id="switchCollisionSystem-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="gameData">
+    <title-bar>Game Data<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="gameData-operation"></select-box>
+        <text>Index</text><number-var id="gameData-index" min="0" max="32"></number-var>
+        <text>Variables</text><text-box id="gameData-variables"></text-box>
+      </grid-box>
+      <button id="gameData-confirm" name="confirm">Confirm</button>
+      <button id="gameData-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="simulateKey">
+    <title-bar>Simulate Key<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Operation</text><select-box id="simulateKey-operation"></select-box>
+        <text>Key Code</text><keyboard-box id="simulateKey-keycode"></keyboard-box>
+      </grid-box>
+      <button id="simulateKey-confirm" name="confirm">Confirm</button>
+      <button id="simulateKey-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setLanguage">
+    <title-bar>Set Language<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Language</text><select-box id="setLanguage-language"></select-box>
+      </grid-box>
+      <button id="setLanguage-confirm" name="confirm">Confirm</button>
+      <button id="setLanguage-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="setResolution">
+    <title-bar>Set Resolution<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Width</text><number-var id="setResolution-width" min="240" max="7680" unit="px"></number-var>
+        <text>Height</text><number-var id="setResolution-height" min="240" max="7680" unit="px"></number-var>
+        <text>Scene Scale</text><number-var id="setResolution-sceneScale" min="0.5" max="4" decimals="10"></number-var>
+        <text>UI Scale</text><number-var id="setResolution-uiScale" min="0.5" max="4" decimals="10"></number-var>
+      </grid-box>
+      <button id="setResolution-confirm" name="confirm">Confirm</button>
+      <button id="setResolution-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="commandLine">
+    <title-bar>Command Line<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Type</text><select-box id="commandLine-type"></select-box>
+        <text>Key</text><string-var id="commandLine-key"></string-var>
+        <text>Value</text><string-var id="commandLine-value"></string-var>
+        <text>Variable</text><custom-box id="commandLine-variable" type="variable" filter="object"></custom-box>
+      </grid-box>
+      <button id="commandLine-confirm" name="confirm">Confirm</button>
+      <button id="commandLine-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="script">
+    <title-bar>Script<text id='script-mark' class='hidden'>✱</text>
+      <button id="script-change" name="script-change-ts">切换为TS</button>
+      <maximize id="script-maximize"></maximize>
+      <close></close>
+    </title-bar>
+    <content-frame>
+      <box id='script-script'>
+      </box>
+      <button id="script-confirm" name="confirm">Confirm</button>
+      <button id="script-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>

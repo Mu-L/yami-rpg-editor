@@ -408,3 +408,5 @@
 
 	Inspector.uiElement = UIElement
 }
+
+window.UIElement = Inspector.uiElement
