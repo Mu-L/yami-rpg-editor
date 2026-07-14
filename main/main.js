@@ -553,12 +553,11 @@ const createEditorWindow = function () {
 		stopTSC()
 	})
 
-	// 获取tsgo原生可执行文件路径
-	// 参考 @typescript/native-preview/lib/getExePath.js 的逻辑
+	// 获取tsc原生可执行文件路径
 	function getTsgoExePath() {
 		const platform = process.platform
 		const arch = process.arch
-		const expectedPackage = 'native-preview-' + platform + '-' + arch
+		const expectedPackage = 'typescript-' + platform + '-' + arch
 		const platformPackageName = '@typescript/' + expectedPackage
 		let exeDir
 		try {
@@ -570,7 +569,7 @@ const createEditorWindow = function () {
 		} catch {
 			try {
 				const nativePreviewDir = path.dirname(
-					require.resolve('@typescript/native-preview/package.json')
+					require.resolve('typescript/package.json')
 				)
 				exeDir = path.join(
 					nativePreviewDir,
@@ -586,7 +585,7 @@ const createEditorWindow = function () {
 				exeDir = path.join(nodeModulesDir, platformPackageName, 'lib')
 			}
 		}
-		let exe = path.join(exeDir, 'tsgo')
+		let exe = path.join(exeDir, 'tsc')
 		if (platform === 'win32') {
 			exe += '.exe'
 			if (exe.length >= 248) {

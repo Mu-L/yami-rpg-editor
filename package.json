@@ -38,9 +38,7 @@
 		"prettier": "^3.8.3"
 	},
 	"dependencies": {
-		"@typescript/native-preview": "7.0.0-dev.20260527.2",
-		"@typescript/native-preview-win32-x64": "7.0.0-dev.20260527.2",
-		"@typescript/native-preview-darwin-arm64": "7.0.0-dev.20260527.2",
+		"@typescript/typescript-win32-x64": "^7.0.2",
 		"axios": "^1.16.1",
 		"exceljs": "^4.4.0",
 		"fs-extra": "^11.3.5",
@@ -50,6 +48,7 @@
 		"qrcode": "^1.5.4",
 		"sharp": "^0.34.5",
 		"steamworks.js": "^0.4.0",
+		"typescript": "^7.0.2",
 		"uglify-js": "^3.19.3",
 		"xml2js": "^0.6.2",
 		"yauzl": "^3.3.1"
@@ -62,7 +61,11 @@
 		"onlyBuiltDependencies": [
 			"electron",
 			"sharp"
-		]
+		],
+		"overrides": {
+			"electron-builder-squirrel-windows": "25.1.8",
+			"dmg-builder": "25.1.8"
+		}
 	},
 	"build": {
 		"appId": "com.open.yami.rpgeditor",
@@ -87,15 +90,12 @@
 		],
 		"extraResources": [
 			{
-				"from": "node_modules/@typescript/native-preview",
-				"to": "app/node_modules/@typescript/native-preview"
+				"from": "node_modules/typescript",
+				"to": "app/node_modules/typescript"
 			},
 			{
-				"from": "node_modules/@typescript/native-preview-win32-x64",
-				"to": "app/node_modules/@typescript/native-preview-win32-x64",
-				"filter": [
-					"**/*"
-				]
+				"from": "node_modules/@typescript/typescript-win32-x64",
+				"to": "app/node_modules/@typescript/typescript-win32-x64"
 			},
 			{
 				"from": "Project/Templates/electron-win-x64/resources/app/node_modules",
@@ -108,7 +108,7 @@
 		],
 		"asar": false,
 		"asarUnpack": [
-			"node_modules/@typescript/native-preview",
+			"node_modules/typescript",
 			"Project/Templates/electron-win-x64/resources/app/node_modules",
 			"Project/Templates/electron-mac-universal.app/Contents/resources/app/node_modules"
 		],
