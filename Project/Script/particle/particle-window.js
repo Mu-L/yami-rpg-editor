@@ -333,6 +333,8 @@ Particle.load = function (context) {
 
 	// 设置目标对象
 	this.setTarget(editor.target)
+
+	UndoManager.setActive(Particle)
 }
 
 // 保存数据
@@ -364,6 +366,7 @@ Particle.close = function () {
 		this.body.hide()
 		this.stopAnimation()
 		this.stopRendering()
+		UndoManager.setActive(null)
 	}
 }
 

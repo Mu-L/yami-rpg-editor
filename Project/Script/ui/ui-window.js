@@ -604,6 +604,8 @@ UI.load = function (context) {
 	if (this.context.scalingChanged) {
 		this.updateElementTextScaling()
 	}
+
+	UndoManager.setActive(UI)
 }
 
 // 保存界面
@@ -645,6 +647,7 @@ UI.close = function () {
 		this.list.clear()
 		this.body.hide()
 		this.stopRendering()
+		UndoManager.setActive(null)
 	}
 }
 

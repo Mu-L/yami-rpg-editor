@@ -819,6 +819,8 @@ Animation.load = function (context) {
 			editor.selectionLength
 		)
 	}
+
+	UndoManager.setActive(Animation)
 }
 
 // 保存动画
@@ -870,6 +872,7 @@ Animation.close = function () {
 		this.stopAnimation()
 		this.stopRendering()
 		this.stopPlayingSound()
+		UndoManager.setActive(null)
 	}
 }
 

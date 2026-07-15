@@ -196,8 +196,6 @@ Menubar.popupEditMenu = function (target) {
 					items.copy.enabled = selected
 					items.paste.enabled = pastable
 					items.delete.enabled = selected
-					items.undo.enabled = Scene.history.canUndo()
-					items.redo.enabled = Scene.history.canRedo()
 					items.cut.click = () => {
 						Scene.copy()
 						Scene.delete()
@@ -211,12 +209,6 @@ Menubar.popupEditMenu = function (target) {
 					items.delete.click = () => {
 						Scene.delete()
 					}
-					items.undo.click = () => {
-						Scene.undo()
-					}
-					items.redo.click = () => {
-						Scene.redo()
-					}
 				}
 				break
 			case 'ui':
@@ -227,8 +219,6 @@ Menubar.popupEditMenu = function (target) {
 					items.copy.enabled = selected
 					items.paste.enabled = pastable
 					items.delete.enabled = selected
-					items.undo.enabled = UI.history.canUndo()
-					items.redo.enabled = UI.history.canRedo()
 					items.cut.click = () => {
 						UI.copy()
 						UI.delete()
@@ -242,12 +232,6 @@ Menubar.popupEditMenu = function (target) {
 					items.delete.click = () => {
 						UI.delete()
 					}
-					items.undo.click = () => {
-						UI.undo()
-					}
-					items.redo.click = () => {
-						UI.redo()
-					}
 				}
 				break
 			case 'animation':
@@ -258,8 +242,6 @@ Menubar.popupEditMenu = function (target) {
 					items.copy.enabled = selected
 					items.paste.enabled = pastable
 					items.delete.enabled = selected
-					items.undo.enabled = Animation.history.canUndo()
-					items.redo.enabled = Animation.history.canRedo()
 					items.cut.click = () => {
 						Animation.copy()
 						Animation.delete()
@@ -273,27 +255,15 @@ Menubar.popupEditMenu = function (target) {
 					items.delete.click = () => {
 						Animation.delete()
 					}
-					items.undo.click = () => {
-						Animation.undo()
-					}
-					items.redo.click = () => {
-						Animation.redo()
-					}
 				}
 				break
 			case 'particle':
-				if (Particle.state === 'open') {
-					items.undo.enabled = Particle.history.canUndo()
-					items.redo.enabled = Particle.history.canRedo()
-					items.undo.click = () => {
-						Particle.undo()
-					}
-					items.redo.click = () => {
-						Particle.redo()
-					}
-				}
 				break
 		}
+		items.undo.enabled = UndoManager.canUndo()
+		items.redo.enabled = UndoManager.canRedo()
+		items.undo.click = () => UndoManager.undo()
+		items.redo.click = () => UndoManager.redo()
 		Menu.popup(
 			{
 				x: rect.left,
