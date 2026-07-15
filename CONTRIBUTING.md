@@ -18,7 +18,8 @@
 
 `Project\Script\module`是模块文件，我们的改动一般都放在这。
 
-其次，`css`尽量在`index.css`中添加，内联样式尽量少用。
+其次，`css`尽量在`Project\css\`下对应的模块文件中添加，内联样式尽量少用。
+`index.css` 由 `build-css.js` 自动生成（扫描 `Project\css\` 下所有 `.css` 文件生成 `@import` 入口），请勿直接编辑。
 
 注释尽量不要每行或者每几行就一个注释，只在有需要的地方注释即可。
 
@@ -56,6 +57,7 @@ PS：更改了`Template`文件夹下的文件，就要`buildres`更新资源后�
 
 `Project\default.json`: 默认编辑器配置
 
-`Project\index.css`: 样式
+`Project\index.css`: 样式入口文件（由 `build-css.js` 自动生成，请编辑 `Project\css\` 下的模块文件）
 
-`Project\index.html`: 编辑器渲染页面
+`Project\index.html`: 编辑器渲染页面（由 `build-html.js` 自动生成，请编辑 `Project\index.src.html` 模块文件）
+
