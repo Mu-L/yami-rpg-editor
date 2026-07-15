@@ -8,9 +8,11 @@ const VariableGetter = {
 	target: null,
 	filter: null,
 	types: null,
+	_state: null,
 	// methods
 	initialize: null,
 	open: null,
+	_openCore: null,
 	isNone: null,
 	loadPresetKeys: null,
 	checkDataForPlugin: null,
@@ -19,7 +21,9 @@ const VariableGetter = {
 	// events
 	typeWrite: null,
 	typeInput: null,
-	confirm: null
+	confirm: null,
+	confirm2: null,
+	_confirmCore: null
 }
 
 // 初始化
@@ -82,6 +86,29 @@ VariableGetter.initialize = function () {
 		this.dataItems = backup
 	}
 
+	// 变量访问器窗口2（递归叠加打开，复用同一套逻辑，仅支持 local/global/element）
+	$('#variableGetter2-type')
+		.enableHiddenMode()
+		.relate([
+			{ case: 'local', targets: [$('#variableGetter2-common-key')] },
+			{ case: 'global', targets: [$('#variableGetter2-global-key')] },
+			{
+				case: 'element',
+				targets: [
+					$('#variableGetter2-element'),
+					$('#variableGetter2-preset-key')
+				]
+			}
+		])
+	$('#variableGetter2-confirm').on('click', this.confirm2)
+	TextSuggestion.listen(
+		$('#variableGetter2-common-key'),
+		VariableGetter.createVarListGenerator(this)
+	)
+
+	// 递归状态（按窗口名隔离，避免覆盖主窗口的 target/filter）
+	this._state = { variableGetter: null, variableGetter2: null }
+
 	// 侦听事件
 	$('#variableGetter-type').on('write', this.typeWrite)
 	$('#variableGetter-type').on('input', this.typeInput)
@@ -94,111 +121,145 @@ VariableGetter.initialize = function () {
 
 // 打开窗口
 VariableGetter.open = function (target) {
-	// 创建变量类型选项
-	const types = this.types
 	const filter = target.filter
-	this.filter = filter
+	// 若主窗口已打开，则叠加打开窗口2（避免递归冲突）
+	if (Window.isWindowOpen('variableGetter')) {
+		this._openCore(target, filter, 'variableGetter2')
+	} else {
+		this._openCore(target, filter, 'variableGetter')
+	}
+}
+
+// 内部：按窗口前缀打开并填充
+VariableGetter._openCore = function (target, filter, prefix) {
+	// 递归状态按窗口名隔离（窗口2不污染主窗口的 target/filter）
+	this._state[prefix] = { target, filter }
+	const types = this.types
+	let items
 	switch (filter) {
 		case 'all':
 		case 'boolean':
 		case 'number':
 		case 'string':
-			// 如果已经打开了变量访问器窗口，避免冲突使用新窗口
-			if (Window.isWindowOpen('variableGetter')) {
-				return VariableGetter2.open(target, filter)
-			}
-			$('#variableGetter-type').loadItems(types.all)
-			$('#variableGetter-global-key').filter = filter
+			// 递归窗口仅支持 local/global/element
+			items = prefix === 'variableGetter2' ? types.object : types.all
 			break
 		case 'object':
-			// 如果已经打开了变量访问器窗口，避免冲突使用新窗口
-			if (Window.isWindowOpen('variableGetter')) {
-				return VariableGetter2.open(target, filter)
-			}
 			// 打开元素访问器时则过滤掉元素属性选项
-			$('#variableGetter-type').loadItems(
-				!Window.isWindowOpen('elementGetter')
-					? types.object
-					: types.object2
-			)
-			$('#variableGetter-global-key').filter = filter
+			items = !Window.isWindowOpen('elementGetter')
+				? types.object
+				: types.object2
 			break
 		case 'writable-boolean':
 		case 'writable-number':
 		case 'writable-string':
-			$('#variableGetter-type').loadItems(types.writable)
-			$('#variableGetter-global-key').filter = filter.slice(9)
+			items = types.writable
 			break
 		case 'deletable':
-			$('#variableGetter-type').loadItems(types.deletable)
+			items = types.deletable
 			break
 	}
+	$(`#${prefix}-type`).loadItems(items)
+	$(`#${prefix}-global-key`).filter = filter.startsWith('writable-')
+		? filter.slice(9)
+		: filter
 
-	this.target = target
-	Window.open('variableGetter')
+	// 填充当前变量值
 	const variable = target.dataValue
 	const type = variable.type
 	const key = variable.key
-	let commonKey = ''
-	let presetKey = ''
-	let globalKey = ''
-	let actor = { type: 'trigger' }
-	let skill = { type: 'trigger' }
-	let state = { type: 'trigger' }
-	let equipment = { type: 'trigger' }
-	let item = { type: 'trigger' }
-	let element = { type: 'trigger' }
-	switch (type) {
-		case 'local':
-			commonKey = key
-			break
-		case 'global':
-			globalKey = key
-			break
-		case 'actor':
-			this.loadPresetKeys(type)
-			actor = variable.actor
-			presetKey = key
-			break
-		case 'skill':
-			this.loadPresetKeys(type)
-			skill = variable.skill
-			presetKey = key
-			break
-		case 'state':
-			this.loadPresetKeys(type)
-			state = variable.state
-			presetKey = key
-			break
-		case 'equipment':
-			this.loadPresetKeys(type)
-			equipment = variable.equipment
-			presetKey = key
-			break
-		case 'item':
-			this.loadPresetKeys(type)
-			item = variable.item
-			presetKey = key
-			break
-		case 'element':
-			this.loadPresetKeys(type)
-			element = variable.element
-			presetKey = key
-			break
+	const write = getElementWriter(prefix)
+	if (prefix === 'variableGetter2') {
+		// 窗口2仅支持 local/global/element
+		let element = { type: 'trigger' }
+		let commonKey = ''
+		let globalKey = ''
+		let presetKey = Attribute.getDefAttributeId('element', filter)
+		switch (type) {
+			case 'local':
+				commonKey = key
+				break
+			case 'global':
+				globalKey = key
+				break
+			case 'element':
+				element = variable.element
+				presetKey = key
+				break
+		}
+		$(`#${prefix}-preset-key`).loadItems(
+			Attribute.getAttributeItems('element', filter)
+		)
+		write('type', type)
+		write('element', element)
+		write('common-key', commonKey)
+		write('global-key', globalKey)
+		write('preset-key', presetKey)
+	} else {
+		let commonKey = ''
+		let presetKey = ''
+		let globalKey = ''
+		let actor = { type: 'trigger' }
+		let skill = { type: 'trigger' }
+		let state = { type: 'trigger' }
+		let equipment = { type: 'trigger' }
+		let item = { type: 'trigger' }
+		let element = { type: 'trigger' }
+		switch (type) {
+			case 'local':
+				commonKey = key
+				break
+			case 'global':
+				globalKey = key
+				break
+			case 'actor':
+				this.loadPresetKeys(type)
+				actor = variable.actor
+				presetKey = key
+				break
+			case 'skill':
+				this.loadPresetKeys(type)
+				skill = variable.skill
+				presetKey = key
+				break
+			case 'state':
+				this.loadPresetKeys(type)
+				state = variable.state
+				presetKey = key
+				break
+			case 'equipment':
+				this.loadPresetKeys(type)
+				equipment = variable.equipment
+				presetKey = key
+				break
+			case 'item':
+				this.loadPresetKeys(type)
+				item = variable.item
+				presetKey = key
+				break
+			case 'element':
+				this.loadPresetKeys(type)
+				element = variable.element
+				presetKey = key
+				break
+		}
+		this.keyBox.loadItems(Attribute.getAttributeItems('none'))
+		write('type', type)
+		write('actor', actor)
+		write('skill', skill)
+		write('state', state)
+		write('equipment', equipment)
+		write('item', item)
+		write('element', element)
+		write('common-key', commonKey)
+		write('preset-key', presetKey)
+		write('global-key', globalKey)
+		// 主窗口分支保持与原 open 一致，供 typeWrite/typeInput 使用
+		this.target = target
+		this.filter = filter
 	}
-	const write = getElementWriter('variableGetter')
-	this.keyBox.loadItems(Attribute.getAttributeItems('none'))
-	write('type', type)
-	write('actor', actor)
-	write('skill', skill)
-	write('state', state)
-	write('equipment', equipment)
-	write('item', item)
-	write('element', element)
-	write('common-key', commonKey)
-	write('preset-key', presetKey)
-	write('global-key', globalKey)
-	$('#variableGetter-type').getFocus()
+	$(`#${prefix}-type`).getFocus()
+	Window.open(prefix)
 }
 
 // 判断变量是否为空
@@ -369,9 +430,22 @@ VariableGetter.typeInput = function (event) {
 	}
 }
 
-// 确定按钮 - 鼠标点击事件
+// 确定按钮 - 鼠标点击事件（主窗口）
 VariableGetter.confirm = function (event) {
-	const read = getElementReader('variableGetter')
+	this._confirmCore('variableGetter')
+}.bind(VariableGetter)
+
+// 确定按钮 - 鼠标点击事件（递归窗口2）
+VariableGetter.confirm2 = function (event) {
+	this._confirmCore('variableGetter2')
+}.bind(VariableGetter)
+
+// 内部：按窗口前缀执行确认（统一校验逻辑，消除双实现行为漂移）
+VariableGetter._confirmCore = function (prefix) {
+	const state = this._state[prefix]
+	const target = state.target
+	const filter = state.filter
+	const read = getElementReader(prefix)
 	const type = read('type')
 	let getter
 	let key
@@ -379,82 +453,81 @@ VariableGetter.confirm = function (event) {
 		case 'local':
 			key = read('common-key').trim()
 			if (key === '') {
-				return $('#variableGetter-common-key').getFocus()
+				return $(`#${prefix}-common-key`).getFocus()
 			}
+			getter = { type, key }
 			break
 		case 'global': {
 			key = read('global-key')
-			if (key === '') {
-				return $('#variableGetter-global-key').getFocus()
-			}
 			const variable = Data.variables.map[key]
-			const filter = this.target.filter
-			switch (filter) {
-				case 'boolean':
-				case 'number':
-				case 'string':
-					if (typeof variable?.value !== filter) {
-						return $('#variableGetter-global-key').getFocus()
-					}
-					break
+			// 仅对基础类型做类型校验（all/object/writable 不校验，避免错误拒绝）
+			const baseType =
+				filter === 'boolean' ||
+				filter === 'number' ||
+				filter === 'string'
+					? filter
+					: null
+			if (
+				key === '' ||
+				(baseType && typeof variable?.value !== baseType)
+			) {
+				return $(`#${prefix}-global-key`).getFocus()
 			}
-			break
-		}
-		case 'actor':
-		case 'skill':
-		case 'state':
-		case 'item':
-		case 'equipment':
-		case 'element':
-			key = read('preset-key')
-			if (key === '') {
-				return $('#variableGetter-preset-key').getFocus()
-			}
-			break
-	}
-	switch (type) {
-		case 'local':
-		case 'global':
 			getter = { type, key }
 			break
+		}
+		case 'element': {
+			const element = read('element')
+			key = read('preset-key')
+			if (key === '') {
+				return $(`#${prefix}-preset-key`).getFocus()
+			}
+			getter = { type, element, key }
+			break
+		}
 		case 'self':
 			getter = { type }
 			break
 		case 'actor': {
 			const actor = read('actor')
+			key = read('preset-key')
+			if (key === '') return $(`#${prefix}-preset-key`).getFocus()
 			getter = { type, actor, key }
 			break
 		}
 		case 'skill': {
 			const skill = read('skill')
+			key = read('preset-key')
+			if (key === '') return $(`#${prefix}-preset-key`).getFocus()
 			getter = { type, skill, key }
 			break
 		}
 		case 'state': {
-			const state = read('state')
-			getter = { type, state, key }
+			const stateVal = read('state')
+			key = read('preset-key')
+			if (key === '') return $(`#${prefix}-preset-key`).getFocus()
+			getter = { type, state: stateVal, key }
 			break
 		}
 		case 'equipment': {
 			const equipment = read('equipment')
+			key = read('preset-key')
+			if (key === '') return $(`#${prefix}-preset-key`).getFocus()
 			getter = { type, equipment, key }
 			break
 		}
 		case 'item': {
 			const item = read('item')
+			key = read('preset-key')
+			if (key === '') return $(`#${prefix}-preset-key`).getFocus()
 			getter = { type, item, key }
-			break
-		}
-		case 'element': {
-			const element = read('element')
-			getter = { type, element, key }
 			break
 		}
 	}
 	// 如果是插件输入框，额外附加一个属性
-	if (this.target.isPluginInput) {
+	if (target.isPluginInput) {
 		getter = { getter: 'variable', ...getter }
 	}
-	this.target.input(getter)
-	Window.close('variableGetter')
-}.bind(VariableGetter)
+	target.input(getter)
+	Window.close(prefix)
+}

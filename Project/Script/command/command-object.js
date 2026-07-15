@@ -104,7 +104,6 @@ Command.initialize = function () {
 	CommandSuggestion.initialize()
 	TextSuggestion.initialize()
 	VariableGetter.initialize()
-	VariableGetter2.initialize()
 	ActorGetter.initialize()
 	SkillGetter.initialize()
 	StateGetter.initialize()
