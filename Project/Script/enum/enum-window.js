@@ -796,7 +796,7 @@ Enum.searcherInput = function (event) {
 		return
 	}
 	const text = this.input.value
-	Enum.list.searchNodes(text)
+	Enum.list.searchNodesDebounced(text)
 }
 
 // 确定按钮 - 鼠标点击事件

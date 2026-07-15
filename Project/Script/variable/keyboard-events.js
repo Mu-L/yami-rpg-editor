@@ -77,5 +77,5 @@ Variable.searcherInput = function (event) {
 		return
 	}
 	const text = this.input.value
-	Variable.list.searchNodes(text)
+	Variable.list.searchNodesDebounced(text)
 }

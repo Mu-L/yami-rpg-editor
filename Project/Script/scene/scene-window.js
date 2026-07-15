@@ -7426,7 +7426,7 @@ Scene.menuPopup = function (event) {
 Scene.searcherInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const text = this.input.value
-		Scene.list.searchNodes(text)
+		Scene.list.searchNodesDebounced(text)
 	}
 }
 

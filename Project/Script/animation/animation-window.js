@@ -4955,7 +4955,7 @@ Animation.pointermove = function (event) {
 Animation.searcherInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const text = this.input.value
-		Animation.list.searchNodes(text)
+		Animation.list.searchNodesDebounced(text)
 	}
 }
 

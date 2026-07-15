@@ -648,7 +648,7 @@ Localization.searcherInput = function (event) {
 		return
 	}
 	const text = this.input.value
-	Localization.list.searchNodes(text)
+	Localization.list.searchNodesDebounced(text)
 }
 
 // 确定按钮 - 鼠标点击事件

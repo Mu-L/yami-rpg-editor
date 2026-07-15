@@ -21,3 +21,49 @@ function reportError(err, context) {
 		)
 	}
 }
+
+// ******************************** 输入节流 ********************************
+
+// 防抖：延迟 delay 毫秒执行，期间重复调用会重置计时器
+// 适用于搜索框等"输入停止后再处理"的场景，避免每次按键都全量重算
+// 返回的函数带 cancel() 可主动取消待执行的调用
+function debounce(fn, delay = 150) {
+	let timer
+	const debounced = function (...args) {
+		if (timer !== undefined) clearTimeout(timer)
+		timer = setTimeout(() => {
+			timer = undefined
+			fn.apply(this, args)
+		}, delay)
+	}
+	debounced.cancel = function () {
+		if (timer !== undefined) {
+			clearTimeout(timer)
+			timer = undefined
+		}
+	}
+	return debounced
+}
+
+// rAF 节流：同一帧内的多次调用只在下一帧执行最后一次
+// 适用于滚动/拖动/连续输入等每帧至多重渲染一次的场景
+function rafThrottle(fn) {
+	let handle
+	let lastArgs
+	const throttled = function (...args) {
+		lastArgs = args
+		if (handle === undefined) {
+			handle = requestAnimationFrame(() => {
+				handle = undefined
+				fn.apply(this, lastArgs)
+			})
+		}
+	}
+	throttled.cancel = function () {
+		if (handle !== undefined) {
+			cancelAnimationFrame(handle)
+			handle = undefined
+		}
+	}
+	return throttled
+}

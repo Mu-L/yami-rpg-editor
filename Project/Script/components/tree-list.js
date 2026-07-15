@@ -229,6 +229,15 @@ class TreeList extends HTMLElement {
 		this.update()
 	}
 
+	// 搜索节点(防抖入口): 供搜索框输入事件调用，避免每次按键都全量过滤大列表
+	// 注意: 数据变更后需要"即时"重过滤的内部调用仍应直接使用 searchNodes
+	searchNodesDebounced(keyword) {
+		;(this._searchNodesDebounced ??= debounce(
+			(kw) => this.searchNodes(kw),
+			150
+		))(keyword)
+	}
+
 	// 搜索节点算法
 	searchNodesAlgorithm(data, keyword, list) {
 		const length = data.length

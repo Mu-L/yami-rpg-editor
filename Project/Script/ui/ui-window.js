@@ -2908,7 +2908,7 @@ UI.menuPopup = function (event) {
 UI.searcherInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const text = this.input.value
-		UI.list.searchNodes(text)
+		UI.list.searchNodesDebounced(text)
 	}
 }
 

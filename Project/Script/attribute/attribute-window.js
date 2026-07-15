@@ -866,7 +866,7 @@ Attribute.searcherInput = function (event) {
 		return
 	}
 	const text = this.input.value
-	Attribute.list.searchNodes(text)
+	Attribute.list.searchNodesDebounced(text)
 }
 
 // 确定按钮 - 鼠标点击事件
