@@ -2,7 +2,7 @@
 
 // ******************************** 其他 ********************************
 
-// 测量文本大小
+// 测量文本大小（带缓存，避免重复强制重排）
 const measureText = (function IIFE() {
 	const size = { width: 0, lines: 0 }
 	const container = document.createElement('text')
@@ -10,7 +10,20 @@ const measureText = (function IIFE() {
 	let usedFont = ''
 	let lineHeight = 0
 	container.style.whiteSpace = 'pre'
+	// 缓存：key = font + ' ' + text -> { width, lines }
+	// 仅缓存较短文本（标签/单位/字符宽度等），避免长动态文本撑大缓存
+	const cache = new Map()
+	const MAX_CACHE = 4096
+	const MAX_CACHE_TEXT = 256
 	return function (text, font = '') {
+		const cacheable = text.length <= MAX_CACHE_TEXT
+		const key = font + ' ' + text
+		const cached = cacheable ? cache.get(key) : undefined
+		if (cached) {
+			size.width = cached.width
+			size.lines = cached.lines
+			return size
+		}
 		if (appended === false) {
 			appended = true
 			document.body.appendChild(container)
@@ -29,6 +42,10 @@ const measureText = (function IIFE() {
 		container.textContent = text
 		size.width = container.offsetWidth
 		size.lines = container.offsetHeight / lineHeight
+		if (cacheable) {
+			if (cache.size >= MAX_CACHE) cache.clear()
+			cache.set(key, { width: size.width, lines: size.lines })
+		}
 		return size
 	}
 })()
