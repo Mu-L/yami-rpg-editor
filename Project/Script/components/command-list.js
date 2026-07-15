@@ -125,7 +125,7 @@ class CommandList extends HTMLElement {
 		CommonList.resize(this)
 
 		// 检查变量有效性
-		this.checkVariables()
+		this.scheduleCheckVariables()
 	}
 
 	// 更新头部和尾部元素
@@ -1578,12 +1578,22 @@ try {
 		return { varList, varMap }
 	}
 
-	// 检查变量有效性
+	// 检查变量有效性（rAF 合并调度，避免滚动时重复全量检查）
+	scheduleCheckVariables() {
+		if (this._checkVariablesScheduled) return
+		this._checkVariablesScheduled = true
+		requestAnimationFrame(() => {
+			this._checkVariablesScheduled = false
+			this.checkVariables()
+		})
+	}
+
+	// 检查变量有效性（同步执行实际检查）
 	checkVariables() {
 		// 检查本地变量
 		const varMap = this.varMap
 		const varTypes = ['boolean', 'number', 'string', 'object', 'any']
-		for (const text of document.getElementsByClassName(
+		for (const text of this.getElementsByClassName(
 			'local-variable-identifier'
 		)) {
 			const type = text.varType
@@ -1620,7 +1630,7 @@ try {
 		}
 
 		// 检查全局变量
-		for (const text of document.getElementsByClassName(
+		for (const text of this.getElementsByClassName(
 			'global-variable-identifier'
 		)) {
 			const key = text.varKey
@@ -1640,7 +1650,7 @@ try {
 		}
 
 		// 检查属性
-		for (const text of document.getElementsByClassName(
+		for (const text of this.getElementsByClassName(
 			'attribute-identifier'
 		)) {
 			const id = text.varId
@@ -1662,7 +1672,7 @@ try {
 		}
 
 		// 检查枚举
-		for (const text of document.getElementsByClassName('enum-identifier')) {
+		for (const text of this.getElementsByClassName('enum-identifier')) {
 			const id = text.varId
 			const string = Enum.getString(id)
 			if (string) {
@@ -1680,7 +1690,7 @@ try {
 		}
 
 		// 检查文件
-		for (const text of document.getElementsByClassName('file-identifier')) {
+		for (const text of this.getElementsByClassName('file-identifier')) {
 			const fileId = text.varKey
 			if (fileId === '') continue
 			const meta = Data.manifest.guidMap[fileId]
@@ -1698,9 +1708,7 @@ try {
 		}
 
 		// 检查场景对象
-		for (const text of document.getElementsByClassName(
-			'scene-identifier'
-		)) {
+		for (const text of this.getElementsByClassName('scene-identifier')) {
 			const presetId = text.varKey
 			if (presetId === '') continue
 			const preset = Data.scenePresets[presetId]
@@ -1712,7 +1720,7 @@ try {
 		}
 
 		// 检查界面元素
-		for (const text of document.getElementsByClassName('ui-identifier')) {
+		for (const text of this.getElementsByClassName('ui-identifier')) {
 			const presetId = text.varKey
 			if (presetId === '') continue
 			const preset = Data.uiPresets[presetId]
@@ -2359,7 +2367,7 @@ try {
 	// 窗口 - 变量改变事件
 	static windowVariableChange(event) {
 		if (this.read()) {
-			this.checkVariables()
+			this.scheduleCheckVariables()
 		}
 	}
 
