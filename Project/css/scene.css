@@ -1,0 +1,182 @@
+/* --------------------------------
+ * 元素 - 基础页面
+ * --------------------------------
+ */
+.uiElement-transform-align {
+	position: static;
+	width: auto;
+	flex: 1 1 auto;
+	font-family: var(--font-family-symbol);
+}
+
+.uiElement-transform-align.rotated > text {
+	display: block;
+	transform: rotate(90deg);
+}
+
+.uiElement-grid-box {
+	display: grid;
+	grid-gap: 4px;
+}
+
+.uiElement-grid-box.with-2-columns {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.uiElement-grid-box.with-4-columns {
+	grid-template-columns: repeat(4, 1fr);
+}
+
+/* --------------------------------
+ * 元素 - 图像页面
+ * --------------------------------
+ */
+#uiImage-tint-0-slider,
+#uiImage-tint-1-slider,
+#uiImage-tint-2-slider,
+#uiImage-tint-3-slider {
+	flex: 2 1 auto;
+}
+
+#uiImage-tint-0,
+#uiImage-tint-1,
+#uiImage-tint-2,
+#uiImage-tint-3 {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 元素 - 文本页面
+ * --------------------------------
+ */
+#uiText-content {
+	height: 140px;
+}
+
+.uiText-align {
+	display: block;
+	width: auto;
+	height: 20px;
+	flex: 1 1 auto;
+	line-height: 18px;
+	text-align: center;
+	font-family: var(--font-family-symbol);
+	background-color: var(--button-background);
+	border-top: var(--input-border-light);
+	border-left: var(--input-border-light);
+	border-right: var(--input-border-light);
+	border-bottom: var(--input-border-dark);
+	border-radius: 2px;
+}
+
+.uiText-align:hover {
+	background-color: var(--button-background-hover);
+}
+
+.uiText-align:focus {
+	border-color: var(--input-border-color-focus);
+}
+
+.uiText-align.selected {
+	background-color: var(--selected-background);
+}
+
+.uiText-align.rotated > text {
+	display: block;
+	transform: rotate(90deg);
+}
+
+#uiText-size-slider,
+#uiText-lineSpacing-slider,
+#uiText-letterSpacing-slider {
+	flex: 2 1 auto;
+}
+
+#uiText-size,
+#uiText-lineSpacing,
+#uiText-letterSpacing {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 元素 - 对话框页�? * --------------------------------
+ */
+#uiDialogBox-content {
+	height: 140px;
+}
+
+#uiDialogBox-size-slider,
+#uiDialogBox-lineSpacing-slider,
+#uiDialogBox-letterSpacing-slider {
+	flex: 2 1 auto;
+}
+
+#uiDialogBox-size,
+#uiDialogBox-lineSpacing,
+#uiDialogBox-letterSpacing {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 元素 - 进度条页�? * --------------------------------
+ */
+#uiProgressBar-color-0-slider,
+#uiProgressBar-color-1-slider,
+#uiProgressBar-color-2-slider,
+#uiProgressBar-color-3-slider {
+	flex: 2 1 auto;
+}
+
+#uiProgressBar-color-0,
+#uiProgressBar-color-1,
+#uiProgressBar-color-2,
+#uiProgressBar-color-3 {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 预设元素窗口
+ * --------------------------------
+ */
+#presetElement {
+	width: 340px;
+	height: 528px;
+}
+
+#presetElement-uiId {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 320px;
+}
+
+#presetElement-list {
+	position: absolute;
+	left: 10px;
+	top: 34px;
+	width: 320px;
+	height: 402px;
+	background-color: var(--input-background);
+	border-top: var(--input-border-dark);
+	border-left: var(--input-border-light);
+	border-right: var(--input-border-light);
+	border-bottom: var(--input-border-light);
+	border-radius: 2px;
+}
+
+#presetElement-searcher {
+	position: absolute;
+	left: 10px;
+	top: 440px;
+	width: 320px;
+}
+
+#presetElement-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#presetElement-cancel {
+	right: 10px;
+	bottom: 10px;
+}

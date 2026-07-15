@@ -1,0 +1,208 @@
+/* --------------------------------
+ * 粒子
+ * --------------------------------
+ */
+#particle-head {
+	display: flex;
+	position: absolute;
+	flex: 1 0 auto;
+	justify-content: space-between;
+	top: -25px;
+	right: 0;
+	height: 24px;
+	overflow: hidden;
+	background-color: var(--group-head-background);
+}
+
+#particle-head-start {
+	display: flex;
+	flex: 0 0 auto;
+	width: 57px;
+	/* background: yellow; */
+}
+
+#particle-head-start > .toolbar-item::after {
+	content: '';
+	display: block;
+	margin: 4px 6px;
+	width: 16px;
+	height: 16px;
+	background-color: var(--text-color);
+	-webkit-mask-image: url(../Images/particle_view.png);
+	-webkit-mask-size: 100% 200%;
+}
+
+#particle-view-wireframe::after {
+	-webkit-mask-position: 0 0;
+}
+
+#particle-view-anchor::after {
+	-webkit-mask-position: 0 -100%;
+}
+
+#particle-head-center {
+	display: flex;
+	flex: 0 0 auto;
+	/* background: green; */
+	border-left: var(--toolbar-item-border);
+}
+
+#particle-control {
+	display: flex;
+}
+
+#particle-speed {
+	margin: 2px;
+	width: 82px;
+}
+
+#particle-control > .toolbar-item::after {
+	content: '';
+	display: block;
+	margin: 4px 6px;
+	width: 16px;
+	height: 16px;
+	background-color: var(--text-color);
+	-webkit-mask-image: url(../Images/particle_animation.png);
+	-webkit-mask-size: 100% 200%;
+}
+
+#particle-control > .toolbar-item.selected::after,
+#particle-control-restart:active::after {
+	background-color: var(--toolbar-item-color-highlight);
+}
+
+#particle-control-restart::after {
+	-webkit-mask-position: 0 0;
+}
+
+#particle-control-pause::after {
+	-webkit-mask-position: 0 -100%;
+}
+
+#particle-head-end {
+	flex: 0 0 auto;
+	/* background: blue; */
+}
+
+#particle-zoom {
+	/* position: absolute; */
+	margin: 2px 4px;
+	right: 0;
+	width: 80px;
+}
+
+#particle-screen {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#particle-info {
+	position: absolute;
+	padding: 0 4px;
+	width: 100%;
+	line-height: 20px;
+	color: white;
+	overflow: hidden;
+	white-space: pre;
+	text-overflow: ellipsis;
+	text-shadow: var(--stage-info-text-shadow);
+	pointer-events: none;
+}
+
+#particle-list {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+/* --------------------------------
+ * 粒子 - 图层页面
+ * --------------------------------
+ */
+#particleLayer-anchor-x-0,
+#particleLayer-anchor-x-1,
+#particleLayer-anchor-y-0,
+#particleLayer-anchor-y-1,
+#particleLayer-anchor-speedX-0,
+#particleLayer-anchor-speedX-1,
+#particleLayer-anchor-speedY-0,
+#particleLayer-anchor-speedY-1,
+#particleLayer-movement-angle-0,
+#particleLayer-movement-angle-1,
+#particleLayer-movement-speed-0,
+#particleLayer-movement-speed-1,
+#particleLayer-movement-accelAngle-0,
+#particleLayer-movement-accelAngle-1,
+#particleLayer-movement-accel-0,
+#particleLayer-movement-accel-1,
+#particleLayer-rotation-angle-0,
+#particleLayer-rotation-angle-1,
+#particleLayer-rotation-speed-0,
+#particleLayer-rotation-speed-1,
+#particleLayer-rotation-accel-0,
+#particleLayer-rotation-accel-1,
+#particleLayer-hRotation-radius-0,
+#particleLayer-hRotation-radius-1,
+#particleLayer-hRotation-expansionSpeed-0,
+#particleLayer-hRotation-expansionSpeed-1,
+#particleLayer-hRotation-expansionAccel-0,
+#particleLayer-hRotation-expansionAccel-1,
+#particleLayer-hRotation-angle-0,
+#particleLayer-hRotation-angle-1,
+#particleLayer-hRotation-angularSpeed-0,
+#particleLayer-hRotation-angularSpeed-1,
+#particleLayer-hRotation-angularAccel-0,
+#particleLayer-hRotation-angularAccel-1,
+#particleLayer-scale-factor-0,
+#particleLayer-scale-factor-1,
+#particleLayer-scale-speed-0,
+#particleLayer-scale-speed-1,
+#particleLayer-scale-accel-0,
+#particleLayer-scale-accel-1,
+#particleLayer-color-rgba-0,
+#particleLayer-color-rgba-1,
+#particleLayer-color-rgba-2,
+#particleLayer-color-rgba-3,
+#particleLayer-color-min-0,
+#particleLayer-color-min-1,
+#particleLayer-color-min-2,
+#particleLayer-color-min-3,
+#particleLayer-color-max-0,
+#particleLayer-color-max-1,
+#particleLayer-color-max-2,
+#particleLayer-color-max-3,
+#particleLayer-color-startMin-0,
+#particleLayer-color-startMin-1,
+#particleLayer-color-startMin-2,
+#particleLayer-color-startMin-3,
+#particleLayer-color-startMax-0,
+#particleLayer-color-startMax-1,
+#particleLayer-color-startMax-2,
+#particleLayer-color-startMax-3,
+#particleLayer-color-endMin-0,
+#particleLayer-color-endMin-1,
+#particleLayer-color-endMin-2,
+#particleLayer-color-endMin-3,
+#particleLayer-color-endMax-0,
+#particleLayer-color-endMax-1,
+#particleLayer-color-endMax-2,
+#particleLayer-color-endMax-3 {
+	flex: 1 1 auto;
+}
+
+#particleLayer-color-tint-0-slider,
+#particleLayer-color-tint-1-slider,
+#particleLayer-color-tint-2-slider,
+#particleLayer-color-tint-3-slider {
+	flex: 2 1 auto;
+}
+
+#particleLayer-color-tint-0,
+#particleLayer-color-tint-1,
+#particleLayer-color-tint-2,
+#particleLayer-color-tint-3 {
+	flex: 1 1 auto;
+}

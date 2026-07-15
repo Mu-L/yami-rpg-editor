@@ -1,0 +1,3766 @@
+/* --------------------------------
+ * 动画过渡
+ * --------------------------------
+ */
+#animation-easing {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#animation-easing-head {
+	display: flex;
+	position: absolute;
+	justify-content: space-between;
+	top: -25px;
+	right: 0;
+	height: 24px;
+	overflow: hidden;
+	background-color: var(--group-head-background);
+}
+
+#animation-easing-settings::after {
+	content: '';
+	display: block;
+	margin: 4px 6px;
+	width: 16px;
+	height: 16px;
+	background-color: var(--text-color);
+	-webkit-mask-image: url(../Images/curve_settings.png);
+	-webkit-mask-size: 100% 100%;
+	-webkit-mask-position: 0 0;
+}
+
+#animation-easing-id {
+	margin: 2px;
+	flex: 1 1 auto;
+	/* background: blue; */
+}
+
+#animation-easing-canvas {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/* --------------------------------
+ * 角色精灵图窗�? * --------------------------------
+ */
+#fileActor-sprite {
+	width: 324px;
+	height: 122px;
+}
+
+#fileActor-sprite-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#fileActor-sprite-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 角色技能窗�? * --------------------------------
+ */
+#fileActor-skill {
+	width: 324px;
+	height: 122px;
+}
+
+#fileActor-skill-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#fileActor-skill-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 角色装备窗口
+ * --------------------------------
+ */
+#fileActor-equipment {
+	width: 324px;
+	height: 122px;
+}
+
+#fileActor-equipment-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#fileActor-equipment-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 指令建议列表
+ * --------------------------------
+ */
+#command-suggestions {
+	display: block;
+	position: fixed;
+	margin-left: var(--1dpx);
+	width: calc(400px - var(--2dpx));
+	/* box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.5); */
+	background-color: var(--suggestion-widget-background);
+	outline: var(--window-outline);
+	pointer-events: visible;
+}
+
+.command-suggestion-item.selected {
+	color: var(--text-color-rename);
+}
+
+.icon-command {
+	margin: 6px 6px 6px 4px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+}
+
+.icon-command.message {
+	background-color: var(--command-color-element);
+}
+
+.icon-command.message-comment {
+	background-color: var(--command-color-comment);
+}
+
+.icon-command.variable {
+	background-color: var(--command-color-variable);
+}
+
+.icon-command.flow {
+	background-color: var(--command-color-flow);
+}
+
+.icon-command.flow-label {
+	background-color: var(--command-color-label);
+}
+
+.icon-command.flow-wait {
+	background-color: var(--command-color-wait);
+}
+
+.icon-command.ui {
+	background-color: var(--command-color-element);
+}
+
+.icon-command.object {
+	background-color: var(--command-color-object);
+}
+
+.icon-command.audio {
+	background-color: var(--command-color-audio);
+}
+
+.icon-command.actor {
+	background-color: var(--command-color-actor);
+}
+
+.icon-command.skill {
+	background-color: var(--command-color-skill);
+}
+
+.icon-command.inventory {
+	background-color: var(--command-color-inventory);
+}
+
+.icon-command.scene {
+	background-color: var(--command-color-scene);
+}
+
+.icon-command.network {
+	background-color: var(--command-color-network);
+}
+
+.icon-command.system {
+	background-color: var(--command-color-system);
+}
+
+.icon-command.system-javascript {
+	background-color: var(--command-color-text);
+}
+
+.icon-command.custom {
+	background-color: var(--command-color-custom);
+}
+
+.command-suggestion-comment {
+	position: absolute;
+	margin-right: 4px;
+	left: auto;
+	right: 0;
+	width: 180px;
+	color: var(--text-color-suggestion-comment);
+	overflow: hidden;
+	/* 这里不能用pre-wrap，中文会自动换行 */
+	white-space: no-wrap;
+	text-overflow: ellipsis;
+	text-align: right;
+	pointer-events: none;
+}
+
+/* --------------------------------
+ * 文本建议列表
+ * --------------------------------
+ */
+#text-suggestions {
+	display: block;
+	position: fixed;
+	margin-left: var(--1dpx);
+	/* box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.5); */
+	background-color: var(--suggestion-widget-background);
+	outline: var(--window-outline);
+	pointer-events: visible;
+}
+
+.text-suggestion-item {
+	padding-left: 4px;
+	padding-right: 4px;
+	/* color: var(--text-color-unit); */
+}
+
+.text-suggestion-content {
+	pointer-events: none;
+}
+
+.text-suggestion-content.error {
+	text-decoration: underline wavy var(--command-color-invalid-wave);
+}
+
+.text-suggestion-ref-count {
+	margin-left: 4px;
+	padding: 0 2px;
+	color: var(--text-color-suggestion-ref-count);
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	pointer-events: none;
+}
+
+.text-suggestion-comment {
+	position: absolute;
+	margin-right: 4px;
+	left: auto;
+	right: 0;
+	width: 90px;
+	color: var(--text-color-suggestion-comment);
+	overflow: hidden;
+	/* 这里不能用pre-wrap，中文会自动换行 */
+	white-space: no-wrap;
+	text-overflow: ellipsis;
+	text-align: right;
+	pointer-events: none;
+}
+
+/* --------------------------------
+ * 变量访问器窗�? * --------------------------------
+ */
+#variableGetter {
+	width: 324px;
+	height: 146px;
+}
+
+#variableGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#variableGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 变量访问器窗�?
+ * --------------------------------
+ */
+#variableGetter2 {
+	width: 324px;
+	height: 146px;
+}
+
+#variableGetter2-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#variableGetter2-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 角色访问器窗�? * --------------------------------
+ */
+#actorGetter {
+	width: 324px;
+	height: 122px;
+}
+
+#actorGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#actorGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 技能访问器窗口
+ * --------------------------------
+ */
+#skillGetter {
+	width: 324px;
+	height: 146px;
+}
+
+#skillGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#skillGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 状态访问器窗口
+ * --------------------------------
+ */
+#stateGetter {
+	width: 324px;
+	height: 146px;
+}
+
+#stateGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#stateGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 装备访问器窗�? * --------------------------------
+ */
+#equipmentGetter {
+	width: 324px;
+	height: 146px;
+}
+
+#equipmentGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#equipmentGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 物品访问器窗�? * --------------------------------
+ */
+#itemGetter {
+	width: 324px;
+	height: 146px;
+}
+
+#itemGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#itemGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 位置访问器窗�? * --------------------------------
+ */
+#positionGetter {
+	width: 324px;
+	height: 146px;
+}
+
+#positionGetter-absolute-x,
+#positionGetter-absolute-y,
+#positionGetter-relative-x,
+#positionGetter-relative-y {
+	width: 86px;
+}
+
+#positionGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#positionGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 角度访问器窗�? * --------------------------------
+ */
+#angleGetter {
+	width: 324px;
+	height: 122px;
+}
+
+#angleGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#angleGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 触发器访问器窗口
+ * --------------------------------
+ */
+#triggerGetter {
+	width: 324px;
+	height: 122px;
+}
+
+#triggerGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#triggerGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 光源访问器窗�? * --------------------------------
+ */
+#lightGetter {
+	width: 324px;
+	height: 122px;
+}
+
+#lightGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#lightGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 区域访问器窗�? * --------------------------------
+ */
+#regionGetter {
+	width: 324px;
+	height: 122px;
+}
+
+#regionGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#regionGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 瓦片地图访问器窗�? * --------------------------------
+ */
+#tilemapGetter {
+	width: 324px;
+	height: 122px;
+}
+
+#tilemapGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#tilemapGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 场景对象访问器窗�? * --------------------------------
+ */
+#objectGetter {
+	width: 324px;
+	height: 122px;
+}
+
+#objectGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#objectGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 元素访问器窗�? * --------------------------------
+ */
+#elementGetter {
+	width: 324px;
+	height: 146px;
+}
+
+#elementGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#elementGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 祖先元素访问器窗�? * --------------------------------
+ */
+#ancestorGetter {
+	width: 324px;
+	height: 146px;
+}
+
+#ancestorGetter-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#ancestorGetter-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 显示文本
+ * --------------------------------
+ */
+#showText {
+	width: 720px;
+	height: 268px;
+}
+
+#showText-target {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 200px;
+}
+
+#showText-parameters {
+	position: absolute;
+	left: 220px;
+	top: 10px;
+	width: 490px;
+	font-family: var(--font-family-mono);
+}
+
+#showText-content {
+	position: absolute;
+	left: 10px;
+	top: 40px;
+	width: 700px;
+	height: 160px;
+	background-color: var(--input-background);
+}
+
+#showText-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#showText-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 显示选项
+ * --------------------------------
+ */
+#showChoices {
+	width: 400px;
+	height: 204px;
+}
+
+#showChoices-choices {
+	height: 102px;
+}
+
+#showChoices-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#showChoices-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置布尔�? * --------------------------------
+ */
+#setBoolean {
+	width: 324px;
+	height: 194px;
+}
+
+#setBoolean-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setBoolean-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置数�? * --------------------------------
+ */
+#setNumber {
+	width: 324px;
+	height: 204px;
+}
+
+#setNumber-operands {
+	height: 102px;
+}
+
+#setNumber-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setNumber-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置数�?- 操作�? * --------------------------------
+ */
+#setNumber-operand {
+	width: 324px;
+	height: 190px;
+}
+
+#setNumber-operand-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setNumber-operand-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置字符�? * --------------------------------
+ */
+#setString {
+	width: 324px;
+	height: 242px;
+}
+
+#setString-operand-common-value {
+	height: 92px;
+}
+
+#setString-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setString-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置对象
+ * --------------------------------
+ */
+#setObject {
+	width: 324px;
+	height: 170px;
+}
+
+#setObject-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setObject-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置列表
+ * --------------------------------
+ */
+#setList {
+	width: 324px;
+	height: calc(194px + 24px);
+}
+
+#setList-string,
+#setList-separator {
+	height: 44px;
+}
+
+#setList-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setList-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 删除变量
+ * --------------------------------
+ */
+#deleteVariable {
+	width: 324px;
+	height: 98px;
+}
+
+#deleteVariable-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#deleteVariable-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 获取对象属�? * --------------------------------
+ */
+#getObjectProperty {
+	width: 324px;
+	height: 220px;
+}
+
+#getObjectProperty-list {
+	height: 102px;
+}
+
+#getObjectProperty-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#getObjectProperty-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置对象属�? * --------------------------------
+ */
+#setObjectProperty {
+	width: 324px;
+	height: 220px;
+}
+
+#setObjectProperty-list {
+	height: 102px;
+}
+
+#setObjectProperty-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setObjectProperty-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 获取对象属�?- 属性索�? * --------------------------------
+ */
+#ObjectProperty-index {
+	width: 324px;
+	height: 98px;
+}
+
+#ObjectProperty-index-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#ObjectProperty-index-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 分支条件
+ * --------------------------------
+ */
+#if {
+	width: 324px;
+	height: 180px;
+}
+
+#if-branches {
+	height: 102px;
+}
+
+#if-else {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+}
+
+#if-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#if-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 分支条件 - 分支
+ * --------------------------------
+ */
+#if-branch {
+	width: 324px;
+	height: 200px;
+}
+
+#if-branch-conditions {
+	height: 102px;
+}
+
+#if-branch-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#if-branch-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 分支条件 - 条件
+ * --------------------------------
+ */
+#if-condition {
+	width: 324px;
+	height: 218px;
+}
+
+#if-condition-string-constant-value {
+	height: 44px;
+}
+
+#if-condition-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#if-condition-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 匹配
+ * --------------------------------
+ */
+#switch {
+	width: 324px;
+	height: 204px;
+}
+
+#switch-branches {
+	height: 102px;
+}
+
+#switch-default {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+}
+
+#switch-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#switch-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 匹配 - 分支
+ * --------------------------------
+ */
+#switch-branch {
+	width: 324px;
+	height: 180px;
+}
+
+#switch-branch-conditions {
+	height: 102px;
+}
+
+#switch-branch-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#switch-branch-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 匹配 - 条件
+ * --------------------------------
+ */
+#switch-condition {
+	width: 324px;
+	height: 146px;
+}
+
+#switch-condition-string-value {
+	height: 44px;
+}
+
+#switch-condition-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#switch-condition-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 循环
+ * --------------------------------
+ */
+#loop {
+	width: 324px;
+	height: 204px;
+}
+
+#loop-conditions {
+	height: 102px;
+}
+
+#loop-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#loop-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 遍历
+ * --------------------------------
+ */
+#forEach {
+	width: 324px;
+	height: 146px;
+}
+
+#forEach-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#forEach-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 调用事件
+ * --------------------------------
+ */
+#callEvent {
+	width: 324px;
+	height: 146px;
+}
+
+.callEvent-argument-string > text-area {
+	height: 92px;
+}
+
+#callEvent-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#callEvent-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 返回�? * --------------------------------
+ */
+#return {
+	width: 324px;
+	height: 122px;
+}
+
+#return-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#return-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 注册事件
+ * --------------------------------
+ */
+#registerEvent {
+	width: 324px;
+	height: 212px;
+}
+
+#registerEvent-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#registerEvent-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 停止事件
+ * --------------------------------
+ */
+#stopEvent {
+	width: 324px;
+	height: 146px;
+}
+
+#stopEvent-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#stopEvent-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置事件
+ * --------------------------------
+ */
+#setEvent {
+	width: 324px;
+	height: 122px;
+}
+
+#setEvent-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setEvent-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 注释
+ * --------------------------------
+ */
+#comment {
+	width: 720px;
+	height: 238px;
+}
+
+#comment-comment {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 700px;
+	height: 160px;
+	background-color: var(--input-background);
+}
+
+#comment-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#comment-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 过渡
+ * --------------------------------
+ */
+#transition {
+	width: 324px;
+	height: 194px;
+}
+
+#transition-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#transition-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 指令�? * --------------------------------
+ */
+#block {
+	width: 520px;
+	height: 98px;
+}
+
+#block-note {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 500px;
+}
+
+#block-asynchronous {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+}
+
+#block-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#block-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 标签
+ * --------------------------------
+ */
+#label {
+	width: 324px;
+	height: 98px;
+}
+
+#label-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#label-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 跳转�? * --------------------------------
+ */
+#jumpTo {
+	width: 324px;
+	height: 122px;
+}
+
+#jumpTo-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#jumpTo-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 等待
+ * --------------------------------
+ */
+#wait {
+	width: 324px;
+	height: 98px;
+}
+
+#wait-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#wait-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 创建元素
+ * --------------------------------
+ */
+#createElement {
+	width: 324px;
+	height: 146px;
+}
+
+#createElement-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#createElement-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置图像
+ * --------------------------------
+ */
+#setImage {
+	width: 324px;
+	height: 204px;
+}
+
+#setImage-properties {
+	height: 102px;
+}
+
+#setImage-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setImage-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置图像 - 属�? * --------------------------------
+ */
+#setImage-property {
+	width: 324px;
+	height: 122px;
+}
+
+#setImage-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setImage-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 加载图像
+ * --------------------------------
+ */
+#loadImage {
+	width: 324px;
+	height: 170px;
+}
+
+#loadImage-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#loadImage-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变图像色调
+ * --------------------------------
+ */
+#tintImage {
+	width: 428px;
+	height: 290px;
+}
+
+#tintImage-grid-box {
+	width: 304px;
+}
+
+#tintImage-filter {
+	position: absolute;
+	left: 318px;
+	top: 10px;
+	width: 100px;
+	height: 212px;
+}
+
+#tintImage-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#tintImage-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置文本
+ * --------------------------------
+ */
+#setText {
+	width: 324px;
+	height: 204px;
+}
+
+#setText-properties {
+	height: 102px;
+}
+
+#setText-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setText-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置文本 - 属�? * --------------------------------
+ */
+#setText-property {
+	width: 324px;
+	height: 194px;
+}
+
+#setText-property-content {
+	height: 92px;
+}
+
+#setText-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setText-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置对话�? * --------------------------------
+ */
+#setDialogBox {
+	width: 324px;
+	height: 204px;
+}
+
+#setDialogBox-properties {
+	height: 102px;
+}
+
+#setDialogBox-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setDialogBox-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置对话�?- 属�? * --------------------------------
+ */
+#setDialogBox-property {
+	width: 324px;
+	height: 194px;
+}
+
+#setDialogBox-property-content {
+	height: 92px;
+}
+
+#setDialogBox-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setDialogBox-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 控制对话�? * --------------------------------
+ */
+#controlDialog {
+	width: 324px;
+	height: 122px;
+}
+
+#controlDialog-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#controlDialog-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置进度�? * --------------------------------
+ */
+#setProgressBar {
+	width: 324px;
+	height: 204px;
+}
+
+#setProgressBar-properties {
+	height: 102px;
+}
+
+#setProgressBar-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setProgressBar-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置进度�?- 属�? * --------------------------------
+ */
+#setProgressBar-property {
+	width: 324px;
+	height: 122px;
+}
+
+#setProgressBar-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setProgressBar-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置动画
+ * --------------------------------
+ */
+#setAnimation {
+	width: 324px;
+	height: 204px;
+}
+
+#setAnimation-properties {
+	height: 102px;
+}
+
+#setAnimation-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setAnimation-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置动画 - 属�? * --------------------------------
+ */
+#setAnimation-property {
+	width: 324px;
+	height: 122px;
+}
+
+#setAnimation-property-content {
+	height: 92px;
+}
+
+#setAnimation-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setAnimation-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置视频
+ * --------------------------------
+ */
+#setVideo {
+	width: 324px;
+	height: 204px;
+}
+
+#setVideo-properties {
+	height: 102px;
+}
+
+#setVideo-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setVideo-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置视频 - 属�? * --------------------------------
+ */
+#setVideo-property {
+	width: 324px;
+	height: 122px;
+}
+
+#setVideo-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setVideo-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * open设置窗口
+ * --------------------------------
+ */
+#setWindow {
+	width: 324px;
+	height: 204px;
+}
+
+#setWindow-properties {
+	height: 102px;
+}
+
+#setWindow-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setWindow-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 等待视频结束
+ * --------------------------------
+ */
+#waitForVideo {
+	width: 324px;
+	height: 98px;
+}
+
+#waitForVideo-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#waitForVideo-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置元素
+ * --------------------------------
+ */
+#setElement {
+	width: 324px;
+	height: 122px;
+}
+
+#setElement-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setElement-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 嵌套元素
+ * --------------------------------
+ */
+#nestElement {
+	width: 324px;
+	height: 122px;
+}
+
+#nestElement-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#nestElement-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 移动元素
+ * --------------------------------
+ */
+#moveElement {
+	width: 324px;
+	height: 276px;
+}
+
+#moveElement-properties {
+	height: 102px;
+}
+
+#moveElement-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#moveElement-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 移动元素 - 属�? * --------------------------------
+ */
+#moveElement-property {
+	width: 324px;
+	height: 122px;
+}
+
+#moveElement-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#moveElement-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 删除元素
+ * --------------------------------
+ */
+#deleteElement {
+	width: 324px;
+	height: 122px;
+}
+
+#deleteElement-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#deleteElement-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置指针事件根元�? * --------------------------------
+ */
+#setPointerEventRoot {
+	width: 324px;
+	height: 122px;
+}
+
+#setPointerEventRoot-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setPointerEventRoot-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置焦点
+ * --------------------------------
+ */
+#setFocus {
+	width: 324px;
+	height: 170px;
+}
+
+#setFocus-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setFocus-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 创建对象
+ * --------------------------------
+ */
+#createObject {
+	width: 324px;
+	height: 122px;
+}
+
+#createObject-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#createObject-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 移动光源
+ * --------------------------------
+ */
+#moveLight {
+	width: 324px;
+	height: 276px;
+}
+
+#moveLight-properties {
+	height: 102px;
+}
+
+#moveLight-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#moveLight-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 移动光源 - 属�? * --------------------------------
+ */
+#moveLight-property {
+	width: 324px;
+	height: 122px;
+}
+
+#moveLight-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#moveLight-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 删除场景对象
+ * --------------------------------
+ */
+#deleteObject {
+	width: 324px;
+	height: 98px;
+}
+
+#deleteObject-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#deleteObject-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置状�? * --------------------------------
+ */
+#setState {
+	width: 324px;
+	height: 146px;
+}
+
+#setState-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setState-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 播放动画
+ * --------------------------------
+ */
+#playAnimation {
+	width: 324px;
+	height: 314px;
+}
+
+#playAnimation-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#playAnimation-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置对象动画
+ * --------------------------------
+ */
+#setObjectAnimation {
+	width: 324px;
+	height: 314px;
+}
+
+#setObjectAnimation-grid-box {
+	width: 304px;
+}
+
+#setObjectAnimation-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setObjectAnimation-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 播放音频
+ * --------------------------------
+ */
+#playAudio {
+	width: 324px;
+	height: 170px;
+}
+
+#playAudio-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#playAudio-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 停止播放音频
+ * --------------------------------
+ */
+#stopAudio {
+	width: 324px;
+	height: 98px;
+}
+
+#stopAudio-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#stopAudio-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置音量
+ * --------------------------------
+ */
+#setVolume {
+	width: 324px;
+	height: 194px;
+}
+
+#setVolume-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setVolume-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置声像
+ * --------------------------------
+ */
+#setPan {
+	width: 324px;
+	height: 194px;
+}
+
+#setPan-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setPan-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置混响
+ * --------------------------------
+ */
+#setReverb {
+	width: 324px;
+	height: 218px;
+}
+
+#setReverb-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setReverb-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置循环
+ * --------------------------------
+ */
+#setLoop {
+	width: 324px;
+	height: 122px;
+}
+
+#setLoop-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setLoop-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 保存音频
+ * --------------------------------
+ */
+#saveAudio {
+	width: 324px;
+	height: 98px;
+}
+
+#saveAudio-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#saveAudio-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 恢复音频
+ * --------------------------------
+ */
+#restoreAudio {
+	width: 324px;
+	height: 98px;
+}
+
+#restoreAudio-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#restoreAudio-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 创建角色
+ * --------------------------------
+ */
+#createActor {
+	width: 324px;
+	height: 170px;
+}
+
+#createActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#createActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 移动角色
+ * --------------------------------
+ */
+#moveActor {
+	width: 324px;
+	height: 170px;
+}
+
+#moveActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#moveActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 跟随角色
+ * --------------------------------
+ */
+#followActor {
+	width: 324px;
+	height: 338px;
+}
+
+#followActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#followActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 平移角色
+ * --------------------------------
+ */
+#translateActor {
+	width: 324px;
+	height: 218px;
+}
+
+#translateActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#translateActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 增减仇恨�? * --------------------------------
+ */
+#changeThreat {
+	width: 324px;
+	height: 170px;
+}
+
+#changeThreat-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeThreat-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置体重
+ * --------------------------------
+ */
+#setWeight {
+	width: 324px;
+	height: 122px;
+}
+
+#setWeight-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setWeight-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置移动速度
+ * --------------------------------
+ */
+#setMovementSpeed {
+	width: 324px;
+	height: 146px;
+}
+
+#setMovementSpeed-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setMovementSpeed-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置角度
+ * --------------------------------
+ */
+#setAngle {
+	width: 324px;
+	height: 194px;
+}
+
+#setAngle-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setAngle-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 固定角度
+ * --------------------------------
+ */
+#fixAngle {
+	width: 324px;
+	height: 122px;
+}
+
+#fixAngle-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#fixAngle-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置激活状�? * --------------------------------
+ */
+#setActive {
+	width: 324px;
+	height: 122px;
+}
+
+#setActive-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setActive-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 获取角色
+ * --------------------------------
+ */
+#getActor {
+	width: 324px;
+	height: 362px;
+}
+
+#getActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#getActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 获取多个角色
+ * --------------------------------
+ */
+#getMultipleActors {
+	width: 324px;
+	height: 266px;
+}
+
+#getMultipleActors-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#getMultipleActors-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 删除角色
+ * --------------------------------
+ */
+#deleteActor {
+	width: 324px;
+	height: 98px;
+}
+
+#deleteActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#deleteActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置玩家角色
+ * --------------------------------
+ */
+#setPlayerActor {
+	width: 324px;
+	height: 98px;
+}
+
+#setPlayerActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setPlayerActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置队伍成员
+ * --------------------------------
+ */
+#setPartyMember {
+	width: 324px;
+	height: 122px;
+}
+
+#setPartyMember-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setPartyMember-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变通行区域
+ * --------------------------------
+ */
+#changePassableTerrain {
+	width: 324px;
+	height: 122px;
+}
+
+#changePassableTerrain-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changePassableTerrain-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变角色队伍
+ * --------------------------------
+ */
+#changeActorTeam {
+	width: 324px;
+	height: 122px;
+}
+
+#changeActorTeam-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeActorTeam-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变角色状�? * --------------------------------
+ */
+#changeActorState {
+	width: 324px;
+	height: 146px;
+}
+
+#changeActorState-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeActorState-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变角色装备
+ * --------------------------------
+ */
+#changeActorEquipment {
+	width: 324px;
+	height: 170px;
+}
+
+#changeActorEquipment-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeActorEquipment-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变角色技�? * --------------------------------
+ */
+#changeActorSkill {
+	width: 324px;
+	height: 146px;
+}
+
+#changeActorSkill-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeActorSkill-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变角色头像
+ * --------------------------------
+ */
+#changeActorPortrait {
+	width: 324px;
+	height: 170px;
+}
+
+#changeActorPortrait-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeActorPortrait-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变角色动画
+ * --------------------------------
+ */
+#changeActorAnimation {
+	width: 324px;
+	height: 122px;
+}
+
+#changeActorAnimation-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeActorAnimation-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变角色精灵�? * --------------------------------
+ */
+#changeActorSprite {
+	width: 324px;
+	height: 170px;
+}
+
+#changeActorSprite-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeActorSprite-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变角色动作
+ * --------------------------------
+ */
+#changeActorMotion {
+	width: 324px;
+	height: 146px;
+}
+
+#changeActorMotion-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#changeActorMotion-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 播放角色动画
+ * --------------------------------
+ */
+#playActorAnimation {
+	width: 324px;
+	height: 170px;
+}
+
+#playActorAnimation-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#playActorAnimation-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 停止角色动画
+ * --------------------------------
+ */
+#stopActorAnimation {
+	width: 324px;
+	height: 98px;
+}
+
+#stopActorAnimation-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#stopActorAnimation-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 添加动画组件
+ * --------------------------------
+ */
+#addAnimationComponent {
+	width: 324px;
+	height: 242px;
+}
+
+#addAnimationComponent-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#addAnimationComponent-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置动画组件
+ * --------------------------------
+ */
+#setAnimationComponent {
+	width: 324px;
+	height: 218px;
+}
+
+#setAnimationComponent-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setAnimationComponent-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 移除动画组件
+ * --------------------------------
+ */
+#removeAnimationComponent {
+	width: 324px;
+	height: 146px;
+}
+
+#removeAnimationComponent-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#removeAnimationComponent-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 创建全局角色
+ * --------------------------------
+ */
+#createGlobalActor {
+	width: 324px;
+	height: 122px;
+}
+
+#createGlobalActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#createGlobalActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 转移全局角色
+ * --------------------------------
+ */
+#transferGlobalActor {
+	width: 324px;
+	height: 122px;
+}
+
+#transferGlobalActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#transferGlobalActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 删除全局角色
+ * --------------------------------
+ */
+#deleteGlobalActor {
+	width: 324px;
+	height: 98px;
+}
+
+#deleteGlobalActor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#deleteGlobalActor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置目标
+ * --------------------------------
+ */
+#setTarget {
+	width: 324px;
+	height: 98px;
+}
+
+#setTarget-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTarget-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 获取目标
+ * --------------------------------
+ */
+#getTarget {
+	width: 324px;
+	height: 194px;
+}
+
+#getTarget-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#getTarget-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 添加目标
+ * --------------------------------
+ */
+#appendTarget {
+	width: 324px;
+	height: 122px;
+}
+
+#appendTarget-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#appendTarget-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 移除目标
+ * --------------------------------
+ */
+#removeTarget {
+	width: 324px;
+	height: 122px;
+}
+
+#removeTarget-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#removeTarget-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 探测目标
+ * --------------------------------
+ */
+#detectTargets {
+	width: 324px;
+	height: 170px;
+}
+
+#detectTargets-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#detectTargets-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 放弃目标
+ * --------------------------------
+ */
+#discardTargets {
+	width: 324px;
+	height: 146px;
+}
+
+#discardTargets-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#discardTargets-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 重置目标列表
+ * --------------------------------
+ */
+#resetTargets {
+	width: 324px;
+	height: 98px;
+}
+
+#resetTargets-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#resetTargets-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 渲染轮廓
+ * --------------------------------
+ */
+#renderOutline {
+	width: 324px;
+	height: 146px;
+}
+
+#renderOutline-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#renderOutline-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 施放技�? * --------------------------------
+ */
+#castSkill {
+	width: 324px;
+	height: 170px;
+}
+
+#castSkill-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#castSkill-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置技�? * --------------------------------
+ */
+#setSkill {
+	width: 324px;
+	height: 146px;
+}
+
+#setSkill-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setSkill-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 创建触发�? * --------------------------------
+ */
+#createTrigger {
+	width: 346px;
+	height: 242px;
+}
+
+#createTrigger-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#createTrigger-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置触发器速度
+ * --------------------------------
+ */
+#setTriggerSpeed {
+	width: 324px;
+	height: 122px;
+}
+
+#setTriggerSpeed-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTriggerSpeed-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置触发器角�? * --------------------------------
+ */
+#setTriggerAngle {
+	width: 324px;
+	height: 122px;
+}
+
+#setTriggerAngle-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTriggerAngle-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置触发器持续时�? * --------------------------------
+ */
+#setTriggerDuration {
+	width: 324px;
+	height: 146px;
+}
+
+#setTriggerDuration-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTriggerDuration-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置触发器动�? * --------------------------------
+ */
+#setTriggerMotion {
+	width: 324px;
+	height: 122px;
+}
+
+#setTriggerMotion-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTriggerMotion-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置库存
+ * --------------------------------
+ */
+#setInventory {
+	width: 324px;
+	height: 170px;
+}
+
+#setInventory-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setInventory-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 使用物品
+ * --------------------------------
+ */
+#useItem {
+	width: 324px;
+	height: 170px;
+}
+
+#useItem-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#useItem-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置物品
+ * --------------------------------
+ */
+#setItem {
+	width: 324px;
+	height: 146px;
+}
+
+#setItem-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setItem-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置冷却时间
+ * --------------------------------
+ */
+#setCooldown {
+	width: 324px;
+	height: 170px;
+}
+
+#setCooldown-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setCooldown-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置快捷�? * --------------------------------
+ */
+#setShortcut {
+	width: 324px;
+	height: 170px;
+}
+
+#setShortcut-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setShortcut-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 激活场�? * --------------------------------
+ */
+#activateScene {
+	width: 324px;
+	height: 98px;
+}
+
+#activateScene-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#activateScene-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 加载场景
+ * --------------------------------
+ */
+#loadScene {
+	width: 324px;
+	height: 170px;
+}
+
+#loadScene-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#loadScene-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 加载子场�? * --------------------------------
+ */
+#loadSubscene {
+	width: 324px;
+	height: 146px;
+}
+
+#loadSubscene-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#loadSubscene-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 卸载子场�? * --------------------------------
+ */
+#unloadSubscene {
+	width: 324px;
+	height: 98px;
+}
+
+#unloadSubscene-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#unloadSubscene-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 限制摄像机边�? * --------------------------------
+ */
+#clampCamera {
+	width: 324px;
+	height: 170px;
+}
+
+#clampCamera-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#clampCamera-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 移动摄像�? * --------------------------------
+ */
+#moveCamera {
+	width: 324px;
+	height: 194px;
+}
+
+#moveCamera-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#moveCamera-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置缩放�? * --------------------------------
+ */
+#setZoomFactor {
+	width: 324px;
+	height: 170px;
+}
+
+#setZoomFactor-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setZoomFactor-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置环境�? * --------------------------------
+ */
+#setAmbientLight {
+	width: 324px;
+	height: 218px;
+}
+
+#setAmbientLight-filter {
+	position: absolute;
+	left: 318px;
+	top: 10px;
+	width: 100px;
+	height: 164px;
+}
+
+#setAmbientLight-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setAmbientLight-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 改变画面色调
+ * --------------------------------
+ */
+#tintScreen {
+	width: 428px;
+	height: 242px;
+}
+
+#tintScreen-grid-box {
+	width: 304px;
+}
+
+#tintScreen-filter {
+	position: absolute;
+	left: 318px;
+	top: 10px;
+	width: 100px;
+	height: 164px;
+}
+
+#tintScreen-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#tintScreen-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 震动屏幕
+ * --------------------------------
+ */
+#shakeScreen {
+	width: 324px;
+	height: 218px;
+}
+
+#shakeScreen-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#shakeScreen-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置图块
+ * --------------------------------
+ */
+#setTile {
+	width: 324px;
+	height: 218px;
+}
+
+#setTile-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTile-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 删除图块
+ * --------------------------------
+ */
+#deleteTile {
+	width: 324px;
+	height: 146px;
+}
+
+#deleteTile-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#deleteTile-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置地形
+ * --------------------------------
+ */
+#setTerrain {
+	width: 324px;
+	height: 122px;
+}
+
+#setTerrain-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTerrain-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 请求URL
+ * --------------------------------
+ */
+#requestURL {
+	width: 324px;
+	height: 360px;
+}
+
+#requestURL-header {
+	height: 102px;
+}
+
+#requestURL-data {
+	height: 102px;
+}
+
+#requestURL-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#requestURL-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 请求 - keyValue
+ * --------------------------------
+ */
+#request-keyValue {
+	width: 324px;
+	height: 120px;
+}
+
+#request-keyValue-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#request-keyValue-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 下载文件
+ * --------------------------------
+ */
+#downloadFile {
+	width: 324px;
+	height: 430px;
+}
+
+#downloadFile-header {
+	height: 102px;
+}
+
+#downloadFile-data {
+	height: 102px;
+}
+
+#downloadFile-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#downloadFile-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置游戏速度
+ * --------------------------------
+ */
+#setGameSpeed {
+	width: 324px;
+	height: 170px;
+}
+
+#setGameSpeed-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setGameSpeed-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置队伍关系
+ * --------------------------------
+ */
+#setTeamRelation {
+	width: 324px;
+	height: 146px;
+}
+
+#setTeamRelation-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTeamRelation-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 开关碰撞系�? * --------------------------------
+ */
+#switchCollisionSystem {
+	width: 324px;
+	height: 98px;
+}
+
+#switchCollisionSystem-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#switchCollisionSystem-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 游戏数据
+ * --------------------------------
+ */
+#gameData {
+	width: 324px;
+	height: 146px;
+}
+
+#gameData-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#gameData-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 模拟按键
+ * --------------------------------
+ */
+#simulateKey {
+	width: 324px;
+	height: 122px;
+}
+
+#simulateKey-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#simulateKey-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置语言
+ * --------------------------------
+ */
+#setLanguage {
+	width: 324px;
+	height: 98px;
+}
+
+#setLanguage-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setLanguage-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置分辨�? * --------------------------------
+ */
+#setResolution {
+	width: 324px;
+	height: 170px;
+}
+
+#setResolution-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setResolution-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 启动参数
+ * --------------------------------
+ */
+#commandLine {
+	width: 324px;
+	height: 146px;
+}
+
+#commandLine-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#commandLine-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 编辑数据
+ * --------------------------------
+ */
+#edit-data {
+	width: 720px;
+	height: calc(238px * 1.5);
+	/* 输入提示框可溢出 */
+	overflow: visible;
+}
+
+#edit-data-current {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 700px;
+	height: calc(238px * 1.15);
+	/* 用于填补150%缩放时边框处的缝�?*/
+	background-color: var(--input-background);
+	border: var(--fieldset-border);
+	border-radius: 2px;
+}
+
+#edit-data-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#edit-data-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 执行脚本
+ * --------------------------------
+ */
+#script {
+	width: 720px;
+	height: calc(238px * 1.5);
+	/* 输入提示框可溢出 */
+	overflow: visible;
+}
+
+#script-script {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 700px;
+	height: calc(238px * 1.15);
+	/* 用于填补150%缩放时边框处的缝�?*/
+	background-color: var(--input-background);
+	border: var(--fieldset-border);
+	border-radius: 2px;
+}
+#script-change {
+	margin-left: 20px;
+	margin-top: 5px;
+}
+
+#script-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#script-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 脚本指令
+ * --------------------------------
+ */
+#scriptCommand {
+	width: 324px;
+}
+
+#scriptCommand-parameter-grid {
+	display: grid;
+	margin: 10px;
+	grid-gap: 4px;
+	grid-template-columns: 1fr 2fr;
+}
+
+#scriptCommand-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#scriptCommand-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 过渡窗口
+ * --------------------------------
+ */
+#easing {
+	width: 800px;
+	height: 604px;
+}
+
+#easing-list-fieldset {
+	left: 10px;
+	top: 10px;
+	width: 200px;
+	height: 234px;
+}
+
+#easing-list {
+	font-family: var(--font-family-mono);
+}
+
+#easing-points-fieldset {
+	left: 220px;
+	top: 10px;
+	width: 326px;
+	height: 234px;
+}
+
+#easing-points-grid {
+	grid-template-columns: 100px 98px 98px;
+}
+
+#easing-mode {
+	grid-column-start: 2;
+	grid-column-end: 4;
+	grid-row-start: 1;
+}
+
+#easing-points-0-x,
+#easing-points-0-y,
+#easing-points-1-x,
+#easing-points-1-y,
+#easing-points-2-x,
+#easing-points-2-y,
+#easing-points-3-x,
+#easing-points-3-y,
+#easing-points-4-x,
+#easing-points-4-y,
+#easing-points-5-x,
+#easing-points-5-y,
+#easing-points-6-x,
+#easing-points-6-y,
+#easing-points-7-x,
+#easing-points-7-y {
+	width: 98px;
+}
+
+#easing-curve-fieldset {
+	padding: 10px;
+	left: 556px;
+	top: 10px;
+	width: 234px;
+	height: 234px;
+}
+
+#easing-curve-canvas {
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
+	/* background-color: green; */
+}
+
+[name='easing-scale'] {
+	display: block;
+	position: relative;
+	margin: 0 -10px;
+	width: 44px;
+	text-indent: 10px;
+	line-height: 12px;
+	font-size: 12px;
+	opacity: 0.25;
+}
+
+[name='easing-scale'].selected {
+	opacity: 1;
+}
+
+#easing-preview-fieldset {
+	left: 10px;
+	top: 254px;
+	width: 780px;
+	height: 282px;
+}
+
+#easing-preview-canvas {
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
+	/* background-color: green; */
+}
+
+#easing-preview-grid {
+	position: absolute;
+	left: auto;
+	right: 0;
+	grid-template-columns: 60px 1fr;
+}
+
+#easing-preview-reverse,
+#easing-preview-duration,
+#easing-preview-delay {
+	width: 80px;
+}
+
+#easing-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#easing-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置图块标签窗口
+ * --------------------------------
+ */
+#setTileTag {
+	width: 324px;
+	height: 98px;
+}
+
+#setTileTag-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setTileTag-cancel {
+	right: 10px;
+	bottom: 10px;
+}

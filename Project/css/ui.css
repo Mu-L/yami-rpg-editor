@@ -1,0 +1,1338 @@
+/* --------------------------------
+ * 项目窗口
+ * --------------------------------
+ */
+#project-browser {
+	width: 100%;
+	height: 100%;
+}
+
+/* --------------------------------
+ * 舞台窗口
+ * --------------------------------
+ */
+#scene,
+#ui,
+#animation,
+#particle {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: var(--stage-page-background);
+}
+
+nav-item[value='scene'].selected,
+nav-item[value='ui'].selected,
+nav-item[value='animation'].selected,
+nav-item[value='particle'].selected {
+	background-clip: padding-box;
+	border-bottom: 1px solid transparent;
+}
+
+/* --------------------------------
+ * 场景
+ * --------------------------------
+ */
+#scene-head {
+	display: flex;
+	position: absolute;
+	flex: 1 0 auto;
+	justify-content: space-between;
+	top: -25px;
+	right: 0;
+	height: 24px;
+	overflow: hidden;
+	background-color: var(--group-head-background);
+}
+
+/* 这里不能写成flex: 0 0 144px; */
+#scene-head-start {
+	display: flex;
+	flex: 0 0 auto;
+	width: 115px;
+	/* background: yellow; */
+}
+
+#scene-head-start > .toolbar-item::after {
+	content: '';
+	display: block;
+	margin: 4px 6px;
+	width: 16px;
+	height: 16px;
+	background-color: var(--text-color);
+}
+
+#scene-switch-grid::after {
+	-webkit-mask-image: url(../Images/scene_view.png);
+	-webkit-mask-size: 100% 400%;
+	-webkit-mask-position: 0 0;
+}
+
+#scene-switch-light::after {
+	-webkit-mask-image: url(../Images/scene_view.png);
+	-webkit-mask-size: 100% 400%;
+	-webkit-mask-position: 0 -100%;
+}
+
+#scene-switch-animation::after {
+	-webkit-mask-image: url(../Images/scene_view.png);
+	-webkit-mask-size: 100% 400%;
+	-webkit-mask-position: 0 -300%;
+}
+
+#scene-switch-settings::after {
+	-webkit-mask-image: url(../Images/common_settings.png);
+	-webkit-mask-size: 100% 100%;
+	-webkit-mask-position: 0 0;
+}
+
+#scene-head-center {
+	display: flex;
+	flex: 0 0 auto;
+	/* background: green; */
+	border-left: var(--toolbar-item-border);
+}
+
+#scene-layer,
+#scene-brush {
+	display: flex;
+}
+
+#scene-layer > .toolbar-item::after,
+#scene-brush > .toolbar-item::after {
+	content: '';
+	display: block;
+	margin: 4px 6px;
+	width: 16px;
+	height: 16px;
+	background-color: var(--text-color);
+	-webkit-mask-image: url(../Images/scene_tilemap.png);
+	-webkit-mask-size: 100% 1300%;
+}
+
+#scene-layer > .toolbar-item.selected::after,
+#scene-brush > .toolbar-item.selected::after {
+	background-color: var(--toolbar-item-color-highlight);
+}
+
+#scene-layer-object::after {
+	-webkit-mask-position: 0 0;
+}
+
+#scene-layer-tilemap-1::after {
+	-webkit-mask-position: 0 -100%;
+}
+
+#scene-layer-tilemap-2::after {
+	-webkit-mask-position: 0 -200%;
+}
+
+#scene-layer-tilemap-3::after {
+	-webkit-mask-position: 0 -300%;
+}
+
+#scene-layer-tilemap-4::after {
+	-webkit-mask-position: 0 -400%;
+}
+
+#scene-layer-tilemap-5::after {
+	-webkit-mask-position: 0 -500%;
+}
+
+#scene-layer-tilemap-6::after {
+	-webkit-mask-position: 0 -600%;
+}
+
+#scene-layer-terrain::after {
+	-webkit-mask-position: 0 -700%;
+}
+
+#scene-brush-eraser::after {
+	-webkit-mask-position: 0 -800%;
+}
+
+#scene-brush-pencil::after {
+	-webkit-mask-position: 0 -900%;
+}
+
+#scene-brush-rect::after {
+	-webkit-mask-position: 0 -1000%;
+}
+
+#scene-brush-oval::after {
+	-webkit-mask-position: 0 -1100%;
+}
+
+#scene-brush-fill::after {
+	-webkit-mask-position: 0 -1200%;
+}
+
+#scene-head-end {
+	flex: 0 0 auto;
+	/* background: blue; */
+}
+
+#scene-zoom {
+	margin: 2px 4px;
+	right: 0;
+	width: 80px;
+}
+
+#scene-screen {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#scene-info {
+	position: absolute;
+	padding: 0 4px;
+	line-height: 20px;
+	color: white;
+	overflow: hidden;
+	white-space: pre;
+	text-overflow: ellipsis;
+	text-shadow: var(--stage-info-text-shadow);
+	pointer-events: none;
+}
+
+#scene-list-head {
+	position: absolute;
+	top: -25px;
+	right: 0;
+	height: 24px;
+	overflow: hidden;
+	background-color: var(--group-head-background);
+}
+
+#scene-searcher {
+	margin: 2px;
+	width: calc(100% - 4px);
+}
+
+#scene-list {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+/* --------------------------------
+ * 界面
+ * --------------------------------
+ */
+#ui-head {
+	display: flex;
+	position: absolute;
+	flex: 1 0 auto;
+	justify-content: space-between;
+	top: -25px;
+	right: 0;
+	height: 24px;
+	overflow: hidden;
+	background-color: var(--group-head-background);
+}
+
+#ui-head-start {
+	display: flex;
+	flex: 0 0 auto;
+	width: 28px;
+	/* background: yellow; */
+}
+
+#ui-head-start > .toolbar-item::after {
+	content: '';
+	display: block;
+	margin: 4px 6px;
+	width: 16px;
+	height: 16px;
+	background-color: var(--text-color);
+}
+
+#ui-switch-settings::after {
+	-webkit-mask-image: url(../Images/common_settings.png);
+	-webkit-mask-size: 100% 100%;
+	-webkit-mask-position: 0 0;
+}
+
+#ui-head-center {
+	display: flex;
+	flex: 0 0 auto;
+	/* background: green; */
+	border-left: var(--toolbar-item-border);
+}
+
+#ui-head-center > .toolbar-item::after {
+	content: '';
+	display: block;
+	margin: 4px 6px;
+	width: 16px;
+	height: 16px;
+	background-color: var(--text-color);
+	-webkit-mask-image: url(../Images/ui_components.png);
+	-webkit-mask-size: 100% 1100%;
+}
+
+#ui-element-image::after {
+	-webkit-mask-position: 0 0;
+}
+
+#ui-element-text::after {
+	-webkit-mask-position: 0 -100%;
+}
+
+#ui-element-textbox::after {
+	-webkit-mask-position: 0 -200%;
+}
+
+#ui-element-dialogbox::after {
+	-webkit-mask-position: 0 -300%;
+}
+
+#ui-element-progressbar::after {
+	-webkit-mask-position: 0 -400%;
+}
+
+#ui-element-button::after {
+	-webkit-mask-position: 0 -500%;
+}
+
+#ui-element-animation::after {
+	-webkit-mask-position: 0 -600%;
+}
+
+#ui-element-video::after {
+	-webkit-mask-position: 0 -700%;
+}
+
+#ui-element-window::after {
+	-webkit-mask-position: 0 -800%;
+}
+
+#ui-element-container::after {
+	-webkit-mask-position: 0 -900%;
+}
+
+#ui-element-reference::after {
+	-webkit-mask-position: 0 -1000%;
+}
+
+#ui-head-end {
+	flex: 0 0 auto;
+	/* background: blue; */
+}
+
+#ui-zoom {
+	margin: 2px 4px;
+	right: 0;
+	width: 80px;
+}
+
+#ui-screen {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#ui-list-head {
+	position: absolute;
+	top: -25px;
+	right: 0;
+	height: 24px;
+	overflow: hidden;
+	background-color: var(--group-head-background);
+}
+
+#ui-searcher {
+	margin: 2px;
+	width: calc(100% - 4px);
+}
+
+#ui-list {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+/* --------------------------------
+ * 移动场景
+ * --------------------------------
+ */
+#scene-shift {
+	width: 324px;
+	height: 122px;
+}
+
+#scene-shift-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#scene-shift-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 对象窗口
+ * --------------------------------
+ */
+#scene-object,
+#ui-element,
+#animation-motion {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+/* --------------------------------
+ * 默认对象文件�? * --------------------------------
+ */
+#object-folder {
+	width: 324px;
+	height: 242px;
+}
+
+#object-folder-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#object-folder-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 检查器
+ * --------------------------------
+ */
+#inspector-page-manager {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#inspector-page-manager.overflow-visible {
+	overflow: visible;
+}
+
+.inspector-list {
+	margin: 4px;
+	width: calc(100% - 8px);
+	height: 100px;
+}
+
+/* nav-item[value=inspector].selected {
+  border-bottom: var(--nav-bar-border);
+} */
+
+/* --------------------------------
+ * 文件 - 场景页面
+ * --------------------------------
+ */
+#fileScene-ambient-red-slider,
+#fileScene-ambient-green-slider,
+#fileScene-ambient-blue-slider,
+#fileScene-ambient-direct-slider {
+	flex: 2 1 auto;
+}
+
+#fileScene-ambient-red,
+#fileScene-ambient-green,
+#fileScene-ambient-blue,
+#fileScene-ambient-direct {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 场景 - 角色页面
+ * --------------------------------
+ */
+#sceneActor-angle-slider,
+#sceneActor-scale-slider {
+	flex: 2 1 auto;
+}
+
+#sceneActor-angle,
+#sceneActor-scale {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 场景 - 动画页面
+ * --------------------------------
+ */
+#sceneAnimation-angle-slider,
+#sceneAnimation-scale-slider,
+#sceneAnimation-speed-slider,
+#sceneAnimation-opacity-slider,
+#sceneAnimation-priority-slider {
+	flex: 2 1 auto;
+}
+
+#sceneAnimation-angle,
+#sceneAnimation-scale,
+#sceneAnimation-speed,
+#sceneAnimation-opacity,
+#sceneAnimation-priority {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 场景 - 粒子页面
+ * --------------------------------
+ */
+#sceneParticle-angle-slider,
+#sceneParticle-scale-slider,
+#sceneParticle-speed-slider,
+#sceneParticle-opacity-slider,
+#sceneParticle-priority-slider {
+	flex: 2 1 auto;
+}
+
+#sceneParticle-angle,
+#sceneParticle-scale,
+#sceneParticle-speed,
+#sceneParticle-opacity,
+#sceneParticle-priority {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 场景 - 光源页面
+ * --------------------------------
+ */
+#sceneLight-range-slider,
+#sceneLight-intensity-slider,
+#sceneLight-anchorX-slider,
+#sceneLight-anchorY-slider,
+#sceneLight-width-slider,
+#sceneLight-height-slider,
+#sceneLight-angle-slider,
+#sceneLight-red-slider,
+#sceneLight-green-slider,
+#sceneLight-blue-slider,
+#sceneLight-direct-slider {
+	flex: 2 1 auto;
+}
+
+#sceneLight-range,
+#sceneLight-intensity,
+#sceneLight-anchorX,
+#sceneLight-anchorY,
+#sceneLight-width,
+#sceneLight-height,
+#sceneLight-angle,
+#sceneLight-red,
+#sceneLight-green,
+#sceneLight-blue,
+#sceneLight-direct {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 场景 - 视差图页�? * --------------------------------
+ */
+#sceneParallax-tint-0-slider,
+#sceneParallax-tint-1-slider,
+#sceneParallax-tint-2-slider,
+#sceneParallax-tint-3-slider {
+	flex: 2 1 auto;
+}
+
+#sceneParallax-tint-0,
+#sceneParallax-tint-1,
+#sceneParallax-tint-2,
+#sceneParallax-tint-3 {
+	flex: 1 1 auto;
+}
+
+/* --------------------------------
+ * 资源窗口
+ * --------------------------------
+ */
+
+#resource {
+	width: 520px;
+	height: 700px;
+}
+.resource-item {
+	display: flex;
+	width: 100%;
+	margin: 10px 0;
+	padding: 0 4px;
+}
+.resource-item text-box {
+	flex: 1;
+}
+.resource-item button {
+	position: relative;
+}
+.resource-item button {
+	position: relative;
+}
+
+#resource-check-version {
+	right: 108px;
+	bottom: 10px;
+}
+#resource-open-dir {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置窗口
+ * --------------------------------
+ */
+
+#setting {
+	width: 520px;
+	height: 700px;
+}
+
+.setting-title {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-family: var(--font-family-bold);
+}
+
+#setting-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+#setting-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 确认窗口
+ * --------------------------------
+ */
+#confirmation {
+	width: 304px;
+	height: 98px;
+}
+
+#confirmation-message {
+	display: block;
+	margin: 10px;
+	line-height: 20px;
+	white-space: pre;
+}
+
+#confirmation-button-frame {
+	display: flex;
+	column-gap: 10px;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+
+#confirmation-button-0,
+#confirmation-button-1,
+#confirmation-button-2 {
+	position: static;
+}
+
+/* --------------------------------
+ * 新建项目窗口
+ * --------------------------------
+ */
+#newProject {
+	width: 448px;
+	height: 146px;
+}
+
+#newProject-folder {
+	width: 324px;
+}
+
+#newProject-location {
+	width: 300px;
+}
+
+#newProject-choose {
+	position: static;
+	width: 20px;
+}
+
+#newProject-warning {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	line-height: 20px;
+	white-space: nowrap;
+	background-color: var(--selected-background);
+}
+
+#newProject-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#newProject-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 部署项目窗口
+ * --------------------------------
+ */
+#deployment {
+	width: 448px;
+	height: 166px;
+}
+
+#deployment-folder {
+	width: 324px;
+}
+
+#deployment-location {
+	width: 300px;
+}
+#deployment-compress {
+	width: 300px;
+}
+
+#deployment-choose {
+	position: static;
+	width: 20px;
+}
+
+#deployment-warning {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	line-height: 20px;
+	white-space: nowrap;
+	background-color: var(--selected-background);
+}
+
+#deployment-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#deployment-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 复制进度窗口
+ * --------------------------------
+ */
+#copyProgress {
+	width: 380px;
+	height: 116px;
+}
+
+#copyProgress-flex {
+	margin: 10px;
+	flex-direction: column;
+}
+
+#copyProgress-box {
+	display: block;
+	height: 20px;
+	background-color: var(--input-background);
+	border: var(--input-border);
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+#copyProgress-bar {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: var(--selected-background);
+}
+
+/* --------------------------------
+ * 拾色器窗�? * --------------------------------
+ */
+#color {
+	width: 410px;
+	height: 306px;
+}
+
+#color-palette-canvas {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	border: var(--input-border);
+	border-radius: 2px;
+}
+
+#color-palette-frame {
+	position: absolute;
+	left: 11px;
+	top: 11px;
+	width: 256px;
+	height: 194px;
+	overflow: hidden;
+}
+
+#color-palette-cursor {
+	position: absolute;
+	width: 11px;
+	height: 11px;
+	border: 2px solid #ffffff;
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+#color-index-grid {
+	display: grid;
+	position: absolute;
+	grid-template-columns: repeat(8, 1fr);
+	left: 0;
+	bottom: 0;
+	width: 220px;
+	height: 52px;
+}
+
+[name='color-index'] {
+	display: block;
+	padding: 1px;
+	width: 24px;
+	height: 24px;
+	background-clip: content-box;
+	border: var(--input-border);
+	border-radius: 2px;
+}
+
+[name='color-index'].selected {
+	padding: 0;
+	border: 2px solid var(--indexed-color-border-color-selected);
+}
+
+#color-pillar-canvas {
+	position: absolute;
+	left: 278px;
+	top: 10px;
+	border: var(--input-border);
+	border-radius: 2px;
+}
+
+#color-pillar-frame {
+	position: absolute;
+	left: 270px;
+	top: 8px;
+	width: 38px;
+	height: 262px;
+	z-index: 1;
+}
+
+#color-pillar-cursor {
+	position: absolute;
+	width: 100%;
+	height: 7px;
+	pointer-events: none;
+}
+
+#color-pillar-cursor::before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 0;
+	border-top: 3.5px solid transparent;
+	border-bottom: 3.5px solid transparent;
+	border-left: 6px solid var(--folder-mark-color);
+}
+
+#color-pillar-cursor::after {
+	content: '';
+	display: block;
+	position: absolute;
+	right: 0;
+	border-top: 3.5px solid transparent;
+	border-bottom: 3.5px solid transparent;
+	border-right: 6px solid var(--folder-mark-color);
+}
+
+#color-viewer-frame {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 90px;
+	height: 34px;
+	background-clip: content-box;
+	background-image: var(--grid-background);
+	border: var(--input-border);
+	border-radius: 2px;
+}
+
+#color-viewer {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#color-rgba-grid {
+	position: absolute;
+	left: auto;
+	right: 0;
+	top: 44px;
+	grid-template-columns: 14px 1fr;
+}
+
+#color-hex,
+#color-r,
+#color-g,
+#color-b,
+#color-a {
+	width: 72px;
+	font-family: var(--font-family-mono);
+}
+
+#color-confirm {
+	width: 90px;
+	right: 10px;
+	bottom: 34px;
+}
+
+#color-cancel {
+	width: 90px;
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置字体窗口
+ * --------------------------------
+ */
+#font {
+	width: 324px;
+	height: 98px;
+}
+
+#font-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#font-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置字体大小窗口
+ * --------------------------------
+ */
+#fontSize {
+	width: 324px;
+	height: 98px;
+}
+
+#fontSize-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#fontSize-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置文字位置窗口
+ * --------------------------------
+ */
+#textPosition {
+	width: 324px;
+	height: 146px;
+}
+
+#textPosition-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#textPosition-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置文字效果窗口
+ * --------------------------------
+ */
+#textEffect {
+	width: 324px;
+	height: 170px;
+}
+
+#textEffect-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#textEffect-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 插入图像窗口
+ * --------------------------------
+ */
+#insertImage {
+	width: 324px;
+	height: 194px;
+}
+
+#insertImage-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#insertImage-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置本地变量窗口
+ * --------------------------------
+ */
+#localVariable {
+	width: 324px;
+	height: 98px;
+}
+
+#localVariable-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#localVariable-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 搜素字符串窗�? * --------------------------------
+ */
+.event-search-string-active {
+	background-color: var(--command-global-event-link-background);
+}
+.event-search-string-location-active {
+	border: 2px solid transparent; /* 初始透明边框 */
+	-webkit-animation: pulse-animation 0.5s ease-in-out infinite;
+	animation: pulse-animation 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-animation {
+	0% {
+		border-color: transparent;
+	}
+	50% {
+		border-color: #ffcc20;
+		box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+	}
+	100% {
+		border-color: black;
+	}
+}
+
+#event-search-string {
+	width: 324px;
+	height: 168px;
+}
+
+#event-search-string-previous {
+	right: 108px;
+	bottom: 10px;
+}
+
+#event-search-string-next {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 事件窗口
+ * --------------------------------
+ */
+#event {
+	width: 1280px;
+	height: 700px;
+}
+
+#event-open-fieldset {
+	left: 10px;
+	top: 10px;
+	width: 280px;
+	bottom: 10px;
+}
+
+.event-open-item {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.event-open-item:not(:hover) > .event-close-button {
+	visibility: hidden;
+}
+
+#event-open-list.alt > node-item.global-event {
+	cursor: pointer;
+}
+
+#event-open-list.alt > node-item.global-event:hover {
+	background-color: var(--command-global-event-link-background);
+}
+
+node-item.local-event {
+	color: var(--command-color-identifier);
+}
+
+node-item.related-event {
+	text-decoration: underline var(--command-color-audio);
+}
+
+.event-close-button {
+	margin-right: 4px;
+	color: var(--text-color-unit);
+}
+
+.event-close-button:hover {
+	color: var(--text-color);
+}
+
+.event-close-button:active {
+	color: var(--text-color-active);
+}
+
+.event-init-text {
+	pointer-events: none;
+	white-space: nowrap;
+	color: var(--text-color-variable-init);
+}
+
+.selected > .event-init-text {
+	color: var(--text-color-accelerator-selected);
+}
+
+#event-commands-fieldset {
+	left: 300px;
+	top: 10px;
+	right: 10px;
+	bottom: 40px;
+}
+
+#event-commands-gutter-background {
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+	width: 48px;
+	pointer-events: none;
+	border-right: none;
+}
+
+#event-commands-gutter-outer {
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+	width: 48px;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+/* 32px的静态宽度最多适配4位数的宽�?*/
+#event-commands-gutter-inner {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	/* margin-top: -20px; */
+	width: 32px;
+}
+
+.event-commands-line-number {
+	height: 20px;
+	line-height: 20px;
+	text-align: right;
+	font-family: var(--font-family-mono);
+	color: var(--command-line-number-color);
+}
+
+#event-type {
+	position: absolute;
+	left: 300px;
+	bottom: 10px;
+	width: 200px;
+}
+
+#event-confirm {
+	right: 206px;
+	bottom: 10px;
+}
+
+#event-cancel {
+	right: 108px;
+	bottom: 10px;
+}
+
+#event-apply {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 事件指令组件
+ * --------------------------------
+ */
+#command-widget {
+	width: 400px;
+	height: 20px;
+	box-shadow: none;
+	outline: none;
+	/* outline-color: var(--input-border-color-focus); */
+}
+
+#command-searcher {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	font-family: var(--font-family-mono);
+	border-radius: 0;
+}
+
+#command-searcher-mark {
+	position: absolute;
+	left: 0;
+	line-height: 18px;
+	text-indent: 4px;
+	color: var(--text-color-unit);
+}
+
+#command-searcher-input {
+	padding-left: 12px;
+}
+
+/* --------------------------------
+ * 设置窗口 - 属�? * --------------------------------
+ */
+#setWindow-property {
+	width: 324px;
+	height: 122px;
+}
+
+#setWindow-property-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setWindow-property-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 项目设置窗口
+ * --------------------------------
+ */
+#project-settings {
+	width: 480px;
+	height: 700px;
+}
+
+#project-page {
+	position: absolute;
+	top: 0;
+	bottom: 40px;
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	/* background-color: green; */
+}
+
+#project-grid-box {
+	display: grid;
+	margin: 10px 4px 10px 10px;
+	grid-gap: 4px;
+	grid-template-columns: 1fr 1fr;
+	line-height: 20px;
+	white-space: nowrap;
+}
+
+.project-summary {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-family: var(--font-family-bold);
+}
+
+.project-label {
+	text-indent: 1em;
+}
+
+#project-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#project-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 预设对象窗口
+ * --------------------------------
+ */
+#presetObject {
+	width: 340px;
+	height: 528px;
+}
+
+#presetObject-sceneId {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 320px;
+}
+
+#presetObject-list {
+	position: absolute;
+	left: 10px;
+	top: 34px;
+	width: 320px;
+	height: 402px;
+	background-color: var(--input-background);
+	border-top: var(--input-border-dark);
+	border-left: var(--input-border-light);
+	border-right: var(--input-border-light);
+	border-bottom: var(--input-border-light);
+	border-radius: 2px;
+}
+
+#presetObject-searcher {
+	position: absolute;
+	left: 10px;
+	top: 440px;
+	width: 320px;
+}
+
+#presetObject-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#presetObject-cancel {
+	right: 10px;
+	bottom: 10px;
+}

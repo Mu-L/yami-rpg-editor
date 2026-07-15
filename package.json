@@ -7,10 +7,12 @@
 	"author": "Yami",
 	"description": "2D Game Editor",
 	"scripts": {
+		"buildcss": "node scripts/build-css.js",
+		"buildhtml": "node scripts/build-html.js",
 		"buildres": "node scripts/buildres.js",
 		"buildtime": "node scripts/buildRuntime.js",
 		"prepare": "husky",
-		"prestart": "node scripts/build-html.js",
+		"prestart": "pnpm run buildcss && node pnpm run buildhtml",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",
 		"format": "prettier --write . --config prettierrc.json",
