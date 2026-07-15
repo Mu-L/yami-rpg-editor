@@ -1635,7 +1635,7 @@ try {
 		)) {
 			const key = text.varKey
 			if (key === '') continue
-			const variable = Data.variables.map[key]
+			const variable = getVariable(key)
 			if (variable) {
 				text.removeClass('invalid')
 			} else {

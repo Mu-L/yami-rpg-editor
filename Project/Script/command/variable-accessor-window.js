@@ -459,7 +459,7 @@ VariableGetter._confirmCore = function (prefix) {
 			break
 		case 'global': {
 			key = read('global-key')
-			const variable = Data.variables.map[key]
+			const variable = getVariable(key)
 			// 仅对基础类型做类型校验（all/object/writable 不校验，避免错误拒绝）
 			const baseType =
 				filter === 'boolean' ||

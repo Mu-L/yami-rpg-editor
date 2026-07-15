@@ -228,17 +228,30 @@ Command.save = function (params) {
 // 解析指令
 Command.parse = function (command, varMap) {
 	this.varMap = varMap
-	let id = command.id
+	let id = command?.id
+	// 防御：指令缺少 id 或 params 时直接标记为无效，避免整段渲染崩溃
+	if (id == null) {
+		this.invalid = true
+		reportError(new Error('指令缺少 id'), 'Command.parse')
+		return ''
+	}
 	if (id[0] === '!') {
 		id = id.slice(1)
 	}
 	this.invalid = false
-	const params = command.params
+	const params = command.params ?? {}
 	const handler = this.cases[id]
-	const contents = handler
-		? handler.parse(params)
-		: this.custom.parse(id, params)
-	return Command.parseTextTags(contents)
+	try {
+		const contents = handler
+			? handler.parse(params)
+			: this.custom.parse(id, params)
+		return Command.parseTextTags(contents)
+	} catch (err) {
+		// 单条指令解析失败不应拖垮整个事件渲染
+		this.invalid = true
+		reportError(err, `Command.parse (id=${id})`)
+		return `[解析失败: ${id}]`
+	}
 }
 
 // 解析混合模式
@@ -289,13 +302,13 @@ Command.fetchVariables = function (commands) {
 	const fetchVariables = (commands) => {
 		for (const command of commands) {
 			const { id, params } = command
-			// 跳过关闭的指令
-			if (id[0] === '!') continue
+			// 跳过关闭的指令 / 防御：指令缺少 id
+			if (id == null || id[0] === '!') continue
 			Command.currentCommand = command
 			// 遍历调用事件中的全局事件指令列表
 			if (id === 'callEvent') {
 				if (
-					params.type === 'global' &&
+					params?.type === 'global' &&
 					calledEvents.append(params.eventId)
 				) {
 					const file = Data.manifest.guidMap[params.eventId]?.file
@@ -313,9 +326,16 @@ Command.fetchVariables = function (commands) {
 			}
 			// 执行指令解析事件
 			const handler = this.cases[id]
-			const contents = handler
-				? handler.parse(params)
-				: this.custom.parse(id, params)
+			let contents
+			try {
+				contents = handler
+					? handler.parse(params ?? {})
+					: this.custom.parse(id, params ?? {})
+			} catch (err) {
+				// 单条指令解析失败不应中断整个变量收集
+				reportError(err, `Command.fetchVariables (id=${id})`)
+				contents = []
+			}
 			// 遍历子代指令列表
 			for (const content of contents) {
 				if (content.children) {
@@ -372,7 +392,7 @@ Command.parseVariable = function (
 		case 'global': {
 			let varName = Command.parseGlobalVariable(key)
 			if (valueType) {
-				const gVar = Data.variables.map[variable.key]
+				const gVar = getVariable(variable.key)
 				// 优先使用全局变量值的类型
 				const type = gVar ? typeof gVar.value : valueType
 				const textId = Command.setTextId(
@@ -438,7 +458,7 @@ Command.parseVariable = function (
 // 解析全局变量
 Command.parseGlobalVariable = function (id) {
 	if (id === '') return Token('none')
-	const variable = Data.variables.map[id]
+	const variable = getVariable(id)
 	return variable ? variable.name : Command.parseUnlinkedId(id)
 }
 

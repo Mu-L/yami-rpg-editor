@@ -34,7 +34,7 @@ UI.Text = class TextElement extends UI.Element {
 	// 替换全局变量
 	static replaceGlobalVariable(text) {
 		return text.replace(this.globalVarRegexp, (match, delimiter, varId) => {
-			const name = Data.variables.map[varId]?.name
+			const name = getVariable(varId)?.name
 			const sign = delimiter === '::' ? '@' : ''
 			return name ? `<color:f0d0ff>${sign}${name}</color>` : match
 		})

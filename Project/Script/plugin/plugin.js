@@ -1143,7 +1143,7 @@ PluginManager.reconstruct = (function IIFE() {
 			case 'team':
 				return !!Data.teams.map[value]
 			case 'variable':
-				return value === '' || !!Data.variables.map[value]
+				return value === '' || !!getVariable(value)
 			case 'attribute':
 			case 'attribute-key':
 				if (value === '') return true
@@ -1237,7 +1237,7 @@ PluginManager.reconstruct = (function IIFE() {
 				if (Data.teams.map[value]) return value
 				return Data.teams.list[0].id
 			case 'variable':
-				if (Data.variables.map[value]) return value
+				if (getVariable(value)) return value
 				return ''
 			case 'attribute':
 			case 'attribute-key':
