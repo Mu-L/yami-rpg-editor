@@ -1,0 +1,65 @@
+// 获取对象文件
+Scene.getObjectFile = function (sceneObject) {
+	switch (sceneObject?.class) {
+		case 'actor':
+		case 'animation': {
+			const guid = sceneObject.data?.guid
+			return Data.manifest.guidMap[guid]?.file ?? null
+		}
+		case 'particle': {
+			const guid = sceneObject.emitter?.data.guid
+			return Data.manifest.guidMap[guid]?.file ?? null
+		}
+		case 'parallax': {
+			const guid = sceneObject.image
+			return Data.manifest.guidMap[guid]?.file ?? null
+		}
+		default:
+			return undefined
+	}
+}
+
+// 打开文件位置
+Scene.openFileLocation = function (sceneObject) {
+	const file = Scene.getObjectFile(sceneObject)
+	if (file instanceof FileItem) {
+		Browser.body.openFileLocation(file)
+		Browser.body.select(file)
+		Browser.body.content.getFocus()
+	}
+}
+
+// 保存状态到配置文件
+Scene.saveToConfig = function (config) {
+	config.colors.sceneBackground = this.background.hex
+}
+
+// 从配置文件中加载状态
+Scene.loadFromConfig = function (config) {
+	this.background = new StageColor(config.colors.sceneBackground, () =>
+		this.requestRendering()
+	)
+}
+
+// 保存状态到项目文件
+Scene.saveToProject = function (project) {
+	const { scene } = project
+	this.closeTilemap()
+	scene.grid = this.showGrid ?? scene.grid
+	scene.light = this.showLight ?? scene.light
+	scene.animation = this.showAnimation ?? scene.animation
+	scene.layer = this.layer ?? scene.layer
+	scene.brush = this.brush ?? scene.brush
+	scene.zoom = this.zoom ?? scene.zoom
+}
+
+// 从项目文件中加载状态
+Scene.loadFromProject = function (project) {
+	const { scene } = project
+	this.switchGrid(scene.grid)
+	this.switchLight(scene.light)
+	this.switchAnimation(scene.animation)
+	this.switchLayer(scene.layer)
+	this.switchBrush(scene.brush)
+	this.setZoom(scene.zoom)
+}
