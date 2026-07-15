@@ -2,7 +2,7 @@
 
 // ******************************** 选取文本 ********************************
 
-const Selection = {
+export const Selection = {
 	// properties
 	target: null,
 	inserting: false,
@@ -922,3 +922,5 @@ Selection.localization = {
 		}
 	}
 }
+
+window.Selection = Selection

@@ -2,7 +2,7 @@
 
 // ******************************** 纹理管理器类 ********************************
 
-class TextureManager {
+export class TextureManager {
 	gl //:object
 	map //:object
 	images //:object
@@ -130,3 +130,5 @@ class TextureManager {
 		}
 	}
 }
+
+window.TextureManager = TextureManager

@@ -2,7 +2,7 @@
 
 // ******************************** 移动元素 - 属性窗口 ********************************
 
-const TransformProperty = {
+export const TransformProperty = {
 	// properties
 	target: null,
 	// methods
@@ -137,3 +137,5 @@ TransformProperty.save = function () {
 TransformProperty.confirm = function (event) {
 	return TransformProperty.target.save()
 }
+
+window.TransformProperty = TransformProperty

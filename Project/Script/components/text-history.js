@@ -2,7 +2,7 @@
 
 // ******************************** 文本操作历史 ********************************
 
-class TextHistory {
+export class TextHistory {
 	input //:element
 	stack //:array
 	index //:number
@@ -370,3 +370,5 @@ TextHistory.inputReplace = (function IIFE() {
 		this.value = value
 	}
 })()
+
+window.TextHistory = TextHistory

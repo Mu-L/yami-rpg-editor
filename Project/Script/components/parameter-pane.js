@@ -2,7 +2,7 @@
 
 // ******************************** 脚本参数面板 ********************************
 
-class ParameterPane extends HTMLElement {
+export class ParameterPane extends HTMLElement {
 	scriptList //:element
 	headPad //:element
 	metas //:array
@@ -687,3 +687,5 @@ class ParameterPane extends HTMLElement {
 }
 
 customElements.define('parameter-pane', ParameterPane)
+
+window.ParameterPane = ParameterPane

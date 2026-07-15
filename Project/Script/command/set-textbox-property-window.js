@@ -2,7 +2,7 @@
 
 // ******************************** 设置文本框 - 属性窗口 ********************************
 
-const TextBoxProperty = {
+export const TextBoxProperty = {
 	// properties
 	target: null,
 	// methods
@@ -174,3 +174,5 @@ TextBoxProperty.save = function () {
 TextBoxProperty.confirm = function (event) {
 	return TextBoxProperty.target.save()
 }
+
+window.TextBoxProperty = TextBoxProperty

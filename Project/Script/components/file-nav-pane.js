@@ -2,7 +2,7 @@
 
 // ******************************** 文件导航面板 ********************************
 
-class FileNavPane extends HTMLElement {
+export class FileNavPane extends HTMLElement {
 	timer //:object
 	elements //:array
 	selections //:array
@@ -699,3 +699,5 @@ class FileNavPane extends HTMLElement {
 }
 
 customElements.define('file-nav-pane', FileNavPane)
+
+window.FileNavPane = FileNavPane

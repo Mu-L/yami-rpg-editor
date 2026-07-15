@@ -2,7 +2,7 @@
 
 // ******************************** 图块帧索引窗口 ********************************
 
-const TileFrame = {
+export const TileFrame = {
 	// properties
 	window: $('#autoTile-frameIndex'),
 	screen: $('#autoTile-frameIndex-screen'),
@@ -369,3 +369,5 @@ TileFrame.pointermove = function (event) {
 		}
 	}
 }.bind(TileFrame)
+
+window.TileFrame = TileFrame

@@ -2,7 +2,7 @@
 
 // ******************************** 选择框 ********************************
 
-class SelectBox extends HTMLElement {
+export class SelectBox extends HTMLElement {
 	info //:element
 	dataItems //:array
 	dataValue //:any
@@ -366,3 +366,5 @@ class SelectBox extends HTMLElement {
 }
 
 customElements.define('select-box', SelectBox)
+
+window.SelectBox = SelectBox

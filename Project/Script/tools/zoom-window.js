@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 缩放窗口 ********************************
 
-const Zoom = {
+export const Zoom = {
 	// methods
 	initialize: null,
 	getFactor: null,
@@ -36,3 +37,5 @@ Zoom.confirm = function (event) {
 		(Editor.config.zoom = $('#zoom-factor').read())
 	)
 }
+
+window.Zoom = Zoom

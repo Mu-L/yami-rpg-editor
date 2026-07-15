@@ -2,7 +2,7 @@
 
 // ******************************** 图块帧生成器窗口 ********************************
 
-const FrameGenerator = {
+export const FrameGenerator = {
 	// properties
 	callback: null,
 	// methods
@@ -48,3 +48,5 @@ FrameGenerator.confirm = function (event) {
 	this.callback(strideX, strideY, count)
 	Window.close('autoTile-generateFrames')
 }.bind(FrameGenerator)
+
+window.FrameGenerator = FrameGenerator

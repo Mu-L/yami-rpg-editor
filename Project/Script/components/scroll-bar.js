@@ -2,7 +2,7 @@
 
 // ******************************** 滚动条 ********************************
 
-class ScrollBar extends HTMLElement {
+export class ScrollBar extends HTMLElement {
 	target //:element
 	type //:string
 	thumb //:element
@@ -333,3 +333,5 @@ class ScrollBar extends HTMLElement {
 }
 
 customElements.define('scroll-bar', ScrollBar)
+
+window.ScrollBar = ScrollBar

@@ -2,7 +2,7 @@
 
 // ******************************** 平面矩阵类 ********************************
 
-class Matrix extends Float32Array {
+export class Matrix extends Float32Array {
 	constructor() {
 		super(9)
 		this[0] = 1
@@ -172,6 +172,8 @@ class Matrix extends Float32Array {
 	// 静态 - 平面矩阵实例
 	static instance = new Matrix()
 }
+
+window.Matrix = Matrix
 
 // 初始化WebGL上下文
 GL.initialize()

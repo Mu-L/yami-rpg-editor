@@ -2,7 +2,7 @@
 
 // ******************************** 事件列表接口类 ********************************
 
-class EventListInterface {
+export class EventListInterface {
 	target //:element
 	type //:string
 	filter //:string
@@ -154,3 +154,5 @@ class EventListInterface {
 		}
 	}
 }
+
+window.EventListInterface = EventListInterface

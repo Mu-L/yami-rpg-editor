@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 目录对象 ********************************
 
-const Directory = {
+export const Directory = {
 	// properties
 	inoMap: {},
 	assets: null,
@@ -486,3 +487,5 @@ Directory.windowFocus = function (event) {
 	// 因此延时更新目录
 	setTimeout(() => Directory.update(), 100)
 }
+
+window.Directory = Directory

@@ -2,7 +2,7 @@
 
 // ******************************** 指令列表 ********************************
 
-class CommandList extends HTMLElement {
+export class CommandList extends HTMLElement {
 	data //:array
 	elements //:array
 	selections //:array
@@ -2436,3 +2436,5 @@ try {
 }
 
 customElements.define('command-list', CommandList)
+
+window.CommandList = CommandList

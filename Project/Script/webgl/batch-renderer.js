@@ -2,7 +2,7 @@
 
 // ******************************** 批量渲染器 ********************************
 
-class BatchRenderer {
+export class BatchRenderer {
 	response //:array
 	setAttrSize //:function
 	getEndIndex //:function
@@ -151,3 +151,5 @@ class BatchRenderer {
 		this.draw = draw
 	}
 }
+
+window.BatchRenderer = BatchRenderer

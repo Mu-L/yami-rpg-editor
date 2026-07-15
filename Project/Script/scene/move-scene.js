@@ -2,7 +2,7 @@
 
 // ******************************** 移动场景 ********************************
 
-const SceneShift = {
+export const SceneShift = {
 	// properties
 	callback: null,
 	// methods
@@ -44,3 +44,5 @@ SceneShift.confirm = function (event) {
 	SceneShift.callback(x, y)
 	Window.close('scene-shift')
 }
+
+window.SceneShift = SceneShift

@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 文件系统 ********************************
 
-const File = {
+export const File = {
 	// properties
 	root: '',
 	promises: {},
@@ -327,3 +328,5 @@ File.updateRoot = function (path) {
 File.route = function (relativePath) {
 	return this.root + relativePath
 }
+
+window.File = File

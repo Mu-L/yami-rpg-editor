@@ -2,7 +2,7 @@
 
 // ******************************** 导入语言包窗口 ********************************
 
-const ImportLanguage = {
+export const ImportLanguage = {
 	// properties
 	filePath: '',
 	// methods
@@ -114,3 +114,5 @@ ImportLanguage.confirm = function (event) {
 		]
 	)
 }
+
+window.ImportLanguage = ImportLanguage

@@ -2,7 +2,7 @@
 
 // ******************************** UI 窗口 ********************************
 
-const UI = {
+export const UI = {
 	// properties
 	state: 'closed',
 	page: $('#ui'),
@@ -3547,3 +3547,5 @@ UI.list.onResume = function (item) {
 	UI.loadElement(item)
 	UI.updateElement(item)
 }
+
+window.UI = UI

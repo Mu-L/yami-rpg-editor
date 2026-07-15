@@ -2,7 +2,7 @@
 
 // ******************************** 键盘按键框 ********************************
 
-class KeyboardBox extends HTMLElement {
+export class KeyboardBox extends HTMLElement {
 	input //:element
 	dataValue //:number
 	inputEventEnabled //:boolean
@@ -115,3 +115,5 @@ class KeyboardBox extends HTMLElement {
 }
 
 customElements.define('keyboard-box', KeyboardBox)
+
+window.KeyboardBox = KeyboardBox

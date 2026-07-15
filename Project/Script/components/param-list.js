@@ -2,7 +2,7 @@
 
 // ******************************** 参数列表 ********************************
 
-class ParamList extends HTMLElement {
+export class ParamList extends HTMLElement {
 	object //:object
 	type //:string
 	data //:array
@@ -942,3 +942,5 @@ class ParamList extends HTMLElement {
 }
 
 customElements.define('param-list', ParamList)
+
+window.ParamList = ParamList

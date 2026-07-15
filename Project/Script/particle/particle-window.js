@@ -2,7 +2,7 @@
 
 // ******************************** 粒子窗口 ********************************
 
-const Particle = {
+export const Particle = {
 	// properties
 	state: 'closed',
 	page: $('#particle'),
@@ -1750,3 +1750,5 @@ Particle.list.onResume = function () {
 	Particle.computeOuterRect()
 	Particle.requestRendering()
 }
+
+window.Particle = Particle

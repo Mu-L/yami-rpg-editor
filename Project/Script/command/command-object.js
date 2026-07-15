@@ -2,7 +2,7 @@
 
 // ******************************** 指令对象 ********************************
 
-const Command = {
+export const Command = {
 	// properties
 	target: null,
 	id: null,
@@ -2246,3 +2246,5 @@ Command.custom = {
 		}
 	}
 }
+
+window.Command = Command

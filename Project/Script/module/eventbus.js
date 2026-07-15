@@ -1,4 +1,4 @@
-const EventBus = new (class EventBus {
+export const EventBus = new (class EventBus {
 	events
 	constructor() {
 		this.events = {}
@@ -58,3 +58,4 @@ const EventBus = new (class EventBus {
 		this.events = {}
 	}
 })()
+window.EventBus = EventBus

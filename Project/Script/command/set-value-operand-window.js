@@ -2,7 +2,7 @@
 
 // ******************************** 设置数值 - 操作数窗口 ********************************
 
-const NumberOperand = {
+export const NumberOperand = {
 	// properties
 	target: null,
 	// methods
@@ -1230,3 +1230,5 @@ NumberOperand.save = function () {
 NumberOperand.confirm = function (event) {
 	return NumberOperand.target.save()
 }
+
+window.NumberOperand = NumberOperand

@@ -2,7 +2,7 @@
 
 // ******************************** 计时器类 ********************************
 
-class Timer {
+export class Timer {
 	playbackRate //:number
 	elapsed //:number
 	duration //:number
@@ -219,3 +219,5 @@ Timer.removeUpdater = function (key, updater) {
 		updaters[key] = null
 	}
 }
+
+window.Timer = Timer

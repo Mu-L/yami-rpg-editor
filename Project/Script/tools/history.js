@@ -2,7 +2,7 @@
 
 // ******************************** 操作历史类 ********************************
 
-class History extends Array {
+export class History extends Array {
 	index //:number
 	capacity //:number
 	onSave //:function
@@ -90,3 +90,5 @@ class History extends Array {
 	// 操作历史处理器集合
 	static processors = {}
 }
+
+window.History = History

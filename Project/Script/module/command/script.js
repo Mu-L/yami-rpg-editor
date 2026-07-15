@@ -1,4 +1,5 @@
 'use strict'
+const require = window.__nodeRequire || window.require
 
 Command.cases.script = {
 	editor: null,

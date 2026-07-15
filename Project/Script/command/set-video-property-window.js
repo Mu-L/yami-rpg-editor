@@ -2,7 +2,7 @@
 
 // ******************************** 设置视频 - 属性窗口 ********************************
 
-const VideoProperty = {
+export const VideoProperty = {
 	// properties
 	target: null,
 	// methods
@@ -150,3 +150,5 @@ VideoProperty.save = function () {
 VideoProperty.confirm = function (event) {
 	return VideoProperty.target.save()
 }
+
+window.VideoProperty = VideoProperty

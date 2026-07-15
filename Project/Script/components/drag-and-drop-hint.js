@@ -2,7 +2,7 @@
 
 // ******************************** 拖放提示 ********************************
 
-class DragAndDropHint extends HTMLElement {
+export class DragAndDropHint extends HTMLElement {
 	left //:number
 	top //:number
 	width //:number
@@ -79,3 +79,5 @@ class DragAndDropHint extends HTMLElement {
 }
 
 customElements.define('drag-and-drop-hint', DragAndDropHint)
+
+window.DragAndDropHint = DragAndDropHint

@@ -2,7 +2,7 @@
 
 // ******************************** 文件变量框 ********************************
 
-class FileVar extends HTMLElement {
+export class FileVar extends HTMLElement {
 	mode //:string
 	strBox //:element
 	varBox //:element
@@ -148,3 +148,5 @@ class FileVar extends HTMLElement {
 }
 
 customElements.define('file-var', FileVar)
+
+window.FileVar = FileVar

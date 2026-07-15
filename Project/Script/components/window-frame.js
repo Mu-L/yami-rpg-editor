@@ -2,7 +2,7 @@
 
 // ******************************** 窗口框架 ********************************
 
-class WindowFrame extends HTMLElement {
+export class WindowFrame extends HTMLElement {
 	enableAmbient //:boolean
 	activeElement //:element
 	focusableElements //:array
@@ -244,3 +244,5 @@ class WindowFrame extends HTMLElement {
 }
 
 customElements.define('window-frame', WindowFrame)
+
+window.WindowFrame = WindowFrame

@@ -2,7 +2,7 @@
 
 // ******************************** 事件编辑器 ********************************
 
-const EventEditor = {
+export const EventEditor = {
 	// properties
 	list: $('#event-open-list'),
 	commandList: $('#event-commands'),
@@ -1472,3 +1472,5 @@ EventEditor.list.updateItemName = function (item) {
 EventEditor.list.closeButtonClick = function (event) {
 	EventEditor.list.close(event.target.parentNode.item)
 }
+
+window.EventEditor = EventEditor

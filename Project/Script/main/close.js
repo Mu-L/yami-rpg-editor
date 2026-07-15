@@ -1,4 +1,5 @@
 'use strict'
+const require = window.__nodeRequire || window.require
 
 // 关闭项目
 Editor.close = function (save = true) {

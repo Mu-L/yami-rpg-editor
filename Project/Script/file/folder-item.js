@@ -2,7 +2,7 @@
 
 // ******************************** 文件夹项目 ********************************
 
-class FolderItem {
+export class FolderItem {
 	name //:string
 	path //:string
 	stats //:object
@@ -194,3 +194,5 @@ class FolderItem {
 		return item
 	}
 }
+
+window.FolderItem = FolderItem

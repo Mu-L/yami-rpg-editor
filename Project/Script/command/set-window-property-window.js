@@ -2,7 +2,7 @@
 
 // ******************************** 设置窗口 - 属性窗口 ********************************
 
-const WindowProperty = {
+export const WindowProperty = {
 	// properties
 	target: null,
 	// methods
@@ -168,3 +168,5 @@ WindowProperty.save = function () {
 WindowProperty.confirm = function (event) {
 	return WindowProperty.target.save()
 }
+
+window.WindowProperty = WindowProperty

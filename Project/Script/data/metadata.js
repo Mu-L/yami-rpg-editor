@@ -2,7 +2,7 @@
 
 // ******************************** 元数据类 ********************************
 
-const Meta = (function IIFE() {
+export const Meta = (function IIFE() {
 	// 类型到分组名称映射表
 	const typeMapToGroupName = {
 		...FileItem.dataMapNames,
@@ -136,3 +136,5 @@ const Meta = (function IIFE() {
 		static versionId = 0
 	}
 })()
+
+window.Meta = Meta

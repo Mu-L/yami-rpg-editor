@@ -2,7 +2,7 @@
 
 // ******************************** 设置文本 - 属性窗口 ********************************
 
-const TextProperty = {
+export const TextProperty = {
 	// properties
 	target: null,
 	// methods
@@ -308,3 +308,5 @@ TextProperty.save = function () {
 TextProperty.confirm = function (event) {
 	return TextProperty.target.save()
 }
+
+window.TextProperty = TextProperty

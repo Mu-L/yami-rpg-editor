@@ -2,7 +2,7 @@
 
 // ******************************** 属性列表接口 ********************************
 
-class AttributeListInterface {
+export class AttributeListInterface {
 	target //:element
 	type //:string
 	history //:object
@@ -219,3 +219,5 @@ class AttributeListInterface {
 		}
 	}
 }
+
+window.AttributeListInterface = AttributeListInterface

@@ -2,7 +2,7 @@
 
 // ******************************** 匹配 - 条件窗口 ********************************
 
-const SwitchCondition = {
+export const SwitchCondition = {
 	// properties
 	target: null,
 	// methods
@@ -272,3 +272,5 @@ SwitchCondition.save = function () {
 SwitchCondition.confirm = function (event) {
 	return SwitchCondition.target.save()
 }
+
+window.SwitchCondition = SwitchCondition

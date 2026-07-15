@@ -2,7 +2,7 @@
 
 // ******************************** 新建项目窗口 ********************************
 
-const NewProject = {
+export const NewProject = {
 	// properties
 	state: 'passed',
 	timer: null,
@@ -312,3 +312,5 @@ NewProject.confirm = function (event) {
 			)
 		})
 }
+
+window.NewProject = NewProject

@@ -2,7 +2,7 @@
 
 // ******************************** 主页面对象 ********************************
 
-const Home = {
+export const Home = {
 	// methods
 	initialize: null,
 	updateCenterPosition: null,
@@ -479,3 +479,5 @@ Home.recentPointerup = function (event) {
 		}
 	}
 }
+
+window.Home = Home

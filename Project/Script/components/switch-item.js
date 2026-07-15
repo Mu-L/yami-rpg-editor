@@ -2,7 +2,7 @@
 
 // ******************************** 开关选项 ********************************
 
-class SwitchItem extends HTMLElement {
+export class SwitchItem extends HTMLElement {
 	dataValue //:number
 	class //:string
 	length //:number
@@ -70,3 +70,5 @@ class SwitchItem extends HTMLElement {
 }
 
 customElements.define('switch-item', SwitchItem)
+
+window.SwitchItem = SwitchItem

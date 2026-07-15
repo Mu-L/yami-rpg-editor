@@ -2,7 +2,7 @@
 
 // ******************************** 树状列表 ********************************
 
-class TreeList extends HTMLElement {
+export class TreeList extends HTMLElement {
 	display //:string
 	keyword //:string
 	searchResults //:array
@@ -1654,3 +1654,5 @@ class TreeList extends HTMLElement {
 }
 
 customElements.define('node-list', TreeList)
+
+window.TreeList = TreeList

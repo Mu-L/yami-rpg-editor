@@ -5,7 +5,7 @@
 /**
  * @type {WebGLRenderingContext}
  */
-let GL
+export let GL
 namespace: {
 	// 创建画布元素
 	const canvas = document.createElement('canvas')
@@ -93,3 +93,5 @@ namespace: {
 	// 获取失去上下文扩展
 	GL.WEBGL_lose_context = GL.getExtension('WEBGL_lose_context')
 }
+
+window.GL = GL

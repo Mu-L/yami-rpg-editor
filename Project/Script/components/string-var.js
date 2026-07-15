@@ -2,7 +2,7 @@
 
 // ******************************** 字符串变量框 ********************************
 
-class StringVar extends HTMLElement {
+export class StringVar extends HTMLElement {
 	mode //:string
 	strBox //:element
 	varBox //:element
@@ -147,3 +147,5 @@ class StringVar extends HTMLElement {
 }
 
 customElements.define('string-var', StringVar)
+
+window.StringVar = StringVar

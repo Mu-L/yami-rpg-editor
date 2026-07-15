@@ -2,7 +2,7 @@
 
 // ******************************** 标记字符串管理器 ********************************
 
-const Token = (function IIFE() {
+export const Token = (function IIFE() {
 	const map = {
 		'=': Command.setOperatorColor('='),
 		' = ': Command.setOperatorColor(' = '),
@@ -39,3 +39,5 @@ const Token = (function IIFE() {
 	// 获取定界符
 	return (key) => map[key]
 })()
+
+window.Token = Token

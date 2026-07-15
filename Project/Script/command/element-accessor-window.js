@@ -2,7 +2,7 @@
 
 // ******************************** 元素访问器窗口 ********************************
 
-const ElementGetter = {
+export const ElementGetter = {
 	// properties
 	target: null,
 	// methods
@@ -184,3 +184,5 @@ ElementGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('elementGetter')
 }.bind(ElementGetter)
+
+window.ElementGetter = ElementGetter

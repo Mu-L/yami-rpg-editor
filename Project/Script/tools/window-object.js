@@ -2,7 +2,7 @@
 
 // ******************************** 窗口对象 ********************************
 
-const Window = {
+export const Window = {
 	// properties
 	ambient: $('#window-ambient'),
 	frames: [],
@@ -337,3 +337,5 @@ Window.ambient.update = function () {
 	}
 	this.removeClass('open')
 }
+
+window.Window = Window

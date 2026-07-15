@@ -2,7 +2,7 @@
 
 // ******************************** 技能访问器窗口 ********************************
 
-const SkillGetter = {
+export const SkillGetter = {
 	// properties
 	target: null,
 	// methods
@@ -138,3 +138,5 @@ SkillGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('skillGetter')
 }.bind(SkillGetter)
+
+window.SkillGetter = SkillGetter

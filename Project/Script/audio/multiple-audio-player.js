@@ -2,7 +2,7 @@
 
 // ******************************** 多源音频播放器类 ********************************
 
-class MultipleAudioPlayer {
+export class MultipleAudioPlayer {
 	/**
 	 * 备用的音频元素池
 	 * @type {Array<HTMLAudioElement>}
@@ -85,3 +85,5 @@ class MultipleAudioPlayer {
 		}
 	}
 }
+
+window.MultipleAudioPlayer = MultipleAudioPlayer

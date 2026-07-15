@@ -2,7 +2,7 @@
 
 // ******************************** 设置动画 - 属性窗口 ********************************
 
-const AnimationProperty = {
+export const AnimationProperty = {
 	// properties
 	target: null,
 	// methods
@@ -143,3 +143,5 @@ AnimationProperty.save = function () {
 AnimationProperty.confirm = function (event) {
 	return AnimationProperty.target.save()
 }
+
+window.AnimationProperty = AnimationProperty

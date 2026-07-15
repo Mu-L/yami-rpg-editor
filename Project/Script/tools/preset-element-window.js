@@ -2,7 +2,7 @@
 
 // ******************************** 预设元素窗口 ********************************
 
-const PresetElement = {
+export const PresetElement = {
 	// properties
 	ui: $('#presetElement-uiId'),
 	list: $('#presetElement-list'),
@@ -165,3 +165,5 @@ PresetElement.confirm = function (event) {
 	this.target.input(presetId)
 	Window.close('presetElement')
 }.bind(PresetElement)
+
+window.PresetElement = PresetElement

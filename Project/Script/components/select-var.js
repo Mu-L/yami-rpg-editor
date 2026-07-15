@@ -2,7 +2,7 @@
 
 // ******************************** 选择变量框 ********************************
 
-class SelectVar extends HTMLElement {
+export class SelectVar extends HTMLElement {
 	mode //:string
 	selectBox //:element
 	varBox //:element
@@ -156,3 +156,5 @@ class SelectVar extends HTMLElement {
 }
 
 customElements.define('select-var', SelectVar)
+
+window.SelectVar = SelectVar

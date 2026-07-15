@@ -2,7 +2,7 @@
 
 // ******************************** 文件浏览器 ********************************
 
-class FileBrowser extends HTMLElement {
+export class FileBrowser extends HTMLElement {
 	display //:string
 	directory //:array
 	dragging //:event
@@ -298,14 +298,12 @@ class FileBrowser extends HTMLElement {
 			if (!dragging.allowCopy && !dragging.target.contains(element)) {
 				dragging.allowCopy = true
 			}
-			while (
-				!(
-					element instanceof FileBrowser ||
-					element instanceof FileNavPane ||
-					element instanceof FileBodyPane ||
-					element.file instanceof FolderItem
-				)
-			) {
+			while (!(
+				element instanceof FileBrowser ||
+				element instanceof FileNavPane ||
+				element instanceof FileBodyPane ||
+				element.file instanceof FolderItem
+			)) {
 				element = element.parentNode
 			}
 			if (dropTarget !== element) {
@@ -465,14 +463,12 @@ class FileBrowser extends HTMLElement {
 		if (dragging) {
 			const { dropTarget } = dragging
 			let element = event.target
-			while (
-				!(
-					element instanceof FileBrowser ||
-					element instanceof FileNavPane ||
-					element instanceof FileBodyPane ||
-					element.file instanceof FolderItem
-				)
-			) {
+			while (!(
+				element instanceof FileBrowser ||
+				element instanceof FileNavPane ||
+				element instanceof FileBodyPane ||
+				element.file instanceof FolderItem
+			)) {
 				element = element.parentNode
 			}
 			if (dropTarget !== element) {
@@ -525,3 +521,5 @@ class FileBrowser extends HTMLElement {
 }
 
 customElements.define('file-browser', FileBrowser)
+
+window.FileBrowser = FileBrowser

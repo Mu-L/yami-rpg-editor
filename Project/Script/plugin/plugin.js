@@ -2,7 +2,7 @@
 
 // ******************************** 插件窗口 ********************************
 
-const PluginManager = {
+export const PluginManager = {
 	// properties
 	list: $('#plugin-list'),
 	overviewPane: $('#plugin-overview-detail').hide(),
@@ -1789,3 +1789,5 @@ PluginManager.parameterPane.clear = function () {
 		window.off('script-change', this.scriptChange)
 	}
 }
+
+window.PluginManager = PluginManager

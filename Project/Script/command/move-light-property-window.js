@@ -2,7 +2,7 @@
 
 // ******************************** 移动光源 - 属性窗口 ********************************
 
-const LightProperty = {
+export const LightProperty = {
 	// properties
 	target: null,
 	// methods
@@ -189,3 +189,5 @@ LightProperty.save = function () {
 LightProperty.confirm = function (event) {
 	return LightProperty.target.save()
 }
+
+window.LightProperty = LightProperty

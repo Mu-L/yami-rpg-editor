@@ -2,7 +2,7 @@
 
 // ******************************** 光源类 ********************************
 
-class Light {
+export class Light {
 	data //:object
 	angle //:number
 	anchorOffsetX //:number
@@ -163,3 +163,5 @@ class Light {
 		this.measureHeight = measureHeight
 	}
 }
+
+window.Light = Light

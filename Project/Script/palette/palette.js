@@ -2,7 +2,7 @@
 
 // ******************************** 调色板 ********************************
 
-const Palette = {
+export const Palette = {
 	// properties
 	state: 'closed',
 	page: $('#fileTileset'),
@@ -2417,3 +2417,5 @@ Palette.pointermove = function (event) {
 		}
 	}
 }.bind(Palette)
+
+window.Palette = Palette

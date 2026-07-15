@@ -2,7 +2,7 @@
 
 // ******************************** 相关引用 ********************************
 
-const Reference = {
+export const Reference = {
 	// properties
 	keydownMap: new Map(),
 	keyupMap: new Map(),
@@ -884,3 +884,5 @@ Reference.getPointermoveListener = function (list) {
 	}
 	return listener
 }
+
+window.Reference = Reference

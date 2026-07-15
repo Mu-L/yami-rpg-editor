@@ -2,7 +2,7 @@
 
 // ******************************** 角度访问器窗口 ********************************
 
-const AngleGetter = {
+export const AngleGetter = {
 	// properties
 	target: null,
 	// methods
@@ -92,3 +92,5 @@ AngleGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('angleGetter')
 }.bind(AngleGetter)
+
+window.AngleGetter = AngleGetter

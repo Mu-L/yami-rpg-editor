@@ -2,7 +2,7 @@
 
 // ******************************** 曲线窗口 ********************************
 
-const Curve = {
+export const Curve = {
 	// properties
 	state: 'closed',
 	page: $('#animation-easing').hide(),
@@ -383,3 +383,5 @@ Curve.easingIdInput = function (event) {
 Curve.settingsPointerdown = function () {
 	Easing.open()
 }
+
+window.Curve = Curve

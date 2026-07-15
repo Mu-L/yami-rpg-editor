@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 标题栏对象 ********************************
 
-const Title = {
+export const Title = {
 	// properties
 	target: $('#title'),
 	tabBar: $('#title-tabBar'),
@@ -677,3 +678,5 @@ Title.maximizeClick = function (event) {
 Title.closeClick = function (event) {
 	Title.windowBeforeClose()
 }
+
+window.Title = Title

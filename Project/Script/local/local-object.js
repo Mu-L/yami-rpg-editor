@@ -2,7 +2,7 @@
 
 // ******************************** 游戏本地化对象 ********************************
 
-const GameLocal = {
+export const GameLocal = {
 	// properties
 	active: '',
 	language: '',
@@ -159,3 +159,5 @@ GameLocal.datachange = function (event) {
 		}
 	}
 }
+
+window.GameLocal = GameLocal

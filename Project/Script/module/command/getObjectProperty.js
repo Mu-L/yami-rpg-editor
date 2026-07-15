@@ -1,4 +1,4 @@
-const IndexBind = {
+export const IndexBind = {
 	target: null,
 	type: null,
 	initialize() {
@@ -144,3 +144,5 @@ Command.cases.setObjectProperty = {
 		Command.save({ variable, valueVariable, properties })
 	}
 }
+
+window.IndexBind = IndexBind

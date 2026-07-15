@@ -2,7 +2,7 @@
 
 // ******************************** 导出语言包窗口 ********************************
 
-const ExportLanguage = {
+export const ExportLanguage = {
 	// methods
 	initialize: null,
 	open: null,
@@ -83,3 +83,5 @@ ExportLanguage.confirm = function (event) {
 		}
 	})
 }
+
+window.ExportLanguage = ExportLanguage

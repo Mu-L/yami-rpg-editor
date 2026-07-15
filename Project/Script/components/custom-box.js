@@ -2,7 +2,7 @@
 
 // ******************************** 自定义框 ********************************
 
-class CustomBox extends HTMLElement {
+export class CustomBox extends HTMLElement {
 	info //:element
 	dataValue //:any
 	writeEventEnabled //:boolean
@@ -493,3 +493,5 @@ class CustomBox extends HTMLElement {
 }
 
 customElements.define('custom-box', CustomBox)
+
+window.CustomBox = CustomBox

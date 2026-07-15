@@ -2,7 +2,7 @@
 
 // ******************************** 装备访问器窗口 ********************************
 
-const EquipmentGetter = {
+export const EquipmentGetter = {
 	// properties
 	target: null,
 	// methods
@@ -146,3 +146,5 @@ EquipmentGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('equipmentGetter')
 }.bind(EquipmentGetter)
+
+window.EquipmentGetter = EquipmentGetter

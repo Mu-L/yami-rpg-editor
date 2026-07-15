@@ -2,7 +2,7 @@
 
 // ******************************** 设置图像 - 属性窗口 ********************************
 
-const ImageProperty = {
+export const ImageProperty = {
 	// properties
 	target: null,
 	// methods
@@ -202,3 +202,5 @@ ImageProperty.save = function () {
 ImageProperty.confirm = function (event) {
 	return ImageProperty.target.save()
 }
+
+window.ImageProperty = ImageProperty

@@ -2,7 +2,7 @@
 
 // ******************************** 平面向量类 ********************************
 
-class Vector {
+export class Vector {
 	constructor(x = 0, y = 0) {
 		this.x = x
 		this.y = y
@@ -75,3 +75,5 @@ class Vector {
 		new Vector()
 	]
 }
+
+window.Vector = Vector

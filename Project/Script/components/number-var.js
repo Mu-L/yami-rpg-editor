@@ -2,7 +2,7 @@
 
 // ******************************** 数字变量框 ********************************
 
-class NumberVar extends HTMLElement {
+export class NumberVar extends HTMLElement {
 	mode //:string
 	numBox //:element
 	varBox //:element
@@ -155,3 +155,5 @@ class NumberVar extends HTMLElement {
 }
 
 customElements.define('number-var', NumberVar)
+
+window.NumberVar = NumberVar

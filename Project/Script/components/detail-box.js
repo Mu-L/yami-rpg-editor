@@ -3,7 +3,7 @@
 // ******************************** 细节框 ********************************
 
 // 默认 details 的子元素无法正确获得 css 百分比高度属性
-class DetailBox extends HTMLElement {
+export class DetailBox extends HTMLElement {
 	toggleEventEnabled //:boolean
 
 	constructor() {
@@ -68,3 +68,5 @@ class DetailBox extends HTMLElement {
 }
 
 customElements.define('detail-box', DetailBox)
+
+window.DetailBox = DetailBox

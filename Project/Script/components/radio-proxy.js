@@ -2,7 +2,7 @@
 
 // ******************************** 单选框代理 ********************************
 
-class RadioProxy extends HTMLElement {
+export class RadioProxy extends HTMLElement {
 	dataValue //:any
 	relations //:array
 	cancelable //:boolean
@@ -152,3 +152,5 @@ class RadioProxy extends HTMLElement {
 }
 
 customElements.define('radio-proxy', RadioProxy)
+
+window.RadioProxy = RadioProxy

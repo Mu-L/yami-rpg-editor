@@ -2,7 +2,7 @@
 
 // ******************************** 祖先元素访问器窗口 ********************************
 
-const AncestorGetter = {
+export const AncestorGetter = {
 	// properties
 	target: null,
 	// methods
@@ -89,3 +89,5 @@ AncestorGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('ancestorGetter')
 }.bind(AncestorGetter)
+
+window.AncestorGetter = AncestorGetter

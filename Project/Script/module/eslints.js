@@ -2,7 +2,7 @@
 
 /* 辅助线 */
 
-const updateCommandElement = CommandList.prototype.updateCommandElement
+export const updateCommandElement = CommandList.prototype.updateCommandElement
 CommandList.prototype.updateCommandElement = function (element) {
 	const ret = updateCommandElement.call(this, ...arguments)
 
@@ -70,14 +70,14 @@ CommandList.prototype.updateCommandElement = function (element) {
 	return ret
 }
 
-const commandList = document.querySelector('#event-commands')
+export const commandList = document.querySelector('#event-commands')
 
 commandList.getSelectionPosition = function () {
 	return this.elements[this.active].pre.getBoundingClientRect()
 }
 
 /* 获取区域 */
-function range(elements, start, end = start) {
+export function range(elements, start, end = start) {
 	// 限制范围
 	const count = elements.count
 	start = Math.clamp(start, 0, count - 1)
@@ -138,3 +138,7 @@ commandList.on('update', function () {
 		e.classList.add(e.mark)
 	}
 })
+
+window.updateCommandElement = updateCommandElement
+window.commandList = commandList
+window.range = range

@@ -2,7 +2,7 @@
 
 // ******************************** 本地化对象 ********************************
 
-const Local = {
+export const Local = {
 	// properties
 	active: null,
 	dirname: '',
@@ -299,3 +299,5 @@ Local.showInExplorer = function () {
 			return 'showInFinder'
 	}
 }
+
+window.Local = Local

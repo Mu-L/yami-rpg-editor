@@ -2,7 +2,7 @@
 
 // ******************************** 音频管理器 ********************************
 
-const AudioManager = {
+export const AudioManager = {
 	// properties
 	context: null,
 	player: null,
@@ -91,3 +91,5 @@ AudioManager.close = function () {
 	this.player.stop()
 	this.waveforms = {}
 }
+
+window.AudioManager = AudioManager

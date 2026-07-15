@@ -2,7 +2,7 @@
 
 // ******************************** 瓦片地图访问器窗口 ********************************
 
-const TilemapGetter = {
+export const TilemapGetter = {
 	// properties
 	target: null,
 	// methods
@@ -86,3 +86,5 @@ TilemapGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('tilemapGetter')
 }.bind(TilemapGetter)
+
+window.TilemapGetter = TilemapGetter

@@ -2,7 +2,7 @@
 
 // ******************************** 设置对话框 - 属性窗口 ********************************
 
-const DialogBoxProperty = {
+export const DialogBoxProperty = {
 	// properties
 	target: null,
 	// methods
@@ -330,3 +330,5 @@ DialogBoxProperty.save = function () {
 DialogBoxProperty.confirm = function (event) {
 	return DialogBoxProperty.target.save()
 }
+
+window.DialogBoxProperty = DialogBoxProperty

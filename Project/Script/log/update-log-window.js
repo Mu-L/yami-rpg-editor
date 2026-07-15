@@ -2,7 +2,7 @@
 
 // ******************************** 更新日志窗口 ********************************
 
-const UpdateLog = {
+export const UpdateLog = {
 	// properties
 	content: $('#update-log-content'),
 	// methods
@@ -57,3 +57,5 @@ UpdateLog.update = function (items) {
 UpdateLog.windowClosed = function () {
 	UpdateLog.content.clear()
 }
+
+window.UpdateLog = UpdateLog

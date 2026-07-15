@@ -2,7 +2,7 @@
 
 // ******************************** 脚本列表接口 ********************************
 
-class ScriptListInterface {
+export class ScriptListInterface {
 	target //:element
 	type //:string
 	filter //:string
@@ -169,3 +169,5 @@ class ScriptListInterface {
 		}
 	}
 }
+
+window.ScriptListInterface = ScriptListInterface

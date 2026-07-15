@@ -2,7 +2,7 @@
 
 // ******************************** 数字框 ********************************
 
-class NumberBox extends HTMLElement {
+export class NumberBox extends HTMLElement {
 	input //:element
 	decimals //:number
 	focusEventEnabled //:boolean
@@ -174,3 +174,5 @@ class NumberBox extends HTMLElement {
 }
 
 customElements.define('number-box', NumberBox)
+
+window.NumberBox = NumberBox

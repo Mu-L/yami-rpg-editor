@@ -2,7 +2,7 @@
 
 // ******************************** 布局对象 ********************************
 
-const Layout = {
+export const Layout = {
 	// properties
 	manager: $('#workspace-page-manager'),
 	items: null,
@@ -1380,3 +1380,5 @@ Layout.pointermove = function (event) {
 		}
 	}
 }
+
+window.Layout = Layout

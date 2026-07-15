@@ -2,7 +2,7 @@
 
 // ******************************** 物品访问器窗口 ********************************
 
-const ItemGetter = {
+export const ItemGetter = {
 	// properties
 	target: null,
 	// methods
@@ -138,3 +138,5 @@ ItemGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('itemGetter')
 }.bind(ItemGetter)
+
+window.ItemGetter = ItemGetter

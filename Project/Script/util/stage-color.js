@@ -2,7 +2,7 @@
 
 // ******************************** 舞台颜色类 ********************************
 
-class StageColor {
+export class StageColor {
 	hex //:string
 	red //:number
 	green //:number
@@ -51,3 +51,5 @@ class StageColor {
 	// 静态 - RGBA数组
 	static rgba = new Float64Array(4)
 }
+
+window.StageColor = StageColor

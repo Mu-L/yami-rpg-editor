@@ -2,7 +2,7 @@
 
 // ******************************** 字符串变量框 ********************************
 
-class TextAreaVar extends HTMLElement {
+export class TextAreaVar extends HTMLElement {
 	mode //:string
 	strBox //:element
 	varBox //:element
@@ -149,3 +149,5 @@ class TextAreaVar extends HTMLElement {
 }
 
 customElements.define('text-area-var', TextAreaVar)
+
+window.TextAreaVar = TextAreaVar

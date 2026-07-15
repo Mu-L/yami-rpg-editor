@@ -2,7 +2,7 @@
 
 // ******************************** 场景窗口 ********************************
 
-const Scene = {
+export const Scene = {
 	// properties
 	state: 'closed',
 	page: $('#scene'),
@@ -2435,3 +2435,5 @@ Scene.updateParallaxes = function (deltaTime) {
 }
 
 // 绘制场景
+
+window.Scene = Scene

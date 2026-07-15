@@ -2,7 +2,7 @@
 
 // ******************************** 精灵窗口 ********************************
 
-const Sprite = {
+export const Sprite = {
 	// properties
 	state: 'closed',
 	body: $('#sprite-body'),
@@ -748,3 +748,5 @@ Sprite.pointermove = function (event) {
 		}
 	}
 }.bind(Sprite)
+
+window.Sprite = Sprite

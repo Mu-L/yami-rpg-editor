@@ -2,7 +2,7 @@
 
 // ******************************** 手柄按键框 ********************************
 
-class GamepadBox extends HTMLElement {
+export class GamepadBox extends HTMLElement {
 	// 属性声明
 	input //:element
 	dataValue //:array
@@ -145,3 +145,5 @@ class GamepadBox extends HTMLElement {
 }
 
 customElements.define('gamepad-box', GamepadBox)
+
+window.GamepadBox = GamepadBox

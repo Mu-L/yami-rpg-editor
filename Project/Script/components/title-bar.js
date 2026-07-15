@@ -2,7 +2,7 @@
 
 // ******************************** 标题栏 ********************************
 
-class TitleBar extends HTMLElement {
+export class TitleBar extends HTMLElement {
 	dragging //:event
 
 	constructor() {
@@ -109,3 +109,5 @@ class TitleBar extends HTMLElement {
 }
 
 customElements.define('title-bar', TitleBar)
+
+window.TitleBar = TitleBar

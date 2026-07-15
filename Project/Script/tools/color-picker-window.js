@@ -2,7 +2,7 @@
 
 // ******************************** 拾色器窗口 ********************************
 
-const Color = {
+export const Color = {
 	// properties
 	target: null,
 	dragging: null,
@@ -463,3 +463,5 @@ Color.confirm = function (event) {
 	}
 	Window.close('color')
 }.bind(Color)
+
+window.Color = Color

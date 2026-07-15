@@ -3,7 +3,7 @@
 // ******************************** Toast ********************************
 // 轻量用户可见提示，接入 reportError 派发的 'yami:error' 事件
 
-class ToastManager extends HTMLElement {
+export class ToastManager extends HTMLElement {
 	// 显示一条提示
 	show(message, type = 'info', duration = 4000) {
 		const el = document.createElement('div')
@@ -39,7 +39,7 @@ class ToastManager extends HTMLElement {
 customElements.define('toast-manager', ToastManager)
 
 // 全局便捷接口
-const Toast = {
+export const Toast = {
 	_manager() {
 		let m = document.querySelector('toast-manager')
 		if (!m) {
@@ -67,3 +67,6 @@ window.addEventListener('yami:error', (event) => {
 	const detail = event.detail || {}
 	Toast.error(detail.message || String(event.detail))
 })
+
+window.ToastManager = ToastManager
+window.Toast = Toast

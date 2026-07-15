@@ -2,7 +2,7 @@
 
 // ******************************** 场景预设对象窗口 ********************************
 
-const PresetObject = {
+export const PresetObject = {
 	// properties
 	scene: $('#presetObject-sceneId'),
 	list: $('#presetObject-list'),
@@ -188,3 +188,5 @@ PresetObject.confirm = function (event) {
 	this.target.input(presetId)
 	Window.close('presetObject')
 }.bind(PresetObject)
+
+window.PresetObject = PresetObject

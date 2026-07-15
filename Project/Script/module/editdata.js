@@ -1,4 +1,4 @@
-const EditDataInstance = new (class {
+export const EditDataInstance = new (class {
 	editor = null
 	model = null
 	versionId = null
@@ -357,3 +357,5 @@ const EditDataInstance = new (class {
 		}
 	}
 })()
+
+window.EditDataInstance = EditDataInstance

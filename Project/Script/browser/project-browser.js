@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 项目浏览器 ********************************
 
-const Browser = $('#project-browser')
+export const Browser = $('#project-browser')
 // properties
 Browser.page = $('#project')
 Browser.searcher = null
@@ -843,3 +844,5 @@ Browser.bodyPopup = function (event) {
 		)
 	}
 }
+
+window.Browser = Browser

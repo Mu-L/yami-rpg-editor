@@ -2,7 +2,7 @@
 
 // ******************************** 音频播放器类 ********************************
 
-class AudioPlayer {
+export class AudioPlayer {
 	audio //:element
 	source //:object
 	panner //:object
@@ -83,3 +83,5 @@ class AudioPlayer {
 		}
 	}
 }
+
+window.AudioPlayer = AudioPlayer

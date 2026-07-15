@@ -2,7 +2,7 @@
 
 // ******************************** 导航栏 ********************************
 
-class NavBar extends HTMLElement {
+export class NavBar extends HTMLElement {
 	writeEventEnabled //:boolean
 	selectEventEnabled //:boolean
 
@@ -118,3 +118,5 @@ class NavBar extends HTMLElement {
 }
 
 customElements.define('nav-bar', NavBar)
+
+window.NavBar = NavBar

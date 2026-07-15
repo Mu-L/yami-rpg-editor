@@ -2,7 +2,7 @@
 
 // ******************************** 指令操作历史 ********************************
 
-class CommandHistory {
+export class CommandHistory {
 	list //:element
 	stack //:array
 	index //:number
@@ -211,3 +211,5 @@ class CommandHistory {
 		return this.index + 1 < this.stack.length
 	}
 }
+
+window.CommandHistory = CommandHistory

@@ -2,7 +2,7 @@
 
 // ******************************** 单选框 ********************************
 
-class RadioBox extends HTMLElement {
+export class RadioBox extends HTMLElement {
 	proxy //:element
 	dataValue //:any
 
@@ -95,3 +95,5 @@ class RadioBox extends HTMLElement {
 }
 
 customElements.define('radio-box', RadioBox)
+
+window.RadioBox = RadioBox

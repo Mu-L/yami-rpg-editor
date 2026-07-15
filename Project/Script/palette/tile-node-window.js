@@ -2,7 +2,7 @@
 
 // ******************************** 图块节点窗口 ********************************
 
-const TileNode = {
+export const TileNode = {
 	// properties
 	canvas: $('#autoTile-selectNode-canvas'),
 	context: null,
@@ -446,3 +446,5 @@ TileNode.pointermove = function (event) {
 		}
 	}
 }.bind(TileNode)
+
+window.TileNode = TileNode

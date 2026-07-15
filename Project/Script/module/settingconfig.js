@@ -1,6 +1,7 @@
-const path = require('path')
+const require = window.__nodeRequire || window.require
+export const path = require('path')
 
-const SettingConfig = new (class {
+export const SettingConfig = new (class {
 	config = {}
 	homedir = GlobalPathForDir
 	configPath = path.join(GlobalPath, 'yami-config.json')
@@ -326,3 +327,6 @@ const SettingConfig = new (class {
 		}
 	}
 })()
+
+window.path = path
+window.SettingConfig = SettingConfig

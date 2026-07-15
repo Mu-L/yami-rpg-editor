@@ -2,7 +2,7 @@
 
 // ******************************** 图像剪辑窗口 ********************************
 
-const ImageClip = {
+export const ImageClip = {
 	// properties
 	window: $('#imageClip'),
 	screen: $('#imageClip-screen'),
@@ -360,3 +360,5 @@ ImageClip.confirm = function (event) {
 	this.target.input([read('x'), read('y'), read('width'), read('height')])
 	Window.close('imageClip')
 }.bind(ImageClip)
+
+window.ImageClip = ImageClip

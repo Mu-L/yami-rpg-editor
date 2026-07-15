@@ -1,6 +1,6 @@
 'use strict'
 
-const UndoManager = {
+export const UndoManager = {
 	active: null,
 
 	setActive(editor) {
@@ -27,3 +27,5 @@ const UndoManager = {
 		return this.active?.canRedo() ?? false
 	}
 }
+
+window.UndoManager = UndoManager

@@ -2,7 +2,7 @@
 
 // ******************************** 设置按钮 - 属性窗口 ********************************
 
-const ButtonProperty = {
+export const ButtonProperty = {
 	// properties
 	target: null,
 	// methods
@@ -221,3 +221,5 @@ ButtonProperty.save = function () {
 ButtonProperty.confirm = function (event) {
 	return ButtonProperty.target.save()
 }
+
+window.ButtonProperty = ButtonProperty

@@ -2,7 +2,7 @@
 
 // ******************************** 默认对象文件夹 ********************************
 
-const ObjectFolder = {
+export const ObjectFolder = {
 	// methods
 	initialize: null,
 	open: null,
@@ -44,3 +44,5 @@ ObjectFolder.confirm = function (event) {
 	}
 	Window.close('object-folder')
 }
+
+window.ObjectFolder = ObjectFolder

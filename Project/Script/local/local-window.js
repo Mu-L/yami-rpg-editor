@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 游戏本地化窗口 ********************************
 
-const Localization = {
+export const Localization = {
 	// properties
 	list: $('#localization-list'),
 	panel: $('#localization-inspector').hide(),
@@ -897,3 +898,5 @@ Localization.list.onDelete = function (item) {
 Localization.list.onResume = function (item) {
 	Localization.register(item)
 }
+
+window.Localization = Localization

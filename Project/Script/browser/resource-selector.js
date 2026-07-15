@@ -2,7 +2,7 @@
 
 // ******************************** 资源选择器 ********************************
 
-const Selector = $('#selector-browser')
+export const Selector = $('#selector-browser')
 // properties
 Selector.target = null
 Selector.allowNone = true
@@ -301,3 +301,5 @@ Selector.confirm = function (event) {
 			break
 	}
 }
+
+window.Selector = Selector

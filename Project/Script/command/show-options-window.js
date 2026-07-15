@@ -2,7 +2,7 @@
 
 // ******************************** 显示选项窗口 ********************************
 
-const Choices = {
+export const Choices = {
 	// properties
 	target: null,
 	commands: null,
@@ -58,3 +58,5 @@ Choices.windowClosed = function (event) {
 Choices.confirm = function (event) {
 	return Choices.target.save()
 }
+
+window.Choices = Choices

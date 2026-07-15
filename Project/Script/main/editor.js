@@ -2,7 +2,7 @@
 
 // ******************************** 编辑器对象 ********************************
 
-const Editor = {
+export const Editor = {
 	// properties
 	state: 'closed',
 	config: null,
@@ -23,3 +23,5 @@ const Editor = {
 	checkForProjectUpdates: null,
 	isProjectVersionSupported: null
 }
+
+window.Editor = Editor

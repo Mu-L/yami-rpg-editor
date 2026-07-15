@@ -2,7 +2,7 @@
 
 // ******************************** 标签栏 ********************************
 
-class TabBar extends HTMLElement {
+export class TabBar extends HTMLElement {
 	data //:array
 	dragging //:event
 	selectionIndex //:number
@@ -444,3 +444,5 @@ class TabBar extends HTMLElement {
 }
 
 customElements.define('tab-bar', TabBar)
+
+window.TabBar = TabBar

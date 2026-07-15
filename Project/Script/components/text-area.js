@@ -2,7 +2,7 @@
 
 // ******************************** 文本区域 ********************************
 
-class TextArea extends HTMLElement {
+export class TextArea extends HTMLElement {
 	input //:element
 	focusEventEnabled //:boolean
 	blurEventEnabled //:boolean
@@ -137,3 +137,5 @@ class TextArea extends HTMLElement {
 }
 
 customElements.define('text-area', TextArea)
+
+window.TextArea = TextArea

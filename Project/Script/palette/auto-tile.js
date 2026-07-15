@@ -2,7 +2,7 @@
 
 // ******************************** 自动图块 ********************************
 
-const AutoTile = {
+export const AutoTile = {
 	// properties
 	canvas: $('#autoTile-canvas'),
 	templateList: $('#autoTile-templates'),
@@ -1061,3 +1061,5 @@ AutoTile.confirm = function (event) {
 	Window.close('autoTile')
 	// console.log(JSON.stringify(tiles[index], null, 2))
 }.bind(AutoTile)
+
+window.AutoTile = AutoTile

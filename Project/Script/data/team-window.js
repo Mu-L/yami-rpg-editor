@@ -2,7 +2,7 @@
 
 // ******************************** 队伍窗口 ********************************
 
-const Team = {
+export const Team = {
 	// properties
 	list: $('#team-list'),
 	data: null,
@@ -574,3 +574,5 @@ Team.list.updateMarks = function (item) {
 		}
 	}
 }
+
+window.Team = Team

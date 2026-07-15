@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 部署项目窗口 ********************************
 
-const Deployment = {
+export const Deployment = {
 	// properties
 	state: 'passed',
 	gamedir: '',
@@ -647,3 +648,5 @@ Deployment.confirm = function (event) {
 			)
 		})
 }
+
+window.Deployment = Deployment

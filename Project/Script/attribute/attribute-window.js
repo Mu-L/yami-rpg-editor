@@ -2,7 +2,7 @@
 
 // ******************************** 属性窗口 ********************************
 
-const Attribute = {
+export const Attribute = {
 	// properties
 	list: $('#attribute-list'),
 	panel: $('#attribute-properties-flex').hide(),
@@ -1152,3 +1152,5 @@ Attribute.list.onDelete = function (item) {
 Attribute.list.onResume = function (item) {
 	Attribute.register(item)
 }
+
+window.Attribute = Attribute

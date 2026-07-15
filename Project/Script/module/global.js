@@ -1,9 +1,10 @@
+const require = window.__nodeRequire || window.require
 // oxlint-disable no-unused-vars
 /* 小改动或者不确定放哪的都可以放这 */
-const fs = require('fs-extra')
-const yauzl = require('yauzl')
+export const fs = require('fs-extra')
+export const yauzl = require('yauzl')
 
-const CommunityVersion = '26053001' // 社区编辑器版本
+export const CommunityVersion = '26053001' // 社区编辑器版本
 
 EventBus.once('editor_loaded', () => {
 	// 更新项目数据
@@ -18,18 +19,18 @@ EventBus.once('editor_loaded', () => {
 	}
 })
 
-let PackMeta = JSON.parse(
+export let PackMeta = JSON.parse(
 	require('fs').readFileSync(
 		Path.join(__dirname, 'Script/module', 'packmeta.json')
 	)
 ) // 资源 meta 信息
 
-const TemplatesPath = Path.resolve(GlobalPath, 'Templates') // 模板路径
+export const TemplatesPath = Path.resolve(GlobalPath, 'Templates') // 模板路径
 if (!fs.existsSync(TemplatesPath))
 	fs.mkdirSync(TemplatesPath, { recursive: true })
 
 // 检测是否安装了资源包
-function isNoResource() {
+export function isNoResource() {
 	const bak = JSON.parse(JSON.stringify(PackMeta))
 	delete bak['Editor']
 	delete bak['Project']
@@ -61,7 +62,7 @@ function isNoResource() {
 	}
 }
 
-let NoResourceObj = isNoResource()
+export let NoResourceObj = isNoResource()
 
 window.addEventListener('localize', () => {
 	Resources.initialize() // 初始化
@@ -79,7 +80,7 @@ window.addEventListener('localize', () => {
 
 /* 新项目确认 */
 $('#newProject-confirm').off('click', NewProject.confirm)
-const TitleConfirmOld = NewProject.confirm
+export const TitleConfirmOld = NewProject.confirm
 NewProject.confirm = function () {
 	const template = $('#newProject-template').read()
 	NoResourceObj = isNoResource()
@@ -98,7 +99,7 @@ NewProject.confirm = function () {
 $('#newProject-confirm').off('click', NewProject.confirm)
 
 // 解压zip
-const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
+export const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
 	return new Promise((resolve, reject) => {
 		let totalFiles = 0
 		let extractedFiles = 0
@@ -158,7 +159,7 @@ CommandList.prototype.openEdit = function () {
 	EditDataInstance.open(this)
 }
 
-function find_dItem(fn) {
+export function find_dItem(fn) {
 	var list = this.selections || []
 	var cur = list[list.length - 1]
 	var next = cur?.element?.nextSibling?.item
@@ -297,7 +298,7 @@ UI.list.paste = function (_, callback) {
 }
 
 // 主界面 - 版本号
-const homeElem = $('#home-version')
+export const homeElem = $('#home-version')
 
 homeElem.textContent = `当前社区版本：${CommunityVersion} 当前编辑器版本：${Updater.latestEditorVersion} 
 当前项目版本：${Updater.latestProjectVersion}`
@@ -312,7 +313,7 @@ homeElem.textContent = `当前社区版本：${CommunityVersion} 当前编辑器
 })()
 
 // 自动图块 - 显示引用数量
-originAutoTileTemplateUpdate = AutoTile.templateList.update
+const originAutoTileTemplateUpdate = AutoTile.templateList.update
 AutoTile.templateList.update = function () {
 	originAutoTileTemplateUpdate.call(this)
 	const autoList = Object.keys(Data.tilesets)
@@ -353,7 +354,7 @@ UpdateLog.currentMode = 'internal' // 'internal' or 'community'
 UpdateLog.internalItems = []
 UpdateLog.communityItems = []
 
-const UpdateLogInitializeOrigin = UpdateLog.initialize
+export const UpdateLogInitializeOrigin = UpdateLog.initialize
 window.on('localize', () => {
 	// 设置标签页按钮的本地化文本
 	const tabInternal = $('#update-log-tab-internal')
@@ -393,7 +394,7 @@ UpdateLog.initialize = function () {
 	}
 }
 
-const UpdateLogOpenOrigin = UpdateLog.open
+export const UpdateLogOpenOrigin = UpdateLog.open
 UpdateLog.open = function (items = null) {
 	if (items instanceof Array) {
 		Window.open('update-log')
@@ -407,12 +408,12 @@ UpdateLog.open = function (items = null) {
 	}
 }
 
-function markndownToHtml(markdown) {
+export function markndownToHtml(markdown) {
 	var md = new require('markdown-it')()
 	return md.render(markdown)
 }
 
-const UpdateLogUpdateOrigin = UpdateLog.update
+export const UpdateLogUpdateOrigin = UpdateLog.update
 UpdateLog.update = function (items) {
 	if (this.currentMode === 'internal') {
 		UpdateLogUpdateOrigin.call(this, items)
@@ -550,7 +551,7 @@ UpdateLog.parseCommunityReleases = function (releases) {
 	return items
 }
 
-const UpdateLogWindowClosedOrigin = UpdateLog.windowClosed
+export const UpdateLogWindowClosedOrigin = UpdateLog.windowClosed
 
 UpdateLog.windowClosed = function () {
 	UpdateLogWindowClosedOrigin.call(this)
@@ -560,7 +561,7 @@ UpdateLog.windowClosed = function () {
 }
 
 /* 设置图块标签 */
-const SetTileTag = {
+export const SetTileTag = {
 	// properties
 	callback: null,
 	// methods
@@ -592,7 +593,7 @@ SetTileTag.confirm = function () {
 	Window.close('setTileTag')
 }.bind(SetTileTag)
 
-function loadDtsFolder(folderPath, monaco, recursive = true) {
+export function loadDtsFolder(folderPath, monaco, recursive = true) {
 	const disposables = []
 
 	function walkDirectory(currentPath) {
@@ -646,3 +647,22 @@ function loadDtsFolder(folderPath, monaco, recursive = true) {
 
 	return disposables
 }
+
+window.fs = fs
+window.yauzl = yauzl
+window.CommunityVersion = CommunityVersion
+window.PackMeta = PackMeta
+window.TemplatesPath = TemplatesPath
+window.isNoResource = isNoResource
+window.NoResourceObj = NoResourceObj
+window.TitleConfirmOld = TitleConfirmOld
+window.unzipWithProgress = unzipWithProgress
+window.find_dItem = find_dItem
+window.homeElem = homeElem
+window.UpdateLogInitializeOrigin = UpdateLogInitializeOrigin
+window.UpdateLogOpenOrigin = UpdateLogOpenOrigin
+window.markndownToHtml = markndownToHtml
+window.UpdateLogUpdateOrigin = UpdateLogUpdateOrigin
+window.UpdateLogWindowClosedOrigin = UpdateLogWindowClosedOrigin
+window.SetTileTag = SetTileTag
+window.loadDtsFolder = loadDtsFolder

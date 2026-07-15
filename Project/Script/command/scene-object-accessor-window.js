@@ -2,7 +2,7 @@
 
 // ******************************** 场景对象访问器窗口 ********************************
 
-const ObjectGetter = {
+export const ObjectGetter = {
 	// properties
 	target: null,
 	// methods
@@ -89,3 +89,5 @@ ObjectGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('objectGetter')
 }.bind(ObjectGetter)
+
+window.ObjectGetter = ObjectGetter

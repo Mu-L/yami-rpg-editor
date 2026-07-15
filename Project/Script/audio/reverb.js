@@ -2,7 +2,7 @@
 
 // ******************************** 混响类 ********************************
 
-class Reverb {
+export class Reverb {
 	player //:object
 	input //:object
 	output //:object
@@ -113,3 +113,5 @@ class Reverb {
 	// 共享卷机器
 	static convolver = null
 }
+
+window.Reverb = Reverb

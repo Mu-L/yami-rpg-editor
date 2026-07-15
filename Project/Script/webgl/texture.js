@@ -2,7 +2,7 @@
 
 // ******************************** 纹理类 ********************************
 
-class Texture {
+export class Texture {
 	complete //:boolean
 	base //:object
 	gl //:object
@@ -153,3 +153,5 @@ class Texture {
 		}
 	}
 }
+
+window.Texture = Texture

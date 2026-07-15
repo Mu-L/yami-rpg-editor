@@ -2,7 +2,7 @@
 
 // ******************************** 条件列表接口类 ********************************
 
-class ConditionListInterface {
+export class ConditionListInterface {
 	target //:element
 	type //:string
 	history //:object
@@ -289,3 +289,5 @@ class ConditionListInterface {
 		})
 	}
 }
+
+window.ConditionListInterface = ConditionListInterface

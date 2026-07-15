@@ -3,7 +3,7 @@
 // ******************************** Empty State ********************************
 // 列表/面板为空时的占位提示（通过 message / icon 属性配置）
 
-class EmptyState extends HTMLElement {
+export class EmptyState extends HTMLElement {
 	connectedCallback() {
 		if (this.querySelector('.empty-icon') == null) {
 			this.innerHTML =
@@ -60,3 +60,5 @@ class EmptyState extends HTMLElement {
 }
 
 customElements.define('empty-state', EmptyState)
+
+window.EmptyState = EmptyState

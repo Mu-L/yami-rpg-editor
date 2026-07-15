@@ -2,7 +2,7 @@
 
 // ******************************** 打印机类 ********************************
 
-class Printer {
+export class Printer {
 	texture //:object
 	images //:array
 	canvas //:element
@@ -1440,3 +1440,5 @@ class Printer {
 		}
 	}
 }
+
+window.Printer = Printer

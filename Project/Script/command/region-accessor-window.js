@@ -2,7 +2,7 @@
 
 // ******************************** 区域访问器窗口 ********************************
 
-const RegionGetter = {
+export const RegionGetter = {
 	// properties
 	target: null,
 	// methods
@@ -69,3 +69,5 @@ RegionGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('regionGetter')
 }.bind(RegionGetter)
+
+window.RegionGetter = RegionGetter

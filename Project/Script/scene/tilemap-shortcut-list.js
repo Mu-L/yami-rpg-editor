@@ -2,7 +2,7 @@
 
 // ******************************** 瓦片地图快捷方式列表类 ********************************
 
-class TilemapShortcuts {
+export class TilemapShortcuts {
 	constructor(tilemaps) {
 		this.tilemaps = tilemaps
 		this.reset()
@@ -73,3 +73,5 @@ class TilemapShortcuts {
 		}
 	}
 }
+
+window.TilemapShortcuts = TilemapShortcuts

@@ -2,7 +2,7 @@
 
 // ******************************** 属性上下文类 ********************************
 
-class AttributeContext {
+export class AttributeContext {
 	itemMap //:object
 	groupMap //:object
 	itemCache //:object
@@ -133,3 +133,5 @@ class AttributeContext {
 		return this.itemLists[key]
 	}
 }
+
+window.AttributeContext = AttributeContext

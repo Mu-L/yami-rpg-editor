@@ -2,7 +2,7 @@
 
 // ******************************** 选框区域 ********************************
 
-class MarqueeArea extends HTMLElement {
+export class MarqueeArea extends HTMLElement {
 	selection //:element
 	x //:number
 	y //:number
@@ -95,3 +95,5 @@ class MarqueeArea extends HTMLElement {
 }
 
 customElements.define('marquee-area', MarqueeArea)
+
+window.MarqueeArea = MarqueeArea

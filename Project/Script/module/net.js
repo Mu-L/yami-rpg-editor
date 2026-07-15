@@ -1,6 +1,7 @@
-const axios = require('axios')
+const require = window.__nodeRequire || window.require
+export const axios = require('axios')
 
-const Net = new (class {
+export const Net = new (class {
 	get = axios.get
 	post = axios.post
 	cancelQueue = []
@@ -73,3 +74,6 @@ const Net = new (class {
 		this.cancelQueue = [] // 清空队列
 	}
 })()
+
+window.axios = axios
+window.Net = Net

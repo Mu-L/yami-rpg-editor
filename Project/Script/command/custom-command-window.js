@@ -2,7 +2,7 @@
 
 // ******************************** 自定义指令窗口 ********************************
 
-const CustomCommand = {
+export const CustomCommand = {
 	// properties
 	list: $('#command-list'),
 	overviewPane: $('#command-overview-detail').hide(),
@@ -424,3 +424,5 @@ CustomCommand.list.restoreSelection = function () {
 	this.update()
 	this.scrollToSelection()
 }
+
+window.CustomCommand = CustomCommand

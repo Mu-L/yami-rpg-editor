@@ -2,7 +2,7 @@
 
 // ******************************** 过渡窗口 ********************************
 
-const Easing = {
+export const Easing = {
 	// properties
 	list: $('#easing-list'),
 	curve: $('#easing-curve-canvas'),
@@ -1479,3 +1479,5 @@ Easing.list.updateKeyTextNode = function (item) {
 		keyTextNode.textContent = ' = ' + key
 	}
 }
+
+window.Easing = Easing

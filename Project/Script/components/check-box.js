@@ -2,7 +2,7 @@
 
 // ******************************** 复选框 ********************************
 
-class CheckBox extends HTMLElement {
+export class CheckBox extends HTMLElement {
 	dataValue //:boolean
 	relations //:array
 	writeEventEnabled //:boolean
@@ -149,3 +149,5 @@ class CheckBox extends HTMLElement {
 }
 
 customElements.define('check-box', CheckBox)
+
+window.CheckBox = CheckBox

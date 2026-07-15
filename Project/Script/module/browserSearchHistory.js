@@ -1,10 +1,10 @@
 // 项目浏览器搜索历史（会话内）
-const BrowserSearchHistory = {
+export const BrowserSearchHistory = {
 	histories: [],
 	input: null,
 	dropdown: null,
 	outsideHandler: null,
-	themeObserver: null,
+	themeObserver: null
 }
 
 BrowserSearchHistory.initialize = function () {
@@ -27,15 +27,18 @@ BrowserSearchHistory.bind = function (searcher) {
 
 BrowserSearchHistory.getInput = function (searcher) {
 	if (!searcher) return null
-	return searcher.querySelector?.('.text-box-input')
-		?? searcher.querySelector?.('input')
-		?? searcher
+	return (
+		searcher.querySelector?.('.text-box-input') ??
+		searcher.querySelector?.('input') ??
+		searcher
+	)
 }
 
 BrowserSearchHistory.getLimit = function () {
-	const config = typeof SettingConfig !== 'undefined'
-		? SettingConfig.config?.other?.browserSearchHistoryLimit
-		: 9
+	const config =
+		typeof SettingConfig !== 'undefined'
+			? SettingConfig.config?.other?.browserSearchHistoryLimit
+			: 9
 	const limit = Math.floor(Number(config))
 	return Number.isFinite(limit) ? Math.min(Math.max(limit, 1), 9) : 9
 }
@@ -72,13 +75,15 @@ BrowserSearchHistory.getThemeStyles = function () {
 		dropdown: {
 			background: isDarkTheme ? '#383838' : '#f0f0f0',
 			border: isDarkTheme ? '1px solid #181818' : '1px solid #c0c0c0',
-			boxShadow: isDarkTheme ? '0 6px 18px rgba(0, 0, 0, 0.5)' : '0 6px 18px rgba(0, 0, 0, 0.15)',
-			color: isDarkTheme ? '#d8d8d8' : '#000000',
+			boxShadow: isDarkTheme
+				? '0 6px 18px rgba(0, 0, 0, 0.5)'
+				: '0 6px 18px rgba(0, 0, 0, 0.15)',
+			color: isDarkTheme ? '#d8d8d8' : '#000000'
 		},
 		item: {
 			color: isDarkTheme ? '#d8d8d8' : '#000000',
-			hoverBg: isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-		},
+			hoverBg: isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
+		}
 	}
 }
 
@@ -88,14 +93,16 @@ BrowserSearchHistory.initThemeObserver = function () {
 		if (!this.dropdown) return
 		const styles = this.getThemeStyles()
 		Object.assign(this.dropdown.style, styles.dropdown)
-		for (const item of this.dropdown.querySelectorAll('.browser-search-item')) {
+		for (const item of this.dropdown.querySelectorAll(
+			'.browser-search-item'
+		)) {
 			item.style.color = styles.item.color
 			item.style.background = ''
 		}
 	})
 	this.themeObserver.observe(document.documentElement, {
 		attributes: true,
-		attributeFilter: ['class'],
+		attributeFilter: ['class']
 	})
 }
 
@@ -113,7 +120,7 @@ BrowserSearchHistory.createDropdown = function () {
 		display: 'none',
 		fontSize: '12px',
 		scrollbarWidth: 'none',
-		msOverflowStyle: 'none',
+		msOverflowStyle: 'none'
 	})
 	Object.assign(el.style, this.getThemeStyles().dropdown)
 	el.addEventListener('mousedown', (event) => {
@@ -169,7 +176,7 @@ BrowserSearchHistory.createItem = function (input, keyword, styles) {
 		overflow: 'hidden',
 		textOverflow: 'ellipsis',
 		color: styles.item.color,
-		transition: 'background 0.2s ease',
+		transition: 'background 0.2s ease'
 	})
 	const text = document.createElement('span')
 	text.textContent = keyword
@@ -178,7 +185,7 @@ BrowserSearchHistory.createItem = function (input, keyword, styles) {
 	deleteButton.textContent = '\u2716'
 	Object.assign(deleteButton.style, {
 		top: '50%',
-		transform: 'translateY(-50%)',
+		transform: 'translateY(-50%)'
 	})
 	deleteButton.addEventListener('click', (event) => {
 		event.preventDefault()
@@ -218,3 +225,5 @@ BrowserSearchHistory.hide = function () {
 }
 
 BrowserSearchHistory.initialize()
+
+window.BrowserSearchHistory = BrowserSearchHistory

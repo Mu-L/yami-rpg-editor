@@ -2,7 +2,7 @@
 
 // ******************************** 条件分支 - 分支窗口 ********************************
 
-const IfBranch = {
+export const IfBranch = {
 	// properties
 	target: null,
 	commands: null,
@@ -98,3 +98,5 @@ IfBranch.windowClosed = function (event) {
 IfBranch.confirm = function (event) {
 	return IfBranch.target.save()
 }
+
+window.IfBranch = IfBranch

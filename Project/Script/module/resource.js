@@ -1,4 +1,5 @@
-const Resources = new (class {
+const require = window.__nodeRequire || window.require
+export const Resources = new (class {
 	window = $('#resource')
 	content = $('#resource-content')
 	nodeInfoBox = $('#resource-node-info')
@@ -680,3 +681,5 @@ const Resources = new (class {
 		this.load()
 	}
 })()
+
+window.Resources = Resources

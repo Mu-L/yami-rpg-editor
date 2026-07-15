@@ -2,7 +2,7 @@
 
 // ******************************** 检查器 ********************************
 
-const Inspector = {
+export const Inspector = {
 	// properties
 	manager: null,
 	type: null,
@@ -469,3 +469,5 @@ Inspector.ParamHistory = class ParamHistory {
 		return data?.type.indexOf('inspector-param') === 0
 	}
 }
+
+window.Inspector = Inspector

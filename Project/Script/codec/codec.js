@@ -3,7 +3,7 @@
 // ******************************** 编解码器 ********************************
 // undefined按位运算等价于0，因此不会产生NaN
 
-const Codec = {
+export const Codec = {
 	// properties
 	textEncoder: new TextEncoder(),
 	textDecoder: new TextDecoder(),
@@ -445,3 +445,5 @@ Codec.getTilemaps = (function IIFE() {
 // const {decrypt} = window
 // window.decrypt = buffer => decrypt(buffer)
 // \`)()`)
+
+window.Codec = Codec

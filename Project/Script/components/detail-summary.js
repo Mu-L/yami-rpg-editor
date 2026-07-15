@@ -2,7 +2,7 @@
 
 // ******************************** 细节概要 ********************************
 
-class DetailSummary extends HTMLElement {
+export class DetailSummary extends HTMLElement {
 	constructor() {
 		super()
 
@@ -47,3 +47,5 @@ class DetailSummary extends HTMLElement {
 }
 
 customElements.define('detail-summary', DetailSummary)
+
+window.DetailSummary = DetailSummary

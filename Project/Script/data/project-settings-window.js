@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 项目设置窗口 ********************************
 
-const Project = {
+export const Project = {
 	// properties
 	data: null,
 	changed: false,
@@ -421,3 +422,5 @@ Project.languages = {
 		return items
 	}
 }
+
+window.Project = Project

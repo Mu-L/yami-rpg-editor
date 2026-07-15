@@ -2,7 +2,7 @@
 
 // ******************************** 枚举上下文类 ********************************
 
-class EnumerationContext {
+export class EnumerationContext {
 	itemMap //:object
 	groupMap //:object
 	itemCache //:object
@@ -152,3 +152,5 @@ class EnumerationContext {
 		return this.itemLists[key]
 	}
 }
+
+window.EnumerationContext = EnumerationContext

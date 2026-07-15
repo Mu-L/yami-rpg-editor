@@ -2,7 +2,7 @@
 
 // ******************************** 选择列表 ********************************
 
-class SelectList extends HTMLElement {
+export class SelectList extends HTMLElement {
 	state //:string
 	target //:element
 	elements //:array
@@ -361,4 +361,7 @@ class SelectList extends HTMLElement {
 customElements.define('select-list', SelectList)
 
 // 创建选择列表实例
-const Select = new SelectList()
+export const Select = new SelectList()
+
+window.SelectList = SelectList
+window.Select = Select

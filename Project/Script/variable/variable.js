@@ -2,7 +2,7 @@
 
 // ******************************** 变量窗口 ********************************
 
-const Variable = {
+export const Variable = {
 	// properties
 	list: $('#variable-list'),
 	panel: $('#variable-properties-flex').hide(),
@@ -80,3 +80,5 @@ Variable.list.updateNoteIcon = null
 Variable.list.onCreate = null
 Variable.list.onDelete = null
 Variable.list.onResume = null
+
+window.Variable = Variable

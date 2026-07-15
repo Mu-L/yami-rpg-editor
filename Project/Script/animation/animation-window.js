@@ -2,7 +2,7 @@
 
 // ******************************** 动画窗口 ********************************
 
-const Animation = {
+export const Animation = {
 	// properties
 	state: 'closed',
 	page: $('#animation'),
@@ -6176,3 +6176,5 @@ Animation.timelineMarquee.isShrinkable = function () {
 	const frame = frames[frames.length - 1]
 	return frame ? this.x < frame.end : false
 }
+
+window.Animation = Animation

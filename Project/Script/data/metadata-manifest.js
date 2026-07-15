@@ -2,7 +2,7 @@
 
 // ******************************** 元数据清单类 ********************************
 
-class Manifest {
+export class Manifest {
 	actors = []
 	skills = []
 	triggers = []
@@ -89,3 +89,5 @@ class Manifest {
 		console.log(`delete meta: ${meta.path}`)
 	}
 }
+
+window.Manifest = Manifest

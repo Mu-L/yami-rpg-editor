@@ -2,7 +2,7 @@
 
 // ******************************** 设置进度条 - 属性窗口 ********************************
 
-const ProgressBarProperty = {
+export const ProgressBarProperty = {
 	// properties
 	target: null,
 	// methods
@@ -241,3 +241,5 @@ ProgressBarProperty.save = function () {
 ProgressBarProperty.confirm = function (event) {
 	return ProgressBarProperty.target.save()
 }
+
+window.ProgressBarProperty = ProgressBarProperty

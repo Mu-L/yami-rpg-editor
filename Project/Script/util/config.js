@@ -1,16 +1,16 @@
 'use strict'
 
-const { require } = window
-const Path = require('path')
+const require = window.__nodeRequire || window.require
+export const Path = require('path')
 
 // const GlobalPathForDir = require('electron').ipcRenderer.sendSync(
 // 	'get-dir-path-sync',
 // 	'app-data'
 // )
 // const ConfigDir = 'Open Yami RPG Editor'
-const GlobalPathForDir = require('os').homedir()
-const ConfigDir = '.openyami'
-const GlobalPath = Path.resolve(GlobalPathForDir, ConfigDir)
+export const GlobalPathForDir = require('os').homedir()
+export const ConfigDir = '.openyami'
+export const GlobalPath = Path.resolve(GlobalPathForDir, ConfigDir)
 
 // ******************************** 读取配置文件 ********************************
 
@@ -52,3 +52,8 @@ const GlobalPath = Path.resolve(GlobalPathForDir, ConfigDir)
 			})
 		})
 }
+
+window.Path = Path
+window.GlobalPathForDir = GlobalPathForDir
+window.ConfigDir = ConfigDir
+window.GlobalPath = GlobalPath

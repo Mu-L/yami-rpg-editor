@@ -4,7 +4,7 @@
 
 // GUID含有字母或首位是零可以大幅提升查询效率
 // 因此需要避免纯数字的GUID出现
-class GUID {
+export class GUID {
 	static regExpForChecking = /[a-f]/
 
 	// 生成32位GUID(8个字符)
@@ -23,3 +23,5 @@ class GUID {
 		return id
 	}
 }
+
+window.GUID = GUID

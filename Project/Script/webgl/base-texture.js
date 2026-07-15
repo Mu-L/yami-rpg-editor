@@ -2,7 +2,7 @@
 
 // ******************************** 基础纹理类 ********************************
 
-class BaseTexture {
+export class BaseTexture {
 	constructor() {
 		this.glTexture = GL.createTexture()
 		this.width = 0
@@ -94,3 +94,5 @@ class BaseTexture {
 
 	static CALLBACK = Symbol('LOAD_CALLBACK')
 }
+
+window.BaseTexture = BaseTexture

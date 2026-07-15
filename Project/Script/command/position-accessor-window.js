@@ -2,7 +2,7 @@
 
 // ******************************** 位置访问器窗口 ********************************
 
-const PositionGetter = {
+export const PositionGetter = {
 	// properties
 	target: null,
 	// methods
@@ -195,3 +195,5 @@ PositionGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('positionGetter')
 }.bind(PositionGetter)
+
+window.PositionGetter = PositionGetter

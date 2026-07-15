@@ -2,7 +2,7 @@
 
 // ******************************** 普通列表 ********************************
 
-class CommonList extends HTMLElement {
+export class CommonList extends HTMLElement {
 	elements //:array
 	selection //:element
 	writeEventEnabled //:boolean
@@ -359,3 +359,5 @@ class CommonList extends HTMLElement {
 }
 
 customElements.define('common-list', CommonList)
+
+window.CommonList = CommonList

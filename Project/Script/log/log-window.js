@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 日志窗口 ********************************
 
-const Log = {
+export const Log = {
 	// properties
 	box: $('#log-message'),
 	list: [],
@@ -158,3 +159,5 @@ Log.tscLog = function (event, tscMessage) {
 		duration: duration
 	})
 }
+
+window.Log = Log

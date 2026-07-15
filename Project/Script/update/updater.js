@@ -2,7 +2,7 @@
 
 // ******************************** 更新管理器 ********************************
 
-const Updater = {
+export const Updater = {
 	// properties
 	latestEditorVersion: '1.0.18',
 	latestProjectVersion: '1.0.147',
@@ -40,3 +40,5 @@ Updater.getVersionNumber = function (version) {
 	const c = parseInt(nodes[2])
 	return a * 100000000 + b * 10000 + c
 }
+
+window.Updater = Updater

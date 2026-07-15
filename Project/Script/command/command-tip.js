@@ -2,7 +2,7 @@
 
 // ******************************** 指令提示框 ********************************
 
-const CommandSuggestion = {
+export const CommandSuggestion = {
 	// properties
 	widget: $('#command-widget'),
 	searcher: $('#command-searcher'),
@@ -383,3 +383,5 @@ CommandSuggestion.list.selectDefaultCommand = function () {
 		}
 	}
 }
+
+window.CommandSuggestion = CommandSuggestion

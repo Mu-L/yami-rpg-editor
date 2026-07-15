@@ -1,4 +1,4 @@
-const SearchString = new (class {
+export const SearchString = new (class {
 	window = $('#event-search-string')
 	current = null
 	log = $('#event-search-string-log')
@@ -143,3 +143,5 @@ const SearchString = new (class {
 		this.log.textContent = this.lastArr.length
 	}
 })()
+
+window.SearchString = SearchString

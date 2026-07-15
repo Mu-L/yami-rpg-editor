@@ -2,7 +2,7 @@
 
 // ******************************** 数据对象 ********************************
 
-const Data = {
+export const Data = {
 	// properties
 	manifest: null,
 	scenePresets: null,
@@ -707,3 +707,5 @@ Data.loadScript = async function (file) {
 			})
 	}
 }
+
+window.Data = Data

@@ -2,7 +2,7 @@
 
 // ******************************** 滑动框 ********************************
 
-class SliderBox extends HTMLElement {
+export class SliderBox extends HTMLElement {
 	filler //:element
 	input //:element
 	synchronizer //:element
@@ -196,3 +196,5 @@ class SliderBox extends HTMLElement {
 }
 
 customElements.define('slider-box', SliderBox)
+
+window.SliderBox = SliderBox

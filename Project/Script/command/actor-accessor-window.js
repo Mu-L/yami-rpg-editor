@@ -2,7 +2,7 @@
 
 // ******************************** 角色访问器窗口 ********************************
 
-const ActorGetter = {
+export const ActorGetter = {
 	// properties
 	target: null,
 	// methods
@@ -144,3 +144,5 @@ ActorGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('actorGetter')
 }.bind(ActorGetter)
+
+window.ActorGetter = ActorGetter

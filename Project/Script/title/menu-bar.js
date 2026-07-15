@@ -1,8 +1,9 @@
 ﻿'use strict'
+const require = window.__nodeRequire || window.require
 
 // ******************************** 菜单栏对象 ********************************
 
-const Menubar = {
+export const Menubar = {
 	// methods
 	initialize: null,
 	toggleFullScreen: null,
@@ -1068,3 +1069,5 @@ Menubar.pointerover = function (event) {
 Menubar.hrefClick = function (event) {
 	File.openURL(event.target.getAttribute('href'))
 }
+
+window.Menubar = Menubar

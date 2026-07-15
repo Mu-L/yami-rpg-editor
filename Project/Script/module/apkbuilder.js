@@ -1,4 +1,5 @@
-const ApkBuilder = new (class {
+const require = window.__nodeRequire || window.require
+export const ApkBuilder = new (class {
 	logs = []
 	constructor() {
 		require('electron').ipcRenderer.on('apk-log', (_, log) => {
@@ -68,3 +69,5 @@ const ApkBuilder = new (class {
 		return config
 	}
 })()
+
+window.ApkBuilder = ApkBuilder

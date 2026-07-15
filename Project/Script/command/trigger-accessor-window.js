@@ -2,7 +2,7 @@
 
 // ******************************** 触发器访问器窗口 ********************************
 
-const TriggerGetter = {
+export const TriggerGetter = {
 	// properties
 	target: null,
 	// methods
@@ -72,3 +72,5 @@ TriggerGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('triggerGetter')
 }.bind(TriggerGetter)
+
+window.TriggerGetter = TriggerGetter

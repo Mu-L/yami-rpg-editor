@@ -2,7 +2,7 @@
 
 // ******************************** 文件头部面板 ********************************
 
-class FileHeadPane extends HTMLElement {
+export class FileHeadPane extends HTMLElement {
 	address //:element
 	searcher //:element
 	view //:element
@@ -225,3 +225,5 @@ class FileHeadPane extends HTMLElement {
 }
 
 customElements.define('file-head-pane', FileHeadPane)
+
+window.FileHeadPane = FileHeadPane

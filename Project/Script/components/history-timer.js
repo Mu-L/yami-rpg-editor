@@ -2,7 +2,7 @@
 
 // ******************************** 历史操作计时器 ********************************
 
-const HistoryTimer = new Timer({
+export const HistoryTimer = new Timer({
 	duration: 2000,
 	callback: (timer) => {
 		timer.complete = true
@@ -29,3 +29,5 @@ HistoryTimer.finish = function () {
 		this.remove()
 	}
 }
+
+window.HistoryTimer = HistoryTimer

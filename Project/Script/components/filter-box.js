@@ -2,7 +2,7 @@
 
 // ******************************** 滤镜框 ********************************
 
-class FilterBox extends HTMLElement {
+export class FilterBox extends HTMLElement {
 	canvas //:element
 	dataValue //:object
 
@@ -117,3 +117,5 @@ class FilterBox extends HTMLElement {
 }
 
 customElements.define('filter-box', FilterBox)
+
+window.FilterBox = FilterBox

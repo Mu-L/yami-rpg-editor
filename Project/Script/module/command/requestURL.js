@@ -1,4 +1,4 @@
-const RequestkeyValueBind = {
+export const RequestkeyValueBind = {
 	target: null,
 	type: null,
 	initialize() {
@@ -141,3 +141,5 @@ Command.cases.requestURL = {
 		})
 	}
 }
+
+window.RequestkeyValueBind = RequestkeyValueBind

@@ -2,7 +2,7 @@
 
 // ******************************** 匹配 - 分支窗口 ********************************
 
-const SwitchBranch = {
+export const SwitchBranch = {
 	// properties
 	target: null,
 	commands: null,
@@ -79,3 +79,5 @@ SwitchBranch.windowClosed = function (event) {
 SwitchBranch.confirm = function (event) {
 	return SwitchBranch.target.save()
 }
+
+window.SwitchBranch = SwitchBranch

@@ -2,7 +2,7 @@
 
 // ******************************** 枚举窗口 ********************************
 
-const Enum = {
+export const Enum = {
 	// properties
 	list: $('#enum-list'),
 	panel: $('#enum-properties-flex').hide(),
@@ -1061,3 +1061,5 @@ Enum.list.onDelete = function (item) {
 Enum.list.onResume = function (item) {
 	Enum.register(item)
 }
+
+window.Enum = Enum

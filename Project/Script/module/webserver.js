@@ -1,4 +1,5 @@
-const WebServer = new (class {
+const require = window.__nodeRequire || window.require
+export const WebServer = new (class {
 	port = 5959
 	constructor() {
 		$('#qr-start-button').on('click', () => {
@@ -92,3 +93,5 @@ const WebServer = new (class {
 			})
 	}
 })()
+
+window.WebServer = WebServer

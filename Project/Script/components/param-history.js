@@ -2,7 +2,7 @@
 
 // ******************************** 参数操作历史 ********************************
 
-class ParamHistory {
+export class ParamHistory {
 	list //:element
 	stack //:array
 	index //:number
@@ -172,3 +172,5 @@ class ParamHistory {
 		}
 	}
 }
+
+window.ParamHistory = ParamHistory

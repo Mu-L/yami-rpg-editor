@@ -2,7 +2,7 @@
 
 // ******************************** 文件身体面板 ********************************
 
-class FileBodyPane extends HTMLElement {
+export class FileBodyPane extends HTMLElement {
 	viewIndex //:number
 	viewMode //:string
 	timer //:object
@@ -1720,3 +1720,5 @@ class FileBodyPane extends HTMLElement {
 }
 
 customElements.define('file-body-pane', FileBodyPane)
+
+window.FileBodyPane = FileBodyPane

@@ -2,7 +2,7 @@
 
 // ******************************** 元素实例列表 ********************************
 
-class UIInstanceList extends Array {
+export class UIInstanceList extends Array {
 	// 设置属性
 	set(key, value) {
 		const keys = key.split('-')
@@ -24,3 +24,5 @@ class UIInstanceList extends Array {
 		}
 	}
 }
+
+window.UIInstanceList = UIInstanceList

@@ -2,7 +2,7 @@
 
 // ******************************** 文本框 ********************************
 
-class TextBox extends HTMLElement {
+export class TextBox extends HTMLElement {
 	input //:element
 	focusEventEnabled //:boolean
 	blurEventEnabled //:boolean
@@ -261,3 +261,5 @@ class TextBox extends HTMLElement {
 }
 
 customElements.define('text-box', TextBox)
+
+window.TextBox = TextBox

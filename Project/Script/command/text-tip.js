@@ -2,7 +2,7 @@
 
 // ******************************** 文本提示框 ********************************
 
-const TextSuggestion = {
+export const TextSuggestion = {
 	// properties
 	list: $('#text-suggestions'),
 	inserting: false,
@@ -285,3 +285,5 @@ TextSuggestion.list.selectDefaultCommand = function () {
 		return
 	}
 }
+
+window.TextSuggestion = TextSuggestion

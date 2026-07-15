@@ -2,7 +2,7 @@
 
 // ******************************** 设置数量窗口 ********************************
 
-const SetQuantity = {
+export const SetQuantity = {
 	// properties
 	callback: null,
 	// methods
@@ -39,3 +39,5 @@ SetQuantity.confirm = function (event) {
 	this.callback($('#setQuantity-quantity').read())
 	Window.close('setQuantity')
 }.bind(SetQuantity)
+
+window.SetQuantity = SetQuantity

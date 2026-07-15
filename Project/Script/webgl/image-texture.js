@@ -2,7 +2,7 @@
 
 // ******************************** 图像纹理类 ********************************
 
-class ImageTexture extends Texture {
+export class ImageTexture extends Texture {
 	constructor(image, options = {}) {
 		super(options)
 
@@ -151,3 +151,5 @@ ImageTexture.prototype.on = BaseTexture.prototype.on
 
 // 执行加载回调
 ImageTexture.prototype.reply = BaseTexture.prototype.reply
+
+window.ImageTexture = ImageTexture

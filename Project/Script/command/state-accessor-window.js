@@ -2,7 +2,7 @@
 
 // ******************************** 状态访问器窗口 ********************************
 
-const StateGetter = {
+export const StateGetter = {
 	// properties
 	target: null,
 	// methods
@@ -115,3 +115,5 @@ StateGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('stateGetter')
 }.bind(StateGetter)
+
+window.StateGetter = StateGetter

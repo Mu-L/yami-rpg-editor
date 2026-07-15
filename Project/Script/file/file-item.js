@@ -2,7 +2,7 @@
 
 // ******************************** 文件项目 ********************************
 
-class FileItem {
+export class FileItem {
 	meta //:object
 	name //:string
 	alias //:string
@@ -213,3 +213,5 @@ class FileItem {
 		FileItem.oversizeImagePaths.length = 0
 	}
 }
+
+window.FileItem = FileItem

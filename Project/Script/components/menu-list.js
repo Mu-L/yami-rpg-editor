@@ -2,7 +2,7 @@
 
 // ******************************** 菜单列表 ********************************
 
-class MenuList extends HTMLElement {
+export class MenuList extends HTMLElement {
 	state //:string
 	callback //:function
 	dataItems //:array
@@ -473,4 +473,7 @@ class MenuList extends HTMLElement {
 customElements.define('menu-list', MenuList)
 
 // 创建菜单列表实例
-const Menu = new MenuList()
+export const Menu = new MenuList()
+
+window.MenuList = MenuList
+window.Menu = Menu

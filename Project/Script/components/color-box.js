@@ -2,7 +2,7 @@
 
 // ******************************** 颜色框 ********************************
 
-class ColorBox extends HTMLElement {
+export class ColorBox extends HTMLElement {
 	dataValue //:string
 	foreground //:element
 	inputEventEnabled //:boolean
@@ -105,3 +105,5 @@ class ColorBox extends HTMLElement {
 }
 
 customElements.define('color-box', ColorBox)
+
+window.ColorBox = ColorBox

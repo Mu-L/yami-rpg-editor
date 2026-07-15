@@ -2,7 +2,7 @@
 
 // ******************************** 变量访问器窗口 ********************************
 
-const VariableGetter = {
+export const VariableGetter = {
 	// properties
 	keyBox: $('#variableGetter-preset-key'),
 	target: null,
@@ -531,3 +531,5 @@ VariableGetter._confirmCore = function (prefix) {
 	target.input(getter)
 	Window.close(prefix)
 }
+
+window.VariableGetter = VariableGetter

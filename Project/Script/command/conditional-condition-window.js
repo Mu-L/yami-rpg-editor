@@ -2,7 +2,7 @@
 
 // ******************************** 条件分支 - 条件窗口 ********************************
 
-const IfCondition = {
+export const IfCondition = {
 	// properties
 	type: 'condition',
 	target: null,
@@ -1270,3 +1270,5 @@ IfCondition.save = function () {
 IfCondition.confirm = function (event) {
 	return IfCondition.target.save()
 }
+
+window.IfCondition = IfCondition

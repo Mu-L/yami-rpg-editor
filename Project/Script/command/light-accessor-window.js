@@ -2,7 +2,7 @@
 
 // ******************************** 光源访问器窗口 ********************************
 
-const LightGetter = {
+export const LightGetter = {
 	// properties
 	target: null,
 	// methods
@@ -89,3 +89,5 @@ LightGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('lightGetter')
 }.bind(LightGetter)
+
+window.LightGetter = LightGetter
