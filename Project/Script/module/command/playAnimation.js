@@ -1,51 +1,42 @@
 'use strict'
 
-Command.cases.playAnimation = {
-	initialize: function () {
-		$('#playAnimation-confirm').on('click', this.save)
-
-		// 创建模式选项
+Command.cases.playAnimation = new CommandSchema({
+	name: 'playAnimation',
+	onInitialize() {
+		$('#playAnimation-confirm').on('click', () => this.save())
 		$('#playAnimation-mode').loadItems([
 			{ name: 'Position', value: 'position' },
 			{ name: 'Actor', value: 'actor' }
 		])
-
-		// 设置模式关联元素
 		$('#playAnimation-mode')
 			.enableHiddenMode()
 			.relate([
 				{ case: 'position', targets: [$('#playAnimation-position')] },
 				{ case: 'actor', targets: [$('#playAnimation-actor')] }
 			])
-
-		// 创建旋转选项
 		$('#playAnimation-rotatable').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建等待结束选项
 		$('#playAnimation-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 动画ID - 写入事件
 		$('#playAnimation-animationId').on('write', (event) => {
 			const elMotion = $('#playAnimation-motion')
 			elMotion.loadItems(Animation.getMotionListItems(event.value))
 			elMotion.write2(elMotion.read())
 		})
 	},
-	parseRotatable: function (rotatable) {
+	parseRotatable(rotatable) {
 		return rotatable ? Local.get('command.playAnimation.rotatable') : ''
 	},
-	parsePriority: function (priority) {
+	parsePriority(priority) {
 		if (priority === 0) return ''
 		const abs = Command.setNumberColor(Math.abs(priority))
 		return priority > 0 ? Token('+') + abs : Token('-') + abs
 	},
-	parseOffsetY: function (offsetY) {
+	parseOffsetY(offsetY) {
 		let num
 		if (typeof offsetY === 'number')
 			num = Command.setNumberColor(Math.abs(offsetY)) + 'px'
@@ -55,7 +46,7 @@ Command.cases.playAnimation = {
 				: Token('-') + num
 			: Command.parseVariableNumber(offsetY)
 	},
-	parse: function ({
+	customParse({
 		mode,
 		position,
 		actor,
@@ -96,7 +87,7 @@ Command.cases.playAnimation = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		mode = 'position',
 		position = { type: 'actor', actor: { type: 'trigger' } },
 		actor = { type: 'trigger' },
@@ -123,7 +114,7 @@ Command.cases.playAnimation = {
 		write('wait', wait)
 		$('#playAnimation-mode').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('playAnimation')
 		const mode = read('mode')
 		const animationId = read('animationId')
@@ -175,4 +166,4 @@ Command.cases.playAnimation = {
 			}
 		}
 	}
-}
+})

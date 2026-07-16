@@ -1,12 +1,13 @@
 'use strict'
 
-Command.cases.showText = {
+Command.cases.showText = new CommandSchema({
+	name: 'showText',
 	latinCharWidth: 0,
 	otherCharWidth: 0,
-	initialize: function () {
-		$('#showText-confirm').on('click', this.save)
+	onInitialize() {
+		$('#showText-confirm').on('click', () => this.save())
 	},
-	parse: function ({ target, parameters, content }) {
+	customParse({ target, parameters, content }) {
 		const alias = Local.get('command.showText.alias')
 		const words = Command.words
 			.push(Command.parseActor(target))
@@ -24,7 +25,7 @@ Command.cases.showText = {
 		this.appendTextLines(contents, alias, content)
 		return contents
 	},
-	load: function ({
+	customLoad({
 		target = { type: 'trigger' },
 		parameters = '',
 		content = ''
@@ -38,7 +39,7 @@ Command.cases.showText = {
 			$('#showText-content').getFocus()
 		}
 	},
-	save: function () {
+	customSave() {
 		const target = $('#showText-target').read()
 		const parameters = $('#showText-parameters').read()
 		const content = $('#showText-content').read()
@@ -47,7 +48,7 @@ Command.cases.showText = {
 		}
 		Command.save({ target, parameters, content })
 	},
-	updateCharWidth: function () {
+	updateCharWidth() {
 		if (this.latinCharWidth === 0) {
 			const latinChars = '          '
 			const otherChars = '　　　　　　　　　　'
@@ -108,19 +109,16 @@ Command.cases.showText = {
 					const slice = text.slice(i)
 					const idMatch = slice.match(textIdTag)
 					if (idMatch) {
-						// 跳到结束位置
 						i += idMatch[0].length - 1
 						continue
 					}
 					const tipMatch = slice.match(tooltipTag)
 					if (tipMatch) {
-						// 跳到结束位置
 						i += tipMatch[0].length - 1
 						continue
 					}
 					const classMatch = slice.match(classTag)
 					if (classMatch) {
-						// 跳到结束位置
 						i += classMatch[0].length - 1
 						continue
 					}
@@ -130,7 +128,6 @@ Command.cases.showText = {
 							lineWidth +=
 								char < '\xff' ? latinCharWidth : otherCharWidth
 						}
-						// 跳到结束位置
 						i += colorMatch[0].length - 1
 						continue
 					}
@@ -157,4 +154,4 @@ Command.cases.showText = {
 			}
 		}
 	})()
-}
+})

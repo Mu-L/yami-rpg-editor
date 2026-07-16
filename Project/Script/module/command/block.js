@@ -1,11 +1,11 @@
 'use strict'
 
-Command.cases.block = {
-	initialize: function () {
-		$('#block-confirm').on('click', this.save)
+Command.cases.block = new CommandSchema({
+	name: 'block',
+	onInitialize() {
+		$('#block-confirm').on('click', () => this.save())
 	},
-	parse: function ({ note, asynchronous, commands }) {
-		// 补丁：2025-3-21
+	customParse({ note, asynchronous, commands }) {
 		if (asynchronous === undefined) {
 			asynchronous = false
 		}
@@ -21,16 +21,15 @@ Command.cases.block = {
 			{ text: Local.get('command.block.end') }
 		]
 	},
-	load: function ({ note = '', asynchronous = false, commands = [] }) {
+	customLoad({ note = '', asynchronous = false, commands = [] }) {
 		$('#block-note').write(note)
 		$('#block-asynchronous').write(asynchronous)
 		$('#block-note').getFocus()
-		Command.cases.block.commands = commands
+		this.commands = commands
 	},
-	save: function () {
+	customSave() {
 		const note = $('#block-note').read().trim()
 		const asynchronous = $('#block-asynchronous').read()
-		const commands = Command.cases.block.commands
-		Command.save({ note, asynchronous, commands })
+		Command.save({ note, asynchronous, commands: this.commands })
 	}
-}
+})

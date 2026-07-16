@@ -1,17 +1,14 @@
 'use strict'
 
-Command.cases.castSkill = {
-	initialize: function () {
-		$('#castSkill-confirm').on('click', this.save)
-
-		// 创建模式选项
+Command.cases.castSkill = new CommandSchema({
+	name: 'castSkill',
+	onInitialize() {
+		$('#castSkill-confirm').on('click', () => this.save())
 		$('#castSkill-mode').loadItems([
 			{ name: 'By Shortcut Key', value: 'by-key' },
 			{ name: 'By Skill ID', value: 'by-id' },
 			{ name: 'By Skill Instance', value: 'by-skill' }
 		])
-
-		// 设置模式关联元素
 		$('#castSkill-mode')
 			.enableHiddenMode()
 			.relate([
@@ -19,14 +16,12 @@ Command.cases.castSkill = {
 				{ case: 'by-id', targets: [$('#castSkill-skillId')] },
 				{ case: 'by-skill', targets: [$('#castSkill-skill')] }
 			])
-
-		// 创建等待结束选项
 		$('#castSkill-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
 	},
-	parse: function ({ actor, mode, key, skillId, skill, wait }) {
+	customParse({ actor, mode, key, skillId, skill, wait }) {
 		const words = Command.words.push(Command.parseActor(actor))
 		switch (mode) {
 			case 'by-key':
@@ -46,7 +41,7 @@ Command.cases.castSkill = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		mode = 'by-key',
 		key = Enum.getDefStringId('shortcut-key'),
@@ -54,7 +49,6 @@ Command.cases.castSkill = {
 		skill = { type: 'trigger' },
 		wait = false
 	}) {
-		// 加载快捷键选项
 		$('#castSkill-key').loadItems(Enum.getStringItems('shortcut-key'))
 		const write = getElementWriter('castSkill')
 		write('actor', actor)
@@ -65,7 +59,7 @@ Command.cases.castSkill = {
 		write('wait', wait)
 		$('#castSkill-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('castSkill')
 		const actor = read('actor')
 		const mode = read('mode')
@@ -88,10 +82,14 @@ Command.cases.castSkill = {
 				break
 			}
 			case 'by-skill': {
-				const skill = read('skill')
-				Command.save({ actor, mode, skill, wait })
+				Command.save({
+					actor,
+					mode,
+					skill: read('skill'),
+					wait
+				})
 				break
 			}
 		}
 	}
-}
+})

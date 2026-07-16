@@ -46,8 +46,9 @@ export const RequestkeyValueBind = {
 }
 
 // 请求RequestURL
-Command.cases.requestURL = {
-	initialize: function () {
+Command.cases.requestURL = new CommandSchema({
+	name: 'requestURL',
+	onInitialize() {
 		$('#requestURL-method').loadItems([
 			{ name: 'GET', value: 'GET' },
 			{ name: 'POST', value: 'POST' },
@@ -58,9 +59,9 @@ Command.cases.requestURL = {
 		$('#requestURL-url').write('')
 		$('#requestURL-header').bind(RequestkeyValueBind)
 		$('#requestURL-data').bind(RequestkeyValueBind)
-		$('#requestURL-confirm').on('click', this.save)
+		$('#requestURL-confirm').on('click', () => this.save())
 	},
-	parse: function ({
+	customParse({
 		url = '',
 		method = 'GET',
 		headers = [],
@@ -110,7 +111,7 @@ Command.cases.requestURL = {
 			datas.slice(1)
 		)
 	},
-	load: function ({
+	customLoad({
 		url = '',
 		method = 'GET',
 		headers = [],
@@ -125,7 +126,7 @@ Command.cases.requestURL = {
 		write('header', headers)
 		write('data', data)
 	},
-	save: function () {
+	customSave() {
 		const elVariable = $('#requestURL-url')
 		const variable = elVariable.read()
 		if (!variable || VariableGetter.isNone(variable)) {
@@ -140,6 +141,6 @@ Command.cases.requestURL = {
 			callback: read('callback')
 		})
 	}
-}
+})
 
 window.RequestkeyValueBind = RequestkeyValueBind

@@ -33,18 +33,16 @@ export const IndexBind = {
 }
 
 // 获取对象属性
-Command.cases.getObjectProperty = {
-	initialize: function () {
-		$('#getObjectProperty-confirm').on('click', this.save)
-		// 绑定分支列表
+Command.cases.getObjectProperty = new CommandSchema({
+	name: 'getObjectProperty',
+	onInitialize() {
+		$('#getObjectProperty-confirm').on('click', () => this.save())
 		$('#getObjectProperty-list').bind(IndexBind)
-
-		// 清理内存 - 窗口已关闭事件
 		$('#getObjectProperty').on('closed', () => {
 			$('#getObjectProperty-list').clear()
 		})
 	},
-	parse: function ({ variable, saveVariable, properties }) {
+	customParse({ variable, saveVariable, properties }) {
 		const contents = []
 		for (const i of properties) {
 			contents.push({ text: '.' }, { color: 'normal' }, { text: i.text })
@@ -56,7 +54,7 @@ Command.cases.getObjectProperty = {
 			{ text: Command.parseVariable(variable, 'any') + '.' }
 		].concat(contents.slice(1))
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		saveVariable = { type: 'local', key: '' },
 		properties = []
@@ -67,7 +65,7 @@ Command.cases.getObjectProperty = {
 		const write = getElementWriter('getObjectProperty')
 		write('list', properties)
 	},
-	save: function () {
+	customSave() {
 		const elVariable = $('#getObjectProperty-variable')
 		const variable = elVariable.read()
 		if (VariableGetter.isNone(variable)) {
@@ -85,21 +83,19 @@ Command.cases.getObjectProperty = {
 		}
 		Command.save({ variable, saveVariable, properties })
 	}
-}
+})
 
 // 设置对象属性
-Command.cases.setObjectProperty = {
-	initialize: function () {
-		$('#setObjectProperty-confirm').on('click', this.save)
-		// 绑定分支列表
+Command.cases.setObjectProperty = new CommandSchema({
+	name: 'setObjectProperty',
+	onInitialize() {
+		$('#setObjectProperty-confirm').on('click', () => this.save())
 		$('#setObjectProperty-list').bind(IndexBind)
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setObjectProperty').on('closed', () => {
 			$('#setObjectProperty-list').clear()
 		})
 	},
-	parse: function ({ variable, valueVariable, properties }) {
+	customParse({ variable, valueVariable, properties }) {
 		const contents = []
 		for (const i of properties) {
 			contents.push({ text: '.' }, { color: 'normal' }, { text: i.text })
@@ -114,7 +110,7 @@ Command.cases.setObjectProperty = {
 				{ text: '=' + Command.parseVariable(valueVariable, 'any') }
 			])
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		valueVariable = { type: 'local', key: '' },
 		properties = []
@@ -125,7 +121,7 @@ Command.cases.setObjectProperty = {
 		const write = getElementWriter('setObjectProperty')
 		write('list', properties)
 	},
-	save: function () {
+	customSave() {
 		const elVariable = $('#setObjectProperty-variable')
 		const variable = elVariable.read()
 		if (VariableGetter.isNone(variable)) {
@@ -143,6 +139,6 @@ Command.cases.setObjectProperty = {
 		}
 		Command.save({ variable, valueVariable, properties })
 	}
-}
+})
 
 window.IndexBind = IndexBind

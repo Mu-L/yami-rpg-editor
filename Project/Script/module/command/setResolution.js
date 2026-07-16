@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.setResolution = {
-	initialize: function () {
-		$('#setResolution-confirm').on('click', this.save)
-	},
-	parse: function ({ width, height, sceneScale, uiScale }) {
+Command.cases.setResolution = new CommandSchema({
+	name: 'setResolution',
+	customParse({ width, height, sceneScale, uiScale }) {
 		const words = Command.words
 			.push(
 				Command.parseVariableNumber(width) +
@@ -19,12 +17,7 @@ Command.cases.setResolution = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
-		width = 1920,
-		height = 1080,
-		sceneScale = 1,
-		uiScale = 1
-	}) {
+	customLoad({ width = 1920, height = 1080, sceneScale = 1, uiScale = 1 }) {
 		const write = getElementWriter('setResolution')
 		write('width', width)
 		write('height', height)
@@ -32,12 +25,13 @@ Command.cases.setResolution = {
 		write('uiScale', uiScale)
 		$('#setResolution-width').getFocus('all')
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setResolution')
-		const width = read('width')
-		const height = read('height')
-		const sceneScale = read('sceneScale')
-		const uiScale = read('uiScale')
-		Command.save({ width, height, sceneScale, uiScale })
+		Command.save({
+			width: read('width'),
+			height: read('height'),
+			sceneScale: read('sceneScale'),
+			uiScale: read('uiScale')
+		})
 	}
-}
+})

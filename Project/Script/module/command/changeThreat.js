@@ -1,24 +1,23 @@
 'use strict'
 
-Command.cases.changeThreat = {
-	initialize: function () {
-		$('#changeThreat-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.changeThreat = new CommandSchema({
+	name: 'changeThreat',
+	onInitialize() {
+		$('#changeThreat-confirm').on('click', () => this.save())
 		$('#changeThreat-operation').loadItems([
 			{ name: 'Increase', value: 'increase' },
 			{ name: 'Decrease', value: 'decrease' }
 		])
 	},
-	parseActors: function (actor, target) {
+	parseActors(actor, target) {
 		const sActor = Command.parseActor(actor)
 		const dActor = Command.parseActor(target)
 		return sActor + Token(' -> ') + dActor
 	},
-	parseOperation: function (operation) {
+	parseOperation(operation) {
 		return Local.get('command.changeThreat.' + operation)
 	},
-	parse: function ({ actor, target, operation, threat }) {
+	customParse({ actor, target, operation, threat }) {
 		const words = Command.words
 			.push(this.parseActors(actor, target))
 			.push(this.parseOperation(operation))
@@ -29,7 +28,7 @@ Command.cases.changeThreat = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		target = { type: 'trigger' },
 		operation = 'increase',
@@ -42,12 +41,13 @@ Command.cases.changeThreat = {
 		write('threat', threat)
 		$('#changeThreat-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('changeThreat')
-		const actor = read('actor')
-		const target = read('target')
-		const operation = read('operation')
-		const threat = read('threat')
-		Command.save({ actor, target, operation, threat })
+		Command.save({
+			actor: read('actor'),
+			target: read('target'),
+			operation: read('operation'),
+			threat: read('threat')
+		})
 	}
-}
+})

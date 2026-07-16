@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setPointerEventRoot = {
-	initialize: function () {
-		$('#setPointerEventRoot-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setPointerEventRoot = new CommandSchema({
+	name: 'setPointerEventRoot',
+	onInitialize() {
+		$('#setPointerEventRoot-confirm').on('click', () => this.save())
 		$('#setPointerEventRoot-operation').loadItems([
 			{ name: 'Add Root Element', value: 'add' },
 			{ name: 'Remove Root Element', value: 'remove' },
 			{ name: 'Remove The Latest Root Element', value: 'remove-latest' },
 			{ name: 'Reset', value: 'reset' }
 		])
-
-		// 设置操作关联元素
 		$('#setPointerEventRoot-operation')
 			.enableHiddenMode()
 			.relate([
@@ -22,8 +19,7 @@ Command.cases.setPointerEventRoot = {
 				}
 			])
 	},
-	parse: function ({ operation, element }) {
-		// 补丁：2023-3-19
+	customParse({ operation, element }) {
 		if (operation === 'set') {
 			operation = 'add'
 		}
@@ -42,8 +38,7 @@ Command.cases.setPointerEventRoot = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ operation = 'add', element = { type: 'trigger' } }) {
-		// 补丁：2023-3-19
+	customLoad({ operation = 'add', element = { type: 'trigger' } }) {
 		if (operation === 'set') {
 			operation = 'add'
 		}
@@ -51,7 +46,7 @@ Command.cases.setPointerEventRoot = {
 		$('#setPointerEventRoot-element').write(element)
 		$('#setPointerEventRoot-operation').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const operation = $('#setPointerEventRoot-operation').read()
 		switch (operation) {
 			case 'add':
@@ -66,4 +61,4 @@ Command.cases.setPointerEventRoot = {
 				break
 		}
 	}
-}
+})

@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.changeActorSkill = {
-	initialize: function () {
-		$('#changeActorSkill-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.changeActorSkill = new CommandSchema({
+	name: 'changeActorSkill',
+	onInitialize() {
+		$('#changeActorSkill-confirm').on('click', () => this.save())
 		$('#changeActorSkill-operation').loadItems([
 			{ name: 'Add', value: 'add' },
 			{ name: 'Remove', value: 'remove' },
 			{ name: 'Remove Instance', value: 'remove-instance' },
 			{ name: 'Sort by Filename', value: 'sort-by-order' }
 		])
-
-		// 设置关联元素
 		$('#changeActorSkill-operation')
 			.enableHiddenMode()
 			.relate([
@@ -26,10 +23,10 @@ Command.cases.changeActorSkill = {
 				}
 			])
 	},
-	parseOperation: function (operation) {
+	parseOperation(operation) {
 		return Local.get('command.changeActorSkill.' + operation)
 	},
-	parse: function ({ actor, operation, skill, skillId }) {
+	customParse({ actor, operation, skill, skillId }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(this.parseOperation(operation))
@@ -48,7 +45,7 @@ Command.cases.changeActorSkill = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		operation = 'add',
 		skillId = '',
@@ -61,7 +58,7 @@ Command.cases.changeActorSkill = {
 		write('skill', skill)
 		$('#changeActorSkill-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('changeActorSkill')
 		const actor = read('actor')
 		const operation = read('operation')
@@ -76,8 +73,11 @@ Command.cases.changeActorSkill = {
 				break
 			}
 			case 'remove-instance': {
-				const skill = read('skill')
-				Command.save({ actor, operation, skill })
+				Command.save({
+					actor,
+					operation,
+					skill: read('skill')
+				})
 				break
 			}
 			case 'sort-by-order':
@@ -85,4 +85,4 @@ Command.cases.changeActorSkill = {
 				break
 		}
 	}
-}
+})

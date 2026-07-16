@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.createElement = {
-	initialize: function () {
-		$('#createElement-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.createElement = new CommandSchema({
+	name: 'createElement',
+	onInitialize() {
+		$('#createElement-confirm').on('click', () => this.save())
 		$('#createElement-operation').loadItems([
 			{ name: 'Append All to Root', value: 'append-all-to-root' },
 			{ name: 'Append One to Root', value: 'append-one-to-root' },
 			{ name: 'Append All to Element', value: 'append-all-to-element' },
 			{ name: 'Append One to Element', value: 'append-one-to-element' }
 		])
-
-		// 设置操作关联元素
 		$('#createElement-operation')
 			.enableHiddenMode()
 			.relate([
@@ -40,7 +37,7 @@ Command.cases.createElement = {
 				}
 			])
 	},
-	parseUIAndNodeNames: function (uiId) {
+	parseUIAndNodeNames(uiId) {
 		const uiName = Command.parseFileName(uiId)
 		const data = Data.ui[uiId]
 		if (data !== undefined) {
@@ -61,7 +58,7 @@ Command.cases.createElement = {
 		}
 		return uiName
 	},
-	parse: function ({ operation, parent, uiId, presetId }) {
+	customParse({ operation, parent, uiId, presetId }) {
 		let info
 		switch (operation) {
 			case 'append-all-to-root':
@@ -89,7 +86,7 @@ Command.cases.createElement = {
 			{ text: info }
 		]
 	},
-	load: function ({
+	customLoad({
 		operation = 'append-all-to-root',
 		parent = { type: 'trigger' },
 		uiId = '',
@@ -102,7 +99,7 @@ Command.cases.createElement = {
 		write('presetId', presetId)
 		$('#createElement-operation').getFocus('all')
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('createElement')
 		const operation = read('operation')
 		switch (operation) {
@@ -123,23 +120,29 @@ Command.cases.createElement = {
 				break
 			}
 			case 'append-all-to-element': {
-				const parent = read('parent')
 				const uiId = read('uiId')
 				if (uiId === '') {
 					return $('#createElement-uiId').getFocus()
 				}
-				Command.save({ operation, parent, uiId })
+				Command.save({
+					operation,
+					parent: read('parent'),
+					uiId
+				})
 				break
 			}
 			case 'append-one-to-element': {
-				const parent = read('parent')
 				const presetId = read('presetId')
 				if (presetId === '') {
 					return $('#createElement-presetId').getFocus()
 				}
-				Command.save({ operation, parent, presetId })
+				Command.save({
+					operation,
+					parent: read('parent'),
+					presetId
+				})
 				break
 			}
 		}
 	}
-}
+})

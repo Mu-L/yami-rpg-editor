@@ -1,8 +1,12 @@
-Command.cases.relaunchApp = {
-	parse: function () {
+'use strict'
+
+Command.cases.relaunchApp = new CommandSchema({
+	name: 'relaunchApp',
+	noWindow: true,
+	customParse() {
 		return [{ color: 'system' }, { text: Local.get('command.relaunchApp') }]
 	},
-	save: function () {
+	customSave() {
 		Command.save({})
 	}
-}
+})

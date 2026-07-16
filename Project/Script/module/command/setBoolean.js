@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.setBoolean = {
-	initialize: function () {
-		$('#setBoolean-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setBoolean = new CommandSchema({
+	name: 'setBoolean',
+	onInitialize() {
+		$('#setBoolean-confirm').on('click', () => this.save())
 		$('#setBoolean-operation').loadItems([
 			{ name: 'Set', value: 'set' },
 			{ name: 'Not', value: 'not' },
@@ -12,8 +11,6 @@ Command.cases.setBoolean = {
 			{ name: 'Or', value: 'or' },
 			{ name: 'Xor', value: 'xor' }
 		])
-
-		// 创建类型选项
 		$('#setBoolean-operand-type').loadItems([
 			{ name: 'Constant', value: 'constant' },
 			{ name: 'Variable', value: 'variable' },
@@ -21,8 +18,6 @@ Command.cases.setBoolean = {
 			{ name: 'Parameter', value: 'parameter' },
 			{ name: 'Script', value: 'script' }
 		])
-
-		// 设置类型关联元素
 		$('#setBoolean-operand-type')
 			.enableHiddenMode()
 			.relate([
@@ -47,14 +42,10 @@ Command.cases.setBoolean = {
 				},
 				{ case: 'script', targets: [$('#setBoolean-script')] }
 			])
-
-		// 创建布尔值常量选项
 		$('#setBoolean-constant-value').loadItems([
 			{ name: 'False', value: false },
 			{ name: 'True', value: true }
 		])
-
-		// 设置类型写入事件，切换变量输入框的过滤器
 		$('#setBoolean-operand-type').on('write', (event) => {
 			let filter = 'all'
 			switch (event.value) {
@@ -68,7 +59,7 @@ Command.cases.setBoolean = {
 			$('#setBoolean-common-variable').filter = filter
 		})
 	},
-	parseOperation: function (operation) {
+	parseOperation(operation) {
 		switch (operation) {
 			case 'set':
 				return ' = '
@@ -82,7 +73,7 @@ Command.cases.setBoolean = {
 				return ' ^= '
 		}
 	},
-	parseOperand: function (operand) {
+	parseOperand(operand) {
 		switch (operand.type) {
 			case 'constant':
 				return Command.setBooleanColor(operand.value.toString())
@@ -96,7 +87,7 @@ Command.cases.setBoolean = {
 				return Command.setScriptColor(operand.script)
 		}
 	},
-	parse: function ({ variable, operation, operand }) {
+	customParse({ variable, operation, operand }) {
 		const varDesc = Command.parseVariable(
 			variable,
 			'boolean',
@@ -113,7 +104,7 @@ Command.cases.setBoolean = {
 			{ text: `${varDesc}${operator}${value}` }
 		]
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		operation = 'set',
 		operand = { type: 'constant', value: false }
@@ -152,7 +143,7 @@ Command.cases.setBoolean = {
 		write('script', script)
 		$('#setBoolean-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setBoolean')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
@@ -203,4 +194,4 @@ Command.cases.setBoolean = {
 		}
 		Command.save({ variable, operation, operand })
 	}
-}
+})

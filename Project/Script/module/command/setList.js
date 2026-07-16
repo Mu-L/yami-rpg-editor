@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.setList = {
-	initialize: function () {
-		$('#setList-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setList = new CommandSchema({
+	name: 'setList',
+	onInitialize() {
+		$('#setList-confirm').on('click', () => this.save())
 		$('#setList-operation').loadItems([
 			{ name: 'Set to Empty', value: 'set-empty' },
 			{ name: 'Set Numbers', value: 'set-numbers' },
@@ -22,8 +21,6 @@ Command.cases.setList = {
 			{ name: 'Get Enumeration Values', value: 'get-enum-values' },
 			{ name: 'Get Actor Targets', value: 'get-actor-targets' }
 		])
-
-		// 设置操作关联元素
 		$('#setList-operation')
 			.enableHiddenMode()
 			.relate([
@@ -76,14 +73,12 @@ Command.cases.setList = {
 				},
 				{ case: 'get-actor-targets', targets: [$('#setList-actor')] }
 			])
-
-		// 创建布尔值常量选项
 		$('#setList-boolean').loadItems([
 			{ name: 'False', value: false },
 			{ name: 'True', value: true }
 		])
 	},
-	parse: function ({
+	customParse({
 		variable,
 		operation,
 		list,
@@ -226,7 +221,7 @@ Command.cases.setList = {
 			{ text: info }
 		]
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		operation = 'set-empty',
 		list = [],
@@ -287,7 +282,7 @@ Command.cases.setList = {
 		write('index-skip-check', skipCheck)
 		$('#setList-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setList')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
@@ -406,4 +401,4 @@ Command.cases.setList = {
 			}
 		}
 	}
-}
+})

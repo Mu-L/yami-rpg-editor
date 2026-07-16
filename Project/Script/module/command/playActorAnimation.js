@@ -1,20 +1,19 @@
 'use strict'
 
-Command.cases.playActorAnimation = {
-	initialize: function () {
-		$('#playActorAnimation-confirm').on('click', this.save)
-
-		// 创建等待结束选项
+Command.cases.playActorAnimation = new CommandSchema({
+	name: 'playActorAnimation',
+	onInitialize() {
+		$('#playActorAnimation-confirm').on('click', () => this.save())
 		$('#playActorAnimation-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
 	},
-	parseSpeed: function (speed) {
+	parseSpeed(speed) {
 		if (speed === 1) return ''
 		return Command.parseVariableNumber(speed)
 	},
-	parse: function ({ actor, motion, speed, wait }) {
+	customParse({ actor, motion, speed, wait }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseEnumString(motion))
@@ -26,7 +25,7 @@ Command.cases.playActorAnimation = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		motion = '',
 		speed = 1,
@@ -39,15 +38,17 @@ Command.cases.playActorAnimation = {
 		write('wait', wait)
 		$('#playActorAnimation-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('playActorAnimation')
-		const actor = read('actor')
 		const motion = read('motion').trim()
-		const speed = read('speed')
-		const wait = read('wait')
 		if (!motion) {
 			return $('#playActorAnimation-motion').getFocus()
 		}
-		Command.save({ actor, motion, speed, wait })
+		Command.save({
+			actor: read('actor'),
+			motion,
+			speed: read('speed'),
+			wait: read('wait')
+		})
 	}
-}
+})

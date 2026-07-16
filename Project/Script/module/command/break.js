@@ -1,10 +1,12 @@
 'use strict'
 
-Command.cases.break = {
-	parse: function () {
+Command.cases.break = new CommandSchema({
+	name: 'break',
+	noWindow: true,
+	customParse() {
 		return [{ color: 'flow' }, { text: Local.get('command.break') }]
 	},
-	save: function () {
+	customSave() {
 		Command.save({})
 	}
-}
+})

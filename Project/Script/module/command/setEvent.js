@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.setEvent = {
-	initialize: function () {
-		$('#setEvent-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setEvent = new CommandSchema({
+	name: 'setEvent',
+	onInitialize() {
+		$('#setEvent-confirm').on('click', () => this.save())
 		$('#setEvent-operation').loadItems([
 			{ name: 'Stop Propagation', value: 'stop-propagation' },
 			{ name: 'Pause and Save to Variable', value: 'pause' },
@@ -14,8 +13,6 @@ Command.cases.setEvent = {
 			{ name: 'Set to Highest Priority', value: 'highest-priority' },
 			{ name: 'Go to Choice Branch', value: 'goto-choice-branch' }
 		])
-
-		// 设置操作关联元素
 		$('#setEvent-operation')
 			.enableHiddenMode()
 			.relate([
@@ -33,7 +30,7 @@ Command.cases.setEvent = {
 				}
 			])
 	},
-	parse: function ({ operation, variable, eventId, choiceIndex }) {
+	customParse({ operation, variable, eventId, choiceIndex }) {
 		const words = Command.words.push(
 			Local.get('command.setEvent.' + operation)
 		)
@@ -59,13 +56,12 @@ Command.cases.setEvent = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		operation = 'stop-propagation',
 		variable = { type: 'global', key: '' },
 		eventId = '',
 		choiceIndex = 0
 	}) {
-		// 补丁：删除了阻止和回复场景输入事件选项
 		switch (operation) {
 			case 'prevent-scene-input-events':
 			case 'restore-scene-input-events':
@@ -79,7 +75,7 @@ Command.cases.setEvent = {
 		write('choiceIndex', choiceIndex)
 		$('#setEvent-operation').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setEvent')
 		const operation = read('operation')
 		switch (operation) {
@@ -112,4 +108,4 @@ Command.cases.setEvent = {
 			}
 		}
 	}
-}
+})

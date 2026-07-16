@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.discardTargets = {
-	initialize: function () {
-		$('#discardTargets-confirm').on('click', this.save)
-
-		// 创建选择器选项
+Command.cases.discardTargets = new CommandSchema({
+	name: 'discardTargets',
+	onInitialize() {
+		$('#discardTargets-confirm').on('click', () => this.save())
 		$('#discardTargets-selector').loadItems([
 			{ name: 'Enemy', value: 'enemy' },
 			{ name: 'Friend', value: 'friend' },
@@ -14,7 +13,7 @@ Command.cases.discardTargets = {
 			{ name: 'Any', value: 'any' }
 		])
 	},
-	parse: function ({ actor, selector, distance }) {
+	customParse({ actor, selector, distance }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseActorSelector(selector))
@@ -27,7 +26,7 @@ Command.cases.discardTargets = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		selector = 'any',
 		distance = 0
@@ -38,11 +37,12 @@ Command.cases.discardTargets = {
 		write('distance', distance)
 		$('#discardTargets-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('discardTargets')
-		const actor = read('actor')
-		const selector = read('selector')
-		const distance = read('distance')
-		Command.save({ actor, selector, distance })
+		Command.save({
+			actor: read('actor'),
+			selector: read('selector'),
+			distance: read('distance')
+		})
 	}
-}
+})

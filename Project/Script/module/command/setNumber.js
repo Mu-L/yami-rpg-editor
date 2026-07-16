@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setNumber = {
-	initialize: function () {
-		$('#setNumber-confirm').on('click', this.save)
-
-		// 绑定操作数列表
+Command.cases.setNumber = new CommandSchema({
+	name: 'setNumber',
+	onInitialize() {
+		$('#setNumber-confirm').on('click', () => this.save())
 		$('#setNumber-operands').bind(NumberOperand)
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setNumber').on('closed', (event) => {
 			$('#setNumber-operands').clear()
 		})
 	},
-	parseOperation: function (operation) {
+	parseOperation(operation) {
 		switch (operation) {
 			case 'set':
 				return ' = '
@@ -28,7 +25,7 @@ Command.cases.setNumber = {
 				return ' %= '
 		}
 	},
-	parseOperands: function (operands) {
+	parseOperands(operands) {
 		let expression = ''
 		let currentPriority
 		let nextPriority = false
@@ -66,7 +63,7 @@ Command.cases.setNumber = {
 		}
 		return expression
 	},
-	parse: function ({ variable, operation, operands }) {
+	customParse({ variable, operation, operands }) {
 		const varDesc = Command.parseVariable(
 			variable,
 			'number',
@@ -83,7 +80,7 @@ Command.cases.setNumber = {
 			{ text: `${varDesc}${operator}${expression}` }
 		]
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		operation = 'set',
 		operands = [{ operation: 'add', type: 'constant', value: 0 }]
@@ -94,7 +91,7 @@ Command.cases.setNumber = {
 		write('operands', operands.slice())
 		$('#setNumber-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setNumber')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
@@ -108,4 +105,4 @@ Command.cases.setNumber = {
 		operands[0].operation = 'add'
 		Command.save({ variable, operation, operands })
 	}
-}
+})

@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.loadImage = {
-	initialize: function () {
-		$('#loadImage-confirm').on('click', this.save)
-
-		// 创建类型选项
+Command.cases.loadImage = new CommandSchema({
+	name: 'loadImage',
+	onInitialize() {
+		$('#loadImage-confirm').on('click', () => this.save())
 		$('#loadImage-type').loadItems([
 			{ name: 'Actor Portrait', value: 'actor-portrait' },
 			{ name: 'Skill Icon', value: 'skill-icon' },
@@ -14,8 +13,6 @@ Command.cases.loadImage = {
 			{ name: 'Shortcut Icon', value: 'shortcut-icon' },
 			{ name: 'Base64 Image', value: 'base64' }
 		])
-
-		// 设置类型关联元素
 		$('#loadImage-type')
 			.enableHiddenMode()
 			.relate([
@@ -34,7 +31,7 @@ Command.cases.loadImage = {
 				{ case: 'base64', targets: [$('#loadImage-variable')] }
 			])
 	},
-	parse: function ({
+	customParse({
 		element,
 		type,
 		actor,
@@ -84,7 +81,7 @@ Command.cases.loadImage = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		element = { type: 'trigger' },
 		type = 'actor-portrait',
 		actor = { type: 'trigger' },
@@ -95,7 +92,6 @@ Command.cases.loadImage = {
 		key = Enum.getDefStringId('shortcut-key'),
 		variable = { type: 'local', key: '' }
 	}) {
-		// 加载快捷键选项
 		$('#loadImage-key').loadItems(Enum.getStringItems('shortcut-key'))
 		const write = getElementWriter('loadImage')
 		write('element', element)
@@ -109,40 +105,38 @@ Command.cases.loadImage = {
 		write('variable', variable)
 		$('#loadImage-element').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('loadImage')
 		const element = read('element')
 		const type = read('type')
 		switch (type) {
 			case 'actor-portrait': {
-				const actor = read('actor')
-				Command.save({ element, type, actor })
+				Command.save({ element, type, actor: read('actor') })
 				break
 			}
 			case 'skill-icon': {
-				const skill = read('skill')
-				Command.save({ element, type, skill })
+				Command.save({ element, type, skill: read('skill') })
 				break
 			}
 			case 'state-icon': {
-				const state = read('state')
-				Command.save({ element, type, state })
+				Command.save({ element, type, state: read('state') })
 				break
 			}
 			case 'equipment-icon': {
-				const equipment = read('equipment')
-				Command.save({ element, type, equipment })
+				Command.save({ element, type, equipment: read('equipment') })
 				break
 			}
 			case 'item-icon': {
-				const item = read('item')
-				Command.save({ element, type, item })
+				Command.save({ element, type, item: read('item') })
 				break
 			}
 			case 'shortcut-icon': {
-				const actor = read('actor')
-				const key = read('key')
-				Command.save({ element, type, actor, key })
+				Command.save({
+					element,
+					type,
+					actor: read('actor'),
+					key: read('key')
+				})
 				break
 			}
 			case 'base64': {
@@ -155,4 +149,4 @@ Command.cases.loadImage = {
 			}
 		}
 	}
-}
+})

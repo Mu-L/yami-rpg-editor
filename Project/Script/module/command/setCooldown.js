@@ -1,17 +1,16 @@
 'use strict'
 
-Command.cases.setCooldown = {
-	initialize: function () {
-		$('#setCooldown-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setCooldown = new CommandSchema({
+	name: 'setCooldown',
+	onInitialize() {
+		$('#setCooldown-confirm').on('click', () => this.save())
 		$('#setCooldown-operation').loadItems([
 			{ name: 'Set', value: 'set' },
 			{ name: 'Increase', value: 'increase' },
 			{ name: 'Decrease', value: 'decrease' }
 		])
 	},
-	parse: function ({ actor, operation, key, cooldown }) {
+	customParse({ actor, operation, key, cooldown }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Local.get('command.setCooldown.' + operation))
@@ -23,13 +22,12 @@ Command.cases.setCooldown = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		operation = 'set',
 		key = Enum.getDefStringId('cooldown-key'),
 		cooldown = 0
 	}) {
-		// 加载冷却键选项
 		$('#setCooldown-key').loadItems(Enum.getStringItems('cooldown-key'))
 		const write = getElementWriter('setCooldown')
 		write('actor', actor)
@@ -38,15 +36,17 @@ Command.cases.setCooldown = {
 		write('cooldown', cooldown)
 		$('#setCooldown-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setCooldown')
-		const actor = read('actor')
-		const operation = read('operation')
 		const key = read('key')
 		if (key === '') {
 			return $('#setCooldown-key').getFocus()
 		}
-		const cooldown = read('cooldown')
-		Command.save({ actor, operation, key, cooldown })
+		Command.save({
+			actor: read('actor'),
+			operation: read('operation'),
+			key,
+			cooldown: read('cooldown')
+		})
 	}
-}
+})

@@ -1,10 +1,11 @@
 'use strict'
 
-Command.cases.createTrigger = {
-	initialize: function () {
-		$('#createTrigger-confirm').on('click', this.save)
+Command.cases.createTrigger = new CommandSchema({
+	name: 'createTrigger',
+	onInitialize() {
+		$('#createTrigger-confirm').on('click', () => this.save())
 	},
-	parse: function ({
+	customParse({
 		triggerId,
 		caster,
 		origin,
@@ -29,7 +30,7 @@ Command.cases.createTrigger = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		triggerId = '',
 		caster = { type: 'trigger' },
 		origin = { type: 'actor', actor: { type: 'trigger' } },
@@ -48,26 +49,20 @@ Command.cases.createTrigger = {
 		write('timeScale', timeScale)
 		$('#createTrigger-triggerId').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('createTrigger')
 		const triggerId = read('triggerId')
 		if (triggerId === '') {
 			return $('#createTrigger-triggerId').getFocus()
 		}
-		const caster = read('caster')
-		const origin = read('origin')
-		const angle = read('angle')
-		const distance = read('distance')
-		const scale = read('scale')
-		const timeScale = read('timeScale')
 		Command.save({
 			triggerId,
-			caster,
-			origin,
-			angle,
-			distance,
-			scale,
-			timeScale
+			caster: read('caster'),
+			origin: read('origin'),
+			angle: read('angle'),
+			distance: read('distance'),
+			scale: read('scale'),
+			timeScale: read('timeScale')
 		})
 	}
-}
+})

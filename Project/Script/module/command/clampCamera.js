@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.clampCamera = {
-	initialize: function () {
-		$('#clampCamera-confirm').on('click', this.save)
-	},
-	parse: function ({ left, top, right, bottom }) {
+Command.cases.clampCamera = new CommandSchema({
+	name: 'clampCamera',
+	customParse({ left, top, right, bottom }) {
 		const words = Command.words
 			.push(
 				Local.get('command.clampCamera.left') +
@@ -32,7 +30,7 @@ Command.cases.clampCamera = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ left = 0, top = 0, right = 0, bottom = 0 }) {
+	customLoad({ left = 0, top = 0, right = 0, bottom = 0 }) {
 		const write = getElementWriter('clampCamera')
 		write('left', left)
 		write('top', top)
@@ -40,12 +38,13 @@ Command.cases.clampCamera = {
 		write('bottom', bottom)
 		$('#clampCamera-left').getFocus('all')
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('clampCamera')
-		const left = read('left')
-		const top = read('top')
-		const right = read('right')
-		const bottom = read('bottom')
-		Command.save({ left, top, right, bottom })
+		Command.save({
+			left: read('left'),
+			top: read('top'),
+			right: read('right'),
+			bottom: read('bottom')
+		})
 	}
-}
+})

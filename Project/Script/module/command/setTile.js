@@ -1,10 +1,11 @@
 'use strict'
 
-Command.cases.setTile = {
-	initialize: function () {
-		$('#setTile-confirm').on('click', this.save)
+Command.cases.setTile = new CommandSchema({
+	name: 'setTile',
+	onInitialize() {
+		$('#setTile-confirm').on('click', () => this.save())
 	},
-	parse: function ({
+	customParse({
 		tilemap,
 		tilemapX,
 		tilemapY,
@@ -25,7 +26,7 @@ Command.cases.setTile = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		tilemap = { type: 'trigger' },
 		tilemapX = 0,
 		tilemapY = 0,
@@ -42,24 +43,19 @@ Command.cases.setTile = {
 		write('tilesetY', tilesetY)
 		$('#setTile-tilemap').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setTile')
-		const tilemap = read('tilemap')
-		const tilemapX = read('tilemapX')
-		const tilemapY = read('tilemapY')
 		const tilesetId = read('tilesetId')
-		const tilesetX = read('tilesetX')
-		const tilesetY = read('tilesetY')
 		if (tilesetId === '') {
 			return $('#setTile-tilesetId').getFocus()
 		}
 		Command.save({
-			tilemap,
-			tilemapX,
-			tilemapY,
+			tilemap: read('tilemap'),
+			tilemapX: read('tilemapX'),
+			tilemapY: read('tilemapY'),
 			tilesetId,
-			tilesetX,
-			tilesetY
+			tilesetX: read('tilesetX'),
+			tilesetY: read('tilesetY')
 		})
 	}
-}
+})

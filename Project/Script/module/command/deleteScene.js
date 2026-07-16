@@ -1,10 +1,12 @@
 'use strict'
 
-Command.cases.deleteScene = {
-	parse: function () {
+Command.cases.deleteScene = new CommandSchema({
+	name: 'deleteScene',
+	noWindow: true,
+	customParse() {
 		return [{ color: 'scene' }, { text: Local.get('command.deleteScene') }]
 	},
-	save: function () {
+	customSave() {
 		Command.save({})
 	}
-}
+})

@@ -1,13 +1,14 @@
-// 启动参数
-Command.cases.commandLine = {
-	initialize: function () {
+'use strict'
+
+Command.cases.commandLine = new CommandSchema({
+	name: 'commandLine',
+	onInitialize() {
 		$('#commandLine-type').loadItems([
 			{ name: 'get', value: 'get' },
 			{ name: 'rm', value: 'rm' },
 			{ name: 'set', value: 'set' },
 			{ name: 'has', value: 'has' }
 		])
-		// 设置类型关联元素
 		$('#commandLine-type')
 			.enableHiddenMode()
 			.relate([
@@ -29,9 +30,9 @@ Command.cases.commandLine = {
 				}
 			])
 		$('#commandLine-type').write('get')
-		$('#commandLine-confirm').on('click', this.save)
+		$('#commandLine-confirm').on('click', () => this.save())
 	},
-	parse: function ({
+	customParse({
 		type = 'get',
 		key = '',
 		value = '',
@@ -115,7 +116,7 @@ Command.cases.commandLine = {
 
 		return head
 	},
-	load: function ({
+	customLoad({
 		type = 'get',
 		key = '',
 		value = '',
@@ -127,7 +128,7 @@ Command.cases.commandLine = {
 		write('value', value)
 		write('variable', variable)
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('commandLine')
 		const key = read('key')
 		if (
@@ -147,4 +148,4 @@ Command.cases.commandLine = {
 			variable
 		})
 	}
-}
+})

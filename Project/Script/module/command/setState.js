@@ -1,20 +1,19 @@
 'use strict'
 
-Command.cases.setState = {
-	initialize: function () {
-		$('#setState-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setState = new CommandSchema({
+	name: 'setState',
+	onInitialize() {
+		$('#setState-confirm').on('click', () => this.save())
 		$('#setState-operation').loadItems([
 			{ name: 'Set Time', value: 'set-time' },
 			{ name: 'Increase Time', value: 'increase-time' },
 			{ name: 'Decrease Time', value: 'decrease-time' }
 		])
 	},
-	parseOperation: function (operation) {
+	parseOperation(operation) {
 		return Local.get('command.setState.' + operation)
 	},
-	parse: function ({ state, operation, time }) {
+	customParse({ state, operation, time }) {
 		const words = Command.words
 			.push(Command.parseState(state))
 			.push(this.parseOperation(operation))
@@ -25,7 +24,7 @@ Command.cases.setState = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		state = { type: 'trigger' },
 		operation = 'set-time',
 		time = 0
@@ -36,11 +35,12 @@ Command.cases.setState = {
 		write('time', time)
 		$('#setState-state').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setState')
-		const state = read('state')
-		const operation = read('operation')
-		const time = read('time')
-		Command.save({ state, operation, time })
+		Command.save({
+			state: read('state'),
+			operation: read('operation'),
+			time: read('time')
+		})
 	}
-}
+})

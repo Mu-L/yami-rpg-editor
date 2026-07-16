@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.setObject = {
-	initialize: function () {
-		$('#setObject-confirm').on('click', this.save)
-
-		// 创建类型选项
+Command.cases.setObject = new CommandSchema({
+	name: 'setObject',
+	onInitialize() {
+		$('#setObject-confirm').on('click', () => this.save())
 		$('#setObject-operand-type').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Actor', value: 'actor' },
@@ -19,8 +18,6 @@ Command.cases.setObject = {
 			{ name: 'Variable', value: 'variable' },
 			{ name: 'List', value: 'list' }
 		])
-
-		// 设置类型关联元素
 		$('#setObject-operand-type')
 			.enableHiddenMode()
 			.relate([
@@ -49,7 +46,7 @@ Command.cases.setObject = {
 				}
 			])
 	},
-	parseOperand: function (operand) {
+	parseOperand(operand) {
 		switch (operand.type) {
 			case 'none':
 				return Token('null')
@@ -77,7 +74,7 @@ Command.cases.setObject = {
 				return Command.parseListItem(operand.variable, operand.index)
 		}
 	},
-	parse: function ({ variable, operand }) {
+	customParse({ variable, operand }) {
 		const varDesc = Command.parseVariable(variable, 'object', true)
 		const object = this.parseOperand(operand)
 		return [
@@ -87,7 +84,7 @@ Command.cases.setObject = {
 			{ text: `${varDesc} ${Token('=')} ${object}` }
 		]
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		operand = { type: 'none' }
 	}) {
@@ -154,7 +151,7 @@ Command.cases.setObject = {
 		write('operand-list-index', operandListIndex)
 		$('#setObject-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setObject')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
@@ -231,4 +228,4 @@ Command.cases.setObject = {
 		}
 		Command.save({ variable, operand })
 	}
-}
+})

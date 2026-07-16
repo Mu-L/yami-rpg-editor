@@ -1,27 +1,22 @@
 'use strict'
 
-Command.cases.registerEvent = {
+Command.cases.registerEvent = new CommandSchema({
+	name: 'registerEvent',
 	commands: [],
 	priorityEnabled: false,
-	initialize: function () {
-		$('#registerEvent-confirm').on('click', this.save)
-
-		// 创建目标选项
+	onInitialize() {
+		$('#registerEvent-confirm').on('click', () => this.save())
 		$('#registerEvent-target').loadItems([
 			{ name: 'Global', value: 'global' },
 			{ name: 'Actor', value: 'actor' },
 			{ name: 'Element', value: 'element' }
 		])
-
-		// 设置目标关联元素
 		$('#registerEvent-target')
 			.enableHiddenMode()
 			.relate([
 				{ case: 'actor', targets: [$('#registerEvent-actor')] },
 				{ case: 'element', targets: [$('#registerEvent-element')] }
 			])
-
-		// 目标 - 写入事件
 		$('#registerEvent-target').on('write', (event) => {
 			const type = event.value
 			const elEventType = $('#registerEvent-type')
@@ -31,30 +26,23 @@ Command.cases.registerEvent = {
 				type + '-event'
 			)
 			this.switchTypeAndTagInput()
-			// 加载事件类型选项
 			elEventType.loadItems(eventTypes)
 			elEventType.createTooltip()
 			elEventType.write(eventTypes[0].value)
 		})
-
-		// 创建操作选项
 		$('#registerEvent-operation').loadItems([
 			{ name: 'Register', value: 'register' },
 			{ name: 'Unregister', value: 'unregister' },
 			{ name: 'Reset', value: 'reset' }
 		])
-
-		// 事件操作 - 写入事件
 		$('#registerEvent-operation').on('write', () => {
 			this.switchTypeAndTagInput()
 			this.switchPriority()
 			this.switchNamespace()
 		})
-
-		// 事件类型 - 写入事件
 		$('#registerEvent-type').on('write', () => this.switchPriority())
 	},
-	switchTypeAndTagInput: function (event) {
+	switchTypeAndTagInput(event) {
 		const show = (input) => {
 			input.previousElementSibling.show()
 			input.show()
@@ -100,7 +88,7 @@ Command.cases.registerEvent = {
 				break
 		}
 	},
-	switchPriority: function () {
+	switchPriority() {
 		const priorityTypes = {
 			input: true,
 			keydown: true,
@@ -136,7 +124,7 @@ Command.cases.registerEvent = {
 			this.priorityEnabled = false
 		}
 	},
-	switchNamespace: function () {
+	switchNamespace() {
 		const namespace = $('#registerEvent-namespace')
 		const operation = $('#registerEvent-operation').read()
 		if (operation === 'register') {
@@ -147,7 +135,7 @@ Command.cases.registerEvent = {
 			namespace.hide()
 		}
 	},
-	parse: function ({
+	customParse({
 		target,
 		actor,
 		element,
@@ -259,7 +247,7 @@ Command.cases.registerEvent = {
 		}
 		return contents
 	},
-	load: function ({
+	customLoad({
 		target = 'global',
 		actor = { type: 'trigger' },
 		element = { type: 'trigger' },
@@ -279,16 +267,16 @@ Command.cases.registerEvent = {
 		write('priority', priority)
 		write('namespace', namespace)
 		write('tag', tag)
-		Command.cases.registerEvent.commands = commands
+		this.commands = commands
 		this.switchNamespace()
 		$('#registerEvent-target').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('registerEvent')
 		const target = read('target')
 		const operation = read('operation')
 		const type = read('type')
-		const commands = Command.cases.registerEvent.commands
+		const commands = this.commands
 		const namespace = read('namespace')
 		switch (target) {
 			case 'global':
@@ -298,8 +286,7 @@ Command.cases.registerEvent = {
 						if (typeof tag === 'string') {
 							tag = tag.trim()
 						}
-						const priority = Command.cases.registerEvent
-							.priorityEnabled
+						const priority = this.priorityEnabled
 							? read('priority')
 							: false
 						Command.save({
@@ -375,4 +362,4 @@ Command.cases.registerEvent = {
 			}
 		}
 	}
-}
+})

@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.changeActorEquipment = {
-	initialize: function () {
-		$('#changeActorEquipment-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.changeActorEquipment = new CommandSchema({
+	name: 'changeActorEquipment',
+	onInitialize() {
+		$('#changeActorEquipment-confirm').on('click', () => this.save())
 		$('#changeActorEquipment-operation').loadItems([
 			{ name: 'Add', value: 'add' },
 			{ name: 'Remove', value: 'remove' },
@@ -12,8 +11,6 @@ Command.cases.changeActorEquipment = {
 			{ name: 'Remove Instance', value: 'remove-instance' },
 			{ name: 'Remove Slot', value: 'remove-slot' }
 		])
-
-		// 设置关联元素
 		$('#changeActorEquipment-operation')
 			.enableHiddenMode()
 			.relate([
@@ -45,7 +42,7 @@ Command.cases.changeActorEquipment = {
 				}
 			])
 	},
-	parse: function ({ actor, operation, slot, equipmentId, equipment }) {
+	customParse({ actor, operation, slot, equipmentId, equipment }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Local.get('command.changeActorEquipment.' + operation))
@@ -84,14 +81,13 @@ Command.cases.changeActorEquipment = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		operation = 'add',
 		slot = Enum.getDefStringId('equipment-slot'),
 		equipmentId = '',
 		equipment = { type: 'trigger' }
 	}) {
-		// 加载装备选项
 		$('#changeActorEquipment-slot').loadItems(
 			Enum.getStringItems('equipment-slot')
 		)
@@ -103,7 +99,7 @@ Command.cases.changeActorEquipment = {
 		write('equipment', equipment)
 		$('#changeActorEquipment-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('changeActorEquipment')
 		const actor = read('actor')
 		const operation = read('operation')
@@ -133,13 +129,20 @@ Command.cases.changeActorEquipment = {
 				if (slot === '') {
 					return $('#changeActorEquipment-slot').getFocus()
 				}
-				const equipment = read('equipment')
-				Command.save({ actor, operation, slot, equipment })
+				Command.save({
+					actor,
+					operation,
+					slot,
+					equipment: read('equipment')
+				})
 				break
 			}
 			case 'remove-instance': {
-				const equipment = read('equipment')
-				Command.save({ actor, operation, equipment })
+				Command.save({
+					actor,
+					operation,
+					equipment: read('equipment')
+				})
 				break
 			}
 			case 'remove-slot':
@@ -151,4 +154,4 @@ Command.cases.changeActorEquipment = {
 				break
 		}
 	}
-}
+})

@@ -1,34 +1,27 @@
 'use strict'
 
-Command.cases.setPan = {
-	initialize: function () {
-		$('#setPan-confirm').on('click', this.save)
-
-		// 创建类型选项
+Command.cases.setPan = new CommandSchema({
+	name: 'setPan',
+	onInitialize() {
+		$('#setPan-confirm').on('click', () => this.save())
 		$('#setPan-type').loadItems([
 			{ name: 'BGM', value: 'bgm' },
 			{ name: 'BGS', value: 'bgs' },
 			{ name: 'CV', value: 'cv' },
 			{ name: 'SE', value: 'se' }
 		])
-
-		// 创建等待选项
 		$('#setPan-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
 		$('#setPan').on('open', function (event) {
 			$('#setPan-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setPan').on('closed', function (event) {
 			$('#setPan-easingId').clear()
 		})
 	},
-	parse: function ({ type, pan, easingId, duration, wait }) {
+	customParse({ type, pan, easingId, duration, wait }) {
 		const words = Command.words
 			.push(Command.parseAudioType(type))
 			.push(Command.parseVariableNumber(pan))
@@ -39,7 +32,7 @@ Command.cases.setPan = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		type = 'bgm',
 		pan = 0,
 		easingId = Data.easings[0].id,
@@ -54,13 +47,14 @@ Command.cases.setPan = {
 		write('wait', wait)
 		$('#setPan-type').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setPan')
-		const type = read('type')
-		const pan = read('pan')
-		const easingId = read('easingId')
-		const duration = read('duration')
-		const wait = read('wait')
-		Command.save({ type, pan, easingId, duration, wait })
+		Command.save({
+			type: read('type'),
+			pan: read('pan'),
+			easingId: read('easingId'),
+			duration: read('duration'),
+			wait: read('wait')
+		})
 	}
-}
+})

@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.transferGlobalActor = {
-	initialize: function () {
-		$('#transferGlobalActor-confirm').on('click', this.save)
-	},
-	parse: function ({ actor, position }) {
+Command.cases.transferGlobalActor = new CommandSchema({
+	name: 'transferGlobalActor',
+	customParse({ actor, position }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parsePosition(position))
@@ -14,7 +12,7 @@ Command.cases.transferGlobalActor = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		position = { type: 'absolute', x: 0, y: 0 }
 	}) {
@@ -23,10 +21,8 @@ Command.cases.transferGlobalActor = {
 		write('position', position)
 		$('#transferGlobalActor-actor').getFocus('all')
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('transferGlobalActor')
-		const actor = read('actor')
-		const position = read('position')
-		Command.save({ actor, position })
+		Command.save({ actor: read('actor'), position: read('position') })
 	}
-}
+})

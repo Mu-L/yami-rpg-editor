@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.appendTarget = {
-	initialize: function () {
-		$('#appendTarget-confirm').on('click', this.save)
-	},
-	parse: function ({ actor, target }) {
+Command.cases.appendTarget = new CommandSchema({
+	name: 'appendTarget',
+	customParse({ actor, target }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseActor(target))
@@ -14,19 +12,14 @@ Command.cases.appendTarget = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
-		actor = { type: 'trigger' },
-		target = { type: 'trigger' }
-	}) {
+	customLoad({ actor = { type: 'trigger' }, target = { type: 'trigger' } }) {
 		const write = getElementWriter('appendTarget')
 		write('actor', actor)
 		write('target', target)
 		$('#appendTarget-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('appendTarget')
-		const actor = read('actor')
-		const target = read('target')
-		Command.save({ actor, target })
+		Command.save({ actor: read('actor'), target: read('target') })
 	}
-}
+})

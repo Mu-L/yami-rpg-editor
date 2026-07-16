@@ -1,17 +1,14 @@
 'use strict'
 
-Command.cases.setMovementSpeed = {
-	initialize: function () {
-		$('#setMovementSpeed-confirm').on('click', this.save)
-
-		// 创建属性选项
+Command.cases.setMovementSpeed = new CommandSchema({
+	name: 'setMovementSpeed',
+	onInitialize() {
+		$('#setMovementSpeed-confirm').on('click', () => this.save())
 		$('#setMovementSpeed-property').loadItems([
 			{ name: 'Base Speed', value: 'base' },
 			{ name: 'Speed Factor', value: 'factor' },
 			{ name: 'Speed Factor (Temp)', value: 'factor-temp' }
 		])
-
-		// 设置属性关联元素
 		$('#setMovementSpeed-property')
 			.enableHiddenMode()
 			.relate([
@@ -22,7 +19,7 @@ Command.cases.setMovementSpeed = {
 				}
 			])
 	},
-	parse: function ({ actor, property, base, factor }) {
+	customParse({ actor, property, base, factor }) {
 		const label = Local.get('command.setMovementSpeed.' + property)
 		const words = Command.words
 			.push(Command.parseActor(actor))
@@ -42,7 +39,7 @@ Command.cases.setMovementSpeed = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		property = 'base',
 		base = 0,
@@ -55,22 +52,20 @@ Command.cases.setMovementSpeed = {
 		write('factor', factor)
 		$('#setMovementSpeed-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setMovementSpeed')
 		const actor = read('actor')
 		const property = read('property')
 		switch (property) {
 			case 'base': {
-				const base = read('base')
-				Command.save({ actor, property, base })
+				Command.save({ actor, property, base: read('base') })
 				break
 			}
 			case 'factor':
 			case 'factor-temp': {
-				const factor = read('factor')
-				Command.save({ actor, property, factor })
+				Command.save({ actor, property, factor: read('factor') })
 				break
 			}
 		}
 	}
-}
+})

@@ -1,28 +1,24 @@
 'use strict'
 
-Command.cases.setLanguage = {
-	initialize: function () {
-		$('#setLanguage-confirm').on('click', this.save)
-	},
-	parse: function ({ language }) {
+Command.cases.setLanguage = new CommandSchema({
+	name: 'setLanguage',
+	customParse({ language }) {
 		return [
 			{ color: 'system' },
 			{ text: Local.get('command.setLanguage') + Token(': ') },
 			{ text: Local.get('languages.' + language) }
 		]
 	},
-	load: function ({ language = 'auto' }) {
-		// 创建语言选项
+	customLoad({ language = 'auto' }) {
 		$('#setLanguage-language').loadItems(this.createLanguageItems())
 		$('#setLanguage-language').write(language)
 		$('#setLanguage-language').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setLanguage')
-		const language = read('language')
-		Command.save({ language })
+		Command.save({ language: read('language') })
 	},
-	createLanguageItems: function () {
+	createLanguageItems() {
 		const items = []
 		const languages = Local.get('languages')
 		if (languages) {
@@ -37,4 +33,4 @@ Command.cases.setLanguage = {
 		}
 		return items
 	}
-}
+})

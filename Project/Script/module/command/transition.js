@@ -1,22 +1,19 @@
 'use strict'
 
-Command.cases.transition = {
+Command.cases.transition = new CommandSchema({
+	name: 'transition',
 	commands: null,
-	initialize: function () {
-		$('#transition-confirm').on('click', this.save)
-
-		// 创建过渡方式选项 - 窗口打开事件
+	onInitialize() {
+		$('#transition-confirm').on('click', () => this.save())
 		$('#transition').on('open', function (event) {
 			$('#transition-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#transition').on('closed', function (event) {
 			$('#transition-easingId').clear()
 			this.commands = null
 		})
 	},
-	parse: function ({ variable, start, end, easingId, duration, commands }) {
+	customParse({ variable, start, end, easingId, duration, commands }) {
 		const varName = Command.parseVariable(variable, 'number', true)
 		const from = Command.parseVariableNumber(start)
 		const to = Command.parseVariableNumber(end)
@@ -34,7 +31,7 @@ Command.cases.transition = {
 			{ text: Local.get('command.transition.end') }
 		]
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		start = 0,
 		end = 1,
@@ -48,23 +45,26 @@ Command.cases.transition = {
 		write('end', end)
 		write('easingId', easingId)
 		write('duration', duration)
-		Command.cases.transition.commands = commands
+		this.commands = commands
 		$('#transition-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('transition')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
 			return $('#transition-variable').getFocus()
 		}
-		const start = read('start')
-		const end = read('end')
-		const easingId = read('easingId')
 		const duration = read('duration')
 		if (duration === 0) {
 			return $('#transition-duration').getFocus('all')
 		}
-		const commands = Command.cases.transition.commands
-		Command.save({ variable, start, end, easingId, duration, commands })
+		Command.save({
+			variable,
+			start: read('start'),
+			end: read('end'),
+			easingId: read('easingId'),
+			duration,
+			commands: this.commands
+		})
 	}
-}
+})

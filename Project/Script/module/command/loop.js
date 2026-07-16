@@ -1,26 +1,20 @@
 'use strict'
 
-Command.cases.loop = {
-	commands: null,
-	initialize: function () {
-		$('#loop-confirm').on('click', this.save)
-
-		// 绑定条件列表
+Command.cases.loop = new CommandSchema({
+	name: 'loop',
+	onInitialize() {
+		$('#loop-confirm').on('click', () => this.save())
 		$('#loop-conditions').bind(IfCondition)
-
-		// 创建模式选项
 		$('#loop-mode').loadItems([
 			{ name: 'Meet All', value: 'all' },
 			{ name: 'Meet Any', value: 'any' }
 		])
-
-		// 清理内存 - 窗口已关闭事件
-		$('#loop').on('closed', (event) => {
+		$('#loop').on('closed', () => {
 			this.commands = null
 			$('#loop-conditions').clear()
 		})
 	},
-	parse: function ({ mode, conditions, commands }) {
+	customParse({ mode, conditions, commands }) {
 		const contents = [{ fold: true }, { color: 'flow' }]
 		if (conditions.length !== 0) {
 			const condition = IfBranch.parse({ mode, conditions })
@@ -39,18 +33,17 @@ Command.cases.loop = {
 		)
 		return contents
 	},
-	load: function ({ mode = 'all', conditions = [], commands = [] }) {
+	customLoad({ mode = 'all', conditions = [], commands = [] }) {
 		const write = getElementWriter('loop')
 		write('mode', mode)
 		write('conditions', conditions.slice())
-		Command.cases.loop.commands = commands
+		this.commands = commands
 		$('#loop-conditions').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('loop')
 		const mode = read('mode')
 		const conditions = read('conditions')
-		const commands = Command.cases.loop.commands
-		Command.save({ mode, conditions, commands })
+		Command.save({ mode, conditions, commands: this.commands })
 	}
-}
+})

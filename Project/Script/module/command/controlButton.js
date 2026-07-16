@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.controlButton = {
-	initialize: function () {
-		$('#controlButton-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.controlButton = new CommandSchema({
+	name: 'controlButton',
+	onInitialize() {
+		$('#controlButton-confirm').on('click', () => this.save())
 		$('#controlButton-operation').loadItems([
 			{ name: 'Select Default Button', value: 'select-default' },
 			{ name: 'Select Button', value: 'select' },
@@ -12,8 +11,6 @@ Command.cases.controlButton = {
 			{ name: 'Display Active Mode', value: 'active-mode' },
 			{ name: 'Restore Display Mode', value: 'normal-mode' }
 		])
-
-		// 设置操作关联元素
 		$('#controlButton-operation')
 			.enableHiddenMode()
 			.relate([
@@ -28,7 +25,7 @@ Command.cases.controlButton = {
 				}
 			])
 	},
-	parse: function ({ operation, element }) {
+	customParse({ operation, element }) {
 		const words = Command.words.push(
 			Local.get('command.controlButton.' + operation)
 		)
@@ -46,7 +43,7 @@ Command.cases.controlButton = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		operation = 'select-default',
 		element = { type: 'trigger' }
 	}) {
@@ -55,7 +52,7 @@ Command.cases.controlButton = {
 		write('element', element)
 		$('#controlButton-operation').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('controlButton')
 		const operation = read('operation')
 		switch (operation) {
@@ -66,10 +63,9 @@ Command.cases.controlButton = {
 			case 'hover-mode':
 			case 'active-mode':
 			case 'normal-mode': {
-				const element = read('element')
-				Command.save({ operation, element })
+				Command.save({ operation, element: read('element') })
 				break
 			}
 		}
 	}
-}
+})

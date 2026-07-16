@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.setInventory = {
-	initialize: function () {
-		$('#setInventory-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setInventory = new CommandSchema({
+	name: 'setInventory',
+	onInitialize() {
+		$('#setInventory-confirm').on('click', () => this.save())
 		$('#setInventory-operation').loadItems([
 			{ name: 'Increase Money', value: 'increase-money' },
 			{ name: 'Decrease Money', value: 'decrease-money' },
@@ -21,8 +20,6 @@ Command.cases.setInventory = {
 			{ name: 'Restore Inventory', value: 'dereference' },
 			{ name: 'Reset', value: 'reset' }
 		])
-
-		// 设置关联元素
 		$('#setInventory-operation')
 			.enableHiddenMode()
 			.relate([
@@ -58,7 +55,7 @@ Command.cases.setInventory = {
 				{ case: 'reference', targets: [$('#setInventory-refActor')] }
 			])
 	},
-	parse: function ({
+	customParse({
 		actor,
 		operation,
 		money,
@@ -107,7 +104,7 @@ Command.cases.setInventory = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		operation = 'increase-money',
 		money = 1,
@@ -132,25 +129,32 @@ Command.cases.setInventory = {
 		write('refActor', refActor)
 		$('#setInventory-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setInventory')
 		const actor = read('actor')
 		const operation = read('operation')
 		switch (operation) {
 			case 'increase-money':
 			case 'decrease-money': {
-				const money = read('money')
-				Command.save({ actor, operation, money })
+				Command.save({
+					actor,
+					operation,
+					money: read('money')
+				})
 				break
 			}
 			case 'increase-items':
 			case 'decrease-items': {
 				const itemId = read('itemId')
-				const quantity = read('quantity')
 				if (itemId === '') {
 					return $('#setInventory-itemId').getFocus()
 				}
-				Command.save({ actor, operation, itemId, quantity })
+				Command.save({
+					actor,
+					operation,
+					itemId,
+					quantity: read('quantity')
+				})
 				break
 			}
 			case 'gain-equipment':
@@ -164,14 +168,20 @@ Command.cases.setInventory = {
 			}
 			case 'gain-equipment-instance':
 			case 'lose-equipment-instance': {
-				const equipment = read('equipment')
-				Command.save({ actor, operation, equipment })
+				Command.save({
+					actor,
+					operation,
+					equipment: read('equipment')
+				})
 				break
 			}
 			case 'swap': {
-				const order1 = read('order1')
-				const order2 = read('order2')
-				Command.save({ actor, operation, order1, order2 })
+				Command.save({
+					actor,
+					operation,
+					order1: read('order1'),
+					order2: read('order2')
+				})
 				break
 			}
 			case 'sort':
@@ -181,10 +191,13 @@ Command.cases.setInventory = {
 				Command.save({ actor, operation })
 				break
 			case 'reference': {
-				const refActor = read('refActor')
-				Command.save({ actor, operation, refActor })
+				Command.save({
+					actor,
+					operation,
+					refActor: read('refActor')
+				})
 				break
 			}
 		}
 	}
-}
+})

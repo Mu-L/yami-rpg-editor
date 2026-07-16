@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setProgressBar = {
-	initialize: function () {
-		$('#setProgressBar-confirm').on('click', this.save)
-
-		// 绑定属性列表
+Command.cases.setProgressBar = new CommandSchema({
+	name: 'setProgressBar',
+	onInitialize() {
+		$('#setProgressBar-confirm').on('click', () => this.save())
 		$('#setProgressBar-properties').bind(ProgressBarProperty)
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setProgressBar').on('closed', (event) => {
 			$('#setProgressBar-properties').clear()
 		})
 	},
-	parse: function ({ element, properties }) {
+	customParse({ element, properties }) {
 		const words = Command.words.push(Command.parseElement(element))
 		for (const property of properties) {
 			words.push(ProgressBarProperty.parse(property))
@@ -23,13 +20,13 @@ Command.cases.setProgressBar = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ element = { type: 'trigger' }, properties = [] }) {
+	customLoad({ element = { type: 'trigger' }, properties = [] }) {
 		const write = getElementWriter('setProgressBar')
 		write('element', element)
 		write('properties', properties.slice())
 		$('#setProgressBar-element').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setProgressBar')
 		const element = read('element')
 		const properties = read('properties')
@@ -38,4 +35,4 @@ Command.cases.setProgressBar = {
 		}
 		Command.save({ element, properties })
 	}
-}
+})

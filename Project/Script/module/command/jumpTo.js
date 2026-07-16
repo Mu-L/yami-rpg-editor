@@ -1,27 +1,36 @@
 'use strict'
 
-Command.cases.jumpTo = {
-	initialize: function () {
-		$('#jumpTo-confirm').on('click', this.save)
-
-		// 侦听文本提示
+Command.cases.jumpTo = new CommandSchema({
+	name: 'jumpTo',
+	onInitialize() {
+		$('#jumpTo-confirm').on('click', () => this.save())
 		TextSuggestion.listen($('#jumpTo-label'), this.loadLabels)
-
-		// 创建操作选项
 		$('#jumpTo-operation').loadItems([
 			{ name: 'Jump to Label', value: 'jump' },
 			{ name: 'Save and Jump to Label', value: 'save-jump' },
 			{ name: 'Jump to the Saved Location', value: 'return' }
 		])
-
-		// 设置操作关联元素
 		$('#jumpTo-operation')
 			.enableHiddenMode()
 			.relate([
 				{ case: ['jump', 'save-jump'], targets: [$('#jumpTo-label')] }
 			])
 	},
-	parse: function ({ operation, label }) {
+	loadLabels() {
+		const items = []
+		const commands = EventEditor.commandList.read()
+		if (!commands) return items
+		Command.forEachCommand(commands, (command) => {
+			if (command.id === 'label') {
+				items.push({
+					name: command.params.name,
+					icon: 'icon-label'
+				})
+			}
+		})
+		return items.sort((a, b) => a.name.localeCompare(b.name))
+	},
+	customParse({ operation, label }) {
 		const words = Command.words
 		switch (operation) {
 			case 'jump':
@@ -40,12 +49,12 @@ Command.cases.jumpTo = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ operation = 'jump', label = '' }) {
+	customLoad({ operation = 'jump', label = '' }) {
 		$('#jumpTo-operation').write(operation)
 		$('#jumpTo-label').write(label)
 		$('#jumpTo-operation').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const operation = $('#jumpTo-operation').read()
 		switch (operation) {
 			case 'jump':
@@ -61,22 +70,5 @@ Command.cases.jumpTo = {
 				Command.save({ operation })
 				break
 		}
-	},
-	// 加载本地变量键
-	loadLabels: function () {
-		const items = []
-		const commands = EventEditor.commandList.read()
-		if (!commands) return items
-		// 遍历目标事件的指令列表
-		Command.forEachCommand(commands, (command) => {
-			if (command.id === 'label') {
-				items.push({
-					name: command.params.name,
-					icon: 'icon-label'
-				})
-			}
-		})
-		// 按名称排序列表项，并返回
-		return items.sort((a, b) => a.name.localeCompare(b.name))
 	}
-}
+})

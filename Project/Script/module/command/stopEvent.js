@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.stopEvent = {
-	initialize: function () {
-		$('#stopEvent-confirm').on('click', this.save)
-
-		// 创建类型选项
+Command.cases.stopEvent = new CommandSchema({
+	name: 'stopEvent',
+	onInitialize() {
+		$('#stopEvent-confirm').on('click', () => this.save())
 		$('#stopEvent-type').loadItems([
 			{ name: 'Current', value: 'current' },
 			{ name: 'Global', value: 'global' },
@@ -17,8 +16,6 @@ Command.cases.stopEvent = {
 			{ name: 'Light', value: 'light' },
 			{ name: 'Element', value: 'element' }
 		])
-
-		// 设置关联元素
 		$('#stopEvent-type')
 			.enableHiddenMode()
 			.relate([
@@ -59,11 +56,8 @@ Command.cases.stopEvent = {
 					]
 				}
 			])
-
-		// 类型 - 写入事件
 		$('#stopEvent-type').on('write', (event) => {
 			const type = event.value
-			// 加载事件类型选项(创建了全局事件类型但是没用到)
 			if (type !== 'current') {
 				const elEventType = $('#stopEvent-eventType')
 				const eventTypes = Enum.getMergedItems(
@@ -76,7 +70,7 @@ Command.cases.stopEvent = {
 			}
 		})
 	},
-	parse: function ({
+	customParse({
 		type,
 		actor,
 		skill,
@@ -88,7 +82,6 @@ Command.cases.stopEvent = {
 		eventId,
 		eventType
 	}) {
-		// 2025.2.27补丁
 		if (type === undefined) {
 			type = 'current'
 		}
@@ -134,7 +127,7 @@ Command.cases.stopEvent = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		type = 'current',
 		actor = { type: 'trigger' },
 		skill = { type: 'trigger' },
@@ -159,7 +152,7 @@ Command.cases.stopEvent = {
 		write('eventType', eventType)
 		$('#stopEvent-type').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('stopEvent')
 		const type = read('type')
 		switch (type) {
@@ -174,13 +167,14 @@ Command.cases.stopEvent = {
 				Command.save({ type, eventId })
 				break
 			}
-			case 'scene':
+			case 'scene': {
 				const eventType = read('eventType')
 				if (eventType === '') {
 					return $('#stopEvent-eventType').getFocus()
 				}
 				Command.save({ type, eventType })
 				break
+			}
 			default: {
 				const target = read(type)
 				const eventType = read('eventType')
@@ -196,4 +190,4 @@ Command.cases.stopEvent = {
 			}
 		}
 	}
-}
+})

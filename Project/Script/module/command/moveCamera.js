@@ -1,40 +1,31 @@
 'use strict'
 
-Command.cases.moveCamera = {
-	initialize: function () {
-		$('#moveCamera-confirm').on('click', this.save)
-
-		// 创建模式选项
+Command.cases.moveCamera = new CommandSchema({
+	name: 'moveCamera',
+	onInitialize() {
+		$('#moveCamera-confirm').on('click', () => this.save())
 		$('#moveCamera-mode').loadItems([
 			{ name: 'Move to Position', value: 'position' },
 			{ name: 'Follow Actor', value: 'actor' }
 		])
-
-		// 设置模式关联元素
 		$('#moveCamera-mode')
 			.enableHiddenMode()
 			.relate([
 				{ case: 'position', targets: [$('#moveCamera-position')] },
 				{ case: 'actor', targets: [$('#moveCamera-actor')] }
 			])
-
-		// 创建等待选项
 		$('#moveCamera-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
-		$('#moveCamera').on('open', function (event) {
+		$('#moveCamera').on('open', () => {
 			$('#moveCamera-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
-		$('#moveCamera').on('closed', function (event) {
+		$('#moveCamera').on('closed', () => {
 			$('#moveCamera-easingId').clear()
 		})
 	},
-	parse: function ({ mode, position, actor, easingId, duration, wait }) {
+	customParse({ mode, position, actor, easingId, duration, wait }) {
 		const words = Command.words.push(
 			Local.get('command.moveCamera.' + mode)
 		)
@@ -53,7 +44,7 @@ Command.cases.moveCamera = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		mode = 'position',
 		position = { type: 'absolute', x: 0, y: 0 },
 		actor = { type: 'trigger' },
@@ -70,7 +61,7 @@ Command.cases.moveCamera = {
 		write('wait', wait)
 		$('#moveCamera-mode').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('moveCamera')
 		const mode = read('mode')
 		const easingId = read('easingId')
@@ -89,4 +80,4 @@ Command.cases.moveCamera = {
 			}
 		}
 	}
-}
+})

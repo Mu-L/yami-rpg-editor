@@ -1,6 +1,7 @@
 'use strict'
 
-Command.cases.return = {
+Command.cases.return = new CommandSchema({
+	name: 'return',
 	typeItems: {
 		none: { name: 'None', value: 'none' },
 		boolean: { name: 'Boolean', value: 'boolean' },
@@ -16,19 +17,13 @@ Command.cases.return = {
 		light: { name: 'Light', value: 'light' },
 		element: { name: 'Element', value: 'element' }
 	},
-	initialize: function () {
-		$('#return-confirm').on('click', this.save)
-
-		// 创建返回类型选项
+	onInitialize() {
+		$('#return-confirm').on('click', () => this.save())
 		$('#return-type').loadItems(Object.values(this.typeItems))
-
-		// 创建布尔值选项
 		$('#return-boolean').loadItems([
 			{ name: 'False', value: false },
 			{ name: 'True', value: true }
 		])
-
-		// 设置返回类型关联元素
 		$('#return-type')
 			.enableHiddenMode()
 			.relate([
@@ -46,7 +41,54 @@ Command.cases.return = {
 				{ case: 'element', targets: [$('#return-element')] }
 			])
 	},
-	parse: function ({ type, value }) {
+	loadTypeItems(type) {
+		let items
+		switch (type) {
+			case 'none':
+				items = [this.typeItems.none]
+				break
+			case 'boolean':
+				items = [this.typeItems.boolean]
+				break
+			case 'number':
+				items = [this.typeItems.number]
+				break
+			case 'string':
+				items = [this.typeItems.string]
+				break
+			case 'object':
+				items = [this.typeItems.object]
+				break
+			case 'actor':
+				items = [this.typeItems.actor]
+				break
+			case 'skill':
+				items = [this.typeItems.skill]
+				break
+			case 'state':
+				items = [this.typeItems.state]
+				break
+			case 'equipment':
+				items = [this.typeItems.equipment]
+				break
+			case 'item':
+				items = [this.typeItems.item]
+				break
+			case 'trigger':
+				items = [this.typeItems.trigger]
+				break
+			case 'light':
+				items = [this.typeItems.light]
+				break
+			case 'element':
+				items = [this.typeItems.element]
+				break
+			default:
+				throw new Error('Not implemented')
+		}
+		$('#return-type').loadItems(items)
+	},
+	customParse({ type, value }) {
 		const words = Command.words
 		switch (type) {
 			case 'none':
@@ -99,55 +141,7 @@ Command.cases.return = {
 			{ text: info }
 		]
 	},
-	// 加载类型选项
-	loadTypeItems: function (type) {
-		let items
-		switch (type) {
-			case 'none':
-				items = [this.typeItems.none]
-				break
-			case 'boolean':
-				items = [this.typeItems.boolean]
-				break
-			case 'number':
-				items = [this.typeItems.number]
-				break
-			case 'string':
-				items = [this.typeItems.string]
-				break
-			case 'object':
-				items = [this.typeItems.object]
-				break
-			case 'actor':
-				items = [this.typeItems.actor]
-				break
-			case 'skill':
-				items = [this.typeItems.skill]
-				break
-			case 'state':
-				items = [this.typeItems.state]
-				break
-			case 'equipment':
-				items = [this.typeItems.equipment]
-				break
-			case 'item':
-				items = [this.typeItems.item]
-				break
-			case 'trigger':
-				items = [this.typeItems.trigger]
-				break
-			case 'light':
-				items = [this.typeItems.light]
-				break
-			case 'element':
-				items = [this.typeItems.element]
-				break
-			default:
-				throw new Error('Not implemented')
-		}
-		$('#return-type').loadItems(items)
-	},
-	load: function ({ type = Command.returnType, value = null }) {
+	customLoad({ type = Command.returnType, value = null }) {
 		this.loadTypeItems(Command.returnType)
 		const write = getElementWriter('return')
 		write('type', type)
@@ -194,7 +188,7 @@ Command.cases.return = {
 		)
 		$('#return-type').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('return')
 		const type = read('type')
 		switch (type) {
@@ -244,4 +238,4 @@ Command.cases.return = {
 				break
 		}
 	}
-}
+})

@@ -1,49 +1,44 @@
 'use strict'
 
-Command.cases.addAnimationComponent = {
-	initialize: function () {
-		$('#addAnimationComponent-confirm').on('click', this.save)
-
-		// 创建可旋转选项
+Command.cases.addAnimationComponent = new CommandSchema({
+	name: 'addAnimationComponent',
+	onInitialize() {
+		$('#addAnimationComponent-confirm').on('click', () => this.save())
 		$('#addAnimationComponent-rotatable').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建同步角度选项
 		$('#addAnimationComponent-syncAngle').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 侦听动画ID写入事件
 		$('#addAnimationComponent-animationId').on('write', (event) => {
 			const elMotion = $('#addAnimationComponent-motion')
 			elMotion.loadItems(Animation.getMotionListItems(event.value))
 			elMotion.write2(elMotion.read())
 		})
 	},
-	parseRotatable: function (rotatable) {
+	parseRotatable(rotatable) {
 		return rotatable
 			? Local.get('command.addAnimationComponent.rotatable')
 			: ''
 	},
-	parseSyncAngle: function (syncAngle) {
+	parseSyncAngle(syncAngle) {
 		return syncAngle
 			? Local.get('command.addAnimationComponent.syncAngle')
 			: ''
 	},
-	parsePriority: function (priority) {
+	parsePriority(priority) {
 		if (priority === 0) return ''
 		const abs = Command.setNumberColor(Math.abs(priority))
 		return priority > 0 ? Token('+') + abs : Token('-') + abs
 	},
-	parseOffsetY: function (offsetY) {
+	parseOffsetY(offsetY) {
 		if (offsetY === 0) return ''
 		const abs = Command.setNumberColor(Math.abs(offsetY)) + 'px'
 		return offsetY > 0 ? abs : Token('-') + abs
 	},
-	parse: function ({
+	customParse({
 		actor,
 		animationId,
 		motion,
@@ -52,8 +47,8 @@ Command.cases.addAnimationComponent = {
 		priority,
 		offsetY
 	}) {
-		syncAngle = syncAngle ?? false // 补丁
-		offsetY = offsetY ?? 0 // 补丁
+		syncAngle = syncAngle ?? false
+		offsetY = offsetY ?? 0
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseFileName(animationId))
@@ -68,7 +63,7 @@ Command.cases.addAnimationComponent = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		animationId = '',
 		motion = '',
@@ -87,9 +82,8 @@ Command.cases.addAnimationComponent = {
 		write('offsetY', offsetY)
 		$('#addAnimationComponent-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('addAnimationComponent')
-		const actor = read('actor')
 		const animationId = read('animationId')
 		if (animationId === '') {
 			return $('#addAnimationComponent-animationId').getFocus()
@@ -98,18 +92,14 @@ Command.cases.addAnimationComponent = {
 		if (motion === '') {
 			return $('#addAnimationComponent-motion').getFocus()
 		}
-		const rotatable = read('rotatable')
-		const syncAngle = read('syncAngle')
-		const priority = read('priority')
-		const offsetY = read('offsetY')
 		Command.save({
-			actor,
+			actor: read('actor'),
 			animationId,
 			motion,
-			rotatable,
-			syncAngle,
-			priority,
-			offsetY
+			rotatable: read('rotatable'),
+			syncAngle: read('syncAngle'),
+			priority: read('priority'),
+			offsetY: read('offsetY')
 		})
 	}
-}
+})

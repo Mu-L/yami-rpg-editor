@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.stopAudio = {
-	initialize: function () {
-		$('#stopAudio-confirm').on('click', this.save)
-
-		// 创建类型选项
+Command.cases.stopAudio = new CommandSchema({
+	name: 'stopAudio',
+	onInitialize() {
+		$('#stopAudio-confirm').on('click', () => this.save())
 		$('#stopAudio-type').loadItems([
 			{ name: 'BGM', value: 'bgm' },
 			{ name: 'BGS', value: 'bgs' },
@@ -13,7 +12,7 @@ Command.cases.stopAudio = {
 			{ name: 'ALL', value: 'all' }
 		])
 	},
-	parse: function ({ type }) {
+	customParse({ type }) {
 		const words = Command.words.push(Command.parseAudioType(type))
 		return [
 			{ color: 'audio' },
@@ -21,14 +20,12 @@ Command.cases.stopAudio = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ type = 'bgm' }) {
+	customLoad({ type = 'bgm' }) {
 		const write = getElementWriter('stopAudio')
 		write('type', type)
 		$('#stopAudio-type').getFocus()
 	},
-	save: function () {
-		const read = getElementReader('stopAudio')
-		const type = read('type')
-		Command.save({ type })
+	customSave() {
+		Command.save({ type: getElementReader('stopAudio')('type') })
 	}
-}
+})

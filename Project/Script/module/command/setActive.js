@@ -1,16 +1,15 @@
 'use strict'
 
-Command.cases.setActive = {
-	initialize: function () {
-		$('#setActive-confirm').on('click', this.save)
-
-		// 创建激活状态选项
+Command.cases.setActive = new CommandSchema({
+	name: 'setActive',
+	onInitialize() {
+		$('#setActive-confirm').on('click', () => this.save())
 		$('#setActive-active').loadItems([
 			{ name: 'Active', value: true },
 			{ name: 'Inactive', value: false }
 		])
 	},
-	parse: function ({ actor, active }) {
+	customParse({ actor, active }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Local.get('command.setActive.active.' + active))
@@ -20,16 +19,14 @@ Command.cases.setActive = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ actor = { type: 'trigger' }, active = false }) {
+	customLoad({ actor = { type: 'trigger' }, active = false }) {
 		const write = getElementWriter('setActive')
 		write('actor', actor)
 		write('active', active)
 		$('#setActive-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setActive')
-		const actor = read('actor')
-		const active = read('active')
-		Command.save({ actor, active })
+		Command.save({ actor: read('actor'), active: read('active') })
 	}
-}
+})

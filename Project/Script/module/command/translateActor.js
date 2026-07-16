@@ -1,26 +1,21 @@
 'use strict'
 
-Command.cases.translateActor = {
-	initialize: function () {
-		$('#translateActor-confirm').on('click', this.save)
-
-		// 创建等待结束选项
+Command.cases.translateActor = new CommandSchema({
+	name: 'translateActor',
+	onInitialize() {
+		$('#translateActor-confirm').on('click', () => this.save())
 		$('#translateActor-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
 		$('#translateActor').on('open', function (event) {
 			$('#translateActor-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#translateActor').on('closed', function (event) {
 			$('#translateActor-easingId').clear()
 		})
 	},
-	parse: function ({ actor, angle, distance, easingId, duration, wait }) {
+	customParse({ actor, angle, distance, easingId, duration, wait }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseAngle(angle))
@@ -32,7 +27,7 @@ Command.cases.translateActor = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		angle = { type: 'absolute', degrees: 0 },
 		distance = 0,
@@ -49,17 +44,19 @@ Command.cases.translateActor = {
 		write('wait', wait)
 		$('#translateActor-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('translateActor')
-		const actor = read('actor')
-		const angle = read('angle')
 		const distance = read('distance')
-		const easingId = read('easingId')
-		const duration = read('duration')
-		const wait = read('wait')
 		if (distance === 0) {
 			return $('#translateActor-distance').getFocus('all')
 		}
-		Command.save({ actor, angle, distance, easingId, duration, wait })
+		Command.save({
+			actor: read('actor'),
+			angle: read('angle'),
+			distance,
+			easingId: read('easingId'),
+			duration: read('duration'),
+			wait: read('wait')
+		})
 	}
-}
+})

@@ -1,17 +1,14 @@
 'use strict'
 
-Command.cases.deleteElement = {
-	initialize: function () {
-		$('#deleteElement-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.deleteElement = new CommandSchema({
+	name: 'deleteElement',
+	onInitialize() {
+		$('#deleteElement-confirm').on('click', () => this.save())
 		$('#deleteElement-operation').loadItems([
 			{ name: 'Delete Element', value: 'delete-element' },
 			{ name: 'Delete Children', value: 'delete-children' },
 			{ name: 'Delete All', value: 'delete-all' }
 		])
-
-		// 设置操作关联元素
 		$('#deleteElement-operation')
 			.enableHiddenMode()
 			.relate([
@@ -21,7 +18,7 @@ Command.cases.deleteElement = {
 				}
 			])
 	},
-	parse: function ({ operation, element }) {
+	customParse({ operation, element }) {
 		let info
 		switch (operation) {
 			case 'delete-element':
@@ -43,7 +40,7 @@ Command.cases.deleteElement = {
 			{ text: info }
 		]
 	},
-	load: function ({
+	customLoad({
 		operation = 'delete-element',
 		element = { type: 'trigger' }
 	}) {
@@ -51,13 +48,15 @@ Command.cases.deleteElement = {
 		$('#deleteElement-element').write(element)
 		$('#deleteElement-operation').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const operation = $('#deleteElement-operation').read()
 		switch (operation) {
 			case 'delete-element':
 			case 'delete-children': {
-				const element = $('#deleteElement-element').read()
-				Command.save({ operation, element })
+				Command.save({
+					operation,
+					element: $('#deleteElement-element').read()
+				})
 				break
 			}
 			case 'delete-all':
@@ -65,4 +64,4 @@ Command.cases.deleteElement = {
 				break
 		}
 	}
-}
+})

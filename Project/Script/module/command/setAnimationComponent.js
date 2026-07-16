@@ -1,11 +1,10 @@
 'use strict'
 
-Command.cases.setAnimationComponent = {
-	initialize: function () {
-		$('#setAnimationComponent-confirm').on('click', this.save)
-
-		// 创建操作选项
-		;($('#setAnimationComponent-operation').loadItems([
+Command.cases.setAnimationComponent = new CommandSchema({
+	name: 'setAnimationComponent',
+	onInitialize() {
+		$('#setAnimationComponent-confirm').on('click', () => this.save())
+		$('#setAnimationComponent-operation').loadItems([
 			{ name: 'Set Angle', value: 'set-angle' },
 			{ name: 'Set Scale', value: 'set-scale' },
 			{ name: 'Set Speed', value: 'set-speed' },
@@ -15,58 +14,53 @@ Command.cases.setAnimationComponent = {
 			{ name: 'Set Sprite', value: 'set-sprite' },
 			{ name: 'Play Motion', value: 'play-motion' },
 			{ name: 'Stop Motion', value: 'stop-motion' }
-		]),
-			// 关联操作相关元素
-			$('#setAnimationComponent-operation')
-				.enableHiddenMode()
-				.relate([
-					{
-						case: 'set-angle',
-						targets: [$('#setAnimationComponent-angle')]
-					},
-					{
-						case: 'set-scale',
-						targets: [$('#setAnimationComponent-scale')]
-					},
-					{
-						case: 'set-speed',
-						targets: [$('#setAnimationComponent-speed')]
-					},
-					{
-						case: 'set-opacity',
-						targets: [$('#setAnimationComponent-opacity')]
-					},
-					{
-						case: 'set-priority',
-						targets: [$('#setAnimationComponent-priority')]
-					},
-					{
-						case: 'set-offsetY',
-						targets: [$('#setAnimationComponent-offsetY')]
-					},
-					{
-						case: 'set-sprite',
-						targets: [
-							$('#setAnimationComponent-spriteId'),
-							$('#setAnimationComponent-image')
-						]
-					},
-					{
-						case: 'play-motion',
-						targets: [
-							$('#setAnimationComponent-playMotion'),
-							$('#setAnimationComponent-wait')
-						]
-					}
-				]))
-
-		// 创建等待选项
+		])
+		$('#setAnimationComponent-operation')
+			.enableHiddenMode()
+			.relate([
+				{
+					case: 'set-angle',
+					targets: [$('#setAnimationComponent-angle')]
+				},
+				{
+					case: 'set-scale',
+					targets: [$('#setAnimationComponent-scale')]
+				},
+				{
+					case: 'set-speed',
+					targets: [$('#setAnimationComponent-speed')]
+				},
+				{
+					case: 'set-opacity',
+					targets: [$('#setAnimationComponent-opacity')]
+				},
+				{
+					case: 'set-priority',
+					targets: [$('#setAnimationComponent-priority')]
+				},
+				{
+					case: 'set-offsetY',
+					targets: [$('#setAnimationComponent-offsetY')]
+				},
+				{
+					case: 'set-sprite',
+					targets: [
+						$('#setAnimationComponent-spriteId'),
+						$('#setAnimationComponent-image')
+					]
+				},
+				{
+					case: 'play-motion',
+					targets: [
+						$('#setAnimationComponent-playMotion'),
+						$('#setAnimationComponent-wait')
+					]
+				}
+			])
 		$('#setAnimationComponent-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 侦听动画ID写入事件
 		$('#setAnimationComponent-animationId').on('write', (event) => {
 			const elMotion = $('#setAnimationComponent-motion')
 			const elPlayMotion = $('#setAnimationComponent-playMotion')
@@ -81,7 +75,7 @@ Command.cases.setAnimationComponent = {
 			elSpriteId.write2(elSpriteId.read())
 		})
 	},
-	parsePriority: function (priority) {
+	parsePriority(priority) {
 		const abs = Command.setNumberColor(Math.abs(priority))
 		return priority === 0
 			? abs
@@ -89,11 +83,11 @@ Command.cases.setAnimationComponent = {
 				? Token('+') + abs
 				: Token('-') + abs
 	},
-	parseOffsetY: function (offsetY) {
+	parseOffsetY(offsetY) {
 		const abs = Command.setNumberColor(Math.abs(offsetY)) + 'px'
 		return offsetY >= 0 ? abs : Token('-') + abs
 	},
-	parse: function ({
+	customParse({
 		actor,
 		animationId,
 		motion,
@@ -148,7 +142,7 @@ Command.cases.setAnimationComponent = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		animationId = '',
 		motion = '',
@@ -164,7 +158,7 @@ Command.cases.setAnimationComponent = {
 		playMotion = '',
 		wait = false
 	}) {
-		var write = getElementWriter('setAnimationComponent')
+		const write = getElementWriter('setAnimationComponent')
 		write('actor', actor)
 		write('animationId', animationId)
 		write('motion', motion)
@@ -181,7 +175,7 @@ Command.cases.setAnimationComponent = {
 		if (playMotion) write('playMotion', playMotion)
 		$('#setAnimationComponent-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setAnimationComponent')
 		const actor = read('actor')
 		const animationId = read('animationId')
@@ -266,4 +260,4 @@ Command.cases.setAnimationComponent = {
 				break
 		}
 	}
-}
+})

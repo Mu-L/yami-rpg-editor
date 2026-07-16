@@ -1,12 +1,11 @@
 'use strict'
 
-Command.cases.comment = {
-	initialize: function () {
-		$('#comment-confirm').on('click', this.save)
-	},
-	parse: function ({ comment }) {
-		const contents = []
+Command.cases.comment = new CommandSchema({
+	name: 'comment',
+	fields: [{ key: 'comment', domId: 'comment', default: '', required: true }],
+	customParse({ comment }) {
 		const lines = comment.split('\n')
+		const contents = []
 		for (const line of lines) {
 			if (contents.length === 0) {
 				contents.push({ color: 'comment' }, { text: line })
@@ -19,15 +18,7 @@ Command.cases.comment = {
 		}
 		return contents
 	},
-	load: function ({ comment = '' }) {
-		$('#comment-comment').write(comment)
+	onLoad() {
 		$('#comment-comment').getFocus('end')
-	},
-	save: function () {
-		const comment = $('#comment-comment').read()
-		if (comment === '') {
-			return $('#comment-comment').getFocus()
-		}
-		Command.save({ comment })
 	}
-}
+})

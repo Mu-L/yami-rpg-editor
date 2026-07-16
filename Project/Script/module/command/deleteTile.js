@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.deleteTile = {
-	initialize: function () {
-		$('#deleteTile-confirm').on('click', this.save)
-	},
-	parse: function ({ tilemap, tilemapX, tilemapY }) {
+Command.cases.deleteTile = new CommandSchema({
+	name: 'deleteTile',
+	customParse({ tilemap, tilemapX, tilemapY }) {
 		const words = Command.words
 			.push(Command.parseTilemap(tilemap))
 			.push(Command.parseVariableNumber(tilemapX))
@@ -15,22 +13,19 @@ Command.cases.deleteTile = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
-		tilemap = { type: 'trigger' },
-		tilemapX = 0,
-		tilemapY = 0
-	}) {
+	customLoad({ tilemap = { type: 'trigger' }, tilemapX = 0, tilemapY = 0 }) {
 		const write = getElementWriter('deleteTile')
 		write('tilemap', tilemap)
 		write('tilemapX', tilemapX)
 		write('tilemapY', tilemapY)
 		$('#deleteTile-tilemap').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('deleteTile')
-		const tilemap = read('tilemap')
-		const tilemapX = read('tilemapX')
-		const tilemapY = read('tilemapY')
-		Command.save({ tilemap, tilemapX, tilemapY })
+		Command.save({
+			tilemap: read('tilemap'),
+			tilemapX: read('tilemapX'),
+			tilemapY: read('tilemapY')
+		})
 	}
-}
+})

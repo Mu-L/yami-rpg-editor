@@ -16,14 +16,41 @@ export class CommandSchema {
 		this.onParse = config.onParse
 		this.onLoad = config.onLoad
 		this.onSave = config.onSave
-		this.onInitialize = config.initialize
-		this.customParse = config.parse
-		this.customLoad = config.load
-		this.customSave = config.save
+		this.onInitialize = config.initialize ?? config.onInitialize
+		this.customParse = config.parse ?? config.customParse
+		this.customLoad = config.load ?? config.customLoad
+		this.customSave = config.save ?? config.customSave
 		this.noWindow = config.noWindow ?? false
+		// 挂载配置中其余属性（如 windowFrame / eventArgs 等数据字段，
+		// 以及 parseMode / parseOperation 等辅助方法），
+		// 使 this.xxx 在 onInitialize/customParse/Load/Save 内部可用
+		const reserved = new Set([
+			'name',
+			'fields',
+			'children',
+			'confirmId',
+			'onParse',
+			'onLoad',
+			'onSave',
+			'initialize',
+			'onInitialize',
+			'parse',
+			'customParse',
+			'load',
+			'customLoad',
+			'save',
+			'customSave',
+			'noWindow'
+		])
+		for (const key of Object.keys(config)) {
+			if (reserved.has(key) || key in this) {
+				continue
+			}
+			this[key] = config[key]
+		}
 		if (this.noWindow) {
-			delete this.load
-			delete this.initialize
+			this.load = null
+			this.initialize = null
 		}
 	}
 

@@ -1,16 +1,15 @@
 'use strict'
 
-Command.cases.setItem = {
-	initialize: function () {
-		$('#setItem-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setItem = new CommandSchema({
+	name: 'setItem',
+	onInitialize() {
+		$('#setItem-confirm').on('click', () => this.save())
 		$('#setItem-operation').loadItems([
 			{ name: 'Increase', value: 'increase' },
 			{ name: 'Decrease', value: 'decrease' }
 		])
 	},
-	parse: function ({ item, operation, quantity }) {
+	customParse({ item, operation, quantity }) {
 		const words = Command.words
 			.push(Command.parseItem(item))
 			.push(Local.get('command.setItem.' + operation))
@@ -26,7 +25,7 @@ Command.cases.setItem = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		item = { type: 'trigger' },
 		operation = 'increase',
 		quantity = 1
@@ -37,17 +36,20 @@ Command.cases.setItem = {
 		write('quantity', quantity)
 		$('#setItem-item').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setItem')
 		const item = read('item')
 		const operation = read('operation')
 		switch (operation) {
 			case 'increase':
 			case 'decrease': {
-				const quantity = read('quantity')
-				Command.save({ item, operation, quantity })
+				Command.save({
+					item,
+					operation,
+					quantity: read('quantity')
+				})
 				break
 			}
 		}
 	}
-}
+})

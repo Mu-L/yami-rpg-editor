@@ -1,16 +1,13 @@
 'use strict'
 
-Command.cases.setString = {
-	initialize: function () {
-		$('#setString-confirm').on('click', this.save)
-
-		// 创建头部操作选项
+Command.cases.setString = new CommandSchema({
+	name: 'setString',
+	onInitialize() {
+		$('#setString-confirm').on('click', () => this.save())
 		$('#setString-operation').loadItems([
 			{ name: 'Set', value: 'set' },
 			{ name: 'Add', value: 'add' }
 		])
-
-		// 创建类型选项
 		$('#setString-operand-type').loadItems([
 			{ name: 'Constant', value: 'constant' },
 			{ name: 'Variable', value: 'variable' },
@@ -25,8 +22,6 @@ Command.cases.setString = {
 			{ name: 'Script', value: 'script' },
 			{ name: 'Other', value: 'other' }
 		])
-
-		// 设置类型关联元素
 		$('#setString-operand-type')
 			.enableHiddenMode()
 			.relate([
@@ -82,8 +77,6 @@ Command.cases.setString = {
 				{ case: 'script', targets: [$('#setString-operand-script')] },
 				{ case: 'other', targets: [$('#setString-operand-other-data')] }
 			])
-
-		// 设置类型写入事件，切换变量输入框的过滤器
 		$('#setString-operand-type').on('write', (event) => {
 			let filter = 'all'
 			switch (event.value) {
@@ -100,8 +93,6 @@ Command.cases.setString = {
 			}
 			$('#setString-operand-common-variable').filter = filter
 		})
-
-		// 创建字符串方法选项
 		$('#setString-operand-string-method').loadItems([
 			{ name: 'Char', value: 'char' },
 			{ name: 'Slice', value: 'slice' },
@@ -109,8 +100,6 @@ Command.cases.setString = {
 			{ name: 'Replace', value: 'replace' },
 			{ name: 'Replace All', value: 'replace-all' }
 		])
-
-		// 设置字符串方法关联元素
 		$('#setString-operand-string-method')
 			.enableHiddenMode()
 			.relate([
@@ -140,8 +129,6 @@ Command.cases.setString = {
 					]
 				}
 			])
-
-		// 创建对象属性选项
 		$('#setString-operand-object-property').loadItems([
 			{ name: 'Actor - Team ID', value: 'actor-team-id' },
 			{ name: 'Actor - File ID', value: 'actor-file-id' },
@@ -157,8 +144,6 @@ Command.cases.setString = {
 			{ name: 'Item - File ID', value: 'item-file-id' },
 			{ name: 'File - ID', value: 'file-id' }
 		])
-
-		// 设置对象属性关联元素
 		$('#setString-operand-object-property')
 			.enableHiddenMode()
 			.relate([
@@ -195,15 +180,11 @@ Command.cases.setString = {
 					targets: [$('#setString-operand-object-fileId')]
 				}
 			])
-
-		// 创建元素属性选项
 		$('#setString-operand-element-property').loadItems([
 			{ name: 'Text - Content', value: 'text-content' },
 			{ name: 'Text Box - Text', value: 'textBox-text' },
 			{ name: 'Dialog Box - Content', value: 'dialogBox-content' }
 		])
-
-		// 创建其他数据选项
 		$('#setString-operand-other-data').loadItems([
 			{ name: 'Event Trigger Key', value: 'trigger-key' },
 			{
@@ -216,8 +197,6 @@ Command.cases.setString = {
 			{ name: 'Screenshot(Base64)', value: 'screenshot' },
 			{ name: 'Game Language', value: 'game-language' }
 		])
-
-		// 设置其他数据关联元素
 		$('#setString-operand-other-data')
 			.enableHiddenMode()
 			.relate([
@@ -243,9 +222,222 @@ Command.cases.setString = {
 				}
 			])
 	},
-
-	// 解析指令
-	parse: function ({ variable, operation, operand }) {
+	parseOperation(operation) {
+		switch (operation) {
+			case 'set':
+				return ' = '
+			case 'add':
+				return ' += '
+		}
+	},
+	parseStringMethod(operand) {
+		const method = operand.method
+		const variable = operand.variable
+		const methodName = Local.get('command.setString.string.' + method)
+		const varName = Command.parseVariable(variable, 'string')
+		switch (method) {
+			case 'char': {
+				const index = Command.parseVariableNumber(operand.index)
+				return (
+					methodName +
+					Token('(') +
+					varName +
+					Token(', ') +
+					index +
+					Token(')')
+				)
+			}
+			case 'slice': {
+				const begin = Command.parseVariableNumber(operand.begin)
+				const end = Command.parseVariableNumber(operand.end)
+				return (
+					methodName +
+					Token('(') +
+					varName +
+					Token(', ') +
+					begin +
+					Token(', ') +
+					end +
+					Token(')')
+				)
+			}
+			case 'pad-start': {
+				const length = Command.setNumberColor(operand.length)
+				const pad = Command.setStringColor(operand.pad)
+				return (
+					methodName +
+					Token('(') +
+					varName +
+					Token(', ') +
+					length +
+					Token(', ') +
+					pad +
+					Token(')')
+				)
+			}
+			case 'replace':
+			case 'replace-all': {
+				const pattern = Command.parseVariableString(operand.pattern)
+				const replacement = Command.parseVariableString(
+					operand.replacement
+				)
+				return (
+					methodName +
+					Token('(') +
+					varName +
+					Token(', ') +
+					pattern +
+					Token(', ') +
+					replacement +
+					Token(')')
+				)
+			}
+		}
+	},
+	parseObjectProperty(operand) {
+		const property = Local.get(
+			'command.setString.object.' + operand.property
+		)
+		switch (operand.property) {
+			case 'actor-team-id':
+			case 'actor-file-id':
+			case 'actor-animation-motion-name':
+				return (
+					Command.parseActor(operand.actor) +
+					Token(' -> ') +
+					property.replace('.', Token('.'))
+				)
+			case 'skill-file-id':
+				return (
+					Command.parseSkill(operand.skill) + Token(' -> ') + property
+				)
+			case 'trigger-file-id':
+				return (
+					Command.parseTrigger(operand.trigger) +
+					Token(' -> ') +
+					property
+				)
+			case 'state-file-id':
+				return (
+					Command.parseState(operand.state) + Token(' -> ') + property
+				)
+			case 'equipment-file-id':
+			case 'equipment-slot':
+				return (
+					Command.parseEquipment(operand.equipment) +
+					Token(' -> ') +
+					property
+				)
+			case 'item-file-id':
+				return (
+					Command.parseItem(operand.item) + Token(' -> ') + property
+				)
+			case 'file-id':
+				return (
+					Command.parseFileName(operand.fileId) +
+					Token(' -> ') +
+					property
+				)
+		}
+	},
+	parseElementProperty(operand) {
+		const element = Command.parseElement(operand.element)
+		const property = Local.get(
+			'command.setString.element.' + operand.property
+		)
+		return element + Token(' -> ') + property.replace('.', Token('.'))
+	},
+	parseOther(operand) {
+		const label = Local.get(
+			'command.setString.other.' + operand.data
+		).replace('.', Token('.'))
+		switch (operand.data) {
+			case 'trigger-key':
+			case 'start-position-scene-id':
+			case 'showText-content':
+			case 'game-language':
+				return label
+			case 'showChoices-content-0':
+			case 'showChoices-content-1':
+			case 'showChoices-content-2':
+			case 'showChoices-content-3': {
+				const label = Local.get(
+					'command.setString.other.showChoices-content'
+				)
+				return (
+					label +
+					Token('[') +
+					Command.setNumberColor(operand.data.slice(-1)) +
+					Token(']')
+				)
+			}
+			case 'showChoices-content':
+				return (
+					label +
+					Token('[') +
+					Command.parseVariableNumber(operand.choiceIndex) +
+					Token(']')
+				)
+			case 'parse-timestamp': {
+				const variable = Command.parseVariable(
+					operand.variable,
+					'number'
+				)
+				const format = Command.parseVariableString(operand.format)
+				return (
+					label +
+					Token('(') +
+					variable +
+					Token(', ') +
+					format +
+					Token(')')
+				)
+			}
+			case 'screenshot': {
+				const width = Command.setNumberColor(operand.width)
+				const height = Command.setNumberColor(operand.height)
+				return (
+					label +
+					Token('(') +
+					width +
+					Token(', ') +
+					height +
+					Token(')')
+				)
+			}
+		}
+	},
+	parseOperand(operand) {
+		switch (operand.type) {
+			case 'constant':
+				return Command.setStringColor(
+					`"${Command.parseMultiLineString(operand.value)}"`
+				)
+			case 'template':
+				return Command.parseVariableTemplate(operand.value)
+			case 'variable':
+				return Command.parseVariable(operand.variable, 'string')
+			case 'string':
+				return this.parseStringMethod(operand)
+			case 'attribute':
+				return Command.parseAttributeTag(operand.attributeId, 'string')
+			case 'enum':
+				return Command.parseEnumStringTag(operand.stringId)
+			case 'object':
+				return this.parseObjectProperty(operand)
+			case 'element':
+				return this.parseElementProperty(operand)
+			case 'list':
+				return Command.parseListItem(operand.variable, operand.index)
+			case 'parameter':
+				return Command.parseParameter(operand.key)
+			case 'script':
+				return operand.script
+			case 'other':
+				return this.parseOther(operand)
+		}
+	},
+	customParse({ variable, operation, operand }) {
 		const varDesc = Command.parseVariable(
 			variable,
 			'string',
@@ -262,14 +454,11 @@ Command.cases.setString = {
 			{ text: `${varDesc}${operator}${expression}` }
 		]
 	},
-
-	// 加载数据
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		operation = 'set',
 		operand = { type: 'constant', value: '' }
 	}) {
-		// 写入数据
 		let commonValue = ''
 		let stringMethod = 'char'
 		let commonVariable = { type: 'local', key: '' }
@@ -352,7 +541,6 @@ Command.cases.setString = {
 				script = operand.script
 				break
 			case 'other':
-				// 补丁：2023-1-18
 				switch (operand.data) {
 					case 'showChoices-content-0':
 					case 'showChoices-content-1':
@@ -408,9 +596,7 @@ Command.cases.setString = {
 		write('operand-screenshot-height', screenshotHeight)
 		$('#setString-variable').getFocus()
 	},
-
-	// 保存数据
-	save: function () {
+	customSave() {
 		const read = getElementReader('setString')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
@@ -616,233 +802,5 @@ Command.cases.setString = {
 			}
 		}
 		Command.save({ variable, operation, operand })
-	},
-
-	// 解析字符串操作
-	parseOperation: function (operation) {
-		switch (operation) {
-			case 'set':
-				return ' = '
-			case 'add':
-				return ' += '
-		}
-	},
-
-	// 解析字符串方法
-	parseStringMethod: function (operand) {
-		const method = operand.method
-		const variable = operand.variable
-		const methodName = Local.get('command.setString.string.' + method)
-		const varName = Command.parseVariable(variable, 'string')
-		switch (method) {
-			case 'char': {
-				const index = Command.parseVariableNumber(operand.index)
-				return (
-					methodName +
-					Token('(') +
-					varName +
-					Token(', ') +
-					index +
-					Token(')')
-				)
-			}
-			case 'slice': {
-				const begin = Command.parseVariableNumber(operand.begin)
-				const end = Command.parseVariableNumber(operand.end)
-				return (
-					methodName +
-					Token('(') +
-					varName +
-					Token(', ') +
-					begin +
-					Token(', ') +
-					end +
-					Token(')')
-				)
-			}
-			case 'pad-start': {
-				const length = Command.setNumberColor(operand.length)
-				const pad = Command.setStringColor(operand.pad)
-				return (
-					methodName +
-					Token('(') +
-					varName +
-					Token(', ') +
-					length +
-					Token(', ') +
-					pad +
-					Token(')')
-				)
-			}
-			case 'replace':
-			case 'replace-all': {
-				const pattern = Command.parseVariableString(operand.pattern)
-				const replacement = Command.parseVariableString(
-					operand.replacement
-				)
-				return (
-					methodName +
-					Token('(') +
-					varName +
-					Token(', ') +
-					pattern +
-					Token(', ') +
-					replacement +
-					Token(')')
-				)
-			}
-		}
-	},
-
-	// 解析对象属性
-	parseObjectProperty: function (operand) {
-		const property = Local.get(
-			'command.setString.object.' + operand.property
-		)
-		switch (operand.property) {
-			case 'actor-team-id':
-			case 'actor-file-id':
-			case 'actor-animation-motion-name':
-				return (
-					Command.parseActor(operand.actor) +
-					Token(' -> ') +
-					property.replace('.', Token('.'))
-				)
-			case 'skill-file-id':
-				return (
-					Command.parseSkill(operand.skill) + Token(' -> ') + property
-				)
-			case 'trigger-file-id':
-				return (
-					Command.parseTrigger(operand.trigger) +
-					Token(' -> ') +
-					property
-				)
-			case 'state-file-id':
-				return (
-					Command.parseState(operand.state) + Token(' -> ') + property
-				)
-			case 'equipment-file-id':
-			case 'equipment-slot':
-				return (
-					Command.parseEquipment(operand.equipment) +
-					Token(' -> ') +
-					property
-				)
-			case 'item-file-id':
-				return (
-					Command.parseItem(operand.item) + Token(' -> ') + property
-				)
-			case 'file-id':
-				return (
-					Command.parseFileName(operand.fileId) +
-					Token(' -> ') +
-					property
-				)
-		}
-	},
-
-	// 解析元素属性
-	parseElementProperty: function (operand) {
-		const element = Command.parseElement(operand.element)
-		const property = Local.get(
-			'command.setString.element.' + operand.property
-		)
-		return element + Token(' -> ') + property.replace('.', Token('.'))
-	},
-
-	// 解析其他数据
-	parseOther: function (operand) {
-		const label = Local.get(
-			'command.setString.other.' + operand.data
-		).replace('.', Token('.'))
-		switch (operand.data) {
-			case 'trigger-key':
-			case 'start-position-scene-id':
-			case 'showText-content':
-			case 'game-language':
-				return label
-			// 补丁：2023-1-18
-			case 'showChoices-content-0':
-			case 'showChoices-content-1':
-			case 'showChoices-content-2':
-			case 'showChoices-content-3': {
-				const label = Local.get(
-					'command.setString.other.showChoices-content'
-				)
-				return (
-					label +
-					Token('[') +
-					Command.setNumberColor(operand.data.slice(-1)) +
-					Token(']')
-				)
-			}
-			case 'showChoices-content':
-				return (
-					label +
-					Token('[') +
-					Command.parseVariableNumber(operand.choiceIndex) +
-					Token(']')
-				)
-			case 'parse-timestamp': {
-				const variable = Command.parseVariable(
-					operand.variable,
-					'number'
-				)
-				const format = Command.parseVariableString(operand.format)
-				return (
-					label +
-					Token('(') +
-					variable +
-					Token(', ') +
-					format +
-					Token(')')
-				)
-			}
-			case 'screenshot': {
-				const width = Command.setNumberColor(operand.width)
-				const height = Command.setNumberColor(operand.height)
-				return (
-					label +
-					Token('(') +
-					width +
-					Token(', ') +
-					height +
-					Token(')')
-				)
-			}
-		}
-	},
-
-	// 解析操作数
-	parseOperand: function (operand) {
-		switch (operand.type) {
-			case 'constant':
-				return Command.setStringColor(
-					`"${Command.parseMultiLineString(operand.value)}"`
-				)
-			case 'template':
-				return Command.parseVariableTemplate(operand.value)
-			case 'variable':
-				return Command.parseVariable(operand.variable, 'string')
-			case 'string':
-				return this.parseStringMethod(operand)
-			case 'attribute':
-				return Command.parseAttributeTag(operand.attributeId, 'string')
-			case 'enum':
-				return Command.parseEnumStringTag(operand.stringId)
-			case 'object':
-				return this.parseObjectProperty(operand)
-			case 'element':
-				return this.parseElementProperty(operand)
-			case 'list':
-				return Command.parseListItem(operand.variable, operand.index)
-			case 'parameter':
-				return Command.parseParameter(operand.key)
-			case 'script':
-				return operand.script
-			case 'other':
-				return this.parseOther(operand)
-		}
 	}
-}
+})

@@ -1,17 +1,14 @@
 'use strict'
 
-Command.cases.gameData = {
-	initialize: function () {
-		$('#gameData-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.gameData = new CommandSchema({
+	name: 'gameData',
+	onInitialize() {
+		$('#gameData-confirm').on('click', () => this.save())
 		$('#gameData-operation').loadItems([
 			{ name: 'Save', value: 'save' },
 			{ name: 'Load', value: 'load' },
 			{ name: 'Delete', value: 'delete' }
 		])
-
-		// 设置操作关联元素
 		$('#gameData-operation')
 			.enableHiddenMode()
 			.relate([
@@ -22,7 +19,7 @@ Command.cases.gameData = {
 				{ case: ['load', 'delete'], targets: [$('#gameData-index')] }
 			])
 	},
-	parse: function ({ operation, index, variables }) {
+	customParse({ operation, index, variables }) {
 		const words = Command.words
 			.push(Local.get('command.gameData.' + operation))
 			.push(Command.parseVariableNumber(index))
@@ -44,13 +41,13 @@ Command.cases.gameData = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ operation = 'save', index = 0, variables = '' }) {
+	customLoad({ operation = 'save', index = 0, variables = '' }) {
 		$('#gameData-operation').write(operation)
 		$('#gameData-index').write(index)
 		$('#gameData-variables').write(variables)
 		$('#gameData-operation').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('gameData')
 		const operation = read('operation')
 		switch (operation) {
@@ -68,4 +65,4 @@ Command.cases.gameData = {
 			}
 		}
 	}
-}
+})

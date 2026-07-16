@@ -1,32 +1,25 @@
 'use strict'
 
-Command.cases.getActor = {
-	initialize: function () {
-		$('#getActor-confirm').on('click', this.save)
-
-		// 创建区域选项
+Command.cases.getActor = new CommandSchema({
+	name: 'getActor',
+	onInitialize() {
+		$('#getActor-confirm').on('click', () => this.save())
 		$('#getActor-area').loadItems([
 			{ name: 'Square', value: 'square' },
 			{ name: 'Circle', value: 'circle' }
 		])
-
-		// 设置区域关联元素
 		$('#getActor-area')
 			.enableHiddenMode()
 			.relate([
 				{ case: 'square', targets: [$('#getActor-size')] },
 				{ case: 'circle', targets: [$('#getActor-radius')] }
 			])
-
-		// 创建选择器选项
 		$('#getActor-selector').loadItems([
 			{ name: 'Team Enemy', value: 'enemy' },
 			{ name: 'Team Friend', value: 'friend' },
 			{ name: 'Team Member', value: 'team' },
 			{ name: 'Any', value: 'any' }
 		])
-
-		// 设置选择器关联元素
 		$('#getActor-selector')
 			.enableHiddenMode()
 			.relate([
@@ -35,8 +28,6 @@ Command.cases.getActor = {
 					targets: [$('#getActor-teamId')]
 				}
 			])
-
-		// 创建条件选项
 		$('#getActor-condition').loadItems([
 			{ name: 'Nearest', value: 'nearest' },
 			{ name: 'Farthest', value: 'farthest' },
@@ -46,8 +37,6 @@ Command.cases.getActor = {
 			{ name: 'Max Attribute Ratio', value: 'max-attribute-ratio' },
 			{ name: 'Random', value: 'random' }
 		])
-
-		// 设置条件关联元素
 		$('#getActor-condition')
 			.enableHiddenMode()
 			.relate([
@@ -60,43 +49,33 @@ Command.cases.getActor = {
 					targets: [$('#getActor-attribute'), $('#getActor-divisor')]
 				}
 			])
-
-		// 创建激活状态选项
 		$('#getActor-activation').loadItems([
 			{ name: 'Active', value: 'active' },
 			{ name: 'Inactive', value: 'inactive' },
 			{ name: 'Either', value: 'either' }
 		])
-
-		// 创建排除模式选项
 		$('#getActor-exclusion').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Exclude an Actor', value: 'actor' },
 			{ name: 'Exclude a Team', value: 'team' }
 		])
-
-		// 设置排除模式关联元素
 		$('#getActor-exclusion')
 			.enableHiddenMode()
 			.relate([
 				{ case: 'actor', targets: [$('#getActor-exclusionActor')] },
 				{ case: 'team', targets: [$('#getActor-exclusionTeamId')] }
 			])
-
-		// 侦听窗口打开事件
 		$('#getActor').on('open', function (event) {
 			const items = Data.createTeamItems()
 			$('#getActor-teamId').loadItems(items)
 			$('#getActor-exclusionTeamId').loadItems(items)
 		})
-
-		// 侦听窗口已关闭事件
 		$('#getActor').on('closed', function (event) {
 			$('#getActor-teamId').clear()
 			$('#getActor-exclusionTeamId').clear()
 		})
 	},
-	remapSelectorPatch: function (selector) {
+	remapSelectorPatch(selector) {
 		switch (selector) {
 			case 'team-enemy':
 				return 'enemy'
@@ -108,7 +87,7 @@ Command.cases.getActor = {
 				return selector
 		}
 	},
-	remapActivationPatch: function (activation, active) {
+	remapActivationPatch(activation, active) {
 		switch (active) {
 			case true:
 				return 'active'
@@ -118,7 +97,7 @@ Command.cases.getActor = {
 				return activation
 		}
 	},
-	parseCondition: function (condition, attribute, divisor) {
+	parseCondition(condition, attribute, divisor) {
 		const label = Local.get('command.getActor.condition.' + condition)
 		switch (condition) {
 			case 'nearest':
@@ -145,7 +124,7 @@ Command.cases.getActor = {
 				)
 		}
 	},
-	parse: function ({
+	customParse({
 		variable,
 		position,
 		area,
@@ -162,7 +141,6 @@ Command.cases.getActor = {
 		exclusionTeamId,
 		active
 	}) {
-		// 补丁：2023-1-7
 		selector = this.remapSelectorPatch(selector)
 		activation = this.remapActivationPatch(activation, active)
 		condition = condition ?? 'nearest'
@@ -218,7 +196,7 @@ Command.cases.getActor = {
 			{ text: actor + Token(' = ') + words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		position = { type: 'absolute', x: 0, y: 0 },
 		area = 'square',
@@ -235,10 +213,8 @@ Command.cases.getActor = {
 		exclusionTeamId = Data.teams.list[0].id,
 		active
 	}) {
-		// 补丁：2023-1-7
 		selector = this.remapSelectorPatch(selector)
 		activation = this.remapActivationPatch(activation, active)
-		// 加载角色数值属性选项
 		const attrItems = Attribute.getAttributeItems('actor', 'number')
 		$('#getActor-attribute').loadItems(attrItems)
 		$('#getActor-divisor').loadItems(attrItems)
@@ -259,7 +235,7 @@ Command.cases.getActor = {
 		write('exclusionTeamId', exclusionTeamId)
 		$('#getActor-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('getActor')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
@@ -337,4 +313,4 @@ Command.cases.getActor = {
 		}
 		Command.save({ ...params1, ...params2, ...params3, ...params4 })
 	}
-}
+})

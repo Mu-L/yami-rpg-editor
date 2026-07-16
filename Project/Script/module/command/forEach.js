@@ -1,11 +1,9 @@
 'use strict'
 
-Command.cases.forEach = {
-	commands: null,
-	initialize: function () {
-		$('#forEach-confirm').on('click', this.save)
-
-		// 创建数据选项
+Command.cases.forEach = new CommandSchema({
+	name: 'forEach',
+	onInitialize() {
+		$('#forEach-confirm').on('click', () => this.save())
 		$('#forEach-data').loadItems([
 			{ name: 'List', value: 'list' },
 			{ name: 'Skill', value: 'skill' },
@@ -20,8 +18,6 @@ Command.cases.forEach = {
 			{ name: 'Touch Point', value: 'touch' },
 			{ name: 'Changed Touch Point', value: 'changed-touch' }
 		])
-
-		// 设置数据关联元素
 		$('#forEach-data')
 			.enableHiddenMode()
 			.relate([
@@ -58,13 +54,11 @@ Command.cases.forEach = {
 					targets: [$('#forEach-touchId')]
 				}
 			])
-
-		// 清理内存 - 窗口已关闭事件
-		$('#forEach').on('closed', (event) => {
+		$('#forEach').on('closed', () => {
 			this.commands = null
 		})
 	},
-	parse: function ({
+	customParse({
 		data,
 		list,
 		actor,
@@ -159,7 +153,7 @@ Command.cases.forEach = {
 			{ text: Local.get('command.forEach.end') }
 		]
 	},
-	load: function ({
+	customLoad({
 		data = 'list',
 		list = { type: 'local', key: '' },
 		actor = { type: 'trigger' },
@@ -190,13 +184,13 @@ Command.cases.forEach = {
 		write('variable', variable)
 		write('saveIndex', saveIndex)
 		write('touchId', touchId)
-		Command.cases.forEach.commands = commands
+		this.commands = commands
 		$('#forEach-data').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('forEach')
 		const data = read('data')
-		const commands = Command.cases.forEach.commands
+		const commands = this.commands
 		switch (data) {
 			case 'list': {
 				const list = read('list')
@@ -281,4 +275,4 @@ Command.cases.forEach = {
 			}
 		}
 	}
-}
+})

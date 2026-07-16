@@ -1,20 +1,17 @@
 'use strict'
 
-Command.cases.changeActorTeam = {
-	initialize: function () {
-		$('#changeActorTeam-confirm').on('click', this.save)
-
-		// 创建队伍选项 - 窗口打开事件
+Command.cases.changeActorTeam = new CommandSchema({
+	name: 'changeActorTeam',
+	onInitialize() {
+		$('#changeActorTeam-confirm').on('click', () => this.save())
 		$('#changeActorTeam').on('open', function (event) {
 			$('#changeActorTeam-teamId').loadItems(Data.createTeamItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#changeActorTeam').on('closed', function (event) {
 			$('#changeActorTeam-teamId').clear()
 		})
 	},
-	parse: function ({ actor, teamId }) {
+	customParse({ actor, teamId }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseTeam(teamId))
@@ -24,7 +21,7 @@ Command.cases.changeActorTeam = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		teamId = Data.teams.list[0].id
 	}) {
@@ -33,10 +30,8 @@ Command.cases.changeActorTeam = {
 		write('teamId', teamId)
 		$('#changeActorTeam-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('changeActorTeam')
-		const actor = read('actor')
-		const teamId = read('teamId')
-		Command.save({ actor, teamId })
+		Command.save({ actor: read('actor'), teamId: read('teamId') })
 	}
-}
+})

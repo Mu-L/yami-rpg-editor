@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.getTarget = {
-	initialize: function () {
-		$('#getTarget-confirm').on('click', this.save)
-
-		// 创建选择器选项
+Command.cases.getTarget = new CommandSchema({
+	name: 'getTarget',
+	onInitialize() {
+		$('#getTarget-confirm').on('click', () => this.save())
 		$('#getTarget-selector').loadItems([
 			{ name: 'Enemy', value: 'enemy' },
 			{ name: 'Friend', value: 'friend' },
@@ -13,8 +12,6 @@ Command.cases.getTarget = {
 			{ name: 'Any Except Self', value: 'any-except-self' },
 			{ name: 'Any', value: 'any' }
 		])
-
-		// 创建条件选项
 		$('#getTarget-condition').loadItems([
 			{ name: 'Max Threat', value: 'max-threat' },
 			{ name: 'Nearest', value: 'nearest' },
@@ -25,8 +22,6 @@ Command.cases.getTarget = {
 			{ name: 'Max Attribute Ratio', value: 'max-attribute-ratio' },
 			{ name: 'Random', value: 'random' }
 		])
-
-		// 设置条件关联元素
 		$('#getTarget-condition')
 			.enableHiddenMode()
 			.relate([
@@ -43,7 +38,7 @@ Command.cases.getTarget = {
 				}
 			])
 	},
-	parseCondition: function (condition, attribute, divisor) {
+	parseCondition(condition, attribute, divisor) {
 		const label = Local.get('command.getTarget.condition.' + condition)
 		switch (condition) {
 			case 'max-threat':
@@ -71,7 +66,7 @@ Command.cases.getTarget = {
 				)
 		}
 	},
-	parse: function ({ actor, selector, condition, attribute, divisor }) {
+	customParse({ actor, selector, condition, attribute, divisor }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseActorSelector(selector))
@@ -82,14 +77,13 @@ Command.cases.getTarget = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		selector = 'enemy',
 		condition = 'max-threat',
 		attribute = Attribute.getDefAttributeId('actor', 'number'),
 		divisor = Attribute.getDefAttributeId('actor', 'number')
 	}) {
-		// 加载角色数值属性选项
 		const attrItems = Attribute.getAttributeItems('actor', 'number')
 		$('#getTarget-attribute').loadItems(attrItems)
 		$('#getTarget-divisor').loadItems(attrItems)
@@ -101,7 +95,7 @@ Command.cases.getTarget = {
 		write('divisor', divisor)
 		$('#getTarget-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('getTarget')
 		const actor = read('actor')
 		const selector = read('selector')
@@ -137,4 +131,4 @@ Command.cases.getTarget = {
 			}
 		}
 	}
-}
+})

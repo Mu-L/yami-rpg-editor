@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.changeActorAnimation = {
-	initialize: function () {
-		$('#changeActorAnimation-confirm').on('click', this.save)
-	},
-	parse: function ({ actor, animationId }) {
+Command.cases.changeActorAnimation = new CommandSchema({
+	name: 'changeActorAnimation',
+	customParse({ actor, animationId }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseFileName(animationId))
@@ -14,13 +12,13 @@ Command.cases.changeActorAnimation = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ actor = { type: 'trigger' }, animationId = '' }) {
+	customLoad({ actor = { type: 'trigger' }, animationId = '' }) {
 		const write = getElementWriter('changeActorAnimation')
 		write('actor', actor)
 		write('animationId', animationId)
 		$('#changeActorAnimation-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('changeActorAnimation')
 		const actor = read('actor')
 		const animationId = read('animationId')
@@ -29,4 +27,4 @@ Command.cases.changeActorAnimation = {
 		}
 		Command.save({ actor, animationId })
 	}
-}
+})

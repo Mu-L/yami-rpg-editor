@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.setWeight = {
-	initialize: function () {
-		$('#setWeight-confirm').on('click', this.save)
-	},
-	parse: function ({ actor, weight }) {
+Command.cases.setWeight = new CommandSchema({
+	name: 'setWeight',
+	customParse({ actor, weight }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseVariableNumber(weight))
@@ -14,16 +12,14 @@ Command.cases.setWeight = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ actor = { type: 'trigger' }, weight = 0 }) {
+	customLoad({ actor = { type: 'trigger' }, weight = 0 }) {
 		const write = getElementWriter('setWeight')
 		write('actor', actor)
 		write('weight', weight)
 		$('#setWeight-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setWeight')
-		const actor = read('actor')
-		const weight = read('weight')
-		Command.save({ actor, weight })
+		Command.save({ actor: read('actor'), weight: read('weight') })
 	}
-}
+})

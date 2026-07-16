@@ -1,23 +1,17 @@
 'use strict'
 
-Command.cases.if = {
-	elseCommands: null,
-	initialize: function () {
-		$('#if-confirm').on('click', this.save)
-
-		// 绑定分支列表
+Command.cases.if = new CommandSchema({
+	name: 'if',
+	onInitialize() {
+		$('#if-confirm').on('click', () => this.save())
 		$('#if-branches').bind(IfBranch)
-
-		// 绑定条件列表
 		$('#if-branch-conditions').bind(IfCondition)
-
-		// 清理内存 - 窗口已关闭事件
-		$('#if').on('closed', (event) => {
+		$('#if').on('closed', () => {
 			this.elseCommands = null
 			$('#if-branches').clear()
 		})
 	},
-	parse: function ({ branches, elseCommands }) {
+	customParse({ branches, elseCommands }) {
 		const contents = [{ fold: true }]
 		const textIf = Local.get('command.if')
 		const textElse = Local.get('command.if.else')
@@ -42,14 +36,14 @@ Command.cases.if = {
 		contents.push({ color: 'flow' }, { text: Local.get('command.if.end') })
 		return contents
 	},
-	load: function ({ branches = [], elseCommands = null }) {
+	customLoad({ branches = [], elseCommands = null }) {
 		const write = getElementWriter('if')
 		write('branches', branches.slice())
 		write('else', !!elseCommands)
-		Command.cases.if.elseCommands = elseCommands
+		this.elseCommands = elseCommands
 		$('#if-branches').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('if')
 		const branches = read('branches')
 		if (branches.length === 0) {
@@ -57,7 +51,7 @@ Command.cases.if = {
 		}
 		switch (read('else')) {
 			case true: {
-				const elseCommands = Command.cases.if.elseCommands ?? []
+				const elseCommands = this.elseCommands ?? []
 				Command.save({ branches, elseCommands })
 				break
 			}
@@ -66,4 +60,4 @@ Command.cases.if = {
 				break
 		}
 	}
-}
+})

@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.setElement = {
-	initialize: function () {
-		$('#setElement-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setElement = new CommandSchema({
+	name: 'setElement',
+	onInitialize() {
+		$('#setElement-confirm').on('click', () => this.save())
 		$('#setElement-operation').loadItems([
 			{ name: 'Hide', value: 'hide' },
 			{ name: 'Show', value: 'show' },
@@ -15,7 +14,7 @@ Command.cases.setElement = {
 			{ name: 'Move to Last', value: 'move-to-last' }
 		])
 	},
-	parse: function ({ element, operation }) {
+	customParse({ element, operation }) {
 		const words = Command.words
 			.push(Command.parseElement(element))
 			.push(Local.get('command.setElement.' + operation))
@@ -25,16 +24,17 @@ Command.cases.setElement = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ element = { type: 'trigger' }, operation = 'hide' }) {
+	customLoad({ element = { type: 'trigger' }, operation = 'hide' }) {
 		const write = getElementWriter('setElement')
 		write('element', element)
 		write('operation', operation)
 		$('#setElement-element').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setElement')
-		const element = read('element')
-		const operation = read('operation')
-		Command.save({ element, operation })
+		Command.save({
+			element: read('element'),
+			operation: read('operation')
+		})
 	}
-}
+})

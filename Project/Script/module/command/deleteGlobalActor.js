@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.deleteGlobalActor = {
-	initialize: function () {
-		$('#deleteGlobalActor-confirm').on('click', this.save)
-	},
-	parse: function ({ actorId }) {
+Command.cases.deleteGlobalActor = new CommandSchema({
+	name: 'deleteGlobalActor',
+	customParse({ actorId }) {
 		const words = Command.words.push(Command.parseFileName(actorId))
 		return [
 			{ color: 'actor' },
@@ -12,12 +10,12 @@ Command.cases.deleteGlobalActor = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ actorId = '' }) {
+	customLoad({ actorId = '' }) {
 		const write = getElementWriter('deleteGlobalActor')
 		write('actorId', actorId)
 		$('#deleteGlobalActor-actorId').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('deleteGlobalActor')
 		const actorId = read('actorId')
 		if (actorId === '') {
@@ -25,4 +23,4 @@ Command.cases.deleteGlobalActor = {
 		}
 		Command.save({ actorId })
 	}
-}
+})

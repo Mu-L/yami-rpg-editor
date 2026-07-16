@@ -1,23 +1,20 @@
 'use strict'
 
-Command.cases.loadScene = {
-	initialize: function () {
-		$('#loadScene-confirm').on('click', this.save)
-
-		// 创建转移玩家角色选项
+Command.cases.loadScene = new CommandSchema({
+	name: 'loadScene',
+	onInitialize() {
+		$('#loadScene-confirm').on('click', () => this.save())
 		$('#loadScene-transfer').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 设置转移玩家角色关联元素
 		$('#loadScene-transfer')
 			.enableHiddenMode()
 			.relate([
 				{ case: true, targets: [$('#loadScene-x'), $('#loadScene-y')] }
 			])
 	},
-	parse: function ({ sceneId, transfer, x, y }) {
+	customParse({ sceneId, transfer, x, y }) {
 		const words = Command.words.push(Command.parseVariableFile(sceneId))
 		if (transfer) {
 			words
@@ -30,7 +27,7 @@ Command.cases.loadScene = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ sceneId = '', transfer = true, x = 0, y = 0 }) {
+	customLoad({ sceneId = '', transfer = true, x = 0, y = 0 }) {
 		const write = getElementWriter('loadScene')
 		write('sceneId', sceneId)
 		write('transfer', transfer)
@@ -38,7 +35,7 @@ Command.cases.loadScene = {
 		write('y', y)
 		$('#loadScene-sceneId').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('loadScene')
 		const sceneId = read('sceneId')
 		if (sceneId === '') {
@@ -46,15 +43,17 @@ Command.cases.loadScene = {
 		}
 		const transfer = read('transfer')
 		switch (transfer) {
-			case true: {
-				const x = read('x')
-				const y = read('y')
-				Command.save({ sceneId, transfer, x, y })
+			case true:
+				Command.save({
+					sceneId,
+					transfer,
+					x: read('x'),
+					y: read('y')
+				})
 				break
-			}
 			case false:
 				Command.save({ sceneId, transfer })
 				break
 		}
 	}
-}
+})

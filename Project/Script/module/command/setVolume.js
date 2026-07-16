@@ -1,34 +1,27 @@
 'use strict'
 
-Command.cases.setVolume = {
-	initialize: function () {
-		$('#setVolume-confirm').on('click', this.save)
-
-		// 创建类型选项
+Command.cases.setVolume = new CommandSchema({
+	name: 'setVolume',
+	onInitialize() {
+		$('#setVolume-confirm').on('click', () => this.save())
 		$('#setVolume-type').loadItems([
 			{ name: 'BGM', value: 'bgm' },
 			{ name: 'BGS', value: 'bgs' },
 			{ name: 'CV', value: 'cv' },
 			{ name: 'SE', value: 'se' }
 		])
-
-		// 创建等待选项
 		$('#setVolume-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
 		$('#setVolume').on('open', function (event) {
 			$('#setVolume-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setVolume').on('closed', function (event) {
 			$('#setVolume-easingId').clear()
 		})
 	},
-	parse: function ({ type, volume, easingId, duration, wait }) {
+	customParse({ type, volume, easingId, duration, wait }) {
 		const words = Command.words
 			.push(Command.parseAudioType(type))
 			.push(Command.parseVariableNumber(volume))
@@ -39,7 +32,7 @@ Command.cases.setVolume = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		type = 'bgm',
 		volume = 1,
 		easingId = Data.easings[0].id,
@@ -54,13 +47,14 @@ Command.cases.setVolume = {
 		write('wait', wait)
 		$('#setVolume-type').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setVolume')
-		const type = read('type')
-		const volume = read('volume')
-		const easingId = read('easingId')
-		const duration = read('duration')
-		const wait = read('wait')
-		Command.save({ type, volume, easingId, duration, wait })
+		Command.save({
+			type: read('type'),
+			volume: read('volume'),
+			easingId: read('easingId'),
+			duration: read('duration'),
+			wait: read('wait')
+		})
 	}
-}
+})

@@ -1,33 +1,26 @@
 'use strict'
 
-Command.cases.shakeScreen = {
-	initialize: function () {
-		$('#shakeScreen-confirm').on('click', this.save)
-
-		// 创建震动模式选项
+Command.cases.shakeScreen = new CommandSchema({
+	name: 'shakeScreen',
+	onInitialize() {
+		$('#shakeScreen-confirm').on('click', () => this.save())
 		$('#shakeScreen-mode').loadItems([
 			{ name: 'Random', value: 'random' },
 			{ name: 'Horizontal', value: 'horizontal' },
 			{ name: 'Vertical', value: 'vertical' }
 		])
-
-		// 创建等待结束选项
 		$('#shakeScreen-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
 		$('#shakeScreen').on('open', function (event) {
 			$('#shakeScreen-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#shakeScreen').on('closed', function (event) {
 			$('#shakeScreen-easingId').clear()
 		})
 	},
-	parse: function ({ mode, power, speed, easingId, duration, wait }) {
+	customParse({ mode, power, speed, easingId, duration, wait }) {
 		const words = Command.words
 			.push(Local.get('command.shakeScreen.' + mode))
 			.push(Command.setNumberColor(power))
@@ -39,7 +32,7 @@ Command.cases.shakeScreen = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		mode = 'random',
 		power = 5,
 		speed = 10,
@@ -56,14 +49,15 @@ Command.cases.shakeScreen = {
 		write('wait', wait)
 		$('#shakeScreen-mode').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('shakeScreen')
-		const mode = read('mode')
-		const power = read('power')
-		const speed = read('speed')
-		const easingId = read('easingId')
-		const duration = read('duration')
-		const wait = read('wait')
-		Command.save({ mode, power, speed, easingId, duration, wait })
+		Command.save({
+			mode: read('mode'),
+			power: read('power'),
+			speed: read('speed'),
+			easingId: read('easingId'),
+			duration: read('duration'),
+			wait: read('wait')
+		})
 	}
-}
+})

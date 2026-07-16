@@ -1,15 +1,15 @@
 'use strict'
 
-Command.cases.callEvent = {
+Command.cases.callEvent = new CommandSchema({
+	name: 'callEvent',
 	windowFrame: $('#callEvent'),
 	gridBox: $('#callEvent').querySelector('grid-box'),
 	eventArgs: [],
 	parameters: [],
 	eventResult: null,
-	initialize: function () {
-		$('#callEvent-confirm').on('click', this.save)
+	onInitialize() {
+		$('#callEvent-confirm').on('click', () => this.save())
 
-		// 创建类型选项
 		$('#callEvent-type').loadItems([
 			{ name: 'Global', value: 'global' },
 			{ name: 'Inherited', value: 'inherited' },
@@ -23,7 +23,6 @@ Command.cases.callEvent = {
 			{ name: 'Element', value: 'element' }
 		])
 
-		// 设置关联元素
 		$('#callEvent-type')
 			.enableHiddenMode()
 			.relate([
@@ -65,16 +64,13 @@ Command.cases.callEvent = {
 				}
 			])
 
-		// 窗口 - 已关闭事件
-		this.windowFrame.on('closed', (event) => {
+		this.windowFrame.on('closed', () => {
 			this.eventArgs = []
 			this.clearGlobalEventElements()
 		})
 
-		// 类型 - 写入事件
 		$('#callEvent-type').on('write', (event) => {
 			const type = event.value
-			// 加载事件类型选项(创建了全局事件类型但是没用到)
 			if (type !== 'inherited') {
 				const elEventType = $('#callEvent-eventType')
 				const eventTypes = Enum.getMergedItems(
@@ -85,14 +81,12 @@ Command.cases.callEvent = {
 				elEventType.createTooltip()
 				elEventType.write(eventTypes[0].value)
 			}
-			// 显示或隐藏全局事件参数和返回值元素组件
 			for (const element of $('.call-event-component')) {
 				type === 'global' ? element.show() : element.hide()
 			}
 			this.resizeWindow()
 		})
 
-		// 全局事件ID - 写入事件
 		$('#callEvent-eventId').on('write', (event) => {
 			this.eventArgs = this.readEventArgs()
 			this.clearGlobalEventElements()
@@ -112,17 +106,14 @@ Command.cases.callEvent = {
 			this.resizeWindow()
 		})
 
-		// 全局事件ID - 输入事件
 		$('#callEvent-eventId').on('input', (event) => {
 			this.writeEventArgs(this.eventArgs)
 		})
 	},
-	// 调整窗口大小
-	resizeWindow: function () {
+	resizeWindow() {
 		this.windowFrame.style.height = `${this.gridBox.clientHeight + 78}px`
 	},
-	// 清除全局事件元素
-	clearGlobalEventElements: function () {
+	clearGlobalEventElements() {
 		const { parameters } = this
 		if (parameters.length !== 0) {
 			for (const { label, input } of parameters) {
@@ -138,8 +129,7 @@ Command.cases.callEvent = {
 			this.eventResult = null
 		}
 	},
-	// 创建参数元素
-	createParameterElements: function (parameter) {
+	createParameterElements(parameter) {
 		const { type, key, note } = parameter
 		const label = document.createElement('text')
 		const name = key ? key.charAt(0).toUpperCase() + key.slice(1) : ''
@@ -216,8 +206,7 @@ Command.cases.callEvent = {
 		this.gridBox.appendChild(input)
 		this.parameters.push({ key, type, label, input })
 	},
-	// 创建返回值元素
-	createEventResultElements: function (type) {
+	createEventResultElements(type) {
 		let input
 		switch (type) {
 			case 'none':
@@ -267,7 +256,7 @@ Command.cases.callEvent = {
 		this.gridBox.appendChild(input)
 		this.eventResult = { type, label, input }
 	},
-	parseEventArgs: function (event, args) {
+	parseEventArgs(event, args) {
 		const words = Command.words
 		if (event) {
 			const flags = {}
@@ -301,7 +290,7 @@ Command.cases.callEvent = {
 		if (info) info = `(${info})`
 		return info
 	},
-	parseEventArgInput: function (arg) {
+	parseEventArgInput(arg) {
 		switch (arg.type) {
 			case 'boolean':
 				return Command.setBooleanColor(arg.value.toString())
@@ -329,7 +318,7 @@ Command.cases.callEvent = {
 				return Command.parseElement(arg.value)
 		}
 	},
-	getDefaultArgValue: function (type) {
+	getDefaultArgValue(type) {
 		switch (type) {
 			case 'boolean':
 				return false
@@ -350,7 +339,7 @@ Command.cases.callEvent = {
 				return { type: 'trigger' }
 		}
 	},
-	writeEventArgs: function (args) {
+	writeEventArgs(args) {
 		outer: for (const { type, key, input } of this.parameters) {
 			for (const arg of args) {
 				if (arg.key === key && arg.type === type) {
@@ -361,7 +350,7 @@ Command.cases.callEvent = {
 			input.write(this.getDefaultArgValue(type))
 		}
 	},
-	readEventArgs: function () {
+	readEventArgs() {
 		const args = []
 		for (const { type, key, input } of this.parameters) {
 			const value = input.read()
@@ -373,13 +362,12 @@ Command.cases.callEvent = {
 		}
 		return args
 	},
-	writeEventResult: function (eventResult) {
+	writeEventResult(eventResult) {
 		if (this.eventResult === null) return
 		if (eventResult.type === 'none') return
 		const baseTypes = 'boolean|number|string'
 		const objectTypes =
 			'actor|skill|state|equipment|item|trigger|light|element|any'
-		// 如果数据结构兼容，写入数据
 		if (
 			eventResult.type === this.eventResult.type ||
 			(baseTypes.includes(eventResult.type) &&
@@ -391,7 +379,7 @@ Command.cases.callEvent = {
 			this.eventResult.input.write(eventResult.variable)
 		}
 	},
-	readEventResult: function () {
+	readEventResult() {
 		const eventResult = { type: 'none' }
 		if (this.eventResult !== null) {
 			eventResult.type = this.eventResult.type
@@ -399,7 +387,7 @@ Command.cases.callEvent = {
 		}
 		return eventResult
 	},
-	parse: function ({
+	customParse({
 		type,
 		actor,
 		skill,
@@ -416,7 +404,6 @@ Command.cases.callEvent = {
 		const words = Command.words
 		switch (type) {
 			case 'global': {
-				// 2025.2.22补丁
 				if (eventArgs === undefined) {
 					eventArgs = []
 				}
@@ -526,7 +513,7 @@ Command.cases.callEvent = {
 		}
 		return contents
 	},
-	load: function ({
+	customLoad({
 		type = 'global',
 		actor = { type: 'trigger' },
 		skill = { type: 'trigger' },
@@ -555,7 +542,7 @@ Command.cases.callEvent = {
 		this.writeEventResult(eventResult)
 		$('#callEvent-type').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('callEvent')
 		const type = read('type')
 		switch (type) {
@@ -564,15 +551,14 @@ Command.cases.callEvent = {
 				if (eventId === '') {
 					return $('#callEvent-eventId').getFocus()
 				}
-				const callEvent = Command.cases.callEvent
-				const eventArgs = callEvent.readEventArgs()
+				const eventArgs = this.readEventArgs()
 				if (eventArgs === null) return
-				const eventResult = callEvent.readEventResult()
+				const eventResult = this.readEventResult()
 				if (
 					eventResult.type !== 'none' &&
 					VariableGetter.isNone(eventResult.variable)
 				) {
-					return callEvent.eventResult.input.getFocus()
+					return this.eventResult.input.getFocus()
 				}
 				Command.save({ type, eventId, eventArgs, eventResult })
 				break
@@ -602,4 +588,4 @@ Command.cases.callEvent = {
 			}
 		}
 	}
-}
+})

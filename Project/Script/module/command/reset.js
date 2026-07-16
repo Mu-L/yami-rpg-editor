@@ -1,10 +1,12 @@
 'use strict'
 
-Command.cases.reset = {
-	parse: function () {
+Command.cases.reset = new CommandSchema({
+	name: 'reset',
+	noWindow: true,
+	customParse() {
 		return [{ color: 'system' }, { text: Local.get('command.reset') }]
 	},
-	save: function () {
+	customSave() {
 		Command.save({})
 	}
-}
+})

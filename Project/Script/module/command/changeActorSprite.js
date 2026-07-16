@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.changeActorSprite = {
-	initialize: function () {
-		$('#changeActorSprite-confirm').on('click', this.save)
-
-		// 侦听事件
+Command.cases.changeActorSprite = new CommandSchema({
+	name: 'changeActorSprite',
+	onInitialize() {
+		$('#changeActorSprite-confirm').on('click', () => this.save())
 		$('#changeActorSprite-animationId').on('write', (event) => {
 			const items = Animation.getSpriteListItems(event.value)
 			const elSpriteId = $('#changeActorSprite-spriteId')
@@ -12,7 +11,7 @@ Command.cases.changeActorSprite = {
 			elSpriteId.write(elSpriteId.read())
 		})
 	},
-	parse: function ({ actor, animationId, spriteId, image }) {
+	customParse({ actor, animationId, spriteId, image }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Command.parseFileName(animationId))
@@ -24,7 +23,7 @@ Command.cases.changeActorSprite = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		animationId = '',
 		spriteId = '',
@@ -37,9 +36,8 @@ Command.cases.changeActorSprite = {
 		write('image', image)
 		$('#changeActorSprite-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('changeActorSprite')
-		const actor = read('actor')
 		const animationId = read('animationId')
 		if (animationId === '') {
 			return $('#changeActorSprite-animationId').getFocus()
@@ -48,7 +46,11 @@ Command.cases.changeActorSprite = {
 		if (spriteId === '') {
 			return $('#changeActorSprite-spriteId').getFocus()
 		}
-		const image = read('image')
-		Command.save({ actor, animationId, spriteId, image })
+		Command.save({
+			actor: read('actor'),
+			animationId,
+			spriteId,
+			image: read('image')
+		})
 	}
-}
+})

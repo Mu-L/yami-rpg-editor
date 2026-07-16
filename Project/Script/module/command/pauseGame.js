@@ -1,10 +1,12 @@
 'use strict'
 
-Command.cases.pauseGame = {
-	parse: function () {
+Command.cases.pauseGame = new CommandSchema({
+	name: 'pauseGame',
+	noWindow: true,
+	customParse() {
 		return [{ color: 'system' }, { text: Local.get('command.pauseGame') }]
 	},
-	save: function () {
+	customSave() {
 		Command.save({})
 	}
-}
+})

@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setTextBox = {
-	initialize: function () {
-		$('#setTextBox-confirm').on('click', this.save)
-
-		// 绑定属性列表
+Command.cases.setTextBox = new CommandSchema({
+	name: 'setTextBox',
+	onInitialize() {
+		$('#setTextBox-confirm').on('click', () => this.save())
 		$('#setTextBox-properties').bind(TextBoxProperty)
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setTextBox').on('closed', (event) => {
 			$('#setTextBox-properties').clear()
 		})
 	},
-	parse: function ({ element, properties }) {
+	customParse({ element, properties }) {
 		const words = Command.words.push(Command.parseElement(element))
 		for (const property of properties) {
 			words.push(TextBoxProperty.parse(property))
@@ -23,13 +20,13 @@ Command.cases.setTextBox = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ element = { type: 'trigger' }, properties = [] }) {
+	customLoad({ element = { type: 'trigger' }, properties = [] }) {
 		const write = getElementWriter('setTextBox')
 		write('element', element)
 		write('properties', properties.slice())
 		$('#setTextBox-element').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setTextBox')
 		const element = read('element')
 		const properties = read('properties')
@@ -38,4 +35,4 @@ Command.cases.setTextBox = {
 		}
 		Command.save({ element, properties })
 	}
-}
+})

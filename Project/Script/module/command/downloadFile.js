@@ -1,13 +1,14 @@
-// 下载文件
-Command.cases.downloadFile = {
-	initialize: function () {
+'use strict'
+
+Command.cases.downloadFile = new CommandSchema({
+	name: 'downloadFile',
+	onInitialize() {
 		$('#downloadFile-method').loadItems([
 			{ name: 'GET', value: 'GET' },
 			{ name: 'POST', value: 'POST' },
 			{ name: 'PUT', value: 'PUT' },
 			{ name: 'DELETE', value: 'DELETE' }
 		])
-		// 设置类型关联元素
 		$('#downloadFile-isBackground').relate([
 			$('#downloadFile-isBackground-path')
 		])
@@ -21,9 +22,9 @@ Command.cases.downloadFile = {
 		$('#downloadFile-isBackground-path').write('')
 		$('#downloadFile-header').bind(RequestkeyValueBind)
 		$('#downloadFile-data').bind(RequestkeyValueBind)
-		$('#downloadFile-confirm').on('click', this.save)
+		$('#downloadFile-confirm').on('click', () => this.save())
 	},
-	parse: function ({
+	customParse({
 		url = '',
 		method = 'GET',
 		headers = [],
@@ -91,7 +92,7 @@ Command.cases.downloadFile = {
 				: [])
 		)
 	},
-	load: function ({
+	customLoad({
 		url = '',
 		method = 'GET',
 		headers = [],
@@ -111,7 +112,7 @@ Command.cases.downloadFile = {
 		write('header', headers)
 		write('data', data)
 	},
-	save: function () {
+	customSave() {
 		const elVariable = $('#downloadFile-url')
 		const variable = elVariable.read()
 		if (!variable || VariableGetter.isNone(variable)) {
@@ -129,4 +130,4 @@ Command.cases.downloadFile = {
 			isBackgroundPath: read('isBackground-path')
 		})
 	}
-}
+})

@@ -1,63 +1,48 @@
 'use strict'
 
-Command.cases.followActor = {
-	initialize: function () {
-		$('#followActor-confirm').on('click', this.save)
-
-		// 创建模式选项
+Command.cases.followActor = new CommandSchema({
+	name: 'followActor',
+	onInitialize() {
+		$('#followActor-confirm').on('click', () => this.save())
 		$('#followActor-mode').loadItems([
 			{ name: 'Circle', value: 'circle' },
 			{ name: 'Rectangle', value: 'rectangle' }
 		])
-
-		// 设置模式关联元素
 		$('#followActor-mode')
 			.enableHiddenMode()
 			.relate([
 				{ case: 'circle', targets: [$('#followActor-offset')] },
 				{ case: 'rectangle', targets: [$('#followActor-vertDist')] }
 			])
-
-		// 创建导航选项
 		$('#followActor-navigate').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 设置导航关联元素
 		$('#followActor-navigate')
 			.enableHiddenMode()
 			.relate([{ case: true, targets: [$('#followActor-bypass')] }])
-
-		// 创建绕过角色选项
 		$('#followActor-bypass').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建跟随一次选项
 		$('#followActor-once').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 设置跟随一次关联元素
 		$('#followActor-once')
 			.enableHiddenMode()
 			.relate([{ case: true, targets: [$('#followActor-wait')] }])
-
-		// 创建等待选项
 		$('#followActor-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
 	},
-	parseActors: function (actor, target) {
+	parseActors(actor, target) {
 		const sActor = Command.parseActor(actor)
 		const dActor = Command.parseActor(target)
 		return sActor + Token(' -> ') + dActor
 	},
-	parse: function ({
+	customParse({
 		actor,
 		target,
 		mode,
@@ -71,7 +56,6 @@ Command.cases.followActor = {
 		once,
 		wait
 	}) {
-		// 2025.3.5补丁
 		if (bufferDist === undefined) {
 			bufferDist = 0
 		}
@@ -108,7 +92,7 @@ Command.cases.followActor = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		target = { type: 'trigger' },
 		mode = 'circle',
@@ -137,7 +121,7 @@ Command.cases.followActor = {
 		write('wait', wait)
 		$('#followActor-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('followActor')
 		const actor = read('actor')
 		const target = read('target')
@@ -151,14 +135,13 @@ Command.cases.followActor = {
 		const wait = once ? read('wait') : false
 		switch (mode) {
 			case 'circle': {
-				const offset = read('offset')
 				Command.save({
 					actor,
 					target,
 					mode,
 					minDist,
 					maxDist,
-					offset,
+					offset: read('offset'),
 					bufferDist,
 					navigate,
 					...bypass,
@@ -168,14 +151,13 @@ Command.cases.followActor = {
 				break
 			}
 			case 'rectangle': {
-				const vertDist = read('vertDist')
 				Command.save({
 					actor,
 					target,
 					mode,
 					minDist,
 					maxDist,
-					vertDist,
+					vertDist: read('vertDist'),
 					bufferDist,
 					navigate,
 					...bypass,
@@ -186,4 +168,4 @@ Command.cases.followActor = {
 			}
 		}
 	}
-}
+})

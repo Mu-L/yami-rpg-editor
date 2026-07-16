@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setObjectAnimation = {
-	initialize: function () {
-		$('#setObjectAnimation-confirm').on('click', this.save)
-
-		// 创建分类选项
+Command.cases.setObjectAnimation = new CommandSchema({
+	name: 'setObjectAnimation',
+	onInitialize() {
+		$('#setObjectAnimation-confirm').on('click', () => this.save())
 		$('#setObjectAnimation-sort').loadItems([
 			{ name: 'Only Actor Animation', value: 'actor' },
 			{ name: 'All Animation Components', value: 'components' },
 			{ name: 'Trigger Animation', value: 'trigger' },
 			{ name: 'Scene Animation', value: 'animation' }
 		])
-
-		// 设置动画关联元素
 		$('#setObjectAnimation-sort')
 			.enableHiddenMode()
 			.relate([
@@ -29,8 +26,6 @@ Command.cases.setObjectAnimation = {
 					targets: [$('#setObjectAnimation-animation')]
 				}
 			])
-
-		// 创建操作选项
 		$('#setObjectAnimation-operation').loadItems([
 			{ name: 'Set Tint', value: 'set-tint' },
 			{ name: 'Set RGB', value: 'set-rgb' },
@@ -39,8 +34,6 @@ Command.cases.setObjectAnimation = {
 			{ name: 'Set OffsetY', value: 'set-offsetY' },
 			{ name: 'Set Rotation', value: 'set-rotation' }
 		])
-
-		// 设置操作关联元素
 		$('#setObjectAnimation-operation')
 			.enableHiddenMode()
 			.relate([
@@ -78,26 +71,20 @@ Command.cases.setObjectAnimation = {
 					targets: [$('#setObjectAnimation-rotation')]
 				}
 			])
-
-		// 创建等待结束选项
 		$('#setObjectAnimation-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
 		$('#setObjectAnimation').on('open', function (event) {
 			$('#setObjectAnimation-easingId').loadItems(
 				Data.createEasingItems()
 			)
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setObjectAnimation').on('closed', function (event) {
 			$('#setObjectAnimation-easingId').clear()
 		})
 	},
-	parseTint: function (operation, [red, green, blue, gray]) {
+	parseTint(operation, [red, green, blue, gray]) {
 		const label = Local.get('command.setObjectAnimation.' + operation)
 		const _red = Command.setNumberColor(red)
 		const _green = Command.setNumberColor(green)
@@ -132,7 +119,7 @@ Command.cases.setObjectAnimation = {
 				return label + Token('(') + _gray + Token(')')
 		}
 	},
-	parseProperty: function (operation, property) {
+	parseProperty(operation, property) {
 		const label = Local.get('command.setObjectAnimation.' + operation)
 		return (
 			label +
@@ -141,7 +128,7 @@ Command.cases.setObjectAnimation = {
 			Token(')')
 		)
 	},
-	parse: function ({
+	customParse({
 		sort,
 		object,
 		operation,
@@ -190,7 +177,7 @@ Command.cases.setObjectAnimation = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		sort = 'actor',
 		object = { type: 'trigger' },
 		operation = 'set-tint',
@@ -235,7 +222,7 @@ Command.cases.setObjectAnimation = {
 		write('wait', wait)
 		$('#setObjectAnimation-sort').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setObjectAnimation')
 		const sort = read('sort')
 		const operation = read('operation')
@@ -283,38 +270,35 @@ Command.cases.setObjectAnimation = {
 				wait
 			})
 		} else if (operation === 'set-opacity') {
-			const opacity = read('opacity')
 			Command.save({
 				sort,
 				object,
 				operation,
-				opacity,
+				opacity: read('opacity'),
 				easingId,
 				duration,
 				wait
 			})
 		} else if (operation === 'set-offsetY') {
-			const offsetY = read('offsetY')
 			Command.save({
 				sort,
 				object,
 				operation,
-				offsetY,
+				offsetY: read('offsetY'),
 				easingId,
 				duration,
 				wait
 			})
 		} else if (operation === 'set-rotation') {
-			const rotation = read('rotation')
 			Command.save({
 				sort,
 				object,
 				operation,
-				rotation,
+				rotation: read('rotation'),
 				easingId,
 				duration,
 				wait
 			})
 		}
 	}
-}
+})

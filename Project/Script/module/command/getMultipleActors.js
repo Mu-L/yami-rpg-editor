@@ -1,16 +1,13 @@
 'use strict'
 
-Command.cases.getMultipleActors = {
-	initialize: function () {
-		$('#getMultipleActors-confirm').on('click', this.save)
-
-		// 创建区域选项
+Command.cases.getMultipleActors = new CommandSchema({
+	name: 'getMultipleActors',
+	onInitialize() {
+		$('#getMultipleActors-confirm').on('click', () => this.save())
 		$('#getMultipleActors-area').loadItems([
 			{ name: 'Rectangle', value: 'rectangle' },
 			{ name: 'Circle', value: 'circle' }
 		])
-
-		// 设置区域关联元素
 		$('#getMultipleActors-area')
 			.enableHiddenMode()
 			.relate([
@@ -23,16 +20,12 @@ Command.cases.getMultipleActors = {
 				},
 				{ case: 'circle', targets: [$('#getMultipleActors-radius')] }
 			])
-
-		// 创建选择器选项
 		$('#getMultipleActors-selector').loadItems([
 			{ name: 'Team Enemy', value: 'enemy' },
 			{ name: 'Team Friend', value: 'friend' },
 			{ name: 'Team Member', value: 'team' },
 			{ name: 'Any', value: 'any' }
 		])
-
-		// 设置选择器关联元素
 		$('#getMultipleActors-selector')
 			.enableHiddenMode()
 			.relate([
@@ -41,26 +34,20 @@ Command.cases.getMultipleActors = {
 					targets: [$('#getMultipleActors-teamId')]
 				}
 			])
-
-		// 创建激活状态选项
 		$('#getMultipleActors-activation').loadItems([
 			{ name: 'Active', value: 'active' },
 			{ name: 'Inactive', value: 'inactive' },
 			{ name: 'Either', value: 'either' }
 		])
-
-		// 侦听窗口打开事件
 		$('#getMultipleActors').on('open', function (event) {
 			const items = Data.createTeamItems()
 			$('#getMultipleActors-teamId').loadItems(items)
 		})
-
-		// 侦听窗口已关闭事件
 		$('#getMultipleActors').on('closed', function (event) {
 			$('#getMultipleActors-teamId').clear()
 		})
 	},
-	parse: function ({
+	customParse({
 		variable,
 		position,
 		area,
@@ -107,7 +94,7 @@ Command.cases.getMultipleActors = {
 			{ text: actors + Token(' = ') + words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		position = { type: 'absolute', x: 0, y: 0 },
 		area = 'rectangle',
@@ -130,7 +117,7 @@ Command.cases.getMultipleActors = {
 		write('activation', activation)
 		$('#getMultipleActors-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('getMultipleActors')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
@@ -166,4 +153,4 @@ Command.cases.getMultipleActors = {
 		}
 		Command.save({ ...params1, ...params2, activation })
 	}
-}
+})

@@ -1,17 +1,16 @@
 'use strict'
 
-Command.cases.setTriggerDuration = {
-	initialize: function () {
-		$('#setTriggerDuration-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setTriggerDuration = new CommandSchema({
+	name: 'setTriggerDuration',
+	onInitialize() {
+		$('#setTriggerDuration-confirm').on('click', () => this.save())
 		$('#setTriggerDuration-operation').loadItems([
 			{ name: 'Set', value: 'set' },
 			{ name: 'Increase', value: 'increase' },
 			{ name: 'Decrease', value: 'decrease' }
 		])
 	},
-	parse: function ({ trigger, operation, duration }) {
+	customParse({ trigger, operation, duration }) {
 		const words = Command.words
 			.push(Command.parseTrigger(trigger))
 			.push(Local.get('command.setTriggerDuration.' + operation))
@@ -22,7 +21,7 @@ Command.cases.setTriggerDuration = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		trigger = { type: 'trigger' },
 		operation = 'set',
 		duration = 0
@@ -33,11 +32,12 @@ Command.cases.setTriggerDuration = {
 		write('duration', duration)
 		$('#setTriggerDuration-trigger').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setTriggerDuration')
-		const trigger = read('trigger')
-		const operation = read('operation')
-		const duration = read('duration')
-		Command.save({ trigger, operation, duration })
+		Command.save({
+			trigger: read('trigger'),
+			operation: read('operation'),
+			duration: read('duration')
+		})
 	}
-}
+})

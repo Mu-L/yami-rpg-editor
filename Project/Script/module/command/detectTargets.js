@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.detectTargets = {
-	initialize: function () {
-		$('#detectTargets-confirm').on('click', this.save)
-
-		// 创建选择器选项
+Command.cases.detectTargets = new CommandSchema({
+	name: 'detectTargets',
+	onInitialize() {
+		$('#detectTargets-confirm').on('click', () => this.save())
 		$('#detectTargets-selector').loadItems([
 			{ name: 'Enemy', value: 'enemy' },
 			{ name: 'Friend', value: 'friend' },
@@ -13,14 +12,12 @@ Command.cases.detectTargets = {
 			{ name: 'Any Except Self', value: 'any-except-self' },
 			{ name: 'Any', value: 'any' }
 		])
-
-		// 创建视线判断选项
 		$('#detectTargets-inSight').loadItems([
 			{ name: 'Enabled', value: true },
 			{ name: 'Disabled', value: false }
 		])
 	},
-	parseInSight: function (inSight) {
+	parseInSight(inSight) {
 		switch (inSight) {
 			case true:
 				return Local.get('command.detectTargets.inSight')
@@ -28,7 +25,7 @@ Command.cases.detectTargets = {
 				return ''
 		}
 	},
-	parse: function ({ actor, distance, selector, inSight }) {
+	customParse({ actor, distance, selector, inSight }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(Token('≤') + Command.parseVariableNumber(distance, 't'))
@@ -40,7 +37,7 @@ Command.cases.detectTargets = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		distance = 0,
 		selector = 'enemy',
@@ -53,15 +50,17 @@ Command.cases.detectTargets = {
 		write('inSight', inSight)
 		$('#detectTargets-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('detectTargets')
-		const actor = read('actor')
 		const distance = read('distance')
-		const selector = read('selector')
-		const inSight = read('inSight')
 		if (distance === 0) {
 			return $('#detectTargets-distance').getFocus('all')
 		}
-		Command.save({ actor, distance, selector, inSight })
+		Command.save({
+			actor: read('actor'),
+			distance,
+			selector: read('selector'),
+			inSight: read('inSight')
+		})
 	}
-}
+})

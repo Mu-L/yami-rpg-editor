@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setShortcut = {
-	initialize: function () {
-		$('#setShortcut-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setShortcut = new CommandSchema({
+	name: 'setShortcut',
+	onInitialize() {
+		$('#setShortcut-confirm').on('click', () => this.save())
 		$('#setShortcut-operation').loadItems([
 			{ name: 'Set Item Shortcut', value: 'set-item-shortcut' },
 			{ name: 'Set Skill Shortcut', value: 'set-skill-shortcut' },
 			{ name: 'Delete Shortcut', value: 'delete-shortcut' },
 			{ name: 'Swap Shortcuts', value: 'swap-shortcuts' }
 		])
-
-		// 设置操作关联元素
 		$('#setShortcut-operation')
 			.enableHiddenMode()
 			.relate([
@@ -27,7 +24,7 @@ Command.cases.setShortcut = {
 				{ case: 'swap-shortcuts', targets: [$('#setShortcut-key2')] }
 			])
 	},
-	parse: function ({ actor, operation, itemId, skillId, key, key2 }) {
+	customParse({ actor, operation, itemId, skillId, key, key2 }) {
 		const shortcutKey = Command.parseVariableEnum('shortcut-key', key)
 		const words = Command.words
 			.push(Command.parseActor(actor))
@@ -65,7 +62,7 @@ Command.cases.setShortcut = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		operation = 'set-item-shortcut',
 		itemId = '',
@@ -73,7 +70,6 @@ Command.cases.setShortcut = {
 		key = Enum.getDefStringId('shortcut-key'),
 		key2 = Enum.getDefStringId('shortcut-key')
 	}) {
-		// 加载快捷键选项
 		const items = Enum.getStringItems('shortcut-key')
 		$('#setShortcut-key').loadItems(items)
 		$('#setShortcut-key2').loadItems(items)
@@ -86,7 +82,7 @@ Command.cases.setShortcut = {
 		write('skillId', skillId)
 		$('#setShortcut-operation').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setShortcut')
 		const actor = read('actor')
 		const operation = read('operation')
@@ -121,4 +117,4 @@ Command.cases.setShortcut = {
 			}
 		}
 	}
-}
+})

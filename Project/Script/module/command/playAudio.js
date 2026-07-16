@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.playAudio = {
-	initialize: function () {
-		$('#playAudio-confirm').on('click', this.save)
-
-		// 创建类型选项
+Command.cases.playAudio = new CommandSchema({
+	name: 'playAudio',
+	onInitialize() {
+		$('#playAudio-confirm').on('click', () => this.save())
 		$('#playAudio-type').loadItems([
 			{ name: 'BGM', value: 'bgm' },
 			{ name: 'BGS', value: 'bgs' },
@@ -12,15 +11,13 @@ Command.cases.playAudio = {
 			{ name: 'SE', value: 'se' },
 			{ name: 'SE - Attenuated', value: 'se-attenuated' }
 		])
-
-		// 设置类型关联元素
 		$('#playAudio-type')
 			.enableHiddenMode()
 			.relate([
 				{ case: 'se-attenuated', targets: [$('#playAudio-location')] }
 			])
 	},
-	parse: function ({ type, audio, volume, location }) {
+	customParse({ type, audio, volume, location }) {
 		const words = Command.words
 			.push(Command.parseAudioType(type))
 			.push(Command.parseFileName(audio))
@@ -36,7 +33,7 @@ Command.cases.playAudio = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		type = 'se-attenuated',
 		audio = '',
 		volume = 1,
@@ -49,7 +46,7 @@ Command.cases.playAudio = {
 		write('location', location)
 		$('#playAudio-type').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('playAudio')
 		const type = read('type')
 		const audio = read('audio')
@@ -71,4 +68,4 @@ Command.cases.playAudio = {
 			}
 		}
 	}
-}
+})

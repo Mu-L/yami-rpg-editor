@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setButton = {
-	initialize: function () {
-		$('#setButton-confirm').on('click', this.save)
-
-		// 绑定属性列表
+Command.cases.setButton = new CommandSchema({
+	name: 'setButton',
+	onInitialize() {
+		$('#setButton-confirm').on('click', () => this.save())
 		$('#setButton-properties').bind(ButtonProperty)
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setButton').on('closed', (event) => {
 			$('#setButton-properties').clear()
 		})
 	},
-	parse: function ({ element, properties }) {
+	customParse({ element, properties }) {
 		const words = Command.words.push(Command.parseElement(element))
 		for (const property of properties) {
 			words.push(ButtonProperty.parse(property))
@@ -23,13 +20,13 @@ Command.cases.setButton = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ element = { type: 'trigger' }, properties = [] }) {
+	customLoad({ element = { type: 'trigger' }, properties = [] }) {
 		const write = getElementWriter('setButton')
 		write('element', element)
 		write('properties', properties.slice())
 		$('#setButton-element').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setButton')
 		const element = read('element')
 		const properties = read('properties')
@@ -38,4 +35,4 @@ Command.cases.setButton = {
 		}
 		Command.save({ element, properties })
 	}
-}
+})

@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setAnimation = {
-	initialize: function () {
-		$('#setAnimation-confirm').on('click', this.save)
-
-		// 绑定属性列表
+Command.cases.setAnimation = new CommandSchema({
+	name: 'setAnimation',
+	onInitialize() {
+		$('#setAnimation-confirm').on('click', () => this.save())
 		$('#setAnimation-properties').bind(AnimationProperty)
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setAnimation').on('closed', (event) => {
 			$('#setAnimation-properties').clear()
 		})
 	},
-	parse: function ({ element, properties }) {
+	customParse({ element, properties }) {
 		const words = Command.words.push(Command.parseElement(element))
 		for (const property of properties) {
 			words.push(AnimationProperty.parse(property))
@@ -23,13 +20,13 @@ Command.cases.setAnimation = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ element = { type: 'trigger' }, properties = [] }) {
+	customLoad({ element = { type: 'trigger' }, properties = [] }) {
 		const write = getElementWriter('setAnimation')
 		write('element', element)
 		write('properties', properties.slice())
 		$('#setAnimation-element').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setAnimation')
 		const element = read('element')
 		const properties = read('properties')
@@ -38,4 +35,4 @@ Command.cases.setAnimation = {
 		}
 		Command.save({ element, properties })
 	}
-}
+})

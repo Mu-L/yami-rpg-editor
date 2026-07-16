@@ -1,18 +1,27 @@
 'use strict'
 
-Command.cases.showChoices = {
-	initialize: function () {
-		$('#showChoices-confirm').on('click', this.save)
-
-		// 绑定选项列表
+Command.cases.showChoices = new CommandSchema({
+	name: 'showChoices',
+	onInitialize() {
+		$('#showChoices-confirm').on('click', () => this.save())
 		$('#showChoices-choices').bind(Choices)
-
-		// 清理内存 - 窗口已关闭事件
-		$('#showChoices').on('closed', (event) => {
+		$('#showChoices').on('closed', () => {
 			$('#showChoices-choices').clear()
 		})
 	},
-	parse: function ({ choices, parameters }) {
+	createDefaultChoices() {
+		return [
+			{
+				content: Local.get('showChoices.yes'),
+				commands: []
+			},
+			{
+				content: Local.get('showChoices.no'),
+				commands: []
+			}
+		]
+	},
+	customParse({ choices, parameters }) {
 		const contents = [
 			{ fold: true },
 			{ color: 'flow' },
@@ -20,9 +29,7 @@ Command.cases.showChoices = {
 			{ color: 'text' },
 			{ color: 'save' }
 		]
-		// 添加选项数量
 		contents.push({ text: Command.setNumberColor(choices.length) })
-		// 添加参数内容
 		if (parameters) {
 			contents.push(
 				{ color: 'gray' },
@@ -37,9 +44,7 @@ Command.cases.showChoices = {
 			)
 		}
 		contents.push({ color: 'flow' })
-		// 换行
 		contents.push({ break: true })
-		// 添加选项分支内容
 		const when = Local.get('command.showChoices.when')
 		for (const choice of choices) {
 			contents.push(
@@ -60,29 +65,14 @@ Command.cases.showChoices = {
 		)
 		return contents
 	},
-	createDefaultChoices: function () {
-		return [
-			{
-				content: Local.get('showChoices.yes'),
-				commands: []
-			},
-			{
-				content: Local.get('showChoices.no'),
-				commands: []
-			}
-		]
-	},
-	load: function ({
-		choices = this.createDefaultChoices(),
-		parameters = ''
-	}) {
+	customLoad({ choices = this.createDefaultChoices(), parameters = '' }) {
 		const write = getElementWriter('showChoices')
 		write('choices', choices.slice())
 		write('parameters', parameters)
-		Command.cases.showChoices.choices = choices
+		this.choices = choices
 		$('#showChoices-choices').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('showChoices')
 		const choices = read('choices')
 		if (choices.length === 0) {
@@ -91,4 +81,4 @@ Command.cases.showChoices = {
 		const parameters = read('parameters')
 		Command.save({ choices, parameters })
 	}
-}
+})

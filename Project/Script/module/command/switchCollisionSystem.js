@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.switchCollisionSystem = {
-	initialize: function () {
-		$('#switchCollisionSystem-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.switchCollisionSystem = new CommandSchema({
+	name: 'switchCollisionSystem',
+	onInitialize() {
+		$('#switchCollisionSystem-confirm').on('click', () => this.save())
 		$('#switchCollisionSystem-operation').loadItems([
 			{ name: 'Enable Actor Collision', value: 'enable-actor-collision' },
 			{
@@ -18,19 +17,20 @@ Command.cases.switchCollisionSystem = {
 			}
 		])
 	},
-	parse: function ({ operation }) {
+	customParse({ operation }) {
 		return [
 			{ color: 'system' },
 			{ text: Local.get('command.switchCollisionSystem') + Token(': ') },
 			{ text: Local.get('command.switchCollisionSystem.' + operation) }
 		]
 	},
-	load: function ({ operation = 'enable-actor-collision' }) {
+	customLoad({ operation = 'enable-actor-collision' }) {
 		$('#switchCollisionSystem-operation').write(operation)
 		$('#switchCollisionSystem-operation').getFocus()
 	},
-	save: function () {
-		const operation = $('#switchCollisionSystem-operation').read()
-		Command.save({ operation })
+	customSave() {
+		Command.save({
+			operation: $('#switchCollisionSystem-operation').read()
+		})
 	}
-}
+})

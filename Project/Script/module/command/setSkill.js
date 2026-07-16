@@ -1,17 +1,16 @@
 'use strict'
 
-Command.cases.setSkill = {
-	initialize: function () {
-		$('#setSkill-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setSkill = new CommandSchema({
+	name: 'setSkill',
+	onInitialize() {
+		$('#setSkill-confirm').on('click', () => this.save())
 		$('#setSkill-operation').loadItems([
 			{ name: 'Set Cooldown Time', value: 'set-cooldown' },
 			{ name: 'Increase Cooldown Time', value: 'increase-cooldown' },
 			{ name: 'Decrease Cooldown Time', value: 'decrease-cooldown' }
 		])
 	},
-	parse: function ({ skill, operation, cooldown }) {
+	customParse({ skill, operation, cooldown }) {
 		const words = Command.words
 			.push(Command.parseSkill(skill))
 			.push(Local.get('command.setSkill.' + operation))
@@ -28,7 +27,7 @@ Command.cases.setSkill = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		skill = { type: 'trigger' },
 		operation = 'set-cooldown',
 		cooldown = 0
@@ -39,7 +38,7 @@ Command.cases.setSkill = {
 		write('cooldown', cooldown)
 		$('#setSkill-skill').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setSkill')
 		const skill = read('skill')
 		const operation = read('operation')
@@ -47,10 +46,13 @@ Command.cases.setSkill = {
 			case 'set-cooldown':
 			case 'increase-cooldown':
 			case 'decrease-cooldown': {
-				const cooldown = read('cooldown')
-				Command.save({ skill, operation, cooldown })
+				Command.save({
+					skill,
+					operation,
+					cooldown: read('cooldown')
+				})
 				break
 			}
 		}
 	}
-}
+})

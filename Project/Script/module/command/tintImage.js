@@ -1,17 +1,14 @@
 'use strict'
 
-Command.cases.tintImage = {
-	initialize: function () {
-		$('#tintImage-confirm').on('click', this.save)
-
-		// 创建模式选项
+Command.cases.tintImage = new CommandSchema({
+	name: 'tintImage',
+	onInitialize() {
+		$('#tintImage-confirm').on('click', () => this.save())
 		$('#tintImage-mode').loadItems([
 			{ name: 'Full', value: 'full' },
 			{ name: 'RGB', value: 'rgb' },
 			{ name: 'Gray', value: 'gray' }
 		])
-
-		// 设置模式关联元素
 		$('#tintImage-mode')
 			.enableHiddenMode()
 			.relate([
@@ -34,28 +31,20 @@ Command.cases.tintImage = {
 				},
 				{ case: 'gray', targets: [$('#tintImage-tint-3')] }
 			])
-
-		// 创建等待结束选项
 		$('#tintImage-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
-		$('#tintImage').on('open', function (event) {
+		$('#tintImage').on('open', () => {
 			$('#tintImage-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
-		$('#tintImage').on('closed', function (event) {
+		$('#tintImage').on('closed', () => {
 			$('#tintImage-easingId').clear()
 			$('#tintImage-filter').clear()
 		})
-
-		// 写入滤镜框 - 色调输入框输入事件
 		$(
 			'#tintImage-mode, #tintImage-tint-0, #tintImage-tint-1, #tintImage-tint-2, #tintImage-tint-3'
-		).on('input', function (event) {
+		).on('input', () => {
 			const tint = [0, 0, 0, 0]
 			const read = getElementReader('tintImage')
 			switch (read('mode')) {
@@ -77,7 +66,7 @@ Command.cases.tintImage = {
 			$('#tintImage-filter').write(tint)
 		})
 	},
-	parseTint: function (mode, [red, green, blue, gray]) {
+	parseTint(mode, [red, green, blue, gray]) {
 		const label = Local.get('command.tintImage.' + mode)
 		const _red = Command.setNumberColor(red)
 		const _green = Command.setNumberColor(green)
@@ -112,7 +101,7 @@ Command.cases.tintImage = {
 				return label + Token('(') + _gray + Token(')')
 		}
 	},
-	parse: function ({ element, mode, tint, easingId, duration, wait }) {
+	customParse({ element, mode, tint, easingId, duration, wait }) {
 		const words = Command.words
 			.push(Command.parseElement(element))
 			.push(this.parseTint(mode, tint))
@@ -123,7 +112,7 @@ Command.cases.tintImage = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		element = { type: 'trigger' },
 		mode = 'full',
 		tint = [0, 0, 0, 0],
@@ -144,7 +133,7 @@ Command.cases.tintImage = {
 		write('wait', wait)
 		$('#tintImage-element').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('tintImage')
 		const element = read('element')
 		const mode = read('mode')
@@ -170,4 +159,4 @@ Command.cases.tintImage = {
 		const tint = [red, green, blue, gray]
 		Command.save({ element, mode, tint, easingId, duration, wait })
 	}
-}
+})

@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.createObject = {
-	initialize: function () {
-		$('#createObject-confirm').on('click', this.save)
-	},
-	parse: function ({ presetId, position }) {
+Command.cases.createObject = new CommandSchema({
+	name: 'createObject',
+	customParse({ presetId, position }) {
 		const words = Command.words
 			.push(Command.parsePresetObject(presetId))
 			.push(Command.parsePosition(position))
@@ -14,7 +12,7 @@ Command.cases.createObject = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		presetId = '',
 		position = { type: 'actor', actor: { type: 'trigger' } }
 	}) {
@@ -23,13 +21,12 @@ Command.cases.createObject = {
 		write('position', position)
 		$('#createObject-presetId').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('createObject')
 		const presetId = read('presetId')
 		if (presetId === '') {
 			return $('#createObject-presetId').getFocus()
 		}
-		const position = read('position')
-		Command.save({ presetId, position })
+		Command.save({ presetId, position: read('position') })
 	}
-}
+})

@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.moveActor = {
-	initialize: function () {
-		$('#moveActor-confirm').on('click', this.save)
-
-		// 创建移动模式选项
+Command.cases.moveActor = new CommandSchema({
+	name: 'moveActor',
+	onInitialize() {
+		$('#moveActor-confirm').on('click', () => this.save())
 		$('#moveActor-mode').loadItems([
 			{ name: 'Stop', value: 'stop' },
 			{ name: 'Keep', value: 'keep' },
@@ -13,8 +12,6 @@ Command.cases.moveActor = {
 			{ name: 'Navigate - Bypass Actors', value: 'navigate-bypass' },
 			{ name: 'Teleport', value: 'teleport' }
 		])
-
-		// 设置移动模式关联元素
 		$('#moveActor-mode')
 			.enableHiddenMode()
 			.relate([
@@ -25,21 +22,19 @@ Command.cases.moveActor = {
 				},
 				{ case: 'teleport', targets: [$('#moveActor-destination')] }
 			])
-
-		// 创建等待结束选项
 		$('#moveActor-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
 	},
-	parseMode: function (mode) {
+	parseMode(mode) {
 		let string = Local.get('command.moveActor.mode.' + mode)
 		if (mode === 'navigate-bypass') {
 			string = string.replace('(', Token('(')).replace(')', Token(')'))
 		}
 		return string
 	},
-	parse: function ({ actor, mode, angle, destination, wait }) {
+	customParse({ actor, mode, angle, destination, wait }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(this.parseMode(mode))
@@ -65,7 +60,7 @@ Command.cases.moveActor = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		mode = 'straight',
 		angle = 0,
@@ -80,7 +75,7 @@ Command.cases.moveActor = {
 		write('wait', wait)
 		$('#moveActor-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('moveActor')
 		const actor = read('actor')
 		const mode = read('mode')
@@ -89,23 +84,28 @@ Command.cases.moveActor = {
 				Command.save({ actor, mode })
 				break
 			case 'keep': {
-				const angle = read('angle')
-				Command.save({ actor, mode, angle })
+				Command.save({ actor, mode, angle: read('angle') })
 				break
 			}
 			case 'straight':
 			case 'navigate':
 			case 'navigate-bypass': {
-				const destination = read('destination')
-				const wait = read('wait')
-				Command.save({ actor, mode, destination, wait })
+				Command.save({
+					actor,
+					mode,
+					destination: read('destination'),
+					wait: read('wait')
+				})
 				break
 			}
 			case 'teleport': {
-				const destination = read('destination')
-				Command.save({ actor, mode, destination })
+				Command.save({
+					actor,
+					mode,
+					destination: read('destination')
+				})
 				break
 			}
 		}
 	}
-}
+})

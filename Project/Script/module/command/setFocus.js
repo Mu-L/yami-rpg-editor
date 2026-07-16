@@ -1,18 +1,15 @@
 'use strict'
 
-Command.cases.setFocus = {
-	initialize: function () {
-		$('#setFocus-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.setFocus = new CommandSchema({
+	name: 'setFocus',
+	onInitialize() {
+		$('#setFocus-confirm').on('click', () => this.save())
 		$('#setFocus-operation').loadItems([
 			{ name: 'Add Focus', value: 'add' },
 			{ name: 'Remove Focus', value: 'remove' },
 			{ name: 'Remove The Latest Focus', value: 'remove-latest' },
 			{ name: 'Reset', value: 'reset' }
 		])
-
-		// 创建模式选项
 		$('#setFocus-mode').loadItems([
 			{ name: 'Control Child Buttons', value: 'control-child-buttons' },
 			{
@@ -20,8 +17,6 @@ Command.cases.setFocus = {
 				value: 'control-descendant-buttons'
 			}
 		])
-
-		// 设置操作关联元素
 		$('#setFocus-operation')
 			.enableHiddenMode()
 			.relate([
@@ -36,13 +31,12 @@ Command.cases.setFocus = {
 				{ case: 'remove', targets: [$('#setFocus-element')] }
 			])
 	},
-	parse: function ({ operation, element, mode, cancelable }) {
+	customParse({ operation, element, mode, cancelable }) {
 		const words = Command.words.push(
 			Local.get('command.setFocus.' + operation)
 		)
 		switch (operation) {
 			case 'add':
-				// 补丁：2023-3-21
 				if (mode === undefined) {
 					mode = 'control-child-buttons'
 				}
@@ -62,7 +56,7 @@ Command.cases.setFocus = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		operation = 'add',
 		element = { type: 'trigger' },
 		mode = 'control-child-buttons',
@@ -74,20 +68,21 @@ Command.cases.setFocus = {
 		$('#setFocus-cancelable').write(cancelable)
 		$('#setFocus-operation').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setFocus')
 		const operation = read('operation')
 		switch (operation) {
 			case 'add': {
-				const element = read('element')
-				const mode = read('mode')
-				const cancelable = read('cancelable')
-				Command.save({ operation, element, mode, cancelable })
+				Command.save({
+					operation,
+					element: read('element'),
+					mode: read('mode'),
+					cancelable: read('cancelable')
+				})
 				break
 			}
 			case 'remove': {
-				const element = read('element')
-				Command.save({ operation, element })
+				Command.save({ operation, element: read('element') })
 				break
 			}
 			case 'remove-latest':
@@ -96,4 +91,4 @@ Command.cases.setFocus = {
 				break
 		}
 	}
-}
+})

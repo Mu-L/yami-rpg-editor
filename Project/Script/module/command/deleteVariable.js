@@ -1,10 +1,8 @@
 'use strict'
 
-Command.cases.deleteVariable = {
-	initialize: function () {
-		$('#deleteVariable-confirm').on('click', this.save)
-	},
-	parse: function ({ variable }) {
+Command.cases.deleteVariable = new CommandSchema({
+	name: 'deleteVariable',
+	customParse({ variable }) {
 		return [
 			{ color: 'variable' },
 			{ text: Local.get('command.deleteVariable.alias') + ' ' },
@@ -12,11 +10,11 @@ Command.cases.deleteVariable = {
 			{ text: Command.parseVariable(variable, 'any') }
 		]
 	},
-	load: function ({ variable = { type: 'local', key: '' } }) {
+	customLoad({ variable = { type: 'local', key: '' } }) {
 		$('#deleteVariable-variable').write(variable)
 		$('#deleteVariable-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const elVariable = $('#deleteVariable-variable')
 		const variable = elVariable.read()
 		if (VariableGetter.isNone(variable)) {
@@ -24,4 +22,4 @@ Command.cases.deleteVariable = {
 		}
 		Command.save({ variable })
 	}
-}
+})

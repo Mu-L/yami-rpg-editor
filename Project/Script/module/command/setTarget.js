@@ -1,24 +1,20 @@
 'use strict'
 
-Command.cases.setTarget = {
-	initialize: function () {
-		$('#setTarget-confirm').on('click', this.save)
-	},
-	parse: function ({ actor }) {
+Command.cases.setTarget = new CommandSchema({
+	name: 'setTarget',
+	customParse({ actor }) {
 		return [
 			{ color: 'actor' },
 			{ text: Local.get('command.setTarget') + Token(': ') },
 			{ text: Command.parseActor(actor) }
 		]
 	},
-	load: function ({ actor = { type: 'trigger' } }) {
+	customLoad({ actor = { type: 'trigger' } }) {
 		const write = getElementWriter('setTarget')
 		write('actor', actor)
 		$('#setTarget-actor').getFocus()
 	},
-	save: function () {
-		const read = getElementReader('setTarget')
-		const actor = read('actor')
-		Command.save({ actor })
+	customSave() {
+		Command.save({ actor: getElementReader('setTarget')('actor') })
 	}
-}
+})

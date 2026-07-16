@@ -1,27 +1,20 @@
 'use strict'
 
-Command.cases.tintScreen = {
-	initialize: function () {
-		$('#tintScreen-confirm').on('click', this.save)
-
-		// 创建等待结束选项
+Command.cases.tintScreen = new CommandSchema({
+	name: 'tintScreen',
+	onInitialize() {
+		$('#tintScreen-confirm').on('click', () => this.save())
 		$('#tintScreen-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
 		$('#tintScreen').on('open', function (event) {
 			$('#tintScreen-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#tintScreen').on('closed', function (event) {
 			$('#tintScreen-easingId').clear()
 			$('#tintScreen-filter').clear()
 		})
-
-		// 写入滤镜框 - 色调输入框输入事件
 		$(
 			'#tintScreen-tint-0, #tintScreen-tint-1, #tintScreen-tint-2, #tintScreen-tint-3'
 		).on('input', function (event) {
@@ -33,7 +26,7 @@ Command.cases.tintScreen = {
 			])
 		})
 	},
-	parseTint: function ([red, green, blue, gray]) {
+	parseTint([red, green, blue, gray]) {
 		const _red = Command.setNumberColor(red)
 		const _green = Command.setNumberColor(green)
 		const _blue = Command.setNumberColor(blue)
@@ -50,7 +43,7 @@ Command.cases.tintScreen = {
 			Token(')')
 		)
 	},
-	parse: function ({ tint, easingId, duration, wait }) {
+	customParse({ tint, easingId, duration, wait }) {
 		const words = Command.words
 			.push(this.parseTint(tint))
 			.push(Command.parseEasing(easingId, duration, wait))
@@ -60,7 +53,7 @@ Command.cases.tintScreen = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		tint = [0, 0, 0, 0],
 		easingId = Data.easings[0].id,
 		duration = 0,
@@ -77,16 +70,19 @@ Command.cases.tintScreen = {
 		write('wait', wait)
 		$('#tintScreen-tint-0').getFocus('all')
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('tintScreen')
-		const red = read('tint-0')
-		const green = read('tint-1')
-		const blue = read('tint-2')
-		const gray = read('tint-3')
-		const easingId = read('easingId')
-		const duration = read('duration')
-		const wait = read('wait')
-		const tint = [red, green, blue, gray]
-		Command.save({ tint, easingId, duration, wait })
+		const tint = [
+			read('tint-0'),
+			read('tint-1'),
+			read('tint-2'),
+			read('tint-3')
+		]
+		Command.save({
+			tint,
+			easingId: read('easingId'),
+			duration: read('duration'),
+			wait: read('wait')
+		})
 	}
-}
+})

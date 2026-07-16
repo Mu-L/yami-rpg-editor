@@ -8,6 +8,9 @@ Selector.target = null
 Selector.allowNone = true
 Selector.audioPlayed = false
 Selector.lastDir = 'Assets'
+
+// 设置搜索框ID接入语言包（必须在 Local.update 之前完成，否则本地化找不到元素）
+Selector.head.searcher.id = 'selector-search'
 // methods
 Selector.initialize = null
 Selector.open = null
@@ -27,9 +30,6 @@ Selector.confirm = null
 Selector.initialize = function () {
 	// 因为不需要拖拽，覆盖body.activateFile事件
 	this.body.activateFile = this.body.select
-
-	// 设置搜索框ID接入语言包
-	this.head.searcher.id = 'selector-search'
 
 	// 侦听事件
 	this.body.on('keydown', this.bodyKeydown)

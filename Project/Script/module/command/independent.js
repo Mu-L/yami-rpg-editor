@@ -1,7 +1,9 @@
 'use strict'
 
-Command.cases.independent = {
-	parse: function ({ commands }) {
+Command.cases.independent = new CommandSchema({
+	name: 'independent',
+	noWindow: true,
+	customParse({ commands }) {
 		return [
 			{ fold: true },
 			{ color: 'flow' },
@@ -10,7 +12,7 @@ Command.cases.independent = {
 			{ text: Local.get('command.independent.end') }
 		]
 	},
-	save: function () {
+	customSave() {
 		Command.save({ commands: [] })
 	}
-}
+})

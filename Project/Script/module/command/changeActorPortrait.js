@@ -1,17 +1,14 @@
 'use strict'
 
-Command.cases.changeActorPortrait = {
-	initialize: function () {
-		$('#changeActorPortrait-confirm').on('click', this.save)
-
-		// 创建模式选项
+Command.cases.changeActorPortrait = new CommandSchema({
+	name: 'changeActorPortrait',
+	onInitialize() {
+		$('#changeActorPortrait-confirm').on('click', () => this.save())
 		$('#changeActorPortrait-mode').loadItems([
 			{ name: 'Full Mode', value: 'full' },
 			{ name: 'Image Mode', value: 'portrait' },
 			{ name: 'Clip Mode', value: 'clip' }
 		])
-
-		// 设置模式关联元素
 		$('#changeActorPortrait-mode')
 			.enableHiddenMode()
 			.relate([
@@ -29,7 +26,7 @@ Command.cases.changeActorPortrait = {
 				{ case: 'clip', targets: [$('#changeActorPortrait-clip')] }
 			])
 	},
-	parsePortraitClip: function (clip) {
+	parsePortraitClip(clip) {
 		const label = Local.get('command.changeActorPortrait.clip')
 		const x = Command.setNumberColor(clip[0])
 		const y = Command.setNumberColor(clip[1])
@@ -48,7 +45,7 @@ Command.cases.changeActorPortrait = {
 			Token(')')
 		)
 	},
-	parse: function ({ actor, mode, portrait, clip }) {
+	customParse({ actor, mode, portrait, clip }) {
 		const words = Command.words.push(Command.parseActor(actor))
 		switch (mode) {
 			case 'full':
@@ -69,7 +66,7 @@ Command.cases.changeActorPortrait = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		mode = 'full',
 		portrait = '',
@@ -82,7 +79,7 @@ Command.cases.changeActorPortrait = {
 		write('clip', clip)
 		$('#changeActorPortrait-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('changeActorPortrait')
 		const actor = read('actor')
 		const mode = read('mode')
@@ -97,4 +94,4 @@ Command.cases.changeActorPortrait = {
 				return Command.save({ actor, mode, clip })
 		}
 	}
-}
+})

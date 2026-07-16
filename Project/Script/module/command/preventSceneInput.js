@@ -1,13 +1,15 @@
 'use strict'
 
-Command.cases.preventSceneInput = {
-	parse: function () {
+Command.cases.preventSceneInput = new CommandSchema({
+	name: 'preventSceneInput',
+	noWindow: true,
+	customParse() {
 		return [
 			{ color: 'system' },
 			{ text: Local.get('command.preventSceneInput') }
 		]
 	},
-	save: function () {
+	customSave() {
 		Command.save({})
 	}
-}
+})

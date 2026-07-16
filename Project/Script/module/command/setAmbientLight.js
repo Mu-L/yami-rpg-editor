@@ -1,26 +1,21 @@
 'use strict'
 
-Command.cases.setAmbientLight = {
-	initialize: function () {
-		$('#setAmbientLight-confirm').on('click', this.save)
-
-		// 创建等待结束选项
+Command.cases.setAmbientLight = new CommandSchema({
+	name: 'setAmbientLight',
+	onInitialize() {
+		$('#setAmbientLight-confirm').on('click', () => this.save())
 		$('#setAmbientLight-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
-
-		// 创建过渡方式选项 - 窗口打开事件
 		$('#setAmbientLight').on('open', function (event) {
 			$('#setAmbientLight-easingId').loadItems(Data.createEasingItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#setAmbientLight').on('closed', function (event) {
 			$('#setAmbientLight-easingId').clear()
 		})
 	},
-	parseColor: function (red, green, blue) {
+	parseColor(red, green, blue) {
 		const r = Command.parseVariableNumber(red)
 		const g = Command.parseVariableNumber(green)
 		const b = Command.parseVariableNumber(blue)
@@ -35,18 +30,17 @@ Command.cases.setAmbientLight = {
 			Token(')')
 		)
 	},
-	parse: function ({ red, green, blue, easingId, duration, wait }) {
+	customParse({ red, green, blue, easingId, duration, wait }) {
 		const words = Command.words
 			.push(this.parseColor(red, green, blue))
 			.push(Command.parseEasing(easingId, duration, wait))
-		const contents = [
+		return [
 			{ color: 'scene' },
 			{ text: Local.get('command.setAmbientLight') + Token(': ') },
 			{ text: words.join() }
 		]
-		return contents
 	},
-	load: function ({
+	customLoad({
 		red = 0,
 		green = 0,
 		blue = 0,
@@ -63,14 +57,15 @@ Command.cases.setAmbientLight = {
 		write('wait', wait)
 		$('#setAmbientLight-red').getFocus('all')
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setAmbientLight')
-		const red = read('red')
-		const green = read('green')
-		const blue = read('blue')
-		const easingId = read('easingId')
-		const duration = read('duration')
-		const wait = read('wait')
-		Command.save({ red, green, blue, easingId, duration, wait })
+		Command.save({
+			red: read('red'),
+			green: read('green'),
+			blue: read('blue'),
+			easingId: read('easingId'),
+			duration: read('duration'),
+			wait: read('wait')
+		})
 	}
-}
+})

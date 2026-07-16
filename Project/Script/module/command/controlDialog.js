@@ -1,10 +1,9 @@
 'use strict'
 
-Command.cases.controlDialog = {
-	initialize: function () {
-		$('#controlDialog-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.controlDialog = new CommandSchema({
+	name: 'controlDialog',
+	onInitialize() {
+		$('#controlDialog-confirm').on('click', () => this.save())
 		$('#controlDialog-operation').loadItems([
 			{ name: 'Pause Printing', value: 'pause' },
 			{ name: 'Continue Printing', value: 'continue' },
@@ -12,7 +11,7 @@ Command.cases.controlDialog = {
 			{ name: 'Print Next Page', value: 'print-next-page' }
 		])
 	},
-	parse: function ({ element, operation }) {
+	customParse({ element, operation }) {
 		const words = Command.words
 			.push(Command.parseElement(element))
 			.push(Local.get('command.controlDialog.' + operation))
@@ -22,16 +21,17 @@ Command.cases.controlDialog = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({ element = { type: 'trigger' }, operation = 'pause' }) {
+	customLoad({ element = { type: 'trigger' }, operation = 'pause' }) {
 		const write = getElementWriter('controlDialog')
 		write('element', element)
 		write('operation', operation)
 		$('#controlDialog-element').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('controlDialog')
-		const element = read('element')
-		const operation = read('operation')
-		Command.save({ element, operation })
+		Command.save({
+			element: read('element'),
+			operation: read('operation')
+		})
 	}
-}
+})

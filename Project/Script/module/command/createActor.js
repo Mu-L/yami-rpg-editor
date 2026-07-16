@@ -1,20 +1,17 @@
 'use strict'
 
-Command.cases.createActor = {
-	initialize: function () {
-		$('#createActor-confirm').on('click', this.save)
-
-		// 创建队伍选项 - 窗口打开事件
+Command.cases.createActor = new CommandSchema({
+	name: 'createActor',
+	onInitialize() {
+		$('#createActor-confirm').on('click', () => this.save())
 		$('#createActor').on('open', function (event) {
 			$('#createActor-teamId').loadItems(Data.createTeamItems())
 		})
-
-		// 清理内存 - 窗口已关闭事件
 		$('#createActor').on('closed', function (event) {
 			$('#createActor-teamId').clear()
 		})
 	},
-	parse: function ({ actorId, teamId, position, angle }) {
+	customParse({ actorId, teamId, position, angle }) {
 		const words = Command.words
 			.push(Command.parseFileName(actorId))
 			.push(Command.parseTeam(teamId))
@@ -26,7 +23,7 @@ Command.cases.createActor = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actorId = '',
 		teamId = Data.teams.list[0].id,
 		position = { type: 'absolute', x: 0, y: 0 },
@@ -39,15 +36,17 @@ Command.cases.createActor = {
 		write('angle', angle)
 		$('#createActor-actorId').getFocus('all')
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('createActor')
 		const actorId = read('actorId')
-		const teamId = read('teamId')
-		const position = read('position')
-		const angle = read('angle')
 		if (actorId === '') {
 			return $('#createActor-actorId').getFocus()
 		}
-		Command.save({ actorId, teamId, position, angle })
+		Command.save({
+			actorId,
+			teamId: read('teamId'),
+			position: read('position'),
+			angle: read('angle')
+		})
 	}
-}
+})

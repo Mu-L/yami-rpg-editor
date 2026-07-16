@@ -1,15 +1,16 @@
 'use strict'
 
-Command.cases.setTerrain = {
-	initialize: function () {
-		$('#setTerrain-confirm').on('click', this.save)
+Command.cases.setTerrain = new CommandSchema({
+	name: 'setTerrain',
+	onInitialize() {
+		$('#setTerrain-confirm').on('click', () => this.save())
 		$('#setTerrain-terrain').loadItems([
 			{ name: 'Land', value: 'land' },
 			{ name: 'Water', value: 'water' },
 			{ name: 'Wall', value: 'wall' }
 		])
 	},
-	parse: function ({ position, terrain }) {
+	customParse({ position, terrain }) {
 		const words = Command.words
 			.push(Command.parsePosition(position))
 			.push(Local.get('command.setTerrain.' + terrain))
@@ -19,7 +20,7 @@ Command.cases.setTerrain = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		position = { type: 'absolute', x: 0, y: 0 },
 		terrain = 'land'
 	}) {
@@ -28,10 +29,11 @@ Command.cases.setTerrain = {
 		write('terrain', terrain)
 		$('#setTerrain-position').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('setTerrain')
-		const position = read('position')
-		const terrain = read('terrain')
-		Command.save({ position, terrain })
+		Command.save({
+			position: read('position'),
+			terrain: read('terrain')
+		})
 	}
-}
+})

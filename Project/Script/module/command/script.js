@@ -1,7 +1,8 @@
 'use strict'
 const require = window.__nodeRequire || window.require
 
-Command.cases.script = {
+Command.cases.script = new CommandSchema({
+	name: 'script',
 	editor: null,
 	model: null,
 	versionId: null,
@@ -15,10 +16,10 @@ Command.cases.script = {
 		theme: ''
 	},
 	typesDispose: [],
-	isMaximized: function () {
+	isMaximized() {
 		return $('#script').hasClass('maximized')
 	},
-	resize: function () {
+	resize() {
 		const content = $('#script-script')
 		const parent = content.parentElement
 		if (!this.isMaximized()) {
@@ -31,7 +32,6 @@ Command.cases.script = {
 			})
 		} else {
 			const boundingRect = content.getBoundingClientRect()
-			// 保持content左右间距相同
 			content.style.width =
 				parent.clientWidth - boundingRect.left * 2 + 'px'
 			content.style.height = parent.clientHeight - 60 + 'px'
@@ -41,10 +41,9 @@ Command.cases.script = {
 			})
 		}
 	},
-	initialize: function () {
-		$('#script-confirm').on('click', this.save.bind(this))
+	onInitialize() {
+		$('#script-confirm').on('click', () => this.save())
 
-		// 窗口关闭事件
 		$('#script').on('close', (event) => {
 			if (this.changed) {
 				event.preventDefault()
@@ -76,12 +75,10 @@ Command.cases.script = {
 			this.resize()
 		})
 
-		// 窗口已关闭事件
-		$('#script').on('closed', (event) => {
+		$('#script').on('closed', () => {
 			this.model.setValue('')
 		})
 
-		// 键盘按下事件
 		$('#script').on('keydown', (event) => {
 			if (event.target.hasClass('inputarea')) {
 				switch (event.code) {
@@ -92,15 +89,14 @@ Command.cases.script = {
 			}
 		})
 	},
-
-	parse: function ({ script }) {
+	customParse({ script }) {
 		const contents = [{ script: script }]
 		if (script.includes('\n')) {
 			contents.unshift({ fold: true })
 		}
 		return contents
 	},
-	load: function ({ script = '' }) {
+	customLoad({ script = '' }) {
 		this.createEditor()
 		this.model.setValue(script)
 		this.versionId = this.model.getAlternativeVersionId()
@@ -108,7 +104,6 @@ Command.cases.script = {
 		this.editor.setScrollTop(0)
 		this.editor.revealLine(9999)
 		this.editor.getFocus()
-		// 加载类型定义文件
 		if (!this.typesDispose) {
 			this.typesDispose.forEach((item) => item())
 		}
@@ -119,7 +114,7 @@ Command.cases.script = {
 			true
 		)
 	},
-	save: async function () {
+	async customSave() {
 		let script = this.model.getValue()
 		if (script === '') {
 			return this.editor.getFocus()
@@ -168,7 +163,7 @@ Command.cases.script = {
 		this.setChangeState(false)
 		Command.save({ script })
 	},
-	setChangeState: function (changed) {
+	setChangeState(changed) {
 		if (this.changed !== changed) {
 			this.changed = changed
 			if (changed) {
@@ -178,10 +173,9 @@ Command.cases.script = {
 			}
 		}
 	},
-	createEditor: function () {
+	createEditor() {
 		const { theme } = Title
 		this.createTheme(theme)
-		// 假设monaco对象已加载完毕
 		this.editor = monaco.editor.create($('#script-script'), {
 			language: 'javascript',
 			theme: theme,
@@ -234,12 +228,10 @@ Command.cases.script = {
 			monaco.editor.setModelLanguage(this.model, languageId)
 		})
 
-		// 编辑器 - 获得焦点
 		this.editor.getFocus = function () {
 			setTimeout(() => this.focus())
 		}
 
-		// 侦听键盘按下事件
 		this.editor.onKeyDown((event) => {
 			event = event.browserEvent
 			if (event.ctrlKey) {
@@ -253,7 +245,6 @@ Command.cases.script = {
 			}
 		})
 
-		// 侦听内容改变事件
 		this.editor.onDidChangeModelContent((event) => {
 			if (event.isFlush) return
 			if (event.isUndoing || event.isRedoing) {
@@ -267,11 +258,9 @@ Command.cases.script = {
 			}
 		})
 
-		// 设置为空函数
 		this.createEditor = Function.empty
 	},
-	// 给代码行元素着色
-	colorizeCodeLines: function (items, code) {
+	colorizeCodeLines(items, code) {
 		const text = document.createElement('text')
 		const options = this.colorOptions
 		text.textContent = code
@@ -294,7 +283,6 @@ Command.cases.script = {
 			}
 		})
 	},
-	// 创建主题
 	createTheme: (function IIFE() {
 		const themeData = {
 			light: {
@@ -451,4 +439,4 @@ Command.cases.script = {
 			}
 		}
 	})()
-}
+})

@@ -1,24 +1,20 @@
 'use strict'
 
-Command.cases.setCursor = {
-	initialize: function () {
-		$('#setCursor-confirm').on('click', this.save)
-	},
-	parse: function ({ image }) {
+Command.cases.setCursor = new CommandSchema({
+	name: 'setCursor',
+	customParse({ image }) {
 		return [
 			{ color: 'system' },
 			{ text: Local.get('command.setCursor') + Token(': ') },
 			{ text: Command.parseFileName(image) }
 		]
 	},
-	load: function ({ image = '' }) {
+	customLoad({ image = '' }) {
 		const write = getElementWriter('setCursor')
 		write('image', image)
 		$('#setCursor-image').getFocus()
 	},
-	save: function () {
-		const read = getElementReader('setCursor')
-		const image = read('image')
-		Command.save({ image })
+	customSave() {
+		Command.save({ image: getElementReader('setCursor')('image') })
 	}
-}
+})

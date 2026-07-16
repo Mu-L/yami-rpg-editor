@@ -1,23 +1,18 @@
 'use strict'
 
-Command.cases.switch = {
+Command.cases.switch = new CommandSchema({
+	name: 'switch',
 	defaultCommands: null,
-	initialize: function () {
-		$('#switch-confirm').on('click', this.save)
-
-		// 绑定分支列表
+	onInitialize() {
+		$('#switch-confirm').on('click', () => this.save())
 		$('#switch-branches').bind(SwitchBranch)
-
-		// 绑定条件列表
 		$('#switch-branch-conditions').bind(SwitchCondition)
-
-		// 清理内存 - 窗口已关闭事件
-		$('#switch').on('closed', (event) => {
+		$('#switch').on('closed', () => {
 			this.defaultCommands = null
 			$('#switch-branches').clear()
 		})
 	},
-	parse: function ({ variable, branches, defaultCommands }) {
+	customParse({ variable, branches, defaultCommands }) {
 		const contents = [
 			{ fold: true },
 			{ color: 'flow' },
@@ -49,7 +44,7 @@ Command.cases.switch = {
 		)
 		return contents
 	},
-	load: function ({
+	customLoad({
 		variable = { type: 'local', key: '' },
 		branches = [],
 		defaultCommands = null
@@ -58,10 +53,10 @@ Command.cases.switch = {
 		write('variable', variable)
 		write('branches', branches.slice())
 		write('default', !!defaultCommands)
-		Command.cases.switch.defaultCommands = defaultCommands
+		this.defaultCommands = defaultCommands
 		$('#switch-variable').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('switch')
 		const variable = read('variable')
 		if (VariableGetter.isNone(variable)) {
@@ -73,8 +68,7 @@ Command.cases.switch = {
 		}
 		switch (read('default')) {
 			case true: {
-				const defaultCommands =
-					Command.cases.switch.defaultCommands ?? []
+				const defaultCommands = this.defaultCommands ?? []
 				Command.save({ variable, branches, defaultCommands })
 				break
 			}
@@ -83,4 +77,4 @@ Command.cases.switch = {
 				break
 		}
 	}
-}
+})

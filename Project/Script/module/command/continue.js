@@ -1,10 +1,12 @@
 'use strict'
 
-Command.cases.continue = {
-	parse: function () {
+Command.cases.continue = new CommandSchema({
+	name: 'continue',
+	noWindow: true,
+	customParse() {
 		return [{ color: 'flow' }, { text: Local.get('command.continue') }]
 	},
-	save: function () {
+	customSave() {
 		Command.save({})
 	}
-}
+})

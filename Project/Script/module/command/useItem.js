@@ -1,17 +1,14 @@
 'use strict'
 
-Command.cases.useItem = {
-	initialize: function () {
-		$('#useItem-confirm').on('click', this.save)
-
-		// 创建模式选项
+Command.cases.useItem = new CommandSchema({
+	name: 'useItem',
+	onInitialize() {
+		$('#useItem-confirm').on('click', () => this.save())
 		$('#useItem-mode').loadItems([
 			{ name: 'By Shortcut Key', value: 'by-key' },
 			{ name: 'By Item ID', value: 'by-id' },
 			{ name: 'By Item Instance', value: 'by-item' }
 		])
-
-		// 设置模式关联元素
 		$('#useItem-mode')
 			.enableHiddenMode()
 			.relate([
@@ -19,14 +16,12 @@ Command.cases.useItem = {
 				{ case: 'by-id', targets: [$('#useItem-itemId')] },
 				{ case: 'by-item', targets: [$('#useItem-item')] }
 			])
-
-		// 创建等待结束选项
 		$('#useItem-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
 	},
-	parse: function ({ actor, mode, key, itemId, item, wait }) {
+	customParse({ actor, mode, key, itemId, item, wait }) {
 		const words = Command.words.push(Command.parseActor(actor))
 		switch (mode) {
 			case 'by-key':
@@ -46,7 +41,7 @@ Command.cases.useItem = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		mode = 'by-key',
 		key = Enum.getDefStringId('shortcut-key'),
@@ -54,7 +49,6 @@ Command.cases.useItem = {
 		item = { type: 'trigger' },
 		wait = false
 	}) {
-		// 加载快捷键选项
 		$('#useItem-key').loadItems(Enum.getStringItems('shortcut-key'))
 		const write = getElementWriter('useItem')
 		write('actor', actor)
@@ -65,7 +59,7 @@ Command.cases.useItem = {
 		write('wait', wait)
 		$('#useItem-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('useItem')
 		const actor = read('actor')
 		const mode = read('mode')
@@ -88,10 +82,14 @@ Command.cases.useItem = {
 				break
 			}
 			case 'by-item': {
-				const item = read('item')
-				Command.save({ actor, mode, item, wait })
+				Command.save({
+					actor,
+					mode,
+					item: read('item'),
+					wait
+				})
 				break
 			}
 		}
 	}
-}
+})

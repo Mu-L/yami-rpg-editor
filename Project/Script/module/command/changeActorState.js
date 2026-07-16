@@ -1,17 +1,14 @@
 'use strict'
 
-Command.cases.changeActorState = {
-	initialize: function () {
-		$('#changeActorState-confirm').on('click', this.save)
-
-		// 创建操作选项
+Command.cases.changeActorState = new CommandSchema({
+	name: 'changeActorState',
+	onInitialize() {
+		$('#changeActorState-confirm').on('click', () => this.save())
 		$('#changeActorState-operation').loadItems([
 			{ name: 'Add', value: 'add' },
 			{ name: 'Remove', value: 'remove' },
 			{ name: 'Remove Instance', value: 'remove-instance' }
 		])
-
-		// 设置操作关联元素
 		$('#changeActorState-operation')
 			.enableHiddenMode()
 			.relate([
@@ -25,10 +22,10 @@ Command.cases.changeActorState = {
 				}
 			])
 	},
-	parseOperation: function (operation) {
+	parseOperation(operation) {
 		return Local.get('command.changeActorState.' + operation)
 	},
-	parse: function ({ actor, operation, stateId, state }) {
+	customParse({ actor, operation, stateId, state }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
 			.push(this.parseOperation(operation))
@@ -47,7 +44,7 @@ Command.cases.changeActorState = {
 			{ text: words.join() }
 		]
 	},
-	load: function ({
+	customLoad({
 		actor = { type: 'trigger' },
 		operation = 'add',
 		stateId = '',
@@ -60,7 +57,7 @@ Command.cases.changeActorState = {
 		write('state', state)
 		$('#changeActorState-actor').getFocus()
 	},
-	save: function () {
+	customSave() {
 		const read = getElementReader('changeActorState')
 		const actor = read('actor')
 		const operation = read('operation')
@@ -75,10 +72,13 @@ Command.cases.changeActorState = {
 				break
 			}
 			case 'remove-instance': {
-				const state = read('state')
-				Command.save({ actor, operation, state })
+				Command.save({
+					actor,
+					operation,
+					state: read('state')
+				})
 				break
 			}
 		}
 	}
-}
+})
