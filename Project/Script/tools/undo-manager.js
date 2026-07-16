@@ -20,11 +20,11 @@ export const UndoManager = {
 	},
 
 	canUndo() {
-		return this.active?.canUndo() ?? false
+		return this.active?.history?.canUndo() ?? false
 	},
 
 	canRedo() {
-		return this.active?.canRedo() ?? false
+		return this.active?.history?.canRedo() ?? false
 	}
 }
 
