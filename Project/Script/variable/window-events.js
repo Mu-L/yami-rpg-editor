@@ -31,6 +31,8 @@ Variable.windowClosed = function (event) {
 	this.target = null
 	this.data = null
 	this.idMap = null
+	UndoManager.setActive(this._previousActive)
+	this._previousActive = null
 	this.history = null
 	this.searcher.write('')
 	this.list.clear()

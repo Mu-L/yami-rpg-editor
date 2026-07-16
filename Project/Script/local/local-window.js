@@ -159,7 +159,9 @@ Localization.createInputs = function () {
 // 打开窗口
 Localization.open = function (target = null) {
 	this.target = target
+	this._previousActive = UndoManager.getActive()
 	this.history = new History(100)
+	UndoManager.setActive(this)
 	this.unpackLocalization()
 	this.createInputs()
 	Window.open('localization')
@@ -396,6 +398,8 @@ Localization.windowClosed = function (event) {
 	this.data = null
 	this.idMap = null
 	this.inputs = null
+	UndoManager.setActive(this._previousActive)
+	this._previousActive = null
 	this.history = null
 	this.languages = null
 	this.searcher.write('')

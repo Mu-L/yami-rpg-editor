@@ -190,7 +190,9 @@ Enum.initialize = function () {
 Enum.open = function (target = null, mode = 'normal') {
 	this.mode = mode
 	this.target = target
+	this._previousActive = UndoManager.getActive()
 	this.history = new History(100)
+	UndoManager.setActive(this)
 	this.unpackEnumeration()
 	Window.open('enum')
 
@@ -487,6 +489,8 @@ Enum.windowClosed = function (event) {
 	this.data = null
 	this.idMap = null
 	this.settings = null
+	UndoManager.setActive(this._previousActive)
+	this._previousActive = null
 	this.history = null
 	this.searcher.write('')
 	this.list.clear()

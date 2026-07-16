@@ -3,7 +3,9 @@
 // 打开窗口
 Variable.open = function (target = null) {
 	this.target = target
+	this._previousActive = UndoManager.getActive()
 	this.history = new History(100)
+	UndoManager.setActive(this)
 	this.unpackVariables()
 	Window.open('variable')
 

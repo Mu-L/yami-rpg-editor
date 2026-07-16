@@ -2,7 +2,7 @@
 
 // ******************************** 参数操作历史 ********************************
 
-export class ParamHistory {
+export class ParamListHistory {
 	list //:element
 	stack //:array
 	index //:number
@@ -53,7 +53,7 @@ export class ParamHistory {
 			const list = this.list
 			const data = this.stack[index]
 			const type = data.type
-			ParamHistory.restore(list, data, type, operation)
+			ParamListHistory.restore(list, data, type, operation)
 
 			// 改变指针
 			switch (operation) {
@@ -173,4 +173,4 @@ export class ParamHistory {
 	}
 }
 
-window.ParamHistory = ParamHistory
+window.ParamListHistory = ParamListHistory

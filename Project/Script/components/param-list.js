@@ -83,7 +83,7 @@ export class ParamList extends HTMLElement {
 		object.initialize = Function.empty
 		this.object = object
 		this.type = `yami.${object.type ?? this.id}`
-		this.history = object.history ?? new ParamHistory(this)
+		this.history = object.history ?? new ParamListHistory(this)
 		return this
 	}
 
