@@ -2,6 +2,9 @@
 
 Command.cases.waitForVideo = new CommandSchema({
 	name: 'waitForVideo',
+	fields: [
+		{ key: 'element', domId: 'element', default: { type: 'trigger' } }
+	],
 	customParse({ element }) {
 		return [
 			{ color: 'element' },
@@ -9,11 +12,7 @@ Command.cases.waitForVideo = new CommandSchema({
 			{ text: Command.parseElement(element) }
 		]
 	},
-	customLoad({ element = { type: 'trigger' } }) {
-		$('#waitForVideo-element').write(element)
+	onLoad() {
 		$('#waitForVideo-element').getFocus()
-	},
-	customSave() {
-		Command.save({ element: $('#waitForVideo-element').read() })
 	}
 })

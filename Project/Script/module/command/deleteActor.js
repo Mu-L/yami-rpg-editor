@@ -2,6 +2,7 @@
 
 Command.cases.deleteActor = new CommandSchema({
 	name: 'deleteActor',
+	fields: [{ key: 'actor', domId: 'actor', default: { type: 'trigger' } }],
 	customParse({ actor }) {
 		return [
 			{ color: 'actor' },
@@ -9,12 +10,7 @@ Command.cases.deleteActor = new CommandSchema({
 			{ text: Command.parseActor(actor) }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' } }) {
-		const write = getElementWriter('deleteActor')
-		write('actor', actor)
+	onLoad() {
 		$('#deleteActor-actor').getFocus()
-	},
-	customSave() {
-		Command.save({ actor: getElementReader('deleteActor')('actor') })
 	}
 })

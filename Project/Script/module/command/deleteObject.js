@@ -2,6 +2,7 @@
 
 Command.cases.deleteObject = new CommandSchema({
 	name: 'deleteObject',
+	fields: [{ key: 'object', domId: 'object', default: { type: 'trigger' } }],
 	customParse({ object }) {
 		return [
 			{ color: 'object' },
@@ -9,11 +10,7 @@ Command.cases.deleteObject = new CommandSchema({
 			{ text: Command.parseObject(object) }
 		]
 	},
-	customLoad({ object = { type: 'trigger' } }) {
-		$('#deleteObject-object').write(object)
+	onLoad() {
 		$('#deleteObject-object').getFocus()
-	},
-	customSave() {
-		Command.save({ object: $('#deleteObject-object').read() })
 	}
 })

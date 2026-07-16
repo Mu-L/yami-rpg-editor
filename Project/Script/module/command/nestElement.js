@@ -2,6 +2,10 @@
 
 Command.cases.nestElement = new CommandSchema({
 	name: 'nestElement',
+	fields: [
+		{ key: 'parent', domId: 'parent', default: { type: 'trigger' } },
+		{ key: 'child', domId: 'child', default: { type: 'latest' } }
+	],
 	customParse({ parent, child }) {
 		const pElement = Command.parseElement(parent)
 		const cElement = Command.parseElement(child)
@@ -11,15 +15,7 @@ Command.cases.nestElement = new CommandSchema({
 			{ text: pElement + Token(' -> ') + cElement }
 		]
 	},
-	customLoad({ parent = { type: 'trigger' }, child = { type: 'latest' } }) {
-		$('#nestElement-parent').write(parent)
-		$('#nestElement-child').write(child)
+	onLoad() {
 		$('#nestElement-parent').getFocus()
-	},
-	customSave() {
-		Command.save({
-			parent: $('#nestElement-parent').read(),
-			child: $('#nestElement-child').read()
-		})
 	}
 })

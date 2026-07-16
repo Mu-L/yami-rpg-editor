@@ -2,6 +2,7 @@
 
 Command.cases.resetTargets = new CommandSchema({
 	name: 'resetTargets',
+	fields: [{ key: 'actor', domId: 'actor', default: { type: 'trigger' } }],
 	customParse({ actor }) {
 		return [
 			{ color: 'actor' },
@@ -9,12 +10,7 @@ Command.cases.resetTargets = new CommandSchema({
 			{ text: Command.parseActor(actor) }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' } }) {
-		const write = getElementWriter('resetTargets')
-		write('actor', actor)
+	onLoad() {
 		$('#resetTargets-actor').getFocus()
-	},
-	customSave() {
-		Command.save({ actor: getElementReader('resetTargets')('actor') })
 	}
 })
