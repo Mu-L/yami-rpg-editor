@@ -886,8 +886,7 @@ let Command = new (class CommandCompiler {
 				const { presetId } = tilemap
 				return () => {
 					return Scene.entity.get(presetId) as
-						| SceneTilemap
-						| undefined
+						SceneTilemap | undefined
 				}
 			}
 			case 'variable': {
@@ -922,8 +921,7 @@ let Command = new (class CommandCompiler {
 				const { presetId } = object
 				return () => {
 					return Scene.entity.get(presetId) as
-						| PresetObject
-						| undefined
+						PresetObject | undefined
 				}
 			}
 			case 'variable': {
@@ -2445,8 +2443,7 @@ let Command = new (class CommandCompiler {
 					const getKey = Command.compileString(operand.key)
 					return () =>
 						Command.getParameter(getKey(), 'number') as
-							| number
-							| undefined
+							number | undefined
 				}
 				case 'script':
 					return Command.compileFunction(operand.script) as any
@@ -2876,8 +2873,7 @@ let Command = new (class CommandCompiler {
 					const getKey = Command.compileString(operand.key)
 					return () =>
 						Command.getParameter(getKey(), 'string') as
-							| string
-							| undefined
+							string | undefined
 				}
 				case 'script':
 					return Command.compileFunction(operand.script) as any
@@ -7069,8 +7065,7 @@ let Command = new (class CommandCompiler {
 			}
 		}
 		const OP = method.operationMap[operation] as
-			| 'increaseThreat'
-			| 'decreaseThreat'
+			'increaseThreat' | 'decreaseThreat'
 		const getActor = Command.compileActor(actor)
 		const getTarget = Command.compileActor(target)
 		const getThreat = Command.compileNumber(threat)
@@ -9321,6 +9316,326 @@ let Command = new (class CommandCompiler {
 						EventHandler.call(e)
 					}
 				})
+			return true
+		}
+	}
+
+	/* 上传文件 */
+	protected uploadFile({
+		url,
+		callback,
+		rateCallback,
+		method = 'POST',
+		path,
+		field = 'file',
+		headers
+	}: {
+		url: string | VariableGetter
+		method: string
+		callback: string
+		rateCallback: string
+		path: string | VariableGetter
+		field: string
+		headers: Record<string, string>[]
+	}): CommandFunction {
+		const toTranslate = (data: Record<string, string>[]) => {
+			return data.reduce((result, item) => {
+				const key =
+					typeof item.key === 'string'
+						? item.key
+						: Command.compileVariable(item.key, Attribute.GET)()
+				const value =
+					typeof item.value === 'string'
+						? item.value
+						: Command.compileVariable(item.value, Attribute.GET)()
+				result[key] = value
+				return result
+			}, {})
+		}
+		return () => {
+			const urlString =
+				typeof url === 'string'
+					? url
+					: Command.compileVariable(url, Attribute.GET)()
+			const pathString =
+				typeof path === 'string'
+					? path
+					: Command.compileVariable(path, Attribute.GET)()
+			const fs = require('fs')
+			const buffer = fs.readFileSync(pathString)
+			const fileName = pathString.split(/[\\/]/).pop() || 'file'
+			const formData = new FormData()
+			formData.append(field, new Blob([buffer]), fileName)
+			// @ts-ignore
+			axios({
+				method,
+				url: urlString,
+				headers: {
+					...toTranslate(headers),
+					...{ 'Content-Type': 'multipart/form-data' }
+				},
+				data: formData,
+				onUploadProgress: (progressEvent: any) => {
+					const command = EventManager.guidMap[rateCallback]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@event', progressEvent)
+						EventHandler.call(e)
+					}
+				}
+			})
+				.catch((error: any) => {
+					const command = EventManager.guidMap[callback]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@code', -1)
+						Attribute.SET(e.attributes, '@response', error.message)
+						EventHandler.call(e)
+					}
+					throw error
+				})
+				.then((response: any) => {
+					if (!response) return
+					const command = EventManager.guidMap[callback]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@code', response.status)
+						Attribute.SET(e.attributes, '@response', response.data)
+						EventHandler.call(e)
+					}
+				})
+			return true
+		}
+	}
+
+	/* 通用HTTP请求 */
+	protected httpRequest({
+		url,
+		callback,
+		method = 'GET',
+		data,
+		headers,
+		timeout,
+		responseType = 'json',
+		withCredentials = false,
+		authUser = '',
+		authPass = ''
+	}: {
+		url: string | VariableGetter
+		method: string
+		callback: string
+		headers: Record<string, string>[]
+		data: Record<string, string>[]
+		timeout?: number
+		responseType: string
+		withCredentials: boolean
+		authUser: string
+		authPass: string
+	}): CommandFunction {
+		const toTranslate = (data: Record<string, string>[]) => {
+			return data.reduce((result, item) => {
+				const key =
+					typeof item.key === 'string'
+						? item.key
+						: Command.compileVariable(item.key, Attribute.GET)()
+				const value =
+					typeof item.value === 'string'
+						? item.value
+						: Command.compileVariable(item.value, Attribute.GET)()
+				result[key] = value
+				return result
+			}, {})
+		}
+		return () => {
+			const urlString =
+				typeof url === 'string'
+					? url
+					: Command.compileVariable(url, Attribute.GET)()
+			// @ts-ignore
+			axios({
+				method,
+				url: urlString,
+				headers: toTranslate(headers),
+				timeout: typeof timeout === 'number' ? timeout : undefined,
+				responseType: responseType as any,
+				withCredentials,
+				auth:
+					authUser || authPass
+						? { username: authUser, password: authPass }
+						: undefined,
+				...(method.toUpperCase() === 'GET'
+					? { params: toTranslate(data) }
+					: { data: toTranslate(data) })
+			})
+				.catch((error: any) => {
+					const command = EventManager.guidMap[callback]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@code', -1)
+						Attribute.SET(e.attributes, '@response', error.message)
+						EventHandler.call(e)
+					}
+					throw error
+				})
+				.then((response: any) => {
+					if (!response) return
+					const command = EventManager.guidMap[callback]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@code', response.status)
+						Attribute.SET(e.attributes, '@response', response.data)
+						EventHandler.call(e)
+					}
+				})
+			return true
+		}
+	}
+
+	/** WebSocket管理器 */
+	protected get WebSocketManager(): Record<string, WebSocket> {
+		return (
+			(window as any)['__wsManager'] ||
+			((window as any)['__wsManager'] = {})
+		)
+	}
+
+	/* WebSocket连接 */
+	protected webSocketConnect({
+		url,
+		id,
+		protocols,
+		onOpen,
+		onMessage,
+		onError,
+		onClose
+	}: {
+		url: string | VariableGetter
+		id: string | VariableGetter
+		protocols: string
+		onOpen: string
+		onMessage: string
+		onError: string
+		onClose: string
+	}): CommandFunction {
+		return () => {
+			const urlString = ((s) =>
+				s.match(/^wss?:\/\//)
+					? s
+					: s.startsWith('s+')
+						? 'wss://' + s.slice(2)
+						: 'ws://' + s)(
+				typeof url === 'string'
+					? url
+					: Command.compileVariable(url, Attribute.GET)()
+			)
+			const idString =
+				typeof id === 'string'
+					? id
+					: Command.compileVariable(id, Attribute.GET)()
+			const protocolList = protocols
+				? protocols.split(',').map((p: string) => p.trim())
+				: undefined
+			const manager = Command.WebSocketManager
+			if (manager[idString]) {
+				manager[idString].close()
+			}
+			const ws = protocolList
+				? new WebSocket(urlString, protocolList)
+				: new WebSocket(urlString)
+			manager[idString] = ws
+			if (onOpen) {
+				ws.onopen = (event: Event) => {
+					const command = EventManager.guidMap[onOpen]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@event', event)
+						EventHandler.call(e)
+					}
+				}
+			}
+			if (onMessage) {
+				ws.onmessage = (event: MessageEvent) => {
+					const command = EventManager.guidMap[onMessage]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@event', event)
+						EventHandler.call(e)
+					}
+				}
+			}
+			if (onError) {
+				ws.onerror = (event: Event) => {
+					const command = EventManager.guidMap[onError]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@event', event)
+						EventHandler.call(e)
+					}
+				}
+			}
+			if (onClose) {
+				ws.onclose = (event: CloseEvent) => {
+					delete manager[idString]
+					const command = EventManager.guidMap[onClose]
+					if (command) {
+						const e = new EventHandler(command)
+						Attribute.SET(e.attributes, '@event', event)
+						EventHandler.call(e)
+					}
+				}
+			}
+			return true
+		}
+	}
+
+	/* WebSocket发送 */
+	protected webSocketSend({
+		id,
+		data
+	}: {
+		id: string | VariableGetter
+		data: string | VariableGetter
+	}): CommandFunction {
+		return () => {
+			const idString =
+				typeof id === 'string'
+					? id
+					: Command.compileVariable(id, Attribute.GET)()
+			const dataString =
+				typeof data === 'string'
+					? data
+					: Command.compileVariable(data, Attribute.GET)()
+			const ws = Command.WebSocketManager[idString]
+			if (ws) {
+				ws.send(dataString)
+			}
+			return true
+		}
+	}
+
+	/* WebSocket关闭 */
+	protected webSocketClose({
+		id,
+		code,
+		reason
+	}: {
+		id: string | VariableGetter
+		code?: number
+		reason: string
+	}): CommandFunction {
+		return () => {
+			const idString =
+				typeof id === 'string'
+					? id
+					: Command.compileVariable(id, Attribute.GET)()
+			const ws = Command.WebSocketManager[idString]
+			if (ws) {
+				ws.close(
+					typeof code === 'number' ? code : undefined,
+					reason || undefined
+				)
+				delete Command.WebSocketManager[idString]
+			}
 			return true
 		}
 	}

@@ -6161,6 +6161,80 @@
       <button id="downloadFile-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
+  <window-frame id="uploadFile">
+    <title-bar>uploadFile<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>URL</text><string-var id="uploadFile-url"></string-var>
+        <text>LocalPath</text><string-var id="uploadFile-path"></string-var>
+        <text>Method</text><select-box id="uploadFile-method"></select-box>
+        <text>Field</text><string-var id="uploadFile-field"></string-var>
+        <text>Header</text><param-list id="uploadFile-header"></param-list>
+        <text>CallBack</text><custom-box id="uploadFile-callback" type="file" filter="event"></custom-box>
+        <text>RateCallBack</text><custom-box id="uploadFile-rateCallback" type="file" filter="event"></custom-box>
+      </grid-box>
+      <button id="uploadFile-confirm" name="confirm">Confirm</button>
+      <button id="uploadFile-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="httpRequest">
+    <title-bar>httpRequest<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>URL</text><string-var id="httpRequest-url"></string-var>
+        <text>Method</text><select-box id="httpRequest-method"></select-box>
+        <text>Header</text><param-list id="httpRequest-header"></param-list>
+        <text>Data</text><param-list id="httpRequest-data"></param-list>
+        <text>TimeOut</text><number-box id="httpRequest-timeout"></number-box>
+        <text>ResponseType</text><select-box id="httpRequest-responseType"></select-box>
+        <text>WithCredentials</text><check-box class="standard" id="httpRequest-withCredentials"></check-box>
+        <text>AuthUser</text><string-var id="httpRequest-authUser"></string-var>
+        <text>AuthPass</text><string-var id="httpRequest-authPass"></string-var>
+        <text>CallBack</text><custom-box id="httpRequest-callback" type="file" filter="event"></custom-box>
+      </grid-box>
+      <button id="httpRequest-confirm" name="confirm">Confirm</button>
+      <button id="httpRequest-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="webSocketConnect">
+    <title-bar>webSocketConnect<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>URL</text><string-var id="webSocketConnect-url"></string-var>
+        <text>ID</text><string-var id="webSocketConnect-id"></string-var>
+        <text>Protocols</text><string-var id="webSocketConnect-protocols"></string-var>
+        <text>OnOpen</text><custom-box id="webSocketConnect-onOpen" type="file" filter="event"></custom-box>
+        <text>OnMessage</text><custom-box id="webSocketConnect-onMessage" type="file" filter="event"></custom-box>
+        <text>OnError</text><custom-box id="webSocketConnect-onError" type="file" filter="event"></custom-box>
+        <text>OnClose</text><custom-box id="webSocketConnect-onClose" type="file" filter="event"></custom-box>
+      </grid-box>
+      <button id="webSocketConnect-confirm" name="confirm">Confirm</button>
+      <button id="webSocketConnect-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="webSocketSend">
+    <title-bar>webSocketSend<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>ID</text><string-var id="webSocketSend-id"></string-var>
+        <text>Data</text><string-var id="webSocketSend-data"></string-var>
+      </grid-box>
+      <button id="webSocketSend-confirm" name="confirm">Confirm</button>
+      <button id="webSocketSend-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+  <window-frame id="webSocketClose">
+    <title-bar>webSocketClose<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>ID</text><string-var id="webSocketClose-id"></string-var>
+        <text>Code</text><number-box id="webSocketClose-code" min="1000" max="4999"></number-box>
+        <text>Reason</text><string-var id="webSocketClose-reason"></string-var>
+      </grid-box>
+      <button id="webSocketClose-confirm" name="confirm">Confirm</button>
+      <button id="webSocketClose-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
   <window-frame id="setGameSpeed">
     <title-bar>Set Game Speed<close></close></title-bar>
     <content-frame>

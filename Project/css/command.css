@@ -3378,9 +3378,115 @@
 }
 
 /* --------------------------------
- * 设置游戏速度
+ * 上传文件
  * --------------------------------
  */
+#uploadFile {
+	width: 324px;
+	height: 430px;
+}
+
+#uploadFile-header {
+	height: 102px;
+}
+
+#uploadFile-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#uploadFile-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 通用请求
+ * --------------------------------
+ */
+#httpRequest {
+	width: 324px;
+	height: 530px;
+}
+
+#httpRequest-header {
+	height: 102px;
+}
+
+#httpRequest-data {
+	height: 102px;
+}
+
+#httpRequest-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#httpRequest-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * WebSocket连接
+ * --------------------------------
+ */
+#webSocketConnect {
+	width: 324px;
+	height: 430px;
+}
+
+#webSocketConnect-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#webSocketConnect-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * WebSocket发送
+ * --------------------------------
+ */
+#webSocketSend {
+	width: 324px;
+	height: 180px;
+}
+
+#webSocketSend-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#webSocketSend-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * WebSocket关闭
+ * --------------------------------
+ */
+#webSocketClose {
+	width: 324px;
+	height: 200px;
+}
+
+#webSocketClose-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#webSocketClose-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置游戏速度
+ * -------------------------------- */
 #setGameSpeed {
 	width: 324px;
 	height: 170px;
