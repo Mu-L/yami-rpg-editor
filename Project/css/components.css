@@ -314,7 +314,7 @@ check-mark {
 }
 
 check-box > check-mark::before {
-	content: '�?;
+	content: '';
 	position: absolute;
 	margin: -1px;
 	width: 16px;
@@ -356,7 +356,6 @@ check-box.standard.large > check-mark::before {
 	font-size: 1.5em;
 }
 
-
 /* --------------------------------
  * 单选框
  * --------------------------------
@@ -388,8 +387,7 @@ radio-mark {
 }
 
 radio-box > radio-mark::before {
-	content: '
-		';
+	content: '';
 	position: absolute;
 	margin: -1px;
 	padding: 3px;
@@ -413,7 +411,6 @@ radio-box.standard.disabled {
 	pointer-events: none;
 	opacity: 0.5;
 }
-
 
 /* --------------------------------
  * 滑动�? * --------------------------------
@@ -475,7 +472,6 @@ slider-filler {
 ::-webkit-slider-thumb:active {
 	background-color: var(--slider-thumb-background-active);
 }
-
 
 /* --------------------------------
  * 数字�? * --------------------------------
@@ -547,7 +543,6 @@ number-box > .unit {
 	appearance: none;
 }
 
-
 /* --------------------------------
  * 数字变量�? * --------------------------------
  */
@@ -561,15 +556,12 @@ number-var:focus-within::before {
 }
 
 number-var.constant:focus-within::before {
-	content: '
-		num ';
+	content: 'num';
 }
 
 number-var.variable:focus-within::before {
-	content: ' var
-		';
+	content: ' var';
 }
-
 
 /* --------------------------------
  * 字符串变量框
@@ -583,15 +575,12 @@ string-var:focus-within::before {
 }
 
 string-var.constant:focus-within::before {
-	content: '
-		str ';
+	content: 'str';
 }
 
 string-var.variable:focus-within::before {
-	content: ' var
-		';
+	content: ' var';
 }
-
 
 /* --------------------------------
  * 文本区域变量�? * --------------------------------
@@ -608,15 +597,12 @@ text-area-var:focus-within::before {
 }
 
 text-area-var.constant:focus-within::before {
-	content: '
-		str ';
+	content: 'str';
 }
 
 text-area-var.variable:focus-within::before {
-	content: ' var
-		';
+	content: ' var';
 }
-
 
 /* --------------------------------
  * 选择变量�? * --------------------------------
@@ -628,19 +614,14 @@ select-var:focus-within::before {
 }
 
 select-var.constant:focus-within::before {
-	content: '
-		enum
-		';
+	content: 'enum';
 	margin-left: -2.6em;
 }
 
 select-var.variable:focus-within::before {
-	content: '
-		var
-		';
+	content: 'var';
 	margin-left: -2em;
 }
-
 
 /* --------------------------------
  * 文件变量�? * --------------------------------
@@ -652,19 +633,14 @@ file-var:focus-within::before {
 }
 
 file-var.constant:focus-within::before {
-	content: '
-		file
-		';
+	content: 'file';
 	margin-left: -2.6em;
 }
 
 file-var.variable:focus-within::before {
-	content: '
-		var
-		';
+	content: 'var';
 	margin-left: -2em;
 }
-
 
 /* --------------------------------
  * 选择�? * --------------------------------
@@ -684,8 +660,7 @@ select-box {
 }
 
 select-box:not(.disabled)::before {
-	content: '
-		';
+	content: '';
 	position: absolute;
 	right: 4px;
 	top: 7px;
@@ -722,7 +697,6 @@ select-box:focus {
 	color: var(--text-color-error);
 }
 
-
 /* --------------------------------
  * 选择列表
  * --------------------------------
@@ -758,7 +732,6 @@ select-item.selected {
 select-item.disabled {
 	color: var(--text-color-disabled);
 }
-
 
 /* --------------------------------
  * 菜单列表
@@ -829,8 +802,7 @@ menu-icon.color-icon {
 }
 
 menu-icon.color-icon.transparent::before {
-	content: '
-		';
+	content: '';
 	position: absolute;
 	top: 4px;
 	width: 10px;
@@ -879,7 +851,6 @@ menu-separator {
 	pointer-events: none;
 }
 
-
 /* --------------------------------
  * 自定义框
  * --------------------------------
@@ -899,8 +870,7 @@ custom-box {
 }
 
 custom-box:not(.disabled)::before {
-	content: '
-		�?;
+	content: '...';
 	position: absolute;
 	right: 0;
 	width: 16px;
@@ -1195,12 +1165,16 @@ node-icon {
 node-icon.icon-folder {
 	background-color: var(--folder-icon-color);
 	-webkit-mask-image: url(../Images/folder_folded.png);
+	mask-image: url(../Images/folder_folded.png);
 	-webkit-mask-size: 100%;
+	mask-size: 100%;
 }
 
 node-icon.icon-folder.expanded {
 	-webkit-mask-image: url(../Images/folder_expanded.png);
+	mask-image: url(../Images/folder_expanded.png);
 	-webkit-mask-size: 100%;
+	mask-size: 100%;
 }
 
 node-icon.icon-particle-image {
@@ -1213,7 +1187,9 @@ node-icon.icon-particle-image {
 .icon-file {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/file_common.png);
+	mask-image: url(../Images/file_common.png);
 	-webkit-mask-size: 100%;
+	mask-size: 100%;
 }
 
 .icon-conditional,
@@ -1267,78 +1243,111 @@ node-icon.icon-particle-image {
 .icon-ui-image {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 .icon-ui-text {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 .icon-ui-textbox {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -200%;
+	mask-position: 0 -200%;
 }
 
 .icon-ui-dialogbox {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -300%;
+	mask-position: 0 -300%;
 }
 
 .icon-ui-progressbar {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -400%;
+	mask-position: 0 -400%;
 }
 
 .icon-ui-button {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -500%;
+	mask-position: 0 -500%;
 }
 
 .icon-ui-animation {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -600%;
+	mask-position: 0 -600%;
 }
 
 .icon-ui-video {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -700%;
+	mask-position: 0 -700%;
 }
 
 .icon-ui-window {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -800%;
+	mask-position: 0 -800%;
 }
 
 .icon-ui-container {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -900%;
+	mask-position: 0 -900%;
 }
 
 .icon-ui-reference {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 	-webkit-mask-position: 0 -1000%;
+	mask-position: 0 -1000%;
 }
 
 .icon-ui-reference-active {
@@ -1963,13 +1972,17 @@ file-nav-icon {
 file-nav-icon.icon-folder {
 	background-color: var(--folder-icon-color);
 	-webkit-mask-image: url(../Images/folder_folded.png);
+	mask-image: url(../Images/folder_folded.png);
 	-webkit-mask-size: 100%;
+	mask-size: 100%;
 }
 
 file-nav-icon.icon-folder.expanded {
 	background-color: var(--folder-icon-color);
 	-webkit-mask-image: url(../Images/folder_expanded.png);
+	mask-image: url(../Images/folder_expanded.png);
 	-webkit-mask-size: 100%;
+	mask-size: 100%;
 }
 
 .file-nav-text-box {
@@ -2183,7 +2196,9 @@ file-body-icon {
 
 file-body-icon.icon-folder {
 	background-color: var(--folder-icon-color);
+	mask-image: url(../Images/folder_folded.png);
 	-webkit-mask-image: url(../Images/folder_folded.png);
+	mask-size: 100%;
 	-webkit-mask-size: 100%;
 }
 
@@ -2281,6 +2296,7 @@ file-body-name {
 	text-overflow: ellipsis;
 	word-break: break-word;
 	-webkit-line-clamp: 2;
+	line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
 

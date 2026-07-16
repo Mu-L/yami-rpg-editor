@@ -31,26 +31,38 @@
 
 #animation-switch-mark::after {
 	-webkit-mask-image: url(../Images/animation_layer.png);
+	mask-image: url(../Images/animation_layer.png);
 	-webkit-mask-size: 100% 300%;
+	mask-size: 100% 300%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #animation-switch-onionskin::after {
 	-webkit-mask-image: url(../Images/animation_buttons.png);
+	mask-image: url(../Images/animation_buttons.png);
 	-webkit-mask-size: 100% 200%;
+	mask-size: 100% 200%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #animation-switch-mirror::after {
 	-webkit-mask-image: url(../Images/animation_buttons.png);
+	mask-image: url(../Images/animation_buttons.png);
 	-webkit-mask-size: 100% 200%;
+	mask-size: 100% 200%;
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 #animation-switch-settings::after {
 	-webkit-mask-image: url(../Images/common_settings.png);
+	mask-image: url(../Images/common_settings.png);
 	-webkit-mask-size: 100% 100%;
+	mask-size: 100% 100%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #animation-head-center {
@@ -150,35 +162,44 @@ anim-dir.selected {
 	height: 16px;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/timeline_buttons.png);
+	mask-image: url(../Images/timeline_buttons.png);
 	-webkit-mask-size: 100% 700%;
+	mask-size: 100% 700%;
 }
 
 #animation-timeline-play::after {
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #animation-timeline-play.playing::after {
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 #animation-timeline-previous::after {
 	-webkit-mask-position: 0 -200%;
+	mask-position: 0 -200%;
 }
 
 #animation-timeline-next::after {
 	-webkit-mask-position: 0 -300%;
+	mask-position: 0 -300%;
 }
 
 #animation-timeline-previousKey::after {
 	-webkit-mask-position: 0 -400%;
+	mask-position: 0 -400%;
 }
 
 #animation-timeline-nextKey::after {
 	-webkit-mask-position: 0 -500%;
+	mask-position: 0 -500%;
 }
 
 #animation-timeline-loop::after {
 	-webkit-mask-position: 0 -600%;
+	mask-position: 0 -600%;
 }
 
 #animation-timeline-ruler-outer {
@@ -250,29 +271,41 @@ anim-dir.selected {
 .anim-layer-joint {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/animation_layer.png);
+	mask-image: url(../Images/animation_layer.png);
 	-webkit-mask-size: 100% 300%;
+	mask-size: 100% 300%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 .anim-layer-sprite {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/animation_layer.png);
+	mask-image: url(../Images/animation_layer.png);
 	-webkit-mask-size: 100% 300%;
+	mask-size: 100% 300%;
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 .anim-layer-particle {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/scene_view.png);
+	mask-image: url(../Images/scene_view.png);
 	-webkit-mask-size: 100% 400%;
+	mask-size: 100% 400%;
 	-webkit-mask-position: 0 -300%;
+	mask-position: 0 -300%;
 }
 
 .anim-layer-sound {
 	background-color: var(--file-icon-color);
 	-webkit-mask-image: url(../Images/animation_layer.png);
+	mask-image: url(../Images/animation_layer.png);
 	-webkit-mask-size: 100% 300%;
+	mask-size: 100% 300%;
 	-webkit-mask-position: 0 -200%;
+	mask-position: 0 -200%;
 }
 
 #animation-timeline-list-outer {

@@ -29,15 +29,19 @@
 	height: 16px;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/particle_view.png);
+	mask-image: url(../Images/particle_view.png);
 	-webkit-mask-size: 100% 200%;
+	mask-size: 100% 200%;
 }
 
 #particle-view-wireframe::after {
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #particle-view-anchor::after {
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 #particle-head-center {
@@ -64,7 +68,9 @@
 	height: 16px;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/particle_animation.png);
+	mask-image: url(../Images/particle_animation.png);
 	-webkit-mask-size: 100% 200%;
+	mask-size: 100% 200%;
 }
 
 #particle-control > .toolbar-item.selected::after,
@@ -74,10 +80,12 @@
 
 #particle-control-restart::after {
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #particle-control-pause::after {
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 #particle-head-end {

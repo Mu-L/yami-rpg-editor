@@ -211,12 +211,14 @@ text.export-apk-major {
 	cursor: pointer;
 	background: var(--about-credit-name-color);
 	-webkit-background-clip: text;
+	background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
 
 .href:hover {
 	background: var(--about-credit-name-color-hover);
 	-webkit-background-clip: text;
+	background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
 

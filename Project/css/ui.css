@@ -64,26 +64,38 @@ nav-item[value='particle'].selected {
 
 #scene-switch-grid::after {
 	-webkit-mask-image: url(../Images/scene_view.png);
+	mask-image: url(../Images/scene_view.png);
 	-webkit-mask-size: 100% 400%;
+	mask-size: 100% 400%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #scene-switch-light::after {
 	-webkit-mask-image: url(../Images/scene_view.png);
+	mask-image: url(../Images/scene_view.png);
 	-webkit-mask-size: 100% 400%;
+	mask-size: 100% 400%;
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 #scene-switch-animation::after {
 	-webkit-mask-image: url(../Images/scene_view.png);
+	mask-image: url(../Images/scene_view.png);
 	-webkit-mask-size: 100% 400%;
+	mask-size: 100% 400%;
 	-webkit-mask-position: 0 -300%;
+	mask-position: 0 -300%;
 }
 
 #scene-switch-settings::after {
 	-webkit-mask-image: url(../Images/common_settings.png);
+	mask-image: url(../Images/common_settings.png);
 	-webkit-mask-size: 100% 100%;
+	mask-size: 100% 100%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #scene-head-center {
@@ -107,7 +119,9 @@ nav-item[value='particle'].selected {
 	height: 16px;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/scene_tilemap.png);
+	mask-image: url(../Images/scene_tilemap.png);
 	-webkit-mask-size: 100% 1300%;
+	mask-size: 100% 1300%;
 }
 
 #scene-layer > .toolbar-item.selected::after,
@@ -117,54 +131,67 @@ nav-item[value='particle'].selected {
 
 #scene-layer-object::after {
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #scene-layer-tilemap-1::after {
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 #scene-layer-tilemap-2::after {
 	-webkit-mask-position: 0 -200%;
+	mask-position: 0 -200%;
 }
 
 #scene-layer-tilemap-3::after {
 	-webkit-mask-position: 0 -300%;
+	mask-position: 0 -300%;
 }
 
 #scene-layer-tilemap-4::after {
 	-webkit-mask-position: 0 -400%;
+	mask-position: 0 -400%;
 }
 
 #scene-layer-tilemap-5::after {
 	-webkit-mask-position: 0 -500%;
+	mask-position: 0 -500%;
 }
 
 #scene-layer-tilemap-6::after {
 	-webkit-mask-position: 0 -600%;
+	mask-position: 0 -600%;
 }
 
 #scene-layer-terrain::after {
 	-webkit-mask-position: 0 -700%;
+	mask-position: 0 -700%;
 }
 
 #scene-brush-eraser::after {
 	-webkit-mask-position: 0 -800%;
+	mask-position: 0 -800%;
 }
 
 #scene-brush-pencil::after {
 	-webkit-mask-position: 0 -900%;
+	mask-position: 0 -900%;
 }
 
 #scene-brush-rect::after {
 	-webkit-mask-position: 0 -1000%;
+	mask-position: 0 -1000%;
 }
 
 #scene-brush-oval::after {
 	-webkit-mask-position: 0 -1100%;
+	mask-position: 0 -1100%;
 }
 
 #scene-brush-fill::after {
 	-webkit-mask-position: 0 -1200%;
+	mask-position: 0 -1200%;
 }
 
 #scene-head-end {
@@ -251,8 +278,11 @@ nav-item[value='particle'].selected {
 
 #ui-switch-settings::after {
 	-webkit-mask-image: url(../Images/common_settings.png);
+	mask-image: url(../Images/common_settings.png);
 	-webkit-mask-size: 100% 100%;
+	mask-size: 100% 100%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #ui-head-center {
@@ -270,51 +300,64 @@ nav-item[value='particle'].selected {
 	height: 16px;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/ui_components.png);
+	mask-image: url(../Images/ui_components.png);
 	-webkit-mask-size: 100% 1100%;
+	mask-size: 100% 1100%;
 }
 
 #ui-element-image::after {
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #ui-element-text::after {
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 #ui-element-textbox::after {
 	-webkit-mask-position: 0 -200%;
+	mask-position: 0 -200%;
 }
 
 #ui-element-dialogbox::after {
 	-webkit-mask-position: 0 -300%;
+	mask-position: 0 -300%;
 }
 
 #ui-element-progressbar::after {
 	-webkit-mask-position: 0 -400%;
+	mask-position: 0 -400%;
 }
 
 #ui-element-button::after {
 	-webkit-mask-position: 0 -500%;
+	mask-position: 0 -500%;
 }
 
 #ui-element-animation::after {
 	-webkit-mask-position: 0 -600%;
+	mask-position: 0 -600%;
 }
 
 #ui-element-video::after {
 	-webkit-mask-position: 0 -700%;
+	mask-position: 0 -700%;
 }
 
 #ui-element-window::after {
 	-webkit-mask-position: 0 -800%;
+	mask-position: 0 -800%;
 }
 
 #ui-element-container::after {
 	-webkit-mask-position: 0 -900%;
+	mask-position: 0 -900%;
 }
 
 #ui-element-reference::after {
 	-webkit-mask-position: 0 -1000%;
+	mask-position: 0 -1000%;
 }
 
 #ui-head-end {

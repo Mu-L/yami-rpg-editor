@@ -313,8 +313,11 @@ minimize::after {
 	height: 100%;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/title_buttons.png);
+	mask-image: url(../Images/title_buttons.png);
 	-webkit-mask-size: 100% 400%;
+	mask-size: 100% 400%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 minimize:hover {
@@ -339,8 +342,11 @@ maximize {
 	height: 100%;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/title_buttons.png);
+	mask-image: url(../Images/title_buttons.png);
 	-webkit-mask-size: 100% 400%;
+	mask-size: 100% 400%;
 	-webkit-mask-position: 0 -100%;
+	mask-position: 0 -100%;
 }
 
 :root:not(.darwin) maximize:hover {
@@ -365,8 +371,11 @@ close {
 	height: 100%;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/title_buttons.png);
+	mask-image: url(../Images/title_buttons.png);
 	-webkit-mask-size: 100% 400%;
+	mask-size: 100% 400%;
 	-webkit-mask-position: 0 -300%;
+	mask-position: 0 -300%;
 }
 
 :root:not(.darwin) close:hover {
@@ -384,6 +393,7 @@ close {
 
 :root:not(.darwin) window-frame.maximized > title-bar > maximize::after {
 	-webkit-mask-position: 0 -200%;
+	mask-position: 0 -200%;
 }
 
 :root.darwin maximize {
@@ -567,6 +577,7 @@ marquee-area > selection {
 
 body.maximized > #title > #title-buttons > #title-maximize::after {
 	-webkit-mask-position: 0 -200%;
+	mask-position: 0 -200%;
 }
 
 /* --------------------------------

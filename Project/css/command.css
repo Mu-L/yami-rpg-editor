@@ -27,8 +27,11 @@
 	height: 16px;
 	background-color: var(--text-color);
 	-webkit-mask-image: url(../Images/curve_settings.png);
+	mask-image: url(../Images/curve_settings.png);
 	-webkit-mask-size: 100% 100%;
+	mask-size: 100% 100%;
 	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
 }
 
 #animation-easing-id {
