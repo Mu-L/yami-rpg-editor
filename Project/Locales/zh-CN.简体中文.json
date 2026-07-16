@@ -66,6 +66,8 @@
     },
     "plugin": {
       "author": "作者",
+      "deprecated": "已弃用",
+      "requireMissing": "缺少依赖：",
       "boolean": "布尔值",
       "number": "数值",
       "variable-number": "可变数值",

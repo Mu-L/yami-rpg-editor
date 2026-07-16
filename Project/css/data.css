@@ -553,6 +553,21 @@ node-icon.icon-note {
 	white-space: pre;
 }
 
+.plugin-deprecated {
+	color: #e8a33d;
+	font-size: 10px;
+	white-space: pre;
+	margin-left: 4px;
+}
+
+.plugin-require-warn {
+	display: block;
+	color: #e05a4d;
+	font-size: 11px;
+	white-space: pre-wrap;
+	margin-top: 4px;
+}
+
 .plugin-wrap {
 	display: block;
 	overflow: hidden;

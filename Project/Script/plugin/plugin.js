@@ -60,8 +60,8 @@ PluginManager.list.updateToggleStyle = null
 PluginManager.list.createEditIcon = null
 
 // pane methods
-PluginManager.parameterPane.createDetailBox = null
-PluginManager.parameterPane.clear = null
+// 注意：不再重写 ParameterPane.createDetailBox / clear，
+// 因为它们在 ParameterPane.initialize 中被重写
 
 // 初始化
 PluginManager.initialize = function () {
@@ -166,6 +166,15 @@ PluginManager.createOverview = function (meta, detailed) {
 			text.addClass('plugin-version')
 			title.appendChild(text)
 		}
+		if (meta.overview.deprecated) {
+			const text = document.createElement('text')
+			text.textContent =
+				typeof meta.overview.deprecated === 'string'
+					? get('deprecated') + ': ' + meta.overview.deprecated
+					: get('deprecated')
+			text.addClass('plugin-deprecated')
+			title.appendChild(text)
+		}
 	}
 	if (author) {
 		if (elements.length) {
@@ -189,6 +198,29 @@ PluginManager.createOverview = function (meta, detailed) {
 			elements.push(document.createTextNode('\n\n'))
 		}
 		elements.push(document.createTextNode(langMap.get(desc)))
+	}
+	// 依赖校验：缺失的依赖在概览区显示告警
+	if (meta.overview.requires?.length) {
+		const guidMap = Data.manifest.guidMap
+		const loaded = new Set()
+		for (const id in guidMap) {
+			const p = guidMap[id]?.overview?.plugin
+			if (p) loaded.add(p)
+		}
+		const missing = meta.overview.requires.filter(
+			(req) => !loaded.has(req.plugin)
+		)
+		if (missing.length) {
+			if (elements.length) {
+				elements.push(document.createTextNode('\n\n'))
+			}
+			const warn = document.createElement('text')
+			warn.addClass('plugin-require-warn')
+			warn.textContent =
+				get('requireMissing') +
+				missing.map((req) => req.plugin).join(', ')
+			elements.push(warn)
+		}
 	}
 	// 显示更多信息
 	if (detailed) {
@@ -516,12 +548,25 @@ PluginManager.parseMeta = (function IIFE() {
 	const setVersion = () => {
 		overview.version = content
 	}
+	const setDeprecated = () => {
+		overview.deprecated = content || true
+	}
+	const setRequire = () => {
+		const slices = content.split(spacing)
+		const name = slices[0]
+		if (!name) return
+		overview.requires.push({
+			plugin: name,
+			version: slices[1] || ''
+		})
+	}
 	const setParameter = () => {
 		if (!paramMap[content]) {
 			parameter = {
 				key: content,
 				type: type,
-				value: parseInitialValue()
+				value: parseInitialValue(),
+				group: currentGroup
 			}
 			parameters.push(parameter)
 			paramMap[content] = parameter
@@ -532,7 +577,8 @@ PluginManager.parseMeta = (function IIFE() {
 			parameter = {
 				key: content,
 				type: type,
-				value: ''
+				value: '',
+				group: currentGroup
 			}
 			Object.defineProperties(parameter, {
 				filter: { writable: true, value: 'any' }
@@ -546,7 +592,8 @@ PluginManager.parseMeta = (function IIFE() {
 			parameter = {
 				key: content,
 				type: type,
-				value: ''
+				value: '',
+				group: currentGroup
 			}
 			Object.defineProperties(parameter, {
 				filter: { writable: true, value: 'any' }
@@ -560,7 +607,8 @@ PluginManager.parseMeta = (function IIFE() {
 			parameter = {
 				key: content,
 				type: type,
-				value: 0
+				value: 0,
+				group: currentGroup
 			}
 			Object.defineProperties(parameter, {
 				min: { writable: true, value: -1000000000 },
@@ -587,7 +635,8 @@ PluginManager.parseMeta = (function IIFE() {
 				key: key,
 				type: type,
 				value: values[0],
-				options: values
+				options: values,
+				group: currentGroup
 			}
 			Object.defineProperty(parameter, 'dataItems', {
 				configurable: true,
@@ -629,7 +678,8 @@ PluginManager.parseMeta = (function IIFE() {
 			parameter = {
 				key: content,
 				type: type,
-				value: ''
+				value: '',
+				group: currentGroup
 			}
 			Object.defineProperties(parameter, {
 				filter: { writable: true, value: '' }
@@ -734,6 +784,18 @@ PluginManager.parseMeta = (function IIFE() {
 			parameter.value = value
 		}
 	}
+	const setPlaceholder = () => {
+		if (parameter === null) return
+		switch (parameter.type) {
+			case 'string':
+			case 'number':
+			case 'variable-number':
+				break
+			default:
+				return
+		}
+		parameter.placeholder = content
+	}
 	const setAlias = () => {
 		if (parameter === null) return
 		if (parameter.type === 'option') {
@@ -786,6 +848,9 @@ PluginManager.parseMeta = (function IIFE() {
 				code: content
 			})
 		}
+	}
+	const setGroup = () => {
+		currentGroup = content || null
 	}
 
 	// 选项管理器类
@@ -989,6 +1054,8 @@ PluginManager.parseMeta = (function IIFE() {
 		author: setAuthor,
 		link: setLink,
 		version: setVersion,
+		deprecated: setDeprecated,
+		require: setRequire,
 		boolean: setParameter,
 		number: setNumber,
 		'variable-number': setNumber,
@@ -1029,11 +1096,13 @@ PluginManager.parseMeta = (function IIFE() {
 		'position-getter': setParameter,
 		clamp: setClamp,
 		decimals: setDecimals,
+		placeholder: setPlaceholder,
 		default: setDefault,
 		alias: setAlias,
 		desc: setDesc,
 		cond: setCond,
-		lang: setLang
+		lang: setLang,
+		group: setGroup
 	}
 
 	// 共享变量
@@ -1045,14 +1114,16 @@ PluginManager.parseMeta = (function IIFE() {
 	let parameter = null
 	let type = ''
 	let content = ''
+	let currentGroup = null
 
 	// 返回函数
 	return function (meta, code) {
-		overview = {}
+		overview = { requires: [] }
 		parameters = []
 		paramMap = {}
 		langMap = new LanguageMap()
 		manager = new OptionManager()
+		currentGroup = null
 		let match = selector.exec(code)
 		if (match) {
 			const code = match[0]
@@ -1759,35 +1830,8 @@ PluginManager.list.createEditIcon = function (item) {
 	item.element.appendChild(box)
 }
 
-// 参数面板 - 重写创建细节框方法
-PluginManager.parameterPane.createDetailBox = (function IIFE() {
-	const box = $('#plugin-parameter-detail')
-	const grid = $('#plugin-parameter-grid')
-	const wrap = { box, grid, children: [] }
-	box.wrap = wrap
-	return function () {
-		return wrap
-	}
-})()
-
-// 参数面板 - 重写清除内容方法
-PluginManager.parameterPane.clear = function () {
-	this.metas = []
-	const { wraps } = this
-	if (wraps.length !== 0) {
-		const { children, box } = wraps[0]
-		let i = children.length
-		while (--i >= 0) {
-			this.recycle(children[i])
-		}
-		box.meta = null
-		box.data = null
-		children.length = 0
-		wraps.length = 0
-	}
-	if (!this.scriptList.data) {
-		window.off('script-change', this.scriptChange)
-	}
-}
+// 注意：不再重写 ParameterPane.createDetailBox / clear，
+// 以保留参数面板按 @group 分组的多 detail-box 渲染能力
+// （原生 ParameterPane 已支持，见 components/parameter-pane.js）
 
 window.PluginManager = PluginManager

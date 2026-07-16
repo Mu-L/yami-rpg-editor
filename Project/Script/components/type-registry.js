@@ -33,6 +33,9 @@ TypeRegistry.register('number', {
 		wrap.input.input.min = param.min.toString()
 		wrap.input.input.max = param.max.toString()
 		wrap.input.decimals = param.decimals
+		if (param.placeholder) {
+			wrap.input.setPlaceholder(param.placeholder)
+		}
 		return wrap
 	}
 })
@@ -45,14 +48,21 @@ TypeRegistry.register('variable-number', {
 		wrap.input.numBox.input.max = param.max.toString()
 		wrap.input.numBox.decimals = param.decimals
 		wrap.input.varBox.isPluginInput = true
+		if (param.placeholder) {
+			wrap.input.numBox.setPlaceholder(param.placeholder)
+		}
 		return wrap
 	}
 })
 
 TypeRegistry.register('string', {
 	component: 'text-box',
-	create(pane) {
-		return pane.createTextBox()
+	create(pane, param) {
+		const wrap = pane.createTextBox()
+		if (param.placeholder) {
+			wrap.input.setPlaceholder(param.placeholder)
+		}
+		return wrap
 	}
 })
 

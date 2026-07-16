@@ -66,6 +66,8 @@
     },
     "plugin": {
       "author": "Author",
+      "deprecated": "Deprecated",
+      "requireMissing": "Missing dependencies: ",
       "boolean": "Boolean",
       "number": "Number",
       "variable-number": "Variable Number",

@@ -106,18 +106,22 @@ export class ParameterPane extends HTMLElement {
 			if (!paramList.length) continue
 			const langMap = meta.langMap.update()
 			const parameters = script.parameters
-			const detailWrap = this.createDetailBox()
-			const { box, summary, grid, children } = detailWrap
-			box.meta = meta
-			box.data = script
-			this.wraps.push(detailWrap)
-			// 如果传递了细节概要元素则设置脚本名称
-			if (summary instanceof DetailSummary) {
-				summary.textContent =
-					langMap.get(meta.overview.plugin) ||
-					File.parseMetaName(meta)
-			}
+			// 按 group 分组（保留首次出现顺序），无 group 的参数归到空串主段
+			const groupOrder = []
+			const groupMap = new Map()
 			for (const parameter of paramList) {
+				const g = parameter.group || ''
+				if (!groupMap.has(g)) {
+					groupMap.set(g, [])
+					groupOrder.push(g)
+				}
+				groupMap.get(g).push(parameter)
+			}
+			if (!groupMap.has('')) {
+				groupMap.set('', [])
+				groupOrder.unshift('')
+			}
+			const createParamRow = (box, grid, children, parameter) => {
 				const inputWrap = this.createParamInput(parameter)
 				const { label, input } = inputWrap
 				const key = parameter.key
@@ -133,8 +137,28 @@ export class ParameterPane extends HTMLElement {
 				grid.appendChild(input)
 				children.push(inputWrap)
 			}
-			this.updateParamDisplay(box)
-			this.appendChild(box)
+			for (const g of groupOrder) {
+				const isMain = g === ''
+				const detailWrap = this.createDetailBox()
+				const { box, summary, grid, children } = detailWrap
+				box.meta = meta
+				box.data = script
+				this.wraps.push(detailWrap)
+				// 主段（无 @group）与分组段外观一致，均为可折叠 detail-box：
+				// 主段显示本地化「参数」，分组段显示组名
+				if (summary instanceof DetailSummary) {
+					if (isMain) {
+						summary.textContent = Local.get('parameter.param')
+					} else {
+						summary.textContent = langMap.get(g) ?? g
+					}
+				}
+				for (const parameter of groupMap.get(g)) {
+					createParamRow(box, grid, children, parameter)
+				}
+				this.updateParamDisplay(box)
+				this.appendChild(box)
+			}
 		}
 		// 脚本列表 - 发送改变事件
 		if (changed) {
@@ -165,15 +189,21 @@ export class ParameterPane extends HTMLElement {
 	// 创建细节框
 	createDetailBox() {
 		const { detailBoxes } = this
+		let box
 		if (detailBoxes.length !== 0) {
-			return detailBoxes.pop()
+			box = detailBoxes.pop().box
+			// 复用池内 box 时先清空残留的 summary/grid，避免多次复用累积
+			while (box.firstChild) {
+				box.removeChild(box.firstChild)
+			}
+		} else {
+			box = document.createElement('detail-box')
+			box.setAttribute('open', '')
 		}
 		const tag = 'detail-box'
-		const box = document.createElement('detail-box')
 		const summary = document.createElement('detail-summary')
 		const grid = document.createElement('detail-grid')
 		const wrap = { tag, box, summary, grid, children: [] }
-		box.setAttribute('open', '')
 		box.appendChild(summary)
 		box.appendChild(grid)
 		box.wrap = wrap

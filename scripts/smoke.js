@@ -222,6 +222,206 @@ guard('Command')
 if (warned) ok('顺序颠倒时 guard 能检出 (Inspector 未先于 Command)')
 else fail('guard 未检出顺序错误')
 
+console.log('[smoke] 4. 插件 @group 参数分组解析')
+// 以递归 stub 加载 plugin.js，验证 parseMeta 能正确标注 parameter.group
+function makeRecStub() {
+	const f = function () {
+		return makeRecStub()
+	}
+	f.createDefaultForPlugin = () => ({ type: 'none' })
+	return new Proxy(f, {
+		get(t, p) {
+			if (p === 'list') return makeRecStub()
+			if (p === Symbol.toPrimitive) return () => ''
+			if (p in t) return t[p]
+			return makeRecStub()
+		},
+		apply() {
+			return makeRecStub()
+		},
+		construct() {
+			return makeRecStub()
+		}
+	})
+}
+const pluginSandbox = {
+	console,
+	Math,
+	Object,
+	Array,
+	JSON,
+	Promise,
+	Set,
+	Map,
+	Symbol,
+	String,
+	Event: function () {},
+	window: null,
+	Local: { get: (k) => k, language: 'en' },
+	File: { parseMetaName: (m) => m.overview?.plugin || 'plugin' }
+}
+pluginSandbox.window = pluginSandbox
+pluginSandbox.globalThis = pluginSandbox
+pluginSandbox.$ = () => makeRecStub()
+pluginSandbox.LanguageMap = class {
+	constructor() {
+		this.packs = []
+	}
+	append(p) {
+		this.packs.push(p)
+	}
+	update() {
+		return { get: (k) => (k && k[0] === '#' ? k.slice(1) : k || '') }
+	}
+}
+pluginSandbox.OptionManager = class extends Array {
+	constructor() {
+		super()
+		this.wraps = {}
+		this.states = {}
+	}
+	append(o) {
+		this.push(o)
+	}
+}
+const pluginProxy = new Proxy(pluginSandbox, {
+	get(target, prop) {
+		if (prop in target) return target[prop]
+		if (typeof prop === 'symbol') return undefined
+		if (typeof globalThis[prop] !== 'undefined') return globalThis[prop]
+		return makeRecStub()
+	},
+	has() {
+		return true
+	}
+})
+let groupOk = true
+try {
+	const pluginCode = stripESM(
+		fs.readFileSync(
+			path.join(ROOT, 'Project/Script/plugin/plugin.js'),
+			'utf8'
+		)
+	)
+	vm.runInNewContext(pluginCode, pluginProxy, 'plugin.js')
+	const parseMeta = pluginSandbox.PluginManager.parseMeta
+	const sample = `/* @plugin Demo
+@group Target
+@actor target
+@number damage @default 10
+
+@group Options
+@boolean heavy
+@string name @alias 名称
+*/`
+	const meta = {}
+	parseMeta(meta, sample)
+	const find = (k) => meta.parameters.find((p) => p.key === k)
+	const checks = [
+		['target', 'Target'],
+		['damage', 'Target'],
+		['heavy', 'Options'],
+		['name', 'Options']
+	]
+	for (const [k, g] of checks) {
+		if (find(k)?.group !== g) {
+			groupOk = false
+			fail(`@group 解析错误: ${k} 期望 ${g} 实得 ${find(k)?.group}`)
+		}
+	}
+	// 验证 @desc 本地化 #key 引用
+	const descSample = `/* @plugin Demo
+@lang en
+#dmgDesc Damage value
+
+@number damage @desc #dmgDesc
+@string note @desc Plain text
+*/`
+	const dmeta = {}
+	parseMeta(dmeta, descSample)
+	const dlm = dmeta.langMap.update()
+	const dmgParam = dmeta.parameters.find((p) => p.key === 'damage')
+	const noteParam = dmeta.parameters.find((p) => p.key === 'note')
+	if (dlm.get(dmgParam.desc) !== 'Damage value') {
+		groupOk = false
+		fail(`@desc 本地化错误: 实得 "${dlm.get(dmgParam.desc)}"`)
+	}
+	if (dlm.get(noteParam.desc) !== 'Plain text') {
+		groupOk = false
+		fail(`@desc 纯文本错误: 实得 "${dlm.get(noteParam.desc)}"`)
+	}
+	// 验证 @deprecated 元数据标注
+	const metaSample = `/* @plugin Old Plugin
+@version 1.2
+@deprecated 请改用 New Plugin
+*/`
+	const metameta = {}
+	parseMeta(metameta, metaSample)
+	const ov = metameta.overview
+	if (ov.deprecated !== '请改用 New Plugin') {
+		groupOk = false
+		fail(`@deprecated 解析错误: ${JSON.stringify(ov.deprecated)}`)
+	}
+	const metaSimple = `/* @plugin X\n@deprecated\n*/`
+	const ms = {}
+	parseMeta(ms, metaSimple)
+	if (ms.overview.deprecated !== true) {
+		groupOk = false
+		fail(
+			`@deprecated 无参数解析错误: ${JSON.stringify(ms.overview.deprecated)}`
+		)
+	}
+	// 验证 @require 依赖声明解析
+	const reqSample = `/* @plugin Demo
+@require BasePlugin 1.0
+@require OtherPlugin
+*/`
+	const reqmeta = {}
+	parseMeta(reqmeta, reqSample)
+	const reqs = reqmeta.overview.requires
+	if (
+		!Array.isArray(reqs) ||
+		reqs.length !== 2 ||
+		reqs[0].plugin !== 'BasePlugin' ||
+		reqs[0].version !== '1.0' ||
+		reqs[1].plugin !== 'OtherPlugin' ||
+		reqs[1].version !== ''
+	) {
+		groupOk = false
+		fail(`@require 解析错误: ${JSON.stringify(reqs)}`)
+	}
+	// 验证 @placeholder 解析
+	const spSample = `/* @plugin Demo
+@number amount
+@placeholder 输入数量
+@string name
+@placeholder 角色名
+*/`
+	const spmeta = {}
+	parseMeta(spmeta, spSample)
+	const amount = spmeta.parameters.find((p) => p.key === 'amount')
+	const name = spmeta.parameters.find((p) => p.key === 'name')
+	if (!amount || amount.placeholder !== '输入数量') {
+		groupOk = false
+		fail(
+			`@placeholder 解析错误: ${JSON.stringify(amount && amount.placeholder)}`
+		)
+	}
+	if (!name || name.placeholder !== '角色名') {
+		groupOk = false
+		fail(
+			`@placeholder 字符串解析错误: ${JSON.stringify(name && name.placeholder)}`
+		)
+	}
+} catch (e) {
+	groupOk = false
+	fail('plugin.js @group 解析抛错: ' + e.message)
+}
+if (groupOk)
+	ok(
+		'@group 分组 + @desc 本地化 + @deprecated + @require + @placeholder 解析正确'
+	)
+
 console.log('')
 if (failures === 0) {
 	console.log('[smoke] 全部通过 ✅')
