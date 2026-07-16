@@ -1,67 +1,12 @@
 ﻿'use strict'
 
+import { TreeDataContext } from '../components/tree-data-context.js'
+
 // ******************************** 枚举上下文类 ********************************
 
-export class EnumerationContext {
-	itemMap //:object
-	groupMap //:object
-	itemCache //:object
-	itemLists //:object
-
+export class EnumerationContext extends TreeDataContext {
 	constructor(enumeration) {
-		const itemMap = {}
-		const groupMap = {}
-
-		// 加载数据
-		const load = (groupKeys, items) => {
-			for (const item of items) {
-				const itemKey = item.id
-				itemMap[itemKey] = item
-				if (item.class === 'folder') {
-					groupMap[itemKey] = {
-						groupName: item.name,
-						itemMap: {},
-						itemList: []
-					}
-					groupKeys.push(itemKey)
-					load(groupKeys, item.children)
-					groupKeys.pop()
-					continue
-				}
-				for (let i = 0; i < groupKeys.length; i++) {
-					const group = groupMap[groupKeys[i]]
-					group.itemMap[itemKey] = item
-					group.itemList.push(item)
-				}
-			}
-		}
-		load([], enumeration.strings)
-
-		// 移除无效的分组设置
-		const settings = enumeration.settings
-		for (const [key, groupId] of Object.entries(settings)) {
-			if (groupId in groupMap) {
-				groupMap[key] = groupMap[groupId]
-			} else {
-				if (groupId !== '') {
-					settings[key] = ''
-				}
-				groupMap[key] = {
-					groupName: '',
-					itemMap: Object.empty,
-					itemList: Array.empty
-				}
-			}
-		}
-		this.itemMap = itemMap
-		this.groupMap = groupMap
-		this.itemCache = {}
-		this.itemLists = {}
-	}
-
-	// 获取枚举群组
-	getGroup(groupKey) {
-		return this.groupMap[groupKey]
+		super(enumeration, 'strings')
 	}
 
 	// 获取枚举字符串对象
@@ -85,8 +30,7 @@ export class EnumerationContext {
 		if (allowNone) {
 			key += '-allowNone'
 		}
-		if (!this.itemLists[key]) {
-			// 获取分组的全部选项
+		return this.getCachedItems(key, () => {
 			const items = []
 			const group = this.groupMap[groupKey]
 			if (group) {
@@ -107,27 +51,19 @@ export class EnumerationContext {
 				}
 			}
 			if (allowNone) {
-				items.unshift({
-					name: Local.get('common.none'),
-					value: ''
-				})
+				items.unshift(this.createNoneItem())
 			}
 			if (items.length === 0) {
-				items.push({
-					name: Local.get('common.none'),
-					value: ''
-				})
+				items.push(this.createNoneItem())
 			}
-			this.itemLists[key] = items
-		}
-		return this.itemLists[key]
+			return items
+		})
 	}
 
 	// 获取合并的选项列表
 	getMergedItems(headItems, groupKey, mergedKey = 'merged') {
 		const key = `${groupKey}-${mergedKey}`
-		if (!this.itemLists[key]) {
-			// 获取分组的全部选项
+		return this.getCachedItems(key, () => {
 			const items = [...headItems]
 			const group = this.groupMap[groupKey]
 			if (group) {
@@ -147,9 +83,8 @@ export class EnumerationContext {
 					items.push(item)
 				}
 			}
-			this.itemLists[key] = items
-		}
-		return this.itemLists[key]
+			return items
+		})
 	}
 }
 
