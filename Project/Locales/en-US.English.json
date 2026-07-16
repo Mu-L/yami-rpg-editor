@@ -5463,9 +5463,11 @@
     "castSkill-mode": {"label": "Mode", "tip": "How to acquire the skill", "options": {
       "by-key": {"name": "By Shortcut Key", "tip": "Get the actor's skill by a shortcut key"},
       "by-id": {"name": "By Skill ID", "tip": "Get the actor's skill by skill ID"},
-      "by-skill": {"name": "By Skill Instance", "tip": "Get the skill object by the skill accessor (It must be in this actor's skill list to take effect)"}
+      "by-skill": {"name": "By Skill Instance", "tip": "Get the skill object by the skill accessor (It must be in this actor's skill list to take effect)"},
+      "by-variable": {"name": "By Variable", "tip": "Get the shortcut key name from a variable"}
     }},
     "castSkill-key": {"label": "Shortcut Key", "tip": "Get the skill registered with this shortcut key from the skill list"},
+    "castSkill-keyVar": {"label": "Shortcut Key Variable", "tip": "Enter a shortcut key name (e.g. Attack, Skill1) or use a variable getter"},
     "castSkill-skillId": {"label": "Skill", "tip": "Get the skill whose skill ID matches from the skill list"},
     "castSkill-skill": {"label": "Skill", "tip": "Get the skill from the skill accessor"},
 

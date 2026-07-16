@@ -7,21 +7,23 @@ Command.cases.castSkill = new CommandSchema({
 		$('#castSkill-mode').loadItems([
 			{ name: 'By Shortcut Key', value: 'by-key' },
 			{ name: 'By Skill ID', value: 'by-id' },
-			{ name: 'By Skill Instance', value: 'by-skill' }
+			{ name: 'By Skill Instance', value: 'by-skill' },
+			{ name: 'By Variable', value: 'by-variable' }
 		])
 		$('#castSkill-mode')
 			.enableHiddenMode()
 			.relate([
 				{ case: 'by-key', targets: [$('#castSkill-key')] },
 				{ case: 'by-id', targets: [$('#castSkill-skillId')] },
-				{ case: 'by-skill', targets: [$('#castSkill-skill')] }
+				{ case: 'by-skill', targets: [$('#castSkill-skill')] },
+				{ case: 'by-variable', targets: [$('#castSkill-keyVar')] }
 			])
 		$('#castSkill-wait').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		])
 	},
-	customParse({ actor, mode, key, skillId, skill, wait }) {
+	customParse({ actor, mode, key, skillId, skill, keyVar, wait }) {
 		const words = Command.words.push(Command.parseActor(actor))
 		switch (mode) {
 			case 'by-key':
@@ -32,6 +34,9 @@ Command.cases.castSkill = new CommandSchema({
 				break
 			case 'by-skill':
 				words.push(Command.parseSkill(skill))
+				break
+			case 'by-variable':
+				words.push(Command.parseVariableString(keyVar))
 				break
 		}
 		words.push(Command.parseWait(wait))
@@ -47,6 +52,7 @@ Command.cases.castSkill = new CommandSchema({
 		key = Enum.getDefStringId('shortcut-key'),
 		skillId = '',
 		skill = { type: 'trigger' },
+		keyVar = '',
 		wait = false
 	}) {
 		$('#castSkill-key').loadItems(Enum.getStringItems('shortcut-key'))
@@ -56,6 +62,7 @@ Command.cases.castSkill = new CommandSchema({
 		write('key', key)
 		write('skillId', skillId)
 		write('skill', skill)
+		write('keyVar', keyVar)
 		write('wait', wait)
 		$('#castSkill-actor').getFocus()
 	},
@@ -88,6 +95,11 @@ Command.cases.castSkill = new CommandSchema({
 					skill: read('skill'),
 					wait
 				})
+				break
+			}
+			case 'by-variable': {
+				const keyVar = read('keyVar')
+				Command.save({ actor, mode, keyVar, wait })
 				break
 			}
 		}

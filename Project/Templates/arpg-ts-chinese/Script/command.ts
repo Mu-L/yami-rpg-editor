@@ -8235,6 +8235,7 @@ let Command = new (class CommandCompiler {
 		key,
 		skillId,
 		skill,
+		keyVar,
 		wait
 	}: {
 		actor: ActorGetter
@@ -8242,6 +8243,7 @@ let Command = new (class CommandCompiler {
 		key?: string
 		skillId?: string
 		skill?: SkillGetter
+		keyVar?: string | VariableGetter
 		wait: boolean
 	}): CommandFunction {
 		const getActor = Command.compileActor(actor)
@@ -8250,6 +8252,14 @@ let Command = new (class CommandCompiler {
 			case 'by-key': {
 				const shortcutKey = Enum.getValue(key!)
 				getSkill = () => getActor()?.shortcut.getSkill(shortcutKey)
+				break
+			}
+			case 'by-variable': {
+				const getKey =
+					typeof keyVar === 'string'
+						? () => keyVar
+						: Command.compileVariable(keyVar!, Attribute.GET)
+				getSkill = () => getActor()?.shortcut.getSkill(getKey())
 				break
 			}
 			case 'by-id':

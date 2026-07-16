@@ -5463,9 +5463,11 @@
     "castSkill-mode": {"label": "模式", "tip": "如何获取技能", "options": {
       "by-key": {"name": "指定快捷键", "tip": "通过快捷键获取角色的技能"},
       "by-id": {"name": "指定技能ID", "tip": "通过技能ID获取角色的技能"},
-      "by-skill": {"name": "指定技能实例", "tip": "通过技能访问器获取技能（它必须在这个角色的技能列表中才会生效）"}
+      "by-skill": {"name": "指定技能实例", "tip": "通过技能访问器获取技能（它必须在这个角色的技能列表中才会生效）"},
+      "by-variable": {"name": "变量快捷键", "tip": "通过变量指定快捷键名称"}
     }},
     "castSkill-key": {"label": "快捷键", "tip": "从技能列表中获取注册了这个快捷键的技能"},
+    "castSkill-keyVar": {"label": "快捷键变量", "tip": "输入快捷键名称（如 Attack、Skill1），或使用变量获取"},
     "castSkill-skillId": {"label": "技能", "tip": "从技能列表中获取ID匹配的技能"},
     "castSkill-skill": {"label": "技能", "tip": "从技能访问器中获取技能"},
 
