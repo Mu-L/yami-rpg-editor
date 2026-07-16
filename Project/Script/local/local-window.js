@@ -411,18 +411,7 @@ Localization.windowClosed = function (event) {
 }.bind(Localization)
 
 // 键盘按下事件
-Localization.keydown = function (event) {
-	if (event.cmdOrCtrlKey) {
-		switch (event.code) {
-			case 'KeyZ':
-				if (!event.macRedoKey) {
-					return Localization.undo()
-				}
-			case 'KeyY':
-				return Localization.redo()
-		}
-	}
-}
+Localization.keydown = Shortcuts.createUndoRedo(Localization)
 
 // 列表 - 键盘按下事件
 Localization.listKeydown = function (event) {

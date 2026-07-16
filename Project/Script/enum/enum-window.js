@@ -500,18 +500,7 @@ Enum.windowClosed = function (event) {
 }.bind(Enum)
 
 // 键盘按下事件
-Enum.keydown = function (event) {
-	if (event.cmdOrCtrlKey) {
-		switch (event.code) {
-			case 'KeyZ':
-				if (!event.macRedoKey) {
-					return Enum.undo()
-				}
-			case 'KeyY':
-				return Enum.redo()
-		}
-	}
-}
+Enum.keydown = Shortcuts.createUndoRedo(Enum)
 
 // 列表 - 键盘按下事件
 Enum.listKeydown = function (event) {

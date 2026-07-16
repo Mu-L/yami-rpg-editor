@@ -1,18 +1,7 @@
 'use strict'
 
 // 键盘按下事件
-Variable.keydown = function (event) {
-	if (event.cmdOrCtrlKey) {
-		switch (event.code) {
-			case 'KeyZ':
-				if (!event.macRedoKey) {
-					return Variable.undo()
-				}
-			case 'KeyY':
-				return Variable.redo()
-		}
-	}
-}
+Variable.keydown = Shortcuts.createUndoRedo(Variable)
 
 // 列表 - 键盘按下事件
 Variable.listKeydown = function (event) {

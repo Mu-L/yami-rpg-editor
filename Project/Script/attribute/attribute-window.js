@@ -537,18 +537,7 @@ Attribute.windowClosed = function (event) {
 }.bind(Attribute)
 
 // 键盘按下事件
-Attribute.keydown = function (event) {
-	if (event.cmdOrCtrlKey) {
-		switch (event.code) {
-			case 'KeyZ':
-				if (!event.macRedoKey) {
-					return Attribute.undo()
-				}
-			case 'KeyY':
-				return Attribute.redo()
-		}
-	}
-}
+Attribute.keydown = Shortcuts.createUndoRedo(Attribute)
 
 // 列表 - 键盘按下事件
 Attribute.listKeydown = function (event) {
