@@ -17,49 +17,113 @@ Editor.initialize = async function () {
 		delete window.config
 
 		// 初始化组件对象
-		Local.initialize()
-		AudioManager.initialize()
-		Menubar.initialize()
-		Home.initialize()
-		Layout.initialize()
-		Timer.initialize()
-		Scene.initialize()
-		UI.initialize()
-		Animation.initialize()
-		Particle.initialize()
-		Window.initialize()
-		EventEditor.initialize()
-		Inspector.initialize()
-		Command.initialize()
-		Project.initialize()
-		Easing.initialize()
-		Team.initialize()
-		PluginManager.initialize()
-		CustomCommand.initialize()
-		Log.initialize()
-		UpdateLog.initialize()
-		Reference.initialize()
-		Directory.initialize()
-		Browser.initialize()
-		Selector.initialize()
-		Printer.initialize()
-		Color.initialize()
-		Variable.initialize()
-		Attribute.initialize()
-		Enum.initialize()
-		Localization.initialize()
-		ImageClip.initialize()
-		Selection.initialize()
-		Zoom.initialize()
-		Rename.initialize()
-		SetKey.initialize()
-		SetQuantity.initialize()
-		SetTileTag.initialize()
-		PresetObject.initialize()
-		PresetElement.initialize()
-		ArrayList.initialize()
-		AttributeListInterface.initialize()
-		ConditionListInterface.initialize()
+		// 注意：Inspector 必须早于 Command 初始化（Command.initialize 会遍历
+		// Command.cases 并调用各 schema 的 onInitialize，其中依赖 Inspector
+		// 已就绪；command-object.js 亦有注释标注此约束）。下方 initializedSet
+		// 用于在开发期捕捉顺序错误。
+		const initializedSet = new Set()
+		const safeInit = (name) => {
+			if (
+				name === 'Command' &&
+				!initializedSet.has('Inspector') &&
+				typeof Log !== 'undefined' &&
+				Log.warn
+			) {
+				Log.warn('初始化顺序错误：Inspector 必须在 Command 之前初始化')
+			}
+			const singleton = {
+				Local,
+				AudioManager,
+				Menubar,
+				Home,
+				Layout,
+				Timer,
+				Scene,
+				UI,
+				Animation,
+				Particle,
+				Window,
+				EventEditor,
+				Inspector,
+				Command,
+				Project,
+				Easing,
+				Team,
+				PluginManager,
+				CustomCommand,
+				Log,
+				UpdateLog,
+				Reference,
+				Directory,
+				Browser,
+				Selector,
+				Printer,
+				Color,
+				Variable,
+				Attribute,
+				Enum,
+				Localization,
+				ImageClip,
+				Selection,
+				Zoom,
+				Rename,
+				SetKey,
+				SetQuantity,
+				SetTileTag,
+				PresetObject,
+				PresetElement,
+				ArrayList,
+				AttributeListInterface,
+				ConditionListInterface
+			}[name]
+			if (singleton && typeof singleton.initialize === 'function') {
+				singleton.initialize()
+				initializedSet.add(name)
+			}
+		}
+		safeInit('Local')
+		safeInit('AudioManager')
+		safeInit('Menubar')
+		safeInit('Home')
+		safeInit('Layout')
+		safeInit('Timer')
+		safeInit('Scene')
+		safeInit('UI')
+		safeInit('Animation')
+		safeInit('Particle')
+		safeInit('Window')
+		safeInit('EventEditor')
+		safeInit('Inspector')
+		safeInit('Command')
+		safeInit('Project')
+		safeInit('Easing')
+		safeInit('Team')
+		safeInit('PluginManager')
+		safeInit('CustomCommand')
+		safeInit('Log')
+		safeInit('UpdateLog')
+		safeInit('Reference')
+		safeInit('Directory')
+		safeInit('Browser')
+		safeInit('Selector')
+		safeInit('Printer')
+		safeInit('Color')
+		safeInit('Variable')
+		safeInit('Attribute')
+		safeInit('Enum')
+		safeInit('Localization')
+		safeInit('ImageClip')
+		safeInit('Selection')
+		safeInit('Zoom')
+		safeInit('Rename')
+		safeInit('SetKey')
+		safeInit('SetQuantity')
+		safeInit('SetTileTag')
+		safeInit('PresetObject')
+		safeInit('PresetElement')
+		safeInit('ArrayList')
+		safeInit('AttributeListInterface')
+		safeInit('ConditionListInterface')
 
 		// 加载配置文件
 		this.loadConfig()

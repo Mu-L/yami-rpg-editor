@@ -10,6 +10,7 @@
 		"buildcss": "node scripts/build-css.js",
 		"buildmodule": "node scripts/build-module.js",
 		"buildhtml": "node scripts/build-html.js",
+		"smoke": "node scripts/smoke.js",
 		"buildres": "node scripts/buildres.js",
 		"buildtime": "node scripts/buildRuntime.js",
 		"prepare": "husky",
