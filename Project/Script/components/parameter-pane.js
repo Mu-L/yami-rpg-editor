@@ -106,6 +106,15 @@ export class ParameterPane extends HTMLElement {
 			if (!paramList.length) continue
 			const langMap = meta.langMap.update()
 			const parameters = script.parameters
+			if (meta.overview?.deprecated && paramList.length) {
+				const banner = document.createElement('div')
+				banner.addClass('deprecated-banner')
+				banner.textContent =
+					typeof meta.overview.deprecated === 'string'
+						? 'deprecated: ' + meta.overview.deprecated
+						: 'deprecated'
+				this.appendChild(banner)
+			}
 			// 按 group 分组（保留首次出现顺序），无 group 的参数归到空串主段
 			const groupOrder = []
 			const groupMap = new Map()
