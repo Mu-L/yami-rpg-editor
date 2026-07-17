@@ -2,26 +2,26 @@
   {
     "path": "arpg-ts-chinese",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-chinese",
-    "version": "1.0.19",
-    "md5": "1b55a581033c94c1106dfb48b5b62b69",
-    "sha1": "580d60af4d49bfa984b8791f034e7bd434b168d5",
-    "sha256": "4490bdb06e9b0235c71e54d97bbb97b4b2135f1762df37847edc18a5b8b2ebfe"
+    "version": "1.0.20",
+    "md5": "7215199625b85305b8b6394f19925cdc",
+    "sha1": "43cba60f2bbdf6ee4caed8e3598494c70ab2a387",
+    "sha256": "98b1687acbc1d2d0e26d056d5b9583ba5644ebcf06bc3bae6d2bc87094c9f811"
   },
   {
     "path": "arpg-ts-english",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-english",
-    "version": "1.0.19",
-    "md5": "b5aa89edf372ac7f98358598c91c42c7",
-    "sha1": "908ee539dd8c802a15f6c92b3228636b94f6cb9d",
-    "sha256": "b2f939377d6bbe2cd23c3e2590f9083632861eedbd96d8f139831d7d1b53642f"
+    "version": "1.0.20",
+    "md5": "14e5362c9c9899e17354e4a8656363d3",
+    "sha1": "92cfbb510da8404dbab8311c3c521ca229df36b1",
+    "sha256": "023ed80f05e24a6b8d296be97038b6baee88b23819001a59396979b7807c8b1c"
   },
   {
     "path": "arpg-ts-update",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-update",
     "version": "1.0.7",
-    "md5": "e5e593f9239bcca10356bd90ecf6b59c",
-    "sha1": "bac30cd5c64056667c89c6bb0f685da25e64cc4d",
-    "sha256": "3091071549f8d661186dfdb2e636ff7f542275f1e6ee78b3bbaa6b1eb666d6cc"
+    "md5": "a86bc35ed3e32fd93a3ad44cd97a35e7",
+    "sha1": "91f49314abcc0fc860da3f00284f3ae8595079c4",
+    "sha256": "90b89d25041ee371a0f14c076f8fd47ea7f1ceb5e03ec3d546d1b47cae6cf0a1"
   },
   {
     "path": "electron-mac-universal.app",
@@ -43,16 +43,16 @@
     "path": "script",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\script",
     "version": "1.0.0",
-    "md5": "337a22e183964f17d5ed0da883224850",
-    "sha1": "3ceb3f9e7da26e760bc2dc66f6832f36d0810ebd",
-    "sha256": "7301813e1da220d011ade662f05ca175d42765480cd6b7f8f59fd0a233e6f5fc"
+    "md5": "9479a217c8bc9f14c08a94f35c1ca892",
+    "sha1": "474d69c3255de4100097fd4463e944aabb3c6413",
+    "sha256": "63e10a1be2193eb743916b82654022acb15ca2171d548accd24250ce81017ffd"
   },
   {
     "path": "Apk",
     "realPath": "Project/Apk",
     "version": "1.0.0",
-    "md5": "e1d86a22bc55de81411668c0b273d7ef",
-    "sha1": "a9a2695a7c909dc059e862ec9ae41de529becc37",
-    "sha256": "325c15e8694faaf53638240abee11a250d6c733eb8be14e0910b0c7051a4782a"
+    "md5": "5ea1d2037c87190a6da0ddd1354213fb",
+    "sha1": "1167cf91012a0b2617901d3a979b80295f52ec13",
+    "sha256": "8c473c3ef629c0c729104410044d36039cebbe5402953ed10ac0a7aa061a070e"
   }
 ]
