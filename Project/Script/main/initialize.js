@@ -17,113 +17,91 @@ Editor.initialize = async function () {
 		delete window.config
 
 		// 初始化组件对象
-		// 注意：Inspector 必须早于 Command 初始化（Command.initialize 会遍历
-		// Command.cases 并调用各 schema 的 onInitialize，其中依赖 Inspector
-		// 已就绪；command-object.js 亦有注释标注此约束）。下方 initializedSet
-		// 用于在开发期捕捉顺序错误。
+		// 单例通过 dependsOn 声明依赖关系，启动期按拓扑排序初始化
 		const initializedSet = new Set()
-		const safeInit = (name) => {
-			if (
-				name === 'Command' &&
-				!initializedSet.has('Inspector') &&
-				typeof Log !== 'undefined' &&
-				Log.warn
-			) {
-				Log.warn('初始化顺序错误：Inspector 必须在 Command 之前初始化')
+		const singletonMap = {
+			Local,
+			AudioManager,
+			Menubar,
+			Home,
+			Layout,
+			Timer,
+			Scene,
+			UI,
+			Animation,
+			Particle,
+			Window,
+			EventEditor,
+			Inspector,
+			Command,
+			Project,
+			Easing,
+			Team,
+			PluginManager,
+			CustomCommand,
+			Log,
+			UpdateLog,
+			Reference,
+			Directory,
+			Browser,
+			Selector,
+			Printer,
+			Color,
+			Variable,
+			Attribute,
+			Enum,
+			Localization,
+			ImageClip,
+			Selection,
+			Zoom,
+			Rename,
+			SetKey,
+			SetQuantity,
+			SetTileTag,
+			PresetObject,
+			PresetElement,
+			ArrayList,
+			AttributeListInterface,
+			ConditionListInterface
+		}
+		const initNames = Object.keys(singletonMap).filter(
+			(n) => typeof singletonMap[n].initialize === 'function'
+		)
+		// 拓扑排序
+		const graph = new Map(initNames.map((n) => [n, []]))
+		const inDegree = new Map(initNames.map((n) => [n, 0]))
+		for (const name of initNames) {
+			const deps = singletonMap[name].dependsOn ?? []
+			for (const dep of deps) {
+				if (!graph.has(dep)) continue
+				graph.get(dep).push(name)
+				inDegree.set(name, inDegree.get(name) + 1)
 			}
-			const singleton = {
-				Local,
-				AudioManager,
-				Menubar,
-				Home,
-				Layout,
-				Timer,
-				Scene,
-				UI,
-				Animation,
-				Particle,
-				Window,
-				EventEditor,
-				Inspector,
-				Command,
-				Project,
-				Easing,
-				Team,
-				PluginManager,
-				CustomCommand,
-				Log,
-				UpdateLog,
-				Reference,
-				Directory,
-				Browser,
-				Selector,
-				Printer,
-				Color,
-				Variable,
-				Attribute,
-				Enum,
-				Localization,
-				ImageClip,
-				Selection,
-				Zoom,
-				Rename,
-				SetKey,
-				SetQuantity,
-				SetTileTag,
-				PresetObject,
-				PresetElement,
-				ArrayList,
-				AttributeListInterface,
-				ConditionListInterface
-			}[name]
-			if (singleton && typeof singleton.initialize === 'function') {
-				singleton.initialize()
+		}
+		const queue = initNames.filter((n) => inDegree.get(n) === 0)
+		while (queue.length) {
+			const node = queue.shift()
+			const singleton = singletonMap[node]
+			singleton.initialize()
+			initializedSet.add(node)
+			for (const next of graph.get(node)) {
+				inDegree.set(next, inDegree.get(next) - 1)
+				if (inDegree.get(next) === 0) queue.push(next)
+			}
+		}
+		// 循环依赖兜底
+		for (const name of initNames) {
+			if (!initializedSet.has(name)) {
+				if (typeof Log !== 'undefined' && Log.warn) {
+					Log.warn(
+						`初始化循环依赖：${name} 未被初始化`,
+						singletonMap[name].dependsOn
+					)
+				}
+				singletonMap[name].initialize()
 				initializedSet.add(name)
 			}
 		}
-		safeInit('Local')
-		safeInit('AudioManager')
-		safeInit('Menubar')
-		safeInit('Home')
-		safeInit('Layout')
-		safeInit('Timer')
-		safeInit('Scene')
-		safeInit('UI')
-		safeInit('Animation')
-		safeInit('Particle')
-		safeInit('Window')
-		safeInit('EventEditor')
-		safeInit('Inspector')
-		safeInit('Command')
-		safeInit('Project')
-		safeInit('Easing')
-		safeInit('Team')
-		safeInit('PluginManager')
-		safeInit('CustomCommand')
-		safeInit('Log')
-		safeInit('UpdateLog')
-		safeInit('Reference')
-		safeInit('Directory')
-		safeInit('Browser')
-		safeInit('Selector')
-		safeInit('Printer')
-		safeInit('Color')
-		safeInit('Variable')
-		safeInit('Attribute')
-		safeInit('Enum')
-		safeInit('Localization')
-		safeInit('ImageClip')
-		safeInit('Selection')
-		safeInit('Zoom')
-		safeInit('Rename')
-		safeInit('SetKey')
-		safeInit('SetQuantity')
-		safeInit('SetTileTag')
-		safeInit('PresetObject')
-		safeInit('PresetElement')
-		safeInit('ArrayList')
-		safeInit('AttributeListInterface')
-		safeInit('ConditionListInterface')
 
 		// 加载配置文件
 		this.loadConfig()

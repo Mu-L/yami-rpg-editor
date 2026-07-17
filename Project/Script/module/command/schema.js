@@ -145,26 +145,59 @@ export class CommandSchema {
 		return Command.cases[id] ?? null
 	}
 
+	// 拓扑排序
+	static _topoSort(names, getDeps) {
+		const graph = new Map(names.map((n) => [n, []]))
+		const inDegree = new Map(names.map((n) => [n, 0]))
+		for (const name of names) {
+			for (const dep of getDeps(name) ?? []) {
+				if (!graph.has(dep)) continue
+				graph.get(dep).push(name)
+				inDegree.set(name, inDegree.get(name) + 1)
+			}
+		}
+		const queue = names.filter((n) => inDegree.get(n) === 0)
+		const result = []
+		while (queue.length) {
+			const node = queue.shift()
+			result.push(node)
+			for (const next of graph.get(node)) {
+				inDegree.set(next, inDegree.get(next) - 1)
+				if (inDegree.get(next) === 0) queue.push(next)
+			}
+		}
+		return result
+	}
+
 	// 初始化所有指令
 	static initAll() {
 		Command.words = new Command.WordList()
-		CommandSuggestion.initialize()
-		TextSuggestion.initialize()
-		VariableGetter.initialize()
-		ActorGetter.initialize()
-		SkillGetter.initialize()
-		StateGetter.initialize()
-		EquipmentGetter.initialize()
-		ItemGetter.initialize()
-		PositionGetter.initialize()
-		AngleGetter.initialize()
-		TriggerGetter.initialize()
-		LightGetter.initialize()
-		RegionGetter.initialize()
-		TilemapGetter.initialize()
-		ObjectGetter.initialize()
-		ElementGetter.initialize()
-		AncestorGetter.initialize()
+		const subMap = {
+			CommandSuggestion,
+			TextSuggestion,
+			VariableGetter,
+			ActorGetter,
+			SkillGetter,
+			StateGetter,
+			EquipmentGetter,
+			ItemGetter,
+			PositionGetter,
+			AngleGetter,
+			TriggerGetter,
+			LightGetter,
+			RegionGetter,
+			TilemapGetter,
+			ObjectGetter,
+			ElementGetter,
+			AncestorGetter
+		}
+		const sorted = CommandSchema._topoSort(
+			Object.keys(subMap),
+			(name) => subMap[name].dependsOn
+		)
+		for (const name of sorted) {
+			subMap[name].initialize()
+		}
 		Command.custom.initialize()
 		for (const object of Object.values(Command.cases)) {
 			object.initialize?.()

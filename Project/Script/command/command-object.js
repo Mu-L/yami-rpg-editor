@@ -14,6 +14,7 @@ export const Command = {
 	eventIndex: 0,
 	variables: [],
 	varMap: {},
+	dependsOn: ['Inspector'],
 	// methods
 	initialize: null,
 	insert: null,

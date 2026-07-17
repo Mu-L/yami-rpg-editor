@@ -5,6 +5,7 @@
 export const AncestorGetter = {
 	// properties
 	target: null,
+	dependsOn: ['ElementGetter'],
 	// methods
 	initialize: null,
 	open: null,
