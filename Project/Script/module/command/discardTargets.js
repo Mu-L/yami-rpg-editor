@@ -2,6 +2,11 @@
 
 Command.cases.discardTargets = new CommandSchema({
 	name: 'discardTargets',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'selector', default: 'any' },
+		{ key: 'distance', default: 0 }
+	],
 	onInitialize() {
 		$('#discardTargets-confirm').on('click', () => this.save())
 		$('#discardTargets-selector').loadItems([
@@ -26,23 +31,7 @@ Command.cases.discardTargets = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		selector = 'any',
-		distance = 0
-	}) {
-		const write = getElementWriter('discardTargets')
-		write('actor', actor)
-		write('selector', selector)
-		write('distance', distance)
+	onLoad() {
 		$('#discardTargets-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('discardTargets')
-		Command.save({
-			actor: read('actor'),
-			selector: read('selector'),
-			distance: read('distance')
-		})
 	}
 })

@@ -2,6 +2,12 @@
 
 Command.cases.detectTargets = new CommandSchema({
 	name: 'detectTargets',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'distance', default: 0 },
+		{ key: 'selector', default: 'enemy' },
+		{ key: 'inSight', default: false }
+	],
 	onInitialize() {
 		$('#detectTargets-confirm').on('click', () => this.save())
 		$('#detectTargets-selector').loadItems([
@@ -37,17 +43,7 @@ Command.cases.detectTargets = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		distance = 0,
-		selector = 'enemy',
-		inSight = false
-	}) {
-		const write = getElementWriter('detectTargets')
-		write('actor', actor)
-		write('distance', distance)
-		write('selector', selector)
-		write('inSight', inSight)
+	onLoad() {
 		$('#detectTargets-actor').getFocus()
 	},
 	customSave() {

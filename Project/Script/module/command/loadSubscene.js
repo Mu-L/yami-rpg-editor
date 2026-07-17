@@ -2,6 +2,11 @@
 
 Command.cases.loadSubscene = new CommandSchema({
 	name: 'loadSubscene',
+	fields: [
+		{ key: 'sceneId', default: '', required: true },
+		{ key: 'shiftX', default: 0 },
+		{ key: 'shiftY', default: 0 }
+	],
 	customParse({ sceneId, shiftX, shiftY }) {
 		const words = Command.words
 			.push(Command.parseVariableFile(sceneId))
@@ -13,23 +18,7 @@ Command.cases.loadSubscene = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ sceneId = '', shiftX = 0, shiftY = 0 }) {
-		const write = getElementWriter('loadSubscene')
-		write('sceneId', sceneId)
-		write('shiftX', shiftX)
-		write('shiftY', shiftY)
+	onLoad() {
 		$('#loadSubscene-sceneId').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('loadSubscene')
-		const sceneId = read('sceneId')
-		if (sceneId === '') {
-			return $('#loadSubscene-sceneId').getFocus()
-		}
-		Command.save({
-			sceneId,
-			shiftX: read('shiftX'),
-			shiftY: read('shiftY')
-		})
 	}
 })
