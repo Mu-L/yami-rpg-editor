@@ -4,7 +4,7 @@ const require = window.__nodeRequire || window.require
 export const fs = require('fs-extra')
 export const yauzl = require('yauzl')
 
-export const CommunityVersion = '26053001' // 社区编辑器版本
+export const CommunityVersion = '26071701' // 社区编辑器版本
 
 EventBus.once('editor_loaded', () => {
 	// 更新项目数据
