@@ -314,7 +314,7 @@ check-mark {
 }
 
 check-box > check-mark::before {
-	content: '';
+	content: '\2713';
 	position: absolute;
 	margin: -1px;
 	width: 16px;
@@ -387,7 +387,7 @@ radio-mark {
 }
 
 radio-box > radio-mark::before {
-	content: '';
+	content: ' ';
 	position: absolute;
 	margin: -1px;
 	padding: 3px;
