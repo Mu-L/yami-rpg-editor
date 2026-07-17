@@ -518,13 +518,31 @@ try {
 	}
 	if (codeParam?.validate && freeParam?.validate === undefined)
 		ok('@validate 解析正确')
+	// 验证 @suffix / @prefix 解析
+	const affixMeta = {}
+	parseMeta(
+		affixMeta,
+		`/* @plugin Demo\n@number hp\n@suffix HP\n@string code\n@prefix #\n*/`
+	)
+	const hpParam = affixMeta.parameters.find((p) => p.key === 'hp')
+	const codeParam2 = affixMeta.parameters.find((p) => p.key === 'code')
+	if (hpParam?.suffix !== 'HP') {
+		groupOk = false
+		fail(`@suffix 解析错误: ${JSON.stringify(hpParam?.suffix)}`)
+	}
+	if (codeParam2?.prefix !== '#') {
+		groupOk = false
+		fail(`@prefix 解析错误: ${JSON.stringify(codeParam2?.prefix)}`)
+	}
+	if (hpParam?.suffix === 'HP' && codeParam2?.prefix === '#')
+		ok('@suffix / @prefix 解析正确')
 } catch (e) {
 	groupOk = false
 	fail('plugin.js 新标签解析抛错: ' + e.message)
 }
 if (groupOk)
 	ok(
-		'@group 分组 + @desc 本地化 + @deprecated + @require + @placeholder + @group[] + @readonly + @hidden + @validate 解析正确'
+		'@group 分组 + @desc 本地化 + @deprecated + @require + @placeholder + @group[] + @readonly + @hidden + @validate + @suffix + @prefix 解析正确'
 	)
 
 console.log('')

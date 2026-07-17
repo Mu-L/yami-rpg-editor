@@ -161,6 +161,21 @@ detail-grid > text {
 	text-overflow: ellipsis;
 }
 
+.param-affix {
+	position: absolute;
+	padding: 0 4px;
+	line-height: 18px;
+	font-family: var(--font-family-mono);
+	color: var(--text-color-unit);
+	pointer-events: none;
+	user-select: none;
+}
+.param-affix.left {
+	left: 0;
+}
+.param-affix.right {
+	right: 0;
+}
 .disabled {
 	opacity: 0.5;
 	pointer-events: none;

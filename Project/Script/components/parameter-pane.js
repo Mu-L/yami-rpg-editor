@@ -134,7 +134,11 @@ export class ParameterPane extends HTMLElement {
 				input.parameters = parameters
 				input.key = key
 				grid.appendChild(label)
+				if (parameter.prefix || parameter.suffix) {
+					this.applyAffix(input, parameter)
+				}
 				grid.appendChild(input)
+				input.enable()
 				if (parameter.readonly) {
 					input.disable()
 				}
@@ -493,8 +497,15 @@ export class ParameterPane extends HTMLElement {
 					wrap.input.parameters = item
 					wrap.input.key = subParam.key
 					wrap.input.write(val)
+					wrap.input.enable()
 					wrap.input.removeClass('validate-error')
+					if (subParam.readonly) {
+						wrap.input.disable()
+					}
 					grid.appendChild(wrap.label)
+					if (subParam.prefix || subParam.suffix) {
+						pane.applyAffix(wrap.input, subParam)
+					}
 					grid.appendChild(wrap.input)
 					return { param: subParam, ...wrap }
 				})
@@ -668,6 +679,34 @@ export class ParameterPane extends HTMLElement {
 			}
 			this.updateParamDisplay(detail)
 			this.onResize?.()
+		}
+	}
+
+	applyAffix(input, param) {
+		const font = 'var(--font-family-mono)'
+		if (param.prefix) {
+			const pre = document.createElement('text')
+			pre.textContent = param.prefix
+			pre.addClass('param-affix')
+			pre.addClass('left')
+			input.insertBefore(pre, input.input)
+		}
+		if (param.suffix) {
+			const suf = document.createElement('text')
+			suf.textContent = param.suffix
+			suf.addClass('param-affix')
+			suf.addClass('right')
+			input.insertBefore(suf, input.input)
+		}
+		if (input.input) {
+			if (param.prefix) {
+				const pw = measureText(param.prefix, font).width + 8
+				input.input.style.paddingLeft = pw + 'px'
+			}
+			if (param.suffix) {
+				const sw = measureText(param.suffix, font).width + 8
+				input.input.style.paddingRight = sw + 'px'
+			}
 		}
 	}
 

@@ -841,6 +841,14 @@ PluginManager.parseMeta = (function IIFE() {
 			value: content
 		})
 	}
+	const setSuffix = () => {
+		if (parameter === null) return
+		parameter.suffix = content
+	}
+	const setPrefix = () => {
+		if (parameter === null) return
+		parameter.prefix = content
+	}
 	const setReadonly = () => {
 		if (parameter === null) return
 		parameter.readonly = true
@@ -1188,6 +1196,8 @@ PluginManager.parseMeta = (function IIFE() {
 		default: setDefault,
 		alias: setAlias,
 		desc: setDesc,
+		suffix: setSuffix,
+		prefix: setPrefix,
 		readonly: setReadonly,
 		hidden: setHidden,
 		validate: setValidate,
