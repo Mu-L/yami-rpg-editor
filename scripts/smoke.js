@@ -413,13 +413,50 @@ try {
 			`@placeholder 字符串解析错误: ${JSON.stringify(name && name.placeholder)}`
 		)
 	}
+	// 验证 @group[] 可重复参数组解析
+	const rgSample = `/* @plugin DropTable
+@group Drops
+@item-getter item
+@number chance @default 50
+@group[] Drops
+*/`
+	const rgMeta = {}
+	parseMeta(rgMeta, rgSample)
+	const rgParam = rgMeta.parameters.find((p) => p.type === 'repeatable-group')
+	const rgChecks = [
+		['@group[] 未创建 repeatable-group 参数', !!rgParam],
+		['@group[] key 应为 Drops', rgParam?.key === 'Drops'],
+		['@group[] 缺少 repeatableGroup 模板', !!rgParam?.repeatableGroup],
+		[
+			'@group[] 模板参数数应为 2',
+			rgParam?.repeatableGroup?.parameters?.length === 2
+		],
+		[
+			'@group[] 模板首参数名应为 item',
+			rgParam?.repeatableGroup?.parameters?.[0]?.key === 'item'
+		],
+		['@group[] 默认值应为 []', rgParam?.value?.join() === '']
+	]
+	for (const rp of rgMeta.parameters) {
+		if (rp.group === 'Drops' && rp.type !== 'repeatable-group') {
+			fail(`@group[] 有残留 group=Drops 参数: ${rp.key}`)
+		}
+	}
+	let repeatableOk = true
+	for (const [msg, ok_] of rgChecks) {
+		if (!ok_) {
+			repeatableOk = false
+			fail(msg)
+		}
+	}
+	if (repeatableOk) ok('@group[] 可重复参数组解析正确')
 } catch (e) {
 	groupOk = false
 	fail('plugin.js @group 解析抛错: ' + e.message)
 }
 if (groupOk)
 	ok(
-		'@group 分组 + @desc 本地化 + @deprecated + @require + @placeholder 解析正确'
+		'@group 分组 + @desc 本地化 + @deprecated + @require + @placeholder + @group[] 解析正确'
 	)
 
 console.log('')

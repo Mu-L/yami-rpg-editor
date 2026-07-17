@@ -406,6 +406,8 @@ PluginManager.parseMeta = (function IIFE() {
 				return ElementGetter.createDefaultForPlugin()
 			case 'position-getter':
 				return PositionGetter.createDefaultForPlugin()
+			case 'repeatable-group':
+				return []
 			default:
 				return ''
 		}
@@ -852,6 +854,39 @@ PluginManager.parseMeta = (function IIFE() {
 	const setGroup = () => {
 		currentGroup = content || null
 	}
+	const setGroupRepeatable = () => {
+		const groupName = content || null
+		if (!groupName) return
+		const groupParams = []
+		const remaining = []
+		for (const p of parameters) {
+			if (p.group === groupName) {
+				groupParams.push(p)
+			} else {
+				remaining.push(p)
+			}
+		}
+		if (groupParams.length === 0) return
+		for (const p of groupParams) {
+			delete paramMap[p.key]
+		}
+		const key = groupName
+		parameter = {
+			key,
+			type: 'repeatable-group',
+			value: [],
+			group: null,
+			repeatableGroup: {
+				name: groupName,
+				parameters: groupParams
+			}
+		}
+		remaining.push(parameter)
+		parameters.length = 0
+		parameters.push(...remaining)
+		paramMap[key] = parameter
+		currentGroup = null
+	}
 
 	// 选项管理器类
 	class OptionManager extends Array {
@@ -1102,7 +1137,8 @@ PluginManager.parseMeta = (function IIFE() {
 		desc: setDesc,
 		cond: setCond,
 		lang: setLang,
-		group: setGroup
+		group: setGroup,
+		'group[]': setGroupRepeatable
 	}
 
 	// 共享变量
@@ -1275,6 +1311,8 @@ PluginManager.reconstruct = (function IIFE() {
 				return typeof value === 'string'
 			case 'color':
 				return colorRegExp.test(value)
+			case 'repeatable-group':
+				return value instanceof Array
 		}
 	}
 	const readValue = (parameter, value) => {
@@ -1393,6 +1431,9 @@ PluginManager.reconstruct = (function IIFE() {
 				if (colorRegExp.test(value)) {
 					return value
 				}
+				return parameter.value
+			case 'repeatable-group':
+				if (value instanceof Array) return value
 				return parameter.value
 		}
 	}

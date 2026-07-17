@@ -398,6 +398,13 @@ TypeRegistry.register('string[]', {
 	}
 })
 
+TypeRegistry.register('repeatable-group', {
+	component: 'custom-box',
+	create(pane, param) {
+		return pane.createRepeatableGroup(param)
+	}
+})
+
 TypeRegistry.register('keycode', {
 	component: 'keyboard-box',
 	create(pane) {

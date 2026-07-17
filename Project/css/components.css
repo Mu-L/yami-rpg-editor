@@ -2765,3 +2765,50 @@ empty-state .empty-text {
 	line-height: 1.5;
 	max-width: 280px;
 }
+
+/* --------------------------------
+ * 可重复参数组
+ * --------------------------------
+ */
+.repeatable-group {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+}
+
+.repeatable-group-rows {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.repeatable-group-row {
+	display: flex;
+	align-items: flex-start;
+	gap: 4px;
+	padding: 4px;
+	border: 1px solid var(--border-color);
+	border-radius: 2px;
+}
+
+.repeatable-group-row .repeatable-group-remove {
+	position: relative;
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+}
+
+.repeatable-group .add-row-btn {
+	position: relative;
+	width: auto;
+	padding: 2px 12px;
+	height: 22px;
+}
+
+.repeatable-group-row detail-grid {
+	grid-template-columns: auto 1fr;
+	margin: 0;
+	flex: 1;
+	min-width: 0;
+}

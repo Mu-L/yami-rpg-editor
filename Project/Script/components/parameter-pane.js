@@ -257,6 +257,11 @@ export class ParameterPane extends HTMLElement {
 					wrap.input.update()
 				}
 				break
+			case 'repeatable-group':
+				if (wrap.input.read() !== value) {
+					wrap.input.write(value)
+				}
+				break
 		}
 	}
 
@@ -380,6 +385,94 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input }
 	}
 
+	// 创建可重复参数组
+	createRepeatableGroup(parameter) {
+		const template = parameter.repeatableGroup.parameters
+		const tag = 'repeatable-group'
+		const label = document.createElement('text')
+		const container = document.createElement('div')
+		container.className = 'repeatable-group'
+		const rowsEl = document.createElement('div')
+		rowsEl.className = 'repeatable-group-rows'
+		const addBtn = document.createElement('button')
+		addBtn.textContent = '+'
+		addBtn.className = 'add-row-btn'
+		container.appendChild(rowsEl)
+		container.appendChild(addBtn)
+		container.setTooltip = () => {}
+		container.parameters = null
+		container.key = null
+		const pane = this
+		container.read = function () {
+			const result = []
+			for (const rowEl of rowsEl.children) {
+				const data = {}
+				for (const { param, input } of rowEl.wraps) {
+					data[param.key] = input.read()
+				}
+				result.push(data)
+			}
+			return result
+		}
+		container.write = function (value) {
+			rowsEl.innerHTML = ''
+			let arr = value
+			if (!arr || arr.length === 0) {
+				const empty = {}
+				for (const subParam of template) {
+					empty[subParam.key] = subParam.value
+				}
+				arr = [empty]
+			}
+			for (const item of arr) {
+				const row = document.createElement('div')
+				row.className = 'repeatable-group-row'
+				const removeBtn = document.createElement('button')
+				removeBtn.className = 'repeatable-group-remove'
+				removeBtn.textContent = '×'
+				removeBtn.onclick = function (e) {
+					e.stopPropagation()
+					row.remove()
+					container.dispatchEvent(
+						new Event('change', { bubbles: true })
+					)
+				}
+				row.appendChild(removeBtn)
+				const grid = document.createElement('detail-grid')
+				row.appendChild(grid)
+				row.wraps = template.map((subParam) => {
+					const wrap = TypeRegistry.get(subParam.type).create(
+						pane,
+						subParam
+					)
+					const val =
+						item[subParam.key] !== undefined
+							? item[subParam.key]
+							: subParam.value
+					wrap.input.parameters = item
+					wrap.input.key = subParam.key
+					wrap.input.write(val)
+					grid.appendChild(wrap.label)
+					grid.appendChild(wrap.input)
+					return { param: subParam, ...wrap }
+				})
+				rowsEl.appendChild(row)
+			}
+		}
+		addBtn.onclick = function (e) {
+			e.stopPropagation()
+			const empty = {}
+			for (const subParam of template) {
+				empty[subParam.key] = subParam.value
+			}
+			const data = container.read()
+			data.push(empty)
+			container.write(data)
+			container.dispatchEvent(new Event('change', { bubbles: true }))
+		}
+		return { tag, label, input: container }
+	}
+
 	// 回收组件
 	recycle(wrap) {
 		switch (wrap.tag) {
@@ -458,6 +551,12 @@ export class ParameterPane extends HTMLElement {
 				if (wrap.input.tabIndex === 0) {
 					this.customBoxes.push(wrap)
 				}
+				break
+			case 'repeatable-group':
+				wrap.label.remove()
+				wrap.input.remove()
+				wrap.input.parameters = null
+				wrap.input.key = null
 				break
 		}
 	}
