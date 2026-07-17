@@ -2,16 +2,16 @@
 
 let Party = new (class PartyManager {
 	/** 玩家角色对象 */
-	public player: GlobalActor | null = null;
+	public player: GlobalActor | null = null
 	/** 玩家队伍成员列表 */
-	public members: Array<GlobalActor> = [];
+	public members: Array<GlobalActor> = []
 	/** 队伍版本(随着队伍成员的添加和移除发生变化) */
-	public version: number = 0;
+	public version: number = 0
 
 	/** 重置队伍角色 */
 	public reset(): void {
-		this.player = null;
-		this.members = [];
+		this.player = null
+		this.members = []
 	}
 
 	/**
@@ -20,10 +20,10 @@ let Party = new (class PartyManager {
 	 */
 	public setPlayer(actor: GlobalActor | null): void {
 		if (actor instanceof GlobalActor && !actor.destroyed) {
-			this.player = actor;
+			this.player = actor
 		}
 		if (actor === null) {
-			this.player = null;
+			this.player = null
 		}
 	}
 
@@ -34,7 +34,7 @@ let Party = new (class PartyManager {
 	public addMember(actor: GlobalActor): void {
 		if (actor instanceof GlobalActor && !actor.destroyed) {
 			if (this.members.append(actor)) {
-				this.version++;
+				this.version++
 			}
 		}
 	}
@@ -46,7 +46,7 @@ let Party = new (class PartyManager {
 	public removeMember(actor: GlobalActor): void {
 		if (actor instanceof GlobalActor) {
 			if (this.members.remove(actor)) {
-				this.version++;
+				this.version++
 			}
 		}
 	}
@@ -54,9 +54,9 @@ let Party = new (class PartyManager {
 	/** 保存队伍角色数据 */
 	public saveData(): PartySaveData {
 		return {
-			player: this.player?.data.id ?? "",
-			members: this.members.map(a => a.data.id),
-		};
+			player: this.player?.data.id ?? '',
+			members: this.members.map((a) => a.data.id)
+		}
 	}
 
 	/**
@@ -64,55 +64,55 @@ let Party = new (class PartyManager {
 	 * @param party 队伍存档数据
 	 */
 	public loadData(party: PartySaveData): void {
-		const { player, members } = party;
-		this.player = ActorManager.get(player) ?? null;
-		this.members = [];
+		const { player, members } = party
+		this.player = ActorManager.get(player) ?? null
+		this.members = []
 		for (const member of members) {
-			const actor = ActorManager.get(member);
-			if (actor) this.addMember(actor);
+			const actor = ActorManager.get(member)
+			if (actor) this.addMember(actor)
 		}
 	}
-})();
+})()
 
 /** ******************************** 势力队伍管理器 ******************************** */
 
 let Team = new (class TeamManager {
 	/** 队伍列表 */
-	public list: Array<TeamItem> = [];
+	public list: Array<TeamItem> = []
 	/** 队伍的键(ID)列表 */
-	public keys: Array<string> = [];
+	public keys: Array<string> = []
 	/** {ID:队伍}映射表 */
-	public map: HashMap<TeamItem> = {};
+	public map: HashMap<TeamItem> = {}
 	/** 默认队伍ID */
-	public defaultId: string = "";
+	public defaultId: string = ''
 	/** 队伍关系数组(0:敌对, 1:友好) */
-	public relationMap: Uint8Array = new Uint8Array(65536);
+	public relationMap: Uint8Array = new Uint8Array(65536)
 	/** 队伍碰撞开关表(0:关闭, 1:开启) */
-	public collisionMap: Uint8Array = new Uint8Array(65536);
+	public collisionMap: Uint8Array = new Uint8Array(65536)
 
 	/** 初始化 */
 	public initialize(): void {
 		// 给队伍设置索引
-		const map = this.map;
-		const teams = Data.teams.list as Array<TeamItem>;
-		const keys = teams.map((team: TeamItem) => team.id);
-		this.list = teams;
-		this.keys = keys;
-		const data = this.unpackTeamData(keys, Data.teams);
-		const length = teams.length;
+		const map = this.map
+		const teams = Data.teams.list as Array<TeamItem>
+		const keys = teams.map((team: TeamItem) => team.id)
+		this.list = teams
+		this.keys = keys
+		const data = this.unpackTeamData(keys, Data.teams)
+		const length = teams.length
 		for (let i = 0; i < length; i++) {
-			const team = teams[i];
-			const key = keys[i];
-			team.index = i;
-			team.relations = data.relationsMap[key]!;
-			team.collisions = data.collisionsMap[key]!;
-			map[team.id] = team;
+			const team = teams[i]
+			const key = keys[i]
+			team.index = i
+			team.relations = data.relationsMap[key]!
+			team.collisions = data.collisionsMap[key]!
+			map[team.id] = team
 			for (let j = 0; j < length; j++) {
-				this.relationMap[i | (j << 8)] = team.relations[keys[j]]!;
-				this.collisionMap[i | (j << 8)] = team.collisions[keys[j]]!;
+				this.relationMap[i | (j << 8)] = team.relations[keys[j]]!
+				this.collisionMap[i | (j << 8)] = team.collisions[keys[j]]!
 			}
 		}
-		this.defaultId = keys[0];
+		this.defaultId = keys[0]
 	}
 
 	/**
@@ -122,32 +122,32 @@ let Team = new (class TeamManager {
 	 * @returns 解码后的队伍数据
 	 */
 	private unpackTeamData(keys: string[], data: any): UnpackedTeamData {
-		const relationsMap: HashMap<HashMap<number>> = {};
-		const collisionsMap: HashMap<HashMap<number>> = {};
-		const length = keys.length;
+		const relationsMap: HashMap<HashMap<number>> = {}
+		const collisionsMap: HashMap<HashMap<number>> = {}
+		const length = keys.length
 		// 解码已压缩的队伍关系数据
-		const sRelations = Codec.decodeTeamData(data.relations, length);
-		const sCollisions = Codec.decodeTeamData(data.collisions, length);
-		const a = length * 2;
+		const sRelations = Codec.decodeTeamData(data.relations, length)
+		const sCollisions = Codec.decodeTeamData(data.collisions, length)
+		const a = length * 2
 		// 构建完整的队伍关系数据结构
 		for (let i = 0; i < length; i++) {
-			const dRelations: HashMap<number> = {};
-			const dCollisions: HashMap<number> = {};
+			const dRelations: HashMap<number> = {}
+			const dCollisions: HashMap<number> = {}
 			for (let j = 0; j < i; j++) {
-				const ri = ((a - j + 1) / 2) * j - j + i;
-				dRelations[keys[j]] = sRelations[ri];
-				dCollisions[keys[j]] = sCollisions[ri];
+				const ri = ((a - j + 1) / 2) * j - j + i
+				dRelations[keys[j]] = sRelations[ri]
+				dCollisions[keys[j]] = sCollisions[ri]
 			}
-			const b = ((a - i + 1) / 2) * i - i;
+			const b = ((a - i + 1) / 2) * i - i
 			for (let j = i; j < length; j++) {
-				const ri = b + j;
-				dRelations[keys[j]] = sRelations[ri];
-				dCollisions[keys[j]] = sCollisions[ri];
+				const ri = b + j
+				dRelations[keys[j]] = sRelations[ri]
+				dCollisions[keys[j]] = sCollisions[ri]
 			}
-			relationsMap[keys[i]] = dRelations;
-			collisionsMap[keys[i]] = dCollisions;
+			relationsMap[keys[i]] = dRelations
+			collisionsMap[keys[i]] = dCollisions
 		}
-		return { relationsMap, collisionsMap };
+		return { relationsMap, collisionsMap }
 	}
 
 	/**
@@ -156,7 +156,7 @@ let Team = new (class TeamManager {
 	 * @returns ID匹配的队伍
 	 */
 	public get(teamId: string): TeamItem | undefined {
-		return this.map[teamId];
+		return this.map[teamId]
 	}
 
 	/**
@@ -165,8 +165,11 @@ let Team = new (class TeamManager {
 	 * @param teamIndex2 队伍索引2
 	 * @returns 队伍关系(0:敌对, 1:友好)
 	 */
-	public getRelationByIndexes(teamIndex1: number, teamIndex2: number): number {
-		return this.relationMap[teamIndex1 | (teamIndex2 << 8)];
+	public getRelationByIndexes(
+		teamIndex1: number,
+		teamIndex2: number
+	): number {
+		return this.relationMap[teamIndex1 | (teamIndex2 << 8)]
 	}
 
 	/**
@@ -176,7 +179,7 @@ let Team = new (class TeamManager {
 	 * @returns 是否为敌对关系
 	 */
 	public isEnemy(teamId1: string, teamId2: string): boolean {
-		return this.map[teamId1]?.relations[teamId2] === 0;
+		return this.map[teamId1]?.relations[teamId2] === 0
 	}
 
 	/**
@@ -186,7 +189,7 @@ let Team = new (class TeamManager {
 	 * @returns 是否为友好关系
 	 */
 	public isFriendly(teamId1: string, teamId2: string): boolean {
-		return this.map[teamId1]?.relations[teamId2] === 1;
+		return this.map[teamId1]?.relations[teamId2] === 1
 	}
 
 	/**
@@ -200,13 +203,13 @@ let Team = new (class TeamManager {
 		teamId2: string,
 		relation: 0 | 1
 	): void {
-		const team1 = this.get(teamId1);
-		const team2 = this.get(teamId2);
+		const team1 = this.get(teamId1)
+		const team2 = this.get(teamId2)
 		if (team1 && team2) {
-			team1.relations[teamId2] = relation;
-			team2.relations[teamId1] = relation;
-			this.relationMap[team1.index | (team2.index << 8)] = relation;
-			this.relationMap[team2.index | (team1.index << 8)] = relation;
+			team1.relations[teamId2] = relation
+			team2.relations[teamId1] = relation
+			this.relationMap[team1.index | (team2.index << 8)] = relation
+			this.relationMap[team2.index | (team1.index << 8)] = relation
 		}
 	}
 
@@ -215,30 +218,32 @@ let Team = new (class TeamManager {
 	 * @returns 队伍存档数据
 	 */
 	public saveData(): TeamSaveData {
-		const keys = this.keys;
-		const teams = this.list;
-		const length = teams.length;
-		const dRelations = GL.arrays[0].uint8;
-		const dCollisions = GL.arrays[1].uint8;
-		let ri = 0;
+		const keys = this.keys
+		const teams = this.list
+		const length = teams.length
+		const dRelations = GL.arrays[0].uint8
+		const dCollisions = GL.arrays[1].uint8
+		let ri = 0
 		// 压缩队伍关系数据
 		for (let i = 0; i < length; i++) {
-			const team = teams[i];
-			const sRelations = team.relations;
-			const sCollisions = team.collisions;
+			const team = teams[i]
+			const sRelations = team.relations
+			const sCollisions = team.collisions
 			for (let j = i; j < length; j++, ri++) {
-				dRelations[ri] = sRelations[keys[j]]!;
-				dCollisions[ri] = sCollisions[keys[j]]!;
+				dRelations[ri] = sRelations[keys[j]]!
+				dCollisions[ri] = sCollisions[keys[j]]!
 			}
 		}
 		// 编码已压缩的队伍关系数据
 		return {
 			keys: keys,
-			relations: Codec.encodeTeamData(new Uint8Array(dRelations.buffer, 0, ri)),
+			relations: Codec.encodeTeamData(
+				new Uint8Array(dRelations.buffer, 0, ri)
+			),
 			collisions: Codec.encodeTeamData(
 				new Uint8Array(dCollisions.buffer, 0, ri)
-			),
-		};
+			)
+		}
 	}
 
 	/**
@@ -246,63 +251,63 @@ let Team = new (class TeamManager {
 	 * @param team 队伍存档数据
 	 */
 	public loadData(team: TeamSaveData): void {
-		const sKeys = team.keys;
-		const data = this.unpackTeamData(sKeys, team);
-		const dKeys = this.keys;
-		const teams = this.list;
-		const length = teams.length;
+		const sKeys = team.keys
+		const data = this.unpackTeamData(sKeys, team)
+		const dKeys = this.keys
+		const teams = this.list
+		const length = teams.length
 		// 将加载的队伍关系数据合并到现有的数据中
 		// 丢弃项目编辑所造成的无效数据
 		for (let i = 0; i < length; i++) {
-			const key = dKeys[i];
-			const sRelations = data.relationsMap[key];
-			const sCollisions = data.collisionsMap[key];
-			if (!sRelations || !sCollisions) continue;
-			const team = teams[i];
-			const dRelations = team.relations;
-			const dCollisions = team.collisions;
+			const key = dKeys[i]
+			const sRelations = data.relationsMap[key]
+			const sCollisions = data.collisionsMap[key]
+			if (!sRelations || !sCollisions) continue
+			const team = teams[i]
+			const dRelations = team.relations
+			const dCollisions = team.collisions
 			for (let j = 0; j < length; j++) {
-				const key = dKeys[j];
-				const relation = sRelations[key];
+				const key = dKeys[j]
+				const relation = sRelations[key]
 				if (relation !== undefined) {
-					dRelations[key] = relation;
-					this.relationMap[i | (j << 8)] = relation;
+					dRelations[key] = relation
+					this.relationMap[i | (j << 8)] = relation
 				}
-				const collision = sCollisions[key];
+				const collision = sCollisions[key]
 				if (collision !== undefined) {
-					dCollisions[key] = collision;
-					this.collisionMap[i | (j << 8)] = collision;
+					dCollisions[key] = collision
+					this.collisionMap[i | (j << 8)] = collision
 				}
 			}
 		}
 	}
-})();
+})()
 
 /** ******************************** 全局角色管理器 ******************************** */
 
 let ActorManager = new (class GlobalActorManager {
 	/** 全局角色列表 */
-	public list: Array<GlobalActor> = [];
+	public list: Array<GlobalActor> = []
 	/** {ID:全局角色实例}映射表 */
-	public idMap: HashMap<GlobalActor> = {};
+	public idMap: HashMap<GlobalActor> = {}
 
 	/** 重置全局角色 */
 	public reset(): void {
-		this.clearGlobalActors();
+		this.clearGlobalActors()
 	}
 
 	/** 清除所有全局角色 */
 	public clearGlobalActors(): void {
-		this.idMap = {};
+		this.idMap = {}
 		// 遍历所有全局角色
 		for (const actor of this.list) {
 			// 从所有场景角色列表中移除该角色
 			for (const context of Scene.contexts) {
-				context?.actor.remove(actor);
+				context?.actor.remove(actor)
 			}
-			actor.destroy();
+			actor.destroy()
 		}
-		this.list = [];
+		this.list = []
 	}
 
 	/**
@@ -315,15 +320,15 @@ let ActorManager = new (class GlobalActorManager {
 		actorId: string,
 		savedData?: ActorSaveData
 	): GlobalActor | undefined {
-		const data = Data.actors[actorId];
+		const data = Data.actors[actorId]
 		if (!this.idMap[actorId] && data) {
 			// 如果角色ID未被占用，则创建角色
-			const actor = new GlobalActor(data, savedData);
-			this.idMap[actorId] = actor;
-			this.list.push(actor);
-			return actor;
+			const actor = new GlobalActor(data, savedData)
+			this.idMap[actorId] = actor
+			this.list.push(actor)
+			return actor
 		}
-		return undefined;
+		return undefined
 	}
 
 	/**
@@ -331,18 +336,18 @@ let ActorManager = new (class GlobalActorManager {
 	 * @param actorId 角色文件ID
 	 */
 	public delete(actorId: string): void {
-		const actor = this.idMap[actorId];
+		const actor = this.idMap[actorId]
 		if (actor) {
 			// 从所有场景角色列表中移除该角色
 			for (const context of Scene.contexts) {
-				context?.actor.remove(actor);
+				context?.actor.remove(actor)
 			}
-			delete this.idMap[actorId];
-			actor.destroy();
-			this.list.remove(actor);
-			Party.removeMember(actor);
+			delete this.idMap[actorId]
+			actor.destroy()
+			this.list.remove(actor)
+			Party.removeMember(actor)
 			if (Party.player === actor) {
-				Party.player = null;
+				Party.player = null
 			}
 		}
 	}
@@ -353,7 +358,7 @@ let ActorManager = new (class GlobalActorManager {
 	 * @returns 全局角色
 	 */
 	public get(actorId: string): GlobalActor | undefined {
-		return this.idMap[actorId];
+		return this.idMap[actorId]
 	}
 
 	/**
@@ -361,13 +366,13 @@ let ActorManager = new (class GlobalActorManager {
 	 * @returns 角色存档数据列表
 	 */
 	public saveData(): Array<ActorSaveData> {
-		const actors = this.list;
-		const length = actors.length;
-		const data = new Array(length);
+		const actors = this.list
+		const length = actors.length
+		const data = new Array(length)
 		for (let i = 0; i < length; i++) {
-			data[i] = actors[i].saveData();
+			data[i] = actors[i].saveData()
 		}
-		return data;
+		return data
 	}
 
 	/**
@@ -375,107 +380,107 @@ let ActorManager = new (class GlobalActorManager {
 	 * @param actors 角色存档数据列表
 	 */
 	public loadData(actors: Array<ActorSaveData>): void {
-		this.clearGlobalActors();
+		this.clearGlobalActors()
 		// 恢复全局角色列表
 		for (const savedData of actors) {
-			this.create(savedData.fileId, savedData);
+			this.create(savedData.fileId, savedData)
 		}
 	}
-})();
+})()
 
 /** ******************************** 角色 ******************************** */
 
 class Actor {
 	/** 角色对象名称 */
-	public name: string;
+	public name: string
 	/** 角色对象实体ID */
-	public entityId: string;
+	public entityId: string
 	/** 角色预设数据ID */
-	public presetId: string;
+	public presetId: string
 	/** 角色独立变量ID */
-	public selfVarId: string;
+	public selfVarId: string
 	/** 角色对象可见性 */
-	public visible: boolean;
+	public visible: boolean
 	/** 角色头像ID */
-	public portrait: string;
+	public portrait: string
 	/** 角色头像矩形裁剪区域 */
-	public clip: ImageClip;
+	public clip: ImageClip
 	/** 角色文件数据 */
-	public data: ActorFile;
+	public data: ActorFile
 	/** 角色的场景分区ID */
-	public cellId: number;
+	public cellId: number
 	/** 角色的场景网格ID */
-	public gridId: number;
+	public gridId: number
 	/** 角色队伍ID */
-	public teamId: string;
+	public teamId: string
 	/** 角色队伍索引 */
-	public teamIndex: number;
+	public teamIndex: number
 	/** 角色的激活状态 */
-	public active: boolean;
+	public active: boolean
 	/** 角色是否已销毁 */
-	public destroyed: boolean;
+	public destroyed: boolean
 	/** 角色的通行区域码 */
-	public passage: number;
+	public passage: number
 	/** 角色的渲染优先级 */
-	public priority: number;
+	public priority: number
 	/** 角色的场景位置X */
-	public x: number;
+	public x: number
 	/** 角色的场景位置Y */
-	public y: number;
+	public y: number
 	/** 角色的整数位置X */
-	public intX: number;
+	public intX: number
 	/** 角色的整数位置Y */
-	public intY: number;
+	public intY: number
 	/** 角色的缩放系数 */
-	public scale: number;
+	public scale: number
 	/** 角色的角度 */
-	public angle: number;
+	public angle: number
 	/** 是否固定角度 */
-	public angleFixed: boolean;
+	public angleFixed: boolean
 	/** 受击时间戳 */
-	public hitTimestamp: number;
+	public hitTimestamp: number
 	/** 角色碰撞器 */
-	public collider: ActorCollider;
+	public collider: ActorCollider
 	/** 角色导航器 */
-	public navigator: ActorNavigator;
+	public navigator: ActorNavigator
 	/** 角色动画播放器 */
-	public animation: AnimationPlayer | null;
+	public animation: AnimationPlayer | null
 	/** {精灵ID:图像ID}映射表 */
-	public sprites: HashMap<string>;
+	public sprites: HashMap<string>
 	/** 角色更新器列表 */
-	public updaters: UpdaterList;
+	public updaters: UpdaterList
 	/** {键:属性值}映射表 */
-	public attributes: AttributeMap;
+	public attributes: AttributeMap
 	/** 角色动画控制器 */
-	public animationController: AnimationController;
+	public animationController: AnimationController
 	/** 角色动画管理器 */
-	public animationManager: AnimationManager;
+	public animationManager: AnimationManager
 	/** 角色技能管理器 */
-	public skill: SkillManager;
+	public skill: SkillManager
 	/** 角色状态管理器 */
-	public state: StateManager;
+	public state: StateManager
 	/** 角色装备管理器 */
-	public equipment: EquipmentManager;
+	public equipment: EquipmentManager
 	/** 角色公共冷却管理器 */
-	public cooldown: CooldownManager;
+	public cooldown: CooldownManager
 	/** 角色快捷栏管理器 */
-	public shortcut: ShortcutManager;
+	public shortcut: ShortcutManager
 	/** 角色目标对象管理器 */
-	public target: TargetManager;
+	public target: TargetManager
 	/** 角色库存管理器 */
-	public inventory: Inventory;
+	public inventory: Inventory
 	/** {类型:事件}映射表 */
-	public events: HashMap<CommandFunctionList>;
+	public events: HashMap<CommandFunctionList>
 	/** {类型:注册事件}映射表 */
-	public registeredEvents: HashMap<CommandFunctionList>;
+	public registeredEvents: HashMap<CommandFunctionList>
 	/** 角色脚本管理器 */
-	public script: ScriptManager;
+	public script: ScriptManager
 	/** 角色的父级对象 */
-	public parent: SceneActorManager | null;
+	public parent: SceneActorManager | null
 	/** 已开始状态 */
-	protected started: boolean;
+	protected started: boolean
 	/** 保存的角色库存管理器 */
-	public savedInventory?: Inventory;
+	public savedInventory?: Inventory
 
 	/**
 	 * 场景角色对象
@@ -486,141 +491,141 @@ class Actor {
 	constructor(
 		data: ActorFile,
 		savedData?: ActorSaveData,
-		presetId: string = ""
+		presetId: string = ''
 	) {
-		this.name = "";
-		this.entityId = "";
-		this.presetId = presetId;
-		this.selfVarId = "";
-		this.visible = true;
-		this.portrait = data.portrait;
-		this.clip = [...data.clip];
-		this.data = data;
-		this.cellId = -1;
-		this.gridId = -1;
-		this.teamId = Team.defaultId;
-		this.teamIndex = 0;
-		this.active = true;
-		this.destroyed = false;
-		this.priority = data.priority;
-		this.x = 0;
-		this.y = 0;
-		this.intX = 0;
-		this.intY = 0;
-		this.passage = 0;
-		this.scale = data.scale;
-		this.angle = 0;
-		this.angleFixed = false;
-		this.hitTimestamp = -100000000;
-		this.parent = null;
-		this.started = false;
+		this.name = ''
+		this.entityId = ''
+		this.presetId = presetId
+		this.selfVarId = ''
+		this.visible = true
+		this.portrait = data.portrait
+		this.clip = [...data.clip]
+		this.data = data
+		this.cellId = -1
+		this.gridId = -1
+		this.teamId = Team.defaultId
+		this.teamIndex = 0
+		this.active = true
+		this.destroyed = false
+		this.priority = data.priority
+		this.x = 0
+		this.y = 0
+		this.intX = 0
+		this.intY = 0
+		this.passage = 0
+		this.scale = data.scale
+		this.angle = 0
+		this.angleFixed = false
+		this.hitTimestamp = -100000000
+		this.parent = null
+		this.started = false
 
 		// 角色组件
-		this.collider = new ActorCollider(this);
-		this.navigator = new ActorNavigator(this);
-		this.animation = null;
-		this.sprites = {};
-		this.updaters = new UpdaterList();
-		this.attributes = {};
-		this.animationController = new AnimationController(this);
-		this.animationManager = new AnimationManager(this);
-		this.skill = new SkillManager(this);
-		this.state = new StateManager(this);
-		this.equipment = new EquipmentManager(this);
-		this.cooldown = new CooldownManager(this);
-		this.shortcut = new ShortcutManager(this);
-		this.target = new TargetManager(this);
-		this.inventory = new Inventory(this);
-		this.events = data.events;
-		this.registeredEvents = {};
-		this.script = ScriptManager.create(this, data.scripts);
-		Actor.latest = this;
+		this.collider = new ActorCollider(this)
+		this.navigator = new ActorNavigator(this)
+		this.animation = null
+		this.sprites = {}
+		this.updaters = new UpdaterList()
+		this.attributes = {}
+		this.animationController = new AnimationController(this)
+		this.animationManager = new AnimationManager(this)
+		this.skill = new SkillManager(this)
+		this.state = new StateManager(this)
+		this.equipment = new EquipmentManager(this)
+		this.cooldown = new CooldownManager(this)
+		this.shortcut = new ShortcutManager(this)
+		this.target = new TargetManager(this)
+		this.inventory = new Inventory(this)
+		this.events = data.events
+		this.registeredEvents = {}
+		this.script = ScriptManager.create(this, data.scripts)
+		Actor.latest = this
 
 		if (savedData) {
 			// 加载存档数据
-			this.visible = savedData.visible;
-			this.entityId = savedData.entityId;
-			this.presetId = savedData.presetId;
-			this.selfVarId = savedData.selfVarId;
-			this.name = savedData.name;
-			this.active = savedData.active;
-			this.passage = savedData.passage;
-			this.priority = savedData.priority;
-			this.portrait = savedData.portrait;
-			this.clip = savedData.clip;
-			this.scale = savedData.scale;
-			this.angle = savedData.angle;
-			this.sprites = savedData.sprites;
-			this.setTeam(savedData.teamId);
-			this.setPosition(savedData.x, savedData.y);
-			this.collider.weight = savedData.weight;
-			this.navigator.movementSpeed = savedData.movementSpeed;
-			this.navigator.movementFactor = savedData.movementFactor;
-			this.attributes = savedData.attributes;
-			this.animationController.loadData(savedData.motions);
-			this.animationManager.loadData(savedData.animations);
-			this.animation = this.animationManager.get("actor") ?? null;
-			this.animation?.setSpriteImages(savedData.sprites);
-			this.animationController.bindAnimation(this.animation);
-			this.skill.loadData(savedData.skills);
-			this.state.loadData(savedData.states);
-			this.equipment.loadData(savedData.equipments);
-			this.cooldown.loadData(savedData.cooldowns);
-			this.inventory.loadData(savedData.inventory);
-			this.shortcut.loadData(savedData.shortcuts);
-			GlobalEntityManager.add(this);
+			this.visible = savedData.visible
+			this.entityId = savedData.entityId
+			this.presetId = savedData.presetId
+			this.selfVarId = savedData.selfVarId
+			this.name = savedData.name
+			this.active = savedData.active
+			this.passage = savedData.passage
+			this.priority = savedData.priority
+			this.portrait = savedData.portrait
+			this.clip = savedData.clip
+			this.scale = savedData.scale
+			this.angle = savedData.angle
+			this.sprites = savedData.sprites
+			this.setTeam(savedData.teamId)
+			this.setPosition(savedData.x, savedData.y)
+			this.collider.weight = savedData.weight
+			this.navigator.movementSpeed = savedData.movementSpeed
+			this.navigator.movementFactor = savedData.movementFactor
+			this.attributes = savedData.attributes
+			this.animationController.loadData(savedData.motions)
+			this.animationManager.loadData(savedData.animations)
+			this.animation = this.animationManager.get('actor') ?? null
+			this.animation?.setSpriteImages(savedData.sprites)
+			this.animationController.bindAnimation(this.animation)
+			this.skill.loadData(savedData.skills)
+			this.state.loadData(savedData.states)
+			this.equipment.loadData(savedData.equipments)
+			this.cooldown.loadData(savedData.cooldowns)
+			this.inventory.loadData(savedData.inventory)
+			this.shortcut.loadData(savedData.shortcuts)
+			GlobalEntityManager.add(this)
 		} else {
 			// 初始化
-			GlobalEntityManager.add(this);
-			this.setPassage(data.passage);
-			this.setAnimation(data.animationId);
-			this.loadSprites();
-			this.loadAttributes();
-			this.loadSkills();
-			this.loadEquipments();
-			this.loadInventory();
+			GlobalEntityManager.add(this)
+			this.setPassage(data.passage)
+			this.setAnimation(data.animationId)
+			this.loadSprites()
+			this.loadAttributes()
+			this.loadSkills()
+			this.loadEquipments()
+			this.loadInventory()
 			if (Actor.enableCreateEvent) {
-				this.emit("create");
+				this.emit('create')
 			}
 		}
 
 		// 定义临时属性
-		Actor.defineTempAttributes(this.attributes);
+		Actor.defineTempAttributes(this.attributes)
 	}
 
 	/** 加载初始动画精灵哈希表 */
 	private loadSprites(): void {
-		const map = this.sprites;
-		const sprites = this.data.sprites;
-		const length = sprites.length;
+		const map = this.sprites
+		const sprites = this.data.sprites
+		const length = sprites.length
 		// 使用精灵数组生成哈希表
 		for (let i = 0; i < length; i++) {
-			const sprite = sprites[i];
-			map[sprite.id] = sprite.image;
+			const sprite = sprites[i]
+			map[sprite.id] = sprite.image
 		}
 	}
 
 	/** 加载初始角色属性 */
 	private loadAttributes(): void {
-		Attribute.loadEntries(this.attributes, this.data.attributes);
+		Attribute.loadEntries(this.attributes, this.data.attributes)
 	}
 
 	/** 加载初始角色技能 */
 	private loadSkills(): void {
-		const { skill: skillManager } = this;
-		const dataMap = Data.skills;
-		const skills = this.data.skills;
-		const length = skills.length;
+		const { skill: skillManager } = this
+		const dataMap = Data.skills
+		const skills = this.data.skills
+		const length = skills.length
 		// 创建初始技能并设置快捷键
 		for (let i = 0; i < length; i++) {
-			const skill = skills[i];
-			const data = dataMap[skill.id];
-			const key = Enum.get(skill.key);
+			const skill = skills[i]
+			const data = dataMap[skill.id]
+			const key = Enum.get(skill.key)
 			if (data !== undefined) {
-				const skill = new Skill(data);
-				skillManager.add(skill);
+				const skill = new Skill(data)
+				skillManager.add(skill)
 				if (key && this.shortcut.get(key.value) === undefined) {
-					this.shortcut.set(key.value, skill);
+					this.shortcut.set(key.value, skill)
 				}
 			}
 		}
@@ -628,56 +633,56 @@ class Actor {
 
 	/** 加载初始角色装备 */
 	private loadEquipments(): void {
-		const { equipment: equipmentManager } = this;
-		const dataMap = Data.equipments;
-		const equipments = this.data.equipments;
-		const length = equipments.length;
+		const { equipment: equipmentManager } = this
+		const dataMap = Data.equipments
+		const equipments = this.data.equipments
+		const length = equipments.length
 		// 创建初始装备并设置快捷键
 		for (let i = 0; i < length; i++) {
-			const equipment = equipments[i];
-			const data = dataMap[equipment.id];
-			const slot = Enum.get(equipment.slot);
+			const equipment = equipments[i]
+			const data = dataMap[equipment.id]
+			const slot = Enum.get(equipment.slot)
 			if (
 				data !== undefined &&
 				slot !== undefined &&
 				equipmentManager.get(slot.value) === undefined
 			) {
-				equipmentManager.set(slot.value, new Equipment(data));
+				equipmentManager.set(slot.value, new Equipment(data))
 			}
 		}
 	}
 
-  /** 加载初始角色库存 */
-  private loadInventory(): void {
-    const inventory = this.inventory
-    const list = this.data.inventory
-    const length = list.length
-    // 创建初始物品和装备，避免触发获得事件
-    for (let i = 0; i < length; i++) {
-      const asset = list[i]
-      switch (asset.type) {
-        case 'item': {
-          const data = Data.items[asset.id]
-          if (data) {
-            const item = new Item(data)
-            inventory.insert(item)
-            item.increase(asset.quantity)
-          }
-          continue
-        }
-        case 'equipment': {
-          const data = Data.equipments[asset.id]
-          if (data) {
-            inventory.insert(new Equipment(data))
-          }
-          continue
-        }
-        case 'money':
-          inventory.money += asset.money
-          continue
-      }
-    }
-  }
+	/** 加载初始角色库存 */
+	private loadInventory(): void {
+		const inventory = this.inventory
+		const list = this.data.inventory
+		const length = list.length
+		// 创建初始物品和装备，避免触发获得事件
+		for (let i = 0; i < length; i++) {
+			const asset = list[i]
+			switch (asset.type) {
+				case 'item': {
+					const data = Data.items[asset.id]
+					if (data) {
+						const item = new Item(data)
+						inventory.insert(item)
+						item.increase(asset.quantity)
+					}
+					continue
+				}
+				case 'equipment': {
+					const data = Data.equipments[asset.id]
+					if (data) {
+						inventory.insert(new Equipment(data))
+					}
+					continue
+				}
+				case 'money':
+					inventory.money += asset.money
+					continue
+			}
+		}
+	}
 
 	/**
 	 * 角色朝指定角度位移一段距离
@@ -690,41 +695,41 @@ class Actor {
 	public translate(
 		angle: number,
 		distance: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0,
-		key: string = "translate"
+		key: string = 'translate'
 	): void {
-		const distX = distance * Math.cos(angle);
-		const distY = distance * Math.sin(angle);
+		const distX = distance * Math.cos(angle)
+		const distY = distance * Math.sin(angle)
 		if (duration > 0) {
 			// 创建过渡更新器，使用set方法:
 			// 如果已有同名更新器，则替换
-			let elapsed = 0;
-			let lastTime = 0;
-			const easing = Easing.get(easingId);
+			let elapsed = 0
+			let lastTime = 0
+			const easing = Easing.get(easingId)
 			this.updaters.set(key, {
 				protected: true,
-				update: deltaTime => {
+				update: (deltaTime) => {
 					// 更新中不断设置角色位置
-					elapsed += deltaTime;
-					const time = easing.get(elapsed / duration);
-					const increase = time - lastTime;
-					const x = distX * increase;
-					const y = distY * increase;
-					this.move(x, y);
-					lastTime = time;
+					elapsed += deltaTime
+					const time = easing.get(elapsed / duration)
+					const increase = time - lastTime
+					const x = distX * increase
+					const y = distY * increase
+					this.move(x, y)
+					lastTime = time
 					// 过渡结束，延迟删除更新器
 					if (elapsed >= duration) {
-						this.updaters.deleteDelay(key);
+						this.updaters.deleteDelay(key)
 					}
-				},
-			});
+				}
+			})
 		} else {
 			// 立即执行
-			this.updaters.deleteDelay(key);
-			const x = this.x + distX;
-			const y = this.y + distY;
-			this.setPosition(x, y);
+			this.updaters.deleteDelay(key)
+			const x = this.x + distX
+			const y = this.y + distY
+			this.setPosition(x, y)
 		}
 	}
 
@@ -736,34 +741,34 @@ class Actor {
 	 */
 	public setScale(
 		scale: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		if (duration > 0) {
 			// 创建过渡更新器，使用set方法:
 			// 如果已有同名更新器，则替换
-			let elapsed = 0;
-			const start = this.scale;
-			const easing = Easing.get(easingId);
-			this.updaters.set("scale", {
+			let elapsed = 0
+			const start = this.scale
+			const easing = Easing.get(easingId)
+			this.updaters.set('scale', {
 				protected: true,
-				update: deltaTime => {
+				update: (deltaTime) => {
 					// 更新中不断设置角色角度
-					elapsed += deltaTime;
-					const time = easing.get(elapsed / duration);
-					this.scale = start * (1 - time) + scale * time;
-					this.animationManager.setGlobalScale(this.scale);
+					elapsed += deltaTime
+					const time = easing.get(elapsed / duration)
+					this.scale = start * (1 - time) + scale * time
+					this.animationManager.setGlobalScale(this.scale)
 					// 过渡结束，延迟删除更新器
 					if (elapsed >= duration) {
-						this.updaters.deleteDelay("scale");
+						this.updaters.deleteDelay('scale')
 					}
-				},
-			});
+				}
+			})
 		} else {
 			// 立即执行
-			this.updaters.deleteDelay("scale");
-			this.scale = scale;
-			this.animationManager.setGlobalScale(this.scale);
+			this.updaters.deleteDelay('scale')
+			this.scale = scale
+			this.animationManager.setGlobalScale(this.scale)
 		}
 	}
 
@@ -775,15 +780,15 @@ class Actor {
 	 */
 	public setAngle(
 		angle: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		if (duration > 0) {
-			this.rotate(angle - this.angle, easingId, duration);
+			this.rotate(angle - this.angle, easingId, duration)
 		} else {
 			// 立即执行
-			this.updaters.deleteDelay("rotate");
-			this.updateAngle(angle);
+			this.updaters.deleteDelay('rotate')
+			this.updateAngle(angle)
 		}
 	}
 
@@ -796,34 +801,34 @@ class Actor {
 	 */
 	public rotate(
 		angle: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0,
-		key: string = "rotate"
+		key: string = 'rotate'
 	): void {
 		if (duration > 0) {
 			// 创建过渡更新器，使用set方法:
 			// 如果已有同名更新器，则替换
-			let elapsed = 0;
-			let lastTime = 0;
-			const easing = Easing.get(easingId);
+			let elapsed = 0
+			let lastTime = 0
+			const easing = Easing.get(easingId)
 			this.updaters.set(key, {
 				protected: true,
-				update: deltaTime => {
+				update: (deltaTime) => {
 					// 更新中不断设置角色角度
-					elapsed += deltaTime;
-					const time = easing.get(elapsed / duration);
-					this.updateAngle(this.angle + angle * (time - lastTime));
-					lastTime = time;
+					elapsed += deltaTime
+					const time = easing.get(elapsed / duration)
+					this.updateAngle(this.angle + angle * (time - lastTime))
+					lastTime = time
 					// 过渡结束，延迟删除更新器
 					if (elapsed >= duration) {
-						this.updaters.deleteDelay(key);
+						this.updaters.deleteDelay(key)
 					}
-				},
-			});
+				}
+			})
 		} else {
 			// 立即执行
-			this.updaters.deleteDelay(key);
-			this.updateAngle(this.angle + angle);
+			this.updaters.deleteDelay(key)
+			this.updateAngle(this.angle + angle)
 		}
 	}
 
@@ -832,24 +837,24 @@ class Actor {
 	 * @param animationId 动画文件ID
 	 */
 	public setAnimation(animationId: string): void {
-		this.animation?.finish();
-		const data = Data.animations[animationId];
+		this.animation?.finish()
+		const data = Data.animations[animationId]
 		if (data) {
 			// 如果动画ID有效，创建新的动画播放器
-			const animation = new AnimationPlayer(data);
-			animation.rotatable = this.data.rotatable;
-			animation.syncAngle = true;
+			const animation = new AnimationPlayer(data)
+			animation.rotatable = this.data.rotatable
+			animation.syncAngle = true
 			// 角色精灵图像优先于默认动画精灵图像
-			animation.setSpriteImages(this.sprites);
-			this.animationManager.set("actor", animation);
-			this.animation = animation;
+			animation.setSpriteImages(this.sprites)
+			this.animationManager.set('actor', animation)
+			this.animation = animation
 		} else if (this.animation) {
 			// 否则销毁上一个动画播放器
-			this.animationManager.delete("actor");
-			this.animation = null;
+			this.animationManager.delete('actor')
+			this.animation = null
 		}
 		// 绑定到动画控制器
-		this.animationController.bindAnimation(this.animation);
+		this.animationController.bindAnimation(this.animation)
 	}
 
 	/**
@@ -859,9 +864,9 @@ class Actor {
 	 */
 	public setSprite(spriteId: string, imageId: string): void {
 		// 修改角色精灵表中的键值
-		this.sprites[spriteId] = imageId;
+		this.sprites[spriteId] = imageId
 		// 如果角色动画已经加载了同名纹理，则删除
-		this.animation?.deleteTexture(spriteId);
+		this.animation?.deleteTexture(spriteId)
 	}
 
 	/**
@@ -872,16 +877,16 @@ class Actor {
 	 */
 	public setTint(
 		tint: ImageTintOptions,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		this.animation?.setTint(
-			"actor-tint",
+			'actor-tint',
 			this.updaters,
 			tint,
 			easingId,
 			duration
-		);
+		)
 	}
 
 	/**
@@ -892,12 +897,12 @@ class Actor {
 	 */
 	public setTintForAll(
 		tint: ImageTintOptions,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		for (const animation of this.animationManager.list) {
-			const id = animation.key + "-tint";
-			animation.setTint(id, this.updaters, tint, easingId, duration);
+			const id = animation.key + '-tint'
+			animation.setTint(id, this.updaters, tint, easingId, duration)
 		}
 	}
 
@@ -909,16 +914,16 @@ class Actor {
 	 */
 	public setOpacity(
 		opacity: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		this.animation?.setOpacity(
-			"actor-opacity",
+			'actor-opacity',
 			this.updaters,
 			opacity,
 			easingId,
 			duration
-		);
+		)
 	}
 
 	/**
@@ -929,12 +934,12 @@ class Actor {
 	 */
 	public setOpacityForAll(
 		opacity: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		for (const animation of this.animationManager.list) {
-			const id = animation.key + "-opacity";
-			animation.setOpacity(id, this.updaters, opacity, easingId, duration);
+			const id = animation.key + '-opacity'
+			animation.setOpacity(id, this.updaters, opacity, easingId, duration)
 		}
 	}
 
@@ -946,16 +951,16 @@ class Actor {
 	 */
 	public setOffsetY(
 		offsetY: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		this.animation?.setOffsetY(
-			"actor-offsetY",
+			'actor-offsetY',
 			this.updaters,
 			offsetY,
 			easingId,
 			duration
-		);
+		)
 	}
 
 	/**
@@ -966,12 +971,12 @@ class Actor {
 	 */
 	public setOffsetYForAll(
 		offsetY: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		for (const animation of this.animationManager.list) {
-			const id = animation.key + "-offsetY";
-			animation.setOffsetY(id, this.updaters, offsetY, easingId, duration);
+			const id = animation.key + '-offsetY'
+			animation.setOffsetY(id, this.updaters, offsetY, easingId, duration)
 		}
 	}
 
@@ -983,16 +988,16 @@ class Actor {
 	 */
 	public setRotation(
 		rotation: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		this.animation?.setRotation(
-			"actor-rotation",
+			'actor-rotation',
 			this.updaters,
 			rotation,
 			easingId,
 			duration
-		);
+		)
 	}
 
 	/**
@@ -1003,12 +1008,18 @@ class Actor {
 	 */
 	public setRotationForAll(
 		rotation: number,
-		easingId: string = "",
+		easingId: string = '',
 		duration: number = 0
 	): void {
 		for (const animation of this.animationManager.list) {
-			const id = animation.key + "-rotation";
-			animation.setRotation(id, this.updaters, rotation, easingId, duration);
+			const id = animation.key + '-rotation'
+			animation.setRotation(
+				id,
+				this.updaters,
+				rotation,
+				easingId,
+				duration
+			)
 		}
 	}
 
@@ -1017,29 +1028,29 @@ class Actor {
 	 * @param teamId 队伍ID
 	 */
 	public setTeam(teamId: string): void {
-		const team = Team.get(teamId);
+		const team = Team.get(teamId)
 		if (team !== undefined) {
-			this.teamId = teamId;
-			this.teamIndex = team.index;
+			this.teamId = teamId
+			this.teamIndex = team.index
 		}
 	}
 
-  /**
-   * 设置通行区域
-   * @param passage 通行区域
-   */
-  public setPassage(passage: keyof ActorPassageMap): void {
-    this.passage = Actor.passageMap[passage]
-  }
+	/**
+	 * 设置通行区域
+	 * @param passage 通行区域
+	 */
+	public setPassage(passage: keyof ActorPassageMap): void {
+		this.passage = Actor.passageMap[passage]
+	}
 
-  /**
-   * 设置角色优先级
-   * @param priority 优先级
-   */
-  public setPriority(priority: number): void {
-    this.priority = priority
-    this.animationManager.setPriority(priority)
-  }
+	/**
+	 * 设置角色优先级
+	 * @param priority 优先级
+	 */
+	public setPriority(priority: number): void {
+		this.priority = priority
+		this.animationManager.setPriority(priority)
+	}
 
 	/**
 	 * 移动角色
@@ -1047,11 +1058,11 @@ class Actor {
 	 * @param y 位移Y
 	 */
 	public move(x: number, y: number): void {
-		this.x += x;
-		this.y += y;
+		this.x += x
+		this.y += y
 		// 设置碰撞器为已经移动状态
-		this.collider.moved = true;
-		this.collider.handleImmovableCollisions();
+		this.collider.moved = true
+		this.collider.handleImmovableCollisions()
 	}
 
 	/**
@@ -1060,26 +1071,26 @@ class Actor {
 	 * @param y 场景网格Y
 	 */
 	public setPosition(x: number, y: number): void {
-		this.x = x;
-		this.y = y;
-		this.updateGridPosition();
+		this.x = x
+		this.y = y
+		this.updateGridPosition()
 		// 设置碰撞器为已经移动状态
-		this.collider.moved = true;
+		this.collider.moved = true
 	}
 
 	/**
 	 * 更新角色在场景中的网格位置
 	 */
 	public updateGridPosition(): void {
-		this.intX = Math.floor(this.x);
-		this.intY = Math.floor(this.y);
+		this.intX = Math.floor(this.x)
+		this.intY = Math.floor(this.y)
 	}
 
 	/**
 	 * 更新受击时间戳
 	 */
 	public updateHitTimestamp(): void {
-		this.hitTimestamp = Time.elapsed;
+		this.hitTimestamp = Time.elapsed
 	}
 
 	/**
@@ -1088,10 +1099,10 @@ class Actor {
 	 */
 	public setActive(active: boolean): void {
 		if (this.active !== active) {
-			this.active = active;
+			this.active = active
 			// 如果是未激活状态，重置目标列表
 			if (!active) {
-				this.target.reset();
+				this.target.reset()
 			}
 		}
 	}
@@ -1101,7 +1112,7 @@ class Actor {
 	 * @returns 角色是激活状态
 	 */
 	public isActive(): boolean {
-		return this.active && this.parent !== null;
+		return this.active && this.parent !== null
 	}
 
 	/**
@@ -1109,13 +1120,13 @@ class Actor {
 	 * @param angle 弧度
 	 */
 	public updateAngle(angle: number): void {
-		if (this.angleFixed) return;
-		angle = Math.modRadians(angle);
+		if (this.angleFixed) return
+		angle = Math.modRadians(angle)
 		// 当新的角度与当前角度不同时，计算动画方向
 		// 允许存在一点角度误差，避免频繁计算动画方向
 		if (Math.abs(this.angle - angle) >= 0.0001) {
-			this.angle = angle;
-			this.animationManager.setAngle(angle);
+			this.angle = angle
+			this.animationManager.setAngle(angle)
 		}
 	}
 
@@ -1125,19 +1136,19 @@ class Actor {
 	 */
 	public update(deltaTime: number): void {
 		// 更新导航器
-		this.navigator.update(deltaTime);
+		this.navigator.update(deltaTime)
 
 		// 更新动画组件
-		this.animationManager.update(deltaTime);
+		this.animationManager.update(deltaTime)
 
 		// 更新模块列表
 		if (this.active) {
-			this.updaters.update(deltaTime);
+			this.updaters.update(deltaTime)
 		} else {
 			// 如果角色未激活，仅执行受保护的更新器
 			for (const updater of this.updaters) {
 				if (updater.protected) {
-					updater.update(deltaTime);
+					updater.update(deltaTime)
 				}
 			}
 		}
@@ -1150,9 +1161,9 @@ class Actor {
 	public useInventory(inventory: Inventory): void {
 		if (this.inventory !== inventory) {
 			if (!this.savedInventory) {
-				this.savedInventory = this.inventory;
+				this.savedInventory = this.inventory
 			}
-			this.inventory = inventory;
+			this.inventory = inventory
 		}
 	}
 
@@ -1161,8 +1172,8 @@ class Actor {
 	 */
 	public restoreInventory(): void {
 		if (this.savedInventory) {
-			this.inventory = this.savedInventory;
-			delete this.savedInventory;
+			this.inventory = this.savedInventory
+			delete this.savedInventory
 		}
 	}
 
@@ -1172,15 +1183,15 @@ class Actor {
 	 * @returns 生成的事件处理器
 	 */
 	public callEvent(type: string): EventHandler | undefined {
-		const commands = this.registeredEvents[type] ?? this.events[type];
+		const commands = this.registeredEvents[type] ?? this.events[type]
 		if (commands) {
-			const event = new EventHandler(commands);
-			event.parent = this;
-			event.triggerActor = this;
-			event.triggerObject = this;
-			event.selfVarId = this.selfVarId;
-			EventHandler.call(event, this.updaters);
-			return event;
+			const event = new EventHandler(commands)
+			event.parent = this
+			event.triggerActor = this
+			event.triggerObject = this
+			event.selfVarId = this.selfVarId
+			EventHandler.call(event, this.updaters)
+			return event
 		}
 	}
 
@@ -1190,9 +1201,9 @@ class Actor {
 	 * @returns 生成的事件处理器
 	 */
 	public emit(type: string, scriptEvent?: any): EventHandler | undefined {
-		const event = this.callEvent(type);
-		this.script.emit(type, scriptEvent ?? this);
-		return event;
+		const event = this.callEvent(type)
+		this.script.emit(type, scriptEvent ?? this)
+		return event
 	}
 
 	/**
@@ -1204,12 +1215,12 @@ class Actor {
 		// 忽略重复注册
 		if (this.registeredEvents[type] !== commandList) {
 			// 取消已注册的相同键的事件指令
-			this.unregister(type);
+			this.unregister(type)
 			// 注册新的事件指令
-			this.registeredEvents[type] = commandList;
+			this.registeredEvents[type] = commandList
 			// 如果是自动执行事件，立即执行
-			if (type === "autorun" && this.started) {
-				this.callEvent("autorun");
+			if (type === 'autorun' && this.started) {
+				this.callEvent('autorun')
 			}
 		}
 	}
@@ -1219,19 +1230,19 @@ class Actor {
 	 * @param type 事件类型
 	 */
 	public unregister(type: string): void {
-		const commands = this.registeredEvents[type];
+		const commands = this.registeredEvents[type]
 		if (commands) {
-			this.stopEvents(commands);
-			delete this.registeredEvents[type];
+			this.stopEvents(commands)
+			delete this.registeredEvents[type]
 		}
 	}
 
 	/** 取消注册所有事件指令 */
 	public unregisterAll(): void {
-		const map = this.registeredEvents;
+		const map = this.registeredEvents
 		for (const key of Object.keys(map)) {
-			this.stopEvents(map[key]!);
-			delete map[key];
+			this.stopEvents(map[key]!)
+			delete map[key]
 		}
 	}
 
@@ -1241,8 +1252,11 @@ class Actor {
 	 */
 	public stopEvents(commandList: CommandFunctionList): void {
 		for (const updater of this.updaters) {
-			if (updater instanceof EventHandler && updater.initial === commandList) {
-				updater.finish();
+			if (
+				updater instanceof EventHandler &&
+				updater.initial === commandList
+			) {
+				updater.finish()
 			}
 		}
 	}
@@ -1250,29 +1264,29 @@ class Actor {
 	/** 发送自动执行事件 */
 	public autorun(): void {
 		if (this.started === false) {
-			this.started = true;
-			this.emit("autorun");
+			this.started = true
+			this.emit('autorun')
 		}
 	}
 
 	/** 销毁角色 */
 	public destroy(): void {
 		if (!this.destroyed) {
-			this.emit("destroy");
-			GlobalEntityManager.remove(this);
-			this.parent?.remove(this);
-			this.destroyed = true;
-			this.active = false;
-			this.target.reset();
-			this.animationManager.destroy();
+			this.emit('destroy')
+			GlobalEntityManager.remove(this)
+			this.parent?.remove(this)
+			this.destroyed = true
+			this.active = false
+			this.target.reset()
+			this.animationManager.destroy()
 		}
 	}
 
 	/** 异步销毁角色 */
 	public destroyAsync(): void {
 		Callback.push(() => {
-			this.destroy();
-		});
+			this.destroy()
+		})
 	}
 
 	/** 保存角色数据 */
@@ -1306,20 +1320,20 @@ class Actor {
 			equipments: this.equipment.saveData(),
 			cooldowns: this.cooldown.saveData(),
 			shortcuts: this.shortcut.saveData(),
-			inventory: this.inventory.saveData(this),
-		};
+			inventory: this.inventory.saveData(this)
+		}
 	}
 
 	/** 最新创建的角色 */
-	public static latest?: Actor;
+	public static latest?: Actor
 	/** 是否启用发送创建事件 */
-	public static enableCreateEvent: boolean = true;
+	public static enableCreateEvent: boolean = true
 	/** 通行区域映射表 */
 	private static passageMap: ActorPassageMap = {
 		land: 0,
 		water: 1,
-		unrestricted: -1,
-	};
+		unrestricted: -1
+	}
 
 	/** 定义临时属性映射表函数 */
 	private static defineTempAttributes(attributes: AttributeMap): void {}
@@ -1327,71 +1341,72 @@ class Actor {
 	/** 初始化角色相关的数据 */
 	public static initialize(): void {
 		// 创建角色临时属性的描述器
-		let hasAttributes = false;
-		const properties: PropertyDescriptorMap = {};
+		let hasAttributes = false
+		const properties: PropertyDescriptorMap = {}
 		for (const entry of Data.config.actor.tempAttributes) {
-			const attr = Attribute.get(entry.key);
-			if (!attr) continue;
-			let value = entry.value;
-			if (attr.type === "enum") {
-				const enumstr = Enum.get(value as string);
-				if (!enumstr) continue;
-				value = enumstr.value;
+			const attr = Attribute.get(entry.key)
+			if (!attr) continue
+			let value = entry.value
+			if (attr.type === 'enum') {
+				const enumstr = Enum.get(value as string)
+				if (!enumstr) continue
+				value = enumstr.value
 			}
-			hasAttributes = true;
+			hasAttributes = true
 			properties[attr.key] = {
 				configurable: true,
 				writable: true,
-				value: value,
-			};
+				value: value
+			}
 		}
 		// 创建定义角色临时属性方法
 		if (hasAttributes) {
-			Actor.defineTempAttributes = attributes => {
-				Object.defineProperties(attributes, properties);
-			};
+			Actor.defineTempAttributes = (attributes) => {
+				Object.defineProperties(attributes, properties)
+			}
 		}
 	}
 
 	/** 角色检查器集合 */
 	public static inspectors = new (class ActorInspectors {
 		/** 检查器 - 判断敌对角色 */
-		"enemy" = (a: Actor, b: Actor): boolean => {
+		'enemy' = (a: Actor, b: Actor): boolean => {
 			return (
-				Team.relationMap[a.teamIndex | (b.teamIndex << 8)] === 0 && a !== b
-			);
-		};
+				Team.relationMap[a.teamIndex | (b.teamIndex << 8)] === 0 &&
+				a !== b
+			)
+		}
 
 		/** 检查器 - 判断友好角色 */
-		"friend" = (a: Actor, b: Actor): boolean => {
-			return Team.relationMap[a.teamIndex | (b.teamIndex << 8)] === 1;
-		};
+		'friend' = (a: Actor, b: Actor): boolean => {
+			return Team.relationMap[a.teamIndex | (b.teamIndex << 8)] === 1
+		}
 
 		/** 检查器 - 判断小队角色 */
-		"team" = (a: Actor, b: Actor): boolean => {
-			return a.teamId === b.teamId;
-		};
+		'team' = (a: Actor, b: Actor): boolean => {
+			return a.teamId === b.teamId
+		}
 
 		/** 检查器 - 判断小队角色除自己以外 */
-		"team-except-self" = (a: Actor, b: Actor): boolean => {
-			return a !== b && a.teamId === b.teamId;
-		};
+		'team-except-self' = (a: Actor, b: Actor): boolean => {
+			return a !== b && a.teamId === b.teamId
+		}
 
 		/** 检查器 - 判断任意角色除自己以外 */
-		"any-except-self" = (a: Actor, b: Actor): boolean => {
-			return a !== b;
-		};
+		'any-except-self' = (a: Actor, b: Actor): boolean => {
+			return a !== b
+		}
 
 		/** 检查器 - 判断任意角色 */
-		"any" = (): boolean => true;
-	})();
+		'any' = (): boolean => true
+	})()
 }
 
 /** ******************************** 全局角色 ******************************** */
 
 class GlobalActor extends Actor {
 	/** 场景角色的本地事件标记键 */
-	private static localEventKey = Symbol("LOCAL_EVENT");
+	private static localEventKey = Symbol('LOCAL_EVENT')
 
 	/**
 	 * 转移到场景中的指定位置
@@ -1400,11 +1415,11 @@ class GlobalActor extends Actor {
 	 */
 	public transferToScene(x: number, y: number): void {
 		if (Scene.binding && !this.destroyed) {
-			this.parent?.remove(this);
-			this.target.reset();
-			this.setPosition(x, y);
-			this.updateSceneActorData();
-			Scene.actor.append(this);
+			this.parent?.remove(this)
+			this.target.reset()
+			this.setPosition(x, y)
+			this.updateSceneActorData()
+			Scene.actor.append(this)
 		}
 	}
 
@@ -1412,13 +1427,13 @@ class GlobalActor extends Actor {
 	public override destroy(): void {
 		if (ActorManager.get(this.data.id) === this) {
 			// 如果角色还存在于管理器中，释放资源
-			this.parent?.remove(this);
-			this.navigator.stopMoving();
-			this.target.reset();
-			this.animationManager.release();
-			this.setSceneActorData(null);
+			this.parent?.remove(this)
+			this.navigator.stopMoving()
+			this.target.reset()
+			this.animationManager.release()
+			this.setSceneActorData(null)
 		} else {
-			super.destroy();
+			super.destroy()
 		}
 	}
 
@@ -1428,40 +1443,40 @@ class GlobalActor extends Actor {
 	 * @returns 生成的事件处理器
 	 */
 	public override callEvent(type: string): EventHandler | undefined {
-		const event = super.callEvent(type);
-		if (event && this.presetId !== "") {
-			const type = event.type;
+		const event = super.callEvent(type)
+		if (event && this.presetId !== '') {
+			const type = event.type
 			if (
 				this.events.hasOwnProperty(type) &&
 				event.initial === this.events[type]
 			) {
-				(event as any)[GlobalActor.localEventKey] = true;
+				;(event as any)[GlobalActor.localEventKey] = true
 			}
 		}
-		return event;
+		return event
 	}
 
 	/** 更新场景角色数据 */
 	private updateSceneActorData() {
 		if (this.presetId && !Scene.presets[this.presetId]) {
-			this.setSceneActorData(null);
+			this.setSceneActorData(null)
 		}
 	}
 
 	/** 设置场景角色数据 */
 	public setSceneActorData(preset: SceneActorData | null): void {
-		const presetId = preset?.presetId ?? "";
+		const presetId = preset?.presetId ?? ''
 		if (this.presetId !== presetId) {
 			if (preset) {
-				this.name = preset.name;
-				this.presetId = preset.presetId;
-				this.selfVarId = preset.presetId;
-				this.setEventMap(preset.data.events);
+				this.name = preset.name
+				this.presetId = preset.presetId
+				this.selfVarId = preset.presetId
+				this.setEventMap(preset.data.events)
 			} else {
-				this.name = "";
-				this.presetId = "";
-				this.selfVarId = "";
-				this.setEventMap(this.data.events);
+				this.name = ''
+				this.presetId = ''
+				this.selfVarId = ''
+				this.setEventMap(this.data.events)
 			}
 		}
 	}
@@ -1473,13 +1488,13 @@ class GlobalActor extends Actor {
 				updater instanceof EventHandler &&
 				((GlobalActor.localEventKey in updater) as any)
 			) {
-				updater.finish();
+				updater.finish()
 			}
 		}
-		const oldAutorun = this.registeredEvents.autorun ?? this.events.autorun;
-		const newAutorun = this.registeredEvents.autorun ?? map.autorun;
-		if (oldAutorun !== newAutorun) this.started = false;
-		this.events = map;
+		const oldAutorun = this.registeredEvents.autorun ?? this.events.autorun
+		const newAutorun = this.registeredEvents.autorun ?? map.autorun
+		if (oldAutorun !== newAutorun) this.started = false
+		this.events = map
 	}
 }
 
@@ -1487,39 +1502,39 @@ class GlobalActor extends Actor {
 
 class ActorCollider {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** 碰撞器的形状 */
-	public shape: string;
+	public shape: string
 	/** 角色碰撞体积大小 */
-	public size: number;
+	public size: number
 	/** 角色碰撞体积半径 */
-	public half: number;
+	public half: number
 	/** 角色碰撞体重大小 */
-	public weight: number;
+	public weight: number
 	/** 角色是否不可推动 */
-	public immovable: boolean;
+	public immovable: boolean
 	/** 角色上一次的位置X */
-	public lastX: number;
+	public lastX: number
 	/** 角色上一次的位置Y */
-	public lastY: number;
+	public lastY: number
 	/** 角色是否已经移动 */
-	public moved: boolean;
+	public moved: boolean
 
 	/**
 	 * 角色碰撞器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		const { data } = actor;
-		this.actor = actor;
-		this.shape = data.shape;
-		this.size = data.size;
-		this.half = data.size / 2;
-		this.weight = data.weight;
-		this.immovable = data.immovable;
-		this.lastX = -1;
-		this.lastY = -1;
-		this.moved = false;
+		const { data } = actor
+		this.actor = actor
+		this.shape = data.shape
+		this.size = data.size
+		this.half = data.size / 2
+		this.weight = data.weight
+		this.immovable = data.immovable
+		this.lastX = -1
+		this.lastY = -1
+		this.moved = false
 	}
 
 	/**
@@ -1527,162 +1542,168 @@ class ActorCollider {
 	 * @param weight 碰撞器体重
 	 */
 	public setWeight(weight: number): void {
-		this.weight = weight;
+		this.weight = weight
 		// 更新角色的障碍区域
-		this.actor.parent?.scene.obstacle.update(this.actor);
+		this.actor.parent?.scene.obstacle.update(this.actor)
 	}
 
 	/** 更新上一次的位置 */
 	public updateLastPosition(): void {
-		this.lastX = this.actor.x;
-		this.lastY = this.actor.y;
+		this.lastX = this.actor.x
+		this.lastY = this.actor.y
 	}
 
-  /** 处理不可推动碰撞 */
-  public handleImmovableCollisions(): void {
-    const self = this.actor
-    if (self.collider.weight === 0)
-    {
-      return
-    }
-    const ox = self.x
-    const oy = self.y
-    const half = this.half
-    const expansion = Scene.binding!.maxColliderHalf
-    // 获取探测范围所在的角色区间列表
-    const cells = Scene.actor.partition.get(
-      ox - half - expansion,
-      oy - half - expansion,
-      ox + half + expansion,
-      oy + half + expansion,
-    )
-    const count = cells.count
-    // 查找所有角色区间
-    for (let i = 0; i < count; i++) {
-      const actors = cells[i]!
-      const length = actors.length
-      // 查找区间中的所有角色
-      for (let i = 0; i < length; i++) {
-        const actor = actors[i] as Actor
-        if (actor !== self && actor.collider.immovable) {
-          ActorCollider.handleCollisionBetweenTwoActors(self, actor, 1)
-        }
-      }
-    }
-  }
+	/** 处理不可推动碰撞 */
+	public handleImmovableCollisions(): void {
+		const self = this.actor
+		if (self.collider.weight === 0) return
+		if (!ActorCollider.hasImmovableActors) return
+		const ox = self.x
+		const oy = self.y
+		const half = this.half
+		const expansion = Scene.binding!.maxColliderHalf
+		// 获取探测范围所在的角色区间列表
+		const cells = Scene.actor.partition.get(
+			ox - half - expansion,
+			oy - half - expansion,
+			ox + half + expansion,
+			oy + half + expansion
+		)
+		const count = cells.count
+		// 查找所有角色区间
+		for (let i = 0; i < count; i++) {
+			const actors = cells[i]!
+			const length = actors.length
+			// 查找区间中的所有角色
+			for (let i = 0; i < length; i++) {
+				const actor = actors[i] as Actor
+				if (actor !== self && actor.collider.immovable) {
+					ActorCollider.handleCollisionBetweenTwoActors(
+						self,
+						actor,
+						1
+					)
+				}
+			}
+		}
+	}
 
+	/** 场景是否存在不可移动角色 */
+	public static hasImmovableActors: boolean = false
+	/** 场景是否存在可碰撞(权重不为0)角色 */
+	public static hasCollisionActors: boolean = false
 	/** 角色碰撞系统开关 */
-	public static actorCollisionEnabled: boolean = true;
+	public static actorCollisionEnabled: boolean = true
 	/** 场景碰撞系统开关 */
-	public static sceneCollisionEnabled: boolean = true;
+	public static sceneCollisionEnabled: boolean = true
 	/** 场景碰撞系统角色半径 */
-	public static sceneCollisionRadius: number = 0;
+	public static sceneCollisionRadius: number = 0
 	/** 角色碰撞距离 */
-	public static actorCollisionDist: number = 0;
+	public static actorCollisionDist: number = 0
 
 	/** 初始化 */
 	public static initialize(): void {
-		const { collision } = Data.config;
+		const { collision } = Data.config
 		// 设置角色碰撞系统开关
-		this.actorCollisionEnabled = collision.actor.enabled;
+		this.actorCollisionEnabled = collision.actor.enabled
 		// 设置场景碰撞系统开关
-		this.sceneCollisionEnabled = collision.scene.enabled;
+		this.sceneCollisionEnabled = collision.scene.enabled
 		// 设置场景碰撞角色体积的半径
-		this.sceneCollisionRadius = collision.scene.actorSize / 2;
+		this.sceneCollisionRadius = collision.scene.actorSize / 2
 		// 设置角色碰撞的最小距离
-		this.actorCollisionDist = collision.scene.actorSize;
+		this.actorCollisionDist = collision.scene.actorSize
 	}
 
 	/** 处理角色与场景之间的碰撞 */
 	public static handleSceneCollisions(): void {
-		if (ActorCollider.sceneCollisionEnabled === false) return;
-		const scene = Scene.binding!;
-		const radius = ActorCollider.sceneCollisionRadius;
-		const radiusSquared = radius ** 2;
-		const terrains = scene.terrain.compositeArray;
-		const width = scene.width;
-		const height = scene.height;
-		if (width * height === 0) return;
-		const right = width - 1;
-		const bottom = height - 1;
-		const actors = scene.actor.list;
-		const length = actors.length;
+		if (ActorCollider.sceneCollisionEnabled === false) return
+		const scene = Scene.binding!
+		const radius = ActorCollider.sceneCollisionRadius
+		const radiusSquared = radius ** 2
+		const terrains = scene.terrain.compositeArray
+		const width = scene.width
+		const height = scene.height
+		if (width * height === 0) return
+		const right = width - 1
+		const bottom = height - 1
+		const actors = scene.actor.list
+		const length = actors.length
 		// 遍历场景角色，计算碰撞
 		for (let i = 0; i < length; i++) {
-			const actor = actors[i];
-			const collider = actor.collider;
+			const actor = actors[i]
+			const collider = actor.collider
 			// 如果角色未移动，跳过
 			if (collider.moved === false) {
-				continue;
+				continue
 			}
 			// 如果角色在场景网格之外，跳过
-			if (actor.x < radius) actor.x = radius;
-			if (actor.y < radius) actor.y = radius;
-			if (actor.x > width - radius) actor.x = width - radius;
-			if (actor.y > height - radius) actor.y = height - radius;
-			const passage = actor.passage;
-			if (passage === -1) continue;
-			const sx = Math.clamp(actor.intX, 0, right);
-			const sy = Math.clamp(actor.intY, 0, bottom);
-			let dx = Math.floor(actor.x);
-			let dy = Math.floor(actor.y);
+			if (actor.x < radius) actor.x = radius
+			if (actor.y < radius) actor.y = radius
+			if (actor.x > width - radius) actor.x = width - radius
+			if (actor.y > height - radius) actor.y = height - radius
+			const passage = actor.passage
+			if (passage === -1) continue
+			const sx = Math.clamp(actor.intX, 0, right)
+			const sy = Math.clamp(actor.intY, 0, bottom)
+			let dx = Math.floor(actor.x)
+			let dy = Math.floor(actor.y)
 			// 如果角色锚点穿过了水平网格
 			if (sx !== dx) {
-				const unitY = (dy - sy) / (dx - sx);
-				const step = sx < dx ? 1 : -1;
-				let x = sx;
+				const unitY = (dy - sy) / (dx - sx)
+				const step = sx < dx ? 1 : -1
+				let x = sx
 				do {
-					x += step;
-					const y = Math.floor(sy + (x - sx) * unitY);
+					x += step
+					const y = Math.floor(sy + (x - sx) * unitY)
 					if (terrains[x + y * width] !== passage) {
-						actor.x = sx < dx ? x - radius : x + 1 + radius;
-						dx = Math.floor(actor.x);
-						break;
+						actor.x = sx < dx ? x - radius : x + 1 + radius
+						dx = Math.floor(actor.x)
+						break
 					}
-				} while (x !== dx);
+				} while (x !== dx)
 			}
 			// 如果角色锚点穿过了垂直网格
 			if (sy !== dy) {
-				const unitX = (dx - sx) / (dy - sy);
-				const step = sy < dy ? 1 : -1;
-				let y = sy;
+				const unitX = (dx - sx) / (dy - sy)
+				const step = sy < dy ? 1 : -1
+				let y = sy
 				do {
-					y += step;
-					const x = Math.floor(sx + (y - sy) * unitX);
+					y += step
+					const x = Math.floor(sx + (y - sy) * unitX)
 					if (terrains[x + y * width] !== passage) {
-						actor.y = sy < dy ? y - radius : y + 1 + radius;
-						dy = Math.floor(actor.y);
-						break;
+						actor.y = sy < dy ? y - radius : y + 1 + radius
+						dy = Math.floor(actor.y)
+						break
 					}
-				} while (y !== dy);
+				} while (y !== dy)
 			}
-			const ax = actor.x;
-			const ay = actor.y;
-			const al = Math.floor(ax - radius);
-			const at = Math.floor(ay - radius);
-			const ar = Math.ceil(ax + radius);
-			const ab = Math.ceil(ay + radius);
-			const x = Math.round(ax);
-			const y = Math.round(ay);
-			let ox = 0;
-			let oy = 0;
+			const ax = actor.x
+			const ay = actor.y
+			const al = Math.floor(ax - radius)
+			const at = Math.floor(ay - radius)
+			const ar = Math.ceil(ax + radius)
+			const ab = Math.ceil(ay + radius)
+			const x = Math.round(ax)
+			const y = Math.round(ay)
+			let ox = 0
+			let oy = 0
 			// 如果角色跨越了水平网格
 			if (al + 1 !== ar) {
 				if (x === dx) {
 					// 如果角色锚点在网格中靠左的位置
 					if (terrains[al + dy * width] !== passage) {
 						// 如果左边是不能通行的区域，让角色贴墙
-						actor.x = x + radius;
+						actor.x = x + radius
 					} else {
-						ox = -1;
+						ox = -1
 					}
 				} else {
 					// 如果角色锚点在网格中靠右的位置
 					if (terrains[x + dy * width] !== passage) {
 						// 如果右边是不能通行的区域，让角色贴墙
-						actor.x = x - radius;
+						actor.x = x - radius
 					} else {
-						ox = 1;
+						ox = 1
 					}
 				}
 			}
@@ -1692,17 +1713,17 @@ class ActorCollider {
 					// 如果角色锚点在网格中靠上的位置
 					if (terrains[dx + at * width] !== passage) {
 						// 如果上边是不能通行的区域，让角色贴墙
-						actor.y = y + radius;
+						actor.y = y + radius
 					} else {
-						oy = -1;
+						oy = -1
 					}
 				} else {
 					// 如果角色锚点在网格中靠下的位置
 					if (terrains[dx + y * width] !== passage) {
 						// 如果下边是不能通行的区域，让角色贴墙
-						actor.y = y - radius;
+						actor.y = y - radius
 					} else {
-						oy = 1;
+						oy = 1
 					}
 				}
 			}
@@ -1714,101 +1735,111 @@ class ActorCollider {
 				terrains[dx + ox + (dy + oy) * width] !== passage
 			) {
 				// 如果离角色最近的网格角不可通行，且距离小于碰撞半径，则判定为碰撞
-				const distSquared = (x - ax) ** 2 + (y - ay) ** 2;
-				if (distSquared >= radiusSquared) continue;
+				const distSquared = (x - ax) ** 2 + (y - ay) ** 2
+				if (distSquared >= radiusSquared) continue
 				// 计算最小移动向量，把角色推离到碰撞边缘
-				const hypot = radius - Math.sqrt(distSquared);
-				const angle = Math.atan2(ay - y, ax - x);
-				actor.x += hypot * Math.cos(angle);
-				actor.y += hypot * Math.sin(angle);
+				const dist = Math.sqrt(distSquared)
+				const hypot = radius - dist
+				const nx = (ax - x) / dist
+				const ny = (ay - y) / dist
+				actor.x += hypot * nx
+				actor.y += hypot * ny
 			}
 		}
 	}
 
 	/** 处理角色与角色之间的碰撞 */
 	public static handleActorCollisions(): void {
-		if (ActorCollider.actorCollisionEnabled === false) return;
-		const { partition } = Scene.actor;
-		const { width, height, cells } = partition;
-		const { length } = cells;
+		if (ActorCollider.actorCollisionEnabled === false) return
+		const { partition } = Scene.actor
+		const { width, height, cells } = partition
+		const { length } = cells
 
 		// 计算同一个区间的角色碰撞
 		for (let i = 0; i < length; i++) {
-			const cell = cells[i];
-			const length = cell.length;
+			const cell = cells[i]
+			const length = cell.length
 			for (let si = 0; si < length; si++) {
-				const sActor = cell[si];
-				if (sActor.collider.weight === 0) continue;
+				const sActor = cell[si]
+				if (sActor.collider.weight === 0) continue
 				for (let di = si + 1; di < length; di++) {
-					ActorCollider.handleCollisionBetweenTwoActors(sActor, cell[di]);
+					const dActor = cell[di]
+					if (dActor.collider.weight === 0) continue
+					ActorCollider.handleCollisionBetweenTwoActors(
+						sActor,
+						dActor
+					)
 				}
 			}
 		}
 
 		// 计算左右区间的角色碰撞
-		const ex = width - 1;
+		const ex = width - 1
 		for (let y = 0; y < height; y++) {
 			for (let x = 0; x < ex; x++) {
-				const i = x + y * width;
-				ActorCollider.handleCollisionsBetweenTwoCells(cells[i], cells[i + 1]);
+				const i = x + y * width
+				ActorCollider.handleCollisionsBetweenTwoCells(
+					cells[i],
+					cells[i + 1]
+				)
 			}
 		}
 
 		// 计算上下区间的角色碰撞
-		const ey = height - 1;
+		const ey = height - 1
 		for (let x = 0; x < width; x++) {
 			for (let y = 0; y < ey; y++) {
-				const i = x + y * width;
+				const i = x + y * width
 				ActorCollider.handleCollisionsBetweenTwoCells(
 					cells[i],
 					cells[i + width]
-				);
+				)
 			}
 		}
 
 		// 计算左上到右下区间的角色碰撞
-		const lowerRight = width + 1;
+		const lowerRight = width + 1
 		for (let i = 0; i < ex; i++) {
-			const end = Math.min(ex - i, ey);
+			const end = Math.min(ex - i, ey)
 			for (let x = i, y = 0; y < end; x++, y++) {
-				const i = x + y * width;
+				const i = x + y * width
 				ActorCollider.handleCollisionsBetweenTwoCells(
 					cells[i],
 					cells[i + lowerRight]
-				);
+				)
 			}
 		}
 		for (let i = 1; i < ey; i++) {
-			const end = Math.min(ex, ey - i);
+			const end = Math.min(ex, ey - i)
 			for (let x = 0, y = i; x < end; x++, y++) {
-				const i = x + y * width;
+				const i = x + y * width
 				ActorCollider.handleCollisionsBetweenTwoCells(
 					cells[i],
 					cells[i + lowerRight]
-				);
+				)
 			}
 		}
 
 		// 计算右上到左下区间的角色碰撞
-		const lowerLeft = width - 1;
+		const lowerLeft = width - 1
 		for (let i = ex; i > 0; i--) {
-			const end = Math.min(i, ey);
+			const end = Math.min(i, ey)
 			for (let x = i, y = 0; y < end; x--, y++) {
-				const i = x + y * width;
+				const i = x + y * width
 				ActorCollider.handleCollisionsBetweenTwoCells(
 					cells[i],
 					cells[i + lowerLeft]
-				);
+				)
 			}
 		}
 		for (let i = 1; i < ey; i++) {
-			const end = Math.min(ex + i, ey);
+			const end = Math.min(ex + i, ey)
 			for (let x = ex, y = i; y < end; x--, y++) {
-				const i = x + y * width;
+				const i = x + y * width
 				ActorCollider.handleCollisionsBetweenTwoCells(
 					cells[i],
 					cells[i + lowerLeft]
-				);
+				)
 			}
 		}
 	}
@@ -1818,234 +1849,174 @@ class ActorCollider {
 		sActor: Actor,
 		dActor: Actor,
 		ratio?: number
-	) => void = (IIFE => {
-		// 添加容差值避免陷入无限碰撞
-		const TOLERANCE = 0.01;
+	) => void = ((IIFE) => {
+		const TOLERANCE = 0.01
 
-		// 触发角色碰撞事件
+		const calcRatio = (
+			sCollider: ActorCollider,
+			dCollider: ActorCollider,
+			ratio?: number
+		): number => {
+			if (ratio !== undefined) return ratio
+			if (sCollider.immovable) return 0
+			if (dCollider.immovable) return 1
+			const sWeight = sCollider.weight
+			const dWeight = dCollider.weight
+			return Math.clamp((dWeight * 3) / (sWeight + dWeight) - 1, 0, 1)
+		}
+
+		const dispatchCollide = (
+			sActor: Actor,
+			dActor: Actor,
+			sCollider: ActorCollider,
+			dCollider: ActorCollider,
+			ratio: number
+		): void => {
+			if (ratio !== 0) sCollider.moved = true
+			if (ratio !== 1) dCollider.moved = true
+			collide(sActor, dActor)
+			collide(dActor, sActor)
+		}
+
 		const collide = (sActor: Actor, dActor: Actor): void => {
-			const commands = sActor.events.collision;
+			const commands = sActor.events.collision
 			if (commands) {
-				const event = new EventHandler(commands);
-				event.parent = sActor;
-				event.triggerActor = sActor;
-				event.triggerObject = sActor;
-				event.targetActor = dActor;
-				event.selfVarId = sActor.selfVarId;
-				EventHandler.call(event, sActor.updaters);
+				const event = new EventHandler(commands)
+				event.parent = sActor
+				event.triggerActor = sActor
+				event.triggerObject = sActor
+				event.targetActor = dActor
+				event.selfVarId = sActor.selfVarId
+				EventHandler.call(event, sActor.updaters)
 			}
 			sActor.script
-				.getEvents("collision")
-				?.call(new ScriptCollisionEvent(sActor, dActor));
-		};
+				.getEvents('collision')
+				?.call(new ScriptCollisionEvent(sActor, dActor))
+		}
 
-    // 碰撞 - 正方形和正方形
-    const collideSquareAndSquare = (sCollider: ActorCollider, dCollider: ActorCollider, ratio?: number): void => {
-      const sActor = sCollider.actor
-      const dActor = dCollider.actor
-      const distMin = sCollider.half + dCollider.half
-      const distX = Math.abs(sActor.x - dActor.x)
-      const distY = Math.abs(sActor.y - dActor.y)
-      // 如果角色之间的水平和垂直距离小于最小距离，则发生碰撞
-      if (distX < distMin && distY < distMin) {
-        if (ratio === undefined) {
-          if (sCollider.immovable) {
-            ratio = 0
-          } else if (dCollider.immovable) {
-            ratio = 1
-          } else {
-            // 体重比值0.5~2映射为0~1的推力
-            const sWeight = sCollider.weight
-            const dWeight = dCollider.weight
-            ratio = Math.clamp(dWeight * 3 / (sWeight + dWeight) - 1, 0, 1)
-          }
-        }
-        if (distX > distY) {
-          // 如果水平距离大于垂直距离，把两个角色从水平方向上分开
-          const offset = distMin - distX + TOLERANCE
-          const sOffset = offset * ratio
-          const dOffset = offset - sOffset
-          // 根据角色左右位置情况进行计算
-          if (sActor.x < dActor.x) {
-            sActor.x -= sOffset
-            dActor.x += dOffset
-          } else {
-            sActor.x += sOffset
-            dActor.x -= dOffset
-          }
-        } else {
-          // 如果垂直距离大于水平距离，把两个角色从垂直方向上分开
-          const offset = distMin - distY + TOLERANCE
-          const sOffset = offset * ratio
-          const dOffset = offset - sOffset
-          // 根据角色上下位置情况进行计算
-          if (sActor.y < dActor.y) {
-            sActor.y -= sOffset
-            dActor.y += dOffset
-          } else {
-            sActor.y += sOffset
-            dActor.y -= dOffset
-          }
-        }
-        // 设置角色为已移动状态
-        if (ratio !== 0) {
-          sCollider.moved = true
-        }
-        if (ratio !== 1) {
-          dCollider.moved = true
-        }
-        // 发送角色碰撞事件
-        collide(sActor, dActor)
-        collide(dActor, sActor)
-      }
-    }
+		const collideSquareAndSquare = (
+			sCollider: ActorCollider,
+			dCollider: ActorCollider,
+			ratio?: number
+		): void => {
+			ratio = calcRatio(sCollider, dCollider, ratio)
+			const sActor = sCollider.actor
+			const dActor = dCollider.actor
+			const distMin = sCollider.half + dCollider.half
+			const distX = Math.abs(sActor.x - dActor.x)
+			const distY = Math.abs(sActor.y - dActor.y)
+			if (distX < distMin && distY < distMin) {
+				if (distX > distY) {
+					const offset = distMin - distX + TOLERANCE
+					const sOffset = offset * ratio
+					const dOffset = offset - sOffset
+					if (sActor.x < dActor.x) {
+						sActor.x -= sOffset
+						dActor.x += dOffset
+					} else {
+						sActor.x += sOffset
+						dActor.x -= dOffset
+					}
+				} else {
+					const offset = distMin - distY + TOLERANCE
+					const sOffset = offset * ratio
+					const dOffset = offset - sOffset
+					if (sActor.y < dActor.y) {
+						sActor.y -= sOffset
+						dActor.y += dOffset
+					} else {
+						sActor.y += sOffset
+						dActor.y -= dOffset
+					}
+				}
+				dispatchCollide(sActor, dActor, sCollider, dCollider, ratio)
+			}
+		}
 
-    // 碰撞 - 圆形和圆形
-    const collideCircleAndCircle = (sCollider: ActorCollider, dCollider: ActorCollider, ratio?: number): void => {
-      const sActor = sCollider.actor
-      const dActor = dCollider.actor
-      const distMin = sCollider.half + dCollider.half
-      let distX = dActor.x - sActor.x
-      let distY = dActor.y - sActor.y
-      const distSquared = distX ** 2 + distY ** 2
-      // 如果角色之间的水平和垂直距离小于最小距离，则发生碰撞
-      if (distSquared < distMin ** 2) {
-        let dist = Math.sqrt(distSquared)
-        // 如果重叠，以随机角度分开
-        if (dist === 0) {
-          dist = 0.001
-          const angle = Math.PI * 2 * Math.random()
-          distX = dist * Math.cos(angle)
-          distY = dist * Math.sin(angle)
-        }
-        const offset = distMin - dist
-        const offsetX = offset / dist * distX
-        const offsetY = offset / dist * distY
-        if (ratio === undefined) {
-          if (sCollider.immovable) {
-            ratio = 0
-          } else if (dCollider.immovable) {
-            ratio = 1
-          } else {
-            // 体重比值0.5~2映射为0~1的推力
-            const sWeight = sCollider.weight
-            const dWeight = dCollider.weight
-            ratio = Math.clamp(dWeight * 3 / (sWeight + dWeight) - 1, 0, 1)
-          }
-        }
-        if (offsetX !== 0) {
-          // 如果水平距离大于垂直距离，把两个角色从水平方向上分开
-          const tOffsetX = offsetX + (offsetX > 0 ? TOLERANCE : -TOLERANCE)
-          const sOffset = tOffsetX * ratio
-          const dOffset = tOffsetX - sOffset
-          // 根据角色左右位置情况进行计算
-          sActor.x -= sOffset
-          dActor.x += dOffset
-        }
-        if (offsetY !== 0) {
-          // 如果垂直距离大于水平距离，把两个角色从垂直方向上分开
-          const tOffsetY = offsetY + (offsetY > 0 ? TOLERANCE : -TOLERANCE)
-          const sOffset = tOffsetY * ratio
-          const dOffset = tOffsetY - sOffset
-          // 根据角色上下位置情况进行计算
-          sActor.y -= sOffset
-          dActor.y += dOffset
-        }
-        // 设置角色为已移动状态
-        if (ratio !== 0) {
-          sCollider.moved = true
-        }
-        if (ratio !== 1) {
-          dCollider.moved = true
-        }
-        // 发送角色碰撞事件
-        collide(sActor, dActor)
-        collide(dActor, sActor)
-      }
-    }
+		const collideCircleAndCircle = (
+			sCollider: ActorCollider,
+			dCollider: ActorCollider,
+			ratio?: number
+		): void => {
+			ratio = calcRatio(sCollider, dCollider, ratio)
+			const sActor = sCollider.actor
+			const dActor = dCollider.actor
+			const distMin = sCollider.half + dCollider.half
+			let dx = dActor.x - sActor.x
+			let dy = dActor.y - sActor.y
+			const distSquared = dx ** 2 + dy ** 2
+			if (distSquared >= distMin ** 2) return
+			let dist = Math.sqrt(distSquared)
+			if (dist === 0) {
+				dist = 0.001
+				const angle = Math.PI * 2 * Math.random()
+				dx = dist * Math.cos(angle)
+				dy = dist * Math.sin(angle)
+			}
+			const overlap = distMin - dist
+			const nx = dx / dist
+			const ny = dy / dist
+			const push = overlap + TOLERANCE
+			const sp = push * ratio
+			const dp = push - sp
+			sActor.x -= nx * sp
+			sActor.y -= ny * sp
+			dActor.x += nx * dp
+			dActor.y += ny * dp
+			dispatchCollide(sActor, dActor, sCollider, dCollider, ratio)
+		}
 
-    // 碰撞 - 正方形和圆形
-    const collideSquareAndCircle = (sCollider: ActorCollider, dCollider: ActorCollider, ratio?: number): void => {
-      const sActor = sCollider.actor
-      const dActor = dCollider.actor
-      const distMin = dCollider.half
-      const sx = sActor.x
-      const sy = sActor.y
-      const dx = dActor.x
-      const dy = dActor.y
-      const sl = sx - sCollider.half
-      const sr = sx + sCollider.half
-      const st = sy - sCollider.half
-      const sb = sy + sCollider.half
-      const distX = dx - Math.clamp(dx, sl, sr)
-      const distY = dy - Math.clamp(dy, st, sb)
-      const distSquared = distX ** 2 + distY ** 2
-      // 如果角色之间的水平和垂直距离小于最小距离，则发生碰撞
-      if (distSquared < distMin ** 2) {
-        const dist = Math.sqrt(distSquared)
-        const offset = distMin - dist
-        let offsetX
-        let offsetY
-        if (distX !== 0 && distY !== 0) {
-          offsetX = offset / distMin * distX
-          offsetY = offset / distMin * distY
-        } else {
-          const rx = dx - sx
-          let ry = dy - sy
-          // 如果重叠，上下分开
-          if (rx === 0 && ry === 0) {
-            ry = 0.001
-          }
-          if (Math.abs(rx) > Math.abs(ry)) {
-            offsetX = offset * Math.sign(rx)
-            offsetY = 0
-          } else {
-            offsetX = 0
-            offsetY = offset * Math.sign(ry)
-          }
-        }
-        if (ratio === undefined) {
-          if (sCollider.immovable) {
-            ratio = 0
-          } else if (dCollider.immovable) {
-            ratio = 1
-          } else {
-            // 体重比值0.5~2映射为0~1的推力
-            const sWeight = sCollider.weight
-            const dWeight = dCollider.weight
-            ratio = Math.clamp(dWeight * 3 / (sWeight + dWeight) - 1, 0, 1)
-          }
-        }
-        if (offsetX !== 0) {
-          // 如果水平距离大于垂直距离，把两个角色从水平方向上分开
-          const tOffsetX = offsetX + (offsetX > 0 ? TOLERANCE : -TOLERANCE)
-          const sOffset = tOffsetX * ratio
-          const dOffset = tOffsetX - sOffset
-          // 根据角色左右位置情况进行计算
-          sActor.x -= sOffset
-          dActor.x += dOffset
-        }
-        if (offsetY !== 0) {
-          // 如果垂直距离大于水平距离，把两个角色从垂直方向上分开
-          const tOffsetY = offsetY + (offsetY > 0 ? TOLERANCE : -TOLERANCE)
-          const sOffset = tOffsetY * ratio
-          const dOffset = tOffsetY - sOffset
-          // 根据角色上下位置情况进行计算
-          sActor.y -= sOffset
-          dActor.y += dOffset
-        }
-        // 设置角色为已移动状态
-        if (ratio !== 0) {
-          sCollider.moved = true
-        }
-        if (ratio !== 1) {
-          dCollider.moved = true
-        }
-        // 发送角色碰撞事件
-        collide(sActor, dActor)
-        collide(dActor, sActor)
-      }
-    }
+		const collideSquareAndCircle = (
+			sCollider: ActorCollider,
+			dCollider: ActorCollider,
+			ratio?: number
+		): void => {
+			ratio = calcRatio(sCollider, dCollider, ratio)
+			const sActor = sCollider.actor
+			const dActor = dCollider.actor
+			const distMin = dCollider.half
+			const sx = sActor.x
+			const sy = sActor.y
+			const dx = dActor.x
+			const dy = dActor.y
+			const sl = sx - sCollider.half
+			const sr = sx + sCollider.half
+			const st = sy - sCollider.half
+			const sb = sy + sCollider.half
+			let distX = dx - Math.clamp(dx, sl, sr)
+			let distY = dy - Math.clamp(dy, st, sb)
+			const distSquared = distX ** 2 + distY ** 2
+			if (distSquared >= distMin ** 2) return
+			const dist = Math.sqrt(distSquared)
+			const overlap = distMin - dist
+			let pushX: number
+			let pushY: number
+			if (dist !== 0) {
+				const nx = distX / dist
+				const ny = distY / dist
+				const push = overlap + TOLERANCE
+				pushX = nx * push
+				pushY = ny * push
+			} else {
+				const rx = dx - sx
+				let ry = dy - sy
+				if (rx === 0 && ry === 0) ry = 0.001
+				if (Math.abs(rx) > Math.abs(ry)) {
+					pushX = (overlap + TOLERANCE) * Math.sign(rx)
+					pushY = 0
+				} else {
+					pushX = 0
+					pushY = (overlap + TOLERANCE) * Math.sign(ry)
+				}
+			}
+			const spX = pushX * ratio
+			const spY = pushY * ratio
+			sActor.x -= spX
+			sActor.y -= spY
+			dActor.x += pushX - spX
+			dActor.y += pushY - spY
+			dispatchCollide(sActor, dActor, sCollider, dCollider, ratio)
+		}
 
 		/**
 		 * 处理两个角色的碰撞
@@ -2054,32 +2025,46 @@ class ActorCollider {
 		 * @param ratio 互相推移距离比例[0, 1]
 		 */
 		return (sActor: Actor, dActor: Actor, ratio?: number): void => {
-			const dCollider = dActor.collider;
-			// 如果角色体重为0，不参与碰撞
-			if (dCollider.weight === 0) return;
-			// 如果角色队伍之间不可碰撞
-			const code = sActor.teamIndex | (dActor.teamIndex << 8);
-			if (Team.collisionMap[code] === 0) return;
-			const sCollider = sActor.collider;
+			const dCollider = dActor.collider
+			if (dCollider.weight === 0) return
+			const code = sActor.teamIndex | (dActor.teamIndex << 8)
+			if (Team.collisionMap[code] === 0) return
+			const sCollider = sActor.collider
 			switch (sCollider.shape) {
-				case "circle":
+				case 'circle':
 					switch (dCollider.shape) {
-						case "circle":
-							return collideCircleAndCircle(sCollider, dCollider, ratio);
-						case "square":
-							if (ratio !== undefined) ratio = 1 - ratio;
-							return collideSquareAndCircle(dCollider, sCollider, ratio);
+						case 'circle':
+							return collideCircleAndCircle(
+								sCollider,
+								dCollider,
+								ratio
+							)
+						case 'square':
+							if (ratio !== undefined) ratio = 1 - ratio
+							return collideSquareAndCircle(
+								dCollider,
+								sCollider,
+								ratio
+							)
 					}
-				case "square":
+				case 'square':
 					switch (dCollider.shape) {
-						case "circle":
-							return collideSquareAndCircle(sCollider, dCollider, ratio);
-						case "square":
-							return collideSquareAndSquare(sCollider, dCollider, ratio);
+						case 'circle':
+							return collideSquareAndCircle(
+								sCollider,
+								dCollider,
+								ratio
+							)
+						case 'square':
+							return collideSquareAndSquare(
+								sCollider,
+								dCollider,
+								ratio
+							)
 					}
 			}
-		};
-	})();
+		}
+	})()
 
 	/**
 	 * 处理两个分区之间的角色碰撞
@@ -2090,102 +2075,109 @@ class ActorCollider {
 		sCell: Array<Actor>,
 		dCell: Array<Actor>
 	): void => {
-		const sLength = sCell.length;
-		const dLength = dCell.length;
+		const sLength = sCell.length
+		const dLength = dCell.length
+		if (sLength === 0 || dLength === 0) return
 		for (let si = 0; si < sLength; si++) {
-			const sActor = sCell[si];
-			// 如果角色的体重为0，跳过
-			if (sActor.collider.weight === 0) continue;
+			const sActor = sCell[si]
+			if (sActor.collider.weight === 0) continue
 			for (let di = 0; di < dLength; di++) {
-				ActorCollider.handleCollisionBetweenTwoActors(sActor, dCell[di]);
+				const dActor = dCell[di]
+				if (dActor.collider.weight === 0) continue
+				ActorCollider.handleCollisionBetweenTwoActors(sActor, dActor)
 			}
 		}
-	};
+	}
 }
 
 /** ******************************** 角色导航器 ******************************** */
 
 class ActorNavigator {
 	/** 角色导航模式 */
-	public mode: string;
+	public mode: string
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** 跟随的目标角色 */
-	public target: Actor | null;
+	public target: Actor | null
 	/** 角色移动角度 */
-	public movementAngle: number;
+	public movementAngle: number
 	/** 角色移动速度 */
-	public movementSpeed: number;
+	public movementSpeed: number
 	/** 角色移动速度系数 */
-	public movementFactor: number;
+	public movementFactor: number
 	/** 角色移动速度系数(临时) */
-	public movementFactorTemp: number;
+	public movementFactorTemp: number
 	/** 角色移动路径 */
-	public movementPath: MovementPath | null;
+	public movementPath: MovementPath | null
 	/** 角色移动速度X */
-	public velocityX: number;
+	public velocityX: number
 	/** 角色移动速度Y */
-	public velocityY: number;
+	public velocityY: number
 	/** 角色移动结束后回调函数 */
-	private callbacks: Array<Function> | null;
+	private callbacks: Array<Function> | null
 	/** 角色移动超时时间(毫秒) */
-	private timeout: number;
+	private timeout: number
 	/** 角色跟随目标时的最小距离 */
-	private minDist: number;
+	private minDist: number
 	/** 角色跟随目标时的最大距离 */
-	private maxDist: number;
+	private maxDist: number
 	/** 角色跟随目标时的最大垂直距离 */
-	private vertDist: number;
+	private vertDist: number
 	/** 角色跟随目标时的最小缓冲距离 */
-	private minDistInner: number;
+	private minDistInner: number
 	/** 角色跟随目标时的最大缓冲距离 */
-	private maxDistInner: number;
+	private maxDistInner: number
 	/** 角色跟随目标时的最大垂直缓冲距离 */
-	private vertDistInner: number;
+	private vertDistInner: number
 	/** 计算路径的时候是否绕过角色 */
-	private bypass: boolean;
+	private bypass: boolean
+	/** 上次寻路终点的图块坐标，用于跳过终点未变的重复寻路 */
+	private lastPathDX: number
+	private lastPathDY: number
 	/** 角色圆形跟随模式的偏移值(-0.8~+0.8) */
-	private followingOffset: number;
+	private followingOffset: number
 	/** 角色在跟随目标时是否进行寻路 */
-	private followingNavigate: boolean;
+	private followingNavigate: boolean
 	/** 角色跟随目标一次之后停止移动 */
-	private followOnce: boolean;
+	private followOnce: boolean
 	/**
 	 * 角色跟随目标时切换动作的缓冲时间
 	 * - case 0: 需要等待一段时间后停止移动动画
 	 * - case >0: 正在等待并准备切换到闲置动画
 	 * - case -1: 已经执行过了，无需跳转
 	 */
-	private animBufferTime: number;
+	private animBufferTime: number
 
 	/**
 	 * 角色导航器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.mode = "stop";
-		this.actor = actor;
-		this.target = null;
-		this.movementAngle = 0;
-		this.movementSpeed = actor.data.speed;
-		this.velocityX = 0;
-		this.velocityY = 0;
-		this.movementFactor = 1;
-		this.movementFactorTemp = 1;
-		this.movementPath = null;
-		this.callbacks = null;
-		this.timeout = 0;
-		this.minDist = 0;
-		this.maxDist = 0;
-		this.vertDist = 0;
-		this.minDistInner = 0;
-		this.maxDistInner = 0;
-		this.vertDistInner = 0;
-		this.bypass = false;
-		this.followingOffset = 0;
-		this.followingNavigate = false;
-		this.followOnce = false;
-		this.animBufferTime = 0;
+		this.mode = 'stop'
+		this.actor = actor
+		this.target = null
+		this.movementAngle = 0
+		this.movementSpeed = actor.data.speed
+		this.velocityX = 0
+		this.velocityY = 0
+		this.movementFactor = 1
+		this.movementFactorTemp = 1
+		this.movementPath = null
+		this.callbacks = null
+		this.timeout = 0
+		this.minDist = 0
+		this.maxDist = 0
+		this.vertDist = 0
+		this.minDistInner = 0
+		this.maxDistInner = 0
+		this.vertDistInner = 0
+		this.bypass = false
+		this.lastPathDX = NaN
+		this.lastPathDY = NaN
+		this.followingOffset = 0
+		this.followingNavigate = false
+		this.followOnce = false
+		this.animBufferTime = 0
 	}
 
 	/** 导航器的更新函数(切换状态机被替换) */
@@ -2199,8 +2191,8 @@ class ActorNavigator {
 	 * @param speed 移动速度(图块/秒)
 	 */
 	public setMovementSpeed(speed: number): void {
-		this.movementSpeed = speed;
-		this.calculateVelocity(this.movementAngle);
+		this.movementSpeed = speed
+		this.calculateVelocity(this.movementAngle)
 	}
 
 	/**
@@ -2208,8 +2200,8 @@ class ActorNavigator {
 	 * @param factor 移动速度系数
 	 */
 	public setMovementFactor(factor: number): void {
-		this.movementFactor = factor;
-		this.calculateVelocity(this.movementAngle);
+		this.movementFactor = factor
+		this.calculateVelocity(this.movementAngle)
 	}
 
 	/**
@@ -2217,8 +2209,8 @@ class ActorNavigator {
 	 * @param factor 移动速度系数(不保存)
 	 */
 	public setMovementFactorTemp(factor: number): void {
-		this.movementFactorTemp = factor;
-		this.calculateVelocity(this.movementAngle);
+		this.movementFactorTemp = factor
+		this.calculateVelocity(this.movementAngle)
 	}
 
 	/**
@@ -2227,28 +2219,28 @@ class ActorNavigator {
 	 */
 	private calculateVelocity(angle: number): void {
 		const speed =
-			this.movementSpeed * this.movementFactor * this.movementFactorTemp;
-		this.movementAngle = angle;
-		this.velocityX = (speed * Math.cos(angle)) / 1000;
-		this.velocityY = (speed * Math.sin(angle)) / 1000;
+			this.movementSpeed * this.movementFactor * this.movementFactorTemp
+		this.movementAngle = angle
+		this.velocityX = (speed * Math.cos(angle)) / 1000
+		this.velocityY = (speed * Math.sin(angle)) / 1000
 	}
 
 	/** 角色停止移动 */
 	public stopMoving(): void {
-		if (this.mode !== "stop") {
-			this.mode = "stop";
-			this.target = null;
-			this.movementPath = null;
-			this.animBufferTime = 0;
-			this.actor.animationController.startIdle();
+		if (this.mode !== 'stop') {
+			this.mode = 'stop'
+			this.target = null
+			this.movementPath = null
+			this.animBufferTime = 0
+			this.actor.animationController.startIdle()
 			// 设置更新函数为：空函数
-			this.update = Function.empty;
+			this.update = Function.empty
 			// 执行结束回调(如果有)
 			if (this.callbacks !== null) {
 				for (const callback of this.callbacks) {
-					callback();
+					callback()
 				}
-				this.callbacks = null;
+				this.callbacks = null
 			}
 		}
 	}
@@ -2258,13 +2250,13 @@ class ActorNavigator {
 	 * @param callback 在角色停止当前的移动行为后触发
 	 */
 	public onFinish(callback: CallbackFunction): void {
-		if (this.mode === "stop") {
-			return callback();
+		if (this.mode === 'stop') {
+			return callback()
 		}
 		if (this.callbacks !== null) {
-			this.callbacks.push(callback);
+			this.callbacks.push(callback)
 		} else {
-			this.callbacks = [callback];
+			this.callbacks = [callback]
 		}
 	}
 
@@ -2273,14 +2265,14 @@ class ActorNavigator {
 	 * @param angle 移动角度(弧度)
 	 */
 	public moveTowardAngle(angle: number): void {
-		if (this.mode !== "keep") {
-			this.stopMoving();
-			this.mode = "keep";
-			this.actor.animationController.startMoving();
+		if (this.mode !== 'keep') {
+			this.stopMoving()
+			this.mode = 'keep'
+			this.actor.animationController.startMoving()
 		}
-		this.calculateVelocity(angle);
+		this.calculateVelocity(angle)
 		// 设置更新函数为：向前移动
-		this.update = this.updateForwardMovement;
+		this.update = this.updateForwardMovement
 	}
 
 	/**
@@ -2289,7 +2281,7 @@ class ActorNavigator {
 	 * @param y 场景图块Y
 	 */
 	public moveTo(x: number, y: number): void {
-		this.route(PathFinder.createUnitPath(x, y));
+		this.route(PathFinder.createUnitPath(x, y))
 	}
 
 	/**
@@ -2299,7 +2291,7 @@ class ActorNavigator {
 	 * @param bypass 是否绕过角色
 	 */
 	public navigateTo(x: number, y: number, bypass: boolean = false): void {
-		this.bypass = bypass;
+		this.bypass = bypass
 		this.route(
 			PathFinder.createPath(
 				this.actor.x,
@@ -2310,7 +2302,7 @@ class ActorNavigator {
 				bypass
 			),
 			true
-		);
+		)
 	}
 
 	/**
@@ -2319,15 +2311,15 @@ class ActorNavigator {
 	 * @param navigate 是否开启导航
 	 */
 	private route(path: MovementPath, navigate: boolean = false): void {
-		if (this.mode !== "navigate") {
-			this.stopMoving();
-			this.mode = "navigate";
-			this.actor.animationController.startMoving();
+		if (this.mode !== 'navigate') {
+			this.stopMoving()
+			this.mode = 'navigate'
+			this.actor.animationController.startMoving()
 		}
-		this.timeout = navigate ? 500 : -1;
-		this.movementPath = path;
+		this.timeout = navigate ? 500 : -1
+		this.movementPath = path
 		// 设置更新函数为：路径移动
-		this.update = this.updatePathMovement;
+		this.update = this.updatePathMovement
 	}
 
 	/**
@@ -2351,29 +2343,29 @@ class ActorNavigator {
 		bypass: boolean = false,
 		once: boolean = false
 	): void {
-		if (this.mode !== "follow") {
-			this.stopMoving();
-			this.mode = "follow";
+		if (this.mode !== 'follow') {
+			this.stopMoving()
+			this.mode = 'follow'
 		} else {
-			this.movementPath = null;
-			this.animBufferTime = 0;
+			this.movementPath = null
+			this.animBufferTime = 0
 		}
 		// 调整缓冲距离到合理范围
-		const width = Math.max(maxDist - minDist - 0.1, 0);
-		const buffer = Math.clamp(bufferDist, 0, width / 2);
-		this.target = target;
+		const width = Math.max(maxDist - minDist - 0.1, 0)
+		const buffer = Math.clamp(bufferDist, 0, width / 2)
+		this.target = target
 		// 设置最小和最大距离(至少是最小距离 + 0.1)
-		this.minDist = minDist;
-		this.maxDist = Math.max(maxDist, minDist + 0.1);
-		this.minDistInner = this.minDist + buffer;
-		this.maxDistInner = this.maxDist - buffer;
-		this.followingOffset = offset;
-		this.followingNavigate = navigate;
-		this.bypass = bypass;
-		this.followOnce = once;
-		this.followTarget = this._circleFollowTarget;
+		this.minDist = minDist
+		this.maxDist = Math.max(maxDist, minDist + 0.1)
+		this.minDistInner = this.minDist + buffer
+		this.maxDistInner = this.maxDist - buffer
+		this.followingOffset = offset
+		this.followingNavigate = navigate
+		this.bypass = bypass
+		this.followOnce = once
+		this.followTarget = this._circleFollowTarget
 		// 设置更新函数为：跟随角色
-		this.update = this.followTarget;
+		this.update = this.followTarget
 	}
 
 	/**
@@ -2397,30 +2389,30 @@ class ActorNavigator {
 		bypass: boolean = false,
 		once: boolean = false
 	): void {
-		if (this.mode !== "follow") {
-			this.stopMoving();
-			this.mode = "follow";
+		if (this.mode !== 'follow') {
+			this.stopMoving()
+			this.mode = 'follow'
 		} else {
-			this.movementPath = null;
+			this.movementPath = null
 		}
 		// 调整缓冲距离到合理范围
-		const width = Math.max(maxDist - minDist - 0.1, 0);
-		const buffer = Math.clamp(bufferDist, 0, width / 2);
-		const buffer2 = Math.clamp(bufferDist, 0, vertDist);
-		this.target = target;
+		const width = Math.max(maxDist - minDist - 0.1, 0)
+		const buffer = Math.clamp(bufferDist, 0, width / 2)
+		const buffer2 = Math.clamp(bufferDist, 0, vertDist)
+		this.target = target
 		// 设置最小和最大距离(至少是最小距离 + 0.1)
-		this.minDist = minDist;
-		this.maxDist = Math.max(maxDist, minDist + 0.1);
-		this.vertDist = vertDist;
-		this.minDistInner = this.minDist + buffer;
-		this.maxDistInner = this.maxDist - buffer;
-		this.vertDistInner = this.vertDist - buffer2;
-		this.followingNavigate = navigate;
-		this.bypass = bypass;
-		this.followOnce = once;
-		this.followTarget = this._rectangleFollowTarget;
+		this.minDist = minDist
+		this.maxDist = Math.max(maxDist, minDist + 0.1)
+		this.vertDist = vertDist
+		this.minDistInner = this.minDist + buffer
+		this.maxDistInner = this.maxDist - buffer
+		this.vertDistInner = this.vertDist - buffer2
+		this.followingNavigate = navigate
+		this.bypass = bypass
+		this.followOnce = once
+		this.followTarget = this._rectangleFollowTarget
 		// 设置更新函数为：跟随角色
-		this.update = this.followTarget;
+		this.update = this.followTarget
 	}
 
 	/**
@@ -2428,11 +2420,11 @@ class ActorNavigator {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	private updateForwardMovement(deltaTime: number): void {
-		const actor = this.actor;
-		const x = this.velocityX * deltaTime;
-		const y = this.velocityY * deltaTime;
-		actor.updateAngle(this.movementAngle);
-		actor.move(x, y);
+		const actor = this.actor
+		const x = this.velocityX * deltaTime
+		const y = this.velocityY * deltaTime
+		actor.updateAngle(this.movementAngle)
+		actor.move(x, y)
 	}
 
 	/**
@@ -2441,40 +2433,40 @@ class ActorNavigator {
 	 */
 	private updatePathMovement(deltaTime: number): void {
 		// 逐帧计算角度，并计算移动速度分量
-		const actor = this.actor;
-		const path = this.movementPath!;
+		const actor = this.actor
+		const path = this.movementPath!
 		if (this.timeout !== -1 && (this.timeout -= deltaTime) <= 0) {
-			const destX = path[path.length - 2];
-			const destY = path[path.length - 1];
-			return this.navigateTo(destX, destY, this.bypass);
+			const destX = path[path.length - 2]
+			const destY = path[path.length - 1]
+			return this.navigateTo(destX, destY, this.bypass)
 		}
-		const pi = path.index;
-		const dx = path[pi];
-		const dy = path[pi + 1];
-		const distX = dx - actor.x;
-		const distY = dy - actor.y;
-		const angle = Math.atan2(distY, distX);
-		actor.updateAngle(angle);
-		this.calculateVelocity(angle);
+		const pi = path.index
+		const dx = path[pi]
+		const dy = path[pi + 1]
+		const distX = dx - actor.x
+		const distY = dy - actor.y
+		const angle = Math.atan2(distY, distX)
+		actor.updateAngle(angle)
+		this.calculateVelocity(angle)
 
 		// 计算当前帧向前移动的距离
-		const mx = this.velocityX * deltaTime;
-		const my = this.velocityY * deltaTime;
+		const mx = this.velocityX * deltaTime
+		const my = this.velocityY * deltaTime
 		if (
 			Math.abs(distX) <= Math.abs(mx) + 0.0001 &&
 			Math.abs(distY) <= Math.abs(my) + 0.0001
 		) {
 			// 如果目标点在当前帧移动范围内，则将角色位置设为目标点
 			// 并且将路径索引指向下一个路线节点
-			actor.setPosition(dx, dy);
-			path.index += 2;
+			actor.setPosition(dx, dy)
+			path.index += 2
 			// 如果已经是终点，则停止移动
 			if (path.index === path.length) {
-				this.stopMoving();
+				this.stopMoving()
 			}
 		} else {
 			// 将角色的位置加上当前帧移动距离
-			actor.move(mx, my);
+			actor.move(mx, my)
 		}
 	}
 
@@ -2483,10 +2475,10 @@ class ActorNavigator {
 	 */
 	private _switchToFollowTargetBuffer(): void {
 		if (this.followOnce) {
-			this.stopMoving();
+			this.stopMoving()
 		} else {
-			this.update = this._followTargetBuffer;
-			this.animBufferTime = 100;
+			this.update = this._followTargetBuffer
+			this.animBufferTime = 100
 		}
 	}
 
@@ -2498,14 +2490,14 @@ class ActorNavigator {
 		// 缓冲时间结束后切换动画为idle动作
 		// 避免跟随者移动速度>=目标时频繁地切换动作
 		if ((this.animBufferTime -= deltaTime) <= 0) {
-			this.animBufferTime = -1;
-			this.actor.animationController.startIdle();
+			this.animBufferTime = -1
+			this.actor.animationController.startIdle()
 			// 设置更新函数为：跟随角色
-			this.update = this.followTarget;
-			return this.update(deltaTime);
+			this.update = this.followTarget
+			return this.update(deltaTime)
 		}
 		// 缓冲未结束，调用跟随角色函数
-		this.followTarget(deltaTime);
+		this.followTarget(deltaTime)
 	}
 
 	/**
@@ -2513,38 +2505,38 @@ class ActorNavigator {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	private _circleFollowTarget(deltaTime: number): void {
-		const actor = this.actor;
-		const target = this.target!;
+		const actor = this.actor
+		const target = this.target!
 		// 如果目标已销毁，停止跟随
 		if (target.destroyed) {
-			return this.stopMoving();
+			return this.stopMoving()
 		}
 		const dist = Math.sqrt(
 			(actor.x - target.x) ** 2 + (actor.y - target.y) ** 2
-		);
+		)
 		// 如果角色距离大于最大距离，开始接近
 		// 设置更新函数为：接近目标(圆形模式)
 		if (dist > this.maxDist) {
-			actor.animationController.startMoving();
-			this.animBufferTime = 0;
+			actor.animationController.startMoving()
+			this.animBufferTime = 0
 			this.update = this.followingNavigate
 				? this._circleNavigateToTarget
-				: this._circleApproachTarget;
-			return this.update(deltaTime);
+				: this._circleApproachTarget
+			return this.update(deltaTime)
 		}
 		// 如果角色距离小于最小距离，开始远离
 		// 设置更新函数为：远离目标(圆形模式)
 		if (dist < this.minDist) {
-			actor.animationController.startMoving();
-			this.animBufferTime = 0;
-			this.update = this._circleLeaveTarget;
-			return this.update(deltaTime);
+			actor.animationController.startMoving()
+			this.animBufferTime = 0
+			this.update = this._circleLeaveTarget
+			return this.update(deltaTime)
 		}
 		// 如果角色的位置已经在跟随范围之内
 		if (this.animBufferTime === 0) {
 			// 进入跟随缓冲模式
-			this.update = this._switchToFollowTargetBuffer;
-			return this.update(deltaTime);
+			this.update = this._switchToFollowTargetBuffer
+			return this.update(deltaTime)
 		}
 	}
 
@@ -2553,32 +2545,32 @@ class ActorNavigator {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	private _circleApproachTarget(deltaTime: number): void {
-		const actor = this.actor;
-		const target = this.target!;
+		const actor = this.actor
+		const target = this.target!
 		// 如果目标已销毁，停止跟随
 		if (target.destroyed) {
-			return this.stopMoving();
+			return this.stopMoving()
 		}
-		let distX = target.x - actor.x;
-		let distY = target.y - actor.y;
+		let distX = target.x - actor.x
+		let distY = target.y - actor.y
 		// 如果角色距离小于等于最大距离，进入跟随缓冲模式(100ms)
 		if (Math.sqrt(distX ** 2 + distY ** 2) <= this.maxDistInner) {
-			return this._switchToFollowTargetBuffer();
+			return this._switchToFollowTargetBuffer()
 		}
-		let angle = Math.atan2(distY, distX);
-		const offset = this.followingOffset;
+		let angle = Math.atan2(distY, distX)
+		const offset = this.followingOffset
 		if (offset !== 0 && this.maxDistInner > 0) {
 			// 计算跟随偏移距离和偏移角度
-			const offsetDist = Math.abs(this.maxDistInner * offset);
-			angle += offset > 0 ? Math.PI / 2 : -Math.PI / 2;
+			const offsetDist = Math.abs(this.maxDistInner * offset)
+			angle += offset > 0 ? Math.PI / 2 : -Math.PI / 2
 			// 加上偏移分量，计算朝向偏移目标点的角度
-			distX += offsetDist * Math.cos(angle);
-			distY += offsetDist * Math.sin(angle);
-			angle = Math.atan2(distY, distX);
+			distX += offsetDist * Math.cos(angle)
+			distY += offsetDist * Math.sin(angle)
+			angle = Math.atan2(distY, distX)
 		}
 		// 向接近目标的方向移动
-		this.calculateVelocity(angle);
-		this.updateForwardMovement(deltaTime);
+		this.calculateVelocity(angle)
+		this.updateForwardMovement(deltaTime)
 	}
 
 	/**
@@ -2586,69 +2578,81 @@ class ActorNavigator {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	private _circleNavigateToTarget(deltaTime: number): void {
-		const actor = this.actor;
-		const target = this.target!;
+		const actor = this.actor
+		const target = this.target!
 		// 如果目标已销毁，停止跟随
 		if (target.destroyed) {
-			return this.stopMoving();
+			return this.stopMoving()
 		}
-		const sx = actor.x;
-		const sy = actor.y;
-		const distX = target.x - sx;
-		const distY = target.y - sy;
+		const sx = actor.x
+		const sy = actor.y
+		const distX = target.x - sx
+		const distY = target.y - sy
 		// 如果角色距离小于等于最大距离，进入跟随缓冲模式(100ms)
 		if (Math.sqrt(distX ** 2 + distY ** 2) <= this.maxDistInner) {
-			this.movementPath = null;
-			this._switchToFollowTargetBuffer();
-			return;
+			this.movementPath = null
+			this._switchToFollowTargetBuffer()
+			return
 		}
 		// 每隔一段时间计算移动路径
 		if (!this.movementPath || (this.timeout -= deltaTime) <= 0) {
-			let { x, y } = target;
-			const offset = this.followingOffset;
-			if (offset !== 0 && this.maxDistInner > 0) {
-				// 计算跟随偏移距离和偏移角度
-				const offsetDist = Math.abs(this.maxDistInner * offset);
-				const offsetAngle = offset > 0 ? Math.PI / 2 : -Math.PI / 2;
-				const angle = Math.atan2(distY, distX) + offsetAngle;
-				x += offsetDist * Math.cos(angle);
-				y += offsetDist * Math.sin(angle);
+			const destTileX = Math.floor(target.x)
+			const destTileY = Math.floor(target.y)
+			if (
+				this.movementPath &&
+				this.lastPathDX === destTileX &&
+				this.lastPathDY === destTileY
+			) {
+				this.timeout = 500
+			} else {
+				let { x, y } = target
+				const offset = this.followingOffset
+				if (offset !== 0 && this.maxDistInner > 0) {
+					// 计算跟随偏移距离和偏移角度
+					const offsetDist = Math.abs(this.maxDistInner * offset)
+					const offsetAngle = offset > 0 ? Math.PI / 2 : -Math.PI / 2
+					const angle = Math.atan2(distY, distX) + offsetAngle
+					x += offsetDist * Math.cos(angle)
+					y += offsetDist * Math.sin(angle)
+				}
+				this.movementPath = PathFinder.createPath(
+					sx,
+					sy,
+					x,
+					y,
+					actor.passage,
+					this.bypass
+				)
+				this.lastPathDX = destTileX
+				this.lastPathDY = destTileY
+				this.timeout = 500
 			}
-			this.movementPath = PathFinder.createPath(
-				sx,
-				sy,
-				x,
-				y,
-				actor.passage,
-				this.bypass
-			);
-			this.timeout = 500;
 		}
 		// 逐帧计算角度，并计算移动速度分量
-		const path = this.movementPath;
-		const pi = path.index;
-		const dx = path[pi];
-		const dy = path[pi + 1];
-		const pDistX = dx - sx;
-		const pDistY = dy - sy;
-		const angle = Math.atan2(pDistY, pDistX);
-		actor.updateAngle(angle);
-		this.calculateVelocity(angle);
+		const path = this.movementPath
+		const pi = path.index
+		const dx = path[pi]
+		const dy = path[pi + 1]
+		const pDistX = dx - sx
+		const pDistY = dy - sy
+		const angle = Math.atan2(pDistY, pDistX)
+		actor.updateAngle(angle)
+		this.calculateVelocity(angle)
 
 		// 计算当前帧向前移动的距离
-		const mx = this.velocityX * deltaTime;
-		const my = this.velocityY * deltaTime;
+		const mx = this.velocityX * deltaTime
+		const my = this.velocityY * deltaTime
 		if (
 			Math.abs(pDistX) <= Math.abs(mx) + 0.0001 &&
 			Math.abs(pDistY) <= Math.abs(my) + 0.0001
 		) {
-			actor.setPosition(dx, dy);
-			path.index += 2;
+			actor.setPosition(dx, dy)
+			path.index += 2
 			if (path.index === path.length) {
-				this.movementPath = null;
+				this.movementPath = null
 			}
 		} else {
-			actor.move(mx, my);
+			actor.move(mx, my)
 		}
 	}
 
@@ -2657,22 +2661,22 @@ class ActorNavigator {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	private _circleLeaveTarget(deltaTime: number): void {
-		const actor = this.actor;
-		const target = this.target!;
+		const actor = this.actor
+		const target = this.target!
 		// 如果目标已销毁，停止跟随
 		if (target.destroyed) {
-			return this.stopMoving();
+			return this.stopMoving()
 		}
-		const distX = actor.x - target.x;
-		const distY = actor.y - target.y;
+		const distX = actor.x - target.x
+		const distY = actor.y - target.y
 		// 如果角色距离大于等于最小距离，进入跟随缓冲模式(100ms)
 		if (Math.sqrt(distX ** 2 + distY ** 2) >= this.minDistInner) {
-			return this._switchToFollowTargetBuffer();
+			return this._switchToFollowTargetBuffer()
 		}
 		// 向远离目标的方向移动
-		const angle = Math.atan2(distY, distX);
-		this.calculateVelocity(angle);
-		this.updateForwardMovement(deltaTime);
+		const angle = Math.atan2(distY, distX)
+		this.calculateVelocity(angle)
+		this.updateForwardMovement(deltaTime)
 	}
 
 	/**
@@ -2680,14 +2684,14 @@ class ActorNavigator {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	private _rectangleFollowTarget(deltaTime: number): void {
-		const actor = this.actor;
-		const target = this.target!;
+		const actor = this.actor
+		const target = this.target!
 		// 如果目标已销毁，停止跟随
 		if (target.destroyed) {
-			return this.stopMoving();
+			return this.stopMoving()
 		}
-		const distX = Math.abs(actor.x - target.x);
-		const distY = Math.abs(actor.y - target.y);
+		const distX = Math.abs(actor.x - target.x)
+		const distY = Math.abs(actor.y - target.y)
 		// 如果角色水平距离大于最大距离或小于最小距离
 		// 或者角色垂直距离大于垂直距离(+0.0001容差)
 		// 设置更新函数为：接近目标(矩形模式)
@@ -2696,18 +2700,18 @@ class ActorNavigator {
 			distX < this.minDist ||
 			distY > this.vertDist + 0.0001
 		) {
-			actor.animationController.startMoving();
-			this.animBufferTime = 0;
+			actor.animationController.startMoving()
+			this.animBufferTime = 0
 			this.update = this.followingNavigate
 				? this._rectangleNavigateToTarget
-				: this._rectangleApproachTarget;
-			return this.update(deltaTime);
+				: this._rectangleApproachTarget
+			return this.update(deltaTime)
 		}
 		// 如果角色的位置已经在跟随范围之内(避免重复执行)
 		if (this.animBufferTime === 0) {
 			// 进入跟随缓冲模式
-			this.update = this._switchToFollowTargetBuffer;
-			return this.update(deltaTime);
+			this.update = this._switchToFollowTargetBuffer
+			return this.update(deltaTime)
 		}
 	}
 
@@ -2716,35 +2720,43 @@ class ActorNavigator {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	private _rectangleApproachTarget(deltaTime: number): void {
-		const actor = this.actor;
-		const target = this.target!;
+		const actor = this.actor
+		const target = this.target!
 		// 如果目标已销毁，停止跟随
 		if (target.destroyed) {
-			return this.stopMoving();
+			return this.stopMoving()
 		}
-		const sx = actor.x;
-		const sy = actor.y;
-		const tx = target.x;
-		const ty = target.y;
+		const sx = actor.x
+		const sy = actor.y
+		const tx = target.x
+		const ty = target.y
 		const dx =
 			sx < tx
 				? // 根据宿主角色在目标角色左侧或右侧的情况来计算终点水平坐标
-				  Math.clamp(sx, tx - this.maxDistInner, tx - this.minDistInner)
-				: Math.clamp(sx, tx + this.minDistInner, tx + this.maxDistInner);
+					Math.clamp(
+						sx,
+						tx - this.maxDistInner,
+						tx - this.minDistInner
+					)
+				: Math.clamp(sx, tx + this.minDistInner, tx + this.maxDistInner)
 		// 计算终点垂直坐标
-		const dy = Math.clamp(sy, ty - this.vertDistInner, ty + this.vertDistInner);
-		const distX = dx - sx;
-		const distY = dy - sy;
-		const angle = Math.atan2(distY, distX);
+		const dy = Math.clamp(
+			sy,
+			ty - this.vertDistInner,
+			ty + this.vertDistInner
+		)
+		const distX = dx - sx
+		const distY = dy - sy
+		const angle = Math.atan2(distY, distX)
 		// 设置角度并计算移动速度分量
-		actor.updateAngle(angle);
-		this.calculateVelocity(angle);
+		actor.updateAngle(angle)
+		this.calculateVelocity(angle)
 
 		// 计算当前帧向前移动的距离并更新角色位置
-		const mx = this.velocityX * deltaTime;
-		const my = this.velocityY * deltaTime;
-		actor.move(mx, my);
-		const absDistX = Math.abs(actor.x - tx);
+		const mx = this.velocityX * deltaTime
+		const my = this.velocityY * deltaTime
+		actor.move(mx, my)
+		const absDistX = Math.abs(actor.x - tx)
 		if (
 			absDistX >= this.minDistInner &&
 			absDistX <= this.maxDistInner &&
@@ -2753,9 +2765,9 @@ class ActorNavigator {
 			// 角色进入最小和最大距离的范围
 			// 并且垂直移动距离超过了角色垂直距离
 			// 则将角色垂直位置设为目标点垂直位置
-			actor.setPosition(actor.x, dy);
+			actor.setPosition(actor.x, dy)
 			// 进入跟随缓冲模式
-			this._switchToFollowTargetBuffer();
+			this._switchToFollowTargetBuffer()
 		}
 	}
 
@@ -2764,66 +2776,86 @@ class ActorNavigator {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	private _rectangleNavigateToTarget(deltaTime: number): void {
-		const actor = this.actor;
-		const target = this.target!;
+		const actor = this.actor
+		const target = this.target!
 		// 如果目标已销毁，停止跟随
 		if (target.destroyed) {
-			return this.stopMoving();
+			return this.stopMoving()
 		}
-		const sx = actor.x;
-		const sy = actor.y;
-		const tx = target.x;
-		const ty = target.y;
+		const sx = actor.x
+		const sy = actor.y
+		const tx = target.x
+		const ty = target.y
 		const dx =
 			sx < tx
 				? // 根据宿主角色在目标角色左侧或右侧的情况来计算终点水平坐标
-				  Math.clamp(sx, tx - this.maxDistInner, tx - this.minDistInner)
-				: Math.clamp(sx, tx + this.minDistInner, tx + this.maxDistInner);
+					Math.clamp(
+						sx,
+						tx - this.maxDistInner,
+						tx - this.minDistInner
+					)
+				: Math.clamp(sx, tx + this.minDistInner, tx + this.maxDistInner)
 		// 计算终点垂直坐标
-		const dy = Math.clamp(sy, ty - this.vertDistInner, ty + this.vertDistInner);
+		const dy = Math.clamp(
+			sy,
+			ty - this.vertDistInner,
+			ty + this.vertDistInner
+		)
 		// 每隔一段时间计算移动路径
 		if (!this.movementPath || (this.timeout -= deltaTime) <= 0) {
-			this.movementPath = PathFinder.createPath(
-				sx,
-				sy,
-				dx,
-				dy,
-				actor.passage,
-				this.bypass
-			);
-			this.timeout = 500;
+			const destTileX = Math.floor(dx)
+			const destTileY = Math.floor(dy)
+			if (
+				this.movementPath &&
+				this.lastPathDX === destTileX &&
+				this.lastPathDY === destTileY
+			) {
+				this.timeout = 500
+			} else {
+				this.movementPath = PathFinder.createPath(
+					sx,
+					sy,
+					dx,
+					dy,
+					actor.passage,
+					this.bypass
+				)
+				this.lastPathDX = destTileX
+				this.lastPathDY = destTileY
+				this.timeout = 500
+			}
 		}
 		// 逐帧计算角度，并计算移动速度分量
-		const path = this.movementPath;
-		const pi = path.index;
-		const px = path[pi];
-		const py = path[pi + 1];
-		const pDistX = px - sx;
-		const pDistY = py - sy;
+		const path = this.movementPath
+		const pi = path.index
+		const px = path[pi]
+		const py = path[pi + 1]
+		const pDistX = px - sx
+		const pDistY = py - sy
 		if (pDistX === 0 && pDistY === 0) {
-			this.velocityX = 0;
-			this.velocityY = 0;
+			this.velocityX = 0
+			this.velocityY = 0
 		} else {
-			const angle = Math.atan2(pDistY, pDistX);
-			actor.updateAngle(angle);
-			this.calculateVelocity(angle);
+			const angle = Math.atan2(pDistY, pDistX)
+			actor.updateAngle(angle)
+			this.calculateVelocity(angle)
 		}
 
 		// 计算当前帧向前移动的距离
-		const mx = this.velocityX * deltaTime;
-		const my = this.velocityY * deltaTime;
+		const mx = this.velocityX * deltaTime
+		const my = this.velocityY * deltaTime
 		// 由于计算移动速度现在已经是精确值
 		// 这里的容差值0.0001有可能不需要了
 		if (
 			Math.abs(pDistX) <= Math.abs(mx) + 0.0001 &&
 			Math.abs(pDistY) <= Math.abs(my) + 0.0001
 		) {
-			actor.setPosition(px, py);
-			path.index += 2;
+			actor.setPosition(px, py)
+			path.index += 2
 			if (path.index === path.length) {
-				this.movementPath = null;
-				const absDistX = Math.abs(actor.x - tx);
-				const absDistY = Math.abs(actor.y - dy);
+				this.movementPath = null
+				const absDistX = Math.abs(actor.x - tx)
+				const absDistY = Math.abs(actor.y - dy)
 				if (
 					absDistX >= this.minDistInner &&
 					absDistX <= this.maxDistInner &&
@@ -2832,13 +2864,13 @@ class ActorNavigator {
 					// 角色进入最小和最大距离的范围
 					// 并且垂直移动距离超过了角色垂直距离
 					// 则将角色垂直位置设为目标点垂直位置
-					actor.setPosition(actor.x, dy);
+					actor.setPosition(actor.x, dy)
 					// 进入跟随缓冲模式
-					this._switchToFollowTargetBuffer();
+					this._switchToFollowTargetBuffer()
 				}
 			}
 		} else {
-			actor.move(mx, my);
+			actor.move(mx, my)
 		}
 	}
 }
@@ -2847,26 +2879,26 @@ class ActorNavigator {
 
 class AnimationManager {
 	/** 绑定角色 */
-	public actor: Actor;
+	public actor: Actor
 	/** 缩放系数 */
-	public scale: number;
+	public scale: number
 	/** 是否存在粒子 */
-	public existParticles: boolean;
+	public existParticles: boolean
 	/** 动画列表 */
-	public list: Array<AnimationPlayer>;
+	public list: Array<AnimationPlayer>
 	/** {键:动画}映射表 */
-	public keyMap: HashMap<AnimationPlayer>;
+	public keyMap: HashMap<AnimationPlayer>
 
 	/**
 	 * 角色动画管理器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.actor = actor;
-		this.scale = actor.scale;
-		this.existParticles = false;
-		this.list = [];
-		this.keyMap = {};
+		this.actor = actor
+		this.scale = actor.scale
+		this.existParticles = false
+		this.list = []
+		this.keyMap = {}
 	}
 
 	/**
@@ -2875,70 +2907,69 @@ class AnimationManager {
 	 * @returns 动画播放器
 	 */
 	public get(key: string): AnimationPlayer | undefined {
-		return this.keyMap[key];
+		return this.keyMap[key]
 	}
 
-  /**
-   * 设置动画播放器
-   * @param key 动画键
-   * @param animation 动画播放器
-   */
-  public set(key: string, animation: AnimationPlayer): void {
-    if (key && this.keyMap[key] !== animation) {
-      animation.key = key
-      animation.parent = this
-      animation.priority = this.actor.priority
-      animation.setPosition(this.actor)
-      // 设置原始缩放系数
-      if (animation.rawScale === undefined) {
-        animation.rawScale = animation.scale
-        animation.scale *= this.scale
-      }
-      // 设置原始偏移Y
-      if (animation.rawOffsetY === undefined) {
-        animation.rawOffsetY = animation.offsetY
-        animation.offsetY *= this.scale
-      }
-      // 如果存在旧的动画替换它(销毁)
-      const oldAnim = this.keyMap[key]
-      if (oldAnim instanceof AnimationPlayer) {
-        // 继承一部分数据
-        animation.rawScale = oldAnim.rawScale
-        animation.scale = oldAnim.scale
-        animation.speed = oldAnim.speed
-        animation.opacity = oldAnim.opacity
-        animation.setMotion(oldAnim.motionName)
-        animation.setAngle(oldAnim.angle)
-        oldAnim.destroy()
-        this.list.replace(oldAnim, animation)
-        this.keyMap[key] = animation
-      } else {
-        this.list.push(animation)
-        this.keyMap[key] = animation
-      }
-      // 设置默认顺序
-      if (animation.order === undefined) {
-        animation.order = 0
-      }
-      // 立即同步角度
-      if (animation.syncAngle)
-      {
-        animation.setAngle(this.actor.angle)
-      }
-      this.sort()
-    }
-  }
+	/**
+	 * 设置动画播放器
+	 * @param key 动画键
+	 * @param animation 动画播放器
+	 */
+	public set(key: string, animation: AnimationPlayer): void {
+		if (key && this.keyMap[key] !== animation) {
+			animation.key = key
+			animation.parent = this
+			animation.priority = this.actor.priority
+			animation.setPosition(this.actor)
+			// 设置原始缩放系数
+			if (animation.rawScale === undefined) {
+				animation.rawScale = animation.scale
+				animation.scale *= this.scale
+			}
+			// 设置原始偏移Y
+			if (animation.rawOffsetY === undefined) {
+				animation.rawOffsetY = animation.offsetY
+				animation.offsetY *= this.scale
+			}
+			// 如果存在旧的动画替换它(销毁)
+			const oldAnim = this.keyMap[key]
+			if (oldAnim instanceof AnimationPlayer) {
+				// 继承一部分数据
+				animation.rawScale = oldAnim.rawScale
+				animation.scale = oldAnim.scale
+				animation.speed = oldAnim.speed
+				animation.opacity = oldAnim.opacity
+				animation.setMotion(oldAnim.motionName)
+				animation.setAngle(oldAnim.angle)
+				oldAnim.destroy()
+				this.list.replace(oldAnim, animation)
+				this.keyMap[key] = animation
+			} else {
+				this.list.push(animation)
+				this.keyMap[key] = animation
+			}
+			// 设置默认顺序
+			if (animation.order === undefined) {
+				animation.order = 0
+			}
+			// 立即同步角度
+			if (animation.syncAngle) {
+				animation.setAngle(this.actor.angle)
+			}
+			this.sort()
+		}
+	}
 
 	/**
 	 * 删除动画播放器
 	 * @param key 动画键
 	 */
 	public delete(key: string): void {
-		const animation = this.keyMap[key];
+		const animation = this.keyMap[key]
 		if (animation) {
-			animation.destroy();
-			this.list.remove(animation);
-			delete this.keyMap[key];
+			animation.destroy()
+			this.list.remove(animation)
+			delete this.keyMap[key]
 		}
 	}
 
@@ -2952,27 +2983,27 @@ class AnimationManager {
 		key: string,
 		motionName: string
 	): AnimationPlayer | undefined {
-		const animation = this.get(key);
+		const animation = this.get(key)
 		if (animation?.setMotion(motionName)) {
-			animation.playing = true;
+			animation.playing = true
 			// 重新播放动画
 			const callback = () => {
 				if (animation.playing) {
 					// 播放结束后设置回默认动作
-					animation.playing = false;
+					animation.playing = false
 					if (animation.setMotion(animation.defaultMotion!)) {
-						animation.restart();
+						animation.restart()
 					}
 				} else {
-					animation.onFinish(callback);
+					animation.onFinish(callback)
 				}
-			};
-			animation.restart();
-			animation.onFinish(callback);
+			}
+			animation.restart()
+			animation.onFinish(callback)
 			// 返回动画播放器
-			return animation;
+			return animation
 		}
-		return undefined;
+		return undefined
 	}
 
 	/**
@@ -2980,7 +3011,7 @@ class AnimationManager {
 	 * @param key 动画键
 	 */
 	public stopMotion(key: string): void {
-		this.get(key)?.finish();
+		this.get(key)?.finish()
 	}
 
 	/**
@@ -2988,10 +3019,10 @@ class AnimationManager {
 	 * @param scale 缩放系数
 	 */
 	public setGlobalScale(scale: number): void {
-		this.scale = scale;
+		this.scale = scale
 		for (const animation of this.list) {
-			animation.scale = animation.rawScale! * scale;
-			animation.offsetY = animation.rawOffsetY! * scale;
+			animation.scale = animation.rawScale! * scale
+			animation.offsetY = animation.rawOffsetY! * scale
 		}
 	}
 
@@ -3001,10 +3032,10 @@ class AnimationManager {
 	 * @param scale 缩放系数
 	 */
 	public setScale(key: string, scale: number): void {
-		const animation = this.keyMap[key];
+		const animation = this.keyMap[key]
 		if (animation) {
-			animation.rawScale = scale;
-			animation.scale = scale * this.scale;
+			animation.rawScale = scale
+			animation.scale = scale * this.scale
 		}
 	}
 
@@ -3016,38 +3047,38 @@ class AnimationManager {
 		for (const animation of this.list) {
 			if (animation.syncAngle) {
 				if (animation.playing) {
-					animation.playing = false;
-					animation.setAngle(angle);
-					animation.playing = true;
+					animation.playing = false
+					animation.setAngle(angle)
+					animation.playing = true
 				} else {
-					animation.setAngle(angle);
+					animation.setAngle(angle)
 				}
 			}
 		}
 	}
 
-  /**
-   * 设置动画渲染优先级(粒子)
-   * @param angle 角度(弧度)
-   */
-  public setPriority(priority: number): void {
-    for (const animation of this.list) {
-      animation.priority = priority
-    }
-  }
+	/**
+	 * 设置动画渲染优先级(粒子)
+	 * @param angle 角度(弧度)
+	 */
+	public setPriority(priority: number): void {
+		for (const animation of this.list) {
+			animation.priority = priority
+		}
+	}
 
-  /**
-   * 设置动画排序顺序
-   * @param key 动画键
-   * @param order 顺序
-   */
-  public setOrder(key: string, order: number): void {
-    const animation = this.keyMap[key]
-    if (animation) {
-      animation.order = order
-      this.sort()
-    }
-  }
+	/**
+	 * 设置动画排序顺序
+	 * @param key 动画键
+	 * @param order 顺序
+	 */
+	public setOrder(key: string, order: number): void {
+		const animation = this.keyMap[key]
+		if (animation) {
+			animation.order = order
+			this.sort()
+		}
+	}
 
 	/**
 	 * 设置动画垂直偏移距离
@@ -3055,10 +3086,10 @@ class AnimationManager {
 	 * @param offsetY 垂直偏移
 	 */
 	public setOffsetY(key: string, offsetY: number): void {
-		const animation = this.keyMap[key];
+		const animation = this.keyMap[key]
 		if (animation) {
-			animation.rawOffsetY = offsetY;
-			animation.offsetY = offsetY * this.scale;
+			animation.rawOffsetY = offsetY
+			animation.offsetY = offsetY * this.scale
 		}
 	}
 
@@ -3069,23 +3100,23 @@ class AnimationManager {
 	 * @param imageId 图像文件ID
 	 */
 	public setSprite(key: string, spriteId: string, imageId: string): void {
-		const animation = this.keyMap[key];
+		const animation = this.keyMap[key]
 		if (animation && spriteId) {
 			// 创建优先精灵图像映射表
 			if (!animation.priorityImages) {
-				animation.priorityImages = {};
-				animation.setSpriteImages(animation.priorityImages);
+				animation.priorityImages = {}
+				animation.setSpriteImages(animation.priorityImages)
 			}
 			// 修改角色精灵表中的键值
-			animation.priorityImages[spriteId] = imageId;
+			animation.priorityImages[spriteId] = imageId
 			// 如果角色动画已经加载了同名纹理，则删除
-			animation?.deleteTexture(spriteId);
+			animation?.deleteTexture(spriteId)
 		}
 	}
 
 	/** 排序动画组件 */
 	private sort(): void {
-		this.list.sort(AnimationManager.sorter);
+		this.list.sort(AnimationManager.sorter)
 	}
 
 	/**
@@ -3093,11 +3124,13 @@ class AnimationManager {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	public update(deltaTime: number): void {
-		this.existParticles = false;
-		for (const animation of this.list) {
-			animation.update(deltaTime);
+		this.existParticles = false
+		const list = this.list
+		for (let i = 0, length = list.length; i < length; i++) {
+			const animation = list[i]
+			animation.update(deltaTime)
 			if (animation.existParticles) {
-				this.existParticles = true;
+				this.existParticles = true
 			}
 		}
 	}
@@ -3106,8 +3139,9 @@ class AnimationManager {
 	 * 绘制角色动画
 	 */
 	public draw(): void {
-		for (const animation of this.list) {
-			animation.draw();
+		const list = this.list
+		for (let i = 0, length = list.length; i < length; i++) {
+			list[i].draw()
 		}
 	}
 
@@ -3124,15 +3158,16 @@ class AnimationManager {
 		lightX: number,
 		lightY: number
 	): void {
-		for (const animation of this.list) {
-			animation.activate(drawX, drawY, lightX, lightY);
+		const list = this.list
+		for (let i = 0, length = list.length; i < length; i++) {
+			list[i].activate(drawX, drawY, lightX, lightY)
 		}
 	}
 
 	/** 释放所有动画组件显存 */
 	public release(): void {
 		for (const animation of this.list) {
-			animation.release();
+			animation.release()
 		}
 	}
 
@@ -3140,119 +3175,120 @@ class AnimationManager {
 	public destroy(): void {
 		for (const animation of this.list) {
 			// 完成动画结束回调并销毁动画
-			animation.finish();
-			animation.destroy();
+			animation.finish()
+			animation.destroy()
 		}
 	}
 
-  /**
-   * 保存动画组件列表数据
-   * @returns 动画组件存档数据列表
-   */
-  public saveData(): Array<AnimationComponentSaveData> {
-    const length = this.list.length
-    const animations = new Array(length)
-    for (let i = 0; i < length; i++) {
-      const animation = this.list[i]
-      // 编码为json时忽略undefined
-      animations[i] = {
-        id: animation.data.id,
-        key: animation.key,
-        rotatable: animation.rotatable,
-        syncAngle: animation.syncAngle,
-        angle: animation.angle,
-        scale: animation.rawScale,
-        speed: animation.speed,
-        opacity: animation.opacity,
-        order: animation.order,
-        offsetY: animation.rawOffsetY,
-        motion: animation.defaultMotion ?? undefined,
-        images: animation.priorityImages ?? undefined,
-      }
-    }
-    return animations
-  }
+	/**
+	 * 保存动画组件列表数据
+	 * @returns 动画组件存档数据列表
+	 */
+	public saveData(): Array<AnimationComponentSaveData> {
+		const length = this.list.length
+		const animations = new Array(length)
+		for (let i = 0; i < length; i++) {
+			const animation = this.list[i]
+			// 编码为json时忽略undefined
+			animations[i] = {
+				id: animation.data.id,
+				key: animation.key,
+				rotatable: animation.rotatable,
+				syncAngle: animation.syncAngle,
+				angle: animation.angle,
+				scale: animation.rawScale,
+				speed: animation.speed,
+				opacity: animation.opacity,
+				order: animation.order,
+				offsetY: animation.rawOffsetY,
+				motion: animation.defaultMotion ?? undefined,
+				images: animation.priorityImages ?? undefined
+			}
+		}
+		return animations
+	}
 
-  /**
-   * 加载动画组件列表数据
-   * @param animations 动画组件存档数据列表
-   */
-  public loadData(animations: Array<AnimationComponentSaveData>): void {
-    this.scale = this.actor.scale
-    for (const savedData of animations) {
-      // 补丁：2025-11-1，将priority改名为order
-      // 兼容旧存档，在合适的时候可以删除这段补丁
-      if (savedData.order === undefined) {
-        // @ts-ignore
-        savedData.order = savedData.priority
-      }
-      const data = Data.animations[savedData.id]
-      if (data) {
-        const animation = new AnimationPlayer(data)
-        animation.key = savedData.key
-        animation.playing = false
-        animation.rotatable = savedData.rotatable
-        animation.syncAngle = savedData.syncAngle
-        animation.rawScale = savedData.scale
-        animation.scale = savedData.scale * this.scale
-        animation.speed = savedData.speed
-        animation.opacity = savedData.opacity
-        animation.order = savedData.order
-        animation.priority = this.actor.priority
-        animation.rawOffsetY = savedData.offsetY
-        animation.offsetY = savedData.offsetY * this.scale
-        animation.parent = this
-        animation.setPosition(this.actor)
-        animation.setAngle(savedData.angle)
-        if (savedData.motion) {
-          animation.defaultMotion = savedData.motion
-          animation.setMotion(savedData.motion)
-        }
-        if (savedData.images) {
-          animation.priorityImages = savedData.images
-          animation.setSpriteImages(savedData.images)
-        }
-        this.list.push(animation)
-        this.keyMap[animation.key] = animation
-      }
-    }
-  }
+	/**
+	 * 加载动画组件列表数据
+	 * @param animations 动画组件存档数据列表
+	 */
+	public loadData(animations: Array<AnimationComponentSaveData>): void {
+		this.scale = this.actor.scale
+		for (const savedData of animations) {
+			// 补丁：2025-11-1，将priority改名为order
+			// 兼容旧存档，在合适的时候可以删除这段补丁
+			if (savedData.order === undefined) {
+				// @ts-ignore
+				savedData.order = savedData.priority
+			}
+			const data = Data.animations[savedData.id]
+			if (data) {
+				const animation = new AnimationPlayer(data)
+				animation.key = savedData.key
+				animation.playing = false
+				animation.rotatable = savedData.rotatable
+				animation.syncAngle = savedData.syncAngle
+				animation.rawScale = savedData.scale
+				animation.scale = savedData.scale * this.scale
+				animation.speed = savedData.speed
+				animation.opacity = savedData.opacity
+				animation.order = savedData.order
+				animation.priority = this.actor.priority
+				animation.rawOffsetY = savedData.offsetY
+				animation.offsetY = savedData.offsetY * this.scale
+				animation.parent = this
+				animation.setPosition(this.actor)
+				animation.setAngle(savedData.angle)
+				if (savedData.motion) {
+					animation.defaultMotion = savedData.motion
+					animation.setMotion(savedData.motion)
+				}
+				if (savedData.images) {
+					animation.priorityImages = savedData.images
+					animation.setSpriteImages(savedData.images)
+				}
+				this.list.push(animation)
+				this.keyMap[animation.key] = animation
+			}
+		}
+	}
 
-  /**
-   * 动画组件排序器函数
-   * @param a 动画播放器A
-   * @param b 动画播放器B
-   */
-  private static sorter = (a: AnimationPlayer, b: AnimationPlayer): number => a.order! - b.order!
+	/**
+	 * 动画组件排序器函数
+	 * @param a 动画播放器A
+	 * @param b 动画播放器B
+	 */
+	private static sorter = (a: AnimationPlayer, b: AnimationPlayer): number =>
+		a.order! - b.order!
 }
 
 /** ******************************** 角色动画控制器 ******************************** */
 
 class AnimationController {
 	/** 角色动画状态 */
-	public state: string;
+	public state: string
 	/** 角色动画正在播放中 */
-	public playing: boolean;
+	public playing: boolean
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** 绑定的角色动画 */
-	public animation: AnimationPlayer | null;
+	public animation: AnimationPlayer | null
 	/** 角色动画闲置动作名称 */
-	public idleMotion: string;
+	public idleMotion: string
 	/** 角色动画移动动作名称 */
-	public moveMotion: string;
+	public moveMotion: string
 
 	/**
 	 * 角色动画控制器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.state = "idle";
-		this.playing = false;
-		this.actor = actor;
-		this.animation = null;
-		this.idleMotion = actor.data.idleMotion;
-		this.moveMotion = actor.data.moveMotion;
+		this.state = 'idle'
+		this.playing = false
+		this.actor = actor
+		this.animation = null
+		this.idleMotion = actor.data.idleMotion
+		this.moveMotion = actor.data.moveMotion
 	}
 
 	/**
@@ -3260,11 +3296,11 @@ class AnimationController {
 	 * @param animation 动画实例
 	 */
 	public bindAnimation(animation: AnimationPlayer | null): void {
-		this.animation = animation;
+		this.animation = animation
 		if (animation) {
 			// 设置角色动画的初始动作
-			animation.setMotion(this.getCurrentMotionName());
-			animation.setAngle(this.actor.angle);
+			animation.setMotion(this.getCurrentMotionName())
+			animation.setAngle(this.actor.angle)
 		}
 	}
 
@@ -3275,39 +3311,39 @@ class AnimationController {
 	 */
 	public changeMotion(type: string, motionName: string): void {
 		switch (type) {
-			case "idle":
-				this.idleMotion = motionName;
-				if (this.state === "idle") {
-					this.startIdle();
+			case 'idle':
+				this.idleMotion = motionName
+				if (this.state === 'idle') {
+					this.startIdle()
 				}
-				break;
-			case "move":
-				this.moveMotion = motionName;
-				if (this.state === "move") {
-					this.startMoving();
+				break
+			case 'move':
+				this.moveMotion = motionName
+				if (this.state === 'move') {
+					this.startMoving()
 				}
-				break;
+				break
 		}
 	}
 
 	/** 开始闲置动作 */
 	public startIdle(): void {
-		this.state = "idle";
+		this.state = 'idle'
 		if (this.animation && this.playing === false) {
-			if (this.animation.motionName === this.idleMotion) return;
+			if (this.animation.motionName === this.idleMotion) return
 			if (this.animation.setMotion(this.idleMotion)) {
-				this.animation.restart();
+				this.animation.restart()
 			}
 		}
 	}
 
 	/** 开始移动动作 */
 	public startMoving(): void {
-		this.state = "move";
+		this.state = 'move'
 		if (this.animation && this.playing === false) {
-			if (this.animation.motionName === this.moveMotion) return;
+			if (this.animation.motionName === this.moveMotion) return
 			if (this.animation.setMotion(this.moveMotion)) {
-				this.animation.restart();
+				this.animation.restart()
 			}
 		}
 	}
@@ -3315,10 +3351,10 @@ class AnimationController {
 	/** 重新播放动作 */
 	public restart(): void {
 		if (this.animation) {
-			this.playing = false;
-			this.animation.speed = 1;
+			this.playing = false
+			this.animation.speed = 1
 			if (this.animation.setMotion(this.getCurrentMotionName())) {
-				this.animation.restart();
+				this.animation.restart()
 			}
 		}
 	}
@@ -3326,12 +3362,12 @@ class AnimationController {
 	/** 获取当前动作名称 */
 	private getCurrentMotionName(): string {
 		switch (this.state) {
-			case "idle":
-				return this.idleMotion;
-			case "move":
-				return this.moveMotion;
+			case 'idle':
+				return this.idleMotion
+			case 'move':
+				return this.moveMotion
 			default:
-				throw new Error("Invalid state");
+				throw new Error('Invalid state')
 		}
 	}
 
@@ -3346,23 +3382,23 @@ class AnimationController {
 		speed: number = 1
 	): AnimationPlayer | undefined {
 		if (this.animation?.setMotion(motionName)) {
-			this.playing = true;
-			this.animation.speed = speed;
+			this.playing = true
+			this.animation.speed = speed
 			// 重新播放动画
-			this.animation.restart();
+			this.animation.restart()
 			this.animation.onFinish(() => {
 				// 播放结束后设置回闲置或移动动作
-				this.restart();
-			});
+				this.restart()
+			})
 			// 返回动画播放器
-			return this.animation;
+			return this.animation
 		}
-		return undefined;
+		return undefined
 	}
 
 	/** 停止播放角色动作 */
 	public stopMotion(): void {
-		this.animation?.finish();
+		this.animation?.finish()
 	}
 
 	/**
@@ -3372,8 +3408,8 @@ class AnimationController {
 	public saveData(): ActorMotionSaveData {
 		return {
 			idle: this.idleMotion,
-			move: this.moveMotion,
-		};
+			move: this.moveMotion
+		}
 	}
 
 	/**
@@ -3381,8 +3417,8 @@ class AnimationController {
 	 * @param motions 角色动作存档数据
 	 */
 	public loadData(motions: ActorMotionSaveData): void {
-		this.idleMotion = motions.idle;
-		this.moveMotion = motions.move;
+		this.idleMotion = motions.idle
+		this.moveMotion = motions.move
 	}
 }
 
@@ -3390,23 +3426,23 @@ class AnimationController {
 
 class SkillManager {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** {ID:技能}映射表 */
-	public idMap: HashMap<Skill>;
+	public idMap: HashMap<Skill>
 	/** 技能冷却列表 */
-	public cooldownList: SkillCooldownList;
+	public cooldownList: SkillCooldownList
 	/** 技能管理器版本(随着技能添加和移除发生变化) */
-	public version: number;
+	public version: number
 
 	/**
 	 * 角色技能管理器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.actor = actor;
-		this.idMap = {};
-		this.cooldownList = new SkillCooldownList(actor);
-		this.version = 0;
+		this.actor = actor
+		this.idMap = {}
+		this.cooldownList = new SkillCooldownList(actor)
+		this.version = 0
 	}
 
 	/**
@@ -3415,7 +3451,7 @@ class SkillManager {
 	 * @returns 技能实例
 	 */
 	public get(id: string): Skill | undefined {
-		return this.idMap[id];
+		return this.idMap[id]
 	}
 
 	/**
@@ -3423,14 +3459,14 @@ class SkillManager {
 	 * @param skill 技能实例
 	 */
 	public add(skill: Skill): void {
-		const { id } = skill;
-		const { idMap } = this;
+		const { id } = skill
+		const { idMap } = this
 		// 如果不存在该技能，则添加，并触发技能添加事件
 		if (!idMap[id]) {
-			idMap[id] = skill;
-			this.version++;
-			skill.parent = this;
-			skill.emit("skilladd");
+			idMap[id] = skill
+			this.version++
+			skill.parent = this
+			skill.emit('skilladd')
 		}
 	}
 
@@ -3439,14 +3475,14 @@ class SkillManager {
 	 * @param skill 技能实例
 	 */
 	public remove(skill: Skill): void {
-		const { id } = skill;
-		const { idMap } = this;
+		const { id } = skill
+		const { idMap } = this
 		// 如果存在该技能，则移除，并触发技能移除事件
 		if (idMap[id] === skill) {
-			delete idMap[id];
-			this.version++;
-			skill.emit("skillremove");
-			skill.parent = null;
+			delete idMap[id]
+			this.version++
+			skill.emit('skillremove')
+			skill.parent = null
 		}
 	}
 
@@ -3456,25 +3492,26 @@ class SkillManager {
 	 */
 	public delete(id: string): void {
 		// 从管理器中移除指定ID的技能
-		const skill = this.idMap[id];
-		if (skill) this.remove(skill);
+		const skill = this.idMap[id]
+		if (skill) this.remove(skill)
 	}
 
 	/** 自动排序技能列表 */
 	public sort(): void {
-		const idMap: HashMap<Skill> = {};
+		const idMap: HashMap<Skill> = {}
 		// 使用idMap创建技能列表，并通过文件名排序
 		const list = (Object.values(this.idMap) as Array<Skill>).sort(
-			(a: Skill, b: Skill) => a.data.filename.localeCompare(b.data.filename)
-		);
+			(a: Skill, b: Skill) =>
+				a.data.filename.localeCompare(b.data.filename)
+		)
 		// 遍历技能列表，重构idMap
-		const length = list.length;
+		const length = list.length
 		for (let i = 0; i < length; i++) {
-			const skill = list[i];
-			idMap[skill.id] = skill;
+			const skill = list[i]
+			idMap[skill.id] = skill
 		}
-		this.idMap = idMap;
-		this.version++;
+		this.idMap = idMap
+		this.version++
 	}
 
 	/**
@@ -3482,13 +3519,13 @@ class SkillManager {
 	 * @returns 技能存档数据列表
 	 */
 	public saveData(): Array<SkillSaveData> {
-		const skills = Object.values(this.idMap) as Array<Skill>;
-		const length = skills.length;
-		const data = new Array<SkillSaveData>(length);
+		const skills = Object.values(this.idMap) as Array<Skill>
+		const length = skills.length
+		const data = new Array<SkillSaveData>(length)
 		for (let i = 0; i < length; i++) {
-			data[i] = skills[i].saveData();
+			data[i] = skills[i].saveData()
 		}
-		return data;
+		return data
 	}
 
 	/**
@@ -3496,20 +3533,20 @@ class SkillManager {
 	 * @param skills 技能存档数据列表
 	 */
 	public loadData(skills: Array<SkillSaveData>): void {
-		const dataMap = Data.skills;
-		const { idMap, cooldownList } = this;
+		const dataMap = Data.skills
+		const { idMap, cooldownList } = this
 		for (const savedData of skills) {
-			const id = savedData.id;
-			const data = dataMap[id];
+			const id = savedData.id
+			const data = dataMap[id]
 			if (data) {
 				// 重新创建技能实例
-				const skill = new Skill(data, savedData);
-				idMap[id] = skill;
-				skill.parent = this;
+				const skill = new Skill(data, savedData)
+				idMap[id] = skill
+				skill.parent = this
 				// 如果技能正在冷却中
 				// 添加到技能冷却列表
 				if (skill.cooldown !== 0) {
-					cooldownList.append(skill);
+					cooldownList.append(skill)
 				}
 			}
 		}
@@ -3520,15 +3557,15 @@ class SkillManager {
 
 class SkillCooldownList extends Array<Skill> {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 
 	/**
 	 * 角色技能冷却列表
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		super();
-		this.actor = actor;
+		super()
+		this.actor = actor
 	}
 
 	/**
@@ -3540,10 +3577,10 @@ class SkillCooldownList extends Array<Skill> {
 		// 如果列表为空，延迟将本列表添加到角色的更新器列表中
 		if (this.length === 0) {
 			Callback.push(() => {
-				this.actor.updaters.add(this);
-			});
+				this.actor.updaters.add(this)
+			})
 		}
-		return super.append(skill);
+		return super.append(skill)
 	}
 
 	/**
@@ -3551,19 +3588,19 @@ class SkillCooldownList extends Array<Skill> {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	public update(deltaTime: number): void {
-		let i = this.length;
+		let i = this.length
 		// 逆序遍历冷却中的技能
 		while (--i >= 0) {
 			// 如果冷却结束，则将技能从列表中移除
 			if ((this[i].cooldown -= deltaTime) <= 0) {
-				this[i].cooldown = 0;
-				this[i].duration = 0;
-				this.splice(i, 1);
+				this[i].cooldown = 0
+				this[i].duration = 0
+				this.splice(i, 1)
 				// 如果列表为空，延迟将本列表从角色的更新器列表中移除
 				if (this.length === 0) {
 					Callback.push(() => {
-						this.actor.updaters.remove(this);
-					});
+						this.actor.updaters.remove(this)
+					})
 				}
 			}
 		}
@@ -3574,30 +3611,30 @@ class SkillCooldownList extends Array<Skill> {
 
 class Skill {
 	/** 技能文件ID */
-	public id: string;
+	public id: string
 	/** 技能文件数据 */
-	public data: SkillFile;
+	public data: SkillFile
 	/** 技能图标文件ID */
-	public icon: string;
+	public icon: string
 	/** 技能图标矩形裁剪区域 */
-	public clip: ImageClip;
+	public clip: ImageClip
 	/** 技能当前冷却时间 */
-	public cooldown: number;
+	public cooldown: number
 	/** 技能持续冷却时间 */
-	public duration: number;
+	public duration: number
 	/** {键:属性值}映射表 */
-	public attributes: AttributeMap;
+	public attributes: AttributeMap
 	/** {类型:事件}映射表 */
-	public events: HashMap<CommandFunctionList>;
+	public events: HashMap<CommandFunctionList>
 	/** 技能脚本管理器 */
-	public script: ScriptManager;
+	public script: ScriptManager
 	/** 技能管理器 */
-	public parent: SkillManager | null;
+	public parent: SkillManager | null
 	/** 技能目标角色 */
-	public target: Actor | null;
+	public target: Actor | null
 	/** 技能施放角色 */
 	public get caster() {
-		return this.parent?.actor ?? null;
+		return this.parent?.actor ?? null
 	}
 
 	/**
@@ -3606,33 +3643,33 @@ class Skill {
 	 * @param savedData 技能存档数据
 	 */
 	constructor(data: SkillFile, savedData?: SkillSaveData) {
-		this.id = data.id;
-		this.data = data;
-		this.icon = data.icon;
-		this.clip = data.clip;
-		this.cooldown = 0;
-		this.duration = 0;
-		this.attributes = {};
-		this.events = data.events;
-		this.script = ScriptManager.create(this, data.scripts);
-		this.parent = null;
-		this.target = null;
-		Skill.latest = this;
+		this.id = data.id
+		this.data = data
+		this.icon = data.icon
+		this.clip = data.clip
+		this.cooldown = 0
+		this.duration = 0
+		this.attributes = {}
+		this.events = data.events
+		this.script = ScriptManager.create(this, data.scripts)
+		this.parent = null
+		this.target = null
+		Skill.latest = this
 
 		if (savedData) {
 			// 加载存档数据
-			this.cooldown = savedData.cooldown;
-			this.duration = savedData.duration;
-			this.attributes = savedData.attributes;
+			this.cooldown = savedData.cooldown
+			this.duration = savedData.duration
+			this.attributes = savedData.attributes
 		} else {
 			// 初始化
-			Attribute.loadEntries(this.attributes, data.attributes);
+			Attribute.loadEntries(this.attributes, data.attributes)
 		}
 	}
 
 	/** 读取技能冷却进度 */
 	public get progress(): number {
-		return this.cooldown === 0 ? 0 : this.cooldown / this.duration;
+		return this.cooldown === 0 ? 0 : this.cooldown / this.duration
 	}
 
 	/**
@@ -3642,10 +3679,10 @@ class Skill {
 	public cast(target?: Actor): EventHandler | undefined {
 		// 如果冷却结束且施放角色已激活，返回技能释放事件
 		if (this.cooldown === 0 && this.parent?.actor.isActive()) {
-			this.target = target ?? null;
-			const event = this.emit("skillcast");
-			this.target = null;
-			return event;
+			this.target = target ?? null
+			const event = this.emit('skillcast')
+			this.target = null
+			return event
 		}
 	}
 
@@ -3655,10 +3692,10 @@ class Skill {
 	 */
 	public setCooldown(cooldown: number): void {
 		if (cooldown >= 0 && this.cooldown !== cooldown) {
-			this.cooldown = cooldown;
-			this.duration = cooldown;
+			this.cooldown = cooldown
+			this.duration = cooldown
 			// 添加技能到冷却列表
-			this.parent?.cooldownList.append(this);
+			this.parent?.cooldownList.append(this)
 		}
 	}
 
@@ -3668,10 +3705,10 @@ class Skill {
 	 */
 	public increaseCooldown(cooldown: number): void {
 		if (cooldown > 0) {
-			this.cooldown += cooldown;
-			this.duration = Math.max(this.cooldown, this.duration);
+			this.cooldown += cooldown
+			this.duration = Math.max(this.cooldown, this.duration)
 			// 添加技能到冷却列表
-			this.parent?.cooldownList.append(this);
+			this.parent?.cooldownList.append(this)
 		}
 	}
 
@@ -3681,13 +3718,13 @@ class Skill {
 	 */
 	public decreaseCooldown(cooldown: number): void {
 		if (cooldown > 0) {
-			this.cooldown = Math.max(this.cooldown - cooldown, 0);
+			this.cooldown = Math.max(this.cooldown - cooldown, 0)
 		}
 	}
 
 	/** 移除角色技能 */
 	public remove(): void {
-		this.parent?.remove(this);
+		this.parent?.remove(this)
 	}
 
 	/**
@@ -3696,21 +3733,21 @@ class Skill {
 	 * @returns 生成的事件处理器
 	 */
 	public callEvent(type: string): EventHandler | undefined {
-		const { caster, target } = this;
-		const commands = this.events[type];
+		const { caster, target } = this
+		const commands = this.events[type]
 		if (commands) {
-			const event = new EventHandler(commands);
-			event.parent = this;
-			event.triggerSkill = this;
+			const event = new EventHandler(commands)
+			event.parent = this
+			event.triggerSkill = this
 			if (caster) {
-				event.triggerActor = caster;
-				event.casterActor = caster;
+				event.triggerActor = caster
+				event.casterActor = caster
 			}
 			if (target) {
-				event.targetActor = target;
+				event.targetActor = target
 			}
-			EventHandler.call(event, caster?.updaters);
-			return event;
+			EventHandler.call(event, caster?.updaters)
+			return event
 		}
 	}
 
@@ -3720,9 +3757,9 @@ class Skill {
 	 * @returns 生成的事件处理器
 	 */
 	public emit(type: string): EventHandler | undefined {
-		const event = this.callEvent(type);
-		this.script.emit(type, this);
-		return event;
+		const event = this.callEvent(type)
+		this.script.emit(type, this)
+		return event
 	}
 
 	/**
@@ -3734,35 +3771,35 @@ class Skill {
 			id: this.id,
 			cooldown: this.cooldown,
 			duration: this.duration,
-			attributes: this.attributes,
-		};
+			attributes: this.attributes
+		}
 	}
 
 	/** 最新创建技能 */
-	public static latest?: Skill;
+	public static latest?: Skill
 }
 
 /** ******************************** 状态管理器 ******************************** */
 
 class StateManager {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** {ID:状态}映射表 */
-	public idMap: HashMap<State>;
+	public idMap: HashMap<State>
 	/** 状态倒计时列表 */
-	public countdownList: StateCountdownList;
+	public countdownList: StateCountdownList
 	/** 状态管理器版本(随着状态添加和移除发生变化) */
-	public version: number;
+	public version: number
 
 	/**
 	 * 角色状态管理器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.actor = actor;
-		this.idMap = {};
-		this.countdownList = new StateCountdownList(this);
-		this.version = 0;
+		this.actor = actor
+		this.idMap = {}
+		this.countdownList = new StateCountdownList(this)
+		this.version = 0
 	}
 
 	/**
@@ -3771,7 +3808,7 @@ class StateManager {
 	 * @returns 状态实例
 	 */
 	public get(id: string): State | undefined {
-		return this.idMap[id];
+		return this.idMap[id]
 	}
 
 	/**
@@ -3779,17 +3816,17 @@ class StateManager {
 	 * @param state 状态实例
 	 */
 	public add(state: State): void {
-		const { id } = state;
-		const { idMap } = this;
+		const { id } = state
+		const { idMap } = this
 		// 如果存在该状态，先移除
 		if (id in idMap) {
-			this.remove(idMap[id]!);
+			this.remove(idMap[id]!)
 		}
-		idMap[id] = state;
-		this.version++;
-		this.countdownList.append(state);
-		state.parent = this;
-		state.emit("stateadd");
+		idMap[id] = state
+		this.version++
+		this.countdownList.append(state)
+		state.parent = this
+		state.emit('stateadd')
 	}
 
 	/**
@@ -3797,15 +3834,15 @@ class StateManager {
 	 * @param state 状态实例
 	 */
 	public remove(state: State): void {
-		const { id } = state;
-		const { idMap } = this;
+		const { id } = state
+		const { idMap } = this
 		// 如果存在该状态，则移除，并触发状态移除事件
 		if (idMap[id] === state) {
-			delete idMap[id];
-			this.version++;
-			this.countdownList.remove(state);
-			state.emit("stateremove");
-			state.parent = null;
+			delete idMap[id]
+			this.version++
+			this.countdownList.remove(state)
+			state.emit('stateremove')
+			state.parent = null
 		}
 	}
 
@@ -3815,8 +3852,8 @@ class StateManager {
 	 */
 	public delete(id: string): void {
 		// 从管理器中移除指定ID的状态
-		const state = this.idMap[id];
-		if (state) this.remove(state);
+		const state = this.idMap[id]
+		if (state) this.remove(state)
 	}
 
 	/**
@@ -3824,13 +3861,13 @@ class StateManager {
 	 * @returns 状态存档数据列表
 	 */
 	public saveData(): Array<StateSaveData> {
-		const states = Object.values(this.idMap) as Array<State>;
-		const length = states.length;
-		const data = new Array<StateSaveData>(length);
+		const states = Object.values(this.idMap) as Array<State>
+		const length = states.length
+		const data = new Array<StateSaveData>(length)
 		for (let i = 0; i < length; i++) {
-			data[i] = states[i].saveData();
+			data[i] = states[i].saveData()
 		}
-		return data;
+		return data
 	}
 
 	/**
@@ -3839,14 +3876,14 @@ class StateManager {
 	 */
 	public loadData(states: Array<StateSaveData>): void {
 		for (const savedData of states) {
-			const id = savedData.id;
-			const data = Data.states[id];
+			const id = savedData.id
+			const data = Data.states[id]
 			if (data) {
 				// 重新创建状态实例
-				const state = new State(data, savedData);
-				this.countdownList.append(state);
-				this.idMap[id] = state;
-				state.parent = this;
+				const state = new State(data, savedData)
+				this.countdownList.append(state)
+				this.idMap[id] = state
+				state.parent = this
 			}
 		}
 	}
@@ -3856,18 +3893,18 @@ class StateManager {
 
 class StateCountdownList extends Array {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** 状态管理器 */
-	public manager: StateManager;
+	public manager: StateManager
 
 	/**
 	 * 角色状态倒计时列表
 	 * @param stateManager 角色状态管理器实例
 	 */
 	constructor(stateManager: StateManager) {
-		super();
-		this.actor = stateManager.actor;
-		this.manager = stateManager;
+		super()
+		this.actor = stateManager.actor
+		this.manager = stateManager
 	}
 
 	/**
@@ -3876,14 +3913,14 @@ class StateCountdownList extends Array {
 	 * @returns 是否成功添加
 	 */
 	public append(state: State): boolean {
-		if (state.currentTime === 0) return false;
+		if (state.currentTime === 0) return false
 		// 如果列表为空，延迟将本列表添加到角色的更新器列表中
 		if (this.length === 0) {
 			Callback.push(() => {
-				this.actor.updaters.add(this);
-			});
+				this.actor.updaters.add(this)
+			})
 		}
-		return super.append(state);
+		return super.append(state)
 	}
 
 	/**
@@ -3893,18 +3930,18 @@ class StateCountdownList extends Array {
 	 */
 	public remove(state: State): boolean {
 		// 如果存在该状态，则移除
-		const i = this.indexOf(state);
+		const i = this.indexOf(state)
 		if (i !== -1) {
-			this.splice(i, 1);
+			this.splice(i, 1)
 			// 如果列表为空，延迟将本列表从角色的更新器列表中移除
 			if (this.length === 0) {
 				Callback.push(() => {
-					this.actor.updaters.remove(this);
-				});
+					this.actor.updaters.remove(this)
+				})
 			}
-			return true;
+			return true
 		}
-		return false;
+		return false
 	}
 
 	/**
@@ -3912,16 +3949,16 @@ class StateCountdownList extends Array {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	public update(deltaTime: number): void {
-		let i = this.length;
+		let i = this.length
 		// 逆序遍历倒计时中的状态
 		while (--i >= 0) {
-			const state = this[i];
-			state.autorun();
-			state.updaters.update(deltaTime);
+			const state = this[i]
+			state.autorun()
+			state.updaters.update(deltaTime)
 			// 如果倒计时结束，则将状态从列表中移除
 			if ((state.currentTime -= deltaTime) <= 0) {
-				state.currentTime = 0;
-				this.manager.remove(state);
+				state.currentTime = 0
+				this.manager.remove(state)
 			}
 		}
 	}
@@ -3931,31 +3968,31 @@ class StateCountdownList extends Array {
 
 class State {
 	/** 状态文件ID */
-	public id: string;
+	public id: string
 	/** 状态文件数据 */
-	public data: StateFile;
+	public data: StateFile
 	/** 状态图标文件ID */
-	public icon: string;
+	public icon: string
 	/** 状态图标矩形裁剪区域 */
-	public clip: ImageClip;
+	public clip: ImageClip
 	/** 状态当前时间 */
-	public currentTime: number;
+	public currentTime: number
 	/** 状态持续时间 */
-	public duration: number;
+	public duration: number
 	/** 状态更新器列表 */
-	public updaters: UpdaterList;
+	public updaters: UpdaterList
 	/** {键:属性值}映射表 */
-	public attributes: AttributeMap;
+	public attributes: AttributeMap
 	/** 技能施放者 */
-	public caster: Actor | null;
+	public caster: Actor | null
 	/** {类型:事件}映射表 */
-	public events: HashMap<CommandFunctionList>;
+	public events: HashMap<CommandFunctionList>
 	/** 状态脚本管理器 */
-	public script: ScriptManager;
+	public script: ScriptManager
 	/** 状态管理器 */
-	public parent: StateManager | null;
+	public parent: StateManager | null
 	/** 已开始状态 */
-	private started: boolean;
+	private started: boolean
 
 	/**
 	 * 角色状态对象
@@ -3963,37 +4000,37 @@ class State {
 	 * @param savedData 状态存档数据
 	 */
 	constructor(data: StateFile, savedData?: StateSaveData) {
-		this.id = data.id;
-		this.data = data;
-		this.icon = data.icon;
-		this.clip = data.clip;
-		this.currentTime = 0;
-		this.duration = 0;
-		this.updaters = new UpdaterList();
-		this.attributes = {};
-		this.caster = null;
-		this.events = data.events;
-		this.script = ScriptManager.create(this, data.scripts);
-		this.parent = null;
-		this.started = false;
-		State.latest = this;
+		this.id = data.id
+		this.data = data
+		this.icon = data.icon
+		this.clip = data.clip
+		this.currentTime = 0
+		this.duration = 0
+		this.updaters = new UpdaterList()
+		this.attributes = {}
+		this.caster = null
+		this.events = data.events
+		this.script = ScriptManager.create(this, data.scripts)
+		this.parent = null
+		this.started = false
+		State.latest = this
 
 		if (savedData) {
 			// 加载存档数据
-			this.currentTime = savedData.currentTime;
-			this.duration = savedData.duration;
-			this.attributes = savedData.attributes;
+			this.currentTime = savedData.currentTime
+			this.duration = savedData.duration
+			this.attributes = savedData.attributes
 			if (savedData.caster) {
 				Callback.push(() => {
-					const caster = GlobalEntityManager.get(savedData.caster);
+					const caster = GlobalEntityManager.get(savedData.caster)
 					if (caster instanceof Actor) {
-						this.caster = caster;
+						this.caster = caster
 					}
-				});
+				})
 			}
 		} else {
 			// 初始化
-			Attribute.loadEntries(this.attributes, data.attributes);
+			Attribute.loadEntries(this.attributes, data.attributes)
 		}
 	}
 
@@ -4003,8 +4040,8 @@ class State {
 	 */
 	public setTime(time: number): void {
 		if (time >= 0) {
-			this.currentTime = time;
-			this.duration = time;
+			this.currentTime = time
+			this.duration = time
 		}
 	}
 
@@ -4014,8 +4051,8 @@ class State {
 	 */
 	public increaseTime(time: number): void {
 		if (time > 0) {
-			this.currentTime += time;
-			this.duration = Math.max(this.currentTime, this.duration);
+			this.currentTime += time
+			this.duration = Math.max(this.currentTime, this.duration)
 		}
 	}
 
@@ -4025,7 +4062,7 @@ class State {
 	 */
 	public decreaseTime(time: number): void {
 		if (time > 0) {
-			this.currentTime = Math.max(this.currentTime - time, 0);
+			this.currentTime = Math.max(this.currentTime - time, 0)
 		}
 	}
 
@@ -4034,16 +4071,16 @@ class State {
 	 * @param type 状态事件类型
 	 */
 	public callEvent(type: string): void {
-		const actor = this.parent?.actor;
-		const caster = this.caster ?? undefined;
-		const commands = this.events[type];
+		const actor = this.parent?.actor
+		const caster = this.caster ?? undefined
+		const commands = this.events[type]
 		if (commands) {
-			const event = new EventHandler(commands);
-			event.parent = this;
-			event.triggerState = this;
-			event.triggerActor = actor;
-			event.casterActor = caster;
-			EventHandler.call(event, this.updaters);
+			const event = new EventHandler(commands)
+			event.parent = this
+			event.triggerState = this
+			event.triggerActor = actor
+			event.casterActor = caster
+			EventHandler.call(event, this.updaters)
 		}
 	}
 
@@ -4052,15 +4089,15 @@ class State {
 	 * @param type 状态事件类型
 	 */
 	public emit(type: string): void {
-		this.callEvent(type);
-		this.script.emit(type, this);
+		this.callEvent(type)
+		this.script.emit(type, this)
 	}
 
 	// 自动执行
 	public autorun(): void {
 		if (this.started === false) {
-			this.started = true;
-			this.emit("autorun");
+			this.started = true
+			this.emit('autorun')
 		}
 	}
 
@@ -4071,35 +4108,35 @@ class State {
 	public saveData(): StateSaveData {
 		return {
 			id: this.id,
-			caster: this.caster?.entityId ?? "",
+			caster: this.caster?.entityId ?? '',
 			currentTime: this.currentTime,
 			duration: this.duration,
-			attributes: this.attributes,
-		};
+			attributes: this.attributes
+		}
 	}
 
 	/** 最新创建状态 */
-	public static latest?: State;
+	public static latest?: State
 }
 
 /** ******************************** 装备管理器 ******************************** */
 
 class EquipmentManager {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** {装备槽:装备}映射表 */
-	public slotMap: HashMap<Equipment>;
+	public slotMap: HashMap<Equipment>
 	/** 装备管理器版本(随着装备添加和移除发生变化) */
-	public version: number;
+	public version: number
 
 	/**
 	 * 角色装备管理器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.actor = actor;
-		this.slotMap = {};
-		this.version = 0;
+		this.actor = actor
+		this.slotMap = {}
+		this.version = 0
 	}
 
 	/**
@@ -4108,7 +4145,7 @@ class EquipmentManager {
 	 * @returns 装备实例
 	 */
 	public get(slot: string): Equipment | undefined {
-		return this.slotMap[slot];
+		return this.slotMap[slot]
 	}
 
 	/**
@@ -4119,19 +4156,19 @@ class EquipmentManager {
 	public set(slot: string, equipment: Equipment): void {
 		if (this.actor.active && slot && equipment.parent !== this) {
 			// 先从其他管理器中移除该装备
-			equipment.remove();
+			equipment.remove()
 			// 如果槽已被占用，则移除槽对应的装备
-			const slotMap = this.slotMap;
-			const holder = slotMap[slot];
+			const slotMap = this.slotMap
+			const holder = slotMap[slot]
 			if (holder) {
-				this.remove(holder);
+				this.remove(holder)
 			}
 			// 设置装备槽对应值为该装备，并发送装备添加事件
-			slotMap[slot] = equipment;
-			this.version++;
-			equipment.slot = slot;
-			equipment.parent = this;
-			equipment.emit("equipmentadd");
+			slotMap[slot] = equipment
+			this.version++
+			equipment.slot = slot
+			equipment.parent = this
+			equipment.emit('equipmentadd')
 		}
 	}
 
@@ -4142,13 +4179,13 @@ class EquipmentManager {
 	public remove(equipment: Equipment): void {
 		if (this.actor.active && equipment.parent === this) {
 			// 从管理器中移除该装备，重置键位，并发送装备移除事件
-			delete this.slotMap[equipment.slot];
-			this.version++;
-			equipment.slot = "";
-			equipment.emit("equipmentremove");
-			equipment.parent = null;
+			delete this.slotMap[equipment.slot]
+			this.version++
+			equipment.slot = ''
+			equipment.emit('equipmentremove')
+			equipment.parent = null
 			// 在角色库存中插入移除的装备
-			this.actor.inventory.insert(equipment);
+			this.actor.inventory.insert(equipment)
 		}
 	}
 
@@ -4158,8 +4195,8 @@ class EquipmentManager {
 	 */
 	public delete(slot: string): void {
 		// 从管理器中移除指定键的装备
-		const equipment = this.slotMap[slot];
-		if (equipment) this.remove(equipment);
+		const equipment = this.slotMap[slot]
+		if (equipment) this.remove(equipment)
 	}
 
 	/**
@@ -4168,10 +4205,12 @@ class EquipmentManager {
 	 * @returns 装备实例
 	 */
 	public getById(equipmentId: string): Equipment | undefined {
-		for (const equipment of Object.values(this.slotMap) as Array<Equipment>) {
-			if (equipment.id === equipmentId) return equipment;
+		for (const equipment of Object.values(
+			this.slotMap
+		) as Array<Equipment>) {
+			if (equipment.id === equipmentId) return equipment
 		}
-		return undefined;
+		return undefined
 	}
 
 	/**
@@ -4179,13 +4218,13 @@ class EquipmentManager {
 	 * @returns 装备存档数据列表
 	 */
 	public saveData(): Array<EquipmentSaveData> {
-		const equipments = Object.values(this.slotMap) as Array<Equipment>;
-		const length = equipments.length;
-		const data = Array<EquipmentSaveData>(length);
+		const equipments = Object.values(this.slotMap) as Array<Equipment>
+		const length = equipments.length
+		const data = Array<EquipmentSaveData>(length)
 		for (let i = 0; i < length; i++) {
-			data[i] = equipments[i].saveData();
+			data[i] = equipments[i].saveData()
 		}
-		return data;
+		return data
 	}
 
 	/**
@@ -4194,12 +4233,12 @@ class EquipmentManager {
 	 */
 	public loadData(equipments: Array<EquipmentSaveData>): void {
 		for (const savedData of equipments) {
-			const data = Data.equipments[savedData.id];
+			const data = Data.equipments[savedData.id]
 			if (data) {
 				// 重新创建装备实例
-				const equipment = new Equipment(data, savedData);
-				equipment.parent = this;
-				this.slotMap[savedData.slot] = equipment;
+				const equipment = new Equipment(data, savedData)
+				equipment.parent = this
+				this.slotMap[savedData.slot] = equipment
 			}
 		}
 	}
@@ -4209,25 +4248,25 @@ class EquipmentManager {
 
 class Equipment {
 	/** 装备文件ID */
-	public id: string;
+	public id: string
 	/** 装备槽 */
-	public slot: string;
+	public slot: string
 	/** 装备在库存中的位置(如果不在库存中为-1) */
-	public order: number;
+	public order: number
 	/** 装备文件数据 */
-	public data: EquipmentFile;
+	public data: EquipmentFile
 	/** 装备图标文件ID */
-	public icon: string;
+	public icon: string
 	/** 装备图标矩形裁剪区域 */
-	public clip: ImageClip;
+	public clip: ImageClip
 	/** {键:属性值}映射表 */
-	public attributes: AttributeMap;
+	public attributes: AttributeMap
 	/** {类型:事件}映射表 */
-	public events: HashMap<CommandFunctionList>;
+	public events: HashMap<CommandFunctionList>
 	/** 装备脚本管理器 */
-	public script: ScriptManager;
+	public script: ScriptManager
 	/** 父级对象 */
-	public parent: Inventory | EquipmentManager | null;
+	public parent: Inventory | EquipmentManager | null
 
 	/**
 	 * 角色装备对象
@@ -4235,27 +4274,27 @@ class Equipment {
 	 * @param savedData 装备存档数据
 	 */
 	constructor(data: EquipmentFile, savedData?: EquipmentSaveData) {
-		this.id = data.id;
-		this.slot = "";
-		this.order = -1;
-		this.data = data;
-		this.icon = data.icon;
-		this.clip = data.clip;
-		this.attributes = {};
-		this.events = data.events;
-		this.script = ScriptManager.create(this, data.scripts);
-		this.parent = null;
-		Equipment.latest = this;
+		this.id = data.id
+		this.slot = ''
+		this.order = -1
+		this.data = data
+		this.icon = data.icon
+		this.clip = data.clip
+		this.attributes = {}
+		this.events = data.events
+		this.script = ScriptManager.create(this, data.scripts)
+		this.parent = null
+		Equipment.latest = this
 
 		if (savedData) {
 			// 加载存档数据
-			this.slot = savedData.slot;
-			this.order = savedData.order;
-			this.attributes = savedData.attributes;
+			this.slot = savedData.slot
+			this.order = savedData.order
+			this.attributes = savedData.attributes
 		} else {
 			// 初始化
-			Attribute.loadEntries(this.attributes, data.attributes);
-			this.emit("create");
+			Attribute.loadEntries(this.attributes, data.attributes)
+			this.emit('create')
 		}
 	}
 
@@ -4269,13 +4308,13 @@ class Equipment {
 		actor: Actor | undefined = this.parent?.actor
 	): void {
 		if (this.parent instanceof Inventory) {
-			actor?.equipment.set(slot, this);
+			actor?.equipment.set(slot, this)
 		}
 	}
 
 	/** 移除角色装备 */
 	public remove(): void {
-		this.parent?.remove(this);
+		this.parent?.remove(this)
 	}
 
 	/**
@@ -4283,23 +4322,23 @@ class Equipment {
 	 * @param type 装备事件类型
 	 */
 	public callEvent(type: string): void {
-		const actor = this.parent?.actor;
-		const commands = this.events[type];
-		if (type === "equipmentgain") {
+		const actor = this.parent?.actor
+		const commands = this.events[type]
+		if (type === 'equipmentgain') {
 			EventManager.emit(type, {
 				argument: {},
 				properties: {
 					triggerActor: actor,
-					triggerEquipment: this,
-				},
-			});
+					triggerEquipment: this
+				}
+			})
 		}
 		if (commands) {
-			const event = new EventHandler(commands);
-			event.parent = this;
-			event.triggerActor = actor;
-			event.triggerEquipment = this;
-			EventHandler.call(event, actor?.updaters);
+			const event = new EventHandler(commands)
+			event.parent = this
+			event.triggerActor = actor
+			event.triggerEquipment = this
+			EventHandler.call(event, actor?.updaters)
 		}
 	}
 
@@ -4308,8 +4347,8 @@ class Equipment {
 	 * @param type 装备事件类型
 	 */
 	public emit(type: string): void {
-		this.callEvent(type);
-		this.script.emit(type, this);
+		this.callEvent(type)
+		this.script.emit(type, this)
 	}
 
 	/**
@@ -4321,37 +4360,37 @@ class Equipment {
 			id: this.id,
 			slot: this.slot,
 			order: this.order,
-			attributes: this.attributes,
-		};
+			attributes: this.attributes
+		}
 	}
 
 	/** 最新创建装备 */
-	public static latest?: Equipment;
+	public static latest?: Equipment
 }
 
 /** ******************************** 物品 ******************************** */
 
 class Item {
 	/** 物品文件ID */
-	public id: string;
+	public id: string
 	/** 物品在库存中的位置(如果不在库存中为-1) */
-	public order: number;
+	public order: number
 	/** 物品文件数据 */
-	public data: ItemFile;
+	public data: ItemFile
 	/** 物品图标文件ID */
-	public icon: string;
+	public icon: string
 	/** 物品图标矩形裁剪区域 */
-	public clip: ImageClip;
+	public clip: ImageClip
 	/** 物品数量 */
-	public quantity: number;
+	public quantity: number
 	/** {键:属性值}映射表 */
-	public attributes: AttributeMap;
+	public attributes: AttributeMap
 	/** {类型:事件}映射表 */
-	public events: HashMap<CommandFunctionList>;
+	public events: HashMap<CommandFunctionList>
 	/** 物品脚本管理器 */
-	public script: ScriptManager;
+	public script: ScriptManager
 	/** 父级对象 */
-	public parent: Inventory | null;
+	public parent: Inventory | null
 
 	/**
 	 * 角色物品对象
@@ -4359,23 +4398,23 @@ class Item {
 	 * @param savedData 物品存档数据
 	 */
 	constructor(data: ItemFile, savedData?: ItemSaveData) {
-		this.id = data.id;
-		this.order = -1;
-		this.data = data;
-		this.icon = data.icon;
-		this.clip = data.clip;
-		this.quantity = 0;
-		this.attributes = data.attributes;
-		this.events = data.events;
-		this.script = ScriptManager.create(this, data.scripts);
-		this.parent = null;
+		this.id = data.id
+		this.order = -1
+		this.data = data
+		this.icon = data.icon
+		this.clip = data.clip
+		this.quantity = 0
+		this.attributes = data.attributes
+		this.events = data.events
+		this.script = ScriptManager.create(this, data.scripts)
+		this.parent = null
 
 		if (savedData) {
 			// 加载存档数据
-			this.order = savedData.order;
-			this.quantity = savedData.quantity;
+			this.order = savedData.order
+			this.quantity = savedData.quantity
 		} else {
-			this.emit("create");
+			this.emit('create')
 		}
 	}
 
@@ -4389,7 +4428,7 @@ class Item {
 	): EventHandler | undefined {
 		// 如果数量大于0，则返回物品使用事件
 		if (this.quantity > 0 && actor?.isActive()) {
-			return this.emit("itemuse", actor);
+			return this.emit('itemuse', actor)
 		}
 	}
 
@@ -4398,10 +4437,10 @@ class Item {
 	 * @param quantity 物品数量
 	 */
 	public increase(quantity: number): void {
-		const { parent } = this;
+		const { parent } = this
 		if (parent && quantity > 0) {
-			this.quantity += quantity;
-			parent.version++;
+			this.quantity += quantity
+			parent.version++
 		}
 	}
 
@@ -4410,25 +4449,25 @@ class Item {
 	 * @param quantity 物品数量
 	 */
 	public decrease(quantity: number): void {
-		const { parent } = this;
+		const { parent } = this
 		if (parent && quantity > 0) {
-			this.quantity -= quantity;
+			this.quantity -= quantity
 			// 如果物品数量不足，则移除
 			if (this.quantity <= 0) {
-				this.quantity = 0;
-				this.remove();
+				this.quantity = 0
+				this.remove()
 				// 当数量减少到零时默认已销毁
 				// 标记父对象兼容StopEvent指令
-				this.parent = parent;
+				this.parent = parent
 			}
-			parent.version++;
+			parent.version++
 		}
 	}
 
-  /** 将物品从库存中移除 */
-  public remove(): void {
-    this.parent?.remove(this)
-  }
+	/** 将物品从库存中移除 */
+	public remove(): void {
+		this.parent?.remove(this)
+	}
 
 	/**
 	 * 调用物品事件(共享库存的代价：需要传递事件触发角色)
@@ -4440,23 +4479,23 @@ class Item {
 		type: string,
 		actor: Actor | undefined = this.parent?.actor
 	): EventHandler | undefined {
-		const commands = this.events[type];
-		if (type === "itemgain") {
+		const commands = this.events[type]
+		if (type === 'itemgain') {
 			EventManager.emit(type, {
 				argument: {},
 				properties: {
 					triggerActor: actor,
-					triggerItem: this,
-				},
-			});
+					triggerItem: this
+				}
+			})
 		}
 		if (commands) {
-			const event = new EventHandler(commands);
-			event.parent = this;
-			event.triggerActor = actor;
-			event.triggerItem = this;
-			EventHandler.call(event, actor?.updaters);
-			return event;
+			const event = new EventHandler(commands)
+			event.parent = this
+			event.triggerActor = actor
+			event.triggerItem = this
+			EventHandler.call(event, actor?.updaters)
+			return event
 		}
 	}
 
@@ -4467,9 +4506,9 @@ class Item {
 	 * @returns 生成的事件处理器
 	 */
 	public emit(type: string, actor?: Actor): EventHandler | undefined {
-		const event = this.callEvent(type, actor);
-		this.script.emit(type, this);
-		return event;
+		const event = this.callEvent(type, actor)
+		this.script.emit(type, this)
+		return event
 	}
 
 	/**
@@ -4480,246 +4519,248 @@ class Item {
 		return {
 			id: this.id,
 			order: this.order,
-			quantity: this.quantity,
-		};
+			quantity: this.quantity
+		}
 	}
 
 	/** 最新获得物品 */
-	public static latest?: Item;
+	public static latest?: Item
 	/** 最新获得物品的增量 */
-	public static increment: number = 0;
+	public static increment: number = 0
 }
 
 /** ******************************** 库存 ******************************** */
 
 class Inventory {
-  /** 绑定的角色对象 */
-  public actor: Actor
-  /** 库存中的金钱 */
-  public money: number
-  /** 预测下一个空槽的插入位置 */
-  private pointer: number
-  /** 库存资产列表 */
-  public list: Array<Item | Equipment>
-  /** {ID:资产集合}映射表 */
-  public idMap: HashMap<Array<Item | Equipment>>
-  /** 库存管理器版本(随着资产添加和移除发生变化) */
-  public version: number
+	/** 绑定的角色对象 */
+	public actor: Actor
+	/** 库存中的金钱 */
+	public money: number
+	/** 预测下一个空槽的插入位置 */
+	private pointer: number
+	/** 库存资产列表 */
+	public list: Array<Item | Equipment>
+	/** {ID:资产集合}映射表 */
+	public idMap: HashMap<Array<Item | Equipment>>
+	/** 库存管理器版本(随着资产添加和移除发生变化) */
+	public version: number
 
 	/**
 	 * 角色库存管理器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.actor = actor;
-		this.money = 0;
-		this.pointer = 0;
-		this.list = [];
-		this.idMap = {};
-		this.version = 0;
+		this.actor = actor
+		this.money = 0
+		this.pointer = 0
+		this.list = []
+		this.idMap = {}
+		this.version = 0
 	}
 
-  /**
-   * 获取库存资产
-   * @param id 资产文件ID
-   * @returns 物品或装备实例
-   */
-  public get(id: string): Item | Equipment | undefined {
-    return this.idMap[id]?.[0]
-  }
+	/**
+	 * 获取库存资产
+	 * @param id 资产文件ID
+	 * @returns 物品或装备实例
+	 */
+	public get(id: string): Item | Equipment | undefined {
+		return this.idMap[id]?.[0]
+	}
 
-  /**
-   * 获取库存资产列表
-   * @param id 资产文件ID
-   * @returns 物品或装备列表
-   */
-  public getList(id: string): Array<Item | Equipment> | undefined {
-    return this.idMap[id]
-  }
+	/**
+	 * 获取库存资产列表
+	 * @param id 资产文件ID
+	 * @returns 物品或装备列表
+	 */
+	public getList(id: string): Array<Item | Equipment> | undefined {
+		return this.idMap[id]
+	}
 
-  /** 重置库存中的物品、装备、金币 */
-  public reset(): void {
-    // 遍历库存中的所有物品装备，重置属性
-    for (const asset of this.list) {
-      asset.parent = null
-      asset.order = -1
-    }
-    // 重置库存属性
-    this.money = 0
-    this.pointer = 0
-    this.list = []
-    this.idMap = {}
-    this.version++
-  }
+	/** 重置库存中的物品、装备、金币 */
+	public reset(): void {
+		// 遍历库存中的所有物品装备，重置属性
+		for (const asset of this.list) {
+			asset.parent = null
+			asset.order = -1
+		}
+		// 重置库存属性
+		this.money = 0
+		this.pointer = 0
+		this.list = []
+		this.idMap = {}
+		this.version++
+	}
 
-  /**
-   * 插入物品或装备到库存中的空位置
-   * @param asset 插入资产
-   */
-  public insert(asset: Item | Equipment): void {
-    if (asset.parent === null) {
-      // 将物品插入到空槽位
-      let i = this.pointer
-      const {list} = this
-      while (list[i]?.order === i) {i++}
-      list.splice(i, 0, asset)
-      asset.order = i
-      asset.parent = this
-      // 将物品添加到映射表
-      this.addToMap(asset)
-      // 设置空槽位起始查找位置
-      this.pointer = i + 1
-      this.version++
-    }
-  }
+	/**
+	 * 插入物品或装备到库存中的空位置
+	 * @param asset 插入资产
+	 */
+	public insert(asset: Item | Equipment): void {
+		if (asset.parent === null) {
+			// 将物品插入到空槽位
+			let i = this.pointer
+			const { list } = this
+			while (list[i]?.order === i) {
+				i++
+			}
+			list.splice(i, 0, asset)
+			asset.order = i
+			asset.parent = this
+			// 将物品添加到映射表
+			this.addToMap(asset)
+			// 设置空槽位起始查找位置
+			this.pointer = i + 1
+			this.version++
+		}
+	}
 
-  /**
-   * 从库存中移除物品或装备
-   * @param asset 移除资产
-   */
-  public remove(asset: Item | Equipment): void {
-    if (asset.parent === this) {
-      const {list} = this
-      const i = list.indexOf(asset)
-      list.splice(i, 1)
-      asset.order = -1
-      asset.parent = null
-      // 将物品从映射表中移除
-      this.removeFromMap(asset)
-      // 设置空槽位起始查找位置
-      if (this.pointer > i) {
-        this.pointer = i
-      }
-      this.version++
-    }
-  }
+	/**
+	 * 从库存中移除物品或装备
+	 * @param asset 移除资产
+	 */
+	public remove(asset: Item | Equipment): void {
+		if (asset.parent === this) {
+			const { list } = this
+			const i = list.indexOf(asset)
+			list.splice(i, 1)
+			asset.order = -1
+			asset.parent = null
+			// 将物品从映射表中移除
+			this.removeFromMap(asset)
+			// 设置空槽位起始查找位置
+			if (this.pointer > i) {
+				this.pointer = i
+			}
+			this.version++
+		}
+	}
 
-  /**
-   * 添加物品或装备到映射表
-   * @param asset 添加资产
-   */
-  private addToMap(asset: Item | Equipment): void {
-    if (this.idMap[asset.id]) {
-      this.idMap[asset.id]!.push(asset)
-    } else {
-      this.idMap[asset.id] = [asset]
-    }
-  }
+	/**
+	 * 添加物品或装备到映射表
+	 * @param asset 添加资产
+	 */
+	private addToMap(asset: Item | Equipment): void {
+		if (this.idMap[asset.id]) {
+			this.idMap[asset.id]!.push(asset)
+		} else {
+			this.idMap[asset.id] = [asset]
+		}
+	}
 
-  /**
-   * 从映射表中移除物品或装备
-   * @param asset 移除对象
-   */
-  private removeFromMap(asset: Item | Equipment): void {
-    this.idMap[asset.id]?.remove(asset)
-    if (this.idMap[asset.id]?.length === 0) {
-      delete this.idMap[asset.id]
-    }
-  }
+	/**
+	 * 从映射表中移除物品或装备
+	 * @param asset 移除对象
+	 */
+	private removeFromMap(asset: Item | Equipment): void {
+		this.idMap[asset.id]?.remove(asset)
+		if (this.idMap[asset.id]?.length === 0) {
+			delete this.idMap[asset.id]
+		}
+	}
 
-  /**
-   * 交换物品或装备(如果存在)在库存中的位置
-   * @param order1 资产1的位置
-   * @param order2 资产2的位置
-   */
-  public swap(order1: number, order2: number): void {
-    if (order1 >= 0 && order2 >= 0 && order1 !== order2) {
-      // 确保order1小于order2
-      if (order1 > order2) {
-        const temp = order1
-        order1 = order2
-        order2 = temp
-      }
-      const {list} = this
-      const asset1 = list.find(a => a.order === order1)
-      const asset2 = list.find(a => a.order === order2)
-      if (asset1 && asset2) {
-        // 同时存在两个物品
-        const pos1 = list.indexOf(asset1)
-        const pos2 = list.indexOf(asset2)
-        asset1.order = order2
-        asset2.order = order1
-        list[pos1] = asset2
-        list[pos2] = asset1
-        this.version++
-      } else if (asset1) {
-        // 存在索引较小的物品
-        const pos1 = list.indexOf(asset1)
-        list.splice(pos1, 1)
-        let pos2 = pos1
-        const {length} = list
-        while (pos2 < length) {
-          if (list[pos2].order > order2) {
-            break
-          }
-          pos2++
-        }
-        asset1.order = order2
-        list.splice(pos2, 0, asset1)
-        this.version++
-        // 设置空槽位起始查找位置
-        if (this.pointer > pos1) {
-          this.pointer = pos1
-        }
-      } else if (asset2) {
-        // 存在索引较大的物品
-        const pos2 = list.indexOf(asset2)
-        list.splice(pos2, 1)
-        let pos1 = pos2
-        while (--pos1 >= 0) {
-          if (list[pos1].order < order1) {
-            pos1++
-            break
-          }
-        }
-        pos1 = Math.max(pos1, 0)
-        asset2.order = order1
-        list.splice(pos1, 0, asset2)
-        this.version++
-      }
-    }
-  }
+	/**
+	 * 交换物品或装备(如果存在)在库存中的位置
+	 * @param order1 资产1的位置
+	 * @param order2 资产2的位置
+	 */
+	public swap(order1: number, order2: number): void {
+		if (order1 >= 0 && order2 >= 0 && order1 !== order2) {
+			// 确保order1小于order2
+			if (order1 > order2) {
+				const temp = order1
+				order1 = order2
+				order2 = temp
+			}
+			const { list } = this
+			const asset1 = list.find((a) => a.order === order1)
+			const asset2 = list.find((a) => a.order === order2)
+			if (asset1 && asset2) {
+				// 同时存在两个物品
+				const pos1 = list.indexOf(asset1)
+				const pos2 = list.indexOf(asset2)
+				asset1.order = order2
+				asset2.order = order1
+				list[pos1] = asset2
+				list[pos2] = asset1
+				this.version++
+			} else if (asset1) {
+				// 存在索引较小的物品
+				const pos1 = list.indexOf(asset1)
+				list.splice(pos1, 1)
+				let pos2 = pos1
+				const { length } = list
+				while (pos2 < length) {
+					if (list[pos2].order > order2) {
+						break
+					}
+					pos2++
+				}
+				asset1.order = order2
+				list.splice(pos2, 0, asset1)
+				this.version++
+				// 设置空槽位起始查找位置
+				if (this.pointer > pos1) {
+					this.pointer = pos1
+				}
+			} else if (asset2) {
+				// 存在索引较大的物品
+				const pos2 = list.indexOf(asset2)
+				list.splice(pos2, 1)
+				let pos1 = pos2
+				while (--pos1 >= 0) {
+					if (list[pos1].order < order1) {
+						pos1++
+						break
+					}
+				}
+				pos1 = Math.max(pos1, 0)
+				asset2.order = order1
+				list.splice(pos1, 0, asset2)
+				this.version++
+			}
+		}
+	}
 
 	/**
 	 * 排序库存中的对象
 	 * @param byOrder 如果设置为true，则按文件名排序，物品优先于装备
 	 */
 	public sort(byOrder: boolean = false): void {
-		const { list } = this;
-		const { length } = list;
+		const { list } = this
+		const { length } = list
 		// 如果通过文件名排序
 		if (byOrder)
 			list.sort((a: Item | Equipment, b: Item | Equipment) => {
-				const typeA = a instanceof Item ? "item" : "equipment";
-				const typeB = b instanceof Item ? "item" : "equipment";
+				const typeA = a instanceof Item ? 'item' : 'equipment'
+				const typeB = b instanceof Item ? 'item' : 'equipment'
 				// 物品优先于装备，然后再比较文件名
 				if (typeA !== typeB) {
-					return typeA === "item" ? -1 : 1;
+					return typeA === 'item' ? -1 : 1
 				}
-				return a.data.filename.localeCompare(b.data.filename);
-			});
+				return a.data.filename.localeCompare(b.data.filename)
+			})
 		// 遍历物品列表，更新索引
 		for (let i = 0; i < length; i++) {
-			list[i].order = i;
+			list[i].order = i
 		}
-		this.pointer = length;
-		this.version++;
+		this.pointer = length
+		this.version++
 	}
 
-  /**
-   * 查找指定的物品或装备数量
-   * @param id 物品或装备的文件ID
-   * @returns 资产的数量
-   */
-  public count(id: string): number {
-    const list = this.getList(id)
-    if (!list) return 0
-    let count = 0
-    for (const asset of list) {
-      count += asset instanceof Item ? asset.quantity : 1
-    }
-    return count
-  }
+	/**
+	 * 查找指定的物品或装备数量
+	 * @param id 物品或装备的文件ID
+	 * @returns 资产的数量
+	 */
+	public count(id: string): number {
+		const list = this.getList(id)
+		if (!list) return 0
+		let count = 0
+		for (const asset of list) {
+			count += asset instanceof Item ? asset.quantity : 1
+		}
+		return count
+	}
 
 	//
 	/**
@@ -4727,14 +4768,14 @@ class Inventory {
 	 * @param money 金钱数量
 	 */
 	public increaseMoney(money: number): void {
-		this.money += Math.max(money, 0);
-		Inventory.moneyIncrement = money;
-		EventManager.emit("moneygain", {
+		this.money += Math.max(money, 0)
+		Inventory.moneyIncrement = money
+		EventManager.emit('moneygain', {
 			argument: {},
 			properties: {
-				triggerActor: this.actor,
-			},
-		});
+				triggerActor: this.actor
+			}
+		})
 	}
 
 	/**
@@ -4742,7 +4783,7 @@ class Inventory {
 	 * @param money 金钱数量
 	 */
 	public decreaseMoney(money: number): void {
-		this.money -= Math.max(money, 0);
+		this.money -= Math.max(money, 0)
 	}
 
 	/**
@@ -4751,15 +4792,15 @@ class Inventory {
 	 * @param quantity 物品数量
 	 */
 	public createItems(id: string, quantity: number): void {
-		const data = Data.items[id];
+		const data = Data.items[id]
 		if (data && quantity > 0) {
-			const item = new Item(data);
+			const item = new Item(data)
 			// 插入到库存
-			Item.latest = item;
-			Item.increment = quantity;
-			this.insert(item);
-			item.increase(quantity);
-			item.callEvent("itemgain");
+			Item.latest = item
+			Item.increment = quantity
+			this.insert(item)
+			item.increase(quantity)
+			item.callEvent('itemgain')
 		}
 	}
 
@@ -4769,15 +4810,15 @@ class Inventory {
 	 * @param quantity 物品数量
 	 */
 	public increaseItems(id: string, quantity: number): void {
-		const item = this.get(id);
+		const item = this.get(id)
 		// 如果存在该物品，则增加数量，否则创建物品
 		if (item instanceof Item) {
-			Item.latest = item;
-			Item.increment = quantity;
-			item.increase(quantity);
-			item.callEvent("itemgain");
+			Item.latest = item
+			Item.increment = quantity
+			item.increase(quantity)
+			item.callEvent('itemgain')
 		} else {
-			this.createItems(id, quantity);
+			this.createItems(id, quantity)
 		}
 	}
 
@@ -4787,19 +4828,19 @@ class Inventory {
 	 * @param quantity 物品数量
 	 */
 	public decreaseItems(id: string, quantity: number): void {
-		const { list } = this;
-		let i = list.length;
+		const { list } = this
+		let i = list.length
 		while (--i >= 0) {
-			const item = list[i];
+			const item = list[i]
 			if (item.id === id && item instanceof Item) {
 				// 查找物品并减少数量
 				if (item.quantity >= quantity) {
-					item.decrease(quantity);
-					return;
+					item.decrease(quantity)
+					return
 				}
 				// 如果数量不够，继续查找
-				quantity -= item.quantity;
-				item.decrease(item.quantity);
+				quantity -= item.quantity
+				item.decrease(item.quantity)
 			}
 		}
 	}
@@ -4809,9 +4850,9 @@ class Inventory {
 	 * @param id 装备文件ID
 	 */
 	public createEquipment(id: string): void {
-		const data = Data.equipments[id];
+		const data = Data.equipments[id]
 		if (data) {
-			this.gainEquipment(new Equipment(data));
+			this.gainEquipment(new Equipment(data))
 		}
 	}
 
@@ -4820,9 +4861,9 @@ class Inventory {
 	 * @param id 装备文件ID
 	 */
 	public deleteEquipment(id: string): void {
-		const equipment = this.get(id);
+		const equipment = this.get(id)
 		if (equipment instanceof Equipment) {
-			this.loseEquipment(equipment);
+			this.loseEquipment(equipment)
 		}
 	}
 
@@ -4832,9 +4873,9 @@ class Inventory {
 	 */
 	public gainEquipment(equipment: Equipment): void {
 		if (equipment.parent !== this) {
-			equipment.remove();
-			this.insert(equipment);
-			equipment.callEvent("equipmentgain");
+			equipment.remove()
+			this.insert(equipment)
+			equipment.callEvent('equipmentgain')
 		}
 	}
 
@@ -4844,94 +4885,94 @@ class Inventory {
 	 */
 	public loseEquipment(equipment: Equipment): void {
 		if (equipment.parent === this) {
-			this.remove(equipment);
+			this.remove(equipment)
 		}
 	}
 
-  /**
-   * 保存库存数据
-   * @param actor 为这个角色保存库存(可能不是库存的主人)
-   * @returns 库存存档数据
-   */
-  public saveData(actor: Actor): InventorySaveData {
-    if (actor.savedInventory) {
-      const inventory = actor.savedInventory
-      actor.savedInventory = undefined
-      const savedData = {
-        ref: this.actor.data.id,
-        ...inventory.saveData(actor),
-      }
-      actor.savedInventory = inventory
-      return savedData
-    }
-    const {list} = this
-    const {length} = list
-    const data = new Array(length)
-    for (let i = 0; i < length; i++) {
-      data[i] = list[i].saveData()
-    }
-    return {
-      list: data,
-      money: this.money,
-    }
-  }
+	/**
+	 * 保存库存数据
+	 * @param actor 为这个角色保存库存(可能不是库存的主人)
+	 * @returns 库存存档数据
+	 */
+	public saveData(actor: Actor): InventorySaveData {
+		if (actor.savedInventory) {
+			const inventory = actor.savedInventory
+			actor.savedInventory = undefined
+			const savedData = {
+				ref: this.actor.data.id,
+				...inventory.saveData(actor)
+			}
+			actor.savedInventory = inventory
+			return savedData
+		}
+		const { list } = this
+		const { length } = list
+		const data = new Array(length)
+		for (let i = 0; i < length; i++) {
+			data[i] = list[i].saveData()
+		}
+		return {
+			list: data,
+			money: this.money
+		}
+	}
 
 	/**
 	 * 加载库存数据
 	 * @param inventory 库存存档数据
 	 */
 	public loadData(inventory: InventorySaveData): void {
-		if ("ref" in inventory) {
+		if ('ref' in inventory) {
 			Inventory.references.push({
 				actor: this.actor,
-				ref: inventory.ref!,
-			});
+				ref: inventory.ref!
+			})
 		}
-		const { list } = this;
+		const { list } = this
 		for (const savedData of inventory.list) {
-			const { id } = savedData;
-			if ("quantity" in savedData) {
+			const { id } = savedData
+			if ('quantity' in savedData) {
 				// 如果是物品数据
-				const data = Data.items[id];
+				const data = Data.items[id]
 				if (data) {
 					// 重新创建物品实例
-					const item = new Item(data, savedData);
-					item.parent = this;
-					list.push(item);
-					this.addToMap(item);
+					const item = new Item(data, savedData)
+					item.parent = this
+					list.push(item)
+					this.addToMap(item)
 				}
 			} else {
 				// 如果是装备数据
-				const data = Data.equipments[id];
+				const data = Data.equipments[id]
 				if (data) {
 					// 重新创建装备实例
-					const equipment = new Equipment(data, savedData);
-					equipment.parent = this;
-					list.push(equipment);
-					this.addToMap(equipment);
+					const equipment = new Equipment(data, savedData)
+					equipment.parent = this
+					list.push(equipment)
+					this.addToMap(equipment)
 				}
 			}
 		}
-		this.money = inventory.money;
+		this.money = inventory.money
 		// 设置空槽位起始查找位置
-		let i = 0;
+		let i = 0
 		while (list[i]?.order === i) {
-			i++;
+			i++
 		}
-		this.pointer = i;
+		this.pointer = i
 	}
 
 	/** 金钱增量 */
-	public static moneyIncrement: number = 0;
+	public static moneyIncrement: number = 0
 	/** 引用库存延迟处理列表 */
-	private static references: InventoryReferenceList = [];
+	private static references: InventoryReferenceList = []
 
 	/** 恢复库存引用 */
 	public static reference(): void {
 		for (const { actor, ref } of this.references) {
-			const target = ActorManager.get(ref);
+			const target = ActorManager.get(ref)
 			if (target instanceof GlobalActor) {
-				actor.useInventory(target.inventory);
+				actor.useInventory(target.inventory)
 			}
 		}
 	}
@@ -4941,20 +4982,20 @@ class Inventory {
 
 class ShortcutManager {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** {快捷键:快捷项}映射表 */
-	public keyMap: HashMap<Shortcut>;
+	public keyMap: HashMap<Shortcut>
 	/** 快捷栏管理器版本(随着快捷键的设置和删除发生变化) */
-	public version: number;
+	public version: number
 
 	/**
 	 * 角色快捷栏管理器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.actor = actor;
-		this.keyMap = {};
-		this.version = 0;
+		this.actor = actor
+		this.keyMap = {}
+		this.version = 0
 	}
 
 	/**
@@ -4963,7 +5004,7 @@ class ShortcutManager {
 	 * @returns 快捷项
 	 */
 	public get(key: string): Shortcut | undefined {
-		return this.keyMap[key];
+		return this.keyMap[key]
 	}
 
 	/**
@@ -4972,11 +5013,11 @@ class ShortcutManager {
 	 * @returns 物品实例
 	 */
 	public getItem(key: string): Item | undefined {
-		const shortcut = this.keyMap[key];
-		if (shortcut?.type === "item") {
-			return this.actor.inventory.get(shortcut.id) as Item;
+		const shortcut = this.keyMap[key]
+		if (shortcut?.type === 'item') {
+			return this.actor.inventory.get(shortcut.id) as Item
 		}
-		return undefined;
+		return undefined
 	}
 
 	/**
@@ -4985,11 +5026,11 @@ class ShortcutManager {
 	 * @returns 技能实例
 	 */
 	public getSkill(key: string): Skill | undefined {
-		const shortcut = this.keyMap[key];
-		if (shortcut?.type === "skill") {
-			return this.actor.skill.get(shortcut.id);
+		const shortcut = this.keyMap[key]
+		if (shortcut?.type === 'skill') {
+			return this.actor.skill.get(shortcut.id)
 		}
-		return undefined;
+		return undefined
 	}
 
 	/**
@@ -4998,14 +5039,14 @@ class ShortcutManager {
 	 * @returns 物品或技能实例
 	 */
 	public getTarget(key: string): Skill | Item | undefined {
-		const shortcut = this.keyMap[key];
+		const shortcut = this.keyMap[key]
 		switch (shortcut?.type) {
-			case "skill":
-				return this.actor.skill.get(shortcut.id);
-			case "item":
-				return this.actor.inventory.get(shortcut.id) as Item;
+			case 'skill':
+				return this.actor.skill.get(shortcut.id)
+			case 'item':
+				return this.actor.inventory.get(shortcut.id) as Item
 			default:
-				return undefined;
+				return undefined
 		}
 	}
 
@@ -5015,16 +5056,21 @@ class ShortcutManager {
 	 * @param 物品或技能实例
 	 */
 	public set(key: string, target: Item | Skill): void {
-		if (!key) return;
+		if (!key) return
 		if (target instanceof Skill) {
-			this.keyMap[key] = new Shortcut("skill", key, target.id, target.data);
-			this.version++;
-			return;
+			this.keyMap[key] = new Shortcut(
+				'skill',
+				key,
+				target.id,
+				target.data
+			)
+			this.version++
+			return
 		}
 		if (target instanceof Item) {
-			this.keyMap[key] = new Shortcut("item", key, target.id, target.data);
-			this.version++;
-			return;
+			this.keyMap[key] = new Shortcut('item', key, target.id, target.data)
+			this.version++
+			return
 		}
 	}
 
@@ -5035,14 +5081,14 @@ class ShortcutManager {
 	 */
 	public setId(key: string, id: string): void {
 		if (id in Data.skills) {
-			this.keyMap[key] = new Shortcut("skill", key, id, Data.skills[id]!);
-			this.version++;
-			return;
+			this.keyMap[key] = new Shortcut('skill', key, id, Data.skills[id]!)
+			this.version++
+			return
 		}
 		if (id in Data.items) {
-			this.keyMap[key] = new Shortcut("item", key, id, Data.items[id]!);
-			this.version++;
-			return;
+			this.keyMap[key] = new Shortcut('item', key, id, Data.items[id]!)
+			this.version++
+			return
 		}
 	}
 
@@ -5052,8 +5098,8 @@ class ShortcutManager {
 	 */
 	public delete(key: string): void {
 		if (key in this.keyMap) {
-			delete this.keyMap[key];
-			this.version++;
+			delete this.keyMap[key]
+			this.version++
 		}
 	}
 
@@ -5064,22 +5110,22 @@ class ShortcutManager {
 	 */
 	public swap(sKey: string, dKey: string): void {
 		if (sKey !== dKey && sKey && dKey) {
-			const map = this.keyMap;
-			const sItem = map[sKey];
-			const dItem = map[dKey];
+			const map = this.keyMap
+			const sItem = map[sKey]
+			const dItem = map[dKey]
 			if (sItem) {
-				sItem.key = dKey;
-				map[dKey] = sItem;
+				sItem.key = dKey
+				map[dKey] = sItem
 			} else {
-				delete map[dKey];
+				delete map[dKey]
 			}
 			if (dItem) {
-				dItem.key = sKey;
-				map[sKey] = dItem;
+				dItem.key = sKey
+				map[sKey] = dItem
 			} else {
-				delete map[sKey];
+				delete map[sKey]
 			}
-			this.version++;
+			this.version++
 		}
 	}
 
@@ -5088,17 +5134,17 @@ class ShortcutManager {
 	 * @returns 快捷项存档数据列表
 	 */
 	public saveData(): Array<ShortcutSaveData> {
-		const shortcuts = Object.values(this.keyMap) as Array<Shortcut>;
-		const length = shortcuts.length;
-		const data = new Array<ShortcutSaveData>(length);
+		const shortcuts = Object.values(this.keyMap) as Array<Shortcut>
+		const length = shortcuts.length
+		const data = new Array<ShortcutSaveData>(length)
 		for (let i = 0; i < length; i++) {
-			const shortcut = shortcuts[i];
+			const shortcut = shortcuts[i]
 			data[i] = {
 				key: shortcut.key,
-				id: shortcut.id,
-			};
+				id: shortcut.id
+			}
 		}
-		return data;
+		return data
 	}
 
 	/**
@@ -5107,7 +5153,7 @@ class ShortcutManager {
 	 */
 	public loadData(shortcuts: Array<ShortcutSaveData>): void {
 		for (const shortcut of shortcuts) {
-			this.setId(shortcut.key, shortcut.id);
+			this.setId(shortcut.key, shortcut.id)
 		}
 	}
 }
@@ -5116,17 +5162,17 @@ class ShortcutManager {
 
 class Shortcut {
 	/** 类型 */
-	public type: string;
+	public type: string
 	/** 快捷键 */
-	public key: string;
+	public key: string
 	/** 数据ID */
-	public id: string;
+	public id: string
 	/** 目标文件数据 */
-	public data: ItemFile | SkillFile;
+	public data: ItemFile | SkillFile
 	/** 图标文件ID */
-	public icon: string;
+	public icon: string
 	/** 图标矩形裁剪区域 */
-	public clip: ImageClip;
+	public clip: ImageClip
 
 	/**
 	 * 快捷栏项目
@@ -5141,12 +5187,12 @@ class Shortcut {
 		id: string,
 		data: ItemFile | SkillFile
 	) {
-		this.type = type;
-		this.key = key;
-		this.id = id;
-		this.data = data;
-		this.icon = data.icon;
-		this.clip = data.clip;
+		this.type = type
+		this.key = key
+		this.id = id
+		this.data = data
+		this.icon = data.icon
+		this.clip = data.clip
 	}
 }
 
@@ -5154,20 +5200,20 @@ class Shortcut {
 
 class CooldownManager {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** {冷却键:冷却项目}映射表 */
-	public keyMap: HashMap<CooldownItem>;
+	public keyMap: HashMap<CooldownItem>
 	/** 冷却项目列表 */
-	public cooldownList: Array<CooldownItem>;
+	public cooldownList: Array<CooldownItem>
 
 	/**
 	 * 角色公共冷却管理器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.actor = actor;
-		this.keyMap = {};
-		this.cooldownList = [];
+		this.actor = actor
+		this.keyMap = {}
+		this.cooldownList = []
 	}
 
 	/**
@@ -5176,7 +5222,7 @@ class CooldownManager {
 	 * @returns 冷却项实例
 	 */
 	public get(key: string): CooldownItem | undefined {
-		return this.keyMap[key];
+		return this.keyMap[key]
 	}
 
 	/**
@@ -5185,21 +5231,21 @@ class CooldownManager {
 	 * @returns 冷却项实例
 	 */
 	private create(key: string): CooldownItem {
-		let item = this.keyMap[key];
+		let item = this.keyMap[key]
 		// 如果不存在冷却项目，则新建一个
 		if (item === undefined) {
 			// 如果列表为空，延迟将本列表添加到角色的更新器列表中
 			if (this.cooldownList.length === 0) {
 				Callback.push(() => {
-					this.actor.updaters.add(this);
-				});
+					this.actor.updaters.add(this)
+				})
 			}
 			// 创建冷却项目
-			item = new CooldownItem(key);
-			this.keyMap[key] = item;
-			this.cooldownList.append(item);
+			item = new CooldownItem(key)
+			this.keyMap[key] = item
+			this.cooldownList.append(item)
 		}
-		return item;
+		return item
 	}
 
 	/**
@@ -5207,15 +5253,15 @@ class CooldownManager {
 	 * @param key 冷却键
 	 */
 	private delete(key: string): void {
-		const item = this.keyMap[key];
+		const item = this.keyMap[key]
 		if (item) {
-			delete this.keyMap[key];
-			this.cooldownList.remove(item);
+			delete this.keyMap[key]
+			this.cooldownList.remove(item)
 			// 如果列表为空，延迟将本列表从角色的更新器列表中移除
 			if (this.cooldownList.length === 0) {
 				Callback.push(() => {
-					this.actor.updaters.remove(this);
-				});
+					this.actor.updaters.remove(this)
+				})
 			}
 		}
 	}
@@ -5227,9 +5273,9 @@ class CooldownManager {
 	 */
 	public setCooldown(key: string, cooldown: number): void {
 		if (key && cooldown > 0) {
-			const item = this.create(key);
-			item.cooldown = cooldown;
-			item.duration = cooldown;
+			const item = this.create(key)
+			item.cooldown = cooldown
+			item.duration = cooldown
 		}
 	}
 
@@ -5240,9 +5286,9 @@ class CooldownManager {
 	 */
 	public increaseCooldown(key: string, cooldown: number): void {
 		if (key && cooldown > 0) {
-			const item = this.create(key);
-			item.cooldown += cooldown;
-			item.duration = Math.max(item.cooldown, item.duration);
+			const item = this.create(key)
+			item.cooldown += cooldown
+			item.duration = Math.max(item.cooldown, item.duration)
 		}
 	}
 
@@ -5252,12 +5298,12 @@ class CooldownManager {
 	 * @param cooldown 冷却时间
 	 */
 	public decreaseCooldown(key: string, cooldown: number): void {
-		const item = this.keyMap[key];
+		const item = this.keyMap[key]
 		if (item && cooldown > 0) {
-			item.cooldown -= cooldown;
+			item.cooldown -= cooldown
 			// 如果冷却结束，删除键
 			if (item.cooldown <= 0) {
-				this.delete(key);
+				this.delete(key)
 			}
 		}
 	}
@@ -5267,13 +5313,13 @@ class CooldownManager {
 	 * @param deltaTime 增量时间(毫秒)
 	 */
 	public update(deltaTime: number): void {
-		const { cooldownList } = this;
-		let i = cooldownList.length;
+		const { cooldownList } = this
+		let i = cooldownList.length
 		// 逆序遍历冷却列表
 		while (--i >= 0) {
 			// 如果冷却结束，删除键
 			if ((cooldownList[i].cooldown -= deltaTime) <= 0) {
-				this.delete(cooldownList[i].key);
+				this.delete(cooldownList[i].key)
 			}
 		}
 	}
@@ -5283,7 +5329,7 @@ class CooldownManager {
 	 * @returns 冷却存档数据列表
 	 */
 	public saveData(): Array<CooldownItem> {
-		return this.cooldownList;
+		return this.cooldownList
 	}
 
 	/**
@@ -5294,13 +5340,13 @@ class CooldownManager {
 		if (cooldowns.length !== 0) {
 			// 重构冷却列表
 			for (const cooldown of cooldowns) {
-				const instance = new CooldownItem(cooldown.key);
-				instance.cooldown = cooldown.cooldown;
-				instance.duration = cooldown.duration;
-				this.keyMap[cooldown.key] = instance;
-				this.cooldownList.push(instance);
+				const instance = new CooldownItem(cooldown.key)
+				instance.cooldown = cooldown.cooldown
+				instance.duration = cooldown.duration
+				this.keyMap[cooldown.key] = instance
+				this.cooldownList.push(instance)
 			}
-			this.actor.updaters.add(this);
+			this.actor.updaters.add(this)
 		}
 	}
 }
@@ -5309,25 +5355,25 @@ class CooldownManager {
 
 class CooldownItem {
 	/** 冷却键 */
-	public key: string;
+	public key: string
 	/** 当前冷却时间 */
-	public cooldown: number;
+	public cooldown: number
 	/** 持续冷却时间 */
-	public duration: number;
+	public duration: number
 
 	/**
 	 * 公共冷却项目
 	 * @param key 冷却键
 	 */
 	constructor(key: string) {
-		this.key = key;
-		this.cooldown = 0;
-		this.duration = 0;
+		this.key = key
+		this.cooldown = 0
+		this.duration = 0
 	}
 
 	/** 读取公共冷却进度 */
 	public get progress(): number {
-		return this.cooldown / this.duration;
+		return this.cooldown / this.duration
 	}
 }
 
@@ -5335,23 +5381,23 @@ class CooldownItem {
 
 class TargetManager {
 	/** 绑定的角色对象 */
-	public actor: Actor;
+	public actor: Actor
 	/** 目标角色列表 */
-	public targets: Array<Actor>;
+	public targets: Array<Actor>
 	/** 仇恨值数据列表 */
-	public threats: Array<number>;
+	public threats: Array<number>
 	/** 相关目标角色列表 */
-	public relatedTargets: Array<Actor>;
+	public relatedTargets: Array<Actor>
 
 	/**
 	 * 角色目标管理器
 	 * @param actor 绑定的角色对象
 	 */
 	constructor(actor: Actor) {
-		this.actor = actor;
-		this.targets = [];
-		this.threats = [];
-		this.relatedTargets = [];
+		this.actor = actor
+		this.targets = []
+		this.threats = []
+		this.relatedTargets = []
 	}
 
 	/**
@@ -5360,16 +5406,16 @@ class TargetManager {
 	 * @param threat 增加的仇恨值
 	 */
 	public increaseThreat(actor: Actor, threat: number): void {
-		const index = this.targets.indexOf(actor);
+		const index = this.targets.indexOf(actor)
 		if (index !== -1) {
 			// 如果存在目标角色，增加仇恨值
-			this.threats[index] += threat;
+			this.threats[index] += threat
 		} else if (actor.active) {
 			// 如果不存在目标角色，且目标角色已激活
 			// 添加目标角色和仇恨值，并让目标角色将自己添加为相关目标
-			this.targets.push(actor);
-			this.threats.push(threat);
-			actor.target.relatedTargets.push(this.actor);
+			this.targets.push(actor)
+			this.threats.push(threat)
+			actor.target.relatedTargets.push(this.actor)
 		}
 	}
 
@@ -5379,16 +5425,16 @@ class TargetManager {
 	 * @param threat 减少的仇恨值
 	 */
 	public decreaseThreat(actor: Actor, threat: number): void {
-		const index = this.targets.indexOf(actor);
+		const index = this.targets.indexOf(actor)
 		if (index !== -1) {
 			// 如果存在目标角色，减少仇恨值
-			this.threats[index] = Math.max(this.threats[index] - threat, 0);
+			this.threats[index] = Math.max(this.threats[index] - threat, 0)
 		}
 	}
 
 	/** 判断角色是否存在目标 */
 	public exists(): boolean {
-		return this.targets.length !== 0;
+		return this.targets.length !== 0
 	}
 
 	/**
@@ -5403,39 +5449,44 @@ class TargetManager {
 		selector: ActorSelector,
 		inSight: boolean = false
 	): boolean {
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const ox = owner.x;
-		const oy = owner.y;
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const ox = owner.x
+		const oy = owner.y
 		// 获取探测范围所在的角色区间列表
 		const cells = Scene.actor.partition.get(
 			ox - distance,
 			oy - distance,
 			ox + distance,
 			oy + distance
-		);
-		const square = distance ** 2;
-		const count = cells.count;
+		)
+		const square = distance ** 2
+		const count = cells.count
 		// 查找所有角色区间
 		for (let i = 0; i < count; i++) {
-			const actors = cells[i]!;
-			const length = actors.length;
+			const actors = cells[i]!
+			const length = actors.length
 			// 查找区间中的所有角色
 			for (let i = 0; i < length; i++) {
-				const actor = actors[i] as Actor;
+				const actor = actors[i] as Actor
 				// 如果角色已激活，距离小于等于探测距离，且符合条件，则把该角色添加到目标列表中
 				if (
 					actor.active &&
 					(ox - actor.x) ** 2 + (oy - actor.y) ** 2 <= square &&
 					inspector(owner, actor) &&
 					(inSight === false ||
-						actor.parent!.scene.isInLineOfSight(ox, oy, actor.x, actor.y))
+						actor.parent!.scene.isInLineOfSight(
+							ox,
+							oy,
+							actor.x,
+							actor.y
+						))
 				) {
-					this.append(actor);
+					this.append(actor)
 				}
 			}
 		}
-		return this.exists();
+		return this.exists()
 	}
 
 	/**
@@ -5444,68 +5495,68 @@ class TargetManager {
 	 * @param distance 如果与目标角色的距离达到这个阈值，将他从目标列表中移除
 	 */
 	public discard(selector: ActorSelector, distance: number = 0): void {
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const ox = owner.x;
-		const oy = owner.y;
-		const square = distance ** 2;
-		const targets = this.targets;
-		let i = targets.length;
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const ox = owner.x
+		const oy = owner.y
+		const square = distance ** 2
+		const targets = this.targets
+		let i = targets.length
 		// 逆序查找目标列表中的所有角色
 		while (--i >= 0) {
-			const actor = targets[i];
+			const actor = targets[i]
 			// 如果角色符合条件，且距离大于等于放弃距离，则把该角色从目标列表中移除
 			if (
 				inspector(owner, actor) &&
 				(ox - actor.x) ** 2 + (oy - actor.y) ** 2 >= square
 			) {
-				this.remove(actor);
+				this.remove(actor)
 			}
 		}
 	}
 
 	/** 重置角色目标管理器 */
 	public reset(): void {
-		this.resetTargets();
-		this.resetRelatedTargets();
+		this.resetTargets()
+		this.resetRelatedTargets()
 	}
 
 	/** 重置目标角色列表 */
 	public resetTargets(): void {
-		const targets = this.targets;
-		const length = targets.length;
+		const targets = this.targets
+		const length = targets.length
 		if (length !== 0) {
-			const owner = this.actor;
+			const owner = this.actor
 			// 遍历所有目标，将本角色从它们的相关列表中删除
 			for (let i = 0; i < length; i++) {
-				targets[i].target.relatedTargets.remove(owner);
+				targets[i].target.relatedTargets.remove(owner)
 			}
 			// 重置目标和仇恨值列表
-			this.targets = [];
-			this.threats = [];
+			this.targets = []
+			this.threats = []
 		}
 	}
 
 	/** 重置相关目标角色列表 */
 	public resetRelatedTargets(): void {
-		const relatedTargets = this.relatedTargets;
-		const length = relatedTargets.length;
+		const relatedTargets = this.relatedTargets
+		const length = relatedTargets.length
 		if (length !== 0) {
-			const owner = this.actor;
+			const owner = this.actor
 			// 遍历所有相关目标，将本角色从它们的目标和仇恨值列表中删除
 			for (let i = 0; i < length; i++) {
-				const actor = relatedTargets[i];
-				const manager = actor.target;
-				const targets = manager.targets;
-				const threats = manager.threats;
-				const index = targets.indexOf(owner);
+				const actor = relatedTargets[i]
+				const manager = actor.target
+				const targets = manager.targets
+				const threats = manager.threats
+				const index = targets.indexOf(owner)
 				if (index !== -1) {
-					targets.splice(index, 1);
-					threats.splice(index, 1);
+					targets.splice(index, 1)
+					threats.splice(index, 1)
 				}
 			}
 			// 重置相关列表
-			this.relatedTargets = [];
+			this.relatedTargets = []
 		}
 	}
 
@@ -5514,13 +5565,13 @@ class TargetManager {
 	 * @param actor 目标角色
 	 */
 	public append(actor: Actor): void {
-		const index = this.targets.indexOf(actor);
+		const index = this.targets.indexOf(actor)
 		if (index === -1) {
 			// 如果不存在该目标，则添加目标和仇恨值
 			// 并让目标角色将本角色添加到相关列表
-			this.targets.push(actor);
-			this.threats.push(0);
-			actor.target.relatedTargets.push(this.actor);
+			this.targets.push(actor)
+			this.threats.push(0)
+			actor.target.relatedTargets.push(this.actor)
 		}
 	}
 
@@ -5529,13 +5580,13 @@ class TargetManager {
 	 * @param actor 目标角色
 	 */
 	public remove(actor: Actor): void {
-		const index = this.targets.indexOf(actor);
+		const index = this.targets.indexOf(actor)
 		if (index !== -1) {
 			// 如果存在该目标，则移除目标和仇恨值
 			// 并让目标角色将本角色从相关列表中移除
-			this.targets.splice(index, 1);
-			this.threats.splice(index, 1);
-			actor.target.relatedTargets.remove(this.actor);
+			this.targets.splice(index, 1)
+			this.threats.splice(index, 1)
+			actor.target.relatedTargets.remove(this.actor)
 		}
 	}
 
@@ -5545,25 +5596,25 @@ class TargetManager {
 	 * @returns 目标池中符合条件的角色实例
 	 */
 	public getTargetMaxThreat(selector: ActorSelector): Actor | undefined {
-		let target: Actor | undefined;
-		let weight = -1;
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const targets = this.targets;
-		const threats = this.threats;
-		const length = targets.length;
+		let target: Actor | undefined
+		let weight = -1
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const targets = this.targets
+		const threats = this.threats
+		const length = targets.length
 		for (let i = 0; i < length; i++) {
-			const actor = targets[i];
+			const actor = targets[i]
 			// 检查角色关系，并找出最大仇恨值的目标
 			if (inspector(owner, actor)) {
-				const threat = threats[i];
+				const threat = threats[i]
 				if (threat > weight) {
-					target = actor;
-					weight = threat;
+					target = actor
+					weight = threat
 				}
 			}
 		}
-		return target;
+		return target
 	}
 
 	/**
@@ -5572,24 +5623,24 @@ class TargetManager {
 	 * @returns 目标池中符合条件的角色实例
 	 */
 	public getTargetNearest(selector: ActorSelector): Actor | undefined {
-		let target: Actor | undefined;
-		let weight = Infinity;
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const targets = this.targets;
-		const length = targets.length;
+		let target: Actor | undefined
+		let weight = Infinity
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const targets = this.targets
+		const length = targets.length
 		for (let i = 0; i < length; i++) {
-			const actor = targets[i];
+			const actor = targets[i]
 			// 检查角色关系，并找出最近距离的目标
 			if (inspector(owner, actor)) {
-				const distance = Math.dist(owner.x, owner.y, actor.x, actor.y);
+				const distance = Math.dist(owner.x, owner.y, actor.x, actor.y)
 				if (distance < weight) {
-					target = actor;
-					weight = distance;
+					target = actor
+					weight = distance
 				}
 			}
 		}
-		return target;
+		return target
 	}
 
 	/**
@@ -5598,24 +5649,24 @@ class TargetManager {
 	 * @returns 目标池中符合条件的角色实例
 	 */
 	public getTargetFarthest(selector: ActorSelector): Actor | undefined {
-		let target: Actor | undefined;
-		let weight = -Infinity;
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const targets = this.targets;
-		const length = targets.length;
+		let target: Actor | undefined
+		let weight = -Infinity
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const targets = this.targets
+		const length = targets.length
 		for (let i = 0; i < length; i++) {
-			const actor = targets[i];
+			const actor = targets[i]
 			// 检查角色关系，并找出最远距离的目标
 			if (inspector(owner, actor)) {
-				const distance = Math.dist(owner.x, owner.y, actor.x, actor.y);
+				const distance = Math.dist(owner.x, owner.y, actor.x, actor.y)
 				if (distance > weight) {
-					target = actor;
-					weight = distance;
+					target = actor
+					weight = distance
 				}
 			}
 		}
-		return target;
+		return target
 	}
 
 	/**
@@ -5628,24 +5679,24 @@ class TargetManager {
 		selector: ActorSelector,
 		key: string
 	): Actor | undefined {
-		let target: Actor | undefined;
-		let weight = Infinity;
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const targets = this.targets;
-		const length = targets.length;
+		let target: Actor | undefined
+		let weight = Infinity
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const targets = this.targets
+		const length = targets.length
 		for (let i = 0; i < length; i++) {
-			const actor = targets[i];
+			const actor = targets[i]
 			// 检查角色关系，并找出最小属性值的目标
 			if (inspector(owner, actor)) {
-				const value = actor.attributes[key];
-				if (typeof value === "number" && value < weight) {
-					target = actor;
-					weight = value;
+				const value = actor.attributes[key]
+				if (typeof value === 'number' && value < weight) {
+					target = actor
+					weight = value
 				}
 			}
 		}
-		return target;
+		return target
 	}
 
 	/**
@@ -5658,24 +5709,24 @@ class TargetManager {
 		selector: ActorSelector,
 		key: string
 	): Actor | undefined {
-		let target: Actor | undefined;
-		let weight = -Infinity;
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const targets = this.targets;
-		const length = targets.length;
+		let target: Actor | undefined
+		let weight = -Infinity
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const targets = this.targets
+		const length = targets.length
 		for (let i = 0; i < length; i++) {
-			const actor = targets[i];
+			const actor = targets[i]
 			// 检查角色关系，并找出最大属性值的目标
 			if (inspector(owner, actor)) {
-				const value = actor.attributes[key];
-				if (typeof value === "number" && value > weight) {
-					target = actor;
-					weight = value;
+				const value = actor.attributes[key]
+				if (typeof value === 'number' && value > weight) {
+					target = actor
+					weight = value
 				}
 			}
 		}
-		return target;
+		return target
 	}
 
 	/**
@@ -5690,29 +5741,29 @@ class TargetManager {
 		key: string,
 		divisor: string
 	): Actor | undefined {
-		let target: Actor | undefined;
-		let weight = Infinity;
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const targets = this.targets;
-		const length = targets.length;
+		let target: Actor | undefined
+		let weight = Infinity
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const targets = this.targets
+		const length = targets.length
 		for (let i = 0; i < length; i++) {
-			const actor = targets[i];
+			const actor = targets[i]
 			// 检查角色关系，并找出最小属性比率的目标
 			if (inspector(owner, actor)) {
-				const attributes = actor.attributes;
-				const a = attributes[key];
-				const b = attributes[divisor];
-				if (typeof a === "number" && typeof b === "number") {
-					const ratio = a / b;
+				const attributes = actor.attributes
+				const a = attributes[key]
+				const b = attributes[divisor]
+				if (typeof a === 'number' && typeof b === 'number') {
+					const ratio = a / b
 					if (ratio < weight) {
-						target = actor;
-						weight = ratio;
+						target = actor
+						weight = ratio
 					}
 				}
 			}
 		}
-		return target;
+		return target
 	}
 
 	/**
@@ -5727,29 +5778,29 @@ class TargetManager {
 		key: string,
 		divisor: string
 	): Actor | undefined {
-		let target: Actor | undefined;
-		let weight = -Infinity;
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const targets = this.targets;
-		const length = targets.length;
+		let target: Actor | undefined
+		let weight = -Infinity
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const targets = this.targets
+		const length = targets.length
 		for (let i = 0; i < length; i++) {
-			const actor = targets[i];
+			const actor = targets[i]
 			// 检查角色关系，并找出最大属性值的目标
 			if (inspector(owner, actor)) {
-				const attributes = actor.attributes;
-				const a = attributes[key];
-				const b = attributes[divisor];
-				if (typeof a === "number" && typeof b === "number") {
-					const ratio = a / b;
+				const attributes = actor.attributes
+				const a = attributes[key]
+				const b = attributes[divisor]
+				if (typeof a === 'number' && typeof b === 'number') {
+					const ratio = a / b
 					if (ratio > weight) {
-						target = actor;
-						weight = ratio;
+						target = actor
+						weight = ratio
 					}
 				}
 			}
 		}
-		return target;
+		return target
 	}
 
 	/**
@@ -5758,23 +5809,23 @@ class TargetManager {
 	 * @returns 目标池中符合条件的角色实例
 	 */
 	public getTargetRandom(selector: ActorSelector): Actor | undefined {
-		let target: Actor | undefined;
-		let count = 0;
-		const inspector = Actor.inspectors[selector];
-		const owner = this.actor;
-		const targets = this.targets;
-		const indices = GL.arrays[0].uint32;
-		const length = targets.length;
+		let target: Actor | undefined
+		let count = 0
+		const inspector = Actor.inspectors[selector]
+		const owner = this.actor
+		const targets = this.targets
+		const indices = GL.arrays[0].uint32
+		const length = targets.length
 		for (let i = 0; i < length; i++) {
 			// 检查角色关系，把索引保存在indices中
 			if (inspector(owner, targets[i])) {
-				indices[count++] = i;
+				indices[count++] = i
 			}
 		}
 		if (count !== 0) {
 			// 获取随机索引指向的角色
-			target = targets[indices[Math.floor(Math.random() * count)]];
+			target = targets[indices[Math.floor(Math.random() * count)]]
 		}
-		return target;
+		return target
 	}
 }
