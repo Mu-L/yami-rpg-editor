@@ -2,6 +2,12 @@
 
 Command.cases.playActorAnimation = new CommandSchema({
 	name: 'playActorAnimation',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'motion', default: '', required: true },
+		{ key: 'speed', default: 1 },
+		{ key: 'wait', default: false }
+	],
 	onInitialize() {
 		$('#playActorAnimation-confirm').on('click', () => this.save())
 		$('#playActorAnimation-wait').loadItems([
@@ -25,30 +31,7 @@ Command.cases.playActorAnimation = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		motion = '',
-		speed = 1,
-		wait = false
-	}) {
-		const write = getElementWriter('playActorAnimation')
-		write('actor', actor)
-		write('motion', motion)
-		write('speed', speed)
-		write('wait', wait)
+	onLoad() {
 		$('#playActorAnimation-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('playActorAnimation')
-		const motion = read('motion').trim()
-		if (!motion) {
-			return $('#playActorAnimation-motion').getFocus()
-		}
-		Command.save({
-			actor: read('actor'),
-			motion,
-			speed: read('speed'),
-			wait: read('wait')
-		})
 	}
 })

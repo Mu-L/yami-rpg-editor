@@ -2,6 +2,11 @@
 
 Command.cases.setTriggerDuration = new CommandSchema({
 	name: 'setTriggerDuration',
+	fields: [
+		{ key: 'trigger', default: { type: 'trigger' } },
+		{ key: 'operation', default: 'set' },
+		{ key: 'duration', default: 0 }
+	],
 	onInitialize() {
 		$('#setTriggerDuration-confirm').on('click', () => this.save())
 		$('#setTriggerDuration-operation').loadItems([
@@ -21,23 +26,7 @@ Command.cases.setTriggerDuration = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		trigger = { type: 'trigger' },
-		operation = 'set',
-		duration = 0
-	}) {
-		const write = getElementWriter('setTriggerDuration')
-		write('trigger', trigger)
-		write('operation', operation)
-		write('duration', duration)
+	onLoad() {
 		$('#setTriggerDuration-trigger').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setTriggerDuration')
-		Command.save({
-			trigger: read('trigger'),
-			operation: read('operation'),
-			duration: read('duration')
-		})
 	}
 })

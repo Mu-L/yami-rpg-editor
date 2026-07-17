@@ -2,6 +2,10 @@
 
 Command.cases.createGlobalActor = new CommandSchema({
 	name: 'createGlobalActor',
+	fields: [
+		{ key: 'actorId', default: '', required: true },
+		{ key: 'teamId', default: () => Data.teams.list[0].id }
+	],
 	onInitialize() {
 		$('#createGlobalActor-confirm').on('click', () => this.save())
 		$('#createGlobalActor').on('open', function (event) {
@@ -21,18 +25,7 @@ Command.cases.createGlobalActor = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actorId = '', teamId = Data.teams.list[0].id }) {
-		const write = getElementWriter('createGlobalActor')
-		write('actorId', actorId)
-		write('teamId', teamId)
+	onLoad() {
 		$('#createGlobalActor-actorId').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('createGlobalActor')
-		const actorId = read('actorId')
-		if (actorId === '') {
-			return $('#createGlobalActor-actorId').getFocus()
-		}
-		Command.save({ actorId, teamId: read('teamId') })
 	}
 })

@@ -2,6 +2,10 @@
 
 Command.cases.changeActorTeam = new CommandSchema({
 	name: 'changeActorTeam',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'teamId', default: () => Data.teams.list[0].id }
+	],
 	onInitialize() {
 		$('#changeActorTeam-confirm').on('click', () => this.save())
 		$('#changeActorTeam').on('open', function (event) {
@@ -21,17 +25,7 @@ Command.cases.changeActorTeam = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		teamId = Data.teams.list[0].id
-	}) {
-		const write = getElementWriter('changeActorTeam')
-		write('actor', actor)
-		write('teamId', teamId)
+	onLoad() {
 		$('#changeActorTeam-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('changeActorTeam')
-		Command.save({ actor: read('actor'), teamId: read('teamId') })
 	}
 })

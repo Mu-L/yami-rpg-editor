@@ -2,6 +2,7 @@
 
 Command.cases.deleteVariable = new CommandSchema({
 	name: 'deleteVariable',
+	fields: [{ key: 'variable', default: { type: 'local', key: '' } }],
 	customParse({ variable }) {
 		return [
 			{ color: 'variable' },

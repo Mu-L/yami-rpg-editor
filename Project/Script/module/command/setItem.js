@@ -2,6 +2,11 @@
 
 Command.cases.setItem = new CommandSchema({
 	name: 'setItem',
+	fields: [
+		{ key: 'item', default: { type: 'trigger' } },
+		{ key: 'operation', default: 'increase' },
+		{ key: 'quantity', default: 1 }
+	],
 	onInitialize() {
 		$('#setItem-confirm').on('click', () => this.save())
 		$('#setItem-operation').loadItems([
@@ -25,31 +30,7 @@ Command.cases.setItem = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		item = { type: 'trigger' },
-		operation = 'increase',
-		quantity = 1
-	}) {
-		const write = getElementWriter('setItem')
-		write('item', item)
-		write('operation', operation)
-		write('quantity', quantity)
+	onLoad() {
 		$('#setItem-item').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setItem')
-		const item = read('item')
-		const operation = read('operation')
-		switch (operation) {
-			case 'increase':
-			case 'decrease': {
-				Command.save({
-					item,
-					operation,
-					quantity: read('quantity')
-				})
-				break
-			}
-		}
 	}
 })

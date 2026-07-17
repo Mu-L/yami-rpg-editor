@@ -2,6 +2,16 @@
 
 Command.cases.setCooldown = new CommandSchema({
 	name: 'setCooldown',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'operation', default: 'set' },
+		{
+			key: 'key',
+			default: () => Enum.getDefStringId('cooldown-key'),
+			required: true
+		},
+		{ key: 'cooldown', default: 0 }
+	],
 	onInitialize() {
 		$('#setCooldown-confirm').on('click', () => this.save())
 		$('#setCooldown-operation').loadItems([
@@ -22,31 +32,8 @@ Command.cases.setCooldown = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		operation = 'set',
-		key = Enum.getDefStringId('cooldown-key'),
-		cooldown = 0
-	}) {
+	onLoad() {
 		$('#setCooldown-key').loadItems(Enum.getStringItems('cooldown-key'))
-		const write = getElementWriter('setCooldown')
-		write('actor', actor)
-		write('operation', operation)
-		write('key', key)
-		write('cooldown', cooldown)
 		$('#setCooldown-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setCooldown')
-		const key = read('key')
-		if (key === '') {
-			return $('#setCooldown-key').getFocus()
-		}
-		Command.save({
-			actor: read('actor'),
-			operation: read('operation'),
-			key,
-			cooldown: read('cooldown')
-		})
 	}
 })

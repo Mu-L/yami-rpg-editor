@@ -2,6 +2,14 @@
 
 Command.cases.setReverb = new CommandSchema({
 	name: 'setReverb',
+	fields: [
+		{ key: 'type', default: 'bgm' },
+		{ key: 'dry', default: 1 },
+		{ key: 'wet', default: 0 },
+		{ key: 'easingId', default: () => Data.easings[0].id },
+		{ key: 'duration', default: 0 },
+		{ key: 'wait', default: false }
+	],
 	onInitialize() {
 		$('#setReverb-confirm').on('click', () => this.save())
 		$('#setReverb-type').loadItems([
@@ -33,32 +41,7 @@ Command.cases.setReverb = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		type = 'bgm',
-		dry = 1,
-		wet = 0,
-		easingId = Data.easings[0].id,
-		duration = 0,
-		wait = false
-	}) {
-		const write = getElementWriter('setReverb')
-		write('type', type)
-		write('dry', dry)
-		write('wet', wet)
-		write('easingId', easingId)
-		write('duration', duration)
-		write('wait', wait)
+	onLoad() {
 		$('#setReverb-type').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setReverb')
-		Command.save({
-			type: read('type'),
-			dry: read('dry'),
-			wet: read('wet'),
-			easingId: read('easingId'),
-			duration: read('duration'),
-			wait: read('wait')
-		})
 	}
 })

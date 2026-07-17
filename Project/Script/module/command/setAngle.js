@@ -2,6 +2,13 @@
 
 Command.cases.setAngle = new CommandSchema({
 	name: 'setAngle',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'angle', default: { type: 'absolute', degrees: 0 } },
+		{ key: 'easingId', default: () => Data.easings[0].id },
+		{ key: 'duration', default: 0 },
+		{ key: 'wait', default: false }
+	],
 	onInitialize() {
 		$('#setAngle-confirm').on('click', () => this.save())
 		$('#setAngle-wait').loadItems([
@@ -26,29 +33,7 @@ Command.cases.setAngle = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		angle = { type: 'absolute', degrees: 0 },
-		easingId = Data.easings[0].id,
-		duration = 0,
-		wait = false
-	}) {
-		const write = getElementWriter('setAngle')
-		write('actor', actor)
-		write('angle', angle)
-		write('easingId', easingId)
-		write('duration', duration)
-		write('wait', wait)
+	onLoad() {
 		$('#setAngle-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setAngle')
-		Command.save({
-			actor: read('actor'),
-			angle: read('angle'),
-			easingId: read('easingId'),
-			duration: read('duration'),
-			wait: read('wait')
-		})
 	}
 })

@@ -2,6 +2,10 @@
 
 Command.cases.changeActorAnimation = new CommandSchema({
 	name: 'changeActorAnimation',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'animationId', default: '', required: true }
+	],
 	customParse({ actor, animationId }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
@@ -12,19 +16,7 @@ Command.cases.changeActorAnimation = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, animationId = '' }) {
-		const write = getElementWriter('changeActorAnimation')
-		write('actor', actor)
-		write('animationId', animationId)
+	onLoad() {
 		$('#changeActorAnimation-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('changeActorAnimation')
-		const actor = read('actor')
-		const animationId = read('animationId')
-		if (animationId === '') {
-			return $('#changeActorAnimation-animationId').getFocus()
-		}
-		Command.save({ actor, animationId })
 	}
 })

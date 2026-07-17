@@ -2,6 +2,10 @@
 
 Command.cases.setTriggerSpeed = new CommandSchema({
 	name: 'setTriggerSpeed',
+	fields: [
+		{ key: 'trigger', default: { type: 'trigger' } },
+		{ key: 'speed', default: 0 }
+	],
 	customParse({ trigger, speed }) {
 		const words = Command.words
 			.push(Command.parseTrigger(trigger))
@@ -12,14 +16,7 @@ Command.cases.setTriggerSpeed = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ trigger = { type: 'trigger' }, speed = 0 }) {
-		const write = getElementWriter('setTriggerSpeed')
-		write('trigger', trigger)
-		write('speed', speed)
+	onLoad() {
 		$('#setTriggerSpeed-trigger').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setTriggerSpeed')
-		Command.save({ trigger: read('trigger'), speed: read('speed') })
 	}
 })

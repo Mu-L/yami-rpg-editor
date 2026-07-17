@@ -2,6 +2,10 @@
 
 Command.cases.setTextBox = new CommandSchema({
 	name: 'setTextBox',
+	fields: [
+		{ key: 'element', default: { type: 'trigger' } },
+		{ key: 'properties', default: [] }
+	],
 	onInitialize() {
 		$('#setTextBox-confirm').on('click', () => this.save())
 		$('#setTextBox-properties').bind(TextBoxProperty)
@@ -20,10 +24,7 @@ Command.cases.setTextBox = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ element = { type: 'trigger' }, properties = [] }) {
-		const write = getElementWriter('setTextBox')
-		write('element', element)
-		write('properties', properties.slice())
+	onLoad() {
 		$('#setTextBox-element').getFocus()
 	},
 	customSave() {

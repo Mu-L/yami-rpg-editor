@@ -2,6 +2,7 @@
 
 Command.cases.saveAudio = new CommandSchema({
 	name: 'saveAudio',
+	fields: [{ key: 'type', default: 'bgm' }],
 	onInitialize() {
 		$('#saveAudio-confirm').on('click', () => this.save())
 		$('#saveAudio-type').loadItems([
@@ -17,12 +18,7 @@ Command.cases.saveAudio = new CommandSchema({
 			{ text: Command.parseAudioType(type) }
 		]
 	},
-	customLoad({ type = 'bgm' }) {
-		const write = getElementWriter('saveAudio')
-		write('type', type)
+	onLoad() {
 		$('#saveAudio-type').getFocus()
-	},
-	customSave() {
-		Command.save({ type: getElementReader('saveAudio')('type') })
 	}
 })

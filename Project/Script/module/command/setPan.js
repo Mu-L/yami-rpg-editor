@@ -2,6 +2,13 @@
 
 Command.cases.setPan = new CommandSchema({
 	name: 'setPan',
+	fields: [
+		{ key: 'type', default: 'bgm' },
+		{ key: 'pan', default: 0 },
+		{ key: 'easingId', default: () => Data.easings[0].id },
+		{ key: 'duration', default: 0 },
+		{ key: 'wait', default: false }
+	],
 	onInitialize() {
 		$('#setPan-confirm').on('click', () => this.save())
 		$('#setPan-type').loadItems([
@@ -32,29 +39,7 @@ Command.cases.setPan = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		type = 'bgm',
-		pan = 0,
-		easingId = Data.easings[0].id,
-		duration = 0,
-		wait = false
-	}) {
-		const write = getElementWriter('setPan')
-		write('type', type)
-		write('pan', pan)
-		write('easingId', easingId)
-		write('duration', duration)
-		write('wait', wait)
+	onLoad() {
 		$('#setPan-type').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setPan')
-		Command.save({
-			type: read('type'),
-			pan: read('pan'),
-			easingId: read('easingId'),
-			duration: read('duration'),
-			wait: read('wait')
-		})
 	}
 })

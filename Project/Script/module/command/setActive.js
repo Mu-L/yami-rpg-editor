@@ -2,6 +2,10 @@
 
 Command.cases.setActive = new CommandSchema({
 	name: 'setActive',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'active', default: false }
+	],
 	onInitialize() {
 		$('#setActive-confirm').on('click', () => this.save())
 		$('#setActive-active').loadItems([
@@ -19,14 +23,7 @@ Command.cases.setActive = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, active = false }) {
-		const write = getElementWriter('setActive')
-		write('actor', actor)
-		write('active', active)
+	onLoad() {
 		$('#setActive-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setActive')
-		Command.save({ actor: read('actor'), active: read('active') })
 	}
 })

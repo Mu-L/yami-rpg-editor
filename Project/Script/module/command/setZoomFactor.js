@@ -2,6 +2,12 @@
 
 Command.cases.setZoomFactor = new CommandSchema({
 	name: 'setZoomFactor',
+	fields: [
+		{ key: 'zoom', default: 1 },
+		{ key: 'easingId', default: () => Data.easings[0].id },
+		{ key: 'duration', default: 0 },
+		{ key: 'wait', default: false }
+	],
 	onInitialize() {
 		$('#setZoomFactor-confirm').on('click', () => this.save())
 		$('#setZoomFactor-wait').loadItems([
@@ -25,26 +31,7 @@ Command.cases.setZoomFactor = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		zoom = 1,
-		easingId = Data.easings[0].id,
-		duration = 0,
-		wait = false
-	}) {
-		const write = getElementWriter('setZoomFactor')
-		write('zoom', zoom)
-		write('easingId', easingId)
-		write('duration', duration)
-		write('wait', wait)
+	onLoad() {
 		$('#setZoomFactor-zoom').getFocus('all')
-	},
-	customSave() {
-		const read = getElementReader('setZoomFactor')
-		Command.save({
-			zoom: read('zoom'),
-			easingId: read('easingId'),
-			duration: read('duration'),
-			wait: read('wait')
-		})
 	}
 })

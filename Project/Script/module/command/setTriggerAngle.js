@@ -2,6 +2,10 @@
 
 Command.cases.setTriggerAngle = new CommandSchema({
 	name: 'setTriggerAngle',
+	fields: [
+		{ key: 'trigger', default: { type: 'trigger' } },
+		{ key: 'angle', default: { type: 'absolute', degrees: 0 } }
+	],
 	customParse({ trigger, angle }) {
 		const words = Command.words
 			.push(Command.parseTrigger(trigger))
@@ -12,17 +16,7 @@ Command.cases.setTriggerAngle = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		trigger = { type: 'trigger' },
-		angle = { type: 'absolute', degrees: 0 }
-	}) {
-		const write = getElementWriter('setTriggerAngle')
-		write('trigger', trigger)
-		write('angle', angle)
+	onLoad() {
 		$('#setTriggerAngle-trigger').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setTriggerAngle')
-		Command.save({ trigger: read('trigger'), angle: read('angle') })
 	}
 })

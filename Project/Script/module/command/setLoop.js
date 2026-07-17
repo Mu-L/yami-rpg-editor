@@ -2,6 +2,10 @@
 
 Command.cases.setLoop = new CommandSchema({
 	name: 'setLoop',
+	fields: [
+		{ key: 'type', default: 'bgm' },
+		{ key: 'loop', default: false }
+	],
 	onInitialize() {
 		$('#setLoop-confirm').on('click', () => this.save())
 		$('#setLoop-type').loadItems([
@@ -32,14 +36,7 @@ Command.cases.setLoop = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ type = 'bgm', loop = false }) {
-		const write = getElementWriter('setLoop')
-		write('type', type)
-		write('loop', loop)
+	onLoad() {
 		$('#setLoop-type').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setLoop')
-		Command.save({ type: read('type'), loop: read('loop') })
 	}
 })

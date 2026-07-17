@@ -2,6 +2,10 @@
 
 Command.cases.changePassableTerrain = new CommandSchema({
 	name: 'changePassableTerrain',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'passage', default: 'land' }
+	],
 	onInitialize() {
 		$('#changePassableTerrain-confirm').on('click', () => this.save())
 		$('#changePassableTerrain-passage').loadItems([
@@ -20,14 +24,7 @@ Command.cases.changePassableTerrain = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, passage = 'land' }) {
-		const write = getElementWriter('changePassableTerrain')
-		write('actor', actor)
-		write('passage', passage)
+	onLoad() {
 		$('#changePassableTerrain-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('changePassableTerrain')
-		Command.save({ actor: read('actor'), passage: read('passage') })
 	}
 })

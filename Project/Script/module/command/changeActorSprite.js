@@ -2,6 +2,12 @@
 
 Command.cases.changeActorSprite = new CommandSchema({
 	name: 'changeActorSprite',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'animationId', default: '', required: true },
+		{ key: 'spriteId', default: '', required: true },
+		{ key: 'image', default: '' }
+	],
 	onInitialize() {
 		$('#changeActorSprite-confirm').on('click', () => this.save())
 		$('#changeActorSprite-animationId').on('write', (event) => {
@@ -23,34 +29,7 @@ Command.cases.changeActorSprite = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		animationId = '',
-		spriteId = '',
-		image = ''
-	}) {
-		const write = getElementWriter('changeActorSprite')
-		write('actor', actor)
-		write('animationId', animationId)
-		write('spriteId', spriteId)
-		write('image', image)
+	onLoad() {
 		$('#changeActorSprite-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('changeActorSprite')
-		const animationId = read('animationId')
-		if (animationId === '') {
-			return $('#changeActorSprite-animationId').getFocus()
-		}
-		const spriteId = read('spriteId')
-		if (spriteId === '') {
-			return $('#changeActorSprite-spriteId').getFocus()
-		}
-		Command.save({
-			actor: read('actor'),
-			animationId,
-			spriteId,
-			image: read('image')
-		})
 	}
 })

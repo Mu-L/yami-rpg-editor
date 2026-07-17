@@ -2,6 +2,10 @@
 
 Command.cases.setWeight = new CommandSchema({
 	name: 'setWeight',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'weight', default: 0 }
+	],
 	customParse({ actor, weight }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
@@ -12,14 +16,7 @@ Command.cases.setWeight = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, weight = 0 }) {
-		const write = getElementWriter('setWeight')
-		write('actor', actor)
-		write('weight', weight)
+	onLoad() {
 		$('#setWeight-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setWeight')
-		Command.save({ actor: read('actor'), weight: read('weight') })
 	}
 })

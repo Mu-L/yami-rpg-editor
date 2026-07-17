@@ -2,6 +2,7 @@
 
 Command.cases.stopAudio = new CommandSchema({
 	name: 'stopAudio',
+	fields: [{ key: 'type', default: 'bgm' }],
 	onInitialize() {
 		$('#stopAudio-confirm').on('click', () => this.save())
 		$('#stopAudio-type').loadItems([
@@ -20,12 +21,7 @@ Command.cases.stopAudio = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ type = 'bgm' }) {
-		const write = getElementWriter('stopAudio')
-		write('type', type)
+	onLoad() {
 		$('#stopAudio-type').getFocus()
-	},
-	customSave() {
-		Command.save({ type: getElementReader('stopAudio')('type') })
 	}
 })

@@ -2,6 +2,10 @@
 
 Command.cases.setAnimation = new CommandSchema({
 	name: 'setAnimation',
+	fields: [
+		{ key: 'element', default: { type: 'trigger' } },
+		{ key: 'properties', default: [] }
+	],
 	onInitialize() {
 		$('#setAnimation-confirm').on('click', () => this.save())
 		$('#setAnimation-properties').bind(AnimationProperty)
@@ -20,10 +24,7 @@ Command.cases.setAnimation = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ element = { type: 'trigger' }, properties = [] }) {
-		const write = getElementWriter('setAnimation')
-		write('element', element)
-		write('properties', properties.slice())
+	onLoad() {
 		$('#setAnimation-element').getFocus()
 	},
 	customSave() {

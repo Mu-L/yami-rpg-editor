@@ -2,6 +2,10 @@
 
 Command.cases.controlDialog = new CommandSchema({
 	name: 'controlDialog',
+	fields: [
+		{ key: 'element', default: { type: 'trigger' } },
+		{ key: 'operation', default: 'pause' }
+	],
 	onInitialize() {
 		$('#controlDialog-confirm').on('click', () => this.save())
 		$('#controlDialog-operation').loadItems([
@@ -21,17 +25,7 @@ Command.cases.controlDialog = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ element = { type: 'trigger' }, operation = 'pause' }) {
-		const write = getElementWriter('controlDialog')
-		write('element', element)
-		write('operation', operation)
+	onLoad() {
 		$('#controlDialog-element').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('controlDialog')
-		Command.save({
-			element: read('element'),
-			operation: read('operation')
-		})
 	}
 })

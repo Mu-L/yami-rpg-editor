@@ -2,6 +2,7 @@
 
 Command.cases.switchCollisionSystem = new CommandSchema({
 	name: 'switchCollisionSystem',
+	fields: [{ key: 'operation', default: 'enable-actor-collision' }],
 	onInitialize() {
 		$('#switchCollisionSystem-confirm').on('click', () => this.save())
 		$('#switchCollisionSystem-operation').loadItems([
@@ -24,13 +25,7 @@ Command.cases.switchCollisionSystem = new CommandSchema({
 			{ text: Local.get('command.switchCollisionSystem.' + operation) }
 		]
 	},
-	customLoad({ operation = 'enable-actor-collision' }) {
-		$('#switchCollisionSystem-operation').write(operation)
+	onLoad() {
 		$('#switchCollisionSystem-operation').getFocus()
-	},
-	customSave() {
-		Command.save({
-			operation: $('#switchCollisionSystem-operation').read()
-		})
 	}
 })

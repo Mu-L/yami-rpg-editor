@@ -2,6 +2,13 @@
 
 Command.cases.setVolume = new CommandSchema({
 	name: 'setVolume',
+	fields: [
+		{ key: 'type', default: 'bgm' },
+		{ key: 'volume', default: 1 },
+		{ key: 'easingId', default: () => Data.easings[0].id },
+		{ key: 'duration', default: 0 },
+		{ key: 'wait', default: false }
+	],
 	onInitialize() {
 		$('#setVolume-confirm').on('click', () => this.save())
 		$('#setVolume-type').loadItems([
@@ -32,29 +39,7 @@ Command.cases.setVolume = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		type = 'bgm',
-		volume = 1,
-		easingId = Data.easings[0].id,
-		duration = 0,
-		wait = false
-	}) {
-		const write = getElementWriter('setVolume')
-		write('type', type)
-		write('volume', volume)
-		write('easingId', easingId)
-		write('duration', duration)
-		write('wait', wait)
+	onLoad() {
 		$('#setVolume-type').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setVolume')
-		Command.save({
-			type: read('type'),
-			volume: read('volume'),
-			easingId: read('easingId'),
-			duration: read('duration'),
-			wait: read('wait')
-		})
 	}
 })

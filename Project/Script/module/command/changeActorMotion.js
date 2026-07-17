@@ -2,6 +2,11 @@
 
 Command.cases.changeActorMotion = new CommandSchema({
 	name: 'changeActorMotion',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'type', default: 'move' },
+		{ key: 'motion', default: '', required: true }
+	],
 	onInitialize() {
 		$('#changeActorMotion-confirm').on('click', () => this.save())
 		$('#changeActorMotion-type').loadItems([
@@ -24,23 +29,7 @@ Command.cases.changeActorMotion = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, type = 'move', motion = '' }) {
-		const write = getElementWriter('changeActorMotion')
-		write('actor', actor)
-		write('type', type)
-		write('motion', motion)
+	onLoad() {
 		$('#changeActorMotion-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('changeActorMotion')
-		const motion = read('motion')
-		if (motion === '') {
-			return $('#changeActorMotion-motion').getFocus()
-		}
-		Command.save({
-			actor: read('actor'),
-			type: read('type'),
-			motion
-		})
 	}
 })

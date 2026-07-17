@@ -2,6 +2,7 @@
 
 Command.cases.setCursor = new CommandSchema({
 	name: 'setCursor',
+	fields: [{ key: 'image', default: '' }],
 	customParse({ image }) {
 		return [
 			{ color: 'system' },
@@ -9,12 +10,7 @@ Command.cases.setCursor = new CommandSchema({
 			{ text: Command.parseFileName(image) }
 		]
 	},
-	customLoad({ image = '' }) {
-		const write = getElementWriter('setCursor')
-		write('image', image)
+	onLoad() {
 		$('#setCursor-image').getFocus()
-	},
-	customSave() {
-		Command.save({ image: getElementReader('setCursor')('image') })
 	}
 })

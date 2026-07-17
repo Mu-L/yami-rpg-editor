@@ -2,6 +2,10 @@
 
 Command.cases.simulateKey = new CommandSchema({
 	name: 'simulateKey',
+	fields: [
+		{ key: 'operation', default: 'click' },
+		{ key: 'keycode', default: '' }
+	],
 	onInitialize() {
 		$('#simulateKey-confirm').on('click', () => this.save())
 		$('#simulateKey-operation').loadItems([
@@ -20,13 +24,7 @@ Command.cases.simulateKey = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ operation = 'click', keycode = '' }) {
-		$('#simulateKey-operation').write(operation)
-		$('#simulateKey-keycode').write(keycode)
+	onLoad() {
 		$('#simulateKey-operation').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('simulateKey')
-		Command.save({ operation: read('operation'), keycode: read('keycode') })
 	}
 })

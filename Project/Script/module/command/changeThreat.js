@@ -2,6 +2,12 @@
 
 Command.cases.changeThreat = new CommandSchema({
 	name: 'changeThreat',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'target', default: { type: 'trigger' } },
+		{ key: 'operation', default: 'increase' },
+		{ key: 'threat', default: 0 }
+	],
 	onInitialize() {
 		$('#changeThreat-confirm').on('click', () => this.save())
 		$('#changeThreat-operation').loadItems([
@@ -28,26 +34,7 @@ Command.cases.changeThreat = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		target = { type: 'trigger' },
-		operation = 'increase',
-		threat = 0
-	}) {
-		const write = getElementWriter('changeThreat')
-		write('actor', actor)
-		write('target', target)
-		write('operation', operation)
-		write('threat', threat)
+	onLoad() {
 		$('#changeThreat-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('changeThreat')
-		Command.save({
-			actor: read('actor'),
-			target: read('target'),
-			operation: read('operation'),
-			threat: read('threat')
-		})
 	}
 })

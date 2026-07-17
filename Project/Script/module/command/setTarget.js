@@ -2,6 +2,7 @@
 
 Command.cases.setTarget = new CommandSchema({
 	name: 'setTarget',
+	fields: [{ key: 'actor', default: { type: 'trigger' } }],
 	customParse({ actor }) {
 		return [
 			{ color: 'actor' },
@@ -9,12 +10,7 @@ Command.cases.setTarget = new CommandSchema({
 			{ text: Command.parseActor(actor) }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' } }) {
-		const write = getElementWriter('setTarget')
-		write('actor', actor)
+	onLoad() {
 		$('#setTarget-actor').getFocus()
-	},
-	customSave() {
-		Command.save({ actor: getElementReader('setTarget')('actor') })
 	}
 })

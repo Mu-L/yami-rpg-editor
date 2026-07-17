@@ -2,6 +2,15 @@
 
 Command.cases.addAnimationComponent = new CommandSchema({
 	name: 'addAnimationComponent',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'animationId', default: '', required: true },
+		{ key: 'motion', default: '', required: true },
+		{ key: 'rotatable', default: false },
+		{ key: 'syncAngle', default: false },
+		{ key: 'priority', default: 0 },
+		{ key: 'offsetY', default: 0 }
+	],
 	onInitialize() {
 		$('#addAnimationComponent-confirm').on('click', () => this.save())
 		$('#addAnimationComponent-rotatable').loadItems([
@@ -63,43 +72,7 @@ Command.cases.addAnimationComponent = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		animationId = '',
-		motion = '',
-		rotatable = false,
-		syncAngle = false,
-		priority = 0,
-		offsetY = 0
-	}) {
-		const write = getElementWriter('addAnimationComponent')
-		write('actor', actor)
-		write('animationId', animationId)
-		write('motion', motion)
-		write('rotatable', rotatable)
-		write('syncAngle', syncAngle)
-		write('priority', priority)
-		write('offsetY', offsetY)
+	onLoad() {
 		$('#addAnimationComponent-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('addAnimationComponent')
-		const animationId = read('animationId')
-		if (animationId === '') {
-			return $('#addAnimationComponent-animationId').getFocus()
-		}
-		const motion = read('motion')
-		if (motion === '') {
-			return $('#addAnimationComponent-motion').getFocus()
-		}
-		Command.save({
-			actor: read('actor'),
-			animationId,
-			motion,
-			rotatable: read('rotatable'),
-			syncAngle: read('syncAngle'),
-			priority: read('priority'),
-			offsetY: read('offsetY')
-		})
 	}
 })

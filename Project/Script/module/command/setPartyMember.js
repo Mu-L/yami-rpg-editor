@@ -2,6 +2,10 @@
 
 Command.cases.setPartyMember = new CommandSchema({
 	name: 'setPartyMember',
+	fields: [
+		{ key: 'operation', default: 'add' },
+		{ key: 'actor', default: { type: 'trigger' } }
+	],
 	onInitialize() {
 		$('#setPartyMember-confirm').on('click', () => this.save())
 		$('#setPartyMember-operation').loadItems([
@@ -19,14 +23,7 @@ Command.cases.setPartyMember = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ operation = 'add', actor = { type: 'trigger' } }) {
-		const write = getElementWriter('setPartyMember')
-		write('operation', operation)
-		write('actor', actor)
+	onLoad() {
 		$('#setPartyMember-operation').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setPartyMember')
-		Command.save({ operation: read('operation'), actor: read('actor') })
 	}
 })

@@ -2,6 +2,11 @@
 
 Command.cases.deleteTile = new CommandSchema({
 	name: 'deleteTile',
+	fields: [
+		{ key: 'tilemap', default: { type: 'trigger' } },
+		{ key: 'tilemapX', default: 0 },
+		{ key: 'tilemapY', default: 0 }
+	],
 	customParse({ tilemap, tilemapX, tilemapY }) {
 		const words = Command.words
 			.push(Command.parseTilemap(tilemap))
@@ -13,19 +18,7 @@ Command.cases.deleteTile = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ tilemap = { type: 'trigger' }, tilemapX = 0, tilemapY = 0 }) {
-		const write = getElementWriter('deleteTile')
-		write('tilemap', tilemap)
-		write('tilemapX', tilemapX)
-		write('tilemapY', tilemapY)
+	onLoad() {
 		$('#deleteTile-tilemap').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('deleteTile')
-		Command.save({
-			tilemap: read('tilemap'),
-			tilemapX: read('tilemapX'),
-			tilemapY: read('tilemapY')
-		})
 	}
 })

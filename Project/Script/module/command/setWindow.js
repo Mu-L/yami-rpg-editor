@@ -2,6 +2,10 @@
 
 Command.cases.setWindow = new CommandSchema({
 	name: 'setWindow',
+	fields: [
+		{ key: 'element', default: { type: 'trigger' } },
+		{ key: 'properties', default: [] }
+	],
 	onInitialize() {
 		$('#setWindow-confirm').on('click', () => this.save())
 		$('#setWindow-properties').bind(WindowProperty)
@@ -20,10 +24,7 @@ Command.cases.setWindow = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ element = { type: 'trigger' }, properties = [] }) {
-		const write = getElementWriter('setWindow')
-		write('element', element)
-		write('properties', properties.slice())
+	onLoad() {
 		$('#setWindow-element').getFocus()
 	},
 	customSave() {

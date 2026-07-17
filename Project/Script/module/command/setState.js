@@ -2,6 +2,11 @@
 
 Command.cases.setState = new CommandSchema({
 	name: 'setState',
+	fields: [
+		{ key: 'state', default: { type: 'trigger' } },
+		{ key: 'operation', default: 'set-time' },
+		{ key: 'time', default: 0 }
+	],
 	onInitialize() {
 		$('#setState-confirm').on('click', () => this.save())
 		$('#setState-operation').loadItems([
@@ -24,23 +29,7 @@ Command.cases.setState = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		state = { type: 'trigger' },
-		operation = 'set-time',
-		time = 0
-	}) {
-		const write = getElementWriter('setState')
-		write('state', state)
-		write('operation', operation)
-		write('time', time)
+	onLoad() {
 		$('#setState-state').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setState')
-		Command.save({
-			state: read('state'),
-			operation: read('operation'),
-			time: read('time')
-		})
 	}
 })

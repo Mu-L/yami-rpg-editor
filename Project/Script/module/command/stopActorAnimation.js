@@ -2,6 +2,7 @@
 
 Command.cases.stopActorAnimation = new CommandSchema({
 	name: 'stopActorAnimation',
+	fields: [{ key: 'actor', default: { type: 'trigger' } }],
 	customParse({ actor }) {
 		return [
 			{ color: 'actor' },
@@ -9,12 +10,7 @@ Command.cases.stopActorAnimation = new CommandSchema({
 			{ text: Command.parseActor(actor) }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' } }) {
-		const write = getElementWriter('stopActorAnimation')
-		write('actor', actor)
+	onLoad() {
 		$('#stopActorAnimation-actor').getFocus()
-	},
-	customSave() {
-		Command.save({ actor: getElementReader('stopActorAnimation')('actor') })
 	}
 })

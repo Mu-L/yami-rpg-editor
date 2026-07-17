@@ -2,6 +2,12 @@
 
 Command.cases.clampCamera = new CommandSchema({
 	name: 'clampCamera',
+	fields: [
+		{ key: 'left', default: 0 },
+		{ key: 'top', default: 0 },
+		{ key: 'right', default: 0 },
+		{ key: 'bottom', default: 0 }
+	],
 	customParse({ left, top, right, bottom }) {
 		const words = Command.words
 			.push(
@@ -30,21 +36,7 @@ Command.cases.clampCamera = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ left = 0, top = 0, right = 0, bottom = 0 }) {
-		const write = getElementWriter('clampCamera')
-		write('left', left)
-		write('top', top)
-		write('right', right)
-		write('bottom', bottom)
+	onLoad() {
 		$('#clampCamera-left').getFocus('all')
-	},
-	customSave() {
-		const read = getElementReader('clampCamera')
-		Command.save({
-			left: read('left'),
-			top: read('top'),
-			right: read('right'),
-			bottom: read('bottom')
-		})
 	}
 })

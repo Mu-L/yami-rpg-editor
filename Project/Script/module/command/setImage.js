@@ -2,6 +2,10 @@
 
 Command.cases.setImage = new CommandSchema({
 	name: 'setImage',
+	fields: [
+		{ key: 'element', default: { type: 'trigger' } },
+		{ key: 'properties', default: [] }
+	],
 	onInitialize() {
 		$('#setImage-confirm').on('click', () => this.save())
 		$('#setImage-properties').bind(ImageProperty)
@@ -20,10 +24,7 @@ Command.cases.setImage = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ element = { type: 'trigger' }, properties = [] }) {
-		const write = getElementWriter('setImage')
-		write('element', element)
-		write('properties', properties.slice())
+	onLoad() {
 		$('#setImage-element').getFocus()
 	},
 	customSave() {

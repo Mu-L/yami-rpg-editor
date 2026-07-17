@@ -2,6 +2,10 @@
 
 Command.cases.fixAngle = new CommandSchema({
 	name: 'fixAngle',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'fixed', default: true }
+	],
 	onInitialize() {
 		$('#fixAngle-confirm').on('click', () => this.save())
 		$('#fixAngle-fixed').loadItems([
@@ -19,14 +23,7 @@ Command.cases.fixAngle = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, fixed = true }) {
-		const write = getElementWriter('fixAngle')
-		write('actor', actor)
-		write('fixed', fixed)
+	onLoad() {
 		$('#fixAngle-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('fixAngle')
-		Command.save({ actor: read('actor'), fixed: read('fixed') })
 	}
 })

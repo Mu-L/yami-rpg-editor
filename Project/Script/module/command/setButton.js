@@ -2,6 +2,10 @@
 
 Command.cases.setButton = new CommandSchema({
 	name: 'setButton',
+	fields: [
+		{ key: 'element', default: { type: 'trigger' } },
+		{ key: 'properties', default: [] }
+	],
 	onInitialize() {
 		$('#setButton-confirm').on('click', () => this.save())
 		$('#setButton-properties').bind(ButtonProperty)
@@ -20,10 +24,7 @@ Command.cases.setButton = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ element = { type: 'trigger' }, properties = [] }) {
-		const write = getElementWriter('setButton')
-		write('element', element)
-		write('properties', properties.slice())
+	onLoad() {
 		$('#setButton-element').getFocus()
 	},
 	customSave() {

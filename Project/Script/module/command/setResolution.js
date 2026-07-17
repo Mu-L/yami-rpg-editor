@@ -2,6 +2,12 @@
 
 Command.cases.setResolution = new CommandSchema({
 	name: 'setResolution',
+	fields: [
+		{ key: 'width', default: 1920 },
+		{ key: 'height', default: 1080 },
+		{ key: 'sceneScale', default: 1 },
+		{ key: 'uiScale', default: 1 }
+	],
 	customParse({ width, height, sceneScale, uiScale }) {
 		const words = Command.words
 			.push(
@@ -17,21 +23,7 @@ Command.cases.setResolution = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ width = 1920, height = 1080, sceneScale = 1, uiScale = 1 }) {
-		const write = getElementWriter('setResolution')
-		write('width', width)
-		write('height', height)
-		write('sceneScale', sceneScale)
-		write('uiScale', uiScale)
+	onLoad() {
 		$('#setResolution-width').getFocus('all')
-	},
-	customSave() {
-		const read = getElementReader('setResolution')
-		Command.save({
-			width: read('width'),
-			height: read('height'),
-			sceneScale: read('sceneScale'),
-			uiScale: read('uiScale')
-		})
 	}
 })

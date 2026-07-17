@@ -2,6 +2,7 @@
 
 Command.cases.setLanguage = new CommandSchema({
 	name: 'setLanguage',
+	fields: [{ key: 'language', default: 'auto' }],
 	customParse({ language }) {
 		return [
 			{ color: 'system' },
@@ -9,14 +10,14 @@ Command.cases.setLanguage = new CommandSchema({
 			{ text: Local.get('languages.' + language) }
 		]
 	},
-	customLoad({ language = 'auto' }) {
-		$('#setLanguage-language').loadItems(this.createLanguageItems())
-		$('#setLanguage-language').write(language)
-		$('#setLanguage-language').getFocus()
+	onLoad(data) {
+		const el = $('#setLanguage-language')
+		el.loadItems(this.createLanguageItems())
+		el.write(data.language ?? 'auto')
+		el.getFocus()
 	},
 	customSave() {
-		const read = getElementReader('setLanguage')
-		Command.save({ language: read('language') })
+		Command.save({ language: getElementReader('setLanguage')('language') })
 	},
 	createLanguageItems() {
 		const items = []

@@ -2,6 +2,10 @@
 
 Command.cases.setElement = new CommandSchema({
 	name: 'setElement',
+	fields: [
+		{ key: 'element', default: { type: 'trigger' } },
+		{ key: 'operation', default: 'hide' }
+	],
 	onInitialize() {
 		$('#setElement-confirm').on('click', () => this.save())
 		$('#setElement-operation').loadItems([
@@ -24,17 +28,7 @@ Command.cases.setElement = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ element = { type: 'trigger' }, operation = 'hide' }) {
-		const write = getElementWriter('setElement')
-		write('element', element)
-		write('operation', operation)
+	onLoad() {
 		$('#setElement-element').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setElement')
-		Command.save({
-			element: read('element'),
-			operation: read('operation')
-		})
 	}
 })

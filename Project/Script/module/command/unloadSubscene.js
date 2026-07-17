@@ -2,6 +2,7 @@
 
 Command.cases.unloadSubscene = new CommandSchema({
 	name: 'unloadSubscene',
+	fields: [{ key: 'sceneId', default: '', required: true }],
 	customParse({ sceneId }) {
 		return [
 			{ color: 'scene' },
@@ -9,17 +10,7 @@ Command.cases.unloadSubscene = new CommandSchema({
 			{ text: Command.parseVariableFile(sceneId) }
 		]
 	},
-	customLoad({ sceneId = '' }) {
-		const write = getElementWriter('unloadSubscene')
-		write('sceneId', sceneId)
+	onLoad() {
 		$('#unloadSubscene-sceneId').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('unloadSubscene')
-		const sceneId = read('sceneId')
-		if (sceneId === '') {
-			return $('#unloadSubscene-sceneId').getFocus()
-		}
-		Command.save({ sceneId })
 	}
 })

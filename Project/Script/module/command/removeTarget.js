@@ -2,6 +2,10 @@
 
 Command.cases.removeTarget = new CommandSchema({
 	name: 'removeTarget',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'target', default: { type: 'trigger' } }
+	],
 	customParse({ actor, target }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
@@ -12,14 +16,7 @@ Command.cases.removeTarget = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, target = { type: 'trigger' } }) {
-		const write = getElementWriter('removeTarget')
-		write('actor', actor)
-		write('target', target)
+	onLoad() {
 		$('#removeTarget-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('removeTarget')
-		Command.save({ actor: read('actor'), target: read('target') })
 	}
 })

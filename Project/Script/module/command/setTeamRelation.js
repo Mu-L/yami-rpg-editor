@@ -2,6 +2,11 @@
 
 Command.cases.setTeamRelation = new CommandSchema({
 	name: 'setTeamRelation',
+	fields: [
+		{ key: 'teamId1', default: () => Data.teams.list[0].id },
+		{ key: 'teamId2', default: () => Data.teams.list[0].id },
+		{ key: 'relation', default: 0 }
+	],
 	onInitialize() {
 		$('#setTeamRelation-confirm').on('click', () => this.save())
 		$('#setTeamRelation-relation').loadItems([
@@ -32,23 +37,7 @@ Command.cases.setTeamRelation = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		teamId1 = Data.teams.list[0].id,
-		teamId2 = Data.teams.list[0].id,
-		relation = 0
-	}) {
-		const write = getElementWriter('setTeamRelation')
-		write('teamId1', teamId1)
-		write('teamId2', teamId2)
-		write('relation', relation)
+	onLoad() {
 		$('#setTeamRelation-teamId1').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('setTeamRelation')
-		Command.save({
-			teamId1: read('teamId1'),
-			teamId2: read('teamId2'),
-			relation: read('relation')
-		})
 	}
 })

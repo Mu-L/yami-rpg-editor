@@ -2,6 +2,7 @@
 
 Command.cases.restoreAudio = new CommandSchema({
 	name: 'restoreAudio',
+	fields: [{ key: 'type', default: 'bgm' }],
 	onInitialize() {
 		$('#restoreAudio-confirm').on('click', () => this.save())
 		$('#restoreAudio-type').loadItems([
@@ -17,12 +18,7 @@ Command.cases.restoreAudio = new CommandSchema({
 			{ text: Command.parseAudioType(type) }
 		]
 	},
-	customLoad({ type = 'bgm' }) {
-		const write = getElementWriter('restoreAudio')
-		write('type', type)
+	onLoad() {
 		$('#restoreAudio-type').getFocus()
-	},
-	customSave() {
-		Command.save({ type: getElementReader('restoreAudio')('type') })
 	}
 })

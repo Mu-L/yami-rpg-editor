@@ -2,6 +2,10 @@
 
 Command.cases.appendTarget = new CommandSchema({
 	name: 'appendTarget',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'target', default: { type: 'trigger' } }
+	],
 	customParse({ actor, target }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
@@ -12,14 +16,7 @@ Command.cases.appendTarget = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, target = { type: 'trigger' } }) {
-		const write = getElementWriter('appendTarget')
-		write('actor', actor)
-		write('target', target)
+	onLoad() {
 		$('#appendTarget-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('appendTarget')
-		Command.save({ actor: read('actor'), target: read('target') })
 	}
 })

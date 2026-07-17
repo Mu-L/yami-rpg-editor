@@ -2,6 +2,12 @@
 
 Command.cases.setGameSpeed = new CommandSchema({
 	name: 'setGameSpeed',
+	fields: [
+		{ key: 'speed', default: 1 },
+		{ key: 'easingId', default: () => Data.easings[0].id },
+		{ key: 'duration', default: 0 },
+		{ key: 'wait', default: false }
+	],
 	onInitialize() {
 		$('#setGameSpeed-confirm').on('click', () => this.save())
 		$('#setGameSpeed-wait').loadItems([
@@ -25,26 +31,7 @@ Command.cases.setGameSpeed = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		speed = 1,
-		easingId = Data.easings[0].id,
-		duration = 0,
-		wait = false
-	}) {
-		const write = getElementWriter('setGameSpeed')
-		write('speed', speed)
-		write('easingId', easingId)
-		write('duration', duration)
-		write('wait', wait)
+	onLoad() {
 		$('#setGameSpeed-speed').getFocus('all')
-	},
-	customSave() {
-		const read = getElementReader('setGameSpeed')
-		Command.save({
-			speed: read('speed'),
-			easingId: read('easingId'),
-			duration: read('duration'),
-			wait: read('wait')
-		})
 	}
 })

@@ -2,6 +2,11 @@
 
 Command.cases.removeAnimationComponent = new CommandSchema({
 	name: 'removeAnimationComponent',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'animationId', default: '', required: true },
+		{ key: 'motion', default: '', required: true }
+	],
 	onInitialize() {
 		$('#removeAnimationComponent-confirm').on('click', () => this.save())
 		$('#removeAnimationComponent-animationId').on('write', (event) => {
@@ -24,27 +29,7 @@ Command.cases.removeAnimationComponent = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({ actor = { type: 'trigger' }, animationId = '', motion = '' }) {
-		var write = getElementWriter('removeAnimationComponent')
-		write('actor', actor)
-		write('animationId', animationId)
-		write('motion', motion)
+	onLoad() {
 		$('#removeAnimationComponent-actor').getFocus()
-	},
-	customSave() {
-		const read = getElementReader('removeAnimationComponent')
-		const animationId = read('animationId')
-		if (animationId === '') {
-			return $('#removeAnimationComponent-animationId').getFocus()
-		}
-		const motion = read('motion')
-		if (motion === '') {
-			return $('#removeAnimationComponent-motion').getFocus()
-		}
-		Command.save({
-			actor: read('actor'),
-			animationId,
-			motion
-		})
 	}
 })

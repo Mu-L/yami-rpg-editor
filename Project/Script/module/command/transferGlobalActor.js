@@ -2,6 +2,10 @@
 
 Command.cases.transferGlobalActor = new CommandSchema({
 	name: 'transferGlobalActor',
+	fields: [
+		{ key: 'actor', default: { type: 'trigger' } },
+		{ key: 'position', default: { type: 'absolute', x: 0, y: 0 } }
+	],
 	customParse({ actor, position }) {
 		const words = Command.words
 			.push(Command.parseActor(actor))
@@ -12,17 +16,7 @@ Command.cases.transferGlobalActor = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		position = { type: 'absolute', x: 0, y: 0 }
-	}) {
-		const write = getElementWriter('transferGlobalActor')
-		write('actor', actor)
-		write('position', position)
+	onLoad() {
 		$('#transferGlobalActor-actor').getFocus('all')
-	},
-	customSave() {
-		const read = getElementReader('transferGlobalActor')
-		Command.save({ actor: read('actor'), position: read('position') })
 	}
 })

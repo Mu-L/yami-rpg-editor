@@ -2,6 +2,14 @@
 
 Command.cases.setAmbientLight = new CommandSchema({
 	name: 'setAmbientLight',
+	fields: [
+		{ key: 'red', default: 0 },
+		{ key: 'green', default: 0 },
+		{ key: 'blue', default: 0 },
+		{ key: 'easingId', default: () => Data.easings[0].id },
+		{ key: 'duration', default: 0 },
+		{ key: 'wait', default: false }
+	],
 	onInitialize() {
 		$('#setAmbientLight-confirm').on('click', () => this.save())
 		$('#setAmbientLight-wait').loadItems([
@@ -40,32 +48,7 @@ Command.cases.setAmbientLight = new CommandSchema({
 			{ text: words.join() }
 		]
 	},
-	customLoad({
-		red = 0,
-		green = 0,
-		blue = 0,
-		easingId = Data.easings[0].id,
-		duration = 0,
-		wait = false
-	}) {
-		const write = getElementWriter('setAmbientLight')
-		write('red', red)
-		write('green', green)
-		write('blue', blue)
-		write('easingId', easingId)
-		write('duration', duration)
-		write('wait', wait)
+	onLoad() {
 		$('#setAmbientLight-red').getFocus('all')
-	},
-	customSave() {
-		const read = getElementReader('setAmbientLight')
-		Command.save({
-			red: read('red'),
-			green: read('green'),
-			blue: read('blue'),
-			easingId: read('easingId'),
-			duration: read('duration'),
-			wait: read('wait')
-		})
 	}
 })
