@@ -450,13 +450,81 @@ try {
 		}
 	}
 	if (repeatableOk) ok('@group[] 可重复参数组解析正确')
+	// 验证 @readonly 解析
+	const roSample = `/* @plugin Demo\n@number fixed\n@readonly\n@string editable\n*/`
+	const roMeta = {}
+	parseMeta(roMeta, roSample)
+	const fixedParam = roMeta.parameters.find((p) => p.key === 'fixed')
+	const editableParam = roMeta.parameters.find((p) => p.key === 'editable')
+	if (fixedParam?.readonly !== true) {
+		groupOk = false
+		fail(`@readonly 解析错误: ${JSON.stringify(fixedParam?.readonly)}`)
+	}
+	if (editableParam?.readonly === true) {
+		groupOk = false
+		fail(
+			`@readonly 误标记 editable: ${JSON.stringify(editableParam?.readonly)}`
+		)
+	}
+	if (fixedParam?.readonly === true && editableParam?.readonly !== true)
+		ok('@readonly 解析正确')
+	// 验证 @hidden 解析
+	const hSample = `/* @plugin Demo\n@number visible\n@string internal\n@hidden\n*/`
+	const hMeta = {}
+	parseMeta(hMeta, hSample)
+	const visibleParam = hMeta.parameters.find((p) => p.key === 'visible')
+	const hiddenParam = hMeta.parameters.find((p) => p.key === 'internal')
+	if (hiddenParam?.hidden !== true) {
+		groupOk = false
+		fail(`@hidden 解析错误: ${JSON.stringify(hiddenParam?.hidden)}`)
+	}
+	if (visibleParam?.hidden === true) {
+		groupOk = false
+		fail(`@hidden 误标记 visible: ${JSON.stringify(visibleParam?.hidden)}`)
+	}
+	if (hiddenParam?.hidden === true && visibleParam?.hidden !== true)
+		ok('@hidden 解析正确')
+	// 验证 @validate 解析
+	const vSample = `/* @plugin Demo\n@string code\n@validate pattern:^[a-z]+$ minLength:3 maxLength:10 notEmpty\n@string free\n*/`
+	const vMeta = {}
+	parseMeta(vMeta, vSample)
+	const codeParam = vMeta.parameters.find((p) => p.key === 'code')
+	const freeParam = vMeta.parameters.find((p) => p.key === 'free')
+	if (!codeParam?.validate) {
+		groupOk = false
+		fail('@validate 未解析出 validate 对象')
+	} else {
+		const v = codeParam.validate
+		if (!v.pattern || v.pattern.source !== '^[a-z]+$') {
+			groupOk = false
+			fail(`@validate pattern 错误: ${v.pattern}`)
+		}
+		if (v.minLength !== 3) {
+			groupOk = false
+			fail(`@validate minLength 错误: ${v.minLength}`)
+		}
+		if (v.maxLength !== 10) {
+			groupOk = false
+			fail(`@validate maxLength 错误: ${v.maxLength}`)
+		}
+		if (v.notEmpty !== true) {
+			groupOk = false
+			fail(`@validate notEmpty 错误: ${v.notEmpty}`)
+		}
+	}
+	if (freeParam?.validate !== undefined) {
+		groupOk = false
+		fail(`@validate 误标记 free: ${JSON.stringify(freeParam?.validate)}`)
+	}
+	if (codeParam?.validate && freeParam?.validate === undefined)
+		ok('@validate 解析正确')
 } catch (e) {
 	groupOk = false
-	fail('plugin.js @group 解析抛错: ' + e.message)
+	fail('plugin.js 新标签解析抛错: ' + e.message)
 }
 if (groupOk)
 	ok(
-		'@group 分组 + @desc 本地化 + @deprecated + @require + @placeholder + @group[] 解析正确'
+		'@group 分组 + @desc 本地化 + @deprecated + @require + @placeholder + @group[] + @readonly + @hidden + @validate 解析正确'
 	)
 
 console.log('')

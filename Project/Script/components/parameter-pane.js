@@ -135,6 +135,24 @@ export class ParameterPane extends HTMLElement {
 				input.key = key
 				grid.appendChild(label)
 				grid.appendChild(input)
+				if (parameter.readonly) {
+					input.disable()
+				}
+				if (parameter.validate) {
+					const validateInput = () => {
+						const val = input.parameters?.[input.key]
+						const ok =
+							val !== undefined &&
+							PluginManager.checkValidate(parameter, val)
+						if (ok) {
+							input.removeClass('validate-error')
+						} else {
+							input.addClass('validate-error')
+						}
+					}
+					const nativeInput = input.input || input
+					nativeInput.addEventListener('input', validateInput)
+				}
 				children.push(inputWrap)
 			}
 			for (const g of groupOrder) {
@@ -154,6 +172,7 @@ export class ParameterPane extends HTMLElement {
 					}
 				}
 				for (const parameter of groupMap.get(g)) {
+					if (parameter.hidden) continue
 					createParamRow(box, grid, children, parameter)
 				}
 				this.updateParamDisplay(box)
@@ -268,8 +287,12 @@ export class ParameterPane extends HTMLElement {
 	// 更新参数可见性
 	updateParamDisplay(detailBox) {
 		const { states } = detailBox.meta.manager
+		const mParams = detailBox.meta.parameters
+		const paramMap = {}
+		for (const p of mParams) paramMap[p.key] = p
 		for (const wrap of detailBox.wrap.children) {
-			switch (states[wrap.input.key]) {
+			const key = wrap.input.key
+			switch (states[key]) {
 				case false:
 					wrap.label.hide()
 					wrap.input.hide()
@@ -278,6 +301,23 @@ export class ParameterPane extends HTMLElement {
 					wrap.label.show()
 					wrap.input.show()
 					continue
+			}
+		}
+		// 校验高亮
+		for (const wrap of detailBox.wrap.children) {
+			const key = wrap.input.key
+			const param = paramMap[key]
+			const parameters = wrap.input.parameters
+			if (param?.validate && parameters) {
+				const value = parameters[key]
+				const ok = PluginManager.checkValidate(param, value)
+				if (ok) {
+					wrap.input.removeClass('validate-error')
+				} else {
+					wrap.input.addClass('validate-error')
+				}
+			} else {
+				wrap.input.removeClass('validate-error')
 			}
 		}
 	}
@@ -449,9 +489,11 @@ export class ParameterPane extends HTMLElement {
 						item[subParam.key] !== undefined
 							? item[subParam.key]
 							: subParam.value
+					wrap.label.textContent = ''
 					wrap.input.parameters = item
 					wrap.input.key = subParam.key
 					wrap.input.write(val)
+					wrap.input.removeClass('validate-error')
 					grid.appendChild(wrap.label)
 					grid.appendChild(wrap.input)
 					return { param: subParam, ...wrap }
@@ -617,11 +659,13 @@ export class ParameterPane extends HTMLElement {
 		}
 		parameters[key] = element.read()
 		scriptList?.dispatchChangeEvent(1)
-		// 更新参数可见性
-		if (element.branched) {
-			const grid = element.parentNode
-			const detail = grid.parentNode
-			PluginManager.reconstruct(detail.data)
+		// 更新参数可见性与校验状态
+		const grid = element.parentNode
+		const detail = grid.parentNode
+		if (detail?.meta) {
+			if (element.branched) {
+				PluginManager.reconstruct(detail.data)
+			}
 			this.updateParamDisplay(detail)
 			this.onResize?.()
 		}

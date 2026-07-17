@@ -841,6 +841,59 @@ PluginManager.parseMeta = (function IIFE() {
 			value: content
 		})
 	}
+	const setReadonly = () => {
+		if (parameter === null) return
+		parameter.readonly = true
+	}
+	const setHidden = () => {
+		if (parameter === null) return
+		parameter.hidden = true
+	}
+	const setValidate = () => {
+		if (parameter === null) return
+		const validate = {}
+		const parts = content.split(/\s+/)
+		for (let i = 0; i < parts.length; i++) {
+			const part = parts[i]
+			const sep = part.indexOf(':')
+			const key = sep === -1 ? part : part.slice(0, sep)
+			const val = sep === -1 ? '' : part.slice(sep + 1)
+			switch (key) {
+				case 'min':
+				case 'max':
+				case 'minLength':
+				case 'maxLength': {
+					const num = parseNumber(val)
+					if (num !== null) validate[key] = num
+					break
+				}
+				case 'pattern': {
+					try {
+						if (val[0] === '/' && val.lastIndexOf('/') > 0) {
+							const lst = val.lastIndexOf('/')
+							validate.pattern = new RegExp(
+								val.slice(1, lst),
+								val.slice(lst + 1)
+							)
+						} else {
+							validate.pattern = new RegExp(val)
+						}
+					} catch (e) {}
+					break
+				}
+				case 'notEmpty':
+					validate.notEmpty = true
+					break
+			}
+		}
+		if (Object.keys(validate).length) {
+			Object.defineProperty(parameter, 'validate', {
+				configurable: true,
+				value: validate
+			})
+		}
+	}
+
 	const setLang = () => {
 		const match = langName.exec(content)
 		if (match) {
@@ -1135,6 +1188,10 @@ PluginManager.parseMeta = (function IIFE() {
 		default: setDefault,
 		alias: setAlias,
 		desc: setDesc,
+		readonly: setReadonly,
+		hidden: setHidden,
+		validate: setValidate,
+
 		cond: setCond,
 		lang: setLang,
 		group: setGroup,
@@ -1314,7 +1371,9 @@ PluginManager.reconstruct = (function IIFE() {
 			case 'repeatable-group':
 				return value instanceof Array
 		}
+		return true
 	}
+
 	const readValue = (parameter, value) => {
 		const { type } = parameter
 		switch (type) {
@@ -1478,6 +1537,28 @@ PluginManager.reconstruct = (function IIFE() {
 		return false
 	}
 })()
+
+// 校验参数值（公共方法，供 UI 层调用）
+PluginManager.checkValidate = function (parameter, value) {
+	if (!parameter.validate) return true
+	const v = parameter.validate
+	if (v.notEmpty && (value === '' || value == null)) return false
+	if (
+		v.minLength != null &&
+		typeof value === 'string' &&
+		value.length < v.minLength
+	)
+		return false
+	if (
+		v.maxLength != null &&
+		typeof value === 'string' &&
+		value.length > v.maxLength
+	)
+		return false
+	if (v.pattern && typeof value === 'string' && !v.pattern.test(value))
+		return false
+	return true
+}
 
 // 保存状态到项目文件
 PluginManager.saveToProject = function (project) {
