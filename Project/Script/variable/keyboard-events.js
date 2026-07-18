@@ -1,4 +1,6 @@
 'use strict'
+import { Variable } from './variable.js'
+import { Shortcuts } from '../tools/shortcut-registry.js'
 
 // 键盘按下事件
 Variable.keydown = Shortcuts.createUndoRedo(Variable)

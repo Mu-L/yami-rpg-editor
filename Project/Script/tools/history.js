@@ -91,4 +91,4 @@ export class History extends Array {
 	static processors = {}
 }
 
-window.History = History
+// ESM 迁移兼容：恢复全局绑定（供尚未迁移的文件裸用）

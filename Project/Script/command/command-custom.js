@@ -1,4 +1,14 @@
 'use strict'
+import { $ } from '../util/dom.js'
+import { Command } from './command-object.js'
+import { Window } from '../tools/window-object.js'
+import { CommandSuggestion } from './command-tip.js'
+import { Token } from './mark-string-manager.js'
+import { TreeList } from '../components/tree-list.js'
+import { Data } from '../data/data-object.js'
+import { Layout } from '../layout/layout.js'
+import { PluginManager } from '../plugin/plugin.js'
+import { Local } from '../tools/localization.js'
 
 // ******************************** 自定义指令 ********************************
 

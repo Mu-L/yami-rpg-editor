@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Window } from './window-object.js'
 
 // ******************************** 设置数量窗口 ********************************
 
@@ -39,5 +41,3 @@ SetQuantity.confirm = function (event) {
 	this.callback($('#setQuantity-quantity').read())
 	Window.close('setQuantity')
 }.bind(SetQuantity)
-
-window.SetQuantity = SetQuantity

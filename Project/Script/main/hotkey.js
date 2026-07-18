@@ -1,4 +1,5 @@
 'use strict'
+import { Editor } from './editor.js'
 
 // 开关快捷键
 Editor.switchHotkey = (function IIFE() {

@@ -1,4 +1,10 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import '../util/event-target.js'
+import '../util/node-list.js'
+import { Animation } from '../animation/animation-window.js'
+import { Cursor } from '../tools/pointer-object.js'
 
 // ******************************** 元素方法 ********************************
 
@@ -226,12 +232,10 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 
 	// 指针离开事件
 	const pointerleave = function (event) {
-		if (
-			!(
-				event.relatedTarget instanceof HTMLElement &&
-				tooltip.contains(event.relatedTarget)
-			)
-		) {
+		if (!(
+			event.relatedTarget instanceof HTMLElement &&
+			tooltip.contains(event.relatedTarget)
+		)) {
 			target = null
 			close()
 		}

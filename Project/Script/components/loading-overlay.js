@@ -61,6 +61,3 @@ export const Loading = {
 		this._el().setText(text)
 	}
 }
-
-window.LoadingOverlay = LoadingOverlay
-window.Loading = Loading

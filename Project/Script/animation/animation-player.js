@@ -1,4 +1,13 @@
 ﻿'use strict'
+import { Data } from '../data/data-object.js'
+import { Scene } from '../scene/scene-window.js'
+import { GL } from '../webgl/webgl-init.js'
+import { UI } from '../ui/ui-window.js'
+import { Animation } from './animation-window.js'
+import { Easing } from '../data/transition-window.js'
+import { Particle } from '../particle/particle-window.js'
+import { ImageTexture } from '../webgl/image-texture.js'
+import { Matrix } from '../webgl/matrix2.js'
 
 // ******************************** 动画播放器类 ********************************
 

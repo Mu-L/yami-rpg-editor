@@ -1,4 +1,10 @@
 'use strict'
+import { $, measureText } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { GameLocal } from '../../local/local-object.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.showText = new CommandSchema({
 	name: 'showText',

@@ -1,4 +1,16 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { ctrl } from '../util/event-accessors.js'
+import { File } from '../file/file-system-core.js'
+import { GL } from '../webgl/webgl-init.js'
+import { Codec } from '../codec/codec.js'
+import { Menu } from '../components/menu-list.js'
+import { Data } from './data-object.js'
+import { Easing } from './transition-window.js'
+import { GUID } from '../file/guid.js'
+import { Color } from '../tools/color-picker-window.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 队伍窗口 ********************************
 
@@ -574,5 +586,3 @@ Team.list.updateMarks = function (item) {
 		}
 	}
 }
-
-window.Team = Team

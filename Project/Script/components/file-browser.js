@@ -1,4 +1,14 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { FileNavPane } from './file-nav-pane.js'
+import { FileBodyPane } from './file-body-pane.js'
+import { Menu } from './menu-list.js'
+import { Directory } from '../file/directory-object.js'
+import { FileItem } from '../file/file-item.js'
+import { File } from '../file/file-system-core.js'
+import { FolderItem } from '../file/folder-item.js'
+import { Local } from '../tools/localization.js'
+import { Path } from '../util/config.js'
 
 // ******************************** 文件浏览器 ********************************
 
@@ -25,30 +35,6 @@ export class FileBrowser extends HTMLElement {
 		this.keyword = null
 		this.backupFolders = []
 		this.searchResults = []
-		this.nav = document.createElement('file-nav-pane')
-		this.head = document.createElement('file-head-pane')
-		this.body = document.createElement('file-body-pane')
-		this.appendChild(this.nav)
-		this.appendChild(this.head)
-		this.appendChild(this.body)
-
-		// 创建链接对象
-		Promise.resolve().then(() => {
-			const browser = this
-			const nav = this.nav
-			const head = this.head
-			const body = this.body
-			const links = {
-				browser,
-				nav,
-				head,
-				body
-			}
-			this.links = links
-			nav.links = links
-			head.links = links
-			body.links = links
-		})
 
 		// 侦听事件
 		this.on('pointerdown', this.pointerdown)
@@ -193,7 +179,7 @@ export class FileBrowser extends HTMLElement {
 	// 获取绝对路径列表
 	getFilePaths(files) {
 		const relativePaths = files.map((file) => file.path)
-		const absolutePaths = relativePaths.map((path) => File.route(path))
+		const absolutePaths = relativePaths.map((path) => File.path(path))
 		return { relativePaths, absolutePaths }
 	}
 
@@ -370,7 +356,7 @@ export class FileBrowser extends HTMLElement {
 		if (dragging) {
 			event.stopPropagation()
 			if (!dragging.dropPath) return
-			const dropPath = File.route(dragging.dropPath)
+			const dropPath = File.path(dragging.dropPath)
 			const dropName = Path.basename(dropPath)
 			const get = Local.createGetter('menuFileOnDrop')
 
@@ -506,7 +492,7 @@ export class FileBrowser extends HTMLElement {
 		if (dragging) {
 			let { dropPath } = dragging
 			if (!dropPath) return
-			dropPath = File.route(dropPath)
+			dropPath = File.path(dropPath)
 			const map = Array.prototype.map
 			const paths = map.call(files, (file) => file.path)
 			Directory.readdir(paths)
@@ -518,8 +504,31 @@ export class FileBrowser extends HTMLElement {
 				})
 		}
 	}
+
+	connectedCallback() {
+		if (this._built) return
+		this._built = true
+		if (!this.nav) {
+			this.nav = document.createElement('file-nav-pane')
+			this.head = document.createElement('file-head-pane')
+			this.body = document.createElement('file-body-pane')
+			this.appendChild(this.nav)
+			this.appendChild(this.head)
+			this.appendChild(this.body)
+			const links = {
+				browser: this,
+				nav: this.nav,
+				head: this.head,
+				body: this.body
+			}
+			this.links = links
+			this.nav.links = links
+			this.head.links = links
+			this.body.links = links
+		}
+	}
 }
 
 customElements.define('file-browser', FileBrowser)
 
-window.FileBrowser = FileBrowser
+const path = require('path')

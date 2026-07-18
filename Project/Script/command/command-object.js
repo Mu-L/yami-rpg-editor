@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { CommandSchema } from '../module/command/schema.js'
+import { Inspector } from '../inspector/inspector.js'
 
 // ******************************** 指令对象 ********************************
 
@@ -106,5 +108,3 @@ Command.parse = CommandSchema.parse
 
 // 显示文本
 // Command.cases.showText extracted -> module/command/showText.js
-
-window.Command = Command

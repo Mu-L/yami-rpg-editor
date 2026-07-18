@@ -1,4 +1,9 @@
 ﻿'use strict'
+import './element-methods.js'
+
+import { TextHistory } from './text-history.js'
+import { Timer } from '../util/timer.js'
+import { TextBox } from './text-box.js'
 
 // ******************************** 文本区域 ********************************
 
@@ -137,5 +142,3 @@ export class TextArea extends HTMLElement {
 }
 
 customElements.define('text-area', TextArea)
-
-window.TextArea = TextArea

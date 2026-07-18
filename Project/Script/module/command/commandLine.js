@@ -1,4 +1,9 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.commandLine = new CommandSchema({
 	name: 'commandLine',

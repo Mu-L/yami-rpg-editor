@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { Scene } from './scene-window.js'
+import { ImageTexture } from '../webgl/image-texture.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 视差图类 ********************************
 
@@ -161,5 +164,3 @@ export class Parallax {
 	// 静态 - 光线采样模式映射表
 	static lightSamplingModes = { raw: 0, global: 1, anchor: 2, ambient: 3 }
 }
-
-window.Parallax = Parallax

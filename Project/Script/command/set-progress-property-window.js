@@ -1,6 +1,9 @@
 ﻿'use strict'
 
+import { $ } from '../util/dom.js'
 import { createPropertyWindow } from './property-window-factory.js'
+import { Command } from './command-object.js'
+import { Color } from '../tools/color-picker-window.js'
 
 // ******************************** 设置进度条 - 属性窗口 ********************************
 
@@ -44,5 +47,3 @@ export const ProgressBarProperty = createPropertyWindow({
 		'color-3': (value) => Command.parseVariableNumber(value)
 	}
 })
-
-window.ProgressBarProperty = ProgressBarProperty

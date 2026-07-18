@@ -1,4 +1,5 @@
-﻿'use strict'
+import { Color } from '../tools/color-picker-window.js'
+;('use strict')
 
 // ******************************** 颜色框 ********************************
 
@@ -105,5 +106,3 @@ export class ColorBox extends HTMLElement {
 }
 
 customElements.define('color-box', ColorBox)
-
-window.ColorBox = ColorBox

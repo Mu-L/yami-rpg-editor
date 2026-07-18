@@ -1,3 +1,14 @@
+import {
+	$,
+	getElementReader,
+	getElementWriter,
+	request
+} from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
+import { Window } from '../../tools/window-object.js'
 export const RequestkeyValueBind = {
 	target: null,
 	type: null,
@@ -142,5 +153,3 @@ Command.cases.requestURL = new CommandSchema({
 		})
 	}
 })
-
-window.RequestkeyValueBind = RequestkeyValueBind

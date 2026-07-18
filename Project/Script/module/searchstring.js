@@ -1,3 +1,5 @@
+import { $ } from '../util/dom.js'
+import { Window } from '../tools/window-object.js'
 export const SearchString = new (class {
 	window = $('#event-search-string')
 	current = null
@@ -143,5 +145,3 @@ export const SearchString = new (class {
 		this.log.textContent = this.lastArr.length
 	}
 })()
-
-window.SearchString = SearchString

@@ -1,4 +1,13 @@
 ﻿'use strict'
+import './element-methods.js'
+
+import { ParamListHistory } from './param-history.js'
+import { ctrl } from '../util/event-accessors.js'
+import { DetailBox } from './detail-box.js'
+import { CommonList } from './common-list.js'
+import { Menu } from './menu-list.js'
+import { WindowFrame } from './window-frame.js'
+import { Local } from '../tools/localization.js'
 
 // ******************************** 参数列表 ********************************
 
@@ -942,5 +951,3 @@ export class ParamList extends HTMLElement {
 }
 
 customElements.define('param-list', ParamList)
-
-window.ParamList = ParamList

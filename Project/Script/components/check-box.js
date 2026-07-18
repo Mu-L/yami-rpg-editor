@@ -149,5 +149,3 @@ export class CheckBox extends HTMLElement {
 }
 
 customElements.define('check-box', CheckBox)
-
-window.CheckBox = CheckBox

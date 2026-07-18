@@ -1,4 +1,5 @@
 ﻿'use strict'
+import './element-methods.js'
 
 // ******************************** 选框区域 ********************************
 
@@ -95,5 +96,3 @@ export class MarqueeArea extends HTMLElement {
 }
 
 customElements.define('marquee-area', MarqueeArea)
-
-window.MarqueeArea = MarqueeArea

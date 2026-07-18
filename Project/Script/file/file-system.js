@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { fs } from '../module/global.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 文件系统 ********************************
@@ -11,6 +12,3 @@ FSP.writeFile = function (path, text, check = false) {
 	const { invoke } = require('electron').ipcRenderer
 	return invoke('write-file', path, text, check)
 }
-
-window.FS = FS
-window.FSP = FSP

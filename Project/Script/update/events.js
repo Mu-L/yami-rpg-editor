@@ -1,4 +1,9 @@
 'use strict'
+import { Data } from '../data/data-object.js'
+import { EventEditor } from '../command/event-editor.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Updater } from './updater.js'
 
 // 更新本地事件数据
 Updater.updateLocalEvents = function (verNum) {

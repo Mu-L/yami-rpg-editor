@@ -1,5 +1,22 @@
 'use strict'
 
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { TextAreaVar } from '../../components/textarea-var.js'
+import { Command } from '../../command/command-object.js'
+import { EventEditor } from '../../command/event-editor.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { CustomBox } from '../../components/custom-box.js'
+import { NumberVar } from '../../components/number-var.js'
+import { SelectBox } from '../../components/select-box.js'
+import { Data } from '../../data/data-object.js'
+import { Enum } from '../../enum/enum-window.js'
+import { CommandSchema } from './schema.js'
+import { Light } from '../../scene/light.js'
+import { Scene } from '../../scene/scene-window.js'
+import { Local } from '../../tools/localization.js'
+import { Selection } from '../../tools/text-capture.js'
+
 Command.cases.callEvent = new CommandSchema({
 	name: 'callEvent',
 	windowFrame: $('#callEvent'),

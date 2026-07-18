@@ -1,4 +1,10 @@
 'use strict'
+import { $ } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Cursor } from '../tools/pointer-object.js'
+import { Animation } from '../animation/animation-window.js'
+import { Palette } from '../palette/palette.js'
 
 // ******************************** 精灵窗口 ********************************
 
@@ -748,5 +754,3 @@ Sprite.pointermove = function (event) {
 		}
 	}
 }.bind(Sprite)
-
-window.Sprite = Sprite

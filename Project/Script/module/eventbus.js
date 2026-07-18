@@ -58,4 +58,3 @@ export const EventBus = new (class EventBus {
 		this.events = {}
 	}
 })()
-window.EventBus = EventBus

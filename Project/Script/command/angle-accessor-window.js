@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 角度访问器窗口 ********************************
 
@@ -92,5 +94,3 @@ AngleGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('angleGetter')
 }.bind(AngleGetter)
-
-window.AngleGetter = AngleGetter

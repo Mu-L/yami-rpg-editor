@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { Inspector } from './inspector.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素 - 容器页面 ********************************
 
@@ -15,7 +17,7 @@
 
 	// 创建容器
 	UIContainer.create = function () {
-		const transform = UIElement.createTransform()
+		const transform = Inspector.uiElement.createTransform()
 		transform.width = 100
 		transform.height = 100
 		return {
@@ -38,7 +40,7 @@
 	UIContainer.open = function (node) {
 		if (this.target !== node) {
 			this.target = node
-			UIElement.open(node)
+			Inspector.uiElement.open(node)
 		}
 	}
 
@@ -47,7 +49,7 @@
 		if (this.target) {
 			UI.list.unselect(this.target)
 			UI.updateTarget()
-			UIElement.close()
+			Inspector.uiElement.close()
 			this.target = null
 		}
 	}

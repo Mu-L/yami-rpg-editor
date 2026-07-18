@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { SelectBox } from './select-box.js'
+import { CustomBox } from './custom-box.js'
 
 // ******************************** 选择变量框 ********************************
 
@@ -156,5 +158,3 @@ export class SelectVar extends HTMLElement {
 }
 
 customElements.define('select-var', SelectVar)
-
-window.SelectVar = SelectVar

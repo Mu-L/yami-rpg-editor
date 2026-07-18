@@ -1,4 +1,17 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Data } from './data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Window } from '../tools/window-object.js'
+import { Inspector } from '../inspector/inspector.js'
+import { UI } from '../ui/ui-window.js'
+import { GUID } from '../file/guid.js'
+import { Menu } from '../components/menu-list.js'
+import { TreeList } from '../components/tree-list.js'
+import { Local } from '../tools/localization.js'
+import { SetKey } from '../tools/set-key-window.js'
 
 // ******************************** 过渡窗口 ********************************
 
@@ -90,16 +103,18 @@ Easing.list.createKeyTextNode = null
 Easing.list.updateKeyTextNode = null
 
 // 初始化
-Easing.initialize = function () {
+// 用箭头函数绑定 Easing 词法作用域，避免裸调 initialize() 时 this===undefined 炸
+// （initialize.js 用 .call(Easing) 绑 this，但若别处裸调会丢上下文；箭头函数根除问题）
+Easing.initialize = () => {
 	// 设置起点和终点
-	this.startPoint = { x: 0, y: 0 }
-	this.endPoint = { x: 1, y: 1 }
+	Easing.startPoint = { x: 0, y: 0 }
+	Easing.endPoint = { x: 1, y: 1 }
 
 	// 绑定过渡列表
-	const { list } = this
+	const { list } = Easing
 	list.removable = true
 	list.renamable = true
-	list.bind(() => this.data)
+	list.bind(() => Easing.data)
 	list.creators.push(list.addElementClass)
 	list.updaters.push(list.updateTextNode)
 	list.creators.push(list.createKeyTextNode)
@@ -132,26 +147,26 @@ Easing.initialize = function () {
 		])
 
 	// 设置初始缩放率
-	this.scale = 1
-	$('#easing-scale').write(this.scale)
+	Easing.scale = 1
+	$('#easing-scale').write(Easing.scale)
 
 	// 设置预览参数
-	this.reverse = true
-	this.duration = 400
-	this.delay = 400
-	$('#easing-preview-reverse').write(this.reverse)
-	$('#easing-preview-duration').write(this.duration)
-	$('#easing-preview-delay').write(this.delay)
+	Easing.reverse = true
+	Easing.duration = 400
+	Easing.delay = 400
+	$('#easing-preview-reverse').write(Easing.reverse)
+	$('#easing-preview-duration').write(Easing.duration)
+	$('#easing-preview-delay').write(Easing.delay)
 
 	// 创建计时器
-	this.timer = new Timer({
-		duration: this.duration,
+	Easing.timer = new Timer({
+		duration: Easing.duration,
 		update: (timer) => {
 			switch (timer.state) {
 				case 'playing':
-					this.elapsed = timer.elapsed
-					this.requestRendering()
-					this.drawPreview()
+					Easing.elapsed = timer.elapsed
+					Easing.requestRendering()
+					Easing.drawPreview()
 					break
 			}
 		},
@@ -159,18 +174,19 @@ Easing.initialize = function () {
 			switch (timer.state) {
 				case 'playing':
 					// 如果存在等待时间
-					if (this.delay !== 0) {
+					if (Easing.delay !== 0) {
 						timer.state = 'waiting'
-						timer.elapsed = timer.playbackRate > 0 ? 0 : this.delay
-						timer.duration = this.delay
+						timer.elapsed =
+							timer.playbackRate > 0 ? 0 : Easing.delay
+						timer.duration = Easing.delay
 						break
 					}
 				case 'waiting':
 					timer.state = 'playing'
-					timer.duration = this.duration
+					timer.duration = Easing.duration
 					switch (timer.playbackRate) {
 						case 1:
-							if (this.reverse) {
+							if (Easing.reverse) {
 								timer.playbackRate = -1
 								timer.elapsed = timer.duration
 							} else {
@@ -188,37 +204,37 @@ Easing.initialize = function () {
 	})
 
 	// 侦听事件
-	window.on('dprchange', this.dprchange)
-	window.on('themechange', this.themechange)
-	$('#easing').on('close', this.windowClose)
-	$('#easing').on('closed', this.windowClosed)
-	$('#easing-points-grid').on('change', this.dataChange)
-	list.on('keydown', this.listKeydown)
-	list.on('select', this.listSelect)
-	list.on('change', this.dataChange)
-	list.on('open', this.listOpen)
-	list.on('popup', this.listPopup)
-	$('#easing-mode').on('input', this.modeSelect)
+	window.on('dprchange', Easing.dprchange)
+	window.on('themechange', Easing.themechange)
+	$('#easing').on('close', Easing.windowClose)
+	$('#easing').on('closed', Easing.windowClosed)
+	$('#easing-points-grid').on('change', Easing.dataChange)
+	list.on('keydown', Easing.listKeydown)
+	list.on('select', Easing.listSelect)
+	list.on('change', Easing.dataChange)
+	list.on('open', Easing.listOpen)
+	list.on('popup', Easing.listPopup)
+	$('#easing-mode').on('input', Easing.modeSelect)
 	$(`#easing-points-0-x, #easing-points-0-y, #easing-points-1-x, #easing-points-1-y,
     #easing-points-2-x, #easing-points-2-y, #easing-points-3-x, #easing-points-3-y,
     #easing-points-4-x, #easing-points-4-y, #easing-points-5-x, #easing-points-5-y,
     #easing-points-6-x, #easing-points-6-y, #easing-points-7-x, #easing-points-7-y`).on(
 		'input',
-		this.pointInput
+		Easing.pointInput
 	)
-	$('#easing-scale').on('input', this.scaleInput)
-	this.curve.on('keydown', this.curveKeydown)
-	this.curve.on('pointerdown', this.curvePointerdown)
-	this.curve.on('wheel', this.curveWheel)
-	this.curve.on('blur', this.curveBlur)
-	$('#easing-preview-reverse').on('input', this.reverseInput)
-	$('#easing-preview-duration').on('input', this.durationInput)
-	$('#easing-preview-delay').on('input', this.delayInput)
-	$('#easing-confirm').on('click', this.confirm)
+	$('#easing-scale').on('input', Easing.scaleInput)
+	Easing.curve.on('keydown', Easing.curveKeydown)
+	Easing.curve.on('pointerdown', Easing.curvePointerdown)
+	Easing.curve.on('wheel', Easing.curveWheel)
+	Easing.curve.on('blur', Easing.curveBlur)
+	$('#easing-preview-reverse').on('input', Easing.reverseInput)
+	$('#easing-preview-duration').on('input', Easing.durationInput)
+	$('#easing-preview-delay').on('input', Easing.delayInput)
+	$('#easing-confirm').on('click', Easing.confirm)
 }
 
 // 创建作用域
-namespace: {
+;(() => {
 	const maps = {}
 	const linear = { map: (a) => a }
 	const get = (id) => {
@@ -252,7 +268,7 @@ namespace: {
 
 	// 清除映射表集合
 	Easing.clear = clear
-}
+})()
 
 // 打开窗口
 Easing.open = function () {
@@ -1479,5 +1495,3 @@ Easing.list.updateKeyTextNode = function (item) {
 		keyTextNode.textContent = ' = ' + key
 	}
 }
-
-window.Easing = Easing

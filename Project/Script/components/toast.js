@@ -1,4 +1,5 @@
 'use strict'
+import { reportError } from '../util/safe.js'
 
 // ******************************** Toast ********************************
 // 轻量用户可见提示，接入 reportError 派发的 'yami:error' 事件
@@ -67,6 +68,3 @@ window.addEventListener('yami:error', (event) => {
 	const detail = event.detail || {}
 	Toast.error(detail.message || String(event.detail))
 })
-
-window.ToastManager = ToastManager
-window.Toast = Toast

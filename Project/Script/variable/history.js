@@ -1,4 +1,5 @@
 'use strict'
+import { Variable } from './variable.js'
 
 // 保存操作历史
 Variable.saveHistory = function (item, key, value) {

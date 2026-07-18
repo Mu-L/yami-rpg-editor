@@ -1,4 +1,22 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Timer } from '../util/timer.js'
+import { Data } from '../data/data-object.js'
+import { Window } from '../tools/window-object.js'
+import { GL } from '../webgl/webgl-init.js'
+import { Menu } from './menu-list.js'
+import { TextBox } from './text-box.js'
+import { Directory } from '../file/directory-object.js'
+import { FileItem } from '../file/file-item.js'
+import { File } from '../file/file-system-core.js'
+import { FSP } from '../file/file-system.js'
+import { FolderItem } from '../file/folder-item.js'
+import { Reference } from '../log/related-references.js'
+import { Editor } from '../main/editor.js'
+import { range } from '../module/eslints.js'
+import { Resources } from '../module/resource.js'
+import { Local } from '../tools/localization.js'
+import { Path } from '../util/config.js'
 
 // ******************************** 文件身体面板 ********************************
 
@@ -65,7 +83,6 @@ export class FileBodyPane extends HTMLElement {
 		this.unselectEventEnabled = false
 		this.popupEventEnabled = false
 		this.textBox = FileBodyPane.textBox
-		this.appendChild(this.content)
 
 		// 设置内容元素属性访问器
 		const { elements } = this
@@ -941,7 +958,7 @@ export class FileBodyPane extends HTMLElement {
 		for (const file of this.selections) {
 			const { element } = file.getContext(this)
 			if (elements.includes(element)) {
-				File.showInExplorer(File.route(file.path))
+				File.showInExplorer(File.path(file.path))
 				if (++length === 10) {
 					break
 				}
@@ -1007,7 +1024,7 @@ export class FileBodyPane extends HTMLElement {
 				const { absolutePaths } = browser.getFilePaths(files)
 				Directory.readdir(absolutePaths)
 					.then((dir) => {
-						const path = File.route(targetPath)
+						const path = File.path(targetPath)
 						return copy.cut
 							? Directory.moveFiles(path, dir)
 							: Directory.saveFiles(files).then(() =>
@@ -1201,7 +1218,7 @@ export class FileBodyPane extends HTMLElement {
 				.then(({ filePath }) => {
 					if (filePath) {
 						dialogs.export = Path.slash(Path.dirname(filePath))
-						return FSP.copyFile(File.route(file.path), filePath)
+						return FSP.copyFile(File.path(file.path), filePath)
 					}
 				})
 				.finally(() => {
@@ -1218,7 +1235,7 @@ export class FileBodyPane extends HTMLElement {
 						const dirPath = filePaths[0]
 						dialogs.export = Path.slash(dirPath)
 						return Directory.readdir(
-							files.map((file) => File.route(file.path))
+							files.map((file) => File.path(file.path))
 						).then((dir) => {
 							return Directory.copyFiles(dirPath, dir, '')
 						})
@@ -1696,7 +1713,7 @@ export class FileBodyPane extends HTMLElement {
 			}
 			if (filename !== file.name) {
 				const dir = Path.dirname(file.path)
-				const path = File.route(`${dir}/${filename}`)
+				const path = File.path(`${dir}/${filename}`)
 				// 当目标文件不存在或就是自己时重命名
 				FSP.stat(path, FolderItem.bigint)
 					.then((stats) => {
@@ -1705,7 +1722,7 @@ export class FileBodyPane extends HTMLElement {
 						}
 					})
 					.catch((error) => {
-						return FSP.rename(File.route(file.path), path).then(
+						return FSP.rename(File.path(file.path), path).then(
 							() => {
 								item.nameBox.textContent = name
 								return Directory.update()
@@ -1717,8 +1734,17 @@ export class FileBodyPane extends HTMLElement {
 
 		return textBox
 	})()
+
+	connectedCallback() {
+		if (this.childElementCount === 0) {
+			setTimeout(() => {
+				if (this.childElementCount !== 0) return
+				this.appendChild(this.content)
+			})
+		}
+	}
 }
 
 customElements.define('file-body-pane', FileBodyPane)
 
-window.FileBodyPane = FileBodyPane
+const path = require('path')

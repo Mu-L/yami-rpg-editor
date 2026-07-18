@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Window } from './window-object.js'
 
 // ******************************** 重命名窗口 ********************************
 
@@ -38,5 +40,3 @@ Rename.confirm = function (event) {
 	this.callback($('#rename-name').read())
 	Window.close('rename')
 }.bind(Rename)
-
-window.Rename = Rename

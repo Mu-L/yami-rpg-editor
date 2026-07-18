@@ -1,4 +1,9 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { PresetObject } from '../tools/scene-preset-window.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from '../variable/variable.js'
 
 // ******************************** 瓦片地图访问器窗口 ********************************
 
@@ -86,5 +91,3 @@ TilemapGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('tilemapGetter')
 }.bind(TilemapGetter)
-
-window.TilemapGetter = TilemapGetter

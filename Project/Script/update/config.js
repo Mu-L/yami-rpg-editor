@@ -1,4 +1,7 @@
 'use strict'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Updater } from './updater.js'
 
 // 更新配置数据
 Updater.updateConfig = function (verNum) {

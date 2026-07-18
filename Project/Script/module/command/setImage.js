@@ -1,4 +1,10 @@
 'use strict'
+import { $, getElementReader } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { ImageProperty } from '../../command/set-image-property-window.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.setImage = new CommandSchema({
 	name: 'setImage',

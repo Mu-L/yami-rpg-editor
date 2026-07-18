@@ -1,3 +1,5 @@
+import { SettingConfig } from './settingconfig.js'
+import { Browser } from '../browser/project-browser.js'
 // 项目浏览器搜索历史（会话内）
 export const BrowserSearchHistory = {
 	histories: [],
@@ -225,5 +227,3 @@ BrowserSearchHistory.hide = function () {
 }
 
 BrowserSearchHistory.initialize()
-
-window.BrowserSearchHistory = BrowserSearchHistory

@@ -1,4 +1,16 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Command } from './command-object.js'
+import { Token } from './mark-string-manager.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { Data } from '../data/data-object.js'
+import { Enum } from '../enum/enum-window.js'
+import { Scene } from '../scene/scene-window.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Zoom } from '../tools/zoom-window.js'
+import { UI } from '../ui/ui-window.js'
+import { Variable } from '../variable/variable.js'
 
 // ******************************** 设置数值 - 操作数窗口 ********************************
 
@@ -1230,5 +1242,3 @@ NumberOperand.save = function () {
 NumberOperand.confirm = function (event) {
 	return NumberOperand.target.save()
 }
-
-window.NumberOperand = NumberOperand

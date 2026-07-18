@@ -1,4 +1,10 @@
 'use strict'
+import { $ } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { Animation } from '../../animation/animation-window.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.addAnimationComponent = new CommandSchema({
 	name: 'addAnimationComponent',

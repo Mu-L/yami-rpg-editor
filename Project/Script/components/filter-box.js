@@ -117,5 +117,3 @@ export class FilterBox extends HTMLElement {
 }
 
 customElements.define('filter-box', FilterBox)
-
-window.FilterBox = FilterBox

@@ -1,5 +1,31 @@
 'use strict'
 
+import { $ } from '../util/dom.js'
+import { getVariable } from '../util/safe.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Command } from '../command/command-object.js'
+import { UI } from '../ui/ui-window.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { Selector } from '../browser/resource-selector.js'
+import { ActorGetter } from '../command/actor-accessor-window.js'
+import { ElementGetter } from '../command/element-accessor-window.js'
+import { EquipmentGetter } from '../command/equipment-accessor-window.js'
+import { ItemGetter } from '../command/item-accessor-window.js'
+import { PositionGetter } from '../command/position-accessor-window.js'
+import { SkillGetter } from '../command/skill-accessor-window.js'
+import { StateGetter } from '../command/state-accessor-window.js'
+import { VariableGetter } from '../command/variable-accessor-window.js'
+import { Menu } from '../components/menu-list.js'
+import { ParameterPane } from '../components/parameter-pane.js'
+import { TreeList } from '../components/tree-list.js'
+import { Data } from '../data/data-object.js'
+import { Easing } from '../data/transition-window.js'
+import { Enum } from '../enum/enum-window.js'
+import { File } from '../file/file-system-core.js'
+import { Local } from '../tools/localization.js'
+import { ScriptListInterface } from '../tools/script-list.js'
+import { Window } from '../tools/window-object.js'
+
 // ******************************** 插件窗口 ********************************
 
 export const PluginManager = {
@@ -1965,5 +1991,3 @@ PluginManager.list.createEditIcon = function (item) {
 // 注意：不再重写 ParameterPane.createDetailBox / clear，
 // 以保留参数面板按 @group 分组的多 detail-box 渲染能力
 // （原生 ParameterPane 已支持，见 components/parameter-pane.js）
-
-window.PluginManager = PluginManager

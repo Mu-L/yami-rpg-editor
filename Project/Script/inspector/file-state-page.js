@@ -1,4 +1,11 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Browser } from '../browser/project-browser.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from './inspector.js'
+import { EventListInterface } from '../tools/event-list.js'
+import { AttributeListInterface } from '../tools/property-list.js'
+import { ScriptListInterface } from '../tools/script-list.js'
 
 // ******************************** 文件 - 状态页面 ********************************
 

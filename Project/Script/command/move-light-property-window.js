@@ -1,6 +1,8 @@
 ﻿'use strict'
 
 import { createPropertyWindow } from './property-window-factory.js'
+import { Command } from './command-object.js'
+import { range } from '../module/eslints.js'
 
 // ******************************** 移动光源 - 属性窗口 ********************************
 
@@ -23,5 +25,3 @@ export const LightProperty = createPropertyWindow({
 	],
 	parseValue: (key, value) => Command.parseVariableNumber(value)
 })
-
-window.LightProperty = LightProperty

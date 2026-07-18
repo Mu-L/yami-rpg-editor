@@ -1,5 +1,7 @@
 ﻿'use strict'
 
+import { TextHistory } from './text-history.js'
+
 // ******************************** 文本框 ********************************
 
 export class TextBox extends HTMLElement {
@@ -15,7 +17,6 @@ export class TextBox extends HTMLElement {
 		input.addClass('text-box-input')
 		input.type = 'text'
 		input.history = new TextHistory(input)
-		this.appendChild(input)
 
 		// 设置属性
 		this.input = input
@@ -50,6 +51,13 @@ export class TextBox extends HTMLElement {
 			},
 			{ capture: true }
 		)
+	}
+
+	// 自定义元素升级后（已连入文档）才允许操作子节点
+	connectedCallback() {
+		if (this._built) return
+		this._built = true
+		this.appendChild(this.input)
 	}
 
 	// 读取数据
@@ -261,5 +269,3 @@ export class TextBox extends HTMLElement {
 }
 
 customElements.define('text-box', TextBox)
-
-window.TextBox = TextBox

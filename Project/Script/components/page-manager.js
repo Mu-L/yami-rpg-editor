@@ -77,5 +77,3 @@ export class PageManager extends HTMLElement {
 }
 
 customElements.define('page-manager', PageManager)
-
-window.PageManager = PageManager

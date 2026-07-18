@@ -1,3 +1,8 @@
+import { Data } from '../data/data-object.js'
+import { Browser } from '../browser/project-browser.js'
+import { FileItem } from '../file/file-item.js'
+import { Scene } from './scene-window.js'
+import { StageColor } from '../util/stage-color.js'
 // 获取对象文件
 Scene.getObjectFile = function (sceneObject) {
 	switch (sceneObject?.class) {

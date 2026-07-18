@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Inspector } from './inspector.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素 - 图像页面 ********************************
 
@@ -84,7 +87,7 @@
 
 	// 创建图像
 	UIImage.create = function () {
-		const transform = UIElement.createTransform()
+		const transform = Inspector.uiElement.createTransform()
 		transform.width = 100
 		transform.height = 100
 		return {
@@ -131,7 +134,7 @@
 			write('tint-1')
 			write('tint-2')
 			write('tint-3')
-			UIElement.open(node)
+			Inspector.uiElement.open(node)
 		}
 	}
 
@@ -140,7 +143,7 @@
 		if (this.target) {
 			UI.list.unselect(this.target)
 			UI.updateTarget()
-			UIElement.close()
+			Inspector.uiElement.close()
 			this.target = null
 		}
 	}

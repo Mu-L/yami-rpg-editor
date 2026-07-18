@@ -1,5 +1,9 @@
 ﻿'use strict'
 
+import { NumberHistory } from './number-history.js'
+import { Home } from '../title/home-page.js'
+import { measureText } from '../util/dom.js'
+
 // ******************************** 数字框 ********************************
 
 export class NumberBox extends HTMLElement {
@@ -174,5 +178,3 @@ export class NumberBox extends HTMLElement {
 }
 
 customElements.define('number-box', NumberBox)
-
-window.NumberBox = NumberBox

@@ -1,4 +1,9 @@
 'use strict'
+import { Window } from '../tools/window-object.js'
+import { Reference } from '../log/related-references.js'
+import { Local } from '../tools/localization.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Variable } from './variable.js'
 
 // 窗口 - 关闭事件
 Variable.windowClose = function (event) {

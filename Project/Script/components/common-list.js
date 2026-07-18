@@ -1,4 +1,5 @@
 ﻿'use strict'
+import './element-methods.js'
 
 // ******************************** 普通列表 ********************************
 
@@ -359,5 +360,3 @@ export class CommonList extends HTMLElement {
 }
 
 customElements.define('common-list', CommonList)
-
-window.CommonList = CommonList

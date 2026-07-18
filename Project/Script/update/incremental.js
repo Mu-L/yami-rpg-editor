@@ -1,4 +1,35 @@
-'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Path } from '../util/config.js'
+import { Animation } from '../animation/animation-window.js'
+import { Data } from '../data/data-object.js'
+import { Project } from '../data/project-settings-window.js'
+import { File } from '../file/file-system-core.js'
+import { FS } from '../file/file-system.js'
+import { Reference } from '../log/related-references.js'
+import { UpdateLog } from '../log/update-log-window.js'
+import { Editor } from '../main/editor.js'
+import { Particle } from '../particle/particle-window.js'
+import { Light } from '../scene/light.js'
+import { Parallax } from '../scene/parallax.js'
+import { UI } from '../ui/ui-window.js'
+import { Updater } from './updater.js'
+import { Texture } from '../webgl/texture.js'
+// ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
+const { fileURLToPath, URL } = require('url')
+const _moduleURL = new URL(import.meta.url)
+const _modulePath =
+	_moduleURL.protocol === 'file:'
+		? fileURLToPath(_moduleURL)
+		: Path.resolve(
+				process.cwd(),
+				'Project',
+				_moduleURL.pathname.split('/').pop()
+			)
+const __dirname =
+	_moduleURL.protocol === 'file:'
+		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+		: Path.resolve(process.cwd(), 'Project')
 
 // 更新增量改动
 Updater.updateIncrementalChanges = function (version) {
@@ -106,7 +137,7 @@ Updater.updateIncrementalChanges = function (version) {
 					if (meta) {
 						// 如果当前项目版本小于插件项目版本，则更新
 						const sPath = Path.resolve(srcPluginDir, file.name)
-						const dPath = File.route(meta.path)
+						const dPath = File.path(meta.path)
 						this.copyFile(sPath, dPath)
 					}
 				}
@@ -401,3 +432,5 @@ Updater.updateIncrementalChanges = function (version) {
 	}
 	updater.showMessage()
 }
+
+const path = require('path')

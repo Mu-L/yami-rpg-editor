@@ -1,5 +1,7 @@
 ﻿'use strict'
 
+import { RadioProxy } from './radio-proxy.js'
+
 // ******************************** 单选框 ********************************
 
 export class RadioBox extends HTMLElement {
@@ -95,5 +97,3 @@ export class RadioBox extends HTMLElement {
 }
 
 customElements.define('radio-box', RadioBox)
-
-window.RadioBox = RadioBox

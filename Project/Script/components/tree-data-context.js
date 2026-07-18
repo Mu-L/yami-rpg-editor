@@ -1,4 +1,5 @@
 'use strict'
+import { Local } from '../tools/localization.js'
 
 // ******************************** 树形数据上下文基类 ********************************
 
@@ -85,5 +86,3 @@ export class TreeDataContext {
 		}
 	}
 }
-
-window.TreeDataContext = TreeDataContext

@@ -1,4 +1,10 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Path } from '../util/config.js'
+import { Meta } from '../data/metadata.js'
+import { FileItem } from './file-item.js'
+import { File } from './file-system-core.js'
+import { FSP } from './file-system.js'
 
 // ******************************** 文件夹项目 ********************************
 
@@ -42,7 +48,7 @@ export class FolderItem {
 	// 更新目录
 	async update(context = { changed: false, promises: [] }) {
 		const bigint = FolderItem.bigint
-		const path = File.route(this.path)
+		const path = File.path(this.path)
 		const pStat = FSP.stat(path, bigint)
 		const pReaddir = this.readdir(context)
 		const stats = await pStat
@@ -69,7 +75,7 @@ export class FolderItem {
 
 		// 读取新的文件目录
 		const dir = this.path
-		const path = File.route(dir)
+		const path = File.path(dir)
 		const files = await FSP.readdir(path, { withFileTypes: true })
 		const length = files.length
 		const promises = new Array(length)
@@ -94,7 +100,7 @@ export class FolderItem {
 				if (name === '.DS_Store') {
 					continue
 				}
-				const promise = FSP.stat(File.route(path), bigint)
+				const promise = FSP.stat(File.path(path), bigint)
 				promise.path = path
 				promises[i] = promise
 			}
@@ -195,4 +201,4 @@ export class FolderItem {
 	}
 }
 
-window.FolderItem = FolderItem
+const path = require('path')

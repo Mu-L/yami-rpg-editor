@@ -1,4 +1,20 @@
 'use strict'
+import { Data } from '../data/data-object.js'
+import { AudioManager } from '../audio/audio-manager.js'
+import { Browser } from '../browser/project-browser.js'
+import { Selector } from '../browser/resource-selector.js'
+import { Project } from '../data/project-settings-window.js'
+import { Directory } from '../file/directory-object.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Layout } from '../layout/layout.js'
+import { Editor } from './editor.js'
+import { WebServer } from '../module/webserver.js'
+import { Printer } from '../printer/printer.js'
+import { Scene } from '../scene/scene-window.js'
+import { Title } from '../title/title-bar.js'
+import { Window } from '../tools/window-object.js'
+import { UI } from '../ui/ui-window.js'
+import { GL } from '../webgl/webgl-init.js'
 const require = window.__nodeRequire || window.require
 
 // 关闭项目

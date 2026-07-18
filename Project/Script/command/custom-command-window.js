@@ -1,4 +1,17 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Selector } from '../browser/resource-selector.js'
+import { Command } from './command-object.js'
+import { Menu } from '../components/menu-list.js'
+import { TreeList } from '../components/tree-list.js'
+import { Data } from '../data/data-object.js'
+import { Easing } from '../data/transition-window.js'
+import { File } from '../file/file-system-core.js'
+import { PluginManager } from '../plugin/plugin.js'
+import { Local } from '../tools/localization.js'
+import { ScriptListInterface } from '../tools/script-list.js'
+import { Window } from '../tools/window-object.js'
+import { ctrl } from '../util/event-accessors.js'
 
 // ******************************** 自定义指令窗口 ********************************
 
@@ -424,5 +437,3 @@ CustomCommand.list.restoreSelection = function () {
 	this.update()
 	this.scrollToSelection()
 }
-
-window.CustomCommand = CustomCommand

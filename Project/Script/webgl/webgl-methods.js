@@ -1,4 +1,13 @@
 ﻿'use strict'
+import { measureText } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { BaseTexture } from './base-texture.js'
+import { BatchRenderer } from './batch-renderer.js'
+import { Matrix } from './matrix2.js'
+import { TextureManager } from './texture-manager.js'
+import { Texture } from './texture.js'
+import { GL } from './webgl-init.js'
 
 // ******************************** WebGL方法 ********************************
 
@@ -1900,3 +1909,9 @@ CanvasRenderingContext2D.prototype.resize = function (width, height) {
 		}
 	}
 }
+
+// 初始化WebGL上下文
+// 必须立即调用（不能延到 requestAnimationFrame）：Printer.initialize 等启动期同步代码
+// 会裸取 GL.arrays[1].uint32 / GL.textureManager.images，若 initialize 没跑过会炸
+// undefined。webgl-init.js 的 IIFE 已在模块求值期就绪 GL 上下文，此处立即初始化属性安全
+GL.initialize()

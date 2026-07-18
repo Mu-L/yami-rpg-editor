@@ -1,4 +1,10 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { Light } from '../scene/light.js'
+import { PresetObject } from '../tools/scene-preset-window.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from '../variable/variable.js'
 
 // ******************************** 光源访问器窗口 ********************************
 
@@ -89,5 +95,3 @@ LightGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('lightGetter')
 }.bind(LightGetter)
-
-window.LightGetter = LightGetter

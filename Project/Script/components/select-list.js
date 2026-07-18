@@ -1,4 +1,8 @@
 ﻿'use strict'
+import './element-methods.js'
+import { Window } from '../tools/window-object.js'
+import { CommonList } from './common-list.js'
+import { Home } from '../title/home-page.js'
 
 // ******************************** 选择列表 ********************************
 
@@ -362,6 +366,3 @@ customElements.define('select-list', SelectList)
 
 // 创建选择列表实例
 export const Select = new SelectList()
-
-window.SelectList = SelectList
-window.Select = Select

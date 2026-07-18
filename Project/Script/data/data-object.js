@@ -1,4 +1,16 @@
 ﻿'use strict'
+import { File } from '../file/file-system-core.js'
+import { UI } from '../ui/ui-window.js'
+import { GUID } from '../file/guid.js'
+import { AttributeContext } from '../attribute/attribute-context.js'
+import { Codec } from '../codec/codec.js'
+import { Manifest } from './metadata-manifest.js'
+import { EnumerationContext } from '../enum/enum-context.js'
+import { FSP } from '../file/file-system.js'
+import { Log } from '../log/log-window.js'
+import { Reference } from '../log/related-references.js'
+
+import { PluginManager } from '../plugin/plugin.js'
 
 // ******************************** 数据对象 ********************************
 
@@ -475,7 +487,7 @@ Data.generateVariableEnumScript = function () {
 		contents.push('}')
 		const code = contents.join('\n')
 		const path = 'Script/yami.ts'
-		const route = File.route(path)
+		const route = File.path(path)
 		FSP.writeFile(route, code)
 			.then(() => {
 				console.log(`write: ${path}`)
@@ -617,7 +629,7 @@ Data.saveManifest = function () {
 		const json = JSON.stringify(copy, null, 2)
 		const last = manifest.code
 		if (json && json !== last) {
-			const path = File.route('Data/manifest.json')
+			const path = File.path('Data/manifest.json')
 			return FSP.writeFile(path, json)
 				.then(() => {
 					manifest.code = json
@@ -707,5 +719,3 @@ Data.loadScript = async function (file) {
 			})
 	}
 }
-
-window.Data = Data

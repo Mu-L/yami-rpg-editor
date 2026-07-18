@@ -1,4 +1,10 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { Scene } from '../scene/scene-window.js'
+import { Cursor } from '../tools/pointer-object.js'
+import { Palette } from './palette.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 图块节点窗口 ********************************
 
@@ -151,7 +157,9 @@ TileNode.updateTransform = function () {
 }
 
 // 更新背景图像
-TileNode.updateBackground = Palette.updateBackground
+TileNode.updateBackground = function (...args) {
+	return Palette.updateBackground(...args)
+}
 
 // 绘制图块节点
 TileNode.drawNodes = function () {
@@ -446,5 +454,3 @@ TileNode.pointermove = function (event) {
 		}
 	}
 }.bind(TileNode)
-
-window.TileNode = TileNode

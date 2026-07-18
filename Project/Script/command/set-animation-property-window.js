@@ -1,6 +1,8 @@
 ﻿'use strict'
 
 import { createPropertyWindow } from './property-window-factory.js'
+import { Animation } from '../animation/animation-window.js'
+import { Command } from './command-object.js'
 
 // ******************************** 设置动画 - 属性窗口 ********************************
 
@@ -27,5 +29,3 @@ export const AnimationProperty = createPropertyWindow({
 		frame: (value) => Command.parseVariableNumber(value)
 	}
 })
-
-window.AnimationProperty = AnimationProperty

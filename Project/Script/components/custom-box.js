@@ -1,4 +1,34 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Command } from '../command/command-object.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { Browser } from '../browser/project-browser.js'
+import { Selector } from '../browser/resource-selector.js'
+import { ActorGetter } from '../command/actor-accessor-window.js'
+import { AncestorGetter } from '../command/ancestor-accessor-window.js'
+import { AngleGetter } from '../command/angle-accessor-window.js'
+import { ElementGetter } from '../command/element-accessor-window.js'
+import { EquipmentGetter } from '../command/equipment-accessor-window.js'
+import { ItemGetter } from '../command/item-accessor-window.js'
+import { LightGetter } from '../command/light-accessor-window.js'
+import { PositionGetter } from '../command/position-accessor-window.js'
+import { RegionGetter } from '../command/region-accessor-window.js'
+import { ObjectGetter } from '../command/scene-object-accessor-window.js'
+import { SkillGetter } from '../command/skill-accessor-window.js'
+import { StateGetter } from '../command/state-accessor-window.js'
+import { TilemapGetter } from '../command/tilemap-accessor-window.js'
+import { TriggerGetter } from '../command/trigger-accessor-window.js'
+import { VariableGetter } from '../command/variable-accessor-window.js'
+import { Enum } from '../enum/enum-window.js'
+import { FileItem } from '../file/file-item.js'
+import { File } from '../file/file-system-core.js'
+import { GameLocal } from '../local/local-object.js'
+import { ArrayList } from '../tools/array-window.js'
+import { ImageClip } from '../tools/image-crop-window.js'
+import { Local } from '../tools/localization.js'
+import { PresetElement } from '../tools/preset-element-window.js'
+import { PresetObject } from '../tools/scene-preset-window.js'
+import { Variable } from '../variable/variable.js'
 
 // ******************************** 自定义框 ********************************
 
@@ -494,4 +524,4 @@ export class CustomBox extends HTMLElement {
 
 customElements.define('custom-box', CustomBox)
 
-window.CustomBox = CustomBox
+const path = require('path')

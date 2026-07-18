@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Inspector } from './inspector.js'
+import { Window } from '../tools/window-object.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素 - 窗口页面 ********************************
 
@@ -67,7 +71,7 @@
 
 	// 创建窗口
 	UIWindow.create = function () {
-		const transform = UIElement.createTransform()
+		const transform = Inspector.uiElement.createTransform()
 		transform.width = 100
 		transform.height = 100
 		return {
@@ -113,7 +117,7 @@
 			write('paddingX')
 			write('paddingY')
 			write('overflow')
-			UIElement.open(node)
+			Inspector.uiElement.open(node)
 		}
 	}
 
@@ -122,7 +126,7 @@
 		if (this.target) {
 			UI.list.unselect(this.target)
 			UI.updateTarget()
-			UIElement.close()
+			Inspector.uiElement.close()
 			this.target = null
 		}
 	}

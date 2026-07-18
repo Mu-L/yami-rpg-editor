@@ -1,4 +1,7 @@
 'use strict'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Variable } from './variable.js'
 
 // 解包变量数据
 Variable.unpackVariables = (function IIFE() {

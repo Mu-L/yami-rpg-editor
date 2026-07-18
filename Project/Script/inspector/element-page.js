@@ -1,4 +1,9 @@
 'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Inspector } from './inspector.js'
+import { EventListInterface } from '../tools/event-list.js'
+import { ScriptListInterface } from '../tools/script-list.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素页面 ********************************
 
@@ -408,5 +413,3 @@
 
 	Inspector.uiElement = UIElement
 }
-
-window.UIElement = Inspector.uiElement

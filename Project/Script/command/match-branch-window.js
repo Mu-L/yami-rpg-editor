@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Command } from './command-object.js'
+import { SwitchCondition } from './match-condition-window.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 匹配 - 分支窗口 ********************************
 
@@ -79,5 +83,3 @@ SwitchBranch.windowClosed = function (event) {
 SwitchBranch.confirm = function (event) {
 	return SwitchBranch.target.save()
 }
-
-window.SwitchBranch = SwitchBranch

@@ -1,4 +1,8 @@
 'use strict'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Updater } from './updater.js'
 
 // 更新技能数据
 Updater.updateSkills = function (verNum) {

@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 图块帧生成器窗口 ********************************
 
@@ -48,5 +50,3 @@ FrameGenerator.confirm = function (event) {
 	this.callback(strideX, strideY, count)
 	Window.close('autoTile-generateFrames')
 }.bind(FrameGenerator)
-
-window.FrameGenerator = FrameGenerator

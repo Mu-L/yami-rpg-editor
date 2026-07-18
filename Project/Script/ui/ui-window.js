@@ -1,4 +1,32 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Window } from '../tools/window-object.js'
+import { Reference } from '../log/related-references.js'
+import { Editor } from '../main/editor.js'
+import { GUID } from '../file/guid.js'
+import { Cursor } from '../tools/pointer-object.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { UIInstanceList } from './element-instance-list.js'
+import { Scene } from '../scene/scene-window.js'
+import { Menu } from '../components/menu-list.js'
+import { TextBox } from '../components/text-box.js'
+import { TreeList } from '../components/tree-list.js'
+import { Data } from '../data/data-object.js'
+import { Easing } from '../data/transition-window.js'
+import { File } from '../file/file-system-core.js'
+import { Layout } from '../layout/layout.js'
+import { Particle } from '../particle/particle-window.js'
+import { Title } from '../title/title-bar.js'
+import { EventBus } from '../module/eventbus.js'
+import { History } from '../tools/history.js'
+import { Local } from '../tools/localization.js'
+import { StageColor } from '../util/stage-color.js'
+import { ImageTexture } from '../webgl/image-texture.js'
+import { Matrix } from '../webgl/matrix2.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** UI 窗口 ********************************
 
@@ -182,22 +210,40 @@ UI.list.paste = null
 UI.list.delete = null
 UI.list.toggle = null
 UI.list.cancelSearch = null
-UI.list.restoreRecursiveStates = Scene.list.restoreRecursiveStates
-UI.list.setRecursiveStates = Scene.list.setRecursiveStates
-UI.list.updateItemClass = Scene.list.updateItemClass
+EventBus.once('editor_loaded', () => {
+	UI.list.restoreRecursiveStates = Scene.list.restoreRecursiveStates
+	UI.list.setRecursiveStates = Scene.list.setRecursiveStates
+	UI.list.updateItemClass = Scene.list.updateItemClass
+	// updateItemClass 从 Scene.list 复制，赋值后才能往 updaters 推；
+	// 否则 UI.initialize 早跑时会推入 undefined，updateNodeElement 调 undefined(item) 炸
+	UI.list.updaters.push(UI.list.updateItemClass)
+})
 UI.list.createIcon = null
 UI.list.updateIcon = null
 UI.list.updateHead = null
 UI.list.createConditionIcon = null
 UI.list.updateConditionIcon = null
-UI.list.createEventIcon = Scene.list.createEventIcon
-UI.list.updateEventIcon = Scene.list.updateEventIcon
-UI.list.createScriptIcon = Scene.list.createScriptIcon
-UI.list.updateScriptIcon = Scene.list.updateScriptIcon
-UI.list.createVisibilityIcon = Scene.list.createVisibilityIcon
-UI.list.updateVisibilityIcon = Scene.list.updateVisibilityIcon
-UI.list.createLockIcon = Scene.list.createLockIcon
-UI.list.updateLockIcon = Scene.list.updateLockIcon
+EventBus.once('editor_loaded', () => {
+	UI.list.createEventIcon = Scene.list.createEventIcon
+	UI.list.updateEventIcon = Scene.list.updateEventIcon
+	UI.list.createScriptIcon = Scene.list.createScriptIcon
+	UI.list.updateScriptIcon = Scene.list.updateScriptIcon
+	UI.list.createVisibilityIcon = Scene.list.createVisibilityIcon
+	UI.list.updateVisibilityIcon = Scene.list.updateVisibilityIcon
+	UI.list.createLockIcon = Scene.list.createLockIcon
+	UI.list.updateLockIcon = Scene.list.updateLockIcon
+	// 上面 8 个方法是从 Scene.list 复制而来，赋值完成后才能往 creators/updaters 推；
+	// 否则 UI.initialize 早跑时会推入 undefined，updateNodeElement 调 undefined(item) 炸
+	const { list } = UI
+	list.creators.push(list.createEventIcon)
+	list.creators.push(list.updateEventIcon)
+	list.creators.push(list.createScriptIcon)
+	list.creators.push(list.updateScriptIcon)
+	list.creators.push(list.createVisibilityIcon)
+	list.updaters.push(list.updateVisibilityIcon)
+	list.creators.push(list.createLockIcon)
+	list.updaters.push(list.updateLockIcon)
+})
 UI.list.onCreate = null
 UI.list.onRemove = null
 UI.list.onDelete = null
@@ -344,17 +390,15 @@ UI.initialize = function () {
 	list.removable = true
 	list.renamable = true
 	list.bind(() => this.nodes)
-	list.updaters.push(list.updateItemClass)
+	// updateItemClass 从 Scene.list 复制，在 editor_loaded 事件后才就绪；
+	// 其 updaters.push 已挪进 EventBus.once('editor_loaded') 回调，
+	// 此处推入会拿到 undefined，updateNodeElement 调 undefined(item) 会炸
+	// createConditionIcon / updateConditionIcon 在本模块顶层已定义，可立即推
 	list.creators.push(list.createConditionIcon)
 	list.creators.push(list.updateConditionIcon)
-	list.creators.push(list.createEventIcon)
-	list.creators.push(list.updateEventIcon)
-	list.creators.push(list.createScriptIcon)
-	list.creators.push(list.updateScriptIcon)
-	list.creators.push(list.createVisibilityIcon)
-	list.updaters.push(list.updateVisibilityIcon)
-	list.creators.push(list.createLockIcon)
-	list.updaters.push(list.updateLockIcon)
+	// createEventIcon 等 8 个方法从 Scene.list 复制，在 editor_loaded 事件后才就绪；
+	// 其 creators/updaters.push 已挪进 EventBus.once('editor_loaded') 回调，
+	// 此处推入会拿到 undefined，updateNodeElement 调 undefined(item) 会炸
 
 	// 设置历史操作处理器
 	History.processors['ui-object-create'] = (operation, data) => {
@@ -3547,5 +3591,3 @@ UI.list.onResume = function (item) {
 	UI.loadElement(item)
 	UI.updateElement(item)
 }
-
-window.UI = UI

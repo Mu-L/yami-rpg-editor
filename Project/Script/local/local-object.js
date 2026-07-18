@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Log } from '../log/log-window.js'
+import { Printer } from '../printer/printer.js'
 
 // ******************************** 游戏本地化对象 ********************************
 
@@ -159,5 +163,3 @@ GameLocal.datachange = function (event) {
 		}
 	}
 }
-
-window.GameLocal = GameLocal

@@ -1,4 +1,9 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { ElementGetter } from './element-accessor-window.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { PresetElement } from '../tools/preset-element-window.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 祖先元素访问器窗口 ********************************
 
@@ -90,5 +95,3 @@ AncestorGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('ancestorGetter')
 }.bind(AncestorGetter)
-
-window.AncestorGetter = AncestorGetter

@@ -1,4 +1,27 @@
-'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Path } from '../util/config.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { FS } from '../file/file-system.js'
+import { UpdateLog } from '../log/update-log-window.js'
+import { Editor } from '../main/editor.js'
+import { Updater } from './updater.js'
+// ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
+const { fileURLToPath, URL } = require('url')
+const _moduleURL = new URL(import.meta.url)
+const _modulePath =
+	_moduleURL.protocol === 'file:'
+		? fileURLToPath(_moduleURL)
+		: Path.resolve(
+				process.cwd(),
+				'Project',
+				_moduleURL.pathname.split('/').pop()
+			)
+const __dirname =
+	_moduleURL.protocol === 'file:'
+		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+		: Path.resolve(process.cwd(), 'Project')
 
 // 更新到最新版本(TypeScript)
 Updater.updateToLatest = function (version) {
@@ -68,8 +91,8 @@ Updater.updateToLatest = function (version) {
 		if (meta) {
 			// 如果当前项目版本小于插件项目版本，则更新
 			const sPath = Path.resolve(srcPluginDir, file.name)
-			const jsPath = File.route(meta.path)
-			const tsPath = File.route(meta.path.replace(jsExtname, '.ts'))
+			const jsPath = File.path(meta.path)
+			const tsPath = File.path(meta.path.replace(jsExtname, '.ts'))
 			FS.copyFileSync(sPath, jsPath)
 			FS.renameSync(jsPath, tsPath)
 		}
@@ -88,3 +111,5 @@ Updater.updateToLatest = function (version) {
 	// 打开更新日志窗口
 	UpdateLog.open()
 }
+
+const path = require('path')

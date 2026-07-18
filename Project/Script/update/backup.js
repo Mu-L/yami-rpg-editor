@@ -1,4 +1,8 @@
 'use strict'
+import { Path } from '../util/config.js'
+import { File } from '../file/file-system-core.js'
+import { FS } from '../file/file-system.js'
+import { Updater } from './updater.js'
 
 // 备份项目
 Updater.backupProject = function () {

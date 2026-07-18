@@ -1,4 +1,21 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { ctrl } from '../util/event-accessors.js'
+import { File } from '../file/file-system-core.js'
+import { Scene } from '../scene/scene-window.js'
+import { GUID } from '../file/guid.js'
+import { Menu } from '../components/menu-list.js'
+import { TreeList } from '../components/tree-list.js'
+import { Data } from '../data/data-object.js'
+import { Team } from '../data/team-window.js'
+import { Easing } from '../data/transition-window.js'
+import { Palette } from './palette.js'
+import { FrameGenerator } from './tile-frame-generator.js'
+import { TileFrame } from './tile-frame-index.js'
+import { SceneShift } from '../scene/move-scene.js'
+import { Local } from '../tools/localization.js'
+import { SetQuantity } from '../tools/set-number-window.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 自动图块 ********************************
 
@@ -1061,5 +1078,3 @@ AutoTile.confirm = function (event) {
 	Window.close('autoTile')
 	// console.log(JSON.stringify(tiles[index], null, 2))
 }.bind(AutoTile)
-
-window.AutoTile = AutoTile

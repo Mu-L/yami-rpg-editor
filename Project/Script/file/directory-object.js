@@ -1,4 +1,14 @@
 ﻿'use strict'
+import { Path } from '../util/config.js'
+import { File } from './file-system-core.js'
+import { Data } from '../data/data-object.js'
+import { Meta } from '../data/metadata.js'
+import { FileItem } from './file-item.js'
+import { FS, FSP } from './file-system.js'
+import { FolderItem } from './folder-item.js'
+import { Log } from '../log/log-window.js'
+import { Editor } from '../main/editor.js'
+import { Window } from '../tools/window-object.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 目录对象 ********************************
@@ -256,7 +266,7 @@ Directory.existFiles = (function IIFE() {
 		}
 	}
 	return function (dirPath, dir) {
-		return check(File.route(dirPath), dir).then(
+		return check(File.path(dirPath), dir).then(
 			(existed) => true,
 			(error) => false
 		)
@@ -307,7 +317,7 @@ Directory.deleteFiles = (function IIFE() {
 	const trash = async (files) => {
 		const promises = []
 		for (const file of files) {
-			const path = File.route(file.path)
+			const path = File.path(file.path)
 			console.log('delete: ' + Path.normalize(path))
 			promises.push(invoke('trash-item', path))
 		}
@@ -488,4 +498,4 @@ Directory.windowFocus = function (event) {
 	setTimeout(() => Directory.update(), 100)
 }
 
-window.Directory = Directory
+const path = require('path')

@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Animation } from '../animation/animation-window.js'
+import { Data } from '../data/data-object.js'
+import { Easing } from '../data/transition-window.js'
+import { Inspector } from './inspector.js'
+import { Particle } from '../particle/particle-window.js'
+import { Light } from '../scene/light.js'
+import { Texture } from '../webgl/texture.js'
 
 // ******************************** 粒子 - 图层页面 ********************************
 

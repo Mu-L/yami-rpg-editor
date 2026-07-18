@@ -2,6 +2,8 @@
 
 // ******************************** 计时器类 ********************************
 
+import { $ } from './dom.js'
+
 export class Timer {
 	playbackRate //:number
 	elapsed //:number
@@ -219,5 +221,3 @@ Timer.removeUpdater = function (key, updater) {
 		updaters[key] = null
 	}
 }
-
-window.Timer = Timer

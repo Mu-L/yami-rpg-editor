@@ -1,4 +1,10 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { Enum } from '../../enum/enum-window.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.changeActorEquipment = new CommandSchema({
 	name: 'changeActorEquipment',

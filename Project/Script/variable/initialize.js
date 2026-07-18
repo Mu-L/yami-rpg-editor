@@ -1,7 +1,22 @@
 'use strict'
+import { $ } from '../util/dom.js'
+import { Variable } from './variable.js'
+import { Reference } from '../log/related-references.js'
+import { History } from '../tools/history.js'
 
 // 初始化
 Variable.initialize = function () {
+	if (!document.querySelector('#variable')) {
+		console.warn(
+			'[Variable.initialize] #variable 尚未就绪，延迟到 DOMContentLoaded'
+		)
+		document.addEventListener(
+			'DOMContentLoaded',
+			() => Variable.initialize(),
+			{ once: true }
+		)
+		return
+	}
 	// 绑定变量列表
 	const { list } = this
 	list.removable = true

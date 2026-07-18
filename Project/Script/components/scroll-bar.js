@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { Timer } from '../util/timer.js'
 
 // ******************************** 滚动条 ********************************
 
@@ -333,5 +334,3 @@ export class ScrollBar extends HTMLElement {
 }
 
 customElements.define('scroll-bar', ScrollBar)
-
-window.ScrollBar = ScrollBar

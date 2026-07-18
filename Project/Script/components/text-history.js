@@ -1,5 +1,7 @@
 ﻿'use strict'
 
+import { HistoryTimer } from './history-timer.js'
+
 // ******************************** 文本操作历史 ********************************
 
 export class TextHistory {
@@ -370,5 +372,3 @@ TextHistory.inputReplace = (function IIFE() {
 		this.value = value
 	}
 })()
-
-window.TextHistory = TextHistory

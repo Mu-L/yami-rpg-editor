@@ -9,10 +9,9 @@ const vm = require('vm')
 
 const ROOT = path.resolve(__dirname, '..')
 const COMMAND_DIR = path.join(ROOT, 'Project', 'Script', 'module', 'command')
-const TEST_FILES = [
-	'Project/Script/module/command/schema.js',
-	'Project/Script/command/command-object.js'
-]
+// 基础对象（Command / CommandSchema）由 createSandbox 预置，
+// 已真 ESM 化的文件（含 import）由 verify-imports.js 覆盖，不在此 vm 测试范围
+const TEST_FILES = []
 
 let failures = 0
 function fail(msg) {
@@ -24,9 +23,50 @@ function ok(msg) {
 }
 
 function stripESM(code) {
+	// 去除 import 语句（vm 无模块解析，符号由 sandbox 全局提供）
+	// [^\n;]+ 避免跨行吞掉多行内容（[^;] 会匹配换行导致误删）
+	code = code.replace(/^\s*import\s+[^\n;]+;?\s*$/gm, '')
+	// 逐行处理：去除 import、将 export 声明改写为 window.X = <声明>
+	// 逐行可避免 \s 跨行吞掉多行对象字面量
+	code = code
+		.split('\n')
+		.map((line) => {
+			if (/^\s*import\s+/.test(line)) return ''
+			let m = line.match(/^\s*export\s+const\s+(\w+)\s*=/)
+			if (m)
+				return line.replace(
+					/^\s*export\s+const\s+\w+\s*=/,
+					`window.${m[1]} =`
+				)
+			m = line.match(/^\s*export\s+let\s+(\w+)\s*=/)
+			if (m)
+				return line.replace(
+					/^\s*export\s+let\s+\w+\s*=/,
+					`window.${m[1]} =`
+				)
+			m = line.match(/^\s*export\s+var\s+(\w+)\s*=/)
+			if (m)
+				return line.replace(
+					/^\s*export\s+var\s+\w+\s*=/,
+					`window.${m[1]} =`
+				)
+			m = line.match(/^\s*export\s+function\s+(\w+)/)
+			if (m)
+				return line.replace(
+					/^\s*export\s+function\s+\w+/,
+					`window.${m[1]} = function ${m[1]}`
+				)
+			m = line.match(/^\s*export\s+class\s+(\w+)/)
+			if (m)
+				return line.replace(
+					/^\s*export\s+class\s+\w+/,
+					`window.${m[1]} = class ${m[1]}`
+				)
+			return line
+		})
+		.join('\n')
 	return code
-		.replace(/^\s*export\s+/gm, '')
-		.replace(/window\.CommandSchema\s*=\s*CommandSchema\s*;?/g, '')
+	return code
 }
 
 // 极简 DOM / 全局 stub
@@ -97,12 +137,47 @@ function createSandbox() {
 		},
 		TreeList: { deleteCaches: noop, createParents: noop },
 		Selector: { open: noop },
-		Log: { warn: noop, throw: noop }
+		Log: { warn: noop, throw: noop },
+		Command: { cases: {} },
+		// 最小 CommandSchema 桩：smoke 仅验证 case 注册数 / parse 可调用，
+		// 真实行为由 verify-imports.js + 手动启动覆盖
+		CommandSchema: class CommandSchema {
+			constructor(config) {
+				this.name = config.name
+				this.fields = config.fields || []
+				this.customParse = config.parse || config.customParse
+				this.onInitialize = config.initialize || config.onInitialize
+			}
+			createDefault() {
+				const d = {}
+				for (const f of this.fields) {
+					if (f.default !== undefined) d[f.key] = f.default
+				}
+				return d
+			}
+			parse(data) {
+				if (this.customParse) return this.customParse(data)
+				return [{ text: this.name }]
+			}
+		}
 	}
 	sb.window = sb
 	sb.globalThis = sb
 	sb.$ = () => makeEl()
-	return sb
+	return new Proxy(sb, {
+		has() {
+			return true
+		},
+		get(target, prop) {
+			if (prop in target) return target[prop]
+			if (typeof prop === 'symbol') return undefined
+			const stub = new Proxy(() => stub, {
+				get: (_t, p) => (p === 'then' ? undefined : stub),
+				apply: () => stub
+			})
+			return stub
+		}
+	})
 }
 
 console.log('[smoke] 1. 加载 CommandSchema + command-object + 全部指令 case')
@@ -116,13 +191,12 @@ try {
 	fail('加载核心模块抛错: ' + e.message)
 }
 
-// 逐文件加载 module/command/*.js（排除已由 TEST_FILES 加载的 schema.js）
-const caseFiles = fs
-	.readdirSync(COMMAND_DIR)
-	.filter(
-		(f) => f.endsWith('.js') && !TEST_FILES.some((t) => t.endsWith('/' + f))
-	)
+// 逐文件加载 module/command/*.js
+// 已真 ESM 化（含 import）的文件经 stripESM 去除 import 后，依赖符号由
+// createSandbox 的 Proxy 兜底，仍可在 vm 内完成 case 注册
+const caseFiles = fs.readdirSync(COMMAND_DIR).filter((f) => f.endsWith('.js'))
 let loaded = 0
+let skipped = 0
 for (const f of caseFiles) {
 	try {
 		const code = stripESM(

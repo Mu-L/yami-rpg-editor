@@ -1,4 +1,23 @@
 'use strict'
+import { SettingConfig } from '../module/settingconfig.js'
+import { Path } from '../util/config.js'
+import { Animation } from '../animation/animation-window.js'
+import { Command } from '../command/command-object.js'
+import { Data } from '../data/data-object.js'
+import { Project } from '../data/project-settings-window.js'
+import { Directory } from '../file/directory-object.js'
+import { File } from '../file/file-system-core.js'
+import { FS } from '../file/file-system.js'
+import { Layout } from '../layout/layout.js'
+import { GameLocal } from '../local/local-object.js'
+import { Log } from '../log/log-window.js'
+import { Editor } from './editor.js'
+import { WebServer } from '../module/webserver.js'
+import { Printer } from '../printer/printer.js'
+import { Title } from '../title/title-bar.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Updater } from '../update/updater.js'
 
 // 打开项目
 Editor.open = async function (path, agreed = false) {
@@ -185,5 +204,8 @@ Editor.open = async function (path, agreed = false) {
 	GameLocal.initialize()
 
 	// 打开开发服务器
-	if (SettingConfig.config.server.auto) WebServer.start(path)
+	// SettingConfig.config 在 SettingConfig 实例化期 load() 从 yami-config.json 载入；
+	// 但若 load() 抛错或文件缺失未兜底，config.server 可能是 undefined，裸取 .auto 会炸
+	const serverConfig = SettingConfig.config?.server ?? {}
+	if (serverConfig.auto) WebServer.start(path)
 }

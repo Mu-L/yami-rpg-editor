@@ -24,4 +24,4 @@ export const Editor = {
 	isProjectVersionSupported: null
 }
 
-window.Editor = Editor
+// ESM 迁移兼容：恢复全局绑定（供尚未迁移的文件裸用）

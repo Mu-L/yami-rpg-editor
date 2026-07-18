@@ -1,4 +1,11 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { Command } from '../../command/command-object.js'
+import { NumberOperand } from '../../command/set-value-operand-window.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.setNumber = new CommandSchema({
 	name: 'setNumber',

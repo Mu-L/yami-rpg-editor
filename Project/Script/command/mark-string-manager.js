@@ -1,9 +1,12 @@
 ﻿'use strict'
+import { Command } from './command-object.js'
+import { Local } from '../tools/localization.js'
 
 // ******************************** 标记字符串管理器 ********************************
 
-export const Token = (function IIFE() {
-	const map = {
+let _tokenMap
+function buildTokenMap() {
+	return {
 		'=': Command.setOperatorColor('='),
 		' = ': Command.setOperatorColor(' = '),
 		' / ': Command.setOperatorColor(' / '),
@@ -35,9 +38,9 @@ export const Token = (function IIFE() {
 			return Command.setBooleanColor(Local.get('common.null'))
 		}
 	}
+}
 
-	// 获取定界符
-	return (key) => map[key]
-})()
-
-window.Token = Token
+export const Token = (key) => {
+	if (!_tokenMap) _tokenMap = buildTokenMap()
+	return _tokenMap[key]
+}

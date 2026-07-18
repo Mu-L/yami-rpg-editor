@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { GL } from '../webgl/webgl-init.js'
+import { UI } from './ui-window.js'
 
 // ******************************** 根元素 ********************************
 

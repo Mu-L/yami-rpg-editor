@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { Scene } from './scene-window.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 光源类 ********************************
 
@@ -163,5 +165,3 @@ export class Light {
 		this.measureHeight = measureHeight
 	}
 }
-
-window.Light = Light

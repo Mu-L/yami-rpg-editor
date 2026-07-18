@@ -1,4 +1,18 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Shortcuts } from '../tools/shortcut-registry.js'
+import { Menu } from '../components/menu-list.js'
+import { GUID } from '../file/guid.js'
+import { GameLocal } from '../local/local-object.js'
+import { Reference } from '../log/related-references.js'
+import { History } from '../tools/history.js'
+import { Local } from '../tools/localization.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Window } from '../tools/window-object.js'
+import { RadioProxy } from '../components/radio-proxy.js'
 
 // ******************************** 属性窗口 ********************************
 
@@ -8,9 +22,9 @@ export const Attribute = {
 	panel: $('#attribute-properties-flex').hide(),
 	searcher: $('#attribute-searcher'),
 	inputs: {
+		// 单一元素，DOM 直接可取
 		name: $('#attribute-name'),
 		key: $('#attribute-key'),
-		type: $('#attribute-type'),
 		note: $('#attribute-note'),
 		enum: $('#attribute-enum'),
 		enumBox: $('#attribute-enum-box')
@@ -87,6 +101,16 @@ Attribute.list.updateNoteIcon = null
 Attribute.list.onCreate = null
 Attribute.list.onDelete = null
 Attribute.list.onResume = null
+
+// attribute-type 是一组 <radio-box name="attribute-type">，共享逻辑控件由
+// RadioBox 升级时塞入 RadioProxy.map，故 inputs.type 不能顶层求值，改为惰性 getter
+Object.defineProperty(Attribute.inputs, 'type', {
+	get() {
+		return RadioProxy.map['attribute-type']
+	},
+	enumerable: true,
+	configurable: true
+})
 
 // 初始化
 Attribute.initialize = function () {
@@ -1145,5 +1169,3 @@ Attribute.list.onDelete = function (item) {
 Attribute.list.onResume = function (item) {
 	Attribute.register(item)
 }
-
-window.Attribute = Attribute

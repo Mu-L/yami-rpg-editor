@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Editor } from '../main/editor.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 默认对象文件夹 ********************************
 
@@ -44,5 +47,3 @@ ObjectFolder.confirm = function (event) {
 	}
 	Window.close('object-folder')
 }
-
-window.ObjectFolder = ObjectFolder

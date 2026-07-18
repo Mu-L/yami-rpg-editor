@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Animation } from '../animation/animation-window.js'
+import { Browser } from '../browser/project-browser.js'
+import { Team } from '../data/team-window.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from './inspector.js'
+import { EventListInterface } from '../tools/event-list.js'
+import { ScriptListInterface } from '../tools/script-list.js'
 
 // ******************************** 文件 - 触发器页面 ********************************
 

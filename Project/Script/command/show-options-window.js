@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Command } from './command-object.js'
+import { GameLocal } from '../local/local-object.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 显示选项窗口 ********************************
 
@@ -58,5 +62,3 @@ Choices.windowClosed = function (event) {
 Choices.confirm = function (event) {
 	return Choices.target.save()
 }
-
-window.Choices = Choices

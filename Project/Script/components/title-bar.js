@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 标题栏 ********************************
 
@@ -109,5 +110,3 @@ export class TitleBar extends HTMLElement {
 }
 
 customElements.define('title-bar', TitleBar)
-
-window.TitleBar = TitleBar

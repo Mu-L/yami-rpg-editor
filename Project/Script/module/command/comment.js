@@ -1,4 +1,7 @@
 'use strict'
+import { $ } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { CommandSchema } from './schema.js'
 
 Command.cases.comment = new CommandSchema({
 	name: 'comment',

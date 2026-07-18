@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { Window } from '../tools/window-object.js'
+import { Inspector } from '../inspector/inspector.js'
+import { UI } from './ui-window.js'
 
 // ******************************** 按钮元素 ********************************
 

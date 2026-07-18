@@ -1,4 +1,19 @@
-'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Data } from '../data/data-object.js'
+import { Animation } from '../animation/animation-window.js'
+import { Browser } from '../browser/project-browser.js'
+import { Selector } from '../browser/resource-selector.js'
+import { FSP } from '../file/file-system.js'
+import { Log } from '../log/log-window.js'
+import { Editor } from './editor.js'
+import { Palette } from '../palette/palette.js'
+import { Particle } from '../particle/particle-window.js'
+import { PluginManager } from '../plugin/plugin.js'
+import { Scene } from '../scene/scene-window.js'
+import { Sprite } from '../sprite/sprite.js'
+import { Title } from '../title/title-bar.js'
+import { UI } from '../ui/ui-window.js'
 
 // 保存项目文件
 Editor.saveProject = function () {
@@ -53,3 +68,5 @@ Editor.loadProject = function () {
 Editor.saveManifest = function () {
 	return Data.saveManifest()
 }
+
+const path = require('path')

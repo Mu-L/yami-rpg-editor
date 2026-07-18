@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Inspector } from './inspector.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素 - 按钮页面 ********************************
 
@@ -185,7 +188,7 @@
 
 	// 创建按钮
 	UIButton.create = function () {
-		const transform = UIElement.createTransform()
+		const transform = Inspector.uiElement.createTransform()
 		transform.width = 100
 		transform.height = 24
 		return {
@@ -291,7 +294,7 @@
 			write('activeColor')
 			write('hoverSound')
 			write('clickSound')
-			UIElement.open(node)
+			Inspector.uiElement.open(node)
 		}
 	}
 
@@ -300,7 +303,7 @@
 		if (this.target) {
 			UI.list.unselect(this.target)
 			UI.updateTarget()
-			UIElement.close()
+			Inspector.uiElement.close()
 			this.target = null
 		}
 	}

@@ -1,3 +1,8 @@
+import { File } from '../file/file-system-core.js'
+import { Animation } from '../animation/animation-window.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Scene } from './scene-window.js'
+import { ImageTexture } from '../webgl/image-texture.js'
 // 创建默认动画播放器
 Scene.createDefaultAnimation = (function IIFE() {
 	let DefaultPlayer

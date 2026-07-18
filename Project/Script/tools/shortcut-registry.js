@@ -195,6 +195,3 @@ export const Shortcuts = {
 		}
 	}
 }
-
-window.ShortcutRegistry = ShortcutRegistry
-window.Shortcuts = Shortcuts

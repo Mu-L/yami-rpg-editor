@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $, measureText } from '../util/dom.js'
+import { Scene } from '../scene/scene-window.js'
+import { UI } from '../ui/ui-window.js'
+import { Animation } from '../animation/animation-window.js'
+import { Layout } from '../layout/layout.js'
+import { Particle } from '../particle/particle-window.js'
+import { Menubar } from '../title/menu-bar.js'
+import { Title } from '../title/title-bar.js'
 
 // ******************************** 窗口对象 ********************************
 
@@ -337,5 +345,3 @@ Window.ambient.update = function () {
 	}
 	this.removeClass('open')
 }
-
-window.Window = Window

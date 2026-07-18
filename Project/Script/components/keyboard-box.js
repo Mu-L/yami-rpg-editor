@@ -115,5 +115,3 @@ export class KeyboardBox extends HTMLElement {
 }
 
 customElements.define('keyboard-box', KeyboardBox)
-
-window.KeyboardBox = KeyboardBox

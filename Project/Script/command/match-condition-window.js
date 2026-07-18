@@ -1,5 +1,17 @@
 ﻿'use strict'
 
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { GamepadBox } from '../components/gamepad-box.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { Command } from './command-object.js'
+import { IfCondition } from './conditional-condition-window.js'
+import { Token } from './mark-string-manager.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { Enum } from '../enum/enum-window.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from '../variable/variable.js'
+
 // ******************************** 匹配 - 条件窗口 ********************************
 
 export const SwitchCondition = {
@@ -272,5 +284,3 @@ SwitchCondition.save = function () {
 SwitchCondition.confirm = function (event) {
 	return SwitchCondition.target.save()
 }
-
-window.SwitchCondition = SwitchCondition

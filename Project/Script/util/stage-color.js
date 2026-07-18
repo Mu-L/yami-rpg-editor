@@ -1,5 +1,8 @@
 'use strict'
 
+import { INTRGBA } from './color-utils.js'
+import { GL } from '../webgl/webgl-init.js'
+
 // ******************************** 舞台颜色类 ********************************
 
 export class StageColor {
@@ -51,5 +54,3 @@ export class StageColor {
 	// 静态 - RGBA数组
 	static rgba = new Float64Array(4)
 }
-
-window.StageColor = StageColor

@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Window } from '../tools/window-object.js'
+import { Updater } from '../update/updater.js'
 
 // ******************************** 更新日志窗口 ********************************
 
@@ -57,5 +60,3 @@ UpdateLog.update = function (items) {
 UpdateLog.windowClosed = function () {
 	UpdateLog.content.clear()
 }
-
-window.UpdateLog = UpdateLog

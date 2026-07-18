@@ -23,5 +23,3 @@ export class GUID {
 		return id
 	}
 }
-
-window.GUID = GUID

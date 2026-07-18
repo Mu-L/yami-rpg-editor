@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Inspector } from './inspector.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素 - 文本页面 ********************************
 
@@ -104,7 +107,7 @@
 
 	// 创建文本
 	UIText.create = function () {
-		const transform = UIElement.createTransform()
+		const transform = Inspector.uiElement.createTransform()
 		transform.width = 100
 		transform.height = 24
 		return {
@@ -160,7 +163,7 @@
 			write('effect-color', node.effect.color || '000000ff')
 			write('overflow')
 			write('blend')
-			UIElement.open(node)
+			Inspector.uiElement.open(node)
 		}
 	}
 
@@ -169,7 +172,7 @@
 		if (this.target) {
 			UI.list.unselect(this.target)
 			UI.updateTarget()
-			UIElement.close()
+			Inspector.uiElement.close()
 			this.target = null
 		}
 	}

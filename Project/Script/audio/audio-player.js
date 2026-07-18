@@ -1,4 +1,8 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { File } from '../file/file-system-core.js'
+import { AudioManager } from './audio-manager.js'
+import { Reverb } from './reverb.js'
 
 // ******************************** 音频播放器类 ********************************
 
@@ -84,4 +88,4 @@ export class AudioPlayer {
 	}
 }
 
-window.AudioPlayer = AudioPlayer
+const path = require('path')

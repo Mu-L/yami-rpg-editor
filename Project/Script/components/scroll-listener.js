@@ -1,8 +1,9 @@
 ﻿'use strict'
+import { Timer } from '../util/timer.js'
 
 // ******************************** 滚动侦听器 ********************************
 
-namespace: {
+;(() => {
 	let target = null
 	let highSpeed = 0
 	let lowSpeed = 0
@@ -138,4 +139,4 @@ namespace: {
 		scrollUpdater = null
 		window.off('pointermove', pointermove)
 	}
-}
+})()

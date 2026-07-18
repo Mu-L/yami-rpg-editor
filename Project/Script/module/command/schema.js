@@ -1,5 +1,30 @@
 'use strict'
 
+import { $ } from '../../util/dom.js'
+import { reportError } from '../../util/safe.js'
+import { ActorGetter } from '../../command/actor-accessor-window.js'
+import { AncestorGetter } from '../../command/ancestor-accessor-window.js'
+import { AngleGetter } from '../../command/angle-accessor-window.js'
+import { Command } from '../../command/command-object.js'
+import { CommandSuggestion } from '../../command/command-tip.js'
+import { ElementGetter } from '../../command/element-accessor-window.js'
+import { EquipmentGetter } from '../../command/equipment-accessor-window.js'
+import { ItemGetter } from '../../command/item-accessor-window.js'
+import { LightGetter } from '../../command/light-accessor-window.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { PositionGetter } from '../../command/position-accessor-window.js'
+import { RegionGetter } from '../../command/region-accessor-window.js'
+import { ObjectGetter } from '../../command/scene-object-accessor-window.js'
+import { SkillGetter } from '../../command/skill-accessor-window.js'
+import { StateGetter } from '../../command/state-accessor-window.js'
+import { TextSuggestion } from '../../command/text-tip.js'
+import { TilemapGetter } from '../../command/tilemap-accessor-window.js'
+import { TriggerGetter } from '../../command/trigger-accessor-window.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { Data } from '../../data/data-object.js'
+import { Local } from '../../tools/localization.js'
+import { Window } from '../../tools/window-object.js'
+
 // ******************************** 指令 schema 基类 ********************************
 
 export class CommandSchema {
@@ -331,5 +356,3 @@ export class CommandSchema {
 		}
 	}
 }
-
-window.CommandSchema = CommandSchema

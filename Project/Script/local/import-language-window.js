@@ -1,4 +1,11 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Editor } from '../main/editor.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Path } from '../util/config.js'
 
 // ******************************** 导入语言包窗口 ********************************
 
@@ -114,5 +121,3 @@ ImportLanguage.confirm = function (event) {
 		]
 	)
 }
-
-window.ImportLanguage = ImportLanguage

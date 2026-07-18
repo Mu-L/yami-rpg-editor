@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Window } from '../tools/window-object.js'
+import { StringVar } from '../components/string-var.js'
 
 // ******************************** 文本提示框 ********************************
 
@@ -285,5 +288,3 @@ TextSuggestion.list.selectDefaultCommand = function () {
 		return
 	}
 }
-
-window.TextSuggestion = TextSuggestion

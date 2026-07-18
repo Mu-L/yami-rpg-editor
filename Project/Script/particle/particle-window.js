@@ -1,5 +1,28 @@
 ﻿'use strict'
 
+import { $ } from '../util/dom.js'
+import { FileBodyPane } from '../components/file-body-pane.js'
+import { ctrl } from '../util/event-accessors.js'
+import { File } from '../file/file-system-core.js'
+import { Cursor } from '../tools/pointer-object.js'
+import { Command } from '../command/command-object.js'
+import { Menu } from '../components/menu-list.js'
+import { TreeList } from '../components/tree-list.js'
+import { Data } from '../data/data-object.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Layout } from '../layout/layout.js'
+
+import { Scene } from '../scene/scene-window.js'
+import { History } from '../tools/history.js'
+import { Local } from '../tools/localization.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Window } from '../tools/window-object.js'
+import { StageColor } from '../util/stage-color.js'
+import { Timer } from '../util/timer.js'
+import { ImageTexture } from '../webgl/image-texture.js'
+import { Matrix } from '../webgl/matrix2.js'
+import { GL } from '../webgl/webgl-init.js'
+
 // ******************************** 粒子窗口 ********************************
 
 export const Particle = {
@@ -133,9 +156,13 @@ Particle.list.copy = null
 Particle.list.paste = null
 Particle.list.delete = null
 Particle.list.createIcon = null
-Particle.list.updateIcon = Scene.list.updateIcon
+Particle.list.updateIcon = function (...args) {
+	return Scene.list.updateIcon(...args)
+}
 Particle.list.createVisibilityIcon = null
-Particle.list.updateVisibilityIcon = Scene.list.updateVisibilityIcon
+Particle.list.updateVisibilityIcon = function (...args) {
+	return Scene.list.updateVisibilityIcon(...args)
+}
 Particle.list.onCreate = null
 Particle.list.onRemove = null
 Particle.list.onDelete = null
@@ -1750,5 +1777,3 @@ Particle.list.onResume = function () {
 	Particle.computeOuterRect()
 	Particle.requestRendering()
 }
-
-window.Particle = Particle

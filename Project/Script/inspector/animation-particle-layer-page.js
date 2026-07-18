@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Animation } from '../animation/animation-window.js'
+import { Inspector } from './inspector.js'
+import { Particle } from '../particle/particle-window.js'
 
 // ******************************** 动画 - 粒子层页面 ********************************
 

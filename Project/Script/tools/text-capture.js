@@ -1,4 +1,15 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { ctrl } from '../util/event-accessors.js'
+import { TextSuggestion } from '../command/text-tip.js'
+import { VariableGetter } from '../command/variable-accessor-window.js'
+import { Menu } from '../components/menu-list.js'
+import { Localization } from '../local/local-window.js'
+import { Printer } from '../printer/printer.js'
+import { Color } from './color-picker-window.js'
+import { Local } from './localization.js'
+import { Window } from './window-object.js'
+import { Variable } from '../variable/variable.js'
 
 // ******************************** 选取文本 ********************************
 
@@ -922,5 +933,3 @@ Selection.localization = {
 		}
 	}
 }
-
-window.Selection = Selection

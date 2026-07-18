@@ -1,4 +1,11 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { File } from '../file/file-system-core.js'
+import { Local } from './localization.js'
+import { Cursor } from './pointer-object.js'
+import { Window } from './window-object.js'
+import { Path } from '../util/config.js'
 
 // ******************************** 图像剪辑窗口 ********************************
 
@@ -361,4 +368,4 @@ ImageClip.confirm = function (event) {
 	Window.close('imageClip')
 }.bind(ImageClip)
 
-window.ImageClip = ImageClip
+const path = require('path')

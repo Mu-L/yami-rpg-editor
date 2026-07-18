@@ -1,4 +1,25 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { File } from '../file/file-system-core.js'
+import { Window } from '../tools/window-object.js'
+import { Reference } from '../log/related-references.js'
+import { Editor } from '../main/editor.js'
+import { GUID } from '../file/guid.js'
+import '../components/element-methods.js'
+import { Codec } from '../codec/codec.js'
+import { Data } from '../data/data-object.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Layout } from '../layout/layout.js'
+import { Palette } from '../palette/palette.js'
+import { Particle } from '../particle/particle-window.js'
+import { ObjectFolder } from './default-object-folder.js'
+import { SceneShift } from './move-scene.js'
+import { TilemapShortcuts } from './tilemap-shortcut-list.js'
+import { History } from '../tools/history.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Matrix } from '../webgl/matrix2.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 场景窗口 ********************************
 
@@ -1324,5 +1345,3 @@ Scene.planToSaveTerrains = function () {
 }
 
 // 绘制场景
-
-window.Scene = Scene

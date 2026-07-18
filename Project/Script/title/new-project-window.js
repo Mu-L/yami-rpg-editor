@@ -1,4 +1,19 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { $, getElementWriter } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { Data } from '../data/data-object.js'
+import { GUID } from '../file/guid.js'
+import { Project } from '../data/project-settings-window.js'
+import { File } from '../file/file-system-core.js'
+import { FS, FSP } from '../file/file-system.js'
+import { Layout } from '../layout/layout.js'
+import { Log } from '../log/log-window.js'
+import { Editor } from '../main/editor.js'
+import { TemplatesPath } from '../module/global.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Path } from '../util/config.js'
 
 // ******************************** 新建项目窗口 ********************************
 
@@ -313,4 +328,4 @@ NewProject.confirm = function (event) {
 		})
 }
 
-window.NewProject = NewProject
+const path = require('path')

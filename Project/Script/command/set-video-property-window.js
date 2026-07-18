@@ -1,6 +1,8 @@
 ﻿'use strict'
 
+import { $ } from '../util/dom.js'
 import { createPropertyWindow } from './property-window-factory.js'
+import { Command } from './command-object.js'
 
 // ******************************** 设置视频 - 属性窗口 ********************************
 
@@ -27,5 +29,3 @@ export const VideoProperty = createPropertyWindow({
 		blend: (value) => Command.parseBlend(value)
 	}
 })
-
-window.VideoProperty = VideoProperty

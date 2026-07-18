@@ -1,4 +1,10 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { Animation } from './animation-window.js'
+import { Data } from '../data/data-object.js'
+import { Easing } from '../data/transition-window.js'
+import { Layout } from '../layout/layout.js'
 
 // ******************************** 曲线窗口 ********************************
 
@@ -383,5 +389,3 @@ Curve.easingIdInput = function (event) {
 Curve.settingsPointerdown = function () {
 	Easing.open()
 }
-
-window.Curve = Curve

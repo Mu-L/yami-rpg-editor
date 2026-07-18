@@ -1,4 +1,6 @@
-﻿'use strict'
+import { Select } from './select-list.js'
+import { Local } from '../tools/localization.js'
+;('use strict')
 
 // ******************************** 选择框 ********************************
 
@@ -366,5 +368,3 @@ export class SelectBox extends HTMLElement {
 }
 
 customElements.define('select-box', SelectBox)
-
-window.SelectBox = SelectBox

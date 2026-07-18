@@ -1,5 +1,10 @@
 ﻿'use strict'
 
+import { SliderBox } from './slider-box.js'
+import { Menu } from './menu-list.js'
+import { TextBox } from './text-box.js'
+import { FolderItem } from '../file/folder-item.js'
+
 // ******************************** 文件头部面板 ********************************
 
 export class FileHeadPane extends HTMLElement {
@@ -15,7 +20,6 @@ export class FileHeadPane extends HTMLElement {
 		this.back = document.createElement('item')
 		this.back.addClass('upper-level-directory')
 		this.back.name = 'back'
-		this.back.setAttribute('hotkey', 'Escape/MouseBackButton')
 		this.back.textContent = '\uf0a8'
 		this.searcher = new TextBox()
 		this.searcher.addCloseButton()
@@ -23,14 +27,9 @@ export class FileHeadPane extends HTMLElement {
 		this.searcher.name = 'search'
 		this.view = new SliderBox()
 		this.view.addClass('file-head-view')
-		this.view.setAttribute('hotkey', 'Ctrl+Wheel')
 		this.view.name = 'view'
 		this.view.input.max = '4'
 		this.view.activeWheel = true
-		this.appendChild(this.address)
-		this.appendChild(this.back)
-		this.appendChild(this.searcher)
-		this.appendChild(this.view)
 
 		// 侦听事件
 		this.on('pointerdown', this.pointerdown)
@@ -40,6 +39,14 @@ export class FileHeadPane extends HTMLElement {
 		this.searcher.on('compositionend', this.searcherInput)
 		this.view.on('focus', this.viewFocus)
 		this.view.on('input', this.viewInput)
+	}
+
+	// 自定义元素升级后（已连入文档）才允许设置属性
+	connectedCallback() {
+		if (this._built) return
+		this._built = true
+		this.back.setAttribute('hotkey', 'Escape/MouseBackButton')
+		this.view.setAttribute('hotkey', 'Ctrl+Wheel')
 	}
 
 	// 更新地址
@@ -222,8 +229,18 @@ export class FileHeadPane extends HTMLElement {
 		const head = this.parentNode
 		head.links.body.setViewIndex(this.read())
 	}
+
+	connectedCallback() {
+		if (this.childElementCount === 0) {
+			setTimeout(() => {
+				if (this.childElementCount !== 0) return
+				this.appendChild(this.address)
+				this.appendChild(this.back)
+				this.appendChild(this.searcher)
+				this.appendChild(this.view)
+			})
+		}
+	}
 }
 
 customElements.define('file-head-pane', FileHeadPane)
-
-window.FileHeadPane = FileHeadPane

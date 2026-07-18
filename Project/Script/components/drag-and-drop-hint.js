@@ -79,5 +79,3 @@ export class DragAndDropHint extends HTMLElement {
 }
 
 customElements.define('drag-and-drop-hint', DragAndDropHint)
-
-window.DragAndDropHint = DragAndDropHint

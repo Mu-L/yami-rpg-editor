@@ -1,4 +1,14 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import '../components/element-methods.js'
+
+import { MarqueeArea } from '../components/marquee-area.js'
+import { Window } from '../tools/window-object.js'
+import { Animation } from '../animation/animation-window.js'
+import { Log } from '../log/log-window.js'
+import { range } from '../module/eslints.js'
+import { History } from '../tools/history.js'
+import { Cursor } from '../tools/pointer-object.js'
 
 // ******************************** 检查器 ********************************
 
@@ -469,5 +479,3 @@ Inspector.ParamHistory = class ParamHistory {
 		return data?.type.indexOf('inspector-param') === 0
 	}
 }
-
-window.Inspector = Inspector

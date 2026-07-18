@@ -1,4 +1,6 @@
 'use strict'
+import { Data } from '../data/data-object.js'
+import { Toast } from '../components/toast.js'
 
 // ******************************** 安全访问 ********************************
 
@@ -67,8 +69,3 @@ export function rafThrottle(fn) {
 	}
 	return throttled
 }
-
-window.getVariable = getVariable
-window.reportError = reportError
-window.debounce = debounce
-window.rafThrottle = rafThrottle

@@ -1,4 +1,6 @@
-﻿'use strict'
+import { CustomBox } from './custom-box.js'
+import { TextArea } from './text-area.js'
+;('use strict')
 
 // ******************************** 字符串变量框 ********************************
 
@@ -149,5 +151,3 @@ export class TextAreaVar extends HTMLElement {
 }
 
 customElements.define('text-area-var', TextAreaVar)
-
-window.TextAreaVar = TextAreaVar

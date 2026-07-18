@@ -1,4 +1,10 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Browser } from '../browser/project-browser.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from './inspector.js'
+import { Palette } from '../palette/palette.js'
+import { Scene } from '../scene/scene-window.js'
 
 // ******************************** 文件 - 图块组页面 ********************************
 

@@ -1,4 +1,6 @@
 'use strict'
+import { Updater } from './updater.js'
+import { Local } from '../tools/localization.js'
 
 // 获取TS版本更新警告
 Updater.getTSVersionWarning = function () {

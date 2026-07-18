@@ -1,4 +1,9 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Command } from './command-object.js'
+import { Token } from './mark-string-manager.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 属性窗口工厂 ********************************
 

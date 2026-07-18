@@ -1,4 +1,10 @@
-'use strict'
+﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { RequestkeyValueBind } from './requestURL.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.downloadFile = new CommandSchema({
 	name: 'downloadFile',

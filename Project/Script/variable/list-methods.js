@@ -1,4 +1,9 @@
 'use strict'
+import { Command } from '../command/command-object.js'
+import { Data } from '../data/data-object.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from './variable.js'
 
 // 列表 - 复制
 Variable.list.copy = function (item) {

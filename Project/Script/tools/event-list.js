@@ -1,4 +1,10 @@
 ﻿'use strict'
+import { Command } from '../command/command-object.js'
+import { Data } from '../data/data-object.js'
+import { EventEditor } from '../command/event-editor.js'
+import { TreeList } from '../components/tree-list.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Local } from './localization.js'
 
 // ******************************** 事件列表接口类 ********************************
 
@@ -154,5 +160,3 @@ export class EventListInterface {
 		}
 	}
 }
-
-window.EventListInterface = EventListInterface

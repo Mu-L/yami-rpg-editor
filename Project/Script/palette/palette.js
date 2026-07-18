@@ -1,4 +1,20 @@
 ﻿'use strict'
+import { $, measureText } from '../util/dom.js'
+import { File } from '../file/file-system-core.js'
+import { Scene } from '../scene/scene-window.js'
+import { Cursor } from '../tools/pointer-object.js'
+import { Menu } from '../components/menu-list.js'
+import { Data } from '../data/data-object.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Layout } from '../layout/layout.js'
+import { fs, SetTileTag } from '../module/global.js'
+import { AutoTile } from './auto-tile.js'
+import { FrameGenerator } from './tile-frame-generator.js'
+import { TileFrame } from './tile-frame-index.js'
+import { TileNode } from './tile-node-window.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Timer } from '../util/timer.js'
 
 // ******************************** 调色板 ********************************
 
@@ -2417,5 +2433,3 @@ Palette.pointermove = function (event) {
 		}
 	}
 }.bind(Palette)
-
-window.Palette = Palette

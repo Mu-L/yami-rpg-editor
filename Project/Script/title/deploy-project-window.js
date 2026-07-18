@@ -1,5 +1,33 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { Codec } from '../codec/codec.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { FS, FSP } from '../file/file-system.js'
+import { FolderItem } from '../file/folder-item.js'
+import { Log } from '../log/log-window.js'
+import { Editor } from '../main/editor.js'
+import { TemplatesPath } from '../module/global.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Path } from '../util/config.js'
 const require = window.__nodeRequire || window.require
+// ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
+const { fileURLToPath, URL } = require('url')
+const _moduleURL = new URL(import.meta.url)
+const _modulePath =
+	_moduleURL.protocol === 'file:'
+		? fileURLToPath(_moduleURL)
+		: Path.resolve(
+				process.cwd(),
+				'Project',
+				_moduleURL.pathname.split('/').pop()
+			)
+const __dirname =
+	_moduleURL.protocol === 'file:'
+		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+		: Path.resolve(process.cwd(), 'Project')
 
 // ******************************** 部署项目窗口 ********************************
 
@@ -350,7 +378,7 @@ Deployment.readFileList = async function (platform) {
 			parameters: parameters
 		})
 		fileList.push({
-			srcPath: File.route(path),
+			srcPath: File.path(path),
 			newPath: newPath
 		})
 	}
@@ -381,7 +409,7 @@ Deployment.readFileList = async function (platform) {
 				})
 			}
 			fileList.push({
-				srcPath: File.route(path),
+				srcPath: File.path(path),
 				newPath: newPath
 			})
 		}
@@ -391,7 +419,7 @@ Deployment.readFileList = async function (platform) {
 
 // 读取TS输出目录
 Deployment.readTsOutDir = function () {
-	const ts = FS.readFileSync(File.route('tsconfig.json'), 'utf8')
+	const ts = FS.readFileSync(File.path('tsconfig.json'), 'utf8')
 	const match = ts.match(/"outDir"\s*:\s*"(.*?)"/)
 	let outDir
 	if (match) {
@@ -421,7 +449,7 @@ Deployment.copyFilesTo = function (dirPath) {
 		const length = list.length
 		for (let i = 0; i < length; i++) {
 			const item = list[i]
-			const srcPath = item.srcPath ?? File.route(item.path)
+			const srcPath = item.srcPath ?? File.path(item.path)
 			const newPath = item.newPath ?? item.path
 			const gamedir = item.shell ? '' : this.gamedir
 			const dstPath = dPath + gamedir + newPath
@@ -649,4 +677,4 @@ Deployment.confirm = function (event) {
 		})
 }
 
-window.Deployment = Deployment
+const path = require('path')

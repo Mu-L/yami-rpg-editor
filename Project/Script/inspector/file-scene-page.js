@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Codec } from '../codec/codec.js'
+import { Inspector } from './inspector.js'
+import { Editor } from '../main/editor.js'
+import { Scene } from '../scene/scene-window.js'
+import { EventListInterface } from '../tools/event-list.js'
+import { ScriptListInterface } from '../tools/script-list.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 文件 - 场景页面 ********************************
 

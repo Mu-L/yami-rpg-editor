@@ -1,4 +1,15 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+
+import { ParamList } from '../components/param-list.js'
+import { File } from '../file/file-system-core.js'
+import { Browser } from '../browser/project-browser.js'
+import { Selector } from '../browser/resource-selector.js'
+import { Command } from '../command/command-object.js'
+import { TreeList } from '../components/tree-list.js'
+import { FileItem } from '../file/file-item.js'
+import { Inspector } from '../inspector/inspector.js'
+import { PluginManager } from '../plugin/plugin.js'
 
 // ******************************** 脚本列表接口 ********************************
 
@@ -170,4 +181,4 @@ export class ScriptListInterface {
 	}
 }
 
-window.ScriptListInterface = ScriptListInterface
+const path = require('path')

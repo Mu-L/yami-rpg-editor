@@ -1,3 +1,7 @@
+import { Scene } from './scene-window.js'
+import { GL } from '../webgl/webgl-init.js'
+import { range } from '../module/eslints.js'
+import { Vector } from '../webgl/vector2.js'
 Scene.selectObject = function (x, y) {
 	let precise = false
 	let target = null

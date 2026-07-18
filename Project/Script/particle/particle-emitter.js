@@ -1,4 +1,5 @@
-﻿'use strict'
+import { Particle } from './particle-window.js'
+;('use strict')
 
 // ******************************** 粒子发射器类 ********************************
 

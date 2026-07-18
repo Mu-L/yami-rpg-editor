@@ -1,4 +1,12 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { CommandSchema } from './schema.js'
+import { Light } from '../../scene/light.js'
+import { Local } from '../../tools/localization.js'
+import { Variable } from '../../variable/variable.js'
 
 Command.cases.setObject = new CommandSchema({
 	name: 'setObject',

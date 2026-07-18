@@ -1,4 +1,9 @@
 'use strict'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from '../inspector/inspector.js'
+import { UI } from '../ui/ui-window.js'
+import { Updater } from './updater.js'
 
 // 更新元素数据
 Updater.updateElements = function (verNum) {

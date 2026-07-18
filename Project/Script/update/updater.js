@@ -34,11 +34,10 @@ export const Updater = {
 
 // 获取版本数值
 Updater.getVersionNumber = function (version) {
+	if (!version) return 0
 	const nodes = version.split('.')
 	const a = parseInt(nodes[0])
 	const b = parseInt(nodes[1])
 	const c = parseInt(nodes[2])
 	return a * 100000000 + b * 10000 + c
 }
-
-window.Updater = Updater

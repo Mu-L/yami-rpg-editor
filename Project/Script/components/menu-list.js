@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { Timer } from '../util/timer.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 菜单列表 ********************************
 
@@ -474,6 +476,3 @@ customElements.define('menu-list', MenuList)
 
 // 创建菜单列表实例
 export const Menu = new MenuList()
-
-window.MenuList = MenuList
-window.Menu = Menu

@@ -1,9 +1,34 @@
+import { fs } from './global.js'
+// axios 是 Node 模块（node_modules/axios），浏览器 ESM 下裸 import 'axios' 解析不了；
+// Electron nodeIntegration:true 下用 require 桥（window.__nodeRequire || window.require）调 Node
 const require = window.__nodeRequire || window.require
-export const axios = require('axios')
+const axios = require('axios')
+export { axios }
+
+// dev 模式下 axios 跨域请求 GitHub raw + jsdelivr CDN 撞浏览器 CORS 政策；
+// vite.config.js server.proxy 配了 /github-raw/ → raw.githubusercontent.com 和
+// /jsdelivr/ → cdn.jsdelivr.net 代理，dev 模式把 https URL 改写成代理前缀避 CORS
+// prod 模式 Electron file:// 协议无 CORS 限制，原样透传
+const proxyRewrite = (url) => {
+	if (typeof url !== 'string' || !import.meta.env?.DEV) return url
+	// 加速节点前缀可能是 https://cdn.jsdelivr.net/gh/... 形式，先剥前缀取原始 GitHub URL
+	const rawMatch = url.match(/https:\/\/raw\.githubusercontent\.com(\/.*)$/)
+	if (rawMatch) return '/github-raw' + rawMatch[1]
+	const jsdelivrMatch = url.match(/https:\/\/cdn\.jsdelivr\.net(\/.*)$/)
+	if (jsdelivrMatch) return '/jsdelivr' + jsdelivrMatch[1]
+	return url
+}
+
+// 包一层 axios.get/post/axios 让 URL 走代理改写
+const _axiosGet = axios.get
+const _axiosPost = axios.post
+axios.get = (url, config) => _axiosGet.call(axios, proxyRewrite(url), config)
+axios.post = (url, data, config) =>
+	_axiosPost.call(axios, proxyRewrite(url), data, config)
 
 export const Net = new (class {
-	get = axios.get
-	post = axios.post
+	get = (url, config) => axios.get(url, config)
+	post = (url, data, config) => axios.post(url, data, config)
 	cancelQueue = []
 
 	constructor() {
@@ -74,6 +99,3 @@ export const Net = new (class {
 		this.cancelQueue = [] // 清空队列
 	}
 })()
-
-window.axios = axios
-window.Net = Net

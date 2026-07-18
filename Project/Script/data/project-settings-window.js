@@ -1,4 +1,17 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Command } from '../command/command-object.js'
+import { Selector } from '../browser/resource-selector.js'
+import { Data } from './data-object.js'
+import { Directory } from '../file/directory-object.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Log } from '../log/log-window.js'
+import { Deployment } from '../title/deploy-project-window.js'
+import { Title } from '../title/title-bar.js'
+import { Local } from '../tools/localization.js'
+import { AttributeListInterface } from '../tools/property-list.js'
+import { Window } from '../tools/window-object.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 项目设置窗口 ********************************
@@ -422,5 +435,3 @@ Project.languages = {
 		return items
 	}
 }
-
-window.Project = Project

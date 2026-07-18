@@ -1,4 +1,16 @@
-﻿'use strict'
+﻿const require = window.__nodeRequire || window.require
+;('use strict')
+import { SettingConfig } from '../module/settingconfig.js'
+import { $ } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { File } from '../file/file-system-core.js'
+import { Menu } from '../components/menu-list.js'
+import { Project } from '../data/project-settings-window.js'
+import { FS, FSP } from '../file/file-system.js'
+import { Layout } from '../layout/layout.js'
+import { Editor } from '../main/editor.js'
+import { Title } from './title-bar.js'
+import { Local } from '../tools/localization.js'
 
 // ******************************** 主页面对象 ********************************
 
@@ -480,4 +492,4 @@ Home.recentPointerup = function (event) {
 	}
 }
 
-window.Home = Home
+const path = require('path')

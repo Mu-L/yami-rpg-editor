@@ -1,4 +1,11 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { SwitchBranch } from '../../command/match-branch-window.js'
+import { SwitchCondition } from '../../command/match-condition-window.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.switch = new CommandSchema({
 	name: 'switch',

@@ -1,10 +1,13 @@
 'use strict'
+import { EventBus } from './eventbus.js'
 
 /* 辅助线 */
 
-export const updateCommandElement = CommandList.prototype.updateCommandElement
-CommandList.prototype.updateCommandElement = function (element) {
-	const ret = updateCommandElement.call(this, ...arguments)
+let _origUpdateCommandElement
+export function updateCommandElement(element) {
+	// _origUpdateCommandElement 在 EventBus.once('editor_loaded') 回调里、
+	// prototype 被覆盖之前已捕获，此处直接调用即可
+	const ret = _origUpdateCommandElement.call(this, element)
 
 	element.querySelectorAll('command-mark-major').forEach((e) => {
 		e.remove()
@@ -69,6 +72,16 @@ CommandList.prototype.updateCommandElement = function (element) {
 
 	return ret
 }
+
+EventBus.once('editor_loaded', () => {
+	const CL = customElements.get('command-list')
+	if (CL) {
+		// 必须在覆盖之前捕获原方法，否则新方法首次调用时取到的 prototype.updateCommandElement
+		// 已是新方法自己，_origUpdateCommandElement.call(this, ...) 会无限递归调自己
+		_origUpdateCommandElement = CL.prototype.updateCommandElement
+		CL.prototype.updateCommandElement = updateCommandElement
+	}
+})
 
 export const commandList = document.querySelector('#event-commands')
 
@@ -138,7 +151,3 @@ commandList.on('update', function () {
 		e.classList.add(e.mark)
 	}
 })
-
-window.updateCommandElement = updateCommandElement
-window.commandList = commandList
-window.range = range

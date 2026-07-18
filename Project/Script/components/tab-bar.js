@@ -1,4 +1,5 @@
-﻿'use strict'
+import { Title } from '../title/title-bar.js'
+;('use strict')
 
 // ******************************** 标签栏 ********************************
 
@@ -444,5 +445,3 @@ export class TabBar extends HTMLElement {
 }
 
 customElements.define('tab-bar', TabBar)
-
-window.TabBar = TabBar

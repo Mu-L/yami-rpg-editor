@@ -1,4 +1,9 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { PresetElement } from '../tools/preset-element-window.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from '../variable/variable.js'
 
 // ******************************** 元素访问器窗口 ********************************
 
@@ -184,5 +189,3 @@ ElementGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('elementGetter')
 }.bind(ElementGetter)
-
-window.ElementGetter = ElementGetter

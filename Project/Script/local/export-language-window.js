@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { File } from '../file/file-system-core.js'
+import { Editor } from '../main/editor.js'
+import { Data } from '../data/data-object.js'
+import { FSP } from '../file/file-system.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 导出语言包窗口 ********************************
 
@@ -83,5 +91,3 @@ ExportLanguage.confirm = function (event) {
 		}
 	})
 }
-
-window.ExportLanguage = ExportLanguage

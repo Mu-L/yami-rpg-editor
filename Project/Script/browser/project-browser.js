@@ -1,9 +1,34 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { Animation } from '../animation/animation-window.js'
+import { EventEditor } from '../command/event-editor.js'
+import { Menu } from '../components/menu-list.js'
+import { Data } from '../data/data-object.js'
+import { Directory } from '../file/directory-object.js'
+import { FileItem } from '../file/file-item.js'
+import { File } from '../file/file-system-core.js'
+import { FSP } from '../file/file-system.js'
+import { FolderItem } from '../file/folder-item.js'
+import { GUID } from '../file/guid.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Layout } from '../layout/layout.js'
+import { Reference } from '../log/related-references.js'
+import { Editor } from '../main/editor.js'
+import { TemplatesPath } from '../module/global.js'
+import { Particle } from '../particle/particle-window.js'
+import { Scene } from '../scene/scene-window.js'
+import { Title } from '../title/title-bar.js'
+import { Local } from '../tools/localization.js'
+import { UI } from '../ui/ui-window.js'
+import { ctrl } from '../util/event-accessors.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 项目浏览器 ********************************
 
-export const Browser = $('#project-browser')
+import '../components/file-browser.js'
+const Browser = $('#project-browser')
+export { Browser }
 // properties
 Browser.page = $('#project')
 Browser.searcher = null
@@ -76,11 +101,11 @@ Browser.openScript = function (filePath) {
 	const { mode, path } = Editor.config.scriptEditor
 	switch (mode) {
 		case 'by-file-extension':
-			File.openPath(File.route(filePath))
+			File.openPath(File.path(filePath))
 			break
 		case 'specified-application':
 			if (path) {
-				const args = [File.route(filePath)]
+				const args = [File.path(filePath)]
 				require('child_process').spawn(path, args)
 			}
 			break
@@ -98,7 +123,7 @@ Browser.createFile = function (filename, data) {
 	const fullname = `${basename}.${guid}.${extname}`
 	const dirname = body.getDirName()
 	const path = `${dirname}/${fullname}`
-	const route = File.route(path)
+	const route = File.path(path)
 	const json = data instanceof Object ? JSON.stringify(data, null, 2) : data
 	FSP.writeFile(route, json)
 		.then(() => {
@@ -134,7 +159,7 @@ Browser.createScript = function (filename) {
 	const fullname = `${basename}.${guid}.${extname}`
 	const dirname = body.getDirName()
 	const path = `${dirname}/${fullname}`
-	const route = File.route(path)
+	const route = File.path(path)
 	const source = Path.resolve(TemplatesPath, 'script', filename)
 	FSP.copyFile(source, route)
 		.then(() => {
@@ -257,7 +282,7 @@ Browser.bodyOpen = function (event) {
 			Browser.openScript(file.path)
 			break
 		case 'other':
-			File.openPath(File.route(file.path))
+			File.openPath(File.path(file.path))
 			break
 	}
 }
@@ -350,7 +375,7 @@ Browser.bodyPopup = function (event) {
 				{
 					label: get(Local.showInExplorer()),
 					click: () => {
-						File.openPath(File.route(folders[0].path))
+						File.openPath(File.path(folders[0].path))
 					}
 				},
 				{
@@ -845,4 +870,4 @@ Browser.bodyPopup = function (event) {
 	}
 }
 
-window.Browser = Browser
+const path = require('path')

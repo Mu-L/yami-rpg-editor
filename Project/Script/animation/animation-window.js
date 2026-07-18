@@ -1,4 +1,35 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Command } from '../command/command-object.js'
+import { File } from '../file/file-system-core.js'
+import { UI } from '../ui/ui-window.js'
+import { Cursor } from '../tools/pointer-object.js'
+import { Curve } from './curve-window.js'
+import { AudioManager } from '../audio/audio-manager.js'
+import { Menu } from '../components/menu-list.js'
+import { TreeList } from '../components/tree-list.js'
+import { Data } from '../data/data-object.js'
+import { Easing } from '../data/transition-window.js'
+import { Enum } from '../enum/enum-window.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Layout } from '../layout/layout.js'
+import { GameLocal } from '../local/local-object.js'
+import { range } from '../module/eslints.js'
+import { Particle } from '../particle/particle-window.js'
+import { SceneShift } from '../scene/move-scene.js'
+import { Scene } from '../scene/scene-window.js'
+import { Sprite } from '../sprite/sprite.js'
+import { Home } from '../title/home-page.js'
+import { History } from '../tools/history.js'
+import { Local } from '../tools/localization.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Window } from '../tools/window-object.js'
+import { StageColor } from '../util/stage-color.js'
+import { ImageTexture } from '../webgl/image-texture.js'
+import { Matrix } from '../webgl/matrix2.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 动画窗口 ********************************
 
@@ -289,13 +320,13 @@ Animation.layerList.create = null
 Animation.layerList.copy = null
 Animation.layerList.paste = null
 Animation.layerList.delete = null
-Animation.layerList.restoreRecursiveStates = Scene.list.restoreRecursiveStates
-Animation.layerList.setRecursiveStates = Scene.list.setRecursiveStates
+// ESM 求值顺序错：scene-window.js:338-339 占位赋 null 早跑，scene-list.js:156/177 真定义晚跑
+// （仅被 module-init.js:164 求值，不在 scene-window.js 链里）——此处模块顶层赋值会固化拿 null。
+// 改在 Animation.initialize 钩子内（initialize 段）补赋真函数，此时 scene-list.js 已求值
 Animation.layerList.createIcon = null
-Animation.layerList.createVisibilityIcon = Scene.list.createVisibilityIcon
-Animation.layerList.updateVisibilityIcon = Scene.list.updateVisibilityIcon
-Animation.layerList.createLockIcon = Scene.list.createLockIcon
-Animation.layerList.updateLockIcon = Scene.list.updateLockIcon
+// ESM 求值顺序错：scene-window.js:353 占位赋 null 早跑，scene-list.js:477 真定义晚跑（仅被
+// module-init.js:164 求值，不在 scene-window.js 链里）——此处模块顶层赋值会固化拿 null。
+// 删此 4 赋值，改在 Animation.initialize 钩子内（503 段）直接用 Scene.list.* （真定义已跑后）
 Animation.layerList.onDelete = null
 
 // timeline properties
@@ -469,10 +500,16 @@ Animation.initialize = function () {
 	layerList.removable = true
 	layerList.renamable = true
 	layerList.bind(() => this.layers)
-	layerList.creators.push(layerList.createVisibilityIcon)
-	layerList.updaters.push(layerList.updateVisibilityIcon)
-	layerList.creators.push(layerList.createLockIcon)
-	layerList.updaters.push(layerList.updateLockIcon)
+	// 直接用 Scene.list.* 真定义（Animation.initialize 跑时 scene-list.js 已求值），
+	// 不用 layerList.* ——后者在模块顶层被 scene-window.js:353 占位赋 null 固化，拿到 null
+	layerList.creators.push(Scene.list.createVisibilityIcon)
+	layerList.updaters.push(Scene.list.updateVisibilityIcon)
+	layerList.creators.push(Scene.list.createLockIcon)
+	layerList.updaters.push(Scene.list.updateLockIcon)
+	// 补赋递归状态方法（同根因：模块顶层赋值会固化拿 null，挪到 initialize 内赋真函数）
+	// 保留 5282/5303 段 this.setRecursiveStates + 567/569/580/582 段 layerList.* 调用姿势不变
+	layerList.restoreRecursiveStates = Scene.list.restoreRecursiveStates
+	layerList.setRecursiveStates = Scene.list.setRecursiveStates
 
 	// 设置历史操作处理器
 	History.processors['animation-object-create'] = (operation, data) => {
@@ -6176,5 +6213,3 @@ Animation.timelineMarquee.isShrinkable = function () {
 	const frame = frames[frames.length - 1]
 	return frame ? this.x < frame.end : false
 }
-
-window.Animation = Animation

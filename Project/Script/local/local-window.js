@@ -1,4 +1,23 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Shortcuts } from '../tools/shortcut-registry.js'
+import { DetailBox } from '../components/detail-box.js'
+import { DetailSummary } from '../components/detail-summary.js'
+import { Menu } from '../components/menu-list.js'
+import { TextArea } from '../components/text-area.js'
+import { TreeList } from '../components/tree-list.js'
+import { GUID } from '../file/guid.js'
+import { ExportLanguage } from './export-language-window.js'
+import { ImportLanguage } from './import-language-window.js'
+import { Reference } from '../log/related-references.js'
+import { History } from '../tools/history.js'
+import { Local } from '../tools/localization.js'
+import { Selection } from '../tools/text-capture.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Window } from '../tools/window-object.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 游戏本地化窗口 ********************************
@@ -891,5 +910,3 @@ Localization.list.onDelete = function (item) {
 Localization.list.onResume = function (item) {
 	Localization.register(item)
 }
-
-window.Localization = Localization

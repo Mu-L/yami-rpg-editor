@@ -1,4 +1,14 @@
-'use strict'
+﻿'use strict'
+import { $ } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { Editor } from '../../main/editor.js'
+import { CommandSchema } from './schema.js'
+import { loadDtsFolder } from '../global.js'
+import { Title } from '../../title/title-bar.js'
+import { Local } from '../../tools/localization.js'
+import { Window } from '../../tools/window-object.js'
+import { Path } from '../../util/config.js'
+import * as monaco from 'monaco-editor'
 const require = window.__nodeRequire || window.require
 
 Command.cases.script = new CommandSchema({
@@ -107,9 +117,9 @@ Command.cases.script = new CommandSchema({
 		if (!this.typesDispose) {
 			this.typesDispose.forEach((item) => item())
 		}
-		const projectDir = path.dirname(Editor.config.project)
+		const projectDir = Path.dirname(Editor.config.project)
 		this.typesDispose = loadDtsFolder(
-			path.join(projectDir, 'Script'),
+			Path.join(projectDir, 'Script'),
 			monaco,
 			true
 		)

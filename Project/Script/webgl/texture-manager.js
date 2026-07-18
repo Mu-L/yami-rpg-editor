@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { File } from '../file/file-system-core.js'
+import { ImageTexture } from './image-texture.js'
+import { GL } from './webgl-init.js'
 
 // ******************************** 纹理管理器类 ********************************
 
@@ -130,5 +133,3 @@ export class TextureManager {
 		}
 	}
 }
-
-window.TextureManager = TextureManager

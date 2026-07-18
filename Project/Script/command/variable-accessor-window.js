@@ -1,5 +1,15 @@
 ﻿'use strict'
 
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { getVariable } from '../util/safe.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { EventEditor } from './event-editor.js'
+import { TextSuggestion } from './text-tip.js'
+import { SelectBox } from '../components/select-box.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from '../variable/variable.js'
+
 // ******************************** 变量访问器窗口 ********************************
 
 export const VariableGetter = {
@@ -531,5 +541,3 @@ VariableGetter._confirmCore = function (prefix) {
 	target.input(getter)
 	Window.close(prefix)
 }
-
-window.VariableGetter = VariableGetter

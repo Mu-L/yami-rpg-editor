@@ -1,4 +1,10 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Command } from './command-object.js'
+import { File } from '../file/file-system-core.js'
+import { Home } from '../title/home-page.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 指令提示框 ********************************
 
@@ -383,5 +389,3 @@ CommandSuggestion.list.selectDefaultCommand = function () {
 		}
 	}
 }
-
-window.CommandSuggestion = CommandSuggestion

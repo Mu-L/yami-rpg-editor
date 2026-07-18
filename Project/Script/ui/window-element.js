@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { Timer } from '../util/timer.js'
+import { UI } from './ui-window.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 窗口元素 ********************************
 

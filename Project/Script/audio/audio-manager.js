@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { File } from '../file/file-system-core.js'
+import { AudioPlayer } from './audio-player.js'
+import { MultipleAudioPlayer } from './multiple-audio-player.js'
 
 // ******************************** 音频管理器 ********************************
 
@@ -91,5 +94,3 @@ AudioManager.close = function () {
 	this.player.stop()
 	this.waveforms = {}
 }
-
-window.AudioManager = AudioManager

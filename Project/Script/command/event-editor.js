@@ -1,4 +1,20 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Command } from './command-object.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Editor } from '../main/editor.js'
+import { Choices } from './show-options-window.js'
+import { Menu } from '../components/menu-list.js'
+import { Select } from '../components/select-list.js'
+import { TreeList } from '../components/tree-list.js'
+import { Data } from '../data/data-object.js'
+import { Enum } from '../enum/enum-window.js'
+import { commandList } from '../module/eslints.js'
+import { Scene } from '../scene/scene-window.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 事件编辑器 ********************************
 
@@ -1472,5 +1488,3 @@ EventEditor.list.updateItemName = function (item) {
 EventEditor.list.closeButtonClick = function (event) {
 	EventEditor.list.close(event.target.parentNode.item)
 }
-
-window.EventEditor = EventEditor

@@ -1,4 +1,14 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import './element-methods.js'
+import { Path } from '../util/config.js'
+import { File } from '../file/file-system-core.js'
+import { CommonList } from './common-list.js'
+import { Menu } from './menu-list.js'
+import { TextBox } from './text-box.js'
+import { Directory } from '../file/directory-object.js'
+import { FS, FSP } from '../file/file-system.js'
+import { Timer } from '../util/timer.js'
 
 // ******************************** 文件导航面板 ********************************
 
@@ -33,7 +43,6 @@ export class FileNavPane extends HTMLElement {
 		})
 
 		// 设置属性
-		this.tabIndex = -1
 		this.timer = timer
 		this.elements = []
 		this.elements.versionId = 0
@@ -56,6 +65,15 @@ export class FileNavPane extends HTMLElement {
 		this.on('doubleclick', this.doubleclick)
 		this.on('select', this.listSelect)
 		window.on('dirchange', this.dirchange.bind(this))
+	}
+
+	// 连接回调：构造期间禁止设置 attribute（如 tabIndex 会反射为 DOM attribute），
+	// 因此将需要反射为 DOM 属性的 IDL 属性推迟到接入 DOM 后再设置
+	connectedCallback() {
+		if (!this._connected) {
+			this._connected = true
+			this.tabIndex = -1
+		}
 	}
 
 	// 加载文件夹
@@ -675,9 +693,9 @@ export class FileNavPane extends HTMLElement {
 			this.remove()
 			if (name && name !== file.name) {
 				const dir = Path.dirname(file.path)
-				const path = File.route(`${dir}/${name}`)
+				const path = File.path(`${dir}/${name}`)
 				if (!FS.existsSync(path)) {
-					return FSP.rename(File.route(file.path), path)
+					return FSP.rename(File.path(file.path), path)
 						.then(() => {
 							return Directory.update()
 						})
@@ -700,4 +718,4 @@ export class FileNavPane extends HTMLElement {
 
 customElements.define('file-nav-pane', FileNavPane)
 
-window.FileNavPane = FileNavPane
+const path = require('path')

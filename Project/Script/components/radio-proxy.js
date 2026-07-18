@@ -152,5 +152,3 @@ export class RadioProxy extends HTMLElement {
 }
 
 customElements.define('radio-proxy', RadioProxy)
-
-window.RadioProxy = RadioProxy

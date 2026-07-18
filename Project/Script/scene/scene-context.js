@@ -1,3 +1,11 @@
+import { Data } from '../data/data-object.js'
+import { Window } from '../tools/window-object.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Animation } from '../animation/animation-window.js'
+import { Particle } from '../particle/particle-window.js'
+import { Light } from './light.js'
+import { Parallax } from './parallax.js'
+import { Scene } from './scene-window.js'
 Scene.loadObjects = function () {
 	const actors = this.actors
 	const regions = this.regions

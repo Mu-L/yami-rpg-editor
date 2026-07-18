@@ -1,4 +1,26 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Scene } from '../scene/scene-window.js'
+import { UI } from '../ui/ui-window.js'
+import { Animation } from '../animation/animation-window.js'
+import { AudioManager } from '../audio/audio-manager.js'
+import { Menu } from '../components/menu-list.js'
+import { Data } from '../data/data-object.js'
+import { Project } from '../data/project-settings-window.js'
+import { Directory } from '../file/directory-object.js'
+import { FileItem } from '../file/file-item.js'
+import { File } from '../file/file-system-core.js'
+import { Layout } from '../layout/layout.js'
+import { Editor } from '../main/editor.js'
+import { ApkBuilder } from '../module/apkbuilder.js'
+import { WebServer } from '../module/webserver.js'
+import { Particle } from '../particle/particle-window.js'
+import { Deployment } from './deploy-project-window.js'
+import { NewProject } from './new-project-window.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 标题栏对象 ********************************
@@ -345,7 +367,12 @@ Title.saveToConfig = function (config) {
 
 // 从配置文件中加载状态
 Title.loadFromConfig = function (config) {
-	const { theme } = config
+	// theme 兜底：缺失或非法值时按当前 DOM 状态推断（html.dark 类 ⇒ dark，否则 light）
+	// 避免向下游派发 undefined 主题导致 webgl background[undefined] 解构炸
+	let { theme } = config
+	if (theme !== 'light' && theme !== 'dark') {
+		theme = document.documentElement.hasClass('dark') ? 'dark' : 'light'
+	}
 	switch (theme) {
 		case 'light':
 			document.documentElement.removeClass('dark')
@@ -678,5 +705,3 @@ Title.maximizeClick = function (event) {
 Title.closeClick = function (event) {
 	Title.windowBeforeClose()
 }
-
-window.Title = Title

@@ -1,5 +1,24 @@
 ﻿'use strict'
 
+import { CheckBox } from './check-box.js'
+import { ColorBox } from './color-box.js'
+import { KeyboardBox } from './keyboard-box.js'
+import { ParamList } from './param-list.js'
+import { TypeRegistry } from './type-registry.js'
+import { CustomBox } from './custom-box.js'
+import { DetailSummary } from './detail-summary.js'
+import { NumberBox } from './number-box.js'
+import { NumberVar } from './number-var.js'
+import { SelectBox } from './select-box.js'
+import { Select } from './select-list.js'
+import { TextBox } from './text-box.js'
+import { TreeList } from './tree-list.js'
+import { Data } from '../data/data-object.js'
+import { PluginManager } from '../plugin/plugin.js'
+import { Local } from '../tools/localization.js'
+import { Selection } from '../tools/text-capture.js'
+import { measureText } from '../util/dom.js'
+
 // ******************************** 脚本参数面板 ********************************
 
 export class ParameterPane extends HTMLElement {
@@ -746,5 +765,3 @@ export class ParameterPane extends HTMLElement {
 }
 
 customElements.define('parameter-pane', ParameterPane)
-
-window.ParameterPane = ParameterPane

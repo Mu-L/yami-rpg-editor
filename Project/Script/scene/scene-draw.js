@@ -1,3 +1,14 @@
+import { INTRGBA } from '../util/color-utils.js'
+import { Data } from '../data/data-object.js'
+import { range } from '../module/eslints.js'
+import { Animation } from '../animation/animation-window.js'
+import { Palette } from '../palette/palette.js'
+import { Scene } from './scene-window.js'
+import { ImageTexture } from '../webgl/image-texture.js'
+import { Matrix } from '../webgl/matrix2.js'
+import { Texture } from '../webgl/texture.js'
+import { GL } from '../webgl/webgl-init.js'
+
 Scene.drawScene = function () {
 	if (GL.width * GL.height === 0) {
 		return

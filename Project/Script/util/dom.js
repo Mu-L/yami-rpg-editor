@@ -97,9 +97,3 @@ export const getElementWriter = function (prefix, bindingObject) {
 		$(`#${prefix}-${suffix}`).write(value)
 	}
 }
-
-window.measureText = measureText
-window.request = request
-window.$ = $
-window.getElementReader = getElementReader
-window.getElementWriter = getElementWriter

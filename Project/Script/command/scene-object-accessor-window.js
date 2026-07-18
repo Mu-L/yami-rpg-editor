@@ -1,4 +1,10 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { Scene } from '../scene/scene-window.js'
+import { PresetObject } from '../tools/scene-preset-window.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from '../variable/variable.js'
 
 // ******************************** 场景对象访问器窗口 ********************************
 
@@ -89,5 +95,3 @@ ObjectGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('objectGetter')
 }.bind(ObjectGetter)
-
-window.ObjectGetter = ObjectGetter

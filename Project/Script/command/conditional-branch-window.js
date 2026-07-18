@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Command } from './command-object.js'
+import { IfCondition } from './conditional-condition-window.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 条件分支 - 分支窗口 ********************************
 
@@ -98,5 +102,3 @@ IfBranch.windowClosed = function (event) {
 IfBranch.confirm = function (event) {
 	return IfBranch.target.save()
 }
-
-window.IfBranch = IfBranch

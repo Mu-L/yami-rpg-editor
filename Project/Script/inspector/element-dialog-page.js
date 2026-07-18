@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Inspector } from './inspector.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素 - 对话框页面 ********************************
 
@@ -94,7 +97,7 @@
 
 	// 创建对话框
 	UIDialogBox.create = function () {
-		const transform = UIElement.createTransform()
+		const transform = Inspector.uiElement.createTransform()
 		transform.width = 100
 		transform.height = 24
 		return {
@@ -144,7 +147,7 @@
 			write('effect-strokeWidth', node.effect.strokeWidth || 1)
 			write('effect-color', node.effect.color || '000000ff')
 			write('blend')
-			UIElement.open(node)
+			Inspector.uiElement.open(node)
 		}
 	}
 
@@ -153,7 +156,7 @@
 		if (this.target) {
 			UI.list.unselect(this.target)
 			UI.updateTarget()
-			UIElement.close()
+			Inspector.uiElement.close()
 			this.target = null
 		}
 	}

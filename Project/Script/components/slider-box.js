@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { range } from '../module/eslints.js'
+import { NumberBox } from './number-box.js'
 
 // ******************************** 滑动框 ********************************
 
@@ -13,13 +15,8 @@ export class SliderBox extends HTMLElement {
 	constructor() {
 		super()
 
-		const min = this.getAttribute('min') ?? '0'
-		const max = this.getAttribute('max') ?? '0'
-		const step = this.getAttribute('step') ?? '1'
-
 		// 创建进度条
 		const bar = document.createElement('slider-bar')
-		this.appendChild(bar)
 
 		// 创建填充物
 		const filler = document.createElement('slider-filler')
@@ -29,23 +26,34 @@ export class SliderBox extends HTMLElement {
 		const input = document.createElement('input')
 		input.addClass('slider-input')
 		input.type = 'range'
-		input.min = min
-		input.max = max
-		input.step = step
 		input.tabIndex = -1
 		input.on('wheel', this.inputWheel)
-		this.appendChild(input)
 
 		// 设置属性
+		this.bar = bar
 		this.filler = filler
 		this.input = input
 		this.synchronizer = null
-		this.activeWheel = this.hasAttribute('active-wheel')
 		this.focusEventEnabled = false
 		this.blurEventEnabled = false
 
 		// 侦听事件
 		this.on('input', this.sliderInput)
+	}
+
+	// 自定义元素升级后（已连入文档）才允许读取属性/操作子节点
+	connectedCallback() {
+		if (this._built) return
+		this._built = true
+		const min = this.getAttribute('min') ?? '0'
+		const max = this.getAttribute('max') ?? '0'
+		const step = this.getAttribute('step') ?? '1'
+		this.input.min = min
+		this.input.max = max
+		this.input.step = step
+		this.activeWheel = this.hasAttribute('active-wheel')
+		this.appendChild(this.bar)
+		this.appendChild(this.input)
 	}
 
 	// 读取数据
@@ -196,5 +204,3 @@ export class SliderBox extends HTMLElement {
 }
 
 customElements.define('slider-box', SliderBox)
-
-window.SliderBox = SliderBox

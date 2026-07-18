@@ -1,4 +1,15 @@
 ﻿'use strict'
+import { request } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { GUID } from './guid.js'
+import { Animation } from '../animation/animation-window.js'
+import { Data } from '../data/data-object.js'
+import { FS, FSP } from './file-system.js'
+import { Log } from '../log/log-window.js'
+import { Particle } from '../particle/particle-window.js'
+import { Scene } from '../scene/scene-window.js'
+import { Cursor } from '../tools/pointer-object.js'
+import { UI } from '../ui/ui-window.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 文件系统 ********************************
@@ -32,9 +43,9 @@ export const File = {
 File.get = function (descriptor) {
 	let path
 	if (descriptor.path) {
-		path = File.route(descriptor.path)
+		path = File.path(descriptor.path)
 	} else if (descriptor.guid) {
-		path = File.route(this.getPath(descriptor.guid))
+		path = File.path(this.getPath(descriptor.guid))
 	} else if (descriptor.local) {
 		path = descriptor.local
 	} else {
@@ -68,22 +79,51 @@ File.get = function (descriptor) {
 						image.src = ''
 						resolve(image)
 					}
-					image.src = path
+					image.src = File.route(path)
 				}))
 			)
 		}
 		default:
+			// 路径含中文文件名（如 zh-CN.简体中文.json）时，XHR open('GET', path) 会把
+			// 中文 URI 编码成 %E7%AE%80...，但磁盘真文件名是未编码的，XHR 载不到报 URIError。
+			// 改用 Node fs.readFileSync 直接读磁盘（Electron nodeIntegration:true 下可用，不经 URI 编码）
+			// path 可能是：①裸文件名（'default.json'，资源根 Project/ 下）②相对路径（'Data/manifest.json'，
+			//   用户游戏项目根下，File.root 在 open.js updateRoot 设）③绝对路径（'E:/...'）
+			// 用 File.root 兜底：非空时 Path.resolve(File.root, path)（用户项目根），
+			//   否则 Path.resolve(process.cwd(), 'Project', path)（编辑器资源根）
+			// path 可能带 ?ver= 查询参数（File.get 的 Image 缓存用），fs.readFileSync 找不到会 ENOENT，
+			// 用 URL 正则剥查询参数再读
+			// type='json' 时 JSON.parse 解析；但 loaderDescriptor 对所有元数据文件硬编码 type='json'
+			// （metadata.js:22），含 .ts 脚本文件——JSON.parse 抛 SyntaxError，不能一刀切 reject，
+			// 否则 .ts 全读炸。改：JSON.parse 失败时回退原文本（兼容 .ts/.txt 等非 JSON 文件）
 			return new Promise((resolve, reject) => {
-				const request = new XMLHttpRequest()
-				request.onload = () => {
-					resolve(request.response)
-				}
-				request.onerror = () => {
+				try {
+					const fs = require('fs')
+					const cleanPath = path.replace(/\?ver=\d+$/, '')
+					const absPath = /^[A-Za-z]:[\\/]|^[/\\]/.test(cleanPath)
+						? cleanPath // 已是绝对路径（含盘符或 Unix 根）
+						: Path.resolve(
+								this.root ||
+									Path.resolve(process.cwd(), 'Project'),
+								cleanPath
+							)
+					const content = fs.readFileSync(absPath, 'utf-8')
+					if (type === 'json') {
+						try {
+							resolve(JSON.parse(content))
+						} catch (parseError) {
+							// 非 JSON 文件（如 .ts 脚本被 loaderDescriptor 硬编码 type='json'）回退包装对象。
+							// 切忌回退裸字符串：metadata.js:74 Object.defineProperty(data,'guid',...) 调用字符串
+							// 抛 called on non-object；且 Data.scripts[id] 调用方取 meta.code/meta.parameters 需对象形状。
+							// 包装 { code: content } 让 metadata 能挂 guid、调用方能取 meta.code
+							resolve({ code: content })
+						}
+					} else {
+						resolve(content)
+					}
+				} catch (error) {
 					reject(new URIError(path))
 				}
-				request.open('GET', path)
-				request.responseType = type
-				request.send()
 			})
 	}
 }
@@ -152,7 +192,7 @@ File.saveFile = function (meta) {
 			return Promise.resolve()
 	}
 	const path = meta.path
-	const route = File.route(path)
+	const route = File.path(path)
 	return FSP.writeFile(route, text, true)
 		.then(() => {
 			console.log(`write: ${path}`)
@@ -219,11 +259,11 @@ File.getFileName = (function IIFE() {
 	const struct = { path: '', route: '' }
 	return function (dir, base, ext = '') {
 		let path = `${dir}/${base}${ext}`
-		let route = File.route(path)
+		let route = File.path(path)
 		if (FS.existsSync(route)) {
 			for (let i = 1; true; i++) {
 				path = `${dir}/${base} ${i}${ext}`
-				route = File.route(path)
+				route = File.path(path)
 				if (!FS.existsSync(route)) {
 					break
 				}
@@ -324,9 +364,53 @@ File.updateRoot = function (path) {
 	this.root = path.slice(0, index + 1)
 }
 
-// 获取路径
-File.route = function (relativePath) {
-	return this.root + relativePath
+// 获取磁盘绝对路径（Node fs 操作用：FSP.stat/readdir/writeFile/rename/copyFile、FS.existsSync/readFileSync、
+// File.openPath、Directory.readdir/trash 等）。dev/prod 同形，都原样回 this.root + relativePath，
+// 不改写——Node fs.stat('/local-file/?path=...') 会当磁盘路径找炸报 ENOENT
+// 兜底与 File.route 一致：this.root 空时回退 Path.resolve(process.cwd(),'Project')（编辑器资源根，
+// Images/ 等内置资源在此下；scene-create-default-animation.js 等早于 updateRoot 跑的调用方依赖此）
+// base 含尾 / 致 base+'/'+relativePath 拼出双斜杠——剥掉重根（Node fs 容忍双斜杠但严谨性需正）
+File.path = function (relativePath) {
+	const isAbsolute = /^[A-Za-z]:[\\/]/.test(relativePath)
+	if (isAbsolute) return relativePath
+	const base = this.root || Path.resolve(process.cwd(), 'Project')
+	return base.replace(/[\\/]+$/, '') + '/' + relativePath
 }
 
-window.File = File
+// 获取浏览器载 URL（Image.src/audio.src/video.src/CSS.encodeURL/FontFace 用）。
+// prod 模式（Electron file:// 协议）原样透传 file:// URL；
+// dev 模式（Vite dev server http://localhost:5173）浏览器从 http origin 载 file:// 被安全策略拒收，
+// 报 Not allowed to load local resource——改走 /local-file/?path= 代理前缀，vite.config.js 配 proxy
+// 用 fs.readFile 读磁盘后回 blob URL（避中文路径 URI 编码 + file:// 协议限制）
+// relativePath 可能是：①裸相对路径（'Images/foo.png' 或 'Assets/...'，需拼 this.root）
+// ②绝对路径（'E:/...'，File.get 入口 File.path 已拼好，再拼 this.root 会重复）——入口判含盘符则不加根
+// this.root 在 open.js updateRoot 设成用户项目根，但部分调用方（如 scene-create-default-animation.js
+// 用 local:'Images/default_actor.png' 载编辑器内置资源）早于 updateRoot 跑——此时 this.root='' 致
+// ''+relativePath 原样回相对路径，vite proxy 拿裸相对路径当磁盘路径找炸 404。
+// 兜底：this.root 空时回退 Path.resolve(process.cwd(),'Project')（编辑器资源根，Images/ 等内置资源在此下）
+// dev 段完全不编码传裸字符串：浏览器 Image.src setter 会 URI 编码中文一次（单编码），
+// vite proxy url.searchParams.get('path') 自动解码回裸字符串读磁盘。
+// 切忌 encodeURI/encodeURIComponent：前者编码中文成 %E4%B8%AD，浏览器 src 再编码 %→%25 双编码；
+// 后者更编码 : / ? = 致路径全炸。
+// 路径末尾的 cache busting 段 ?ver=123 会被 URL 解析成额外 query param 分隔掉——
+// dev 段改写成 #ver=123 fragment（浏览器不编码 #，URL 把 # 后算 hash 不当 query 分隔，
+// vite proxy bypass 段用正则剥 #ver= 段后读磁盘；ver 仅做浏览器缓存 bust 不用读）
+File.route = function (relativePath) {
+	const isAbsolute = /^[A-Za-z]:[\\/]/.test(relativePath)
+	const base = (this.root || Path.resolve(process.cwd(), 'Project')).replace(
+		/[\\/]+$/,
+		''
+	)
+	// 绝对路径原样透传但剥连续斜杠（this.root 含尾 / + relativePath 含前 / 时拼出双斜杠，
+	// vite proxy readFileSync 找炸 ENOENT）；相对路径拼 base+'/'+relativePath
+	const route = (
+		isAbsolute ? relativePath : base + '/' + relativePath
+	).replace(/[\\/]{2,}/g, '/')
+	if (import.meta.env?.DEV) {
+		// ?ver= 改 #ver= fragment 避被 URL 当 query 分隔；裸字符串让浏览器 src 自己编码
+		return `/local-file/?path=${route.replace(/\?ver=(\d+)$/, '#ver=$1')}`
+	}
+	return route
+}
+
+// ESM 迁移兼容：恢复全局绑定（供尚未迁移的文件裸用）

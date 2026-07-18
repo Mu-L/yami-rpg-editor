@@ -19,7 +19,9 @@ const order = (f) => {
 }
 files.sort((a, b) => order(a).localeCompare(order(b)))
 
-const imports = files.map((f) => `@import url(css/${f});`).join('\n')
+// Vite 接管 CSS bundle：用 @import './css/...' 相对路径（Vite 兼容），
+// 不用 @import url(css/...)（Vite 不认 url() 形式，会炸）
+const imports = files.map((f) => `@import './css/${f}';`).join('\n')
 
 const header = `/* 此文件由 build-css.js 自动生成，请勿直接编辑。 */
 ${imports}

@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { File } from '../file/file-system-core.js'
+import { Editor } from '../main/editor.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 日志窗口 ********************************
@@ -159,5 +162,3 @@ Log.tscLog = function (event, tscMessage) {
 		duration: duration
 	})
 }
-
-window.Log = Log

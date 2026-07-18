@@ -1,5 +1,7 @@
+import { Scene } from './scene-window.js'
+import { History } from '../tools/history.js'
 // 创建作用域
-namespace: {
+;(() => {
 	let tilemap = null
 	let mapData = null
 	let changes = null
@@ -104,7 +106,7 @@ namespace: {
 			mapData[ti] = code
 		}
 	}
-}
+})()
 
 // 创建历史操作对象
 Scene.createHistory = (function IIFE() {

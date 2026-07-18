@@ -1,5 +1,24 @@
 ﻿'use strict'
 
+import { SettingConfig } from '../module/settingconfig.js'
+import { getVariable } from '../util/safe.js'
+import { CommandHistory } from './command-history.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Command } from '../command/command-object.js'
+import { Data } from '../data/data-object.js'
+import { CommonList } from './common-list.js'
+import { range, updateCommandElement } from '../module/eslints.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { CommandSuggestion } from '../command/command-tip.js'
+import { EventEditor } from '../command/event-editor.js'
+import { Menu } from './menu-list.js'
+import { WindowFrame } from './window-frame.js'
+import { Enum } from '../enum/enum-window.js'
+import { GameLocal } from '../local/local-object.js'
+import { SearchString } from '../module/searchstring.js'
+import { Home } from '../title/home-page.js'
+import { Local } from '../tools/localization.js'
+
 // ******************************** 指令列表 ********************************
 
 export class CommandList extends HTMLElement {
@@ -2436,5 +2455,3 @@ try {
 }
 
 customElements.define('command-list', CommandList)
-
-window.CommandList = CommandList

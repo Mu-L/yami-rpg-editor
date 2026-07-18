@@ -1,3 +1,22 @@
+﻿import { GlobalPath, Path } from '../util/config.js'
+import { SettingConfig } from './settingconfig.js'
+import { $ } from '../util/dom.js'
+import { Window } from '../tools/window-object.js'
+import { Editor } from '../main/editor.js'
+import { Net, axios } from './net.js'
+import { Project } from '../data/project-settings-window.js'
+import {
+	fs,
+	CommunityVersion,
+	PackMeta,
+	TemplatesPath,
+	isNoResource,
+	NoResourceObj,
+	unzipWithProgress,
+	setPackMeta,
+	setNoResourceObj
+} from './global.js'
+import { Local } from '../tools/localization.js'
 const require = window.__nodeRequire || window.require
 export const Resources = new (class {
 	window = $('#resource')
@@ -258,16 +277,21 @@ export const Resources = new (class {
 			this._fastGithubArray = data
 		})
 		const json = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`
+		// .catch 返 { data: [] } 而非 undefined——下游 netMeta.data 链兜底，
+		// 避 GitHub raw 偶发 502 Bad Gateway 时 checkVersion 裸取 .data/.version 炸
 		return await Net.get(json, {
 			headers: {
 				type: 'application/json'
 			},
 			cache: 'no-cache'
-		}).catch(() => console.log('downloadNetMeta error'))
+		}).catch((error) => {
+			console.log('downloadNetMeta error:', error?.message || error)
+			return { data: [] }
+		})
 	}
 
 	checkResources() {
-		NoResourceObj = isNoResource()
+		setNoResourceObj(isNoResource())
 		return (
 			NoResourceObj &&
 			Object.values(NoResourceObj).every((v) =>
@@ -335,6 +359,9 @@ export const Resources = new (class {
 				type: 'application/json',
 				cache: 'no-cache'
 			}
+		}).catch((error) => {
+			console.warn(`checkEditorVersion: ${error.message}`)
+			return null
 		})
 		if (!jsonParse) return
 		const version = jsonParse.data?.['Community'] ?? '25010100'
@@ -365,22 +392,25 @@ export const Resources = new (class {
 
 	async checkVersion() {
 		let isReOpen = false
-		PackMeta = this.readTemplate() // 读取本地模板信息
-		const jsonParse = (await this.downloadNetMeta()).data
+		setPackMeta(this.readTemplate()) // 读取本地模板信息
+		// downloadNetMeta 失败兜底空响应
+		const netMeta = await this.downloadNetMeta()
+		const jsonParse = netMeta?.data ?? []
 		const list = Object.keys(NoResourceObj)
 
 		let versionString = ''
 
 		for (let i of list) {
 			const elem = jsonParse.find((v) => v.path === i)
+			const elemVersion = elem?.version ?? '1.0.0'
 			if (
-				this.compareVersions(elem.version, PackMeta?.[i] ?? '1.0.0') ===
+				this.compareVersions(elemVersion, PackMeta?.[i] ?? '1.0.0') ===
 				0
 			) {
 				continue
 			}
 			isReOpen = true
-			versionString += `${i} ${PackMeta[i]} -> ${elem.version}\n`
+			versionString += `${i} ${PackMeta[i]} -> ${elemVersion}\n`
 		}
 
 		const get = Local.createGetter('confirmation')
@@ -406,7 +436,7 @@ export const Resources = new (class {
 		const value = val.replace(/[.]/g, '_') // dom id 不能特殊字符
 		const targetPath = Path.resolve(TemplatesPath, `${val}_pack.zip`)
 		const _check = () => {
-			NoResourceObj = isNoResource() // 更新最新数据
+			setNoResourceObj(isNoResource()) // 更新最新数据
 			if (NoResourceObj[val].check) {
 				button.disable()
 				buttonDelete.enable()
@@ -593,7 +623,7 @@ export const Resources = new (class {
 									?.version ?? '1.0.0'
 							this.writeTemplate(j)
 							// 下载完成，也解压完成
-							PackMeta = this.readTemplate() // 重新读取本地模板信息
+							setPackMeta(this.readTemplate()) // 重新读取本地模板信息
 							isDecompressing = false
 							_check()
 							button.textContent = Local.get(
@@ -667,7 +697,7 @@ export const Resources = new (class {
 
 	// 加载列表
 	load() {
-		NoResourceObj = isNoResource()
+		setNoResourceObj(isNoResource())
 		this.content.innerHTML = ''
 		const list = Object.keys(NoResourceObj)
 		for (let i of list) {
@@ -681,5 +711,3 @@ export const Resources = new (class {
 		this.load()
 	}
 })()
-
-window.Resources = Resources

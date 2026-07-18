@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { Timer } from '../util/timer.js'
 
 // ******************************** 历史操作计时器 ********************************
 
@@ -29,5 +30,3 @@ HistoryTimer.finish = function () {
 		this.remove()
 	}
 }
-
-window.HistoryTimer = HistoryTimer

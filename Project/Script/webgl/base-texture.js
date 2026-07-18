@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { GL } from './webgl-init.js'
 
 // ******************************** 基础纹理类 ********************************
 
@@ -94,5 +95,3 @@ export class BaseTexture {
 
 	static CALLBACK = Symbol('LOAD_CALLBACK')
 }
-
-window.BaseTexture = BaseTexture

@@ -1,6 +1,10 @@
 ﻿'use strict'
 
+import { $ } from '../util/dom.js'
 import { createPropertyWindow } from './property-window-factory.js'
+import { Command } from './command-object.js'
+import { Token } from './mark-string-manager.js'
+import { Color } from '../tools/color-picker-window.js'
 
 // ******************************** 设置对话框 - 属性窗口 ********************************
 
@@ -155,5 +159,3 @@ export const DialogBoxProperty = createPropertyWindow({
 		blend: (value) => Command.parseBlend(value)
 	}
 })
-
-window.DialogBoxProperty = DialogBoxProperty

@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { PresetObject } from '../tools/scene-preset-window.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 区域访问器窗口 ********************************
 
@@ -69,5 +72,3 @@ RegionGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('regionGetter')
 }.bind(RegionGetter)
-
-window.RegionGetter = RegionGetter

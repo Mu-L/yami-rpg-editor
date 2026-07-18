@@ -1,4 +1,12 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { $ } from '../util/dom.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Window } from '../tools/window-object.js'
+import { Menu } from '../components/menu-list.js'
+import { Data } from '../data/data-object.js'
+import { GUID } from '../file/guid.js'
+import { Local } from '../tools/localization.js'
 
 // ******************************** 相关引用 ********************************
 
@@ -885,4 +893,4 @@ Reference.getPointermoveListener = function (list) {
 	return listener
 }
 
-window.Reference = Reference
+const path = require('path')

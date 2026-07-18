@@ -1,5 +1,11 @@
 ﻿'use strict'
 
+import { debounce } from '../util/safe.js'
+import { CommonList } from './common-list.js'
+import { Menu } from './menu-list.js'
+import { TextBox } from './text-box.js'
+import { Timer } from '../util/timer.js'
+
 // ******************************** 树状列表 ********************************
 
 export class TreeList extends HTMLElement {
@@ -1654,5 +1660,3 @@ export class TreeList extends HTMLElement {
 }
 
 customElements.define('node-list', TreeList)
-
-window.TreeList = TreeList

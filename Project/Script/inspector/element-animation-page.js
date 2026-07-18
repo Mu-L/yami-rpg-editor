@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Animation } from '../animation/animation-window.js'
+import { Inspector } from './inspector.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素 - 动画页面 ********************************
 
@@ -32,7 +36,7 @@
 
 	// 创建动画
 	UIAnimation.create = function () {
-		const transform = UIElement.createTransform()
+		const transform = Inspector.uiElement.createTransform()
 		transform.width = 100
 		transform.height = 100
 		return {
@@ -74,7 +78,7 @@
 			write('frame')
 			write('offsetX')
 			write('offsetY')
-			UIElement.open(node)
+			Inspector.uiElement.open(node)
 		}
 	}
 
@@ -83,7 +87,7 @@
 		if (this.target) {
 			UI.list.unselect(this.target)
 			UI.updateTarget()
-			UIElement.close()
+			Inspector.uiElement.close()
 			this.target = null
 		}
 	}

@@ -1,16 +1,28 @@
 // [YAMI RPG EDITOR]主线程
 
 // ******************************** 加载模块 ********************************
-const Koa = require('koa')
-const Mime = require('mime-types')
-const QRCode = require('qrcode')
-const ExcelJS = require('exceljs')
-const apkProcessor = require('./apk.js')
-const { app, Menu, BrowserWindow, ipcMain, dialog, shell } = require('electron')
-const fs = require('fs')
-const { spawn } = require('child_process')
-const path = require('path')
-const os = require('os')
+// ESM import——npm 包和 Node 内建模块 external 掉后 runtime 用 createRequire 桥解析
+import Koa from 'koa'
+import Mime from 'mime-types'
+import QRCode from 'qrcode'
+import ExcelJS from 'exceljs'
+import * as apkProcessor from './apk.js'
+import {
+	app,
+	Menu,
+	BrowserWindow,
+	ipcMain,
+	dialog,
+	shell,
+	session
+} from 'electron'
+import fs from 'fs'
+import { spawn } from 'child_process'
+import path from 'path'
+import os from 'os'
+// ESM 下 __dirname 不存在（CommonJS 才注入），用 import.meta.url + fileURLToPath 推算
+import { fileURLToPath } from 'url'
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true' // 关闭警告
 
@@ -20,6 +32,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true' // 关闭警告
 let debug = false
 let dirname = app.getAppPath()
 const regexp = /^--dirname=(.+)$/
+let match
 for (const arg of process.argv) {
 	if ((match = arg.match(regexp))) {
 		dirname = path.resolve(dirname, match[1])
@@ -27,6 +40,13 @@ for (const arg of process.argv) {
 		break
 	}
 }
+
+// Vite dev 模式：dev 腹本（dev:electron）经 cross-env 注 VITE_DEV_SERVER_URL 环境变量；
+// prod 模式（start:prod）不注此变量，走 dist/index.html（vite build 产物）。
+// 注：判据须用 VITE_DEV_SERVER_URL 存在性——不能用 debug（--debug-mode 触发与 dev/prod 无关），
+// 否则 start:prod 腹本带 --debug-mode 时误判走 dev URL 致空白页
+const VITE_DEV_URL = process.env.VITE_DEV_SERVER_URL || 'http://localhost:5173'
+const useViteDev = !!process.env.VITE_DEV_SERVER_URL
 const generate32bit = () => {
 	const n = Math.random() * 0x100000000
 	const s = Math.floor(n).toString(16)
@@ -299,7 +319,7 @@ ipcMain.handle('wait-write-file', () => {
 })
 
 // 异步写入文件
-const FSP = require('fs').promises
+import { promises as FSP } from 'fs'
 const writeFile = async (filePath, text, check) => {
 	if (check) await FSP.stat(filePath)
 	return FSP.writeFile(filePath, text)
@@ -429,7 +449,10 @@ const createEditorWindow = function () {
 			nodeIntegration: true,
 			contextIsolation: false,
 			spellcheck: false,
-			additionalArguments: debug ? ['--debug-mode'] : []
+			additionalArguments: [
+				'--disable-security-warnings',
+				...(debug ? ['--debug-mode'] : [])
+			]
 		}
 	})
 
@@ -437,7 +460,14 @@ const createEditorWindow = function () {
 	editor.setMenuBarVisibility(process.platform === 'darwin')
 
 	// 加载文件
-	editor.loadFile(path.resolve(dirname, 'index.html'))
+	if (useViteDev) {
+		// Vite dev 模式：载 dev server URL，HMR + 模块解析由 Vite 接管
+		editor.loadURL(VITE_DEV_URL)
+	} else {
+		// prod 模式：载 dist/index.html（vite build 产物）
+		const indexPath = path.resolve(dirname, 'dist/index.html')
+		editor.loadFile(indexPath)
+	}
 
 	// 侦听窗口模式切换事件
 	editor.on('maximize', () => editor.send('maximize'))
@@ -450,7 +480,7 @@ const createEditorWindow = function () {
 		path.join(os.homedir(), '.openyami'),
 		'config.json'
 	)
-	const promise = require('fs').promises.readFile(configPath)
+	const promise = FSP.readFile(configPath)
 	editor.once('ready-to-show', () => {
 		// 窗口最大化
 		editor.maximize()
@@ -682,7 +712,7 @@ const createEditorWindow = function () {
 
 const createPlayerWindow = function (parent, projectDir) {
 	// 加载配置文件
-	const fs = require('fs')
+	// fs 已在顶段 import，复用即可（createPlayerWindow 内）
 	const config = path.resolve(projectDir, 'Data/config.json')
 	const window = JSON.parse(fs.readFileSync(config)).window
 
@@ -705,7 +735,7 @@ const createPlayerWindow = function (parent, projectDir) {
 			nodeIntegration: true,
 			contextIsolation: false,
 			spellcheck: false,
-			additionalArguments: ['--debug-mode']
+			additionalArguments: ['--disable-security-warnings', '--debug-mode']
 		}
 	})
 	player.config = window

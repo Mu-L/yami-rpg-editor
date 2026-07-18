@@ -1,4 +1,6 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Path } from '../util/config.js'
 
 // ******************************** 路径工具 ********************************
 
@@ -17,3 +19,5 @@ Path.slash = (function IIFE() {
 // Path.ext = function (path) {
 //   return path.slice(path.lastIndexOf('.') + 1)
 // }
+
+const path = require('path')

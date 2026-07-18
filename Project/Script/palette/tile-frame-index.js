@@ -1,4 +1,9 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Window } from '../tools/window-object.js'
+import { AutoTile } from './auto-tile.js'
+import { Palette } from './palette.js'
+import { Cursor } from '../tools/pointer-object.js'
 
 // ******************************** 图块帧索引窗口 ********************************
 
@@ -369,5 +374,3 @@ TileFrame.pointermove = function (event) {
 		}
 	}
 }.bind(TileFrame)
-
-window.TileFrame = TileFrame

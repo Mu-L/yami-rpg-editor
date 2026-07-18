@@ -1,5 +1,13 @@
 ﻿'use strict'
 
+import { CSSRGBA } from '../util/color-utils.js'
+import { getVariable } from '../util/safe.js'
+import { GameLocal } from '../local/local-object.js'
+import { Printer } from '../printer/printer.js'
+import { UI } from './ui-window.js'
+import { Texture } from '../webgl/texture.js'
+import { GL } from '../webgl/webgl-init.js'
+
 // ******************************** 文本元素 ********************************
 
 UI.Text = class TextElement extends UI.Element {

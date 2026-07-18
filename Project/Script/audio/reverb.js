@@ -1,4 +1,5 @@
-﻿'use strict'
+import { AudioManager } from './audio-manager.js'
+;('use strict')
 
 // ******************************** 混响类 ********************************
 
@@ -113,5 +114,3 @@ export class Reverb {
 	// 共享卷机器
 	static convolver = null
 }
-
-window.Reverb = Reverb

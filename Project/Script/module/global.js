@@ -1,4 +1,44 @@
+import { $ } from '../util/dom.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { Codec } from '../codec/codec.js'
+import { CommandList } from '../components/command-list.js'
+import { Menu } from '../components/menu-list.js'
+import { Data } from '../data/data-object.js'
+import { Project } from '../data/project-settings-window.js'
+import { Enum } from '../enum/enum-window.js'
+import { Localization } from '../local/local-window.js'
+import { UpdateLog } from '../log/update-log-window.js'
+import { Editor } from '../main/editor.js'
+import { EditDataInstance } from './editdata.js'
+import { EventBus } from './eventbus.js'
+import { Resources } from './resource.js'
+import { AutoTile } from '../palette/auto-tile.js'
+import { Scene } from '../scene/scene-window.js'
+import { NewProject } from '../title/new-project-window.js'
+import { Title } from '../title/title-bar.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { UI } from '../ui/ui-window.js'
+import { Updater } from '../update/updater.js'
+import { Variable } from '../variable/variable.js'
 const require = window.__nodeRequire || window.require
+const Path = require('path')
+const GlobalPath = Path.resolve(require('os').homedir(), '.openyami')
+// ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
+const { fileURLToPath, URL } = require('url')
+const _moduleURL = new URL(import.meta.url)
+const _modulePath =
+	_moduleURL.protocol === 'file:'
+		? fileURLToPath(_moduleURL)
+		: Path.resolve(
+				process.cwd(),
+				'Project',
+				_moduleURL.pathname.split('/').pop()
+			)
+const __dirname =
+	_moduleURL.protocol === 'file:'
+		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+		: Path.resolve(process.cwd(), 'Project')
 // oxlint-disable no-unused-vars
 /* 小改动或者不确定放哪的都可以放这 */
 export const fs = require('fs-extra')
@@ -63,6 +103,16 @@ export function isNoResource() {
 }
 
 export let NoResourceObj = isNoResource()
+
+// ESM 下被 import 的 let 绑定对导入方是只读的（live binding 但 const 语义），
+// 跨模块整体赋值会抛 Assignment to constant variable；故提供 setter，
+// 在本模块内部完成赋值，让 live binding 把新值传给所有导入方
+export function setPackMeta(value) {
+	PackMeta = value
+}
+export function setNoResourceObj(value) {
+	NoResourceObj = value
+}
 
 window.addEventListener('localize', () => {
 	Resources.initialize() // 初始化
@@ -154,10 +204,12 @@ export const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
 	})
 }
 
-CommandList.prototype.openEdit = function () {
-	Window.open('edit-data')
-	EditDataInstance.open(this)
-}
+EventBus.once('editor_loaded', () => {
+	CommandList.prototype.openEdit = function () {
+		Window.open('edit-data')
+		EditDataInstance.open(this)
+	}
+})
 
 export function find_dItem(fn) {
 	var list = this.selections || []
@@ -192,110 +244,112 @@ export function find_dItem(fn) {
 	}
 }
 
-// 列表 - 粘贴
-Scene.list.paste = function (dItem, callback) {
-	const copy = Clipboard.read('yami.scene.object')
-	if (copy && this.data) {
-		switch (copy.class) {
-			case 'tilemap':
-				Codec.decodeTilemap(copy)
-				copy.shortcut = 0
-				break
-		}
+// 列表 - 粘贴（延迟到应用加载完成，避免循环依赖 TDZ）
+EventBus.once('editor_loaded', () => {
+	Scene.list.paste = function (dItem, callback) {
+		const copy = Clipboard.read('yami.scene.object')
+		if (copy && this.data) {
+			switch (copy.class) {
+				case 'tilemap':
+					Codec.decodeTilemap(copy)
+					copy.shortcut = 0
+					break
+			}
 
-		var insertBefore = false
-		if (dItem === 'auto') {
+			var insertBefore = false
+			if (dItem === 'auto') {
+				find_dItem.call(this, (a, b) => {
+					dItem = a
+					insertBefore = b
+				})
+			}
+			callback?.(copy)
+			this.addNodeTo(copy, dItem, insertBefore)
+			Scene.requestRendering()
+		}
+	}
+
+	// 列表 - 粘贴
+	Enum.list.paste = function () {
+		const copy = Clipboard.read('yami.data.enumeration')
+		if (copy) {
+			// 只有冲突时进行更换ID
+			// 支持跨项目复制保留ID
+			if (Enum.idMap[copy.id]) {
+				copy.id = Enum.createId()
+				//如果需要去掉后面的 -copy，把下面这行注释就好了
+				copy.name += ' - Copy'
+			}
+
 			find_dItem.call(this, (a, b) => {
-				dItem = a
-				insertBefore = b
+				this.addNodeTo(copy, a, b)
 			})
 		}
-		callback?.(copy)
-		this.addNodeTo(copy, dItem, insertBefore)
-		Scene.requestRendering()
 	}
-}
 
-// 列表 - 粘贴
-Enum.list.paste = function () {
-	const copy = Clipboard.read('yami.data.enumeration')
-	if (copy) {
-		// 只有冲突时进行更换ID
-		// 支持跨项目复制保留ID
-		if (Enum.idMap[copy.id]) {
-			copy.id = Enum.createId()
-			//如果需要去掉后面的 -copy，把下面这行注释就好了
-			copy.name += ' - Copy'
+	// 列表 - 粘贴
+	Variable.list.paste = function () {
+		const copy = Clipboard.read('yami.data.variable')
+		if (copy) {
+			// 只有冲突时进行更换ID
+			// 支持跨项目复制保留ID
+			if (Variable.idMap[copy.id]) {
+				copy.id = Variable.createId()
+				//如果需要去掉后面的 -copy，把下面这行注释就好了
+				copy.name += ' - Copy'
+			}
+
+			find_dItem.call(this, (a, b) => {
+				this.addNodeTo(copy, a, b)
+			})
 		}
-
-		find_dItem.call(this, (a, b) => {
-			this.addNodeTo(copy, a, b)
-		})
 	}
-}
 
-// 列表 - 粘贴
-Variable.list.paste = function () {
-	const copy = Clipboard.read('yami.data.variable')
-	if (copy) {
-		// 只有冲突时进行更换ID
-		// 支持跨项目复制保留ID
-		if (Variable.idMap[copy.id]) {
-			copy.id = Variable.createId()
-			//如果需要去掉后面的 -copy，把下面这行注释就好了
-			copy.name += ' - Copy'
+	// 列表 - 粘贴
+	Attribute.list.paste = function () {
+		const copy = Clipboard.read('yami.data.attribute')
+		if (copy) {
+			// 只有冲突时进行更换ID
+			// 支持跨项目复制保留ID
+			if (Attribute.idMap[copy.id]) {
+				copy.id = Attribute.createId()
+				//如果需要去掉后面的 -copy，把下面这行注释就好了
+				copy.name += ' - Copy'
+			}
+
+			find_dItem.call(this, (a, b) => {
+				this.addNodeTo(copy, a, b)
+			})
 		}
-
-		find_dItem.call(this, (a, b) => {
-			this.addNodeTo(copy, a, b)
-		})
 	}
-}
 
-// 列表 - 粘贴
-Attribute.list.paste = function () {
-	const copy = Clipboard.read('yami.data.attribute')
-	if (copy) {
-		// 只有冲突时进行更换ID
-		// 支持跨项目复制保留ID
-		if (Attribute.idMap[copy.id]) {
-			copy.id = Attribute.createId()
-			//如果需要去掉后面的 -copy，把下面这行注释就好了
-			copy.name += ' - Copy'
+	// 列表 - 粘贴
+	Localization.list.paste = function () {
+		const copy = Clipboard.read('yami.data.localization')
+		if (copy) {
+			// 只有冲突时进行更换ID
+			// 支持跨项目复制保留ID
+			if (Localization.idMap[copy.id]) {
+				copy.id = Localization.createId()
+				//如果需要去掉后面的 -copy，把下面这行注释就好了
+				copy.name += ' - Copy'
+			}
+			find_dItem.call(this, (a, b) => {
+				this.addNodeTo(copy, a, b)
+			})
 		}
-
-		find_dItem.call(this, (a, b) => {
-			this.addNodeTo(copy, a, b)
-		})
 	}
-}
 
-// 列表 - 粘贴
-Localization.list.paste = function () {
-	const copy = Clipboard.read('yami.data.localization')
-	if (copy) {
-		// 只有冲突时进行更换ID
-		// 支持跨项目复制保留ID
-		if (Localization.idMap[copy.id]) {
-			copy.id = Localization.createId()
-			//如果需要去掉后面的 -copy，把下面这行注释就好了
-			copy.name += ' - Copy'
+	// 列表 - 粘贴
+	UI.list.paste = function (_, callback) {
+		const copy = Clipboard.read('yami.ui.object')
+		if (copy && this.data) {
+			callback?.(copy)
+			this.addNodeTo(copy, UI.target)
+			UI.requestRendering()
 		}
-		find_dItem.call(this, (a, b) => {
-			this.addNodeTo(copy, a, b)
-		})
 	}
-}
-
-// 列表 - 粘贴
-UI.list.paste = function (_, callback) {
-	const copy = Clipboard.read('yami.ui.object')
-	if (copy && this.data) {
-		callback?.(copy)
-		this.addNodeTo(copy, UI.target)
-		UI.requestRendering()
-	}
-}
+})
 
 // 主界面 - 版本号
 export const homeElem = $('#home-version')
@@ -601,7 +655,7 @@ export function loadDtsFolder(folderPath, monaco, recursive = true) {
 			const files = fs.readdirSync(currentPath)
 
 			files.forEach((file) => {
-				const fullPath = path.join(currentPath, file)
+				const fullPath = Path.join(currentPath, file)
 
 				const stat = fs.statSync(fullPath)
 
@@ -647,22 +701,3 @@ export function loadDtsFolder(folderPath, monaco, recursive = true) {
 
 	return disposables
 }
-
-window.fs = fs
-window.yauzl = yauzl
-window.CommunityVersion = CommunityVersion
-window.PackMeta = PackMeta
-window.TemplatesPath = TemplatesPath
-window.isNoResource = isNoResource
-window.NoResourceObj = NoResourceObj
-window.TitleConfirmOld = TitleConfirmOld
-window.unzipWithProgress = unzipWithProgress
-window.find_dItem = find_dItem
-window.homeElem = homeElem
-window.UpdateLogInitializeOrigin = UpdateLogInitializeOrigin
-window.UpdateLogOpenOrigin = UpdateLogOpenOrigin
-window.markndownToHtml = markndownToHtml
-window.UpdateLogUpdateOrigin = UpdateLogUpdateOrigin
-window.UpdateLogWindowClosedOrigin = UpdateLogWindowClosedOrigin
-window.SetTileTag = SetTileTag
-window.loadDtsFolder = loadDtsFolder

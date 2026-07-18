@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { Window } from '../tools/window-object.js'
+import { UI } from './ui-window.js'
+import { ImageTexture } from '../webgl/image-texture.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 进度条元素 ********************************
 

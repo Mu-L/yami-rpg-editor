@@ -1,5 +1,11 @@
 ﻿'use strict'
 
+import { INTRGBA } from '../util/color-utils.js'
+import { Printer } from '../printer/printer.js'
+import { UI } from './ui-window.js'
+import { Texture } from '../webgl/texture.js'
+import { GL } from '../webgl/webgl-init.js'
+
 // ******************************** 文本框元素 ********************************
 
 UI.TextBox = class TextBoxElement extends UI.Element {

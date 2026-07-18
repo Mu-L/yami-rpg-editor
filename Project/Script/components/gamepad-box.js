@@ -1,4 +1,5 @@
-﻿'use strict'
+import { Menu } from './menu-list.js'
+;('use strict')
 
 // ******************************** 手柄按键框 ********************************
 
@@ -145,5 +146,3 @@ export class GamepadBox extends HTMLElement {
 }
 
 customElements.define('gamepad-box', GamepadBox)
-
-window.GamepadBox = GamepadBox

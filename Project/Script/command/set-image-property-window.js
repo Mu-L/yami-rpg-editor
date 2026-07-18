@@ -1,6 +1,8 @@
 ﻿'use strict'
 
+import { $ } from '../util/dom.js'
 import { createPropertyWindow } from './property-window-factory.js'
+import { Command } from './command-object.js'
 
 // ******************************** 设置图像 - 属性窗口 ********************************
 
@@ -39,5 +41,3 @@ export const ImageProperty = createPropertyWindow({
 		'clip-3': (value) => Command.parseVariableNumber(value)
 	}
 })
-
-window.ImageProperty = ImageProperty

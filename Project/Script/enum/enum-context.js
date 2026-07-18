@@ -1,6 +1,8 @@
 ﻿'use strict'
 
 import { TreeDataContext } from '../components/tree-data-context.js'
+import { GameLocal } from '../local/local-object.js'
+import { Local } from '../tools/localization.js'
 
 // ******************************** 枚举上下文类 ********************************
 
@@ -87,5 +89,3 @@ export class EnumerationContext extends TreeDataContext {
 		})
 	}
 }
-
-window.EnumerationContext = EnumerationContext

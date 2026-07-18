@@ -43,5 +43,3 @@ export const ctrl =
 		: function (keyName) {
 				return 'Ctrl+' + keyName
 			}
-
-window.ctrl = ctrl

@@ -1,4 +1,10 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Data } from './data-object.js'
+import { FileItem } from '../file/file-item.js'
+import { File } from '../file/file-system-core.js'
+import { GUID } from '../file/guid.js'
+import { Updater } from '../update/updater.js'
 
 // ******************************** 元数据类 ********************************
 
@@ -137,4 +143,4 @@ export const Meta = (function IIFE() {
 	}
 })()
 
-window.Meta = Meta
+const path = require('path')

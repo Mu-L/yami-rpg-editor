@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Inspector } from './inspector.js'
+import { Light } from '../scene/light.js'
+import { Parallax } from '../scene/parallax.js'
+import { Scene } from '../scene/scene-window.js'
+import { ConditionListInterface } from '../tools/condition-list.js'
+import { EventListInterface } from '../tools/event-list.js'
+import { ScriptListInterface } from '../tools/script-list.js'
 
 // ******************************** 场景 - 视差图页面 ********************************
 

@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { GL } from './webgl-init.js'
 
 // ******************************** 纹理类 ********************************
 
@@ -153,5 +154,3 @@ export class Texture {
 		}
 	}
 }
-
-window.Texture = Texture

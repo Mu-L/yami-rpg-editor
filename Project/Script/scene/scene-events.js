@@ -1,3 +1,20 @@
+const require = window.__nodeRequire || window.require
+import { ctrl } from '../util/event-accessors.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Browser } from '../browser/project-browser.js'
+import { Menu } from '../components/menu-list.js'
+import { Directory } from '../file/directory-object.js'
+import { FileItem } from '../file/file-item.js'
+import { Reference } from '../log/related-references.js'
+import { Palette } from '../palette/palette.js'
+import { ObjectFolder } from './default-object-folder.js'
+import { SceneShift } from './move-scene.js'
+import { Scene } from './scene-window.js'
+import { Title } from '../title/title-bar.js'
+import { Local } from '../tools/localization.js'
+import { Cursor } from '../tools/pointer-object.js'
 // WebGL - 上下文恢复事件
 Scene.webglRestored = function (event) {
 	if (Scene.state === 'open') {
@@ -1913,3 +1930,5 @@ Scene.listPageResize = function (event) {
 	Scene.list.updateHead()
 	Scene.list.resize()
 }
+
+const path = require('path')

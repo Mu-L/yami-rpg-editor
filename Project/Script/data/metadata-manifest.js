@@ -1,4 +1,10 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { Data } from './data-object.js'
+import { Meta } from './metadata.js'
+import { File } from '../file/file-system-core.js'
+import { Title } from '../title/title-bar.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元数据清单类 ********************************
 
@@ -90,4 +96,4 @@ export class Manifest {
 	}
 }
 
-window.Manifest = Manifest
+const path = require('path')

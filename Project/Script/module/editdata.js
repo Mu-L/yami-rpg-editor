@@ -1,3 +1,9 @@
+import { $ } from '../util/dom.js'
+import { Command } from '../command/command-object.js'
+import { Title } from '../title/title-bar.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import * as monaco from 'monaco-editor'
 export const EditDataInstance = new (class {
 	editor = null
 	model = null
@@ -357,5 +363,3 @@ export const EditDataInstance = new (class {
 		}
 	}
 })()
-
-window.EditDataInstance = EditDataInstance

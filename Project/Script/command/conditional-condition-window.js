@@ -1,5 +1,19 @@
 ﻿'use strict'
 
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { GamepadBox } from '../components/gamepad-box.js'
+import { Command } from './command-object.js'
+import { Token } from './mark-string-manager.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { Data } from '../data/data-object.js'
+import { Team } from '../data/team-window.js'
+import { Enum } from '../enum/enum-window.js'
+import { Light } from '../scene/light.js'
+import { Scene } from '../scene/scene-window.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from '../variable/variable.js'
+
 // ******************************** 条件分支 - 条件窗口 ********************************
 
 export const IfCondition = {
@@ -1270,5 +1284,3 @@ IfCondition.save = function () {
 IfCondition.confirm = function (event) {
 	return IfCondition.target.save()
 }
-
-window.IfCondition = IfCondition

@@ -1,4 +1,9 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { VariableGetter } from './variable-accessor-window.js'
+import { Enum } from '../enum/enum-window.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from '../variable/variable.js'
 
 // ******************************** 物品访问器窗口 ********************************
 
@@ -138,5 +143,3 @@ ItemGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('itemGetter')
 }.bind(ItemGetter)
-
-window.ItemGetter = ItemGetter

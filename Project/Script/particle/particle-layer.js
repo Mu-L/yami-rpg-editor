@@ -1,4 +1,9 @@
 ﻿'use strict'
+import { Scene } from '../scene/scene-window.js'
+import { GL } from '../webgl/webgl-init.js'
+import { Easing } from '../data/transition-window.js'
+import { Particle } from './particle-window.js'
+import { ImageTexture } from '../webgl/image-texture.js'
 
 // ******************************** 粒子图层类 ********************************
 
@@ -349,16 +354,26 @@ Particle.Layer = class ParticleLayer {
 	static zeros = new Uint32Array(0x40000)
 
 	// 静态 - 共享数组
-	static sharedUint32A = new Uint32Array(
-		GL.arrays[0].uint32.buffer,
-		512 * 512 * 88,
-		512 * 512
-	)
-	static sharedUint32B = new Uint32Array(
-		GL.arrays[0].uint32.buffer,
-		512 * 512 * 92,
-		512 * 512
-	)
+	static get sharedUint32A() {
+		if (!this._sharedUint32A) {
+			this._sharedUint32A = new Uint32Array(
+				GL.arrays[0].uint32.buffer,
+				512 * 512 * 88,
+				512 * 512
+			)
+		}
+		return this._sharedUint32A
+	}
+	static get sharedUint32B() {
+		if (!this._sharedUint32B) {
+			this._sharedUint32B = new Uint32Array(
+				GL.arrays[0].uint32.buffer,
+				512 * 512 * 92,
+				512 * 512
+			)
+		}
+		return this._sharedUint32B
+	}
 
 	// 静态 - 光照采样模式映射表
 	static lightSamplingModes = { raw: 0, global: 1, ambient: 2 }

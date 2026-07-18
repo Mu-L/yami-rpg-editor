@@ -1,6 +1,7 @@
 ﻿'use strict'
 
 import { createPropertyWindow } from './property-window-factory.js'
+import { Command } from './command-object.js'
 
 // ******************************** 移动元素 - 属性窗口 ********************************
 
@@ -27,5 +28,3 @@ export const TransformProperty = createPropertyWindow({
 	],
 	parseValue: (key, value) => Command.parseVariableNumber(value)
 })
-
-window.TransformProperty = TransformProperty

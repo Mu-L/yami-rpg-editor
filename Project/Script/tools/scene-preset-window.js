@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { Scene } from '../scene/scene-window.js'
+import { Window } from './window-object.js'
 
 // ******************************** 场景预设对象窗口 ********************************
 
@@ -188,5 +192,3 @@ PresetObject.confirm = function (event) {
 	this.target.input(presetId)
 	Window.close('presetObject')
 }.bind(PresetObject)
-
-window.PresetObject = PresetObject

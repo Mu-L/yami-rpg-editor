@@ -1,4 +1,9 @@
 'use strict'
+import { ctrl } from '../util/event-accessors.js'
+import { Menu } from '../components/menu-list.js'
+import { Reference } from '../log/related-references.js'
+import { Local } from '../tools/localization.js'
+import { Variable } from './variable.js'
 
 // 列表 - 选择事件
 Variable.listSelect = function (event) {

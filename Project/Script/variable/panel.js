@@ -1,4 +1,6 @@
 'use strict'
+import { $ } from '../util/dom.js'
+import { Variable } from './variable.js'
 
 // 打开属性面板
 Variable.openPropertyPanel = function (variable) {

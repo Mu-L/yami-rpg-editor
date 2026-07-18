@@ -1,3 +1,11 @@
+const require = window.__nodeRequire || window.require
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Codec } from '../codec/codec.js'
+import { Layout } from '../layout/layout.js'
+import { Editor } from '../main/editor.js'
+import { Scene } from './scene-window.js'
+import { Local } from '../tools/localization.js'
 // 列表 - 复制
 Scene.list.copy = function (item) {
 	if (item) {
@@ -545,3 +553,5 @@ Scene.list.onResume = function (item) {
 	Scene.reloadObjectContext(item)
 	Scene.requestRendering()
 }
+
+const path = require('path')

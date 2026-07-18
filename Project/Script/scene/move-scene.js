@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 移动场景 ********************************
 
@@ -44,5 +46,3 @@ SceneShift.confirm = function (event) {
 	SceneShift.callback(x, y)
 	Window.close('scene-shift')
 }
-
-window.SceneShift = SceneShift

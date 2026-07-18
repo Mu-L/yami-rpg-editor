@@ -1,4 +1,8 @@
 'use strict'
+import { File } from '../file/file-system-core.js'
+import { Directory } from '../file/directory-object.js'
+import { Editor } from './editor.js'
+import { Updater } from '../update/updater.js'
 
 // 检查编辑器更新
 Editor.checkForEditorUpdates = function () {

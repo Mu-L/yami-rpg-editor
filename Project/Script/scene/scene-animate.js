@@ -1,3 +1,8 @@
+import { $ } from '../util/dom.js'
+import { Timer } from '../util/timer.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Scene } from './scene-window.js'
+import { GL } from '../webgl/webgl-init.js'
 Scene.requestAnimation = function () {
 	if (this.state === 'open' && this.showAnimation) {
 		Timer.appendUpdater('stageAnimation', this.updateAnimation)

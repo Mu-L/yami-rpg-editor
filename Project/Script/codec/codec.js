@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { Scene } from '../scene/scene-window.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 编解码器 ********************************
 // undefined按位运算等价于0，因此不会产生NaN
@@ -445,5 +447,3 @@ Codec.getTilemaps = (function IIFE() {
 // const {decrypt} = window
 // window.decrypt = buffer => decrypt(buffer)
 // \`)()`)
-
-window.Codec = Codec

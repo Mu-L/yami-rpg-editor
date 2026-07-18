@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { DetailSummary } from './detail-summary.js'
 
 // ******************************** 细节框 ********************************
 
@@ -68,5 +69,3 @@ export class DetailBox extends HTMLElement {
 }
 
 customElements.define('detail-box', DetailBox)
-
-window.DetailBox = DetailBox

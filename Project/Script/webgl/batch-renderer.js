@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { GL } from './webgl-init.js'
 
 // ******************************** 批量渲染器 ********************************
 
@@ -151,5 +152,3 @@ export class BatchRenderer {
 		this.draw = draw
 	}
 }
-
-window.BatchRenderer = BatchRenderer

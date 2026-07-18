@@ -1,4 +1,5 @@
-'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
 
 // ******************************** Empty State ********************************
 // 列表/面板为空时的占位提示（通过 message / icon 属性配置）
@@ -61,4 +62,4 @@ export class EmptyState extends HTMLElement {
 
 customElements.define('empty-state', EmptyState)
 
-window.EmptyState = EmptyState
+const path = require('path')

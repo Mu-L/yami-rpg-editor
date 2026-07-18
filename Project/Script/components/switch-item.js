@@ -70,5 +70,3 @@ export class SwitchItem extends HTMLElement {
 }
 
 customElements.define('switch-item', SwitchItem)
-
-window.SwitchItem = SwitchItem

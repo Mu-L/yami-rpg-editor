@@ -1,3 +1,7 @@
+import { $ } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { Editor } from '../main/editor.js'
+import { TemplatesPath } from './global.js'
 const require = window.__nodeRequire || window.require
 export const ApkBuilder = new (class {
 	logs = []
@@ -69,5 +73,3 @@ export const ApkBuilder = new (class {
 		return config
 	}
 })()
-
-window.ApkBuilder = ApkBuilder

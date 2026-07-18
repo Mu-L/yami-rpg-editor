@@ -1,4 +1,17 @@
 'use strict'
+import { $ } from '../util/dom.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from '../inspector/inspector.js'
+import { GL } from '../webgl/webgl-init.js'
+import { Cursor } from '../tools/pointer-object.js'
+import { Animation } from '../animation/animation-window.js'
+import { Browser } from '../browser/project-browser.js'
+import { Palette } from '../palette/palette.js'
+import { Particle } from '../particle/particle-window.js'
+import { Scene } from '../scene/scene-window.js'
+import { Home } from '../title/home-page.js'
+import { Title } from '../title/title-bar.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 布局对象 ********************************
 
@@ -1380,5 +1393,3 @@ Layout.pointermove = function (event) {
 		}
 	}
 }
-
-window.Layout = Layout

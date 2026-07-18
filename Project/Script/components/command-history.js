@@ -211,5 +211,3 @@ export class CommandHistory {
 		return this.index + 1 < this.stack.length
 	}
 }
-
-window.CommandHistory = CommandHistory

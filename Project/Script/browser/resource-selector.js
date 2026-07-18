@@ -1,8 +1,23 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { $ } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { AudioManager } from '../audio/audio-manager.js'
+import { Menu } from '../components/menu-list.js'
+import { Directory } from '../file/directory-object.js'
+import { FileItem } from '../file/file-item.js'
+import { File } from '../file/file-system-core.js'
+import { FolderItem } from '../file/folder-item.js'
+import { Reference } from '../log/related-references.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 资源选择器 ********************************
 
-export const Selector = $('#selector-browser')
+import '../components/file-browser.js'
+import { EventBus } from '../module/eventbus.js'
+const Selector = $('#selector-browser')
+export { Selector }
 // properties
 Selector.target = null
 Selector.allowNone = true
@@ -10,7 +25,12 @@ Selector.audioPlayed = false
 Selector.lastDir = 'Assets'
 
 // 设置搜索框ID接入语言包（必须在 Local.update 之前完成，否则本地化找不到元素）
-Selector.head.searcher.id = 'selector-search'
+// 自定义元素在 editor_loaded 后才升级，searcher 才存在，故延迟绑定
+EventBus.once('editor_loaded', () => {
+	if (Selector.head && Selector.head.searcher) {
+		Selector.head.searcher.id = 'selector-search'
+	}
+})
 // methods
 Selector.initialize = null
 Selector.open = null
@@ -178,7 +198,7 @@ Selector.bodyPopup = function (event) {
 		items.push({
 			label: get(Local.showInExplorer()),
 			click: () => {
-				File.openPath(File.route(folders[0].path))
+				File.openPath(File.path(folders[0].path))
 			}
 		})
 	} else {
@@ -302,4 +322,4 @@ Selector.confirm = function (event) {
 	}
 }
 
-window.Selector = Selector
+const path = require('path')

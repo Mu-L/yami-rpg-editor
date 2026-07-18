@@ -1,6 +1,7 @@
 ﻿'use strict'
 
 import { TreeDataContext } from '../components/tree-data-context.js'
+import { GameLocal } from '../local/local-object.js'
 
 // ******************************** 属性上下文类 ********************************
 
@@ -70,5 +71,3 @@ export class AttributeContext extends TreeDataContext {
 		})
 	}
 }
-
-window.AttributeContext = AttributeContext

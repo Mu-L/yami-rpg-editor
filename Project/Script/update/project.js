@@ -1,4 +1,6 @@
 'use strict'
+import { Updater } from './updater.js'
+import { Editor } from '../main/editor.js'
 
 // 更新项目数据
 Updater.updateProject = function (verNum) {

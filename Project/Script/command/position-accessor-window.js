@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $, getElementReader } from '../util/dom.js'
+import { Light } from '../scene/light.js'
+import { PresetObject } from '../tools/scene-preset-window.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 位置访问器窗口 ********************************
 
@@ -195,5 +199,3 @@ PositionGetter.confirm = function (event) {
 	this.target.input(getter)
 	Window.close('positionGetter')
 }.bind(PositionGetter)
-
-window.PositionGetter = PositionGetter

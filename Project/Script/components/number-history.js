@@ -1,5 +1,7 @@
 ﻿'use strict'
 
+import { HistoryTimer } from './history-timer.js'
+
 // ******************************** 数值操作历史 ********************************
 
 export class NumberHistory {
@@ -157,5 +159,3 @@ export class NumberHistory {
 
 // 数值操作历史恢复中状态开关
 NumberHistory.restoring = false
-
-window.NumberHistory = NumberHistory

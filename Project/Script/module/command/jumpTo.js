@@ -1,4 +1,11 @@
 'use strict'
+import { $ } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { EventEditor } from '../../command/event-editor.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { TextSuggestion } from '../../command/text-tip.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.jumpTo = new CommandSchema({
 	name: 'jumpTo',

@@ -1,4 +1,42 @@
 ﻿'use strict'
+import { SettingConfig } from '../module/settingconfig.js'
+import { $ } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { Animation } from '../animation/animation-window.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { CustomCommand } from '../command/custom-command-window.js'
+import { Menu } from '../components/menu-list.js'
+import { Data } from '../data/data-object.js'
+import { Project } from '../data/project-settings-window.js'
+import { Team } from '../data/team-window.js'
+import { Easing } from '../data/transition-window.js'
+import { Enum } from '../enum/enum-window.js'
+import { File } from '../file/file-system-core.js'
+import { FS, FSP } from '../file/file-system.js'
+import { Layout } from '../layout/layout.js'
+import { ExportLanguage } from '../local/export-language-window.js'
+import { ImportLanguage } from '../local/import-language-window.js'
+import { Localization } from '../local/local-window.js'
+import { UpdateLog } from '../log/update-log-window.js'
+import { Editor } from '../main/editor.js'
+import { ApkBuilder } from '../module/apkbuilder.js'
+import { Resources } from '../module/resource.js'
+
+import { WebServer } from '../module/webserver.js'
+import { Palette } from '../palette/palette.js'
+import { Particle } from '../particle/particle-window.js'
+import { PluginManager } from '../plugin/plugin.js'
+import { Scene } from '../scene/scene-window.js'
+import { Title } from './title-bar.js'
+import { Color } from '../tools/color-picker-window.js'
+import { Local } from '../tools/localization.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Window } from '../tools/window-object.js'
+import { Zoom } from '../tools/zoom-window.js'
+import { UI } from '../ui/ui-window.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Variable } from '../variable/variable.js'
+import { GL } from '../webgl/webgl-init.js'
 const require = window.__nodeRequire || window.require
 
 // ******************************** 菜单栏对象 ********************************
@@ -898,7 +936,7 @@ Menubar.revealSaveDirectory = async function () {
 		const folder = this.sanitizeFolderName(subdir)
 		saveDir = require('path').resolve(dirname, folder)
 	} else {
-		saveDir = File.route('Save')
+		saveDir = File.path('Save')
 	}
 	File.openPath(saveDir)
 }
@@ -1069,5 +1107,3 @@ Menubar.pointerover = function (event) {
 Menubar.hrefClick = function (event) {
 	File.openURL(event.target.getAttribute('href'))
 }
-
-window.Menubar = Menubar

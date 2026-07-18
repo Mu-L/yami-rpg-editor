@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { Command } from '../command/command-object.js'
+import { SelectBox } from '../components/select-box.js'
+import { Enum } from '../enum/enum-window.js'
+import { Inspector } from '../inspector/inspector.js'
+import { GameLocal } from '../local/local-object.js'
+import { Window } from './window-object.js'
 
 // ******************************** 属性列表接口 ********************************
 
@@ -202,9 +210,6 @@ export class AttributeListInterface {
 		})
 	}
 
-	// 类型选择框(隐藏)
-	static typeBox = new SelectBox()
-
 	// 属性键写入事件
 	static keyWrite(event) {
 		const group = AttributeListInterface.target.getAttribute('group')
@@ -218,6 +223,9 @@ export class AttributeListInterface {
 			}
 		}
 	}
-}
 
-window.AttributeListInterface = AttributeListInterface
+	static get typeBox() {
+		if (!this._typeBox) this._typeBox = new SelectBox()
+		return this._typeBox
+	}
+}

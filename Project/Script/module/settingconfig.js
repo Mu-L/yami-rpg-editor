@@ -1,12 +1,29 @@
+import { $, getElementWriter } from '../util/dom.js'
+import { GlobalPathForDir, GlobalPath } from '../util/config.js'
+import { Window } from '../tools/window-object.js'
+import { Local } from '../tools/localization.js'
+import { ApkBuilder } from './apkbuilder.js'
+import { Resources } from './resource.js'
+import { WebServer } from './webserver.js'
 const require = window.__nodeRequire || window.require
+const fs = require('fs')
 export const path = require('path')
 
 export const SettingConfig = new (class {
 	config = {}
-	homedir = GlobalPathForDir
-	configPath = path.join(GlobalPath, 'yami-config.json')
+	get homedir() {
+		return GlobalPathForDir
+	}
+	get configPath() {
+		return path.join(GlobalPath, 'yami-config.json')
+	}
 	constructor() {
-		$('#setting').on('open', this.open())
+		// 启动期即从磁盘载入完整 config，避免下游裸取 config.github.* 等字段时
+		// 撞 config 还是默认空 {} 的问题（load() 为纯同步 fs 操作，无 DOM 依赖）
+		this.load()
+		// 传 this.open 引用（不加 ()），等 'open' 事件触发时才跑；
+		// 若加 () 立即调用，update() 内用 Local 时 localization.js 可能还在求值 TDZ
+		$('#setting').on('open', this.open.bind(this))
 		$('#setting-confirm').on('click', () => {
 			Window.close('setting')
 		})
@@ -184,6 +201,16 @@ export const SettingConfig = new (class {
 			return _t_obj
 		}
 		this.config = patch(this.defaultConfig, this.config)
+		// 兜底：旧 yami-config.json 可能缺 server/other/recent/apkbuild/signed/github
+		// 子段或子字段，patch() 对已存在但缺子字段的补不全，这里用 Object.assign 强合
+		for (const key of Object.keys(this.defaultConfig)) {
+			this.config[key] ??= {}
+			for (const sub of Object.keys(this.defaultConfig[key])) {
+				if (this.config[key][sub] === undefined) {
+					this.config[key][sub] = this.defaultConfig[key][sub]
+				}
+			}
+		}
 		const browserSearchHistoryLimit = Math.floor(
 			Number(this.config.other.browserSearchHistoryLimit)
 		)
@@ -328,5 +355,6 @@ export const SettingConfig = new (class {
 	}
 })()
 
-window.path = path
-window.SettingConfig = SettingConfig
+// 全局绑定：供尚未迁移的文件裸用 window.SettingConfig
+
+// ESM 迁移兼容：恢复全局绑定（供尚未迁移的文件裸用）

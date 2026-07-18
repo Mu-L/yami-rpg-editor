@@ -24,5 +24,3 @@ export class UIInstanceList extends Array {
 		}
 	}
 }
-
-window.UIInstanceList = UIInstanceList

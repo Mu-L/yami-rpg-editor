@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { Inspector } from './inspector.js'
+import { Scene } from '../scene/scene-window.js'
+import { ConditionListInterface } from '../tools/condition-list.js'
+import { EventListInterface } from '../tools/event-list.js'
+import { Local } from '../tools/localization.js'
+import { ScriptListInterface } from '../tools/script-list.js'
 
 // ******************************** 场景 - 角色页面 ********************************
 

@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Window } from './window-object.js'
 
 // ******************************** 设置键窗口 ********************************
 
@@ -38,5 +40,3 @@ SetKey.confirm = function (event) {
 	this.callback($('#setKey-key').read())
 	Window.close('setKey')
 }.bind(SetKey)
-
-window.SetKey = SetKey

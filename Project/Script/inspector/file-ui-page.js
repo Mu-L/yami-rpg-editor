@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { Inspector } from './inspector.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 文件 - 界面页面 ********************************
 

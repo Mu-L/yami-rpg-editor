@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { GL } from './webgl-init.js'
+import { BaseTexture } from './base-texture.js'
+import { Texture } from './texture.js'
 
 // ******************************** 图像纹理类 ********************************
 
@@ -151,5 +154,3 @@ ImageTexture.prototype.on = BaseTexture.prototype.on
 
 // 执行加载回调
 ImageTexture.prototype.reply = BaseTexture.prototype.reply
-
-window.ImageTexture = ImageTexture

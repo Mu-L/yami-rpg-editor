@@ -19,6 +19,3 @@ export const CSSRGBA = function (hex) {
 	const a = parseInt(hex.slice(6, 8), 16)
 	return `rgba(${r}, ${g}, ${b}, ${a})`
 }
-
-window.INTRGBA = INTRGBA
-window.CSSRGBA = CSSRGBA

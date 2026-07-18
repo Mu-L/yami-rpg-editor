@@ -1,4 +1,13 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Browser } from '../browser/project-browser.js'
+import { EventEditor } from '../command/event-editor.js'
+import { Enum } from '../enum/enum-window.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from './inspector.js'
+import { Light } from '../scene/light.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 文件 - 事件页面 ********************************
 

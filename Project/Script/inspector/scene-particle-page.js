@@ -1,4 +1,11 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Inspector } from './inspector.js'
+import { Particle } from '../particle/particle-window.js'
+import { Scene } from '../scene/scene-window.js'
+import { ConditionListInterface } from '../tools/condition-list.js'
+import { EventListInterface } from '../tools/event-list.js'
+import { ScriptListInterface } from '../tools/script-list.js'
 
 // ******************************** 场景 - 粒子页面 ********************************
 

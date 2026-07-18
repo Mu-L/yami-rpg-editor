@@ -1,4 +1,11 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Command } from '../command/command-object.js'
+import { IfCondition } from '../command/conditional-condition-window.js'
+import { TreeList } from '../components/tree-list.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Local } from './localization.js'
+import { Window } from './window-object.js'
 
 // ******************************** 条件列表接口类 ********************************
 
@@ -289,5 +296,3 @@ export class ConditionListInterface {
 		})
 	}
 }
-
-window.ConditionListInterface = ConditionListInterface

@@ -1,4 +1,15 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { request } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { Meta } from '../data/metadata.js'
+import { File } from './file-system-core.js'
+import { FSP } from './file-system.js'
+import { GUID } from './guid.js'
+import { Local } from '../tools/localization.js'
+import { Window } from '../tools/window-object.js'
+import { Path } from '../util/config.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 文件项目 ********************************
 
@@ -101,8 +112,8 @@ export class FileItem {
 		if (this.name !== name) {
 			const dir = Path.dirname(this.path)
 			const path = `${dir}/${name}`
-			const sPath = File.route(this.path)
-			const dPath = File.route(path)
+			const sPath = File.path(this.path)
+			const dPath = File.path(path)
 			const promise = this.promise ?? Promise.resolve()
 			this.promise = promise.then(() => {
 				return FSP.rename(sPath, dPath).then(() => {
@@ -214,4 +225,4 @@ export class FileItem {
 	}
 }
 
-window.FileItem = FileItem
+const path = require('path')

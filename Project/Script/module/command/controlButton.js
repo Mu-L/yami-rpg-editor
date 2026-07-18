@@ -1,4 +1,10 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { Select } from '../../components/select-list.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.controlButton = new CommandSchema({
 	name: 'controlButton',

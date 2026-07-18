@@ -1,4 +1,14 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { $ } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { SelectBox } from '../components/select-box.js'
+import { TextBox } from '../components/text-box.js'
+import { WindowFrame } from '../components/window-frame.js'
+import { File } from '../file/file-system-core.js'
+import { FSP } from '../file/file-system.js'
+import { Log } from '../log/log-window.js'
+import { Editor } from '../main/editor.js'
 
 // ******************************** 本地化对象 ********************************
 
@@ -35,8 +45,21 @@ Local.initialize = function () {
 	for (const button of document.getElementsByName('cancel')) {
 		button.setAttribute('hotkey', 'Escape')
 	}
-	// 获取语言包目录
-	this.dirname = Path.resolve(__dirname, 'Locales')
+	// ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
+	const _moduleURL = new URL(import.meta.url)
+	const _modulePath =
+		_moduleURL.protocol === 'file:'
+			? fileURLToPath(_moduleURL)
+			: Path.resolve(
+					process.cwd(),
+					'Project',
+					_moduleURL.pathname.split('/').pop()
+				)
+	const _moduleDir =
+		_moduleURL.protocol === 'file:'
+			? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+			: Path.resolve(process.cwd(), 'Project')
+	this.dirname = Path.resolve(_moduleDir, 'Locales')
 	// 读取语言包后显示菜单栏
 	this.readLanguageList()
 		.then(() => {
@@ -300,4 +323,4 @@ Local.showInExplorer = function () {
 	}
 }
 
-window.Local = Local
+const path = require('path')

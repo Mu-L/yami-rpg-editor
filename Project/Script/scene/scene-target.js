@@ -1,3 +1,8 @@
+import { Timer } from '../util/timer.js'
+import { Easing } from '../data/transition-window.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Scene } from './scene-window.js'
+import { TilemapShortcuts } from './tilemap-shortcut-list.js'
 Scene.setTarget = function (target) {
 	if (this.target !== target) {
 		if (

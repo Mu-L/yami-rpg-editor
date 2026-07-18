@@ -1,4 +1,11 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { $, getElementReader } from '../util/dom.js'
+import { AudioManager } from '../audio/audio-manager.js'
+import { Browser } from '../browser/project-browser.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from './inspector.js'
+import { Timer } from '../util/timer.js'
 
 // ******************************** 文件 - 音频页面 ********************************
 
@@ -467,3 +474,5 @@
 
 	Inspector.fileAudio = FileAudio
 }
+
+const path = require('path')

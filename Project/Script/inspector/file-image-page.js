@@ -1,4 +1,9 @@
-﻿'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+import { $ } from '../util/dom.js'
+import { File } from '../file/file-system-core.js'
+import { Browser } from '../browser/project-browser.js'
+import { Inspector } from './inspector.js'
 
 // ******************************** 文件 - 图像页面 ********************************
 
@@ -128,3 +133,5 @@
 
 	Inspector.fileImage = FileImage
 }
+
+const path = require('path')

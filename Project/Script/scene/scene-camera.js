@@ -1,3 +1,8 @@
+import { $ } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { GL } from '../webgl/webgl-init.js'
+import { Inspector } from '../inspector/inspector.js'
+import { Scene } from './scene-window.js'
 Scene.setZoom = (function IIFE() {
 	const slider = $('#scene-zoom')
 	return function (zoom) {

@@ -1,3 +1,7 @@
+import { Data } from '../data/data-object.js'
+import { GL } from '../webgl/webgl-init.js'
+import { Palette } from '../palette/palette.js'
+import { Scene } from './scene-window.js'
 Scene.edit = function (x, y, width, height) {
 	// 使用笔刷来编辑图块
 	switch (this.brush) {

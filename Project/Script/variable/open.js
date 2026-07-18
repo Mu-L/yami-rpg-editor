@@ -1,4 +1,12 @@
 'use strict'
+import { $ } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Reference } from '../log/related-references.js'
+import { History } from '../tools/history.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Window } from '../tools/window-object.js'
+import { Variable } from './variable.js'
 
 // 打开窗口
 Variable.open = function (target = null) {

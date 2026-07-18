@@ -27,5 +27,3 @@ export const UndoManager = {
 		return this.active?.history?.canRedo() ?? false
 	}
 }
-
-window.UndoManager = UndoManager

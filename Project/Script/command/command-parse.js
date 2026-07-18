@@ -1,5 +1,17 @@
 'use strict'
 
+import { $ } from '../util/dom.js'
+import { getVariable, reportError } from '../util/safe.js'
+import { Attribute } from '../attribute/attribute-window.js'
+import { Command } from './command-object.js'
+import { Token } from './mark-string-manager.js'
+import { Data } from '../data/data-object.js'
+import { Enum } from '../enum/enum-window.js'
+import { FileItem } from '../file/file-item.js'
+import { File } from '../file/file-system-core.js'
+import { GameLocal } from '../local/local-object.js'
+import { Local } from '../tools/localization.js'
+
 // ******************************** 指令解析函数库 ********************************
 
 // 解析混合模式

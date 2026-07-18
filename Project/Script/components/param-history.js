@@ -172,5 +172,3 @@ export class ParamListHistory {
 		}
 	}
 }
-
-window.ParamListHistory = ParamListHistory

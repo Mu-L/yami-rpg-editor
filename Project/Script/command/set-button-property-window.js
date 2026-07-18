@@ -1,6 +1,8 @@
 ﻿'use strict'
 
 import { createPropertyWindow } from './property-window-factory.js'
+import { Command } from './command-object.js'
+import { Token } from './mark-string-manager.js'
 
 // ******************************** 设置按钮 - 属性窗口 ********************************
 
@@ -196,5 +198,3 @@ export const ButtonProperty = createPropertyWindow({
 		letterSpacing: (value) => Command.setNumberColor(value)
 	}
 })
-
-window.ButtonProperty = ButtonProperty

@@ -21,39 +21,40 @@ export const GlobalPath = Path.resolve(GlobalPathForDir, ConfigDir)
 	}
 	// 提前读取配置文件以减少等待时间
 	// promise.then的执行顺序在main.js之后
-	const path = require('path').resolve(GlobalPath, 'config.json')
+	// 文件名必须与 Editor.saveConfig（main/config.js）写入的路径一致，
+	// 否则写到 config.json、读到 yami-config.json，配置无法持久化
+	const configFile = require('path').join(GlobalPath, 'config.json')
 	window.config = require('fs')
-		.promises.readFile(path, 'utf8')
+		.promises.readFile(configFile, 'utf8')
 		.then((json) => JSON.parse(json))
 		.catch(() => {
 			// 如果不存在配置文件或加载出错
-			return File.get({
-				local: 'default.json',
-				type: 'json'
-			}).then((config) => {
-				// 设置默认配置属性
-				config.theme = 'dark'
-				config.language = ''
-				config.project = ''
-				config.recent = []
-				config.scriptEditor = {
-					mode: 'by-file-extension',
-					path: ''
-				}
-				return require('electron')
-					.ipcRenderer.invoke('get-dir-path', 'documents')
-					.catch((error) => 'C:')
-					.then((path) => {
-						for (const key of Object.keys(config.dialogs)) {
-							config.dialogs[key] = Path.slash(path)
-						}
-						return config
-					})
+			return import('../file/file-system-core.js').then(({ File }) => {
+				return File.get({
+					local: 'default.json',
+					type: 'json'
+				}).then((config) => {
+					// 设置默认配置属性
+					config.theme = 'dark'
+					config.language = ''
+					config.project = ''
+					config.recent = []
+					config.scriptEditor = {
+						mode: 'by-file-extension',
+						path: ''
+					}
+					return require('electron')
+						.ipcRenderer.invoke('get-dir-path', 'documents')
+						.catch((error) => 'C:')
+						.then((docPath) => {
+							for (const key of Object.keys(config.dialogs)) {
+								config.dialogs[key] = Path.slash(docPath)
+							}
+							return config
+						})
+				})
 			})
 		})
 }
 
-window.Path = Path
-window.GlobalPathForDir = GlobalPathForDir
-window.ConfigDir = ConfigDir
-window.GlobalPath = GlobalPath
+// ESM 迁移兼容：恢复全局绑定（供尚未迁移的文件裸用）

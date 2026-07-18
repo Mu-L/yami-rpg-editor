@@ -1,4 +1,16 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Attribute } from '../../attribute/attribute-window.js'
+import { Command } from '../../command/command-object.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { Choices } from '../../command/show-options-window.js'
+import { VariableGetter } from '../../command/variable-accessor-window.js'
+import { Team } from '../../data/team-window.js'
+import { File } from '../../file/file-system-core.js'
+import { CommandSchema } from './schema.js'
+import { Scene } from '../../scene/scene-window.js'
+import { Local } from '../../tools/localization.js'
+import { Variable } from '../../variable/variable.js'
 
 Command.cases.setString = new CommandSchema({
 	name: 'setString',

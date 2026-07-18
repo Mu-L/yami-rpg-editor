@@ -1,4 +1,12 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { File } from '../file/file-system-core.js'
+import { UI } from '../ui/ui-window.js'
+import { Menu } from '../components/menu-list.js'
+import { Data } from '../data/data-object.js'
+import { Local } from './localization.js'
+import { Rename } from './rename-window.js'
+import { Window } from './window-object.js'
 
 // ******************************** 拾色器窗口 ********************************
 
@@ -463,5 +471,3 @@ Color.confirm = function (event) {
 	}
 	Window.close('color')
 }.bind(Color)
-
-window.Color = Color

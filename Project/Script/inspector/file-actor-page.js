@@ -1,4 +1,18 @@
 ﻿'use strict'
+import { $, getElementReader, getElementWriter } from '../util/dom.js'
+import { Animation } from '../animation/animation-window.js'
+import { Browser } from '../browser/project-browser.js'
+import { Command } from '../command/command-object.js'
+import { Data } from '../data/data-object.js'
+import { Enum } from '../enum/enum-window.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from './inspector.js'
+import { Scene } from '../scene/scene-window.js'
+import { EventListInterface } from '../tools/event-list.js'
+import { Local } from '../tools/localization.js'
+import { AttributeListInterface } from '../tools/property-list.js'
+import { ScriptListInterface } from '../tools/script-list.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 文件 - 角色页面 ********************************
 

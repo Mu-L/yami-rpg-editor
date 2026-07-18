@@ -1,3 +1,5 @@
+import { Data } from '../data/data-object.js'
+import { Scene } from './scene-window.js'
 // 选框 - 保存状态
 Scene.marquee.save = function (key = 'default') {
 	let data

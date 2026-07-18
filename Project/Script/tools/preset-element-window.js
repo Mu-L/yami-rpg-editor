@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { Data } from '../data/data-object.js'
+import { Window } from './window-object.js'
+import { UI } from '../ui/ui-window.js'
 
 // ******************************** 预设元素窗口 ********************************
 
@@ -165,5 +169,3 @@ PresetElement.confirm = function (event) {
 	this.target.input(presetId)
 	Window.close('presetElement')
 }.bind(PresetElement)
-
-window.PresetElement = PresetElement

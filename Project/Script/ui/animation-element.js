@@ -1,4 +1,8 @@
 ﻿'use strict'
+import { Data } from '../data/data-object.js'
+import { Animation } from '../animation/animation-window.js'
+import { UI } from './ui-window.js'
+import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 动画元素 ********************************
 

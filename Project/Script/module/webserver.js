@@ -1,3 +1,10 @@
+import { $ } from '../util/dom.js'
+import { Path } from '../util/config.js'
+import { FSP } from '../file/file-system.js'
+import { Log } from '../log/log-window.js'
+import { Editor } from '../main/editor.js'
+import { Deployment } from '../title/deploy-project-window.js'
+import { Window } from '../tools/window-object.js'
 const require = window.__nodeRequire || window.require
 export const WebServer = new (class {
 	port = 5959
@@ -93,5 +100,3 @@ export const WebServer = new (class {
 			})
 	}
 })()
-
-window.WebServer = WebServer

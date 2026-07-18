@@ -1,4 +1,7 @@
 ﻿'use strict'
+import { $, getElementWriter } from '../util/dom.js'
+import { Animation } from '../animation/animation-window.js'
+import { Inspector } from './inspector.js'
 
 // ******************************** 动画 - 音效帧页面 ********************************
 

@@ -1,4 +1,11 @@
 'use strict'
+import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+import { Command } from '../../command/command-object.js'
+import { Token } from '../../command/mark-string-manager.js'
+import { Choices } from '../../command/show-options-window.js'
+import { GameLocal } from '../../local/local-object.js'
+import { CommandSchema } from './schema.js'
+import { Local } from '../../tools/localization.js'
 
 Command.cases.showChoices = new CommandSchema({
 	name: 'showChoices',

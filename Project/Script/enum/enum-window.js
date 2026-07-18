@@ -1,4 +1,17 @@
 ﻿'use strict'
+import { $ } from '../util/dom.js'
+import { ctrl } from '../util/event-accessors.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Shortcuts } from '../tools/shortcut-registry.js'
+import { Menu } from '../components/menu-list.js'
+import { GUID } from '../file/guid.js'
+import { GameLocal } from '../local/local-object.js'
+import { Reference } from '../log/related-references.js'
+import { History } from '../tools/history.js'
+import { Local } from '../tools/localization.js'
+import { UndoManager } from '../tools/undo-manager.js'
+import { Window } from '../tools/window-object.js'
 
 // ******************************** 枚举窗口 ********************************
 
@@ -1054,5 +1067,3 @@ Enum.list.onDelete = function (item) {
 Enum.list.onResume = function (item) {
 	Enum.register(item)
 }
-
-window.Enum = Enum

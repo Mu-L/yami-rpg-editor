@@ -1,11 +1,11 @@
-const fs = require('fs')
-const fsp = require('fs').promises
-const path = require('path')
-const { parseString, Builder } = require('xml2js')
-const util = require('util')
-const exec = require('child_process').exec
+import fs from 'fs'
+import { promises as fsp } from 'fs'
+import path from 'path'
+import { parseString, Builder } from 'xml2js'
+import util from 'util'
+import { exec } from 'child_process'
 const execPromise = util.promisify(exec)
-const sharp = require('sharp')
+import sharp from 'sharp'
 
 // 构建状态跟踪
 let isBuilding = false
@@ -875,10 +875,10 @@ function isBuildingStatus() {
 }
 
 // 导出构建函数及方法
-module.exports = {
+export {
 	main,
 	abortBuild,
-	isBuilding: isBuildingStatus,
+	isBuildingStatus as isBuilding,
 	decompileApk,
 	modifyManifest,
 	modifyStrings,

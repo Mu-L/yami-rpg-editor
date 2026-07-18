@@ -75,5 +75,3 @@ export class Vector {
 		new Vector()
 	]
 }
-
-window.Vector = Vector

@@ -1,4 +1,14 @@
-'use strict'
+const require = window.__nodeRequire || window.require
+;('use strict')
+
+import { CSSRGBA } from '../util/color-utils.js'
+import { Data } from '../data/data-object.js'
+import { File } from '../file/file-system-core.js'
+import { Inspector } from '../inspector/inspector.js'
+import { GL } from '../webgl/webgl-init.js'
+import { UI } from '../ui/ui-window.js'
+import { GUID } from '../file/guid.js'
+import { Title } from '../title/title-bar.js'
 
 // ******************************** 打印机类 ********************************
 
@@ -1441,4 +1451,4 @@ export class Printer {
 	}
 }
 
-window.Printer = Printer
+const path = require('path')
