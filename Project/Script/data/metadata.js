@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Data } from './data-object.js'
 import { FileItem } from '../file/file-item.js'
@@ -143,4 +142,4 @@ export const Meta = (function IIFE() {
 	}
 })()
 
-const path = require('path')
+import path from 'node:path'

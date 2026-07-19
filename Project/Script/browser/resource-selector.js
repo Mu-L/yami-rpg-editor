@@ -1,5 +1,5 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
+import { clipboard } from 'electron'
 import { $ } from '../util/dom.js'
 import { Data } from '../data/data-object.js'
 import { AudioManager } from '../audio/audio-manager.js'
@@ -322,4 +322,4 @@ Selector.confirm = function (event) {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

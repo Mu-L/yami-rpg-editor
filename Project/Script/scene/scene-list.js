@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 import { Data } from '../data/data-object.js'
 import { File } from '../file/file-system-core.js'
 import { Codec } from '../codec/codec.js'
@@ -554,4 +553,4 @@ Scene.list.onResume = function (item) {
 	Scene.requestRendering()
 }
 
-const path = require('path')
+import path from 'node:path'

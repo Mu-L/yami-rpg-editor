@@ -2,8 +2,8 @@
 import { $ } from '../util/dom.js'
 import { File } from '../file/file-system-core.js'
 import { Editor } from '../main/editor.js'
-const require = window.__nodeRequire || window.require
 
+import { ipcRenderer } from 'electron'
 // ******************************** 日志窗口 ********************************
 
 export const Log = {
@@ -32,7 +32,7 @@ Log.initialize = function () {
 	// 侦听事件
 	window.on('error', this.catchError)
 	window.on('unhandledrejection', this.catchRejection)
-	require('electron').ipcRenderer.on('tsc-log', this.tscLog)
+	ipcRenderer.on('tsc-log', this.tscLog)
 }
 
 // 抛出错误
@@ -75,12 +75,7 @@ Log.update = function () {
 					const file = File.route(path.textContent)
 					const line = parseInt(LINE.textContent)
 					const column = parseInt(COLUMN.textContent)
-					require('electron').ipcRenderer.send(
-						'open-vscode',
-						file,
-						line,
-						column
-					)
+					ipcRenderer.send('open-vscode', file, line, column)
 				}
 			}
 		}

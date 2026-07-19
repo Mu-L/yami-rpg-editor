@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { ipcRenderer } from 'electron'
 import { Path } from '../util/config.js'
 import { File } from './file-system-core.js'
 import { Data } from '../data/data-object.js'
@@ -9,7 +10,6 @@ import { FolderItem } from './folder-item.js'
 import { Log } from '../log/log-window.js'
 import { Editor } from '../main/editor.js'
 import { Window } from '../tools/window-object.js'
-const require = window.__nodeRequire || window.require
 
 // ******************************** 目录对象 ********************************
 
@@ -313,7 +313,7 @@ Directory.filterFiles = (function IIFE() {
 
 // 删除文件
 Directory.deleteFiles = (function IIFE() {
-	const { invoke } = require('electron').ipcRenderer
+	const { invoke } = ipcRenderer
 	const trash = async (files) => {
 		const promises = []
 		for (const file of files) {
@@ -498,4 +498,4 @@ Directory.windowFocus = function (event) {
 	setTimeout(() => Directory.update(), 100)
 }
 
-const path = require('path')
+import path from 'node:path'

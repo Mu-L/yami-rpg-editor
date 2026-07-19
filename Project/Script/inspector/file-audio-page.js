@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { $, getElementReader } from '../util/dom.js'
 import { AudioManager } from '../audio/audio-manager.js'
@@ -475,4 +474,4 @@ import { Timer } from '../util/timer.js'
 	Inspector.fileAudio = FileAudio
 }
 
-const path = require('path')
+import path from 'node:path'

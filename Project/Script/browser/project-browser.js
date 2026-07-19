@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { clipboard } from 'electron'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { Animation } from '../animation/animation-window.js'
@@ -22,7 +23,7 @@ import { Title } from '../title/title-bar.js'
 import { Local } from '../tools/localization.js'
 import { UI } from '../ui/ui-window.js'
 import { ctrl } from '../util/event-accessors.js'
-const require = window.__nodeRequire || window.require
+import child_process from 'node:child_process'
 
 // ******************************** 项目浏览器 ********************************
 
@@ -106,7 +107,7 @@ Browser.openScript = function (filePath) {
 		case 'specified-application':
 			if (path) {
 				const args = [File.path(filePath)]
-				require('child_process').spawn(path, args)
+				child_process.spawn(path, args)
 			}
 			break
 	}
@@ -870,4 +871,4 @@ Browser.bodyPopup = function (event) {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

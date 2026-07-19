@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { File } from '../file/file-system-core.js'
@@ -368,4 +367,4 @@ ImageClip.confirm = function (event) {
 	Window.close('imageClip')
 }.bind(ImageClip)
 
-const path = require('path')
+import path from 'node:path'

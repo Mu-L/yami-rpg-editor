@@ -16,20 +16,14 @@ export class FileHeadPane extends HTMLElement {
 		super()
 
 		// 设置属性
+		// 注意：自定义元素 constructor 期间禁止设置反射 attribute（addClass / name / hotkey 等会
+		// 反射为 DOM attribute，触发 "The result must not have attributes"）。
+		// 仅创建元素实例与赋值实例字段；属性赋值推迟到 connectedCallback。
 		this.address = document.createElement('file-head-address')
 		this.back = document.createElement('item')
-		this.back.addClass('upper-level-directory')
-		this.back.name = 'back'
 		this.back.textContent = '\uf0a8'
 		this.searcher = new TextBox()
-		this.searcher.addCloseButton()
-		this.searcher.addClass('file-head-searcher')
-		this.searcher.name = 'search'
 		this.view = new SliderBox()
-		this.view.addClass('file-head-view')
-		this.view.name = 'view'
-		this.view.input.max = '4'
-		this.view.activeWheel = true
 
 		// 侦听事件
 		this.on('pointerdown', this.pointerdown)
@@ -45,7 +39,25 @@ export class FileHeadPane extends HTMLElement {
 	connectedCallback() {
 		if (this._built) return
 		this._built = true
+		// 同步 appendChild 子元素：升级时序中 Local.update 会调 getElementsByName('back'/'view'/'search')
+		// 找子元素赋本地化，异步 setTimeout 会导致 Local.update 扑空报 'key is invalid'
+		if (this.childElementCount === 0) {
+			this.appendChild(this.address)
+			this.appendChild(this.back)
+			this.appendChild(this.searcher)
+			this.appendChild(this.view)
+		}
+		// back / searcher / view 的反射属性推迟至此（constructor 期间禁止反射 attribute）
+		this.back.addClass('upper-level-directory')
+		this.back.name = 'back'
 		this.back.setAttribute('hotkey', 'Escape/MouseBackButton')
+		this.searcher.addCloseButton()
+		this.searcher.addClass('file-head-searcher')
+		this.searcher.name = 'search'
+		this.view.addClass('file-head-view')
+		this.view.name = 'view'
+		this.view.input.max = '4'
+		this.view.activeWheel = true
 		this.view.setAttribute('hotkey', 'Ctrl+Wheel')
 	}
 
@@ -228,18 +240,6 @@ export class FileHeadPane extends HTMLElement {
 	viewInput(event) {
 		const head = this.parentNode
 		head.links.body.setViewIndex(this.read())
-	}
-
-	connectedCallback() {
-		if (this.childElementCount === 0) {
-			setTimeout(() => {
-				if (this.childElementCount !== 0) return
-				this.appendChild(this.address)
-				this.appendChild(this.back)
-				this.appendChild(this.searcher)
-				this.appendChild(this.view)
-			})
-		}
 	}
 }
 

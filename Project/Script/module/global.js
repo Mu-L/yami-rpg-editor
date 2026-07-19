@@ -21,11 +21,16 @@ import { Window } from '../tools/window-object.js'
 import { UI } from '../ui/ui-window.js'
 import { Updater } from '../update/updater.js'
 import { Variable } from '../variable/variable.js'
-const require = window.__nodeRequire || window.require
-const Path = require('path')
-const GlobalPath = Path.resolve(require('os').homedir(), '.openyami')
+import { shell } from 'electron'
+import Path from 'node:path'
+import os from 'node:os'
+import { fileURLToPath, URL } from 'node:url'
+import nodeFs from 'node:fs'
+import fsExtra from 'fs-extra'
+import nodeYauzl from 'yauzl'
+import MarkdownIt from 'markdown-it'
+const GlobalPath = Path.resolve(os.homedir(), '.openyami')
 // ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
-const { fileURLToPath, URL } = require('url')
 const _moduleURL = new URL(import.meta.url)
 const _modulePath =
 	_moduleURL.protocol === 'file:'
@@ -41,8 +46,8 @@ const __dirname =
 		: Path.resolve(process.cwd(), 'Project')
 // oxlint-disable no-unused-vars
 /* 小改动或者不确定放哪的都可以放这 */
-export const fs = require('fs-extra')
-export const yauzl = require('yauzl')
+export const fs = fsExtra
+export const yauzl = nodeYauzl
 
 export const CommunityVersion = '26071701' // 社区编辑器版本
 
@@ -60,9 +65,7 @@ EventBus.once('editor_loaded', () => {
 })
 
 export let PackMeta = JSON.parse(
-	require('fs').readFileSync(
-		Path.join(__dirname, 'Script/module', 'packmeta.json')
-	)
+	nodeFs.readFileSync(Path.join(__dirname, 'Script/module', 'packmeta.json'))
 ) // 资源 meta 信息
 
 export const TemplatesPath = Path.resolve(GlobalPath, 'Templates') // 模板路径
@@ -463,7 +466,7 @@ UpdateLog.open = function (items = null) {
 }
 
 export function markndownToHtml(markdown) {
-	var md = new require('markdown-it')()
+	var md = new MarkdownIt()
 	return md.render(markdown)
 }
 
@@ -582,7 +585,7 @@ UpdateLog.displayDonationList = function () {
 		link.textContent = donor.name
 		link.addEventListener('click', (e) => {
 			e.preventDefault()
-			require('electron').shell.openExternal(donor.link)
+			shell.openExternal(donor.link)
 		})
 		donorItem.appendChild(link)
 		donorItem.append(`: ￥${donor.amount.toFixed(2)}`)

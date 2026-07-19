@@ -12,9 +12,9 @@ import { TemplatesPath } from '../module/global.js'
 import { Local } from '../tools/localization.js'
 import { Window } from '../tools/window-object.js'
 import { Path } from '../util/config.js'
-const require = window.__nodeRequire || window.require
+import uglifyJs from 'uglify-js'
 // ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
-const { fileURLToPath, URL } = require('url')
+import { fileURLToPath, URL } from 'node:url'
 const _moduleURL = new URL(import.meta.url)
 const _modulePath =
 	_moduleURL.protocol === 'file:'
@@ -546,7 +546,7 @@ Deployment.copyFilesTo = function (dirPath) {
 Deployment.compressJavaScript = function (srcPath, dstPath) {
 	let uglifyJS
 	try {
-		uglifyJS = require('uglify-js')
+		uglifyJS = uglifyJs
 	} catch (e) {
 		uglifyJS = null
 	}
@@ -677,4 +677,4 @@ Deployment.confirm = function (event) {
 		})
 }
 
-const path = require('path')
+import path from 'node:path'

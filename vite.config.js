@@ -62,6 +62,21 @@ export default defineConfig({
 		// Electron file:// 协议下，chunkFilename 必须是相对路径
 		rollupOptions: {
 			input: resolve(__dirname, 'Project/index.html'),
+			// ESM import 'electron' / 'node:fs' 等走运行时 Electron renderer require 解析（nodeIntegration:true 启）；
+			// 不 externalize 则 vite build 报「Could not resolve 'electron'」
+			external: [
+				'electron',
+				'node:fs',
+				'node:path',
+				'node:url',
+				'node:os',
+				'node:child_process',
+				'axios',
+				'fs-extra',
+				'yauzl',
+				'uglify-js',
+				'markdown-it'
+			],
 			output: {
 				entryFileNames: 'assets/[name].js',
 				chunkFileNames: 'assets/[name]-[hash].js',
@@ -105,6 +120,25 @@ export default defineConfig({
 	publicDir: false, // 关闭默认 public/，用插件手动复制
 
 	plugins: [
+		// 解析 electron/axios 等 Node 模块——渲染进程 ESM import 走 window.__nodeRequire 桥
+		// Electron nodeIntegration:true 下 renderer 可以 require('electron')/require('axios')
+		// 但 ESM import 'electron' 被 Vite 拦截找不到模块，把 electron 和 axios 映射为虚拟模块
+		{
+			name: 'electron-renderer-resolve',
+			resolveId(id) {
+				if (id === 'electron' || id === 'axios') {
+					return '\0' + id
+				}
+			},
+			load(id) {
+				if (id === '\0electron') {
+					return `const e = window.__nodeRequire?.('electron') ?? {}; export const { clipboard, ipcRenderer, shell, webFrame } = e; export default e`
+				}
+				if (id === '\0axios') {
+					return `const a = window.__nodeRequire?.('axios') ?? {}; export default a`
+				}
+			}
+		},
 		{
 			name: 'copy-static-assets',
 			// buildFinished 钩子：把 vs/、Locales/、Templates/ 等原样复制到 dist/

@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Command } from '../command/command-object.js'
 import { Attribute } from '../attribute/attribute-window.js'
@@ -524,4 +523,4 @@ export class CustomBox extends HTMLElement {
 
 customElements.define('custom-box', CustomBox)
 
-const path = require('path')
+import path from 'node:path'

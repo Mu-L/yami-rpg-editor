@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Path } from '../util/config.js'
 import { Editor } from './editor.js'
@@ -29,4 +28,4 @@ Editor.updatePath = function (path) {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

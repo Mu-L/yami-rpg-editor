@@ -6,9 +6,14 @@ import { History } from '../tools/history.js'
 
 // 初始化
 Variable.initialize = function () {
-	if (!document.querySelector('#variable')) {
+	// 必须等 #variable 与 #variable-list 同时就绪，否则 list 为 null 时
+	// 后续 list.on(...) 会崩（"Cannot read properties of null (reading 'on')"）
+	if (
+		!document.querySelector('#variable') ||
+		!document.querySelector('#variable-list')
+	) {
 		console.warn(
-			'[Variable.initialize] #variable 尚未就绪，延迟到 DOMContentLoaded'
+			'[Variable.initialize] #variable / #variable-list 尚未就绪，延迟到 DOMContentLoaded'
 		)
 		document.addEventListener(
 			'DOMContentLoaded',

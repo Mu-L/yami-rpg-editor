@@ -3,15 +3,23 @@
 <html class="dark">
 
 <head>
-  <script>window.__nodeRequire = window.require</script>
+  <script>window.__nodeRequire=window.require</script>
   <title>Yami RPG Editor</title>
   <meta charset="utf-8" content="text/html" />
   <meta name="viewport" content="width=device-width" />
   <link rel="stylesheet" href="index.css" />
+
+  <!-- 社区- start -->
+  <!-- 指令 -->
+  <!-- 模块 -->
+  <!-- 社区 - end -->
+
+  <!-- monaco-editor 改由 ESM 包载入（module-init.js import 'monaco-editor' + 绑 window.monaco），
+       删 vs/loader.js + vs/editor/*.js + vs/language/*/*.js 旧 AMD 标签 -->
 </head>
 
-<script type="module" src="Script/main/module-init.js"></script>
-
+  <script type="importmap">{"imports":{"electron":"data:text/javascript;base64,Y29uc3QgZT13aW5kb3cuX19ub2RlUmVxdWlyZSgnZWxlY3Ryb24nKTtleHBvcnQgZGVmYXVsdCBlO2V4cG9ydCBjb25zdHtjbGlwYm9hcmQsaXBjUmVuZGVyZXIsc2hlbGwsd2ViRnJhbWV9PWU=","node:electron":"data:text/javascript;base64,Y29uc3QgZT13aW5kb3cuX19ub2RlUmVxdWlyZSgnZWxlY3Ryb24nKTtleHBvcnQgZGVmYXVsdCBlO2V4cG9ydCBjb25zdHtjbGlwYm9hcmQsaXBjUmVuZGVyZXIsc2hlbGwsd2ViRnJhbWV9PWU=","node:url":"data:text/javascript;base64,Y29uc3QgdT13aW5kb3cuX19ub2RlUmVxdWlyZSgndXJsJyk7ZXhwb3J0IGRlZmF1bHQgdTtleHBvcnQgY29uc3R7ZmlsZVVSTFRvUGF0aCxVUkx9PXU=","monaco-editor":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ21vbmFjby1lZGl0b3InKQ==","axios":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ2F4aW9zJykuZGVmYXVsdA==","fs-extra":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ2ZzLWV4dHJhJyk=","yauzl":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ3lhdXpsJyk=","markdown-it":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ21hcmtkb3duLWl0Jyk=","uglify-js":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ3VnbGlmeS1qcycp","fs":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ2ZzJyk=","path":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ3BhdGgnKQ==","os":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ29zJyk=","url":"data:text/javascript;base64,Y29uc3QgdT13aW5kb3cuX19ub2RlUmVxdWlyZSgndXJsJyk7ZXhwb3J0IGRlZmF1bHQgdTtleHBvcnQgY29uc3R7ZmlsZVVSTFRvUGF0aCxVUkx9PXU=","child_process":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ2NoaWxkX3Byb2Nlc3MnKQ==","node:fs":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ2ZzJyk=","node:path":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ3BhdGgnKQ==","node:os":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ29zJyk=","node:child_process":"data:text/javascript;base64,ZXhwb3J0IGRlZmF1bHQgd2luZG93Ll9fbm9kZVJlcXVpcmUoJ2NoaWxkX3Byb2Nlc3MnKQ=="}}</script>
+  <script type="module" src="Script/main/module-init.js"></script>
 <body>
 
   <!-- 标题栏 -->

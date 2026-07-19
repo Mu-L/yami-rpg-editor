@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 
 import { CSSRGBA } from '../util/color-utils.js'
@@ -1451,4 +1450,4 @@ export class Printer {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

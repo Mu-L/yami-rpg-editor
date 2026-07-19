@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { ipcRenderer } from 'electron'
 import { SettingConfig } from '../module/settingconfig.js'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
@@ -37,7 +38,6 @@ import { UI } from '../ui/ui-window.js'
 import { ctrl } from '../util/event-accessors.js'
 import { Variable } from '../variable/variable.js'
 import { GL } from '../webgl/webgl-init.js'
-const require = window.__nodeRequire || window.require
 
 // ******************************** 菜单栏对象 ********************************
 
@@ -76,7 +76,7 @@ Menubar.initialize = function () {
 
 // 开关全屏模式
 Menubar.toggleFullScreen = function () {
-	require('electron').ipcRenderer.send('toggle-full-screen')
+	ipcRenderer.send('toggle-full-screen')
 }
 
 // 弹出文件菜单
@@ -929,12 +929,9 @@ Menubar.revealSaveDirectory = async function () {
 	let saveDir
 	const { location, subdir } = Data.config.save
 	if (location !== 'local') {
-		const dirname = await require('electron').ipcRenderer.invoke(
-			'get-dir-path',
-			location
-		)
+		const dirname = await ipcRenderer.invoke('get-dir-path', location)
 		const folder = this.sanitizeFolderName(subdir)
-		saveDir = require('path').resolve(dirname, folder)
+		saveDir = path.resolve(dirname, folder)
 	} else {
 		saveDir = File.path('Save')
 	}

@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Data } from './data-object.js'
 import { Meta } from './metadata.js'
@@ -96,4 +95,4 @@ export class Manifest {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

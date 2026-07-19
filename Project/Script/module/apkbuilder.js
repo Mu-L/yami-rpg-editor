@@ -1,12 +1,12 @@
+import { ipcRenderer } from 'electron'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { Editor } from '../main/editor.js'
 import { TemplatesPath } from './global.js'
-const require = window.__nodeRequire || window.require
 export const ApkBuilder = new (class {
 	logs = []
 	constructor() {
-		require('electron').ipcRenderer.on('apk-log', (_, log) => {
+		ipcRenderer.on('apk-log', (_, log) => {
 			this.logs.push(log)
 			this.apkLog(log)
 		})
@@ -14,7 +14,7 @@ export const ApkBuilder = new (class {
 	build(cfg) {
 		$('#export-apk-content').clear()
 		const config = this.process(cfg)
-		require('electron').ipcRenderer.invoke('build-apk', config)
+		ipcRenderer.invoke('build-apk', config)
 	}
 	apkLog(log) {
 		const text = document.createElement('text')
@@ -36,14 +36,12 @@ export const ApkBuilder = new (class {
 		this.logs = []
 	}
 	stopBuild() {
-		require('electron')
-			.ipcRenderer.invoke('stop-build-apk')
-			.then(() => {
-				this.reset()
-			})
+		ipcRenderer.invoke('stop-build-apk').then(() => {
+			this.reset()
+		})
 	}
 	isBuilding() {
-		return require('electron').ipcRenderer.sendSync('isBuilding-apk')
+		return ipcRenderer.sendSync('isBuilding-apk')
 	}
 	processPathOnly(line) {
 		const pathPrefix = Path.resolve(

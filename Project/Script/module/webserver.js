@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { FSP } from '../file/file-system.js'
@@ -5,7 +6,6 @@ import { Log } from '../log/log-window.js'
 import { Editor } from '../main/editor.js'
 import { Deployment } from '../title/deploy-project-window.js'
 import { Window } from '../tools/window-object.js'
-const require = window.__nodeRequire || window.require
 export const WebServer = new (class {
 	port = 5959
 	constructor() {
@@ -15,10 +15,10 @@ export const WebServer = new (class {
 		$('#qr-close-button').on('click', () => this.stop())
 	}
 	get enable() {
-		return require('electron').ipcRenderer.sendSync('get-server-state')
+		return ipcRenderer.sendSync('get-server-state')
 	}
 	start(path) {
-		require('electron').ipcRenderer.invoke('start-server', {
+		ipcRenderer.invoke('start-server', {
 			port: this.port,
 			path
 		})
@@ -26,14 +26,14 @@ export const WebServer = new (class {
 		this.load()
 	}
 	toDataUrl(url) {
-		return require('electron').ipcRenderer.invoke('to-qrcode', url)
+		return ipcRenderer.invoke('to-qrcode', url)
 	}
 	getIp() {
-		return require('electron').ipcRenderer.invoke('get-local-ip')
+		return ipcRenderer.invoke('get-local-ip')
 	}
 	stop() {
 		if (!this.enable) return
-		require('electron').ipcRenderer.invoke('stop-server')
+		ipcRenderer.invoke('stop-server')
 		window.removeEventListener('beforeunload', this.stop)
 		this.load()
 	}

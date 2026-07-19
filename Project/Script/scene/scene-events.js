@@ -1,4 +1,4 @@
-const require = window.__nodeRequire || window.require
+import { clipboard } from 'electron'
 import { ctrl } from '../util/event-accessors.js'
 import { Data } from '../data/data-object.js'
 import { File } from '../file/file-system-core.js'
@@ -1931,4 +1931,4 @@ Scene.listPageResize = function (event) {
 	Scene.list.resize()
 }
 
-const path = require('path')
+import path from 'node:path'

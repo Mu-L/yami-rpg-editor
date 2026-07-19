@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { ipcRenderer } from 'electron'
 import { $, getElementWriter } from '../util/dom.js'
 import { Command } from '../command/command-object.js'
 import { Selector } from '../browser/resource-selector.js'
@@ -12,7 +13,6 @@ import { Title } from '../title/title-bar.js'
 import { Local } from '../tools/localization.js'
 import { AttributeListInterface } from '../tools/property-list.js'
 import { Window } from '../tools/window-object.js'
-const require = window.__nodeRequire || window.require
 
 // ******************************** 项目设置窗口 ********************************
 
@@ -228,7 +228,7 @@ Project.open = function () {
 Project.startTSC = function () {
 	if (!this.tscStarted) {
 		this.tscStarted = true
-		require('electron').ipcRenderer.send('start-tsc', File.root)
+		ipcRenderer.send('start-tsc', File.root)
 	}
 }
 
@@ -236,7 +236,7 @@ Project.startTSC = function () {
 Project.stopTSC = function () {
 	if (this.tscStarted) {
 		this.tscStarted = false
-		require('electron').ipcRenderer.send('stop-tsc')
+		ipcRenderer.send('stop-tsc')
 		Log.clear()
 	}
 }

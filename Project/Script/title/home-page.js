@@ -1,5 +1,4 @@
-﻿const require = window.__nodeRequire || window.require
-;('use strict')
+﻿;('use strict')
 import { SettingConfig } from '../module/settingconfig.js'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
@@ -492,4 +491,4 @@ Home.recentPointerup = function (event) {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

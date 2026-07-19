@@ -1,4 +1,6 @@
 ﻿'use strict'
+import { ipcRenderer, shell } from 'electron'
+import nodeFs from 'node:fs'
 import { request } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { GUID } from './guid.js'
@@ -10,7 +12,6 @@ import { Particle } from '../particle/particle-window.js'
 import { Scene } from '../scene/scene-window.js'
 import { Cursor } from '../tools/pointer-object.js'
 import { UI } from '../ui/ui-window.js'
-const require = window.__nodeRequire || window.require
 
 // ******************************** 文件系统 ********************************
 
@@ -98,7 +99,7 @@ File.get = function (descriptor) {
 			// 否则 .ts 全读炸。改：JSON.parse 失败时回退原文本（兼容 .ts/.txt 等非 JSON 文件）
 			return new Promise((resolve, reject) => {
 				try {
-					const fs = require('fs')
+					const fs = nodeFs
 					const cleanPath = path.replace(/\?ver=\d+$/, '')
 					const absPath = /^[A-Za-z]:[\\/]|^[/\\]/.test(cleanPath)
 						? cleanPath // 已是绝对路径（含盘符或 Unix 根）
@@ -159,7 +160,7 @@ File.save = function (hint = true) {
 	}
 
 	// 这里没有考虑写入失败的情况
-	return require('electron').ipcRenderer.invoke('wait-write-file')
+	return ipcRenderer.invoke('wait-write-file')
 }
 
 // 保存文件
@@ -307,30 +308,28 @@ File.getImageResolution = (function IIFE() {
 
 // 打开资源管理器路径
 File.openPath = function (path) {
-	require('electron').ipcRenderer.send('open-path', path)
+	ipcRenderer.send('open-path', path)
 }
 
 // 打开URL
 File.openURL = function (url) {
 	if (url) {
-		require('electron').shell.openExternal(url)
+		shell.openExternal(url)
 	}
 }
 
 // 在资源管理器中显示
 File.showInExplorer = function (path) {
-	require('electron').ipcRenderer.send('show-item-in-folder', path)
+	ipcRenderer.send('show-item-in-folder', path)
 }
 
 // 显示打开对话框
 File.showOpenDialog = function (options) {
-	const { ipcRenderer } = require('electron')
 	return ipcRenderer.invoke('show-open-dialog', options)
 }
 
 // 显示保存对话框
 File.showSaveDialog = function (options) {
-	const { ipcRenderer } = require('electron')
 	return ipcRenderer.invoke('show-save-dialog', options)
 }
 

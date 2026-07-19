@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 
 // ******************************** Empty State ********************************
@@ -62,4 +61,4 @@ export class EmptyState extends HTMLElement {
 
 customElements.define('empty-state', EmptyState)
 
-const path = require('path')
+import path from 'node:path'

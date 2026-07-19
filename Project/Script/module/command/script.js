@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { ipcRenderer } from 'electron'
 import { $ } from '../../util/dom.js'
 import { Command } from '../../command/command-object.js'
 import { Editor } from '../../main/editor.js'
@@ -9,7 +10,6 @@ import { Local } from '../../tools/localization.js'
 import { Window } from '../../tools/window-object.js'
 import { Path } from '../../util/config.js'
 import * as monaco from 'monaco-editor'
-const require = window.__nodeRequire || window.require
 
 Command.cases.script = new CommandSchema({
 	name: 'script',
@@ -134,10 +134,7 @@ Command.cases.script = new CommandSchema({
 			if (currentLanguage === 'javascript') {
 				new Function(script)
 			} else {
-				script = await require('electron').ipcRenderer.invoke(
-					'tsc-file',
-					script
-				)
+				script = await ipcRenderer.invoke('tsc-file', script)
 				if (script.error) {
 					throw script.error
 				}

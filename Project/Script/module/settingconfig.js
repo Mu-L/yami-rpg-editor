@@ -5,9 +5,9 @@ import { Local } from '../tools/localization.js'
 import { ApkBuilder } from './apkbuilder.js'
 import { Resources } from './resource.js'
 import { WebServer } from './webserver.js'
-const require = window.__nodeRequire || window.require
-const fs = require('fs')
-export const path = require('path')
+import nodeFs from 'node:fs'
+import nodePath from 'node:path'
+export const path = nodePath
 
 export const SettingConfig = new (class {
 	config = {}
@@ -178,8 +178,8 @@ export const SettingConfig = new (class {
 		this.save()
 	}
 	load() {
-		if (!fs.existsSync(this.configPath)) {
-			fs.writeFileSync(
+		if (!nodeFs.existsSync(this.configPath)) {
+			nodeFs.writeFileSync(
 				this.configPath,
 				JSON.stringify(this.defaultConfig),
 				'utf-8'
@@ -187,7 +187,7 @@ export const SettingConfig = new (class {
 			this.config = JSON.parse(JSON.stringify(this.defaultConfig))
 			return
 		}
-		this.config = JSON.parse(fs.readFileSync(this.configPath, 'utf-8'))
+		this.config = JSON.parse(nodeFs.readFileSync(this.configPath, 'utf-8'))
 		// 比对，如果有新增字段，则合并
 		const patch = (_p_obj, _t_obj) => {
 			for (const key in _p_obj) {
@@ -336,14 +336,18 @@ export const SettingConfig = new (class {
 		write6('accelerationNode', this.config.github.accelerationNode)
 	}
 	save() {
-		if (!fs.existsSync(this.configPath)) {
-			return fs.writeFileSync(
+		if (!nodeFs.existsSync(this.configPath)) {
+			return nodeFs.writeFileSync(
 				this.configPath,
 				JSON.stringify(this.defaultConfig),
 				'utf-8'
 			)
 		}
-		fs.writeFileSync(this.configPath, JSON.stringify(this.config), 'utf-8')
+		nodeFs.writeFileSync(
+			this.configPath,
+			JSON.stringify(this.config),
+			'utf-8'
+		)
 		// 应用配置
 		this.apply()
 	}

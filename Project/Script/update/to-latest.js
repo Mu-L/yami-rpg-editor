@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Path } from '../util/config.js'
 import { Data } from '../data/data-object.js'
@@ -8,7 +7,7 @@ import { UpdateLog } from '../log/update-log-window.js'
 import { Editor } from '../main/editor.js'
 import { Updater } from './updater.js'
 // ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
-const { fileURLToPath, URL } = require('url')
+import { fileURLToPath, URL } from 'node:url'
 const _moduleURL = new URL(import.meta.url)
 const _modulePath =
 	_moduleURL.protocol === 'file:'
@@ -112,4 +111,4 @@ Updater.updateToLatest = function (version) {
 	UpdateLog.open()
 }
 
-const path = require('path')
+import path from 'node:path'

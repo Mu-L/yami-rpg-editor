@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 
 import { ParamList } from '../components/param-list.js'
@@ -181,4 +180,4 @@ export class ScriptListInterface {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

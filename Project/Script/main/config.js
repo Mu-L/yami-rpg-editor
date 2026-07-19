@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { GlobalPath, Path } from '../util/config.js'
 import { Animation } from '../animation/animation-window.js'
@@ -93,4 +92,4 @@ Editor.loadConfig = function () {
 	Particle.loadFromConfig(config)
 }
 
-const path = require('path')
+import path from 'node:path'

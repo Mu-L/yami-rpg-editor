@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Path } from '../util/config.js'
 import { Animation } from '../animation/animation-window.js'
@@ -16,7 +15,7 @@ import { UI } from '../ui/ui-window.js'
 import { Updater } from './updater.js'
 import { Texture } from '../webgl/texture.js'
 // ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
-const { fileURLToPath, URL } = require('url')
+import { fileURLToPath, URL } from 'node:url'
 const _moduleURL = new URL(import.meta.url)
 const _modulePath =
 	_moduleURL.protocol === 'file:'
@@ -433,4 +432,4 @@ Updater.updateIncrementalChanges = function (version) {
 	updater.showMessage()
 }
 
-const path = require('path')
+import path from 'node:path'

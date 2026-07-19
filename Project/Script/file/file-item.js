@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { request } from '../util/dom.js'
 import { Data } from '../data/data-object.js'
@@ -225,4 +224,4 @@ export class FileItem {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Data } from '../data/data-object.js'
 import { Animation } from '../animation/animation-window.js'
@@ -69,4 +68,4 @@ Editor.saveManifest = function () {
 	return Data.saveManifest()
 }
 
-const path = require('path')
+import path from 'node:path'

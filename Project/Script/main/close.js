@@ -1,4 +1,5 @@
 'use strict'
+import { ipcRenderer } from 'electron'
 import { Data } from '../data/data-object.js'
 import { AudioManager } from '../audio/audio-manager.js'
 import { Browser } from '../browser/project-browser.js'
@@ -15,7 +16,6 @@ import { Title } from '../title/title-bar.js'
 import { Window } from '../tools/window-object.js'
 import { UI } from '../ui/ui-window.js'
 import { GL } from '../webgl/webgl-init.js'
-const require = window.__nodeRequire || window.require
 
 // 关闭项目
 Editor.close = function (save = true) {
@@ -52,5 +52,5 @@ Editor.quit = function () {
 	this.saveProject()
 	this.saveManifest()
 	WebServer.stop()
-	require('electron').ipcRenderer.send('force-close-window')
+	ipcRenderer.send('force-close-window')
 }

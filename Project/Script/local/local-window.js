@@ -18,8 +18,7 @@ import { Local } from '../tools/localization.js'
 import { Selection } from '../tools/text-capture.js'
 import { UndoManager } from '../tools/undo-manager.js'
 import { Window } from '../tools/window-object.js'
-const require = window.__nodeRequire || window.require
-
+import { clipboard, ipcRenderer } from 'electron'
 // ******************************** 游戏本地化窗口 ********************************
 
 export const Localization = {
@@ -696,7 +695,7 @@ Localization.apply = function (event) {
 
 // 导入Excel按钮 - 鼠标点击事件
 Localization.fromExcel = async function (event) {
-	const items = await require('electron').ipcRenderer.invoke('from-excel')
+	const items = await ipcRenderer.invoke('from-excel')
 	if (
 		JSON.stringify(items) == JSON.stringify(Data.localization.list) ||
 		!items.length
@@ -712,7 +711,7 @@ Localization.fromExcel = async function (event) {
 
 // 导出Excel按钮 - 鼠标点击事件
 Localization.toExcel = function (event) {
-	require('electron').ipcRenderer.invoke('to-excel', {
+	ipcRenderer.invoke('to-excel', {
 		langs: this.languages,
 		list: Data.localization.list
 	})

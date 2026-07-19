@@ -1,4 +1,5 @@
-﻿import { GlobalPath, Path } from '../util/config.js'
+﻿import { ipcRenderer } from 'electron'
+import { GlobalPath, Path } from '../util/config.js'
 import { SettingConfig } from './settingconfig.js'
 import { $ } from '../util/dom.js'
 import { Window } from '../tools/window-object.js'
@@ -17,7 +18,6 @@ import {
 	setNoResourceObj
 } from './global.js'
 import { Local } from '../tools/localization.js'
-const require = window.__nodeRequire || window.require
 export const Resources = new (class {
 	window = $('#resource')
 	content = $('#resource-content')
@@ -88,7 +88,7 @@ export const Resources = new (class {
 
 		$('#resource-check-version').on('click', () => this.checkVersion())
 		$('#resource-open-dir').on('click', () =>
-			require('electron').ipcRenderer.send('open-path', GlobalPath)
+			ipcRenderer.send('open-path', GlobalPath)
 		)
 
 		// 更新节点信息

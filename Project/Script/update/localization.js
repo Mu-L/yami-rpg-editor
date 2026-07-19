@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Data } from '../data/data-object.js'
 import { File } from '../file/file-system-core.js'
@@ -14,4 +13,4 @@ Updater.createLocalization = async function (verNum) {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Path } from '../util/config.js'
 import { Meta } from '../data/metadata.js'
@@ -201,4 +200,4 @@ export class FolderItem {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

@@ -1,8 +1,7 @@
 import { fs } from './global.js'
-// axios 是 Node 模块（node_modules/axios），浏览器 ESM 下裸 import 'axios' 解析不了；
-// Electron nodeIntegration:true 下用 require 桥（window.__nodeRequire || window.require）调 Node
-const require = window.__nodeRequire || window.require
-const axios = require('axios')
+// axios 是 Node 模块，浏览器 ESM 下裸 import 'axios' 解析不了；
+// Electron nodeIntegration:true 下用 window.__nodeRequire 桥调 Node require
+import axios from 'axios'
 export { axios }
 
 // dev 模式下 axios 跨域请求 GitHub raw + jsdelivr CDN 撞浏览器 CORS 政策；

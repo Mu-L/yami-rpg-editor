@@ -1,4 +1,5 @@
 ﻿'use strict'
+import { ipcRenderer } from 'electron'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { ctrl } from '../util/event-accessors.js'
@@ -21,7 +22,6 @@ import { Deployment } from './deploy-project-window.js'
 import { NewProject } from './new-project-window.js'
 import { Local } from '../tools/localization.js'
 import { Window } from '../tools/window-object.js'
-const require = window.__nodeRequire || window.require
 
 // ******************************** 标题栏对象 ********************************
 
@@ -77,7 +77,6 @@ export const Title = {
 // 初始化
 Title.initialize = function () {
 	// 设置按钮图标
-	const { ipcRenderer } = require('electron')
 	ipcRenderer.invoke('update-max-min-icon').then((mode) => {
 		switch (mode) {
 			case 'maximize':
@@ -350,7 +349,6 @@ Title.playGame = async function () {
 		await File.save(false)
 
 		// 创建播放器窗口
-		const { ipcRenderer } = require('electron')
 		ipcRenderer.send('create-player-window', File.root)
 
 		// 窗口关闭事件
@@ -463,7 +461,7 @@ Title.loadFromProject = function (project) {
 Title.windowBeforeClose = function (event) {
 	if (Window.frames.length === 0) {
 		// 阻止关闭窗口
-		require('electron').ipcRenderer.send('prevent-close-window')
+		ipcRenderer.send('prevent-close-window')
 		Title.askWhetherToSave(() => {
 			Editor.quit()
 		})
@@ -693,12 +691,12 @@ Title.playClick = function (event) {
 
 // 最小化按钮 - 鼠标点击事件
 Title.minimizeClick = function (event) {
-	require('electron').ipcRenderer.send('minimize-window')
+	ipcRenderer.send('minimize-window')
 }
 
 // 最大化按钮 - 鼠标点击事件
 Title.maximizeClick = function (event) {
-	require('electron').ipcRenderer.send('maximize-window')
+	ipcRenderer.send('maximize-window')
 }
 
 // 关闭按钮 - 鼠标点击事件

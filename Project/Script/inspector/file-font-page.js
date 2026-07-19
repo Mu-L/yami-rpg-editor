@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { $ } from '../util/dom.js'
 import { File } from '../file/file-system-core.js'
@@ -114,4 +113,4 @@ import { Editor } from '../main/editor.js'
 	Inspector.fileFont = FileFont
 }
 
-const path = require('path')
+import path from 'node:path'

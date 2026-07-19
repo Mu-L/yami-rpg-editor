@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { File } from '../file/file-system-core.js'
 import { AudioManager } from './audio-manager.js'
@@ -88,4 +87,4 @@ export class AudioPlayer {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { $, getElementWriter } from '../util/dom.js'
 import { Timer } from '../util/timer.js'
@@ -328,4 +327,4 @@ NewProject.confirm = function (event) {
 		})
 }
 
-const path = require('path')
+import path from 'node:path'

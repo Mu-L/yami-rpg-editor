@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import './element-methods.js'
 import { Path } from '../util/config.js'
@@ -718,4 +717,4 @@ export class FileNavPane extends HTMLElement {
 
 customElements.define('file-nav-pane', FileNavPane)
 
-const path = require('path')
+import path from 'node:path'

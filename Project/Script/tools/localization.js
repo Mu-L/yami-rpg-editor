@@ -1,7 +1,7 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
+import { fileURLToPath, URL } from 'node:url'
 import { SelectBox } from '../components/select-box.js'
 import { TextBox } from '../components/text-box.js'
 import { WindowFrame } from '../components/window-frame.js'
@@ -323,4 +323,4 @@ Local.showInExplorer = function () {
 	}
 }
 
-const path = require('path')
+import path from 'node:path'

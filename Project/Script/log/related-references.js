@@ -1,4 +1,4 @@
-const require = window.__nodeRequire || window.require
+import path from 'node:path'
 ;('use strict')
 import { $ } from '../util/dom.js'
 import { ctrl } from '../util/event-accessors.js'
@@ -8,6 +8,7 @@ import { Data } from '../data/data-object.js'
 import { GUID } from '../file/guid.js'
 import { Local } from '../tools/localization.js'
 
+import { clipboard } from 'electron'
 // ******************************** 相关引用 ********************************
 
 export const Reference = {
@@ -892,5 +893,3 @@ Reference.getPointermoveListener = function (list) {
 	}
 	return listener
 }
-
-const path = require('path')

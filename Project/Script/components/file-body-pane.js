@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { Timer } from '../util/timer.js'
 import { Data } from '../data/data-object.js'
@@ -1747,4 +1746,4 @@ export class FileBodyPane extends HTMLElement {
 
 customElements.define('file-body-pane', FileBodyPane)
 
-const path = require('path')
+import path from 'node:path'

@@ -1,4 +1,3 @@
-const require = window.__nodeRequire || window.require
 ;('use strict')
 import { FileNavPane } from './file-nav-pane.js'
 import { FileBodyPane } from './file-body-pane.js'
@@ -531,4 +530,4 @@ export class FileBrowser extends HTMLElement {
 
 customElements.define('file-browser', FileBrowser)
 
-const path = require('path')
+import path from 'node:path'

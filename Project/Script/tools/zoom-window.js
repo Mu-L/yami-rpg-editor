@@ -2,8 +2,7 @@
 import { $ } from '../util/dom.js'
 import { Window } from './window-object.js'
 import { Editor } from '../main/editor.js'
-const require = window.__nodeRequire || window.require
-
+import { webFrame } from 'electron'
 // ******************************** 缩放窗口 ********************************
 
 export const Zoom = {
@@ -30,13 +29,11 @@ Zoom.open = function () {
 
 // 获取缩放系数
 Zoom.getFactor = function () {
-	return require('electron').webFrame.getZoomFactor()
+	return webFrame.getZoomFactor()
 }
 
 // 确定按钮 - 鼠标点击事件
 Zoom.confirm = function (event) {
 	Window.close('zoom')
-	require('electron').webFrame.setZoomFactor(
-		(Editor.config.zoom = $('#zoom-factor').read())
-	)
+	webFrame.setZoomFactor((Editor.config.zoom = $('#zoom-factor').read()))
 }
