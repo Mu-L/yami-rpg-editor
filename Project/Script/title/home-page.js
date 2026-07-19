@@ -1,5 +1,4 @@
-﻿;('use strict')
-import { SettingConfig } from '../module/settingconfig.js'
+﻿import { SettingConfig } from '../module/settingconfig.js'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { File } from '../file/file-system-core.js'

@@ -1,4 +1,3 @@
-'use strict'
 import { $ } from '../../util/dom.js'
 import { Command } from '../../command/command-object.js'
 import { VariableGetter } from '../../command/variable-accessor-window.js'

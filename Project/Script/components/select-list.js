@@ -1,5 +1,4 @@
-﻿'use strict'
-import './element-methods.js'
+﻿import './element-methods.js'
 import { Window } from '../tools/window-object.js'
 import { CommonList } from './common-list.js'
 import { Home } from '../title/home-page.js'

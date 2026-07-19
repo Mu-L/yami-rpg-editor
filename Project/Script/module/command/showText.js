@@ -1,4 +1,3 @@
-'use strict'
 import { $, measureText } from '../../util/dom.js'
 import { Command } from '../../command/command-object.js'
 import { Token } from '../../command/mark-string-manager.js'

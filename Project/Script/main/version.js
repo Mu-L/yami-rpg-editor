@@ -1,4 +1,3 @@
-'use strict'
 import { File } from '../file/file-system-core.js'
 import { Directory } from '../file/directory-object.js'
 import { Editor } from './editor.js'

@@ -1,4 +1,3 @@
-;('use strict')
 import { $ } from '../util/dom.js'
 import { File } from '../file/file-system-core.js'
 import { AudioManager } from '../audio/audio-manager.js'

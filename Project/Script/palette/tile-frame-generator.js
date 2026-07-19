@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Window } from '../tools/window-object.js'
 
 // ******************************** 图块帧生成器窗口 ********************************

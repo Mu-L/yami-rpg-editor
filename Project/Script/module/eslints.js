@@ -1,4 +1,3 @@
-'use strict'
 import { EventBus } from './eventbus.js'
 
 /* 辅助线 */

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, measureText } from '../util/dom.js'
+﻿import { $, measureText } from '../util/dom.js'
 import { File } from '../file/file-system-core.js'
 import { Scene } from '../scene/scene-window.js'
 import { Cursor } from '../tools/pointer-object.js'

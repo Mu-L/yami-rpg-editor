@@ -1,4 +1,3 @@
-;('use strict')
 import { $, getElementReader } from '../util/dom.js'
 import { AudioManager } from '../audio/audio-manager.js'
 import { Browser } from '../browser/project-browser.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { Command } from '../command/command-object.js'
 import { IfCondition } from '../command/conditional-condition-window.js'
 import { TreeList } from '../components/tree-list.js'

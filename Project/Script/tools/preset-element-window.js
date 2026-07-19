@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Data } from '../data/data-object.js'
 import { Window } from './window-object.js'
 import { UI } from '../ui/ui-window.js'

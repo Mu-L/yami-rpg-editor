@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { CSSRGBA } from '../util/color-utils.js'
+﻿import { CSSRGBA } from '../util/color-utils.js'
 import { getVariable } from '../util/safe.js'
 import { GameLocal } from '../local/local-object.js'
 import { Printer } from '../printer/printer.js'

@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { createPropertyWindow } from './property-window-factory.js'
+﻿import { createPropertyWindow } from './property-window-factory.js'
 import { Command } from './command-object.js'
 
 // ******************************** 设置窗口 - 属性窗口 ********************************

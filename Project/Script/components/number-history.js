@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { HistoryTimer } from './history-timer.js'
+﻿import { HistoryTimer } from './history-timer.js'
 
 // ******************************** 数值操作历史 ********************************
 

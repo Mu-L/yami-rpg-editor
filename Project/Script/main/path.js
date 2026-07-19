@@ -1,4 +1,3 @@
-;('use strict')
 import { Path } from '../util/config.js'
 import { Editor } from './editor.js'
 

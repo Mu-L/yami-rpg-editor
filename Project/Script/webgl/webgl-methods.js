@@ -1,5 +1,4 @@
-﻿'use strict'
-import { measureText } from '../util/dom.js'
+﻿import { measureText } from '../util/dom.js'
 import { Data } from '../data/data-object.js'
 import { File } from '../file/file-system-core.js'
 import { BaseTexture } from './base-texture.js'

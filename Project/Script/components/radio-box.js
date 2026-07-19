@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { RadioProxy } from './radio-proxy.js'
+﻿import { RadioProxy } from './radio-proxy.js'
 
 // ******************************** 单选框 ********************************
 

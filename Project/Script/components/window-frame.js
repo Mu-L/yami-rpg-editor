@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { TitleBar } from './title-bar.js'
+﻿import { TitleBar } from './title-bar.js'
 import { Layout } from '../layout/layout.js'
 import { Window } from '../tools/window-object.js'
 

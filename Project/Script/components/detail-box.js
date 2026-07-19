@@ -1,5 +1,4 @@
-﻿'use strict'
-import { DetailSummary } from './detail-summary.js'
+﻿import { DetailSummary } from './detail-summary.js'
 
 // ******************************** 细节框 ********************************
 

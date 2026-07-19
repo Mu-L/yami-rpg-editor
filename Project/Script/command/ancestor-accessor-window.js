@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader } from '../util/dom.js'
+﻿import { $, getElementReader } from '../util/dom.js'
 import { ElementGetter } from './element-accessor-window.js'
 import { VariableGetter } from './variable-accessor-window.js'
 import { PresetElement } from '../tools/preset-element-window.js'

@@ -1,6 +1,5 @@
 import { CustomBox } from './custom-box.js'
 import { TextArea } from './text-area.js'
-;('use strict')
 
 // ******************************** 字符串变量框 ********************************
 

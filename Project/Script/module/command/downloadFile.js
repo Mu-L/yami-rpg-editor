@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../../util/dom.js'
 import { Command } from '../../command/command-object.js'
 import { VariableGetter } from '../../command/variable-accessor-window.js'
 import { RequestkeyValueBind } from './requestURL.js'

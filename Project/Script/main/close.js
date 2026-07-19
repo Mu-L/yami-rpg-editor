@@ -1,4 +1,3 @@
-'use strict'
 import { ipcRenderer } from 'electron'
 import { Data } from '../data/data-object.js'
 import { AudioManager } from '../audio/audio-manager.js'

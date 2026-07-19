@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { SliderBox } from './slider-box.js'
+﻿import { SliderBox } from './slider-box.js'
 import { Menu } from './menu-list.js'
 import { TextBox } from './text-box.js'
 import { FolderItem } from '../file/folder-item.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { CommandSchema } from '../module/command/schema.js'
+﻿import { CommandSchema } from '../module/command/schema.js'
 import { Inspector } from '../inspector/inspector.js'
 
 // ******************************** 指令对象 ********************************

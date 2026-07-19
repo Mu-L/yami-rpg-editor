@@ -1,5 +1,4 @@
-﻿'use strict'
-import { clipboard } from 'electron'
+﻿import { clipboard } from 'electron'
 import { $ } from '../util/dom.js'
 import { Timer } from '../util/timer.js'
 import { ctrl } from '../util/event-accessors.js'

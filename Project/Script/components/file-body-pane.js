@@ -1,4 +1,3 @@
-;('use strict')
 import { Timer } from '../util/timer.js'
 import { Data } from '../data/data-object.js'
 import { Window } from '../tools/window-object.js'

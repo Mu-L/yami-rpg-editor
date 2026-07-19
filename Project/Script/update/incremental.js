@@ -1,4 +1,3 @@
-;('use strict')
 import { Path } from '../util/config.js'
 import { Animation } from '../animation/animation-window.js'
 import { Data } from '../data/data-object.js'

@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { INTRGBA } from '../util/color-utils.js'
+﻿import { INTRGBA } from '../util/color-utils.js'
 import { Printer } from '../printer/printer.js'
 import { UI } from './ui-window.js'
 import { Texture } from '../webgl/texture.js'

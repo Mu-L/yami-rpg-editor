@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Window } from './window-object.js'
 import { Editor } from '../main/editor.js'
 import { webFrame } from 'electron'

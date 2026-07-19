@@ -1,4 +1,3 @@
-;('use strict')
 import { Data } from '../data/data-object.js'
 import { Animation } from '../animation/animation-window.js'
 import { Browser } from '../browser/project-browser.js'

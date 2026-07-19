@@ -1,5 +1,4 @@
 import path from 'node:path'
-;('use strict')
 import { $ } from '../util/dom.js'
 import { ctrl } from '../util/event-accessors.js'
 import { Window } from '../tools/window-object.js'

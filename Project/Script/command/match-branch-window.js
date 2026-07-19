@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Command } from './command-object.js'
 import { SwitchCondition } from './match-condition-window.js'
 import { Window } from '../tools/window-object.js'

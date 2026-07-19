@@ -1,5 +1,4 @@
-﻿'use strict'
-import './element-methods.js'
+﻿import './element-methods.js'
 
 // ******************************** 普通列表 ********************************
 

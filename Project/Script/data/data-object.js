@@ -1,5 +1,4 @@
-﻿'use strict'
-import { File } from '../file/file-system-core.js'
+﻿import { File } from '../file/file-system-core.js'
 import { UI } from '../ui/ui-window.js'
 import { GUID } from '../file/guid.js'
 import { AttributeContext } from '../attribute/attribute-context.js'

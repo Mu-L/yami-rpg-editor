@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { File } from '../file/file-system-core.js'
 import { UI } from '../ui/ui-window.js'
 import { Menu } from '../components/menu-list.js'

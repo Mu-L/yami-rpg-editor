@@ -1,4 +1,3 @@
-;('use strict')
 import { File } from '../file/file-system-core.js'
 import { AudioManager } from './audio-manager.js'
 import { Reverb } from './reverb.js'

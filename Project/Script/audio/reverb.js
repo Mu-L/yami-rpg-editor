@@ -1,5 +1,4 @@
 import { AudioManager } from './audio-manager.js'
-;('use strict')
 
 // ******************************** 混响类 ********************************
 

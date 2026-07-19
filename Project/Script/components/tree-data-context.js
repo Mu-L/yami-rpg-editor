@@ -1,4 +1,3 @@
-'use strict'
 import { Local } from '../tools/localization.js'
 
 // ******************************** 树形数据上下文基类 ********************************

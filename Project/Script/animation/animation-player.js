@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Data } from '../data/data-object.js'
+﻿import { Data } from '../data/data-object.js'
 import { Scene } from '../scene/scene-window.js'
 import { GL } from '../webgl/webgl-init.js'
 import { UI } from '../ui/ui-window.js'

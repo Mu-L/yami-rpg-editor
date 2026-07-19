@@ -1,4 +1,3 @@
-;('use strict')
 import './element-methods.js'
 import { Path } from '../util/config.js'
 import { File } from '../file/file-system-core.js'

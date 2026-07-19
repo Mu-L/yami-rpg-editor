@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Window } from '../tools/window-object.js'
 import { StringVar } from '../components/string-var.js'
 

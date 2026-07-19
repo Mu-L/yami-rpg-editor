@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Data } from '../data/data-object.js'
 import { Browser } from '../browser/project-browser.js'
 import { File } from '../file/file-system-core.js'

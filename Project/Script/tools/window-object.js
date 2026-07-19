@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, measureText } from '../util/dom.js'
+﻿import { $, measureText } from '../util/dom.js'
 import { Scene } from '../scene/scene-window.js'
 import { UI } from '../ui/ui-window.js'
 import { Animation } from '../animation/animation-window.js'

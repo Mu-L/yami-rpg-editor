@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Scene } from '../scene/scene-window.js'
+﻿import { Scene } from '../scene/scene-window.js'
 import { GL } from '../webgl/webgl-init.js'
 
 // ******************************** 编解码器 ********************************

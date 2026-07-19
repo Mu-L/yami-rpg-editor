@@ -1,4 +1,3 @@
-'use strict'
 import { $, getElementWriter } from '../util/dom.js'
 import { Inspector } from './inspector.js'
 import { EventListInterface } from '../tools/event-list.js'

@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { CheckBox } from './check-box.js'
+﻿import { CheckBox } from './check-box.js'
 import { ColorBox } from './color-box.js'
 import { KeyboardBox } from './keyboard-box.js'
 import { ParamList } from './param-list.js'

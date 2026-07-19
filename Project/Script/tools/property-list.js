@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { Attribute } from '../attribute/attribute-window.js'
 import { Command } from '../command/command-object.js'
 import { SelectBox } from '../components/select-box.js'

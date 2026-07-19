@@ -1,4 +1,3 @@
-'use strict'
 import { $ } from '../util/dom.js'
 import { Variable } from './variable.js'
 import { Reference } from '../log/related-references.js'

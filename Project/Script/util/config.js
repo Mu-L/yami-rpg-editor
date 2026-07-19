@@ -1,5 +1,3 @@
-'use strict'
-
 import { ipcRenderer } from 'electron'
 import nodePath from 'node:path'
 import os from 'node:os'

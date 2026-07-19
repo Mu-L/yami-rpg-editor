@@ -1,5 +1,3 @@
-;('use strict')
-
 import { CSSRGBA } from '../util/color-utils.js'
 import { Data } from '../data/data-object.js'
 import { File } from '../file/file-system-core.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { Editor } from '../main/editor.js'
 import { Window } from '../tools/window-object.js'
 

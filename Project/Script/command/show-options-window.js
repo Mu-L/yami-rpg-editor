@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Command } from './command-object.js'
 import { GameLocal } from '../local/local-object.js'
 import { Window } from '../tools/window-object.js'

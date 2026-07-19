@@ -1,4 +1,3 @@
-'use strict'
 import { Data } from '../data/data-object.js'
 import { Toast } from '../components/toast.js'
 

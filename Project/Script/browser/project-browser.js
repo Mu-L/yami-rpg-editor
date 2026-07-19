@@ -1,5 +1,4 @@
-﻿'use strict'
-import { clipboard } from 'electron'
+﻿import { clipboard } from 'electron'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { Animation } from '../animation/animation-window.js'

@@ -1,4 +1,3 @@
-'use strict'
 import { $ } from '../util/dom.js'
 import { Command } from './command-object.js'
 import { Window } from '../tools/window-object.js'

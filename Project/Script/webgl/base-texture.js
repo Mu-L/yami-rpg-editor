@@ -1,5 +1,4 @@
-﻿'use strict'
-import { GL } from './webgl-init.js'
+﻿import { GL } from './webgl-init.js'
 
 // ******************************** 基础纹理类 ********************************
 

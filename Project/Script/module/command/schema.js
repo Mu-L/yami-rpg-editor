@@ -1,5 +1,3 @@
-'use strict'
-
 import { $ } from '../../util/dom.js'
 import { reportError } from '../../util/safe.js'
 import { ActorGetter } from '../../command/actor-accessor-window.js'

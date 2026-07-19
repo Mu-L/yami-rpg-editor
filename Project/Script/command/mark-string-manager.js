@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Command } from './command-object.js'
+﻿import { Command } from './command-object.js'
 import { Local } from '../tools/localization.js'
 
 // ******************************** 标记字符串管理器 ********************************

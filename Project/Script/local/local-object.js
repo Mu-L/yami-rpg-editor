@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Data } from '../data/data-object.js'
+﻿import { Data } from '../data/data-object.js'
 import { File } from '../file/file-system-core.js'
 import { Log } from '../log/log-window.js'
 import { Printer } from '../printer/printer.js'

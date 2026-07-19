@@ -1,4 +1,3 @@
-'use strict'
 import { $ } from '../util/dom.js'
 import { Data } from '../data/data-object.js'
 import { File } from '../file/file-system-core.js'

@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { FileBodyPane } from '../components/file-body-pane.js'
 import { ctrl } from '../util/event-accessors.js'
 import { File } from '../file/file-system-core.js'

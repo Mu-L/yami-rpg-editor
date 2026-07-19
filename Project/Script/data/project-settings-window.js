@@ -1,5 +1,4 @@
-﻿'use strict'
-import { ipcRenderer } from 'electron'
+﻿import { ipcRenderer } from 'electron'
 import { $, getElementWriter } from '../util/dom.js'
 import { Command } from '../command/command-object.js'
 import { Selector } from '../browser/resource-selector.js'

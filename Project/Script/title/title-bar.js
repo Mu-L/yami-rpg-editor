@@ -1,5 +1,4 @@
-﻿'use strict'
-import { ipcRenderer } from 'electron'
+﻿import { ipcRenderer } from 'electron'
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { ctrl } from '../util/event-accessors.js'

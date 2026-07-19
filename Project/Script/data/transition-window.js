@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { Timer } from '../util/timer.js'
 import { ctrl } from '../util/event-accessors.js'
 import { Data } from './data-object.js'

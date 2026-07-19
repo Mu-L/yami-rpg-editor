@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { File } from '../file/file-system-core.js'
 import { Editor } from '../main/editor.js'

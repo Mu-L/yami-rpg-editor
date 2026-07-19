@@ -1,4 +1,3 @@
-;('use strict')
 import { Command } from '../command/command-object.js'
 import { Attribute } from '../attribute/attribute-window.js'
 import { Browser } from '../browser/project-browser.js'

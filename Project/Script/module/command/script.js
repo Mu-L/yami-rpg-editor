@@ -1,5 +1,4 @@
-﻿'use strict'
-import { ipcRenderer } from 'electron'
+﻿import { ipcRenderer } from 'electron'
 import { $ } from '../../util/dom.js'
 import { Command } from '../../command/command-object.js'
 import { Editor } from '../../main/editor.js'

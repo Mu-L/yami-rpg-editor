@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Inspector } from './inspector.js'
+﻿import { Inspector } from './inspector.js'
 
 // ******************************** 文件 - 粒子页面 ********************************
 

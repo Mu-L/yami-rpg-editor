@@ -1,5 +1,4 @@
-﻿'use strict'
-import { File } from '../file/file-system-core.js'
+﻿import { File } from '../file/file-system-core.js'
 import { ImageTexture } from './image-texture.js'
 import { GL } from './webgl-init.js'
 

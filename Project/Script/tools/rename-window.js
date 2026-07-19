@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Window } from './window-object.js'
 
 // ******************************** 重命名窗口 ********************************

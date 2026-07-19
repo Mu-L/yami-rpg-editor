@@ -1,5 +1,4 @@
-﻿'use strict'
-import { GL } from './webgl-init.js'
+﻿import { GL } from './webgl-init.js'
 
 // ******************************** 批量渲染器 ********************************
 

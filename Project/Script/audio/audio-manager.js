@@ -1,5 +1,4 @@
-﻿'use strict'
-import { File } from '../file/file-system-core.js'
+﻿import { File } from '../file/file-system-core.js'
 import { AudioPlayer } from './audio-player.js'
 import { MultipleAudioPlayer } from './multiple-audio-player.js'
 

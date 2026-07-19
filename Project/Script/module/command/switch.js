@@ -1,4 +1,3 @@
-'use strict'
 import { $, getElementReader, getElementWriter } from '../../util/dom.js'
 import { Command } from '../../command/command-object.js'
 import { SwitchBranch } from '../../command/match-branch-window.js'

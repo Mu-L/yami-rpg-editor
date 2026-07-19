@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { getVariable } from '../util/safe.js'
 import { Attribute } from '../attribute/attribute-window.js'
 import { EventEditor } from './event-editor.js'

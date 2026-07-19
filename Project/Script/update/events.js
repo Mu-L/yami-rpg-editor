@@ -1,4 +1,3 @@
-'use strict'
 import { Data } from '../data/data-object.js'
 import { EventEditor } from '../command/event-editor.js'
 import { File } from '../file/file-system-core.js'

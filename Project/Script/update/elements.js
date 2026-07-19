@@ -1,4 +1,3 @@
-'use strict'
 import { Data } from '../data/data-object.js'
 import { File } from '../file/file-system-core.js'
 import { Inspector } from '../inspector/inspector.js'

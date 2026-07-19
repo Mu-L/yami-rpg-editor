@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Command } from '../command/command-object.js'
+﻿import { Command } from '../command/command-object.js'
 import { Data } from '../data/data-object.js'
 import { EventEditor } from '../command/event-editor.js'
 import { TreeList } from '../components/tree-list.js'

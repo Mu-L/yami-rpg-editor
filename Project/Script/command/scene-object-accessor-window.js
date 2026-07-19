@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader } from '../util/dom.js'
+﻿import { $, getElementReader } from '../util/dom.js'
 import { VariableGetter } from './variable-accessor-window.js'
 import { Scene } from '../scene/scene-window.js'
 import { PresetObject } from '../tools/scene-preset-window.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { Browser } from '../browser/project-browser.js'
 import { EventEditor } from '../command/event-editor.js'
 import { Enum } from '../enum/enum-window.js'

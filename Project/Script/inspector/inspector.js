@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import '../components/element-methods.js'
 
 import { MarqueeArea } from '../components/marquee-area.js'

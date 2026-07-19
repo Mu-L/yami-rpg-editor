@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { TreeDataContext } from '../components/tree-data-context.js'
+﻿import { TreeDataContext } from '../components/tree-data-context.js'
 import { GameLocal } from '../local/local-object.js'
 
 // ******************************** 属性上下文类 ********************************

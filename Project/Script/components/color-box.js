@@ -1,5 +1,4 @@
 import { Color } from '../tools/color-picker-window.js'
-;('use strict')
 
 // ******************************** 颜色框 ********************************
 

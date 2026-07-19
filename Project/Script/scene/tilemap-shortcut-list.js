@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Scene } from './scene-window.js'
 
 // ******************************** 瓦片地图快捷方式列表类 ********************************

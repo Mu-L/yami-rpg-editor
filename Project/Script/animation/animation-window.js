@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Timer } from '../util/timer.js'
 import { ctrl } from '../util/event-accessors.js'
 import { Command } from '../command/command-object.js'

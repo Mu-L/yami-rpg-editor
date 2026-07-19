@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementWriter } from '../util/dom.js'
 import { Browser } from '../browser/project-browser.js'
 import { FileItem } from '../file/file-item.js'
 import { File } from '../file/file-system-core.js'

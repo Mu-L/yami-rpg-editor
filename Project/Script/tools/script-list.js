@@ -1,5 +1,3 @@
-;('use strict')
-
 import { ParamList } from '../components/param-list.js'
 import { File } from '../file/file-system-core.js'
 import { Browser } from '../browser/project-browser.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { Command } from './command-object.js'
 import { File } from '../file/file-system-core.js'
 import { Home } from '../title/home-page.js'

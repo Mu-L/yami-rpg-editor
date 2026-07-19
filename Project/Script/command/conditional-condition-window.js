@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { GamepadBox } from '../components/gamepad-box.js'
 import { Command } from './command-object.js'
 import { Token } from './mark-string-manager.js'

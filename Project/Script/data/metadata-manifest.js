@@ -1,4 +1,3 @@
-;('use strict')
 import { Data } from './data-object.js'
 import { Meta } from './metadata.js'
 import { File } from '../file/file-system-core.js'

@@ -1,4 +1,3 @@
-'use strict'
 import { SettingConfig } from '../module/settingconfig.js'
 import { Path } from '../util/config.js'
 import { Animation } from '../animation/animation-window.js'

@@ -1,4 +1,3 @@
-'use strict'
 import { Updater } from './updater.js'
 import { Editor } from '../main/editor.js'
 

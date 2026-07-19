@@ -1,5 +1,3 @@
-'use strict'
-
 import { INTRGBA } from './color-utils.js'
 import { GL } from '../webgl/webgl-init.js'
 

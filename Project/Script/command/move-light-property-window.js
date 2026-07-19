@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { createPropertyWindow } from './property-window-factory.js'
+﻿import { createPropertyWindow } from './property-window-factory.js'
 import { Command } from './command-object.js'
 import { range } from '../module/eslints.js'
 

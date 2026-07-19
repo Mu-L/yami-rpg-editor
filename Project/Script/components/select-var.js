@@ -1,5 +1,4 @@
-﻿'use strict'
-import { SelectBox } from './select-box.js'
+﻿import { SelectBox } from './select-box.js'
 import { CustomBox } from './custom-box.js'
 
 // ******************************** 选择变量框 ********************************

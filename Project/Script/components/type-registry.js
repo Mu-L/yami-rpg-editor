@@ -1,4 +1,3 @@
-'use strict'
 import { Data } from '../data/data-object.js'
 import { Attribute } from '../attribute/attribute-window.js'
 import { Enum } from '../enum/enum-window.js'

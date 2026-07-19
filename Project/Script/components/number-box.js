@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { NumberHistory } from './number-history.js'
+﻿import { NumberHistory } from './number-history.js'
 import { Home } from '../title/home-page.js'
 import { measureText } from '../util/dom.js'
 

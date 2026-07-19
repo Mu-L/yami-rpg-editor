@@ -1,4 +1,3 @@
-'use strict'
 import { reportError } from '../util/safe.js'
 
 // ******************************** Toast ********************************

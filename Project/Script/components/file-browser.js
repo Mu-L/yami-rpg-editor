@@ -1,4 +1,3 @@
-;('use strict')
 import { FileNavPane } from './file-nav-pane.js'
 import { FileBodyPane } from './file-body-pane.js'
 import { Menu } from './menu-list.js'

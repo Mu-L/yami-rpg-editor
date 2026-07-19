@@ -1,5 +1,4 @@
-﻿'use strict'
-import './element-methods.js'
+﻿import './element-methods.js'
 
 import { ParamListHistory } from './param-history.js'
 import { ctrl } from '../util/event-accessors.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $ } from '../util/dom.js'
+﻿import { $ } from '../util/dom.js'
 import { ctrl } from '../util/event-accessors.js'
 import { File } from '../file/file-system-core.js'
 import { GL } from '../webgl/webgl-init.js'

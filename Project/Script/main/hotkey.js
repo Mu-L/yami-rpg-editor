@@ -1,4 +1,3 @@
-'use strict'
 import { Editor } from './editor.js'
 
 // 开关快捷键

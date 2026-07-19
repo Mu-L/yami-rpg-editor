@@ -1,5 +1,4 @@
-﻿'use strict'
-import { range } from '../module/eslints.js'
+﻿import { range } from '../module/eslints.js'
 import { NumberBox } from './number-box.js'
 
 // ******************************** 滑动框 ********************************

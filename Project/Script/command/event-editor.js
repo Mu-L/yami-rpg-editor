@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementWriter } from '../util/dom.js'
 import { ctrl } from '../util/event-accessors.js'
 import { Command } from './command-object.js'
 import { File } from '../file/file-system-core.js'

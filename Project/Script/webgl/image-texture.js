@@ -1,5 +1,4 @@
-﻿'use strict'
-import { GL } from './webgl-init.js'
+﻿import { GL } from './webgl-init.js'
 import { BaseTexture } from './base-texture.js'
 import { Texture } from './texture.js'
 

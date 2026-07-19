@@ -1,5 +1,4 @@
-﻿'use strict'
-import { UI } from './ui-window.js'
+﻿import { UI } from './ui-window.js'
 
 // ******************************** 对话框元素 ********************************
 

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Inspector } from './inspector.js'
+﻿import { Inspector } from './inspector.js'
 
 // ******************************** 动画 - 关节层页面 ********************************
 

@@ -1,4 +1,3 @@
-;('use strict')
 import { GlobalPath, Path } from '../util/config.js'
 import { Animation } from '../animation/animation-window.js'
 import { FSP } from '../file/file-system.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import './element-methods.js'
+﻿import './element-methods.js'
 
 import { TextHistory } from './text-history.js'
 import { Timer } from '../util/timer.js'

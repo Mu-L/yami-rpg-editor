@@ -1,4 +1,3 @@
-'use strict'
 import { Timer } from '../util/timer.js'
 import { Variable } from '../variable/variable.js'
 import '../variable/initialize.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementWriter } from '../util/dom.js'
 import { Codec } from '../codec/codec.js'
 import { SelectBox } from '../components/select-box.js'
 import { Inspector } from './inspector.js'

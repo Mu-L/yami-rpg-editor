@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Window } from '../tools/window-object.js'
+﻿import { Window } from '../tools/window-object.js'
 
 // ******************************** 标题栏 ********************************
 

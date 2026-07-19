@@ -1,4 +1,3 @@
-;('use strict')
 import { $, getElementWriter } from '../util/dom.js'
 import { Timer } from '../util/timer.js'
 import { Data } from '../data/data-object.js'

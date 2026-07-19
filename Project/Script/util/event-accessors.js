@@ -1,5 +1,3 @@
-'use strict'
-
 // ******************************** 事件访问器 ********************************
 
 Object.defineProperties(Event.prototype, {

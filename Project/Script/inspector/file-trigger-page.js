@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { Animation } from '../animation/animation-window.js'
 import { Browser } from '../browser/project-browser.js'
 import { Team } from '../data/team-window.js'

@@ -1,4 +1,3 @@
-;('use strict')
 import { Path } from '../util/config.js'
 import { Meta } from '../data/metadata.js'
 import { FileItem } from './file-item.js'

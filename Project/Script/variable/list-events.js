@@ -1,4 +1,3 @@
-'use strict'
 import { ctrl } from '../util/event-accessors.js'
 import { Menu } from '../components/menu-list.js'
 import { Reference } from '../log/related-references.js'

@@ -1,5 +1,4 @@
-﻿'use strict'
-import { ipcRenderer, shell } from 'electron'
+﻿import { ipcRenderer, shell } from 'electron'
 import nodeFs from 'node:fs'
 import { request } from '../util/dom.js'
 import { Path } from '../util/config.js'

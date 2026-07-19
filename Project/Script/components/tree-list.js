@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { debounce } from '../util/safe.js'
+﻿import { debounce } from '../util/safe.js'
 import { CommonList } from './common-list.js'
 import { Menu } from './menu-list.js'
 import { TextBox } from './text-box.js'

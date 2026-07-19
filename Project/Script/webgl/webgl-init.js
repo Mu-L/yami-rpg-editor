@@ -1,7 +1,4 @@
-﻿'use strict'
-import '../components/element-methods.js'
-
-;('use strict')
+﻿import '../components/element-methods.js'
 
 /**
  * @type {WebGLRenderingContext}

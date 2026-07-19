@@ -1,4 +1,3 @@
-'use strict'
 import { Variable } from './variable.js'
 import { GUID } from '../file/guid.js'
 

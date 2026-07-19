@@ -1,4 +1,3 @@
-'use strict'
 import { $, getElementReader, getElementWriter } from '../../util/dom.js'
 import { Token } from '../../command/mark-string-manager.js'
 import { Command } from '../../command/command-object.js'

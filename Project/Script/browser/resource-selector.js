@@ -1,4 +1,3 @@
-;('use strict')
 import { clipboard } from 'electron'
 import { $ } from '../util/dom.js'
 import { Data } from '../data/data-object.js'

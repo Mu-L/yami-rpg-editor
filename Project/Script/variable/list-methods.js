@@ -1,4 +1,3 @@
-'use strict'
 import { Command } from '../command/command-object.js'
 import { Data } from '../data/data-object.js'
 import { Local } from '../tools/localization.js'

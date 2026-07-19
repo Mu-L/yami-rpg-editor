@@ -1,6 +1,4 @@
-﻿'use strict'
-
-import { clipboard } from 'electron'
+﻿import { clipboard } from 'electron'
 import { SettingConfig } from '../module/settingconfig.js'
 import { getVariable } from '../util/safe.js'
 import { CommandHistory } from './command-history.js'

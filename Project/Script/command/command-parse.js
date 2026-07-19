@@ -1,5 +1,3 @@
-'use strict'
-
 import { $ } from '../util/dom.js'
 import { getVariable, reportError } from '../util/safe.js'
 import { Attribute } from '../attribute/attribute-window.js'

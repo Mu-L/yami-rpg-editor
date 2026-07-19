@@ -1,5 +1,3 @@
-'use strict'
-
 import { $ } from '../util/dom.js'
 import { RadioProxy } from '../components/radio-proxy.js'
 

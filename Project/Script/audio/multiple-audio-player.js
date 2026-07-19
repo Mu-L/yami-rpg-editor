@@ -1,5 +1,4 @@
-﻿'use strict'
-import { File } from '../file/file-system-core.js'
+﻿import { File } from '../file/file-system-core.js'
 import { AudioManager } from './audio-manager.js'
 
 // ******************************** 多源音频播放器类 ********************************

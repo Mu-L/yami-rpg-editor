@@ -1,6 +1,5 @@
 import { CustomBox } from './custom-box.js'
 import { NumberBox } from './number-box.js'
-;('use strict')
 
 // ******************************** 数字变量框 ********************************
 

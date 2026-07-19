@@ -1,5 +1,4 @@
-﻿'use strict'
-import { ipcRenderer } from 'electron'
+﻿import { ipcRenderer } from 'electron'
 import { fs } from '../module/global.js'
 import nodeFs from 'node:fs'
 

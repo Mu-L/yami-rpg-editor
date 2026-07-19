@@ -1,5 +1,3 @@
-'use strict'
-
 import { $ } from '../util/dom.js'
 import { getVariable } from '../util/safe.js'
 import { ctrl } from '../util/event-accessors.js'

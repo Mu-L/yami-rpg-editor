@@ -1,4 +1,3 @@
-;('use strict')
 import { request } from '../util/dom.js'
 import { Data } from '../data/data-object.js'
 import { Meta } from '../data/metadata.js'

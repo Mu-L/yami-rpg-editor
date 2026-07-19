@@ -1,4 +1,3 @@
-;('use strict')
 import { $ } from '../util/dom.js'
 import { Path } from '../util/config.js'
 import { fileURLToPath, URL } from 'node:url'

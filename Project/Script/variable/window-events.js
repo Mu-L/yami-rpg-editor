@@ -1,4 +1,3 @@
-'use strict'
 import { Window } from '../tools/window-object.js'
 import { Reference } from '../log/related-references.js'
 import { Local } from '../tools/localization.js'

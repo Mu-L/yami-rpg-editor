@@ -1,5 +1,4 @@
-﻿'use strict'
-import { DetailBox } from './detail-box.js'
+﻿import { DetailBox } from './detail-box.js'
 
 // ******************************** 细节概要 ********************************
 

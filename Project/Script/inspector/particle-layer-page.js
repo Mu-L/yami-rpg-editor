@@ -1,5 +1,4 @@
-﻿'use strict'
-import { $, getElementReader, getElementWriter } from '../util/dom.js'
+﻿import { $, getElementReader, getElementWriter } from '../util/dom.js'
 import { Animation } from '../animation/animation-window.js'
 import { Data } from '../data/data-object.js'
 import { Easing } from '../data/transition-window.js'

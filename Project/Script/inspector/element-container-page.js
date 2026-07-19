@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Inspector } from './inspector.js'
+﻿import { Inspector } from './inspector.js'
 import { UI } from '../ui/ui-window.js'
 
 // ******************************** 元素 - 容器页面 ********************************

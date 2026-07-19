@@ -1,5 +1,4 @@
-﻿'use strict'
-import { ipcRenderer } from 'electron'
+﻿import { ipcRenderer } from 'electron'
 import { Path } from '../util/config.js'
 import { File } from './file-system-core.js'
 import { Data } from '../data/data-object.js'

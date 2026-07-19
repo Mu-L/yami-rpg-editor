@@ -1,5 +1,4 @@
-﻿'use strict'
-import { Scene } from './scene-window.js'
+﻿import { Scene } from './scene-window.js'
 
 // ******************************** 坐标点类 ********************************
 

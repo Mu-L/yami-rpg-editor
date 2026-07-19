@@ -1,5 +1,4 @@
-﻿'use strict'
-import { GL } from '../webgl/webgl-init.js'
+﻿import { GL } from '../webgl/webgl-init.js'
 import { Particle } from './particle-window.js'
 
 // ******************************** 粒子元素类 ********************************

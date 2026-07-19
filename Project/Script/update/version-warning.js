@@ -1,4 +1,3 @@
-'use strict'
 import { Updater } from './updater.js'
 import { Local } from '../tools/localization.js'
 

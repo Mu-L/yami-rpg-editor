@@ -1,6 +1,5 @@
 import { Select } from './select-list.js'
 import { Local } from '../tools/localization.js'
-;('use strict')
 
 // ******************************** 选择框 ********************************
 
