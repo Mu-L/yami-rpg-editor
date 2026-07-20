@@ -656,11 +656,11 @@ const createEditorWindow = function () {
 		})
 		// 监听 stdout（正常输出）
 		tscProcess.stdout.on('data', (data) => {
-			editor.send('tsc-log', data.toString())
+			if (!editor.isDestroyed()) editor.send('tsc-log', data.toString())
 		})
 		// 监听 stderr（错误输出）
 		tscProcess.stderr.on('data', (data) => {
-			editor.send('tsc-log', data.toString())
+			if (!editor.isDestroyed()) editor.send('tsc-log', data.toString())
 		})
 	}
 
