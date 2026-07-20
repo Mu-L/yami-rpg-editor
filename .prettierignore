@@ -25,3 +25,4 @@ icon.icns
 README.md
 package-lock.json
 !*.min.js
+Unused

@@ -18,7 +18,7 @@
 		"prestart": "pnpm run buildcss && pnpm run buildmodule && pnpm run buildhtml",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",
-		"format": "prettier --write . --config prettierrc.json",
+		"format": "prettier --write . --config .prettierrc.json",
 		"commitlint": "commitlint --config commitlint.config.js --edit ",
 		"build:win": "electron-builder --dir --win --x64",
 		"build:winexe": "electron-builder --win --x64",
@@ -54,7 +54,7 @@
 		"wait-on": "^9.0.10"
 	},
 	"dependencies": {
-		"@typescript/typescript-win32-x64": "^7.0.2",
+		"@typescript/typescript-win32-x64": "7.1.0-dev.20260720.1",
 		"axios": "^1.16.1",
 		"exceljs": "^4.4.0",
 		"fs-extra": "^11.3.5",
@@ -65,7 +65,7 @@
 		"qrcode": "^1.5.4",
 		"sharp": "^0.34.5",
 		"steamworks.js": "^0.4.0",
-		"typescript": "^7.0.2",
+		"typescript": "7.1.0-dev.20260720.1",
 		"uglify-js": "^3.19.3",
 		"xml2js": "^0.6.2",
 		"yauzl": "^3.3.1"
