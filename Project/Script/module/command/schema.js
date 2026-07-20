@@ -142,7 +142,7 @@ export class CommandSchema {
 
 	// 按 id 查找已注册的指令处理器
 	static _resolve(id) {
-		return Command.cases[id] ?? null
+		return Command.cases[id]
 	}
 
 	// 拓扑排序
