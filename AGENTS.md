@@ -24,7 +24,7 @@
 ### 3.1 总体策略
 
 - **结构迁移优先**：先批量 `.js` → `.ts` 重命名 + 同步 import 路径扩展名，再做渐进式类型化。
-- **类型检查与编译分离**：`tsc --noEmit` 仅做类型检查；实际 TS→JS 编译由 Vite / esbuild 在 `pnpm start` / `pnpm dev` / `pnpm build:vite` 时完成。
+- **类型检查与编译分离**：`tsc --noEmit` 仅做类型检查；实际 TS→JS 编译由 Vite 8 在 `pnpm start` / `pnpm dev` / `pnpm build:vite` 时完成。
 - **不允许 JS/TS 混源**：`Project/Script/` 内所有源文件统一为 `.ts`；`allowJs: false`。
 
 ### 3.2 tsconfig.json 规范
@@ -84,8 +84,8 @@
 
 ## 5. 工作流约定
 
-- **提交粒度**：一个阶段一个 commit；commit message 使用 conventional commits（`feat:` / `refactor:` / `chore:`）。
-- **提交规范**：commitlint 强制 conventional commits，husky pre-commit 钩子跑 lint-staged（prettier）。
+
+- **提交规范**：不允许自动提交，需要手动提交。
 - **文件操作**：禁止用 `bash sed -i` / `bash echo >>` 改文件——必须用 `edit_file` / `write_file`。
 - **目录操作**：禁止用 `bash ls` / `bash find`——必须用 `list_directory` / `glob`。
 - **内容搜索**：禁止用 `bash grep` / `bash rg`——必须用 `grep`。
@@ -108,7 +108,7 @@
 | `scripts/build-html.js`              | 拼装 index.html + 注入 importmap 桥                  |
 | `scripts/verify-imports.js`          | 校验 import 闭合（迁移后兼容 .ts）                   |
 | `scripts/check-syntax.js`            | git status 改动文件语法检查（迁移后用 tsc）          |
-| `vite.config.js`                     | Vite 配置（root: Project, target: chrome90）         |
+| `vite.config.js`                     | Vite 8 配置（root: Project, target: chrome90）         |
 | `tsconfig.json`                      | TS 7 类型检查配置（迁移后新增）                      |
 
 ## 8. 已知陷阱
