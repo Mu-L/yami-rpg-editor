@@ -1,0 +1,96 @@
+﻿import { $, getElementReader } from '../util/dom.ts';
+import { ElementGetter } from './element-accessor-window.ts';
+import { VariableGetter } from './variable-accessor-window.ts';
+import { PresetElement } from '../tools/preset-element-window.ts';
+import { Window } from '../tools/window-object.ts';
+
+// ******************************** 祖先元素访问器窗口 ********************************
+
+export const AncestorGetter = {
+	// properties
+	target: null,
+	dependsOn: ['ElementGetter'],
+	// methods
+	initialize: null,
+	open: null,
+	// events
+	confirm: null
+};
+
+// 初始化
+AncestorGetter.initialize = function () {
+	// 创建访问器类型选项
+	const inclusions = ['trigger', 'latest', 'by-id', 'variable'];
+	$('#ancestorGetter-type').loadItems(
+		$('#elementGetter-type').dataItems.filter((a) =>
+			inclusions.includes(a.value)
+		)
+	);
+
+	// 设置关联元素
+	$('#ancestorGetter-type')
+		.enableHiddenMode()
+		.relate([
+			{ case: 'by-id', targets: [$('#ancestorGetter-presetId')] },
+			{ case: 'variable', targets: [$('#ancestorGetter-variable')] }
+		]);
+
+	// 侦听事件
+	$('#ancestorGetter-confirm').on('click', this.confirm);
+};
+
+// 打开窗口
+AncestorGetter.open = function (target) {
+	this.target = target;
+	Window.open('ancestorGetter');
+
+	let presetId = PresetElement.getDefaultPresetId();
+	let variable = { type: 'local', key: '' };
+	const element = target.dataValue;
+	switch (element.type) {
+		case 'trigger':
+		case 'latest':
+			break;
+		case 'by-id':
+			presetId = element.presetId;
+			break;
+		case 'variable':
+			variable = element.variable;
+			break;
+	}
+	$('#ancestorGetter-type').write(element.type);
+	$('#ancestorGetter-presetId').write(presetId);
+	$('#ancestorGetter-variable').write(variable);
+	$('#ancestorGetter-type').getFocus();
+};
+
+// 确定按钮 - 鼠标点击事件
+AncestorGetter.confirm = function (event) {
+	const read = getElementReader('ancestorGetter');
+	const type = read('type');
+	let getter;
+	switch (type) {
+		case 'trigger':
+		case 'latest':
+			getter = { type };
+			break;
+		case 'by-id': {
+			const presetId = read('presetId');
+			if (presetId === '') {
+				return $('#ancestorGetter-presetId').getFocus();
+			}
+			getter = { type, presetId };
+			break;
+		}
+		case 'variable': {
+			const variable = read('variable');
+			if (VariableGetter.isNone(variable)) {
+				return $('#ancestorGetter-variable').getFocus();
+			}
+			getter = { type, variable };
+			break;
+		}
+	}
+	this.target.input(getter);
+	Window.close('ancestorGetter');
+}.bind(AncestorGetter);

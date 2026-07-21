@@ -13,9 +13,7 @@ Project/Apk/
 Project/Fonts/
 Project/Images/
 Project/Locales/
-Project/Templates/**/*
-!Project/Templates/**/
-!Project/Templates/**/*.ts
+Project/Templates/
 Project/index.html
 prettierrc.json
 Runtime/
@@ -24,5 +22,8 @@ icon.ico
 icon.icns
 README.md
 package-lock.json
-!*.min.js
+!**/*.min.js
 Unused
+
+# HTML Templates
+Project/html/body-end.html

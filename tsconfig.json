@@ -1,0 +1,39 @@
+{
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"lib": ["es2022", "dom", "dom.iterable", "webworker"],
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
+		"allowJs": false,
+		"strict": false,
+		"noImplicitAny": false,
+		"strictNullChecks": false,
+		"strictFunctionTypes": false,
+		"strictBindCallApply": false,
+		"strictPropertyInitialization": false,
+		"noImplicitThis": false,
+		"alwaysStrict": false,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"verbatimModuleSyntax": false,
+		"types": ["node"]
+	},
+	"include": ["Project/Script/**/*.ts"],
+	"exclude": [
+		"Project/Templates/**",
+		"Project/Script/vs/**",
+		"node_modules/**",
+		"dist/**",
+		"dist-electron/**",
+		"build/**",
+		"main/**",
+		"Unused/**",
+		"jsons/**"
+	]
+}

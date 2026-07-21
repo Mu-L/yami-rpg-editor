@@ -1,58 +1,58 @@
 [
-  {
-    "path": "arpg-ts-chinese",
-    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-chinese",
-    "version": "1.0.20",
-    "md5": "7215199625b85305b8b6394f19925cdc",
-    "sha1": "43cba60f2bbdf6ee4caed8e3598494c70ab2a387",
-    "sha256": "98b1687acbc1d2d0e26d056d5b9583ba5644ebcf06bc3bae6d2bc87094c9f811"
-  },
-  {
-    "path": "arpg-ts-english",
-    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-english",
-    "version": "1.0.20",
-    "md5": "14e5362c9c9899e17354e4a8656363d3",
-    "sha1": "92cfbb510da8404dbab8311c3c521ca229df36b1",
-    "sha256": "023ed80f05e24a6b8d296be97038b6baee88b23819001a59396979b7807c8b1c"
-  },
-  {
-    "path": "arpg-ts-update",
-    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-update",
-    "version": "1.0.7",
-    "md5": "a86bc35ed3e32fd93a3ad44cd97a35e7",
-    "sha1": "91f49314abcc0fc860da3f00284f3ae8595079c4",
-    "sha256": "90b89d25041ee371a0f14c076f8fd47ea7f1ceb5e03ec3d546d1b47cae6cf0a1"
-  },
-  {
-    "path": "electron-mac-universal.app",
-    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-mac-universal.app",
-    "version": "1.0.2",
-    "md5": "0dcf0bf877b1058b7c7d7772ec3c491b",
-    "sha1": "6cd25f5240b2791ed3c53b790099b94ba14f1f1d",
-    "sha256": "91524b3a6a389c6cc402ee61b3eb288d71c2dbd4ae44317b845c88ea5a933c32"
-  },
-  {
-    "path": "electron-win-x64",
-    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-win-x64",
-    "version": "1.0.2",
-    "md5": "75f982340e950c3e2d607ca0b86f2ca7",
-    "sha1": "4e3d4367695e3ccc709907fd449a803a4d1f0b91",
-    "sha256": "15301381c2ec2de9bdcf8dbb01bdb83da5ede821090aeebde8ef5718b8fa7e82"
-  },
-  {
-    "path": "script",
-    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\script",
-    "version": "1.0.0",
-    "md5": "9479a217c8bc9f14c08a94f35c1ca892",
-    "sha1": "474d69c3255de4100097fd4463e944aabb3c6413",
-    "sha256": "63e10a1be2193eb743916b82654022acb15ca2171d548accd24250ce81017ffd"
-  },
-  {
-    "path": "Apk",
-    "realPath": "Project/Apk",
-    "version": "1.0.0",
-    "md5": "5ea1d2037c87190a6da0ddd1354213fb",
-    "sha1": "1167cf91012a0b2617901d3a979b80295f52ec13",
-    "sha256": "8c473c3ef629c0c729104410044d36039cebbe5402953ed10ac0a7aa061a070e"
-  }
+	{
+		"path": "arpg-ts-chinese",
+		"realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-chinese",
+		"version": "1.0.20",
+		"md5": "7215199625b85305b8b6394f19925cdc",
+		"sha1": "43cba60f2bbdf6ee4caed8e3598494c70ab2a387",
+		"sha256": "98b1687acbc1d2d0e26d056d5b9583ba5644ebcf06bc3bae6d2bc87094c9f811"
+	},
+	{
+		"path": "arpg-ts-english",
+		"realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-english",
+		"version": "1.0.20",
+		"md5": "14e5362c9c9899e17354e4a8656363d3",
+		"sha1": "92cfbb510da8404dbab8311c3c521ca229df36b1",
+		"sha256": "023ed80f05e24a6b8d296be97038b6baee88b23819001a59396979b7807c8b1c"
+	},
+	{
+		"path": "arpg-ts-update",
+		"realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-update",
+		"version": "1.0.7",
+		"md5": "a86bc35ed3e32fd93a3ad44cd97a35e7",
+		"sha1": "91f49314abcc0fc860da3f00284f3ae8595079c4",
+		"sha256": "90b89d25041ee371a0f14c076f8fd47ea7f1ceb5e03ec3d546d1b47cae6cf0a1"
+	},
+	{
+		"path": "electron-mac-universal.app",
+		"realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-mac-universal.app",
+		"version": "1.0.2",
+		"md5": "0dcf0bf877b1058b7c7d7772ec3c491b",
+		"sha1": "6cd25f5240b2791ed3c53b790099b94ba14f1f1d",
+		"sha256": "91524b3a6a389c6cc402ee61b3eb288d71c2dbd4ae44317b845c88ea5a933c32"
+	},
+	{
+		"path": "electron-win-x64",
+		"realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-win-x64",
+		"version": "1.0.2",
+		"md5": "75f982340e950c3e2d607ca0b86f2ca7",
+		"sha1": "4e3d4367695e3ccc709907fd449a803a4d1f0b91",
+		"sha256": "15301381c2ec2de9bdcf8dbb01bdb83da5ede821090aeebde8ef5718b8fa7e82"
+	},
+	{
+		"path": "script",
+		"realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\script",
+		"version": "1.0.0",
+		"md5": "9479a217c8bc9f14c08a94f35c1ca892",
+		"sha1": "474d69c3255de4100097fd4463e944aabb3c6413",
+		"sha256": "63e10a1be2193eb743916b82654022acb15ca2171d548accd24250ce81017ffd"
+	},
+	{
+		"path": "Apk",
+		"realPath": "Project/Apk",
+		"version": "1.0.0",
+		"md5": "5ea1d2037c87190a6da0ddd1354213fb",
+		"sha1": "1167cf91012a0b2617901d3a979b80295f52ec13",
+		"sha256": "8c473c3ef629c0c729104410044d36039cebbe5402953ed10ac0a7aa061a070e"
+	}
 ]

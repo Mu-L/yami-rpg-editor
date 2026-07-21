@@ -605,34 +605,34 @@
 		"value": "network",
 		"expanded": true,
 		"children": [
-		{
-			"class": "network",
-			"value": "requestURL"
-		},
-		{
-			"class": "network",
-			"value": "downloadFile"
-		},
-		{
-			"class": "network",
-			"value": "uploadFile"
-		},
-		{
-			"class": "network",
-			"value": "httpRequest"
-		},
-		{
-			"class": "network",
-			"value": "webSocketConnect"
-		},
-		{
-			"class": "network",
-			"value": "webSocketSend"
-		},
-		{
-			"class": "network",
-			"value": "webSocketClose"
-		}
+			{
+				"class": "network",
+				"value": "requestURL"
+			},
+			{
+				"class": "network",
+				"value": "downloadFile"
+			},
+			{
+				"class": "network",
+				"value": "uploadFile"
+			},
+			{
+				"class": "network",
+				"value": "httpRequest"
+			},
+			{
+				"class": "network",
+				"value": "webSocketConnect"
+			},
+			{
+				"class": "network",
+				"value": "webSocketSend"
+			},
+			{
+				"class": "network",
+				"value": "webSocketClose"
+			}
 		]
 	},
 	{

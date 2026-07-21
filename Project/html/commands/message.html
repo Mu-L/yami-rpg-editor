@@ -1,29 +1,34 @@
-  <window-frame id="showText">
-    <title-bar>Show Text<close></close></title-bar>
-    <content-frame>
-      <custom-box id="showText-target" type="actor"></custom-box>
-      <text-box id="showText-parameters"></text-box>
-      <text-area id="showText-content" menu="tag-local-var tag-global-var tag-localization"></text-area>
-      <button id="showText-confirm" name="confirm">Confirm</button>
-      <button id="showText-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="showChoices">
-    <title-bar>Show Choices<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Choices</text><param-list id="showChoices-choices"></param-list>
-        <text>Parameters</text><text-box id="showChoices-parameters"></text-box>
-      </grid-box>
-      <button id="showChoices-confirm" name="confirm">Confirm</button>
-      <button id="showChoices-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="comment">
-    <title-bar>Comment<close></close></title-bar>
-    <content-frame>
-      <text-area id="comment-comment"></text-area>
-      <button id="comment-confirm" name="confirm">Confirm</button>
-      <button id="comment-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
+<window-frame id="showText">
+	<title-bar>Show Text<close></close></title-bar>
+	<content-frame>
+		<custom-box id="showText-target" type="actor"></custom-box>
+		<text-box id="showText-parameters"></text-box>
+		<text-area
+			id="showText-content"
+			menu="tag-local-var tag-global-var tag-localization"
+		></text-area>
+		<button id="showText-confirm" name="confirm">Confirm</button>
+		<button id="showText-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="showChoices">
+	<title-bar>Show Choices<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Choices</text
+			><param-list id="showChoices-choices"></param-list>
+			<text>Parameters</text
+			><text-box id="showChoices-parameters"></text-box>
+		</grid-box>
+		<button id="showChoices-confirm" name="confirm">Confirm</button>
+		<button id="showChoices-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="comment">
+	<title-bar>Comment<close></close></title-bar>
+	<content-frame>
+		<text-area id="comment-comment"></text-area>
+		<button id="comment-confirm" name="confirm">Confirm</button>
+		<button id="comment-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

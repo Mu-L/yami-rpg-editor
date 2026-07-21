@@ -25,7 +25,7 @@ Yami RPG Editor is a 2D RPG editor on user-friendliness.
 
 Official QQ Group: `3992050`
 
-## 
+##
 
 ![Yami_RPG_Editor](https://shared.cdn.queniuqe.com/store_item_assets/steam/apps/1964480/header.jpg?t=1742510557)
 
@@ -96,16 +96,17 @@ Welcome to submit your valuable **issues**, and we will handle them.
 
 The community version project is maintained by Xu Ran alone. Whether you donate a little or a lot, it is the **motivation** for Xu Ran to maintain the project. Come on, let's do it!!!
 
-| Donor  | QQ          | Amount |
-| :----- | ----------- | -----: |
-| 刀里个刀 | 420488038 |   200 |
-| ya       | 332685057 |   100 |
+| Donor    | QQ        | Amount |
+| :------- | --------- | -----: |
+| 刀里个刀 | 420488038 |    200 |
+| ya       | 332685057 |    100 |
 
 <p align="center">
 <img width="500" src="https://github.com/user-attachments/assets/4733d260-991a-4edb-aaa1-483dd3ef5d91" alt="1abcd7e53e8c72cf7b3b7770b48c001d_720">
 </p>
 
 ## Stargazers over time
+
 [![Stargazers over time](https://starchart.cc/Open-Yami-Community/yami-rpg-editor.svg?variant=adaptive)](https://starchart.cc/Open-Yami-Community/yami-rpg-editor)
 
 ## LICENSE

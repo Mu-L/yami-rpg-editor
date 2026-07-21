@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 import {
 	copyFileSync,
 	existsSync,
@@ -6,30 +6,30 @@ import {
 	readdirSync,
 	readFileSync,
 	statSync
-} from 'fs'
-import { dirname, join, resolve } from 'path'
-import { fileURLToPath } from 'url'
+} from 'fs';
+import { dirname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
 // 递归复制目录（保留 monaco vs/ 等静态资源到 dist）
 const copyDirRecursive = (src, dest) => {
-	if (!existsSync(src)) return
-	mkdirSync(dest, { recursive: true })
+	if (!existsSync(src)) return;
+	mkdirSync(dest, { recursive: true });
 	for (const name of readdirSync(src)) {
-		const srcPath = join(src, name)
-		const destPath = join(dest, name)
+		const srcPath = join(src, name);
+		const destPath = join(dest, name);
 		if (statSync(srcPath).isDirectory()) {
-			copyDirRecursive(srcPath, destPath)
+			copyDirRecursive(srcPath, destPath);
 		} else {
-			copyFileSync(srcPath, destPath)
+			copyFileSync(srcPath, destPath);
 		}
 	}
-}
+};
 
 // 将 Project/ 下需原样输出到 dist/ 的非 JS/CSS 静态资源复制到 outDir
 // Vite 只 bundle JS/CSS/HTML，vs/（monaco）、Locales/、Fonts/、Images/、
 // Templates/、Apk/、default.json、commands.json 等需原样复制
 const copyStaticAssets = (outDir) => {
-	const root = resolve(__dirname, 'Project')
+	const root = resolve(__dirname, 'Project');
 	// monaco-editor 改由 pnpm 包载入（module-init.js import 'monaco-editor'），删 'vs' 目录复制
 	// 'Script'：global.js 载 packmeta.json + 各模块运行时读 Script/ 下源（deploy 打包后游戏本体亦需）
 	const staticDirs = [
@@ -39,16 +39,16 @@ const copyStaticAssets = (outDir) => {
 		'Images',
 		'Templates',
 		'Apk'
-	]
-	const staticFiles = ['default.json', 'commands.json']
+	];
+	const staticFiles = ['default.json', 'commands.json'];
 	for (const dir of staticDirs) {
-		copyDirRecursive(join(root, dir), join(outDir, dir))
+		copyDirRecursive(join(root, dir), join(outDir, dir));
 	}
 	for (const file of staticFiles) {
-		const src = join(root, file)
-		if (existsSync(src)) copyFileSync(src, join(outDir, file))
+		const src = join(root, file);
+		if (existsSync(src)) copyFileSync(src, join(outDir, file));
 	}
-}
+};
 
 export default defineConfig({
 	// 源码在 Project/，Electron loadFile 用 file:// 协议，相对路径
@@ -127,15 +127,15 @@ export default defineConfig({
 			name: 'electron-renderer-resolve',
 			resolveId(id) {
 				if (id === 'electron' || id === 'axios') {
-					return '\0' + id
+					return '\0' + id;
 				}
 			},
 			load(id) {
 				if (id === '\0electron') {
-					return `const e = window.__nodeRequire?.('electron') ?? {}; export const { clipboard, ipcRenderer, shell, webFrame } = e; export default e`
+					return `const e = window.__nodeRequire?.('electron') ?? {}; export const { clipboard, ipcRenderer, shell, webFrame } = e; export default e`;
 				}
 				if (id === '\0axios') {
-					return `const a = window.__nodeRequire?.('axios') ?? {}; export default a`
+					return `const a = window.__nodeRequire?.('axios') ?? {}; export default a`;
 				}
 			}
 		},
@@ -143,8 +143,8 @@ export default defineConfig({
 			name: 'copy-static-assets',
 			// buildFinished 钩子：把 vs/、Locales/、Templates/ 等原样复制到 dist/
 			closeBundle() {
-				const outDir = resolve(__dirname, 'dist')
-				copyStaticAssets(outDir)
+				const outDir = resolve(__dirname, 'dist');
+				copyStaticAssets(outDir);
 			}
 		},
 		// /local-file/?path= 本地文件代理——File.route dev 模式改写后走这里读磁盘。
@@ -158,14 +158,14 @@ export default defineConfig({
 			configureServer(server) {
 				server.middlewares.use((req, res, next) => {
 					if (!req.url?.startsWith('/local-file/')) {
-						return next()
+						return next();
 					}
-					const url = new URL(req.url, 'http://localhost')
-					const path = url.searchParams.get('path')
+					const url = new URL(req.url, 'http://localhost');
+					const path = url.searchParams.get('path');
 					if (!path) {
-						res.statusCode = 400
-						res.end('Missing path param')
-						return
+						res.statusCode = 400;
+						res.end('Missing path param');
+						return;
 					}
 					// path 可能是 file:// URL 或裸磁盘路径，剥 file:// 前缀取磁盘绝对路径
 					// ver cache-bust 段：File.route dev 段把 ?ver= 改写成 #ver= fragment 避被 URL 当 query 分隔，
@@ -175,20 +175,20 @@ export default defineConfig({
 						path.startsWith('file://')
 							? fileURLToPath(path)
 							: path.replace(/[#?]ver=\d+$/, '')
-					).replace(/[\\/]{2,}/g, '/')
+					).replace(/[\\/]{2,}/g, '/');
 					try {
-						const buf = readFileSync(diskPath)
+						const buf = readFileSync(diskPath);
 						res.setHeader(
 							'Content-Type',
 							'application/octet-stream'
-						)
-						res.setHeader('Access-Control-Allow-Origin', '*')
-						res.end(buf)
+						);
+						res.setHeader('Access-Control-Allow-Origin', '*');
+						res.end(buf);
 					} catch (error) {
-						res.statusCode = 404
-						res.end(`File not found: ${diskPath}`)
+						res.statusCode = 404;
+						res.end(`File not found: ${diskPath}`);
 					}
-				})
+				});
 			}
 		}
 	],
@@ -209,4 +209,4 @@ export default defineConfig({
 	esbuild: {
 		target: 'chrome90'
 	}
-})
+});

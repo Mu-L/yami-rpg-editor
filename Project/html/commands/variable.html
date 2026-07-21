@@ -1,164 +1,401 @@
-  <window-frame id="setBoolean">
-    <title-bar>Set Boolean<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setBoolean-variable" type="variable"
-          filter="writable-boolean"></custom-box>
-        <text>Operation</text><select-box id="setBoolean-operation"></select-box>
-        <text>Type</text><select-box id="setBoolean-operand-type"></select-box>
-        <text>Constant</text><select-box id="setBoolean-constant-value"></select-box>
-        <text>Variable</text><custom-box id="setBoolean-common-variable" type="variable" filter="all"></custom-box>
-        <text>Index</text><number-var id="setBoolean-list-index" min="0" max="1000000000"></number-var>
-        <text>Param Name</text><string-var id="setBoolean-parameter-key"></string-var>
-        <text>Script</text><text-box id="setBoolean-script"></text-box>
-      </grid-box>
-      <button id="setBoolean-confirm" name="confirm">Confirm</button>
-      <button id="setBoolean-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setNumber">
-    <title-bar>Set Number<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setNumber-variable" type="variable" filter="writable-number"></custom-box>
-        <text>Expression</text><param-list id="setNumber-operands"></param-list>
-      </grid-box>
-      <button id="setNumber-confirm" name="confirm">Confirm</button>
-      <button id="setNumber-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setString">
-    <title-bar>Set String<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setString-variable" type="variable" filter="writable-string"></custom-box>
-        <text>Operation</text><select-box id="setString-operation"></select-box>
-        <text>Type</text><select-box id="setString-operand-type"></select-box>
-        <text>String</text><text-area id="setString-operand-common-value"
-          menu="tag-local-var tag-global-var tag-localization"></text-area>
-        <text>String Method</text><select-box id="setString-operand-string-method"></select-box>
-        <text>Variable</text><custom-box id="setString-operand-common-variable" type="variable"
-          filter="all"></custom-box>
-        <text>Index</text><number-var id="setString-operand-string-char-index" min="0" max="1000000000"></number-var>
-        <text>Begin Index</text><number-var id="setString-operand-string-slice-begin" min="-1000000000"
-          max="1000000000"></number-var>
-        <text>End Index</text><number-var id="setString-operand-string-slice-end" min="-1000000000"
-          max="1000000000"></number-var>
-        <text>Target Length</text><number-box id="setString-operand-string-pad-start-length" min="2"
-          max="10"></number-box>
-        <text>Pad String</text><text-box id="setString-operand-string-pad-start-pad"></text-box>
-        <text>Substring</text><string-var id="setString-operand-string-replace-pattern"></string-var>
-        <text>Replacement</text><string-var id="setString-operand-string-replace-replacement"></string-var>
-        <text>Attribute Key</text><custom-box id="setString-operand-attribute-attributeId"
-          type="attribute"></custom-box>
-        <text>Enum String</text><custom-box id="setString-operand-enum-stringId" type="enum-string"></custom-box>
-        <text>Property</text><select-box id="setString-operand-object-property"></select-box>
-        <text>Property</text><select-box id="setString-operand-element-property"></select-box>
-        <text>Element</text><custom-box id="setString-operand-element-element" type="element"></custom-box>
-        <text>Actor</text><custom-box id="setString-operand-common-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="setString-operand-common-skill" type="skill"></custom-box>
-        <text>Trigger</text><custom-box id="setString-operand-common-trigger" type="trigger"></custom-box>
-        <text>State</text><custom-box id="setString-operand-common-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="setString-operand-common-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="setString-operand-common-item" type="item"></custom-box>
-        <text>File</text><custom-box id="setString-operand-object-fileId" type="file"></custom-box>
-        <text>Index</text><number-var id="setString-operand-list-index" min="0" max="1000000000"></number-var>
-        <text>Param Name</text><string-var id="setString-operand-parameter-key"></string-var>
-        <text>Script</text><text-box id="setString-operand-script"></text-box>
-        <text>Data</text><select-box id="setString-operand-other-data"></select-box>
-        <text>Choice Index</text><number-var id="setString-operand-showChoices-content-choiceIndex" min="0"
-          max="255"></number-var>
-        <text>Timestamp</text><custom-box id="setString-operand-parse-timestamp-variable" type="variable"
-          filter="number"></custom-box>
-        <text>Date Format</text><text-box id="setString-operand-parse-timestamp-format"></text-box>
-        <text>Image Width</text><number-box id="setString-operand-screenshot-width" min="64" max="7680"
-          unit="px"></number-box>
-        <text>Image Height</text><number-box id="setString-operand-screenshot-height" min="64" max="7680"
-          unit="px"></number-box>
-      </grid-box>
-      <button id="setString-confirm" name="confirm">Confirm</button>
-      <button id="setString-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setObject">
-    <title-bar>Set Object<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setObject-variable" type="variable" filter="object"></custom-box>
-        <text>Type</text><select-box id="setObject-operand-type"></select-box>
-        <text>Actor</text><custom-box id="setObject-operand-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="setObject-operand-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="setObject-operand-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="setObject-operand-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="setObject-operand-item" type="item"></custom-box>
-        <text>Trigger</text><custom-box id="setObject-operand-trigger" type="trigger"></custom-box>
-        <text>Light</text><custom-box id="setObject-operand-light" type="light"></custom-box>
-        <text>Object</text><custom-box id="setObject-operand-object" type="object"></custom-box>
-        <text>Element</text><custom-box id="setObject-operand-element" type="element"></custom-box>
-        <text>Variable</text><custom-box id="setObject-operand-variable" type="variable" filter="object"></custom-box>
-        <text>Index</text><number-var id="setObject-operand-list-index" min="0" max="1000000000"></number-var>
-      </grid-box>
-      <button id="setObject-confirm" name="confirm">Confirm</button>
-      <button id="setObject-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setList">
-    <title-bar>Set List<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setList-variable" type="variable" filter="object"></custom-box>
-        <text>Operation</text><select-box id="setList-operation"></select-box>
-        <text>Numbers</text><custom-box id="setList-numbers" type="array" filter="number"></custom-box>
-        <text>Strings</text><custom-box id="setList-strings" type="array" filter="string"></custom-box>
-        <text>Index</text><number-var id="setList-index" min="0" max="1000000000"></number-var>
-        <text>Boolean</text><select-box id="setList-boolean"></select-box>
-        <text>Number</text><number-box id="setList-number" min="-1000000000" max="1000000000"
-          decimals="10"></number-box>
-        <text>String</text><text-area id="setList-string"></text-area>
-        <text>Variable</text><custom-box id="setList-operand" type="variable" filter="all"></custom-box>
-        <text>Separator</text><text-area-var id="setList-separator"></text-area-var>
-        <text>Attribute Group</text><custom-box id="setList-attribute-groupId" type="attribute-group"></custom-box>
-        <text>Enum Group</text><custom-box id="setList-enum-groupId" type="enum-group"></custom-box>
-        <text>Actor</text><custom-box id="setList-actor" type="actor"></custom-box>
-        <text>Default</text><check-box id="setList-index-skip-check" class="standard"></check-box>
-      </grid-box>
-      <button id="setList-confirm" name="confirm">Confirm</button>
-      <button id="setList-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="deleteVariable">
-    <title-bar>Delete Variable<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="deleteVariable-variable" type="variable" filter="deletable"></custom-box>
-      </grid-box>
-      <button id="deleteVariable-confirm" name="confirm">Confirm</button>
-      <button id="deleteVariable-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="getObjectProperty">
-    <title-bar>getObjectProperty<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="getObjectProperty-variable" type="variable" filter="object"></custom-box>
-        <text>getObjectProperty</text><param-list id="getObjectProperty-list"></param-list>
-        <text>saveVariable</text><custom-box id="getObjectProperty-save-variable" type="variable"
-          filter="object"></custom-box>
-      </grid-box>
-      <button id="getObjectProperty-confirm" name="confirm">Confirm</button>
-      <button id="getObjectProperty-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setObjectProperty">
-    <title-bar>setObjectProperty<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="setObjectProperty-variable" type="variable" filter="object"></custom-box>
-        <text>setObjectProperty</text><param-list id="setObjectProperty-list"></param-list>
-        <text>valueVariable</text><custom-box id="setObjectProperty-value-variable" type="variable"
-          filter="all"></custom-box>
-      </grid-box>
-      <button id="setObjectProperty-confirm" name="confirm">Confirm</button>
-      <button id="setObjectProperty-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
+<window-frame id="setBoolean">
+	<title-bar>Set Boolean<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="setBoolean-variable"
+				type="variable"
+				filter="writable-boolean"
+			></custom-box>
+			<text>Operation</text
+			><select-box id="setBoolean-operation"></select-box>
+			<text>Type</text
+			><select-box id="setBoolean-operand-type"></select-box>
+			<text>Constant</text
+			><select-box id="setBoolean-constant-value"></select-box>
+			<text>Variable</text
+			><custom-box
+				id="setBoolean-common-variable"
+				type="variable"
+				filter="all"
+			></custom-box>
+			<text>Index</text
+			><number-var
+				id="setBoolean-list-index"
+				min="0"
+				max="1000000000"
+			></number-var>
+			<text>Param Name</text
+			><string-var id="setBoolean-parameter-key"></string-var>
+			<text>Script</text><text-box id="setBoolean-script"></text-box>
+		</grid-box>
+		<button id="setBoolean-confirm" name="confirm">Confirm</button>
+		<button id="setBoolean-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setNumber">
+	<title-bar>Set Number<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="setNumber-variable"
+				type="variable"
+				filter="writable-number"
+			></custom-box>
+			<text>Expression</text
+			><param-list id="setNumber-operands"></param-list>
+		</grid-box>
+		<button id="setNumber-confirm" name="confirm">Confirm</button>
+		<button id="setNumber-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setString">
+	<title-bar>Set String<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="setString-variable"
+				type="variable"
+				filter="writable-string"
+			></custom-box>
+			<text>Operation</text
+			><select-box id="setString-operation"></select-box> <text>Type</text
+			><select-box id="setString-operand-type"></select-box>
+			<text>String</text
+			><text-area
+				id="setString-operand-common-value"
+				menu="tag-local-var tag-global-var tag-localization"
+			></text-area>
+			<text>String Method</text
+			><select-box id="setString-operand-string-method"></select-box>
+			<text>Variable</text
+			><custom-box
+				id="setString-operand-common-variable"
+				type="variable"
+				filter="all"
+			></custom-box>
+			<text>Index</text
+			><number-var
+				id="setString-operand-string-char-index"
+				min="0"
+				max="1000000000"
+			></number-var>
+			<text>Begin Index</text
+			><number-var
+				id="setString-operand-string-slice-begin"
+				min="-1000000000"
+				max="1000000000"
+			></number-var>
+			<text>End Index</text
+			><number-var
+				id="setString-operand-string-slice-end"
+				min="-1000000000"
+				max="1000000000"
+			></number-var>
+			<text>Target Length</text
+			><number-box
+				id="setString-operand-string-pad-start-length"
+				min="2"
+				max="10"
+			></number-box>
+			<text>Pad String</text
+			><text-box id="setString-operand-string-pad-start-pad"></text-box>
+			<text>Substring</text
+			><string-var
+				id="setString-operand-string-replace-pattern"
+			></string-var>
+			<text>Replacement</text
+			><string-var
+				id="setString-operand-string-replace-replacement"
+			></string-var>
+			<text>Attribute Key</text
+			><custom-box
+				id="setString-operand-attribute-attributeId"
+				type="attribute"
+			></custom-box>
+			<text>Enum String</text
+			><custom-box
+				id="setString-operand-enum-stringId"
+				type="enum-string"
+			></custom-box>
+			<text>Property</text
+			><select-box id="setString-operand-object-property"></select-box>
+			<text>Property</text
+			><select-box id="setString-operand-element-property"></select-box>
+			<text>Element</text
+			><custom-box
+				id="setString-operand-element-element"
+				type="element"
+			></custom-box>
+			<text>Actor</text
+			><custom-box
+				id="setString-operand-common-actor"
+				type="actor"
+			></custom-box>
+			<text>Skill</text
+			><custom-box
+				id="setString-operand-common-skill"
+				type="skill"
+			></custom-box>
+			<text>Trigger</text
+			><custom-box
+				id="setString-operand-common-trigger"
+				type="trigger"
+			></custom-box>
+			<text>State</text
+			><custom-box
+				id="setString-operand-common-state"
+				type="state"
+			></custom-box>
+			<text>Equipment</text
+			><custom-box
+				id="setString-operand-common-equipment"
+				type="equipment"
+			></custom-box>
+			<text>Item</text
+			><custom-box
+				id="setString-operand-common-item"
+				type="item"
+			></custom-box>
+			<text>File</text
+			><custom-box
+				id="setString-operand-object-fileId"
+				type="file"
+			></custom-box>
+			<text>Index</text
+			><number-var
+				id="setString-operand-list-index"
+				min="0"
+				max="1000000000"
+			></number-var>
+			<text>Param Name</text
+			><string-var id="setString-operand-parameter-key"></string-var>
+			<text>Script</text
+			><text-box id="setString-operand-script"></text-box>
+			<text>Data</text
+			><select-box id="setString-operand-other-data"></select-box>
+			<text>Choice Index</text
+			><number-var
+				id="setString-operand-showChoices-content-choiceIndex"
+				min="0"
+				max="255"
+			></number-var>
+			<text>Timestamp</text
+			><custom-box
+				id="setString-operand-parse-timestamp-variable"
+				type="variable"
+				filter="number"
+			></custom-box>
+			<text>Date Format</text
+			><text-box id="setString-operand-parse-timestamp-format"></text-box>
+			<text>Image Width</text
+			><number-box
+				id="setString-operand-screenshot-width"
+				min="64"
+				max="7680"
+				unit="px"
+			></number-box>
+			<text>Image Height</text
+			><number-box
+				id="setString-operand-screenshot-height"
+				min="64"
+				max="7680"
+				unit="px"
+			></number-box>
+		</grid-box>
+		<button id="setString-confirm" name="confirm">Confirm</button>
+		<button id="setString-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setObject">
+	<title-bar>Set Object<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="setObject-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Type</text
+			><select-box id="setObject-operand-type"></select-box>
+			<text>Actor</text
+			><custom-box id="setObject-operand-actor" type="actor"></custom-box>
+			<text>Skill</text
+			><custom-box id="setObject-operand-skill" type="skill"></custom-box>
+			<text>State</text
+			><custom-box id="setObject-operand-state" type="state"></custom-box>
+			<text>Equipment</text
+			><custom-box
+				id="setObject-operand-equipment"
+				type="equipment"
+			></custom-box>
+			<text>Item</text
+			><custom-box id="setObject-operand-item" type="item"></custom-box>
+			<text>Trigger</text
+			><custom-box
+				id="setObject-operand-trigger"
+				type="trigger"
+			></custom-box>
+			<text>Light</text
+			><custom-box id="setObject-operand-light" type="light"></custom-box>
+			<text>Object</text
+			><custom-box
+				id="setObject-operand-object"
+				type="object"
+			></custom-box>
+			<text>Element</text
+			><custom-box
+				id="setObject-operand-element"
+				type="element"
+			></custom-box>
+			<text>Variable</text
+			><custom-box
+				id="setObject-operand-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Index</text
+			><number-var
+				id="setObject-operand-list-index"
+				min="0"
+				max="1000000000"
+			></number-var>
+		</grid-box>
+		<button id="setObject-confirm" name="confirm">Confirm</button>
+		<button id="setObject-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setList">
+	<title-bar>Set List<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="setList-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Operation</text
+			><select-box id="setList-operation"></select-box>
+			<text>Numbers</text
+			><custom-box
+				id="setList-numbers"
+				type="array"
+				filter="number"
+			></custom-box>
+			<text>Strings</text
+			><custom-box
+				id="setList-strings"
+				type="array"
+				filter="string"
+			></custom-box>
+			<text>Index</text
+			><number-var
+				id="setList-index"
+				min="0"
+				max="1000000000"
+			></number-var>
+			<text>Boolean</text><select-box id="setList-boolean"></select-box>
+			<text>Number</text
+			><number-box
+				id="setList-number"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-box>
+			<text>String</text><text-area id="setList-string"></text-area>
+			<text>Variable</text
+			><custom-box
+				id="setList-operand"
+				type="variable"
+				filter="all"
+			></custom-box>
+			<text>Separator</text
+			><text-area-var id="setList-separator"></text-area-var>
+			<text>Attribute Group</text
+			><custom-box
+				id="setList-attribute-groupId"
+				type="attribute-group"
+			></custom-box>
+			<text>Enum Group</text
+			><custom-box
+				id="setList-enum-groupId"
+				type="enum-group"
+			></custom-box>
+			<text>Actor</text
+			><custom-box id="setList-actor" type="actor"></custom-box>
+			<text>Default</text
+			><check-box
+				id="setList-index-skip-check"
+				class="standard"
+			></check-box>
+		</grid-box>
+		<button id="setList-confirm" name="confirm">Confirm</button>
+		<button id="setList-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="deleteVariable">
+	<title-bar>Delete Variable<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="deleteVariable-variable"
+				type="variable"
+				filter="deletable"
+			></custom-box>
+		</grid-box>
+		<button id="deleteVariable-confirm" name="confirm">Confirm</button>
+		<button id="deleteVariable-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="getObjectProperty">
+	<title-bar>getObjectProperty<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="getObjectProperty-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>getObjectProperty</text
+			><param-list id="getObjectProperty-list"></param-list>
+			<text>saveVariable</text
+			><custom-box
+				id="getObjectProperty-save-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+		</grid-box>
+		<button id="getObjectProperty-confirm" name="confirm">Confirm</button>
+		<button id="getObjectProperty-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setObjectProperty">
+	<title-bar>setObjectProperty<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="setObjectProperty-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>setObjectProperty</text
+			><param-list id="setObjectProperty-list"></param-list>
+			<text>valueVariable</text
+			><custom-box
+				id="setObjectProperty-value-variable"
+				type="variable"
+				filter="all"
+			></custom-box>
+		</grid-box>
+		<button id="setObjectProperty-confirm" name="confirm">Confirm</button>
+		<button id="setObjectProperty-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

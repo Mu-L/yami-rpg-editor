@@ -60,4 +60,3 @@ PS：更改了`Template`文件夹下的文件，就要`buildres`更新资源后�
 `Project\index.css`: 样式入口文件（由 `build-css.js` 自动生成，请编辑 `Project\css\` 下的模块文件）
 
 `Project\index.html`: 编辑器渲染页面（由 `build-html.js` 自动生成，请编辑 `Project\index.src.html` 模块文件）
-

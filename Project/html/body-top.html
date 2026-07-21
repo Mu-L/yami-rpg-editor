@@ -1,29 +1,33 @@
 <body>
+	<!-- 标题栏 -->
+	<box id="title">
+		<box id="menu">
+			<item id="menu-file" class="menu-item" value="file">File</item>
+			<item id="menu-edit" class="menu-item" value="edit">Edit</item>
+			<item id="menu-view" class="menu-item" value="view">View</item>
+			<item id="menu-window" class="menu-item" value="window"
+				>Window</item
+			>
+			<item id="menu-help" class="menu-item" value="help">Help</item>
+			<item id="menu-open-yami" class="menu-item" value="openYami"
+				>Open Yami</item
+			>
+		</box>
+		<tab-bar id="title-tabBar"></tab-bar>
+		<box id="title-buttons">
+			<box id="title-play" hotkey="F4">&#xf04b;</box>
+			<minimize id="title-minimize"></minimize>
+			<maximize id="title-maximize"></maximize>
+			<close id="title-close"></close>
+		</box>
+	</box>
 
-  <!-- 标题栏 -->
-  <box id="title">
-    <box id="menu">
-      <item id="menu-file" class="menu-item" value="file">File</item>
-      <item id="menu-edit" class="menu-item" value="edit">Edit</item>
-      <item id="menu-view" class="menu-item" value="view">View</item>
-      <item id="menu-window" class="menu-item" value="window">Window</item>
-      <item id="menu-help" class="menu-item" value="help">Help</item>
-      <item id="menu-open-yami" class="menu-item" value="openYami">Open Yami</item>
-    </box>
-    <tab-bar id="title-tabBar"></tab-bar>
-    <box id="title-buttons">
-      <box id="title-play" hotkey="F4">&#xf04b;</box>
-      <minimize id="title-minimize"></minimize>
-      <maximize id="title-maximize"></maximize>
-      <close id="title-close"></close>
-    </box>
-  </box>
+	<!-- 窗口环境 -->
+	<box id="window-ambient"></box>
 
-  <!-- 窗口环境 -->
-  <box id="window-ambient"></box>
+	<!-- 工具提示 -->
+	<box id="tooltip"></box>
 
-  <!-- 工具提示 -->
-  <box id="tooltip"></box>
-
-  <!-- 指针区域 -->
-  <box id="cursor-region"></box>
+	<!-- 指针区域 -->
+	<box id="cursor-region"></box>
+</body>

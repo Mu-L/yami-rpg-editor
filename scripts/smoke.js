@@ -1,83 +1,83 @@
-'use strict'
+'use strict';
 
 // 轻量冒烟测试（不引入 Vitest）：验证关键构建/加载链路不变量。
 // 零副作用：只读文件 + vm 加载，不写项目产物。
 
-const fs = require('fs')
-const path = require('path')
-const vm = require('vm')
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
 
-const ROOT = path.resolve(__dirname, '..')
-const COMMAND_DIR = path.join(ROOT, 'Project', 'Script', 'module', 'command')
+const ROOT = path.resolve(__dirname, '..');
+const COMMAND_DIR = path.join(ROOT, 'Project', 'Script', 'module', 'command');
 // 基础对象（Command / CommandSchema）由 createSandbox 预置，
 // 已真 ESM 化的文件（含 import）由 verify-imports.js 覆盖，不在此 vm 测试范围
-const TEST_FILES = []
+const TEST_FILES = [];
 
-let failures = 0
+let failures = 0;
 function fail(msg) {
-	failures++
-	console.error('  ✗ ' + msg)
+	failures++;
+	console.error('  ✗ ' + msg);
 }
 function ok(msg) {
-	console.log('  ✓ ' + msg)
+	console.log('  ✓ ' + msg);
 }
 
 function stripESM(code) {
 	// 去除 import 语句（vm 无模块解析，符号由 sandbox 全局提供）
 	// [^\n;]+ 避免跨行吞掉多行内容（[^;] 会匹配换行导致误删）
-	code = code.replace(/^\s*import\s+[^\n;]+;?\s*$/gm, '')
+	code = code.replace(/^\s*import\s+[^\n;]+;?\s*$/gm, '');
 	// 逐行处理：去除 import、将 export 声明改写为 window.X = <声明>
 	// 逐行可避免 \s 跨行吞掉多行对象字面量
 	code = code
 		.split('\n')
 		.map((line) => {
-			if (/^\s*import\s+/.test(line)) return ''
-			let m = line.match(/^\s*export\s+const\s+(\w+)\s*=/)
+			if (/^\s*import\s+/.test(line)) return '';
+			let m = line.match(/^\s*export\s+const\s+(\w+)\s*=/);
 			if (m)
 				return line.replace(
 					/^\s*export\s+const\s+\w+\s*=/,
 					`window.${m[1]} =`
-				)
-			m = line.match(/^\s*export\s+let\s+(\w+)\s*=/)
+				);
+			m = line.match(/^\s*export\s+let\s+(\w+)\s*=/);
 			if (m)
 				return line.replace(
 					/^\s*export\s+let\s+\w+\s*=/,
 					`window.${m[1]} =`
-				)
-			m = line.match(/^\s*export\s+var\s+(\w+)\s*=/)
+				);
+			m = line.match(/^\s*export\s+var\s+(\w+)\s*=/);
 			if (m)
 				return line.replace(
 					/^\s*export\s+var\s+\w+\s*=/,
 					`window.${m[1]} =`
-				)
-			m = line.match(/^\s*export\s+function\s+(\w+)/)
+				);
+			m = line.match(/^\s*export\s+function\s+(\w+)/);
 			if (m)
 				return line.replace(
 					/^\s*export\s+function\s+\w+/,
 					`window.${m[1]} = function ${m[1]}`
-				)
-			m = line.match(/^\s*export\s+class\s+(\w+)/)
+				);
+			m = line.match(/^\s*export\s+class\s+(\w+)/);
 			if (m)
 				return line.replace(
 					/^\s*export\s+class\s+\w+/,
 					`window.${m[1]} = class ${m[1]}`
-				)
-			return line
+				);
+			return line;
 		})
-		.join('\n')
-	return code
-	return code
+		.join('\n');
+	return code;
+	return code;
 }
 
 // 极简 DOM / 全局 stub
 function makeEl() {
-	let v = undefined
+	let v = undefined;
 	return {
 		write(x) {
-			v = x
+			v = x;
 		},
 		read() {
-			return v
+			return v;
 		},
 		getFocus() {},
 		on() {},
@@ -86,15 +86,15 @@ function makeEl() {
 		show() {},
 		hide() {},
 		querySelector() {
-			return null
+			return null;
 		},
 		childNodes: [],
 		appendChild() {},
 		removeChild() {},
 		firstChild: null
-	}
+	};
 }
-const noop = () => {}
+const noop = () => {};
 
 function createSandbox() {
 	const sb = {
@@ -143,112 +143,114 @@ function createSandbox() {
 		// 真实行为由 verify-imports.js + 手动启动覆盖
 		CommandSchema: class CommandSchema {
 			constructor(config) {
-				this.name = config.name
-				this.fields = config.fields || []
-				this.customParse = config.parse || config.customParse
-				this.onInitialize = config.initialize || config.onInitialize
+				this.name = config.name;
+				this.fields = config.fields || [];
+				this.customParse = config.parse || config.customParse;
+				this.onInitialize = config.initialize || config.onInitialize;
 			}
 			createDefault() {
-				const d = {}
+				const d = {};
 				for (const f of this.fields) {
-					if (f.default !== undefined) d[f.key] = f.default
+					if (f.default !== undefined) d[f.key] = f.default;
 				}
-				return d
+				return d;
 			}
 			parse(data) {
-				if (this.customParse) return this.customParse(data)
-				return [{ text: this.name }]
+				if (this.customParse) return this.customParse(data);
+				return [{ text: this.name }];
 			}
 		}
-	}
-	sb.window = sb
-	sb.globalThis = sb
-	sb.$ = () => makeEl()
+	};
+	sb.window = sb;
+	sb.globalThis = sb;
+	sb.$ = () => makeEl();
 	return new Proxy(sb, {
 		has() {
-			return true
+			return true;
 		},
 		get(target, prop) {
-			if (prop in target) return target[prop]
-			if (typeof prop === 'symbol') return undefined
+			if (prop in target) return target[prop];
+			if (typeof prop === 'symbol') return undefined;
 			const stub = new Proxy(() => stub, {
 				get: (_t, p) => (p === 'then' ? undefined : stub),
 				apply: () => stub
-			})
-			return stub
+			});
+			return stub;
 		}
-	})
+	});
 }
 
-console.log('[smoke] 1. 加载 CommandSchema + command-object + 全部指令 case')
-const sb = createSandbox()
+console.log('[smoke] 1. 加载 CommandSchema + command-object + 全部指令 case');
+const sb = createSandbox();
 try {
 	for (const f of TEST_FILES) {
-		const code = stripESM(fs.readFileSync(path.join(ROOT, f), 'utf8'))
-		vm.runInNewContext(code, sb, f)
+		const code = stripESM(fs.readFileSync(path.join(ROOT, f), 'utf8'));
+		vm.runInNewContext(code, sb, f);
 	}
 } catch (e) {
-	fail('加载核心模块抛错: ' + e.message)
+	fail('加载核心模块抛错: ' + e.message);
 }
 
 // 逐文件加载 module/command/*.js
 // 已真 ESM 化（含 import）的文件经 stripESM 去除 import 后，依赖符号由
 // createSandbox 的 Proxy 兜底，仍可在 vm 内完成 case 注册
-const caseFiles = fs.readdirSync(COMMAND_DIR).filter((f) => f.endsWith('.js'))
-let loaded = 0
-let skipped = 0
+const caseFiles = fs
+	.readdirSync(COMMAND_DIR)
+	.filter((f) => /\.(js|ts)$/.test(f));
+let loaded = 0;
+let skipped = 0;
 for (const f of caseFiles) {
 	try {
 		const code = stripESM(
 			fs.readFileSync(path.join(COMMAND_DIR, f), 'utf8')
-		)
-		vm.runInNewContext(code, sb, f)
-		loaded++
+		);
+		vm.runInNewContext(code, sb, f);
+		loaded++;
 	} catch (e) {
-		fail(`指令 case 加载失败: ${f} -> ${e.message}`)
+		fail(`指令 case 加载失败: ${f} -> ${e.message}`);
 	}
 }
-if (loaded === caseFiles.length) ok(`全部 ${loaded} 个指令 case 加载无异常`)
-else fail(`仅 ${loaded}/${caseFiles.length} 个 case 加载成功`)
+if (loaded === caseFiles.length) ok(`全部 ${loaded} 个指令 case 加载无异常`);
+else fail(`仅 ${loaded}/${caseFiles.length} 个 case 加载成功`);
 
 // 统计注册的 Command.cases（command-object.js 经 window.Command = Command 暴露）
-const Command = sb.Command
+const Command = sb.Command;
 if (!Command || !Command.cases) {
-	fail('Command.cases 未注册（command-object.js 未暴露 window.Command）')
+	fail('Command.cases 未注册（command-object.js 未暴露 window.Command）');
 } else {
-	const registeredCases = Object.keys(Command.cases).length
-	if (registeredCases > 100) ok(`Command.cases 注册数 = ${registeredCases}`)
-	else fail(`Command.cases 注册数异常: ${registeredCases}`)
+	const registeredCases = Object.keys(Command.cases).length;
+	if (registeredCases > 100) ok(`Command.cases 注册数 = ${registeredCases}`);
+	else fail(`Command.cases 注册数异常: ${registeredCases}`);
 
 	// 补全 parse 辅助方法（仅当 command-object.js 未提供时），供样例 parse 使用
-	Command.save = Command.save || noop
-	Command.parseActor = Command.parseActor || ((a) => (a && a.type) || '')
-	Command.parseObject = Command.parseObject || ((o) => (o && o.type) || '')
-	Command.parseElement = Command.parseElement || ((e) => (e && e.type) || '')
-	Command.parseVariableNumber = Command.parseVariableNumber || ((v) => v)
+	Command.save = Command.save || noop;
+	Command.parseActor = Command.parseActor || ((a) => (a && a.type) || '');
+	Command.parseObject = Command.parseObject || ((o) => (o && o.type) || '');
+	Command.parseElement = Command.parseElement || ((e) => (e && e.type) || '');
+	Command.parseVariableNumber = Command.parseVariableNumber || ((v) => v);
 	// 兜底：任何未定义的 Command.parse* 方法给安全返回值，避免样例 parse 因 stub 缺口误报
 	for (const key of Object.getOwnPropertyNames(Command)) {
 		if (key.startsWith('parse') && typeof Command[key] !== 'function') {
-			Command[key] = () => ''
+			Command[key] = () => '';
 		}
 	}
 }
 
 console.log(
 	'[smoke] 2. 全量验证 parse 为函数（深度 parse 需完整 helper，仅在样例上调用）'
-)
-let fnOk = 0
-let fnFail = 0
+);
+let fnOk = 0;
+let fnFail = 0;
 for (const name of Object.keys(Command.cases)) {
-	const inst = Command.cases[name]
-	if (typeof inst.parse === 'function') fnOk++
+	const inst = Command.cases[name];
+	if (typeof inst.parse === 'function') fnOk++;
 	else {
-		fnFail++
-		if (fnFail <= 10) fail(`parse 非函数: ${name}`)
+		fnFail++;
+		if (fnFail <= 10) fail(`parse 非函数: ${name}`);
 	}
 }
-if (fnFail === 0) ok(`全部 ${fnOk} 个指令均有 parse 函数`)
-else fail(`${fnOk} 成功 / ${fnFail} 失败`)
+if (fnFail === 0) ok(`全部 ${fnOk} 个指令均有 parse 函数`);
+else fail(`${fnOk} 成功 / ${fnFail} 失败`);
 
 // 在已迁移/代表性样例上实际调用 parse（提供所需 helper）
 const sampleNames = [
@@ -262,61 +264,61 @@ const sampleNames = [
 	'nestElement',
 	'break',
 	'continue'
-]
-let callOk = 0
-let callFail = 0
+];
+let callOk = 0;
+let callFail = 0;
 for (const name of sampleNames) {
-	const inst = Command.cases[name]
+	const inst = Command.cases[name];
 	if (!inst) {
-		fail(`样例缺失: ${name}`)
-		continue
+		fail(`样例缺失: ${name}`);
+		continue;
 	}
 	try {
 		const parsed = inst.parse(
 			inst.createDefault ? inst.createDefault() : {}
-		)
-		if (!Array.isArray(parsed)) throw new Error('parse 未返回数组')
-		callOk++
+		);
+		if (!Array.isArray(parsed)) throw new Error('parse 未返回数组');
+		callOk++;
 	} catch (e) {
-		callFail++
-		if (callFail <= 10) fail(`parse 调用抛错: ${name} -> ${e.message}`)
+		callFail++;
+		if (callFail <= 10) fail(`parse 调用抛错: ${name} -> ${e.message}`);
 	}
 }
-if (callFail === 0) ok(`样例 parse 调用成功: ${callOk} 个`)
-else fail(`${callOk} 成功 / ${callFail} 失败`)
+if (callFail === 0) ok(`样例 parse 调用成功: ${callOk} 个`);
+else fail(`${callOk} 成功 / ${callFail} 失败`);
 
-console.log('[smoke] 3. 初始化顺序 guard 逻辑')
+console.log('[smoke] 3. 初始化顺序 guard 逻辑');
 // 直接验证 guard 判定：Command 早于 Inspector 应告警
-const initializedSet = new Set()
-let warned = false
+const initializedSet = new Set();
+let warned = false;
 function guard(name) {
-	if (name === 'Command' && !initializedSet.has('Inspector')) warned = true
+	if (name === 'Command' && !initializedSet.has('Inspector')) warned = true;
 }
-guard('Command')
-if (warned) ok('顺序颠倒时 guard 能检出 (Inspector 未先于 Command)')
-else fail('guard 未检出顺序错误')
+guard('Command');
+if (warned) ok('顺序颠倒时 guard 能检出 (Inspector 未先于 Command)');
+else fail('guard 未检出顺序错误');
 
-console.log('[smoke] 4. 插件 @group 参数分组解析')
+console.log('[smoke] 4. 插件 @group 参数分组解析');
 // 以递归 stub 加载 plugin.js，验证 parseMeta 能正确标注 parameter.group
 function makeRecStub() {
 	const f = function () {
-		return makeRecStub()
-	}
-	f.createDefaultForPlugin = () => ({ type: 'none' })
+		return makeRecStub();
+	};
+	f.createDefaultForPlugin = () => ({ type: 'none' });
 	return new Proxy(f, {
 		get(t, p) {
-			if (p === 'list') return makeRecStub()
-			if (p === Symbol.toPrimitive) return () => ''
-			if (p in t) return t[p]
-			return makeRecStub()
+			if (p === 'list') return makeRecStub();
+			if (p === Symbol.toPrimitive) return () => '';
+			if (p in t) return t[p];
+			return makeRecStub();
 		},
 		apply() {
-			return makeRecStub()
+			return makeRecStub();
 		},
 		construct() {
-			return makeRecStub()
+			return makeRecStub();
 		}
-	})
+	});
 }
 const pluginSandbox = {
 	console,
@@ -333,52 +335,52 @@ const pluginSandbox = {
 	window: null,
 	Local: { get: (k) => k, language: 'en' },
 	File: { parseMetaName: (m) => m.overview?.plugin || 'plugin' }
-}
-pluginSandbox.window = pluginSandbox
-pluginSandbox.globalThis = pluginSandbox
-pluginSandbox.$ = () => makeRecStub()
+};
+pluginSandbox.window = pluginSandbox;
+pluginSandbox.globalThis = pluginSandbox;
+pluginSandbox.$ = () => makeRecStub();
 pluginSandbox.LanguageMap = class {
 	constructor() {
-		this.packs = []
+		this.packs = [];
 	}
 	append(p) {
-		this.packs.push(p)
+		this.packs.push(p);
 	}
 	update() {
-		return { get: (k) => (k && k[0] === '#' ? k.slice(1) : k || '') }
+		return { get: (k) => (k && k[0] === '#' ? k.slice(1) : k || '') };
 	}
-}
+};
 pluginSandbox.OptionManager = class extends Array {
 	constructor() {
-		super()
-		this.wraps = {}
-		this.states = {}
+		super();
+		this.wraps = {};
+		this.states = {};
 	}
 	append(o) {
-		this.push(o)
+		this.push(o);
 	}
-}
+};
 const pluginProxy = new Proxy(pluginSandbox, {
 	get(target, prop) {
-		if (prop in target) return target[prop]
-		if (typeof prop === 'symbol') return undefined
-		if (typeof globalThis[prop] !== 'undefined') return globalThis[prop]
-		return makeRecStub()
+		if (prop in target) return target[prop];
+		if (typeof prop === 'symbol') return undefined;
+		if (typeof globalThis[prop] !== 'undefined') return globalThis[prop];
+		return makeRecStub();
 	},
 	has() {
-		return true
+		return true;
 	}
-})
-let groupOk = true
+});
+let groupOk = true;
 try {
 	const pluginCode = stripESM(
 		fs.readFileSync(
-			path.join(ROOT, 'Project/Script/plugin/plugin.js'),
+			path.join(ROOT, 'Project/Script/plugin/plugin.ts'),
 			'utf8'
 		)
-	)
-	vm.runInNewContext(pluginCode, pluginProxy, 'plugin.js')
-	const parseMeta = pluginSandbox.PluginManager.parseMeta
+	);
+	vm.runInNewContext(pluginCode, pluginProxy, 'plugin.js');
+	const parseMeta = pluginSandbox.PluginManager.parseMeta;
 	const sample = `/* @plugin Demo
 @group Target
 @actor target
@@ -387,20 +389,20 @@ try {
 @group Options
 @boolean heavy
 @string name @alias 名称
-*/`
-	const meta = {}
-	parseMeta(meta, sample)
-	const find = (k) => meta.parameters.find((p) => p.key === k)
+*/`;
+	const meta = {};
+	parseMeta(meta, sample);
+	const find = (k) => meta.parameters.find((p) => p.key === k);
 	const checks = [
 		['target', 'Target'],
 		['damage', 'Target'],
 		['heavy', 'Options'],
 		['name', 'Options']
-	]
+	];
 	for (const [k, g] of checks) {
 		if (find(k)?.group !== g) {
-			groupOk = false
-			fail(`@group 解析错误: ${k} 期望 ${g} 实得 ${find(k)?.group}`)
+			groupOk = false;
+			fail(`@group 解析错误: ${k} 期望 ${g} 实得 ${find(k)?.group}`);
 		}
 	}
 	// 验证 @desc 本地化 #key 引用
@@ -410,49 +412,49 @@ try {
 
 @number damage @desc #dmgDesc
 @string note @desc Plain text
-*/`
-	const dmeta = {}
-	parseMeta(dmeta, descSample)
-	const dlm = dmeta.langMap.update()
-	const dmgParam = dmeta.parameters.find((p) => p.key === 'damage')
-	const noteParam = dmeta.parameters.find((p) => p.key === 'note')
+*/`;
+	const dmeta = {};
+	parseMeta(dmeta, descSample);
+	const dlm = dmeta.langMap.update();
+	const dmgParam = dmeta.parameters.find((p) => p.key === 'damage');
+	const noteParam = dmeta.parameters.find((p) => p.key === 'note');
 	if (dlm.get(dmgParam.desc) !== 'Damage value') {
-		groupOk = false
-		fail(`@desc 本地化错误: 实得 "${dlm.get(dmgParam.desc)}"`)
+		groupOk = false;
+		fail(`@desc 本地化错误: 实得 "${dlm.get(dmgParam.desc)}"`);
 	}
 	if (dlm.get(noteParam.desc) !== 'Plain text') {
-		groupOk = false
-		fail(`@desc 纯文本错误: 实得 "${dlm.get(noteParam.desc)}"`)
+		groupOk = false;
+		fail(`@desc 纯文本错误: 实得 "${dlm.get(noteParam.desc)}"`);
 	}
 	// 验证 @deprecated 元数据标注
 	const metaSample = `/* @plugin Old Plugin
 @version 1.2
 @deprecated 请改用 New Plugin
-*/`
-	const metameta = {}
-	parseMeta(metameta, metaSample)
-	const ov = metameta.overview
+*/`;
+	const metameta = {};
+	parseMeta(metameta, metaSample);
+	const ov = metameta.overview;
 	if (ov.deprecated !== '请改用 New Plugin') {
-		groupOk = false
-		fail(`@deprecated 解析错误: ${JSON.stringify(ov.deprecated)}`)
+		groupOk = false;
+		fail(`@deprecated 解析错误: ${JSON.stringify(ov.deprecated)}`);
 	}
-	const metaSimple = `/* @plugin X\n@deprecated\n*/`
-	const ms = {}
-	parseMeta(ms, metaSimple)
+	const metaSimple = `/* @plugin X\n@deprecated\n*/`;
+	const ms = {};
+	parseMeta(ms, metaSimple);
 	if (ms.overview.deprecated !== true) {
-		groupOk = false
+		groupOk = false;
 		fail(
 			`@deprecated 无参数解析错误: ${JSON.stringify(ms.overview.deprecated)}`
-		)
+		);
 	}
 	// 验证 @require 依赖声明解析
 	const reqSample = `/* @plugin Demo
 @require BasePlugin 1.0
 @require OtherPlugin
-*/`
-	const reqmeta = {}
-	parseMeta(reqmeta, reqSample)
-	const reqs = reqmeta.overview.requires
+*/`;
+	const reqmeta = {};
+	parseMeta(reqmeta, reqSample);
+	const reqs = reqmeta.overview.requires;
 	if (
 		!Array.isArray(reqs) ||
 		reqs.length !== 2 ||
@@ -461,8 +463,8 @@ try {
 		reqs[1].plugin !== 'OtherPlugin' ||
 		reqs[1].version !== ''
 	) {
-		groupOk = false
-		fail(`@require 解析错误: ${JSON.stringify(reqs)}`)
+		groupOk = false;
+		fail(`@require 解析错误: ${JSON.stringify(reqs)}`);
 	}
 	// 验证 @placeholder 解析
 	const spSample = `/* @plugin Demo
@@ -470,22 +472,22 @@ try {
 @placeholder 输入数量
 @string name
 @placeholder 角色名
-*/`
-	const spmeta = {}
-	parseMeta(spmeta, spSample)
-	const amount = spmeta.parameters.find((p) => p.key === 'amount')
-	const name = spmeta.parameters.find((p) => p.key === 'name')
+*/`;
+	const spmeta = {};
+	parseMeta(spmeta, spSample);
+	const amount = spmeta.parameters.find((p) => p.key === 'amount');
+	const name = spmeta.parameters.find((p) => p.key === 'name');
 	if (!amount || amount.placeholder !== '输入数量') {
-		groupOk = false
+		groupOk = false;
 		fail(
 			`@placeholder 解析错误: ${JSON.stringify(amount && amount.placeholder)}`
-		)
+		);
 	}
 	if (!name || name.placeholder !== '角色名') {
-		groupOk = false
+		groupOk = false;
 		fail(
 			`@placeholder 字符串解析错误: ${JSON.stringify(name && name.placeholder)}`
-		)
+		);
 	}
 	// 验证 @group[] 可重复参数组解析
 	const rgSample = `/* @plugin DropTable
@@ -493,10 +495,12 @@ try {
 @item-getter item
 @number chance @default 50
 @group[] Drops
-*/`
-	const rgMeta = {}
-	parseMeta(rgMeta, rgSample)
-	const rgParam = rgMeta.parameters.find((p) => p.type === 'repeatable-group')
+*/`;
+	const rgMeta = {};
+	parseMeta(rgMeta, rgSample);
+	const rgParam = rgMeta.parameters.find(
+		(p) => p.type === 'repeatable-group'
+	);
 	const rgChecks = [
 		['@group[] 未创建 repeatable-group 参数', !!rgParam],
 		['@group[] key 应为 Drops', rgParam?.key === 'Drops'],
@@ -510,120 +514,120 @@ try {
 			rgParam?.repeatableGroup?.parameters?.[0]?.key === 'item'
 		],
 		['@group[] 默认值应为 []', rgParam?.value?.join() === '']
-	]
+	];
 	for (const rp of rgMeta.parameters) {
 		if (rp.group === 'Drops' && rp.type !== 'repeatable-group') {
-			fail(`@group[] 有残留 group=Drops 参数: ${rp.key}`)
+			fail(`@group[] 有残留 group=Drops 参数: ${rp.key}`);
 		}
 	}
-	let repeatableOk = true
+	let repeatableOk = true;
 	for (const [msg, ok_] of rgChecks) {
 		if (!ok_) {
-			repeatableOk = false
-			fail(msg)
+			repeatableOk = false;
+			fail(msg);
 		}
 	}
-	if (repeatableOk) ok('@group[] 可重复参数组解析正确')
+	if (repeatableOk) ok('@group[] 可重复参数组解析正确');
 	// 验证 @readonly 解析
-	const roSample = `/* @plugin Demo\n@number fixed\n@readonly\n@string editable\n*/`
-	const roMeta = {}
-	parseMeta(roMeta, roSample)
-	const fixedParam = roMeta.parameters.find((p) => p.key === 'fixed')
-	const editableParam = roMeta.parameters.find((p) => p.key === 'editable')
+	const roSample = `/* @plugin Demo\n@number fixed\n@readonly\n@string editable\n*/`;
+	const roMeta = {};
+	parseMeta(roMeta, roSample);
+	const fixedParam = roMeta.parameters.find((p) => p.key === 'fixed');
+	const editableParam = roMeta.parameters.find((p) => p.key === 'editable');
 	if (fixedParam?.readonly !== true) {
-		groupOk = false
-		fail(`@readonly 解析错误: ${JSON.stringify(fixedParam?.readonly)}`)
+		groupOk = false;
+		fail(`@readonly 解析错误: ${JSON.stringify(fixedParam?.readonly)}`);
 	}
 	if (editableParam?.readonly === true) {
-		groupOk = false
+		groupOk = false;
 		fail(
 			`@readonly 误标记 editable: ${JSON.stringify(editableParam?.readonly)}`
-		)
+		);
 	}
 	if (fixedParam?.readonly === true && editableParam?.readonly !== true)
-		ok('@readonly 解析正确')
+		ok('@readonly 解析正确');
 	// 验证 @hidden 解析
-	const hSample = `/* @plugin Demo\n@number visible\n@string internal\n@hidden\n*/`
-	const hMeta = {}
-	parseMeta(hMeta, hSample)
-	const visibleParam = hMeta.parameters.find((p) => p.key === 'visible')
-	const hiddenParam = hMeta.parameters.find((p) => p.key === 'internal')
+	const hSample = `/* @plugin Demo\n@number visible\n@string internal\n@hidden\n*/`;
+	const hMeta = {};
+	parseMeta(hMeta, hSample);
+	const visibleParam = hMeta.parameters.find((p) => p.key === 'visible');
+	const hiddenParam = hMeta.parameters.find((p) => p.key === 'internal');
 	if (hiddenParam?.hidden !== true) {
-		groupOk = false
-		fail(`@hidden 解析错误: ${JSON.stringify(hiddenParam?.hidden)}`)
+		groupOk = false;
+		fail(`@hidden 解析错误: ${JSON.stringify(hiddenParam?.hidden)}`);
 	}
 	if (visibleParam?.hidden === true) {
-		groupOk = false
-		fail(`@hidden 误标记 visible: ${JSON.stringify(visibleParam?.hidden)}`)
+		groupOk = false;
+		fail(`@hidden 误标记 visible: ${JSON.stringify(visibleParam?.hidden)}`);
 	}
 	if (hiddenParam?.hidden === true && visibleParam?.hidden !== true)
-		ok('@hidden 解析正确')
+		ok('@hidden 解析正确');
 	// 验证 @validate 解析
-	const vSample = `/* @plugin Demo\n@string code\n@validate pattern:^[a-z]+$ minLength:3 maxLength:10 notEmpty\n@string free\n*/`
-	const vMeta = {}
-	parseMeta(vMeta, vSample)
-	const codeParam = vMeta.parameters.find((p) => p.key === 'code')
-	const freeParam = vMeta.parameters.find((p) => p.key === 'free')
+	const vSample = `/* @plugin Demo\n@string code\n@validate pattern:^[a-z]+$ minLength:3 maxLength:10 notEmpty\n@string free\n*/`;
+	const vMeta = {};
+	parseMeta(vMeta, vSample);
+	const codeParam = vMeta.parameters.find((p) => p.key === 'code');
+	const freeParam = vMeta.parameters.find((p) => p.key === 'free');
 	if (!codeParam?.validate) {
-		groupOk = false
-		fail('@validate 未解析出 validate 对象')
+		groupOk = false;
+		fail('@validate 未解析出 validate 对象');
 	} else {
-		const v = codeParam.validate
+		const v = codeParam.validate;
 		if (!v.pattern || v.pattern.source !== '^[a-z]+$') {
-			groupOk = false
-			fail(`@validate pattern 错误: ${v.pattern}`)
+			groupOk = false;
+			fail(`@validate pattern 错误: ${v.pattern}`);
 		}
 		if (v.minLength !== 3) {
-			groupOk = false
-			fail(`@validate minLength 错误: ${v.minLength}`)
+			groupOk = false;
+			fail(`@validate minLength 错误: ${v.minLength}`);
 		}
 		if (v.maxLength !== 10) {
-			groupOk = false
-			fail(`@validate maxLength 错误: ${v.maxLength}`)
+			groupOk = false;
+			fail(`@validate maxLength 错误: ${v.maxLength}`);
 		}
 		if (v.notEmpty !== true) {
-			groupOk = false
-			fail(`@validate notEmpty 错误: ${v.notEmpty}`)
+			groupOk = false;
+			fail(`@validate notEmpty 错误: ${v.notEmpty}`);
 		}
 	}
 	if (freeParam?.validate !== undefined) {
-		groupOk = false
-		fail(`@validate 误标记 free: ${JSON.stringify(freeParam?.validate)}`)
+		groupOk = false;
+		fail(`@validate 误标记 free: ${JSON.stringify(freeParam?.validate)}`);
 	}
 	if (codeParam?.validate && freeParam?.validate === undefined)
-		ok('@validate 解析正确')
+		ok('@validate 解析正确');
 	// 验证 @suffix / @prefix 解析
-	const affixMeta = {}
+	const affixMeta = {};
 	parseMeta(
 		affixMeta,
 		`/* @plugin Demo\n@number hp\n@suffix HP\n@string code\n@prefix #\n*/`
-	)
-	const hpParam = affixMeta.parameters.find((p) => p.key === 'hp')
-	const codeParam2 = affixMeta.parameters.find((p) => p.key === 'code')
+	);
+	const hpParam = affixMeta.parameters.find((p) => p.key === 'hp');
+	const codeParam2 = affixMeta.parameters.find((p) => p.key === 'code');
 	if (hpParam?.suffix !== 'HP') {
-		groupOk = false
-		fail(`@suffix 解析错误: ${JSON.stringify(hpParam?.suffix)}`)
+		groupOk = false;
+		fail(`@suffix 解析错误: ${JSON.stringify(hpParam?.suffix)}`);
 	}
 	if (codeParam2?.prefix !== '#') {
-		groupOk = false
-		fail(`@prefix 解析错误: ${JSON.stringify(codeParam2?.prefix)}`)
+		groupOk = false;
+		fail(`@prefix 解析错误: ${JSON.stringify(codeParam2?.prefix)}`);
 	}
 	if (hpParam?.suffix === 'HP' && codeParam2?.prefix === '#')
-		ok('@suffix / @prefix 解析正确')
+		ok('@suffix / @prefix 解析正确');
 } catch (e) {
-	groupOk = false
-	fail('plugin.js 新标签解析抛错: ' + e.message)
+	groupOk = false;
+	fail('plugin.js 新标签解析抛错: ' + e.message);
 }
 if (groupOk)
 	ok(
 		'@group 分组 + @desc 本地化 + @deprecated + @require + @placeholder + @group[] + @readonly + @hidden + @validate + @suffix + @prefix 解析正确'
-	)
+	);
 
-console.log('')
+console.log('');
 if (failures === 0) {
-	console.log('[smoke] 全部通过 ✅')
-	process.exit(0)
+	console.log('[smoke] 全部通过 ✅');
+	process.exit(0);
 } else {
-	console.log(`[smoke] 失败 ${failures} 项 ❌`)
-	process.exit(1)
+	console.log(`[smoke] 失败 ${failures} 项 ❌`);
+	process.exit(1);
 }

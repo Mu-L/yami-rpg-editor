@@ -35,7 +35,8 @@
 		"build:vite": "pnpm run buildcss && pnpm run buildhtml && vite build",
 		"build:electron": "vite build --config vite.electron.config.js",
 		"build:all": "pnpm run build:vite && pnpm run build:electron",
-		"start:prod": "pnpm run build:all && electron . --dirname=."
+		"start:prod": "pnpm run build:all && electron . --dirname=.",
+		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^21.0.1",

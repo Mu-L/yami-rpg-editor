@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
-import { resolve } from 'path'
-import { writeFileSync } from 'fs'
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+import { writeFileSync } from 'fs';
 
 // Electron 主进程 ESM bundle 配置——与渲染进程的 vite.config.js 分开
 // 主进程是 Node ESM（Electron 12+ 支持），输出到 dist-electron/
@@ -82,8 +82,8 @@ export default defineConfig({
 				writeFileSync(
 					resolve(__dirname, 'dist-electron/package.json'),
 					'{\n\t"type": "module"\n}\n'
-				)
+				);
 			}
 		}
 	]
-})
+});

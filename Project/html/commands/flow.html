@@ -1,200 +1,342 @@
-  <window-frame id="if">
-    <title-bar>If<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Branches</text><param-list id="if-branches"></param-list>
-      </grid-box>
-      <check-box id="if-else" class="standard"><text id="if-else-label">Else</text></check-box>
-      <button id="if-confirm" name="confirm">Confirm</button>
-      <button id="if-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="switch">
-    <title-bar>Switch<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Variable</text><custom-box id="switch-variable" type="variable" filter="all"></custom-box>
-        <text>Branches</text><param-list id="switch-branches"></param-list>
-      </grid-box>
-      <check-box id="switch-default" class="standard"><text id="switch-default-label">Default</text></check-box>
-      <button id="switch-confirm" name="confirm">Confirm</button>
-      <button id="switch-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="loop">
-    <title-bar>Loop<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Mode</text><select-box id="loop-mode"></select-box>
-        <text>Conditions</text><param-list id="loop-conditions"></param-list>
-      </grid-box>
-      <button id="loop-confirm" name="confirm">Confirm</button>
-      <button id="loop-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="forEach">
-    <title-bar>For Each<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Data</text><select-box id="forEach-data"></select-box>
-        <text>List Variable</text><custom-box id="forEach-list" type="variable" filter="object"></custom-box>
-        <text>Actor</text><custom-box id="forEach-actor" type="actor"></custom-box>
-        <text>Parent Element</text><custom-box id="forEach-element" type="element"></custom-box>
-        <text>Attribute Group</text><custom-box id="forEach-attribute-groupId" type="attribute-group"></custom-box>
-        <text>Enum Group</text><custom-box id="forEach-enum-groupId" type="enum-group"></custom-box>
-        <text>Write to Variable</text><custom-box id="forEach-variable" type="variable" filter="object"></custom-box>
-        <text>Write Save Index</text><custom-box id="forEach-saveIndex" type="variable" filter="number"></custom-box>
-        <text>Touch Id</text><custom-box id="forEach-touchId" type="variable" filter="number"></custom-box>
-      </grid-box>
-      <button id="forEach-confirm" name="confirm">Confirm</button>
-      <button id="forEach-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="callEvent">
-    <title-bar>Call Event<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="callEvent-type"></select-box>
-        <text>Actor</text><custom-box id="callEvent-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="callEvent-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="callEvent-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="callEvent-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="callEvent-item" type="item"></custom-box>
-        <text>Light</text><custom-box id="callEvent-light" type="light"></custom-box>
-        <text>Element</text><custom-box id="callEvent-element" type="element"></custom-box>
-        <text>Event</text><custom-box id="callEvent-eventId" type="file" filter="event"></custom-box>
-        <text>Event</text><select-box id="callEvent-eventType"></select-box>
-      </grid-box>
-      <button id="callEvent-confirm" name="confirm">Confirm</button>
-      <button id="callEvent-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="return">
-    <title-bar>Return<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="return-type"></select-box>
-        <text>Boolean</text><select-box id="return-boolean"></select-box>
-        <text>Number</text><number-var id="return-number" min="-1000000000" max="1000000000" decimals="10"></number-var>
-        <text>String</text><string-var id="return-string"></string-var>
-        <text>Object</text><custom-box id="return-object" type="variable" filter="object"></custom-box>
-        <text>Actor</text><custom-box id="return-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="return-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="return-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="return-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="return-item" type="item"></custom-box>
-        <text>Trigger</text><custom-box id="return-trigger" type="trigger"></custom-box>
-        <text>Light</text><custom-box id="return-light" type="light"></custom-box>
-        <text>Element</text><custom-box id="return-element" type="element"></custom-box>
-      </grid-box>
-      <button id="return-confirm" name="confirm">Confirm</button>
-      <button id="return-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="registerEvent">
-    <title-bar>Register Event<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Target</text><select-box id="registerEvent-target"></select-box>
-        <text>Actor</text><custom-box id="registerEvent-actor" type="actor"></custom-box>
-        <text>Element</text><custom-box id="registerEvent-element" type="element"></custom-box>
-        <text>Operation</text><select-box id="registerEvent-operation"></select-box>
-        <text>Type</text><select-box id="registerEvent-type"></select-box>
-        <text>Priority</text><check-box id="registerEvent-priority" class="standard large"></check-box>
-        <text>Namespace</text><check-box id="registerEvent-namespace" class="standard large"></check-box>
-        <text>Tag Name</text><string-var id="registerEvent-tag"></string-var>
-      </grid-box>
-      <button id="registerEvent-confirm" name="confirm">Confirm</button>
-      <button id="registerEvent-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="stopEvent">
-    <title-bar>Stop Event<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="stopEvent-type"></select-box>
-        <text>Actor</text><custom-box id="stopEvent-actor" type="actor"></custom-box>
-        <text>Skill</text><custom-box id="stopEvent-skill" type="skill"></custom-box>
-        <text>State</text><custom-box id="stopEvent-state" type="state"></custom-box>
-        <text>Equipment</text><custom-box id="stopEvent-equipment" type="equipment"></custom-box>
-        <text>Item</text><custom-box id="stopEvent-item" type="item"></custom-box>
-        <text>Light</text><custom-box id="stopEvent-light" type="light"></custom-box>
-        <text>Element</text><custom-box id="stopEvent-element" type="element"></custom-box>
-        <text>Event</text><custom-box id="stopEvent-eventId" type="file" filter="event"></custom-box>
-        <text>Event</text><select-box id="stopEvent-eventType"></select-box>
-      </grid-box>
-      <button id="stopEvent-confirm" name="confirm">Confirm</button>
-      <button id="stopEvent-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setEvent">
-    <title-bar>Set Event<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="setEvent-operation"></select-box>
-        <text>Variable</text><custom-box id="setEvent-variable" type="variable" filter="object"></custom-box>
-        <text>Event</text><custom-box id="setEvent-eventId" type="file" filter="event"></custom-box>
-        <text>Choice Index</text><number-var id="setEvent-choiceIndex" min="0" max="255"></number-var>
-      </grid-box>
-      <button id="setEvent-confirm" name="confirm">Confirm</button>
-      <button id="setEvent-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="transition">
-    <title-bar>Transition<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Write to Variable</text><custom-box id="transition-variable" type="variable" filter="number"></custom-box>
-        <text>Start Value</text><number-var id="transition-start" min="-1000000000" max="1000000000"
-          decimals="10"></number-var>
-        <text>End Value</text><number-var id="transition-end" min="-1000000000" max="1000000000"
-          decimals="10"></number-var>
-        <text>Easing</text><select-box id="transition-easingId" name="easing"></select-box>
-        <text>Duration</text><number-var id="transition-duration" name="duration" min="0" max="3600000"
-          unit="ms"></number-var>
-      </grid-box>
-      <button id="transition-confirm" name="confirm">Confirm</button>
-      <button id="transition-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="block">
-    <title-bar>Block<close></close></title-bar>
-    <content-frame>
-      <text-box id="block-note"></text-box>
-      <check-box id="block-asynchronous" class="standard"><text
-          id="block-asynchronous-label">Asynchronous</text></check-box>
-      <button id="block-confirm" name="confirm">Confirm</button>
-      <button id="block-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="label">
-    <title-bar>Label<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Label Name</text><text-box id="label-name"></text-box>
-      </grid-box>
-      <button id="label-confirm" name="confirm">Confirm</button>
-      <button id="label-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="jumpTo">
-    <title-bar>Jump to<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Operation</text><select-box id="jumpTo-operation"></select-box>
-        <text>Label Name</text><text-box id="jumpTo-label"></text-box>
-      </grid-box>
-      <button id="jumpTo-confirm" name="confirm">Confirm</button>
-      <button id="jumpTo-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="wait">
-    <title-bar>Wait<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Duration</text><number-var id="wait-duration" min="1" max="3600000" unit="ms"></number-var>
-      </grid-box>
-      <button id="wait-confirm" name="confirm">Confirm</button>
-      <button id="wait-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
+<window-frame id="if">
+	<title-bar>If<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Branches</text><param-list id="if-branches"></param-list>
+		</grid-box>
+		<check-box id="if-else" class="standard"
+			><text id="if-else-label">Else</text></check-box
+		>
+		<button id="if-confirm" name="confirm">Confirm</button>
+		<button id="if-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="switch">
+	<title-bar>Switch<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="switch-variable"
+				type="variable"
+				filter="all"
+			></custom-box>
+			<text>Branches</text><param-list id="switch-branches"></param-list>
+		</grid-box>
+		<check-box id="switch-default" class="standard"
+			><text id="switch-default-label">Default</text></check-box
+		>
+		<button id="switch-confirm" name="confirm">Confirm</button>
+		<button id="switch-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="loop">
+	<title-bar>Loop<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Mode</text><select-box id="loop-mode"></select-box>
+			<text>Conditions</text
+			><param-list id="loop-conditions"></param-list>
+		</grid-box>
+		<button id="loop-confirm" name="confirm">Confirm</button>
+		<button id="loop-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="forEach">
+	<title-bar>For Each<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Data</text><select-box id="forEach-data"></select-box>
+			<text>List Variable</text
+			><custom-box
+				id="forEach-list"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Actor</text
+			><custom-box id="forEach-actor" type="actor"></custom-box>
+			<text>Parent Element</text
+			><custom-box id="forEach-element" type="element"></custom-box>
+			<text>Attribute Group</text
+			><custom-box
+				id="forEach-attribute-groupId"
+				type="attribute-group"
+			></custom-box>
+			<text>Enum Group</text
+			><custom-box
+				id="forEach-enum-groupId"
+				type="enum-group"
+			></custom-box>
+			<text>Write to Variable</text
+			><custom-box
+				id="forEach-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Write Save Index</text
+			><custom-box
+				id="forEach-saveIndex"
+				type="variable"
+				filter="number"
+			></custom-box>
+			<text>Touch Id</text
+			><custom-box
+				id="forEach-touchId"
+				type="variable"
+				filter="number"
+			></custom-box>
+		</grid-box>
+		<button id="forEach-confirm" name="confirm">Confirm</button>
+		<button id="forEach-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="callEvent">
+	<title-bar>Call Event<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="callEvent-type"></select-box>
+			<text>Actor</text
+			><custom-box id="callEvent-actor" type="actor"></custom-box>
+			<text>Skill</text
+			><custom-box id="callEvent-skill" type="skill"></custom-box>
+			<text>State</text
+			><custom-box id="callEvent-state" type="state"></custom-box>
+			<text>Equipment</text
+			><custom-box id="callEvent-equipment" type="equipment"></custom-box>
+			<text>Item</text
+			><custom-box id="callEvent-item" type="item"></custom-box>
+			<text>Light</text
+			><custom-box id="callEvent-light" type="light"></custom-box>
+			<text>Element</text
+			><custom-box id="callEvent-element" type="element"></custom-box>
+			<text>Event</text
+			><custom-box
+				id="callEvent-eventId"
+				type="file"
+				filter="event"
+			></custom-box>
+			<text>Event</text><select-box id="callEvent-eventType"></select-box>
+		</grid-box>
+		<button id="callEvent-confirm" name="confirm">Confirm</button>
+		<button id="callEvent-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="return">
+	<title-bar>Return<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="return-type"></select-box>
+			<text>Boolean</text><select-box id="return-boolean"></select-box>
+			<text>Number</text
+			><number-var
+				id="return-number"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-var>
+			<text>String</text><string-var id="return-string"></string-var>
+			<text>Object</text
+			><custom-box
+				id="return-object"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Actor</text
+			><custom-box id="return-actor" type="actor"></custom-box>
+			<text>Skill</text
+			><custom-box id="return-skill" type="skill"></custom-box>
+			<text>State</text
+			><custom-box id="return-state" type="state"></custom-box>
+			<text>Equipment</text
+			><custom-box id="return-equipment" type="equipment"></custom-box>
+			<text>Item</text
+			><custom-box id="return-item" type="item"></custom-box>
+			<text>Trigger</text
+			><custom-box id="return-trigger" type="trigger"></custom-box>
+			<text>Light</text
+			><custom-box id="return-light" type="light"></custom-box>
+			<text>Element</text
+			><custom-box id="return-element" type="element"></custom-box>
+		</grid-box>
+		<button id="return-confirm" name="confirm">Confirm</button>
+		<button id="return-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="registerEvent">
+	<title-bar>Register Event<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Target</text
+			><select-box id="registerEvent-target"></select-box>
+			<text>Actor</text
+			><custom-box id="registerEvent-actor" type="actor"></custom-box>
+			<text>Element</text
+			><custom-box id="registerEvent-element" type="element"></custom-box>
+			<text>Operation</text
+			><select-box id="registerEvent-operation"></select-box>
+			<text>Type</text><select-box id="registerEvent-type"></select-box>
+			<text>Priority</text
+			><check-box
+				id="registerEvent-priority"
+				class="standard large"
+			></check-box>
+			<text>Namespace</text
+			><check-box
+				id="registerEvent-namespace"
+				class="standard large"
+			></check-box>
+			<text>Tag Name</text
+			><string-var id="registerEvent-tag"></string-var>
+		</grid-box>
+		<button id="registerEvent-confirm" name="confirm">Confirm</button>
+		<button id="registerEvent-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="stopEvent">
+	<title-bar>Stop Event<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="stopEvent-type"></select-box>
+			<text>Actor</text
+			><custom-box id="stopEvent-actor" type="actor"></custom-box>
+			<text>Skill</text
+			><custom-box id="stopEvent-skill" type="skill"></custom-box>
+			<text>State</text
+			><custom-box id="stopEvent-state" type="state"></custom-box>
+			<text>Equipment</text
+			><custom-box id="stopEvent-equipment" type="equipment"></custom-box>
+			<text>Item</text
+			><custom-box id="stopEvent-item" type="item"></custom-box>
+			<text>Light</text
+			><custom-box id="stopEvent-light" type="light"></custom-box>
+			<text>Element</text
+			><custom-box id="stopEvent-element" type="element"></custom-box>
+			<text>Event</text
+			><custom-box
+				id="stopEvent-eventId"
+				type="file"
+				filter="event"
+			></custom-box>
+			<text>Event</text><select-box id="stopEvent-eventType"></select-box>
+		</grid-box>
+		<button id="stopEvent-confirm" name="confirm">Confirm</button>
+		<button id="stopEvent-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setEvent">
+	<title-bar>Set Event<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Operation</text
+			><select-box id="setEvent-operation"></select-box>
+			<text>Variable</text
+			><custom-box
+				id="setEvent-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Event</text
+			><custom-box
+				id="setEvent-eventId"
+				type="file"
+				filter="event"
+			></custom-box>
+			<text>Choice Index</text
+			><number-var
+				id="setEvent-choiceIndex"
+				min="0"
+				max="255"
+			></number-var>
+		</grid-box>
+		<button id="setEvent-confirm" name="confirm">Confirm</button>
+		<button id="setEvent-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="transition">
+	<title-bar>Transition<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Write to Variable</text
+			><custom-box
+				id="transition-variable"
+				type="variable"
+				filter="number"
+			></custom-box>
+			<text>Start Value</text
+			><number-var
+				id="transition-start"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-var>
+			<text>End Value</text
+			><number-var
+				id="transition-end"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-var>
+			<text>Easing</text
+			><select-box id="transition-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-var
+				id="transition-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-var>
+		</grid-box>
+		<button id="transition-confirm" name="confirm">Confirm</button>
+		<button id="transition-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="block">
+	<title-bar>Block<close></close></title-bar>
+	<content-frame>
+		<text-box id="block-note"></text-box>
+		<check-box id="block-asynchronous" class="standard"
+			><text id="block-asynchronous-label">Asynchronous</text></check-box
+		>
+		<button id="block-confirm" name="confirm">Confirm</button>
+		<button id="block-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="label">
+	<title-bar>Label<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Label Name</text><text-box id="label-name"></text-box>
+		</grid-box>
+		<button id="label-confirm" name="confirm">Confirm</button>
+		<button id="label-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="jumpTo">
+	<title-bar>Jump to<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Operation</text
+			><select-box id="jumpTo-operation"></select-box>
+			<text>Label Name</text><text-box id="jumpTo-label"></text-box>
+		</grid-box>
+		<button id="jumpTo-confirm" name="confirm">Confirm</button>
+		<button id="jumpTo-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="wait">
+	<title-bar>Wait<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Duration</text
+			><number-var
+				id="wait-duration"
+				min="1"
+				max="3600000"
+				unit="ms"
+			></number-var>
+		</grid-box>
+		<button id="wait-confirm" name="confirm">Confirm</button>
+		<button id="wait-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
