@@ -16,7 +16,7 @@ Updater.updateTriggers = function (verNum) {
 			}
 			const dTrigger = Inspector.fileTrigger.create();
 			for (const key of keys) {
-				if (key in sTrigger) {
+				if (key in (sTrigger as any)) {
 					dTrigger[key] = sTrigger[key];
 				}
 			}

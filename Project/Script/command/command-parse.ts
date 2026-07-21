@@ -59,7 +59,7 @@ Command.fetchVariables = function (commands) {
 		for (const command of commands) {
 			const { id, params } = command;
 			if (id == null || id[0] === '!') continue;
-			Command.currentCommand = command;
+			(Command as any).currentCommand = command;
 			if (id === 'callEvent') {
 				if (
 					params?.type === 'global' &&
@@ -94,7 +94,7 @@ Command.fetchVariables = function (commands) {
 				}
 			}
 		}
-		Command.currentCommand = null;
+		(Command as any).currentCommand = null;
 	};
 	fetchParameters(eventId);
 	fetchVariables(commands);
@@ -124,7 +124,7 @@ Command.parseVariable = function (
 						evIndex: Command.eventIndex,
 						isLeftValue: isLeftValue,
 						refCount: 0,
-						command: Command.currentCommand
+						command: (Command as any).currentCommand
 					});
 				}
 			}
@@ -979,7 +979,8 @@ Command.parseFileName = function (id) {
 	if (id === '') return Token('none');
 	const meta = Data.manifest.guidMap[id];
 	const textId = Command.setTextId(`file-string-${id}`);
-	if (meta) return textId + Command.setFileColor(File.parseMetaName(meta));
+	if (meta)
+		return textId + Command.setFileColor((File as any).parseMetaName(meta));
 	this.invalid = true;
 	return textId + Command.setFileColor(Command.parseUnlinkedId(id));
 };

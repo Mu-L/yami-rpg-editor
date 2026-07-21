@@ -93,14 +93,14 @@ export class FileBodyPane extends HTMLElement {
 		});
 
 		// 侦听事件
-		this.on('scroll', this.resize);
-		this.on('keydown', this.keydown);
-		this.on('pointerdown', this.pointerdown);
-		this.on('pointerup', this.pointerup);
-		this.on('doubleclick', this.doubleclick);
-		this.on('wheel', this.wheel);
+		(this as any).on('scroll', this.resize);
+		(this as any).on('keydown', this.keydown);
+		(this as any).on('pointerdown', this.pointerdown);
+		(this as any).on('pointerup', this.pointerup);
+		(this as any).on('doubleclick', this.doubleclick);
+		(this as any).on('wheel', this.wheel);
 		window.on('keydown', this.windowKeydown);
-		// this.on('scroll', this.scroll)
+		// (this as any).on('scroll', this.scroll)
 	}
 
 	// 设置视图索引
@@ -521,7 +521,7 @@ export class FileBodyPane extends HTMLElement {
 				if (!meta || cw * ch === 0) break;
 				const version = meta.mtimeMs;
 				const path = `${File.getPath(data.portrait)}?ver=${version}`;
-				icon.isImageChanged = () => version !== meta.mtimeMs;
+				(icon as any).isImageChanged = () => version !== meta.mtimeMs;
 				this.setIconClip(icon, path, cx, cy, cw, ch);
 				break;
 			}
@@ -539,7 +539,7 @@ export class FileBodyPane extends HTMLElement {
 				if (!meta || cw * ch === 0) break;
 				const version = meta.mtimeMs;
 				const path = `${File.getPath(data.icon)}?ver=${version}`;
-				icon.isImageChanged = () => version !== meta.mtimeMs;
+				(icon as any).isImageChanged = () => version !== meta.mtimeMs;
 				this.setIconClip(icon, path, cx, cy, cw, ch);
 				break;
 			}
@@ -1000,7 +1000,7 @@ export class FileBodyPane extends HTMLElement {
 			}
 		}
 		if (guids.length !== 0) {
-			Clipboard.write('yami.files', { cut, guids });
+			(Clipboard as any).write('yami.files', { cut, guids });
 		}
 	}
 
@@ -1011,7 +1011,7 @@ export class FileBodyPane extends HTMLElement {
 			targetPath = nav.selections[0].path;
 		}
 		if (!targetPath) return;
-		const copy = Clipboard.read('yami.files');
+		const copy = (Clipboard as any).read('yami.files');
 		if (copy) {
 			const files = [];
 			for (const guid of copy.guids) {
@@ -1035,7 +1035,7 @@ export class FileBodyPane extends HTMLElement {
 			}
 			// 剪切后擦除剪切板数据
 			if (copy.cut) {
-				Clipboard.write('yami.no-files', null);
+				(Clipboard as any).write('yami.no-files', null);
 			}
 		}
 	}
@@ -1183,7 +1183,7 @@ export class FileBodyPane extends HTMLElement {
 				const promises = [];
 				const length = filePaths.length;
 				for (let i = 0; i < length; i++) {
-					const src = Path.slash(filePaths[i]);
+					const src = (Path as any).slash(filePaths[i]);
 					const ext = Path.extname(src);
 					const base = Path.basename(src, ext);
 					const dst = File.getFileName(dir, base, ext).route;
@@ -1196,7 +1196,9 @@ export class FileBodyPane extends HTMLElement {
             browser.dirchange()
           }
         }) */
-				dialogs.import = Path.slash(Path.dirname(filePaths[0]));
+				dialogs.import = (Path as any).slash(
+					Path.dirname(filePaths[0])
+				);
 			}
 		});
 	}
@@ -1215,7 +1217,9 @@ export class FileBodyPane extends HTMLElement {
 			})
 				.then(({ filePath }) => {
 					if (filePath) {
-						dialogs.export = Path.slash(Path.dirname(filePath));
+						dialogs.export = (Path as any).slash(
+							Path.dirname(filePath)
+						);
 						return FSP.copyFile(File.path(file.path), filePath);
 					}
 				})
@@ -1231,7 +1235,7 @@ export class FileBodyPane extends HTMLElement {
 				.then(({ filePaths }) => {
 					if (filePaths.length === 1) {
 						const dirPath = filePaths[0];
-						dialogs.export = Path.slash(dirPath);
+						dialogs.export = (Path as any).slash(dirPath);
 						return Directory.readdir(
 							files.map((file) => File.path(file.path))
 						).then((dir) => {
@@ -1270,9 +1274,8 @@ export class FileBodyPane extends HTMLElement {
 		return this;
 	}
 
-	// 添加事件
-	on(type, listener, options) {
-		super.on(type, listener, options);
+	on = (type, listener, options) => {
+		EventTarget.prototype.on.call(this, type, listener, options);
 		switch (type) {
 			case 'open':
 				this.openEventEnabled = true;
@@ -1287,7 +1290,7 @@ export class FileBodyPane extends HTMLElement {
 				this.popupEventEnabled = true;
 				break;
 		}
-	}
+	};
 
 	// 键盘按下事件
 	keydown(event) {
@@ -1408,7 +1411,7 @@ export class FileBodyPane extends HTMLElement {
 				if (element === this) {
 					if (
 						this.contains(document.activeElement) &&
-						this.isInContent(event)
+						(this as any).isInContent(event)
 					) {
 						this.unselect();
 					}
@@ -1433,7 +1436,9 @@ export class FileBodyPane extends HTMLElement {
 							const elements = this.elements;
 							const files = Array.from(selections);
 							for (let i = length - 1; i >= 0; i--) {
-								const { element } = files[i].getContext(this);
+								const { element } = (
+									files[i] as any
+								).getContext(this);
 								if (!elements.includes(element)) {
 									files.splice(i, 1);
 								}
@@ -1548,7 +1553,7 @@ export class FileBodyPane extends HTMLElement {
 					this.popupEventEnabled
 				) {
 					const popup = new Event('popup');
-					popup.raw = event;
+					(popup as any).raw = event;
 					popup.clientX = event.clientX;
 					popup.clientY = event.clientY;
 					this.dispatchEvent(popup);
@@ -1613,7 +1618,7 @@ export class FileBodyPane extends HTMLElement {
 						!Window.getTopWindow() ||
 						Window.getTopWindow()?.id === 'selector'
 					) {
-						this.content.addClass('alt');
+						(this as any).content.addClass('alt');
 						window.on('keyup', this.windowKeyup);
 						window.on('pointermove', this.windowPointermove);
 					}
@@ -1627,7 +1632,7 @@ export class FileBodyPane extends HTMLElement {
 		if (!event.altKey) {
 			switch (event.code) {
 				case 'AltLeft':
-					this.content.removeClass('alt');
+					(this as any).content.removeClass('alt');
 					window.off('keyup', this.windowKeyup);
 					window.off('pointermove', this.windowPointermove);
 					break;
@@ -1638,7 +1643,7 @@ export class FileBodyPane extends HTMLElement {
 	// 窗口 - 指针移动事件
 	static windowPointermove(event) {
 		if (!event.altKey) {
-			this.content.removeClass('alt');
+			(this as any).content.removeClass('alt');
 			window.off('keyup', this.windowKeyup);
 			window.off('pointermove', this.windowPointermove);
 		}
@@ -1652,7 +1657,7 @@ export class FileBodyPane extends HTMLElement {
 		textBox.input.addClass('file-body-text-box-input');
 
 		// 键盘按下事件
-		textBox.on('keydown', function (event) {
+		(textBox as any).on('keydown', function (event) {
 			event.stopPropagation();
 			switch (event.code) {
 				case 'Enter':
@@ -1668,7 +1673,7 @@ export class FileBodyPane extends HTMLElement {
 		});
 
 		// 输入前事件
-		textBox.on('beforeinput', function (event) {
+		(textBox as any).on('beforeinput', function (event) {
 			if (
 				event.inputType === 'insertText' &&
 				typeof event.data === 'string'
@@ -1682,19 +1687,19 @@ export class FileBodyPane extends HTMLElement {
 		});
 
 		// 输入事件
-		textBox.on('input', function (event) {
+		(textBox as any).on('input', function (event) {
 			if (this.style.width !== '') {
 				this.fitContent();
 			}
 		});
 
 		// 选择事件
-		textBox.on('select', function (event) {
+		(textBox as any).on('select', function (event) {
 			event.stopPropagation();
 		});
 
 		// 失去焦点事件
-		textBox.on('blur', function (event) {
+		(textBox as any).on('blur', function (event) {
 			const item = this.parentNode;
 			const file = item.file;
 			const name = this.read().trim();

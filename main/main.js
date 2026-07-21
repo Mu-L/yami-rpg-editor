@@ -41,12 +41,15 @@ for (const arg of process.argv) {
 	}
 }
 
-// Vite dev 模式：dev 腹本（dev:electron）经 cross-env 注 VITE_DEV_SERVER_URL 环境变量；
-// prod 模式（start:prod）不注此变量，走 dist/index.html（vite build 产物）。
-// 注：判据须用 VITE_DEV_SERVER_URL 存在性——不能用 debug（--debug-mode 触发与 dev/prod 无关），
+// Vite dev 模式：dev 腹本（dev:electron）经 --dev-server-url 参数传递开发服务器 URL；
+// prod 模式（start:prod）不传此参数，走 dist/index.html（vite build 产物）。
+// 注：判据须用 devServerUrl 存在性——不能用 debug（--debug-mode 触发与 dev/prod 无关），
 // 否则 start:prod 腹本带 --debug-mode 时误判走 dev URL 致空白页
-const VITE_DEV_URL = process.env.VITE_DEV_SERVER_URL || 'http://localhost:5173';
-const useViteDev = !!process.env.VITE_DEV_SERVER_URL;
+const devServerUrl = process.argv
+	.find((arg) => arg.startsWith('--dev-server-url='))
+	?.split('=')[1];
+const VITE_DEV_URL = devServerUrl || 'http://localhost:5173';
+const useViteDev = !!devServerUrl;
 const generate32bit = () => {
 	const n = Math.random() * 0x100000000;
 	const s = Math.floor(n).toString(16);

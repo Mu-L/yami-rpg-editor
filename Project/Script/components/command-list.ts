@@ -23,7 +23,7 @@ import { Local } from '../tools/localization.ts';
 export class CommandList extends HTMLElement {
 	data: any; //:array
 	elements: any; //:array
-	selections: any[]; //:array
+	selections: any; //:array
 	start: any; //:number
 	end: any; //:number
 	origin: any; //:number
@@ -38,6 +38,9 @@ export class CommandList extends HTMLElement {
 	varMap: any;
 	windowVariableChange: (event: any) => void;
 	_paddingTop: number;
+	addScrollListener: (...args: any[]) => any;
+	removeScrollListener: (...args: any[]) => any;
+	openEdit: (...args: any[]) => any;
 
 	constructor() {
 		super();
@@ -143,7 +146,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 重新调整
-	resize() {
+	resize(...args: any[]) {
 		CommonList.resize(this);
 
 		// 检查变量有效性
@@ -368,7 +371,10 @@ export class CommandList extends HTMLElement {
 						text.addClass('gray');
 						li.appendChild(text);
 					}
-					Command.cases.script.colorizeCodeLines(items, code);
+					(Command.cases as any).script.colorizeCodeLines(
+						items,
+						code
+					);
 				}
 			}
 		}
@@ -1044,7 +1050,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 编辑指令
-	edit() {
+	edit(data?) {
 		if (this.start !== null) {
 			const elements = this.elements;
 			const element = elements[this.start];
@@ -1070,7 +1076,7 @@ export class CommandList extends HTMLElement {
 	// 编辑数据
 
 	// 折叠指令
-	fold(element) {
+	fold(element?) {
 		if (element === undefined && this.start !== null) {
 			const elements = this.elements;
 			const startItem = elements[this.start].dataItem;
@@ -1240,7 +1246,7 @@ export class CommandList extends HTMLElement {
 			const end = eElement.dataIndex + 1;
 			const copies = list.slice(start, end);
 			if (copies.length > 0) {
-				Clipboard.write('yami.commands', copies);
+				(Clipboard as any).write('yami.commands', copies);
 			}
 		}
 	}
@@ -1259,7 +1265,10 @@ export class CommandList extends HTMLElement {
 				let indent = element.dataIndent;
 				// 如果当前缩进已经打印过至少一条指令，跳过无效指令
 				if (element.dataItem === null && lastIndent === indent) {
-					if (SettingConfig.config.other.copyAsTextKeepEmptyLine)
+					if (
+						(SettingConfig.config as any).other
+							.copyAsTextKeepEmptyLine
+					)
 						string += '\n';
 					continue;
 				}
@@ -1310,7 +1319,7 @@ export class CommandList extends HTMLElement {
 				};
 
 				if (dataItem.commands) {
-					command.commands = dataItem.commands;
+					(command as any).commands = dataItem.commands;
 				}
 
 				commands.push(command);
@@ -1348,7 +1357,7 @@ try {
 			if (!this.isParentEnabled(element)) {
 				return;
 			}
-			const copies = Clipboard.read('yami.commands');
+			const copies = (Clipboard as any).read('yami.commands');
 			if (copies) {
 				const parent = element.dataParent;
 				const list = element.dataList;
@@ -1785,7 +1794,7 @@ try {
 		}
 		if (this.focusing) {
 			let element = this;
-			while ((element = element.parentNode)) {
+			while ((element = element.parentNode as any)) {
 				if (element instanceof WindowFrame) {
 					if (element.hasClass('blur')) {
 						return;
@@ -2190,12 +2199,13 @@ try {
 					const pEnabled = this.isParentEnabled(sElement);
 					const sEnabled = valid ? sData.buffer.enabled : pEnabled;
 					const editable = sEnabled && sData === eData;
-					const pastable = pEnabled && Clipboard.has('yami.commands');
+					const pastable =
+						pEnabled && (Clipboard as any).has('yami.commands');
 					const allSelectable = this.data.length > 0;
 					const undoable = this.history.canUndo();
 					const redoable = this.history.canRedo();
 					const get = Local.createGetter('menuCommandList');
-					const menuItems = [
+					const menuItems: any[] = [
 						{
 							label: get('edit'),
 							accelerator: 'Enter',
@@ -2353,7 +2363,7 @@ try {
 	static alphabetCode = /^Key[A-Z]$/;
 
 	// 窗口 - 指针弹起事件
-	static windowPointerup(event) {
+	static windowPointerup(this: CommandList, event: PointerEvent) {
 		const { dragging } = this;
 		if (dragging.relate(event)) {
 			switch (dragging.mode) {
@@ -2368,7 +2378,7 @@ try {
 	}
 
 	// 窗口 - 指针移动事件
-	static windowPointermove(event) {
+	static windowPointermove(this: CommandList, event: PointerEvent) {
 		const { dragging } = this;
 		if (dragging.relate(event)) {
 			switch (dragging.mode) {
@@ -2394,7 +2404,7 @@ try {
 	}
 
 	// 窗口 - 变量改变事件
-	static windowVariableChange(event) {
+	static windowVariableChange(this: CommandList, event: Event) {
 		if (this.read()) {
 			this.scheduleCheckVariables();
 		}
@@ -2404,7 +2414,7 @@ try {
 	static highlightedTexts = Array.empty;
 
 	// 高亮显示文本元素
-	static highlightTexts({ varSpace, varType, varKey }) {
+	static highlightTexts({ varSpace, varType, varKey }: any) {
 		switch (varType) {
 			case 'boolean':
 			case 'number':

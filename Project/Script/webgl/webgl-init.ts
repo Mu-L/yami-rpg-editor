@@ -78,8 +78,14 @@ export let GL;
 
 		// 重写更新缓冲数据方法
 		const prototype = WebGLRenderingContext.prototype;
-		prototype._bufferData = prototype.bufferData;
-		prototype.bufferData = function (target, data, usage, offset, length) {
+		(prototype as any)._bufferData = prototype.bufferData;
+		(prototype as any).bufferData = function (
+			target,
+			data,
+			usage,
+			offset,
+			length
+		) {
 			if (length !== undefined) {
 				length *= data.BYTES_PER_ELEMENT;
 				data = new Uint8Array(data.buffer, offset, length);

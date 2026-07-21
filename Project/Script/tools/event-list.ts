@@ -14,8 +14,11 @@ export class EventListInterface {
 	editor; //:object
 	owner; //:object
 	eventItem; //:object
+	editCallback;
+	insertCallback;
+	history;
 
-	constructor(editor, owner) {
+	constructor(editor?, owner?) {
 		this.editor = editor ?? null;
 		this.owner = owner ?? null;
 	}
@@ -97,7 +100,7 @@ export class EventListInterface {
 			const element = item.element;
 			const list = element?.parentNode;
 			if (list instanceof TreeList) {
-				list.updateEventIcon(item);
+				(list as any).updateEventIcon(item);
 			}
 		}
 	}

@@ -5,9 +5,13 @@
 export const HistoryTimer = new Timer({
 	duration: 2000,
 	callback: (timer) => {
-		timer.complete = true;
+		(timer as any).complete = true;
 	}
-});
+}) as unknown as Omit<Timer, 'start'> & {
+	complete: boolean;
+	type: string;
+	start: (type: string) => void;
+};
 
 // 初始状态
 HistoryTimer.complete = true;

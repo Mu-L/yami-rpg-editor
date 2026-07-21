@@ -174,24 +174,26 @@ Directory.getFile = function (path) {
 Directory.readdir = (function IIFE() {
 	const options = { withFileTypes: true };
 	const read = (dirPath, dir) => {
-		return FSP.readdir(dirPath, options).then(async (files) => {
-			const promises = [];
-			for (const file of files) {
-				const name = file.name;
-				const path = `${dirPath}/${name}`;
-				if (file.isDirectory()) {
-					const children = [];
-					dir.push({ name, path, children });
-					promises.push(read(path, children));
-				} else {
-					dir.push({ name, path });
+		return (FSP.readdir as any)(dirPath, options).then(
+			async (files: any[]) => {
+				const promises = [];
+				for (const file of files) {
+					const name = file.name;
+					const path = `${dirPath}/${name}`;
+					if (file.isDirectory()) {
+						const children = [];
+						dir.push({ name, path, children });
+						promises.push(read(path, children));
+					} else {
+						dir.push({ name, path });
+					}
 				}
+				if (promises.length !== 0) {
+					await Promise.all(promises);
+				}
+				return dir;
 			}
-			if (promises.length !== 0) {
-				await Promise.all(promises);
-			}
-			return dir;
-		});
+		);
 	};
 	return async function (paths) {
 		const dir = [];
@@ -362,7 +364,7 @@ Directory.saveFiles = (function IIFE() {
 		const promises = [];
 		for (const file of files) {
 			if (file instanceof FolderItem) {
-				promises.push(save(file.children, changes));
+				promises.push(save(file.children, changes, metaset));
 			} else if (FileItem.isDataFile(file)) {
 				const meta = file.meta;
 				if (changes.includes(meta)) {

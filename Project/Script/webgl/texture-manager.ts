@@ -87,7 +87,7 @@ export class TextureManager {
 	// 清除所有纹理
 	clear() {
 		const { gl, map, images } = this;
-		for (const texture of Object.values(map)) {
+		for (const texture of Object.values<any>(map)) {
 			if (texture.protected === undefined) {
 				delete map[texture.index];
 				gl.deleteTexture(texture.glTexture);
@@ -97,7 +97,7 @@ export class TextureManager {
 				}
 			}
 		}
-		for (const texture of Object.values(images)) {
+		for (const texture of Object.values<any>(images)) {
 			if (texture.protected === undefined) {
 				delete images[texture.guid];
 			}
@@ -119,7 +119,7 @@ export class TextureManager {
 
 	// 恢复纹理
 	restore() {
-		for (const texture of Object.values(this.map)) {
+		for (const texture of Object.values<any>(this.map)) {
 			if (texture.onRestore) {
 				texture.onRestore(texture);
 				continue;

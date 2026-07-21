@@ -30,6 +30,14 @@ export class CommandSchema {
 	fields; //:array
 	children; //:boolean
 	confirmId; //:string
+	onParse;
+	onLoad;
+	onSave;
+	onInitialize;
+	customParse;
+	customLoad;
+	customSave;
+	noWindow;
 
 	constructor(config) {
 		this.name = config.name;
@@ -170,8 +178,8 @@ export class CommandSchema {
 
 	// 拓扑排序
 	static _topoSort(names, getDeps) {
-		const graph = new Map(names.map((n) => [n, []]));
-		const inDegree = new Map(names.map((n) => [n, 0]));
+		const graph: Map<string, string[]> = new Map(names.map((n) => [n, []]));
+		const inDegree: Map<string, number> = new Map(names.map((n) => [n, 0]));
 		for (const name of names) {
 			for (const dep of getDeps(name) ?? []) {
 				if (!graph.has(dep)) continue;
@@ -222,7 +230,7 @@ export class CommandSchema {
 			subMap[name].initialize();
 		}
 		Command.custom.initialize();
-		for (const object of Object.values(Command.cases)) {
+		for (const object of Object.values<any>(Command.cases)) {
 			object.initialize?.();
 		}
 	}

@@ -51,7 +51,7 @@ export class FileVar extends HTMLElement {
 	}
 
 	// 切换模式
-	switch(mode) {
+	switch(mode?) {
 		const focus = !mode && !this.hasClass('disabled');
 		if (mode === undefined) {
 			switch (this.mode) {

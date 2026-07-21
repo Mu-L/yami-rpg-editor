@@ -10,7 +10,7 @@ export class NumberBox extends HTMLElement {
 	focusEventEnabled; //:boolean
 	blurEventEnabled; //:boolean
 
-	constructor(dom) {
+	constructor(dom?) {
 		super();
 
 		// 获取参数

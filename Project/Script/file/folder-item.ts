@@ -99,7 +99,7 @@ export class FolderItem {
 					continue;
 				}
 				const promise = FSP.stat(File.path(path), bigint);
-				promise.path = path;
+				(promise as any).path = path;
 				promises[i] = promise;
 			}
 		}

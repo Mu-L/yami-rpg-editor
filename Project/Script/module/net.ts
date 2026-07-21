@@ -9,7 +9,7 @@ export { axios };
 // /jsdelivr/ → cdn.jsdelivr.net 代理，dev 模式把 https URL 改写成代理前缀避 CORS
 // prod 模式 Electron file:// 协议无 CORS 限制，原样透传
 const proxyRewrite = (url) => {
-	if (typeof url !== 'string' || !import.meta.env?.DEV) return url;
+	if (typeof url !== 'string' || !(import.meta as any).env?.DEV) return url;
 	// 加速节点前缀可能是 https://cdn.jsdelivr.net/gh/... 形式，先剥前缀取原始 GitHub URL
 	const rawMatch = url.match(/https:\/\/raw\.githubusercontent\.com(\/.*)$/);
 	if (rawMatch) return '/github-raw' + rawMatch[1];

@@ -31,6 +31,7 @@ export const Reference = {
 	// events
 	windowClosed: null,
 	listSelect: null,
+	listPopup: null,
 	getKeydownListener: null,
 	getKeyupListener: null,
 	getPointerdownListener: null,
@@ -118,7 +119,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	let pushToInnerMap = (path, guid) => {
 		if (guid) innerMap[guid] = true;
 	};
-	let pushToOuterMap = (path, guid, fileGuid) => {
+	let pushToOuterMap = (path, guid, fileGuid?) => {
 		if (guid)
 			outerMap[guid] = {
 				type: 'path',
@@ -183,7 +184,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchEvents = () => {
 		pushComment(get('event'));
-		for (const event of Object.values(Data.events)) {
+		for (const event of Object.values<any>(Data.events)) {
 			const path = getPathOfGuid(event.guid);
 			if (event.type === 'common') {
 				pushToOuterMap(path, event.guid);
@@ -235,7 +236,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 				searchUIElements(node.children, path);
 			}
 		};
-		for (const ui of Object.values(Data.ui)) {
+		for (const ui of Object.values<any>(Data.ui)) {
 			const path = getPathOfGuid(ui.guid);
 			pushToOuterMap(path, ui.guid);
 			searchUIElements(ui.nodes, path);
@@ -277,7 +278,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 				searchLocalScripts(node.scripts, path);
 			}
 		};
-		for (const scene of Object.values(Data.scenes)) {
+		for (const scene of Object.values<any>(Data.scenes)) {
 			const path = getPathOfGuid(scene.guid);
 			pushToOuterMap(path, scene.guid);
 			searchLocalEvents(scene.events, path);
@@ -287,7 +288,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchActors = () => {
 		pushComment(get('actor'));
-		for (const actor of Object.values(Data.actors)) {
+		for (const actor of Object.values<any>(Data.actors)) {
 			const path = getPathOfGuid(actor.guid);
 			pushToOuterMap(path, actor.guid);
 			pushToUsedMap2(path, 'portrait', actor.portrait);
@@ -306,7 +307,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchSkills = () => {
 		pushComment(get('skill'));
-		for (const skill of Object.values(Data.skills)) {
+		for (const skill of Object.values<any>(Data.skills)) {
 			const path = getPathOfGuid(skill.guid);
 			pushToOuterMap(path, skill.guid);
 			pushToUsedMap2(path, 'inherit', skill.inherit);
@@ -317,7 +318,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchTriggers = () => {
 		pushComment(get('trigger'));
-		for (const trigger of Object.values(Data.triggers)) {
+		for (const trigger of Object.values<any>(Data.triggers)) {
 			const path = getPathOfGuid(trigger.guid);
 			pushToOuterMap(path, trigger.guid);
 			pushToUsedMap2(path, 'inherit', trigger.inherit);
@@ -329,7 +330,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchItems = () => {
 		pushComment(get('item'));
-		for (const item of Object.values(Data.items)) {
+		for (const item of Object.values<any>(Data.items)) {
 			const path = getPathOfGuid(item.guid);
 			pushToOuterMap(path, item.guid);
 			pushToUsedMap2(path, 'inherit', item.inherit);
@@ -340,7 +341,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchEquipments = () => {
 		pushComment(get('equipment'));
-		for (const equipment of Object.values(Data.equipments)) {
+		for (const equipment of Object.values<any>(Data.equipments)) {
 			const path = getPathOfGuid(equipment.guid);
 			pushToOuterMap(path, equipment.guid);
 			pushToUsedMap2(path, 'inherit', equipment.inherit);
@@ -351,7 +352,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchStates = () => {
 		pushComment(get('state'));
-		for (const state of Object.values(Data.states)) {
+		for (const state of Object.values<any>(Data.states)) {
 			const path = getPathOfGuid(state.guid);
 			pushToOuterMap(path, state.guid);
 			pushToUsedMap2(path, 'inherit', state.inherit);
@@ -362,7 +363,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchAnimations = () => {
 		pushComment(get('animation'));
-		const animations = Object.values(Data.animations);
+		const animations = Object.values<any>(Data.animations);
 		for (const animation of animations) {
 			const path = getPathOfGuid(animation.guid);
 			pushToOuterMap(path, animation.guid);
@@ -395,7 +396,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchParticles = () => {
 		pushComment(get('particle'));
-		for (const particle of Object.values(Data.particles)) {
+		for (const particle of Object.values<any>(Data.particles)) {
 			const path = getPathOfGuid(particle.guid);
 			pushToOuterMap(path, particle.guid);
 			const { layers } = particle;
@@ -416,7 +417,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 		for (const template of Data.autotiles) {
 			ignoreMap[template.id] = true;
 		}
-		for (const tileset of Object.values(Data.tilesets)) {
+		for (const tileset of Object.values<any>(Data.tilesets)) {
 			const path = getPathOfGuid(tileset.guid);
 			pushToOuterMap(path, tileset.guid);
 			const json = JSON.stringify(tileset);
@@ -545,7 +546,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	};
 	const searchScripts = () => {
 		pushComment(get('script'));
-		for (const script of Object.values(Data.scripts)) {
+		for (const script of Object.values<any>(Data.scripts)) {
 			const path = getPathOfGuid(script.guid);
 			pushToOuterMap(path, script.guid);
 			if (script.guid in usedMap) {

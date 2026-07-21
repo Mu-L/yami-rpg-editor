@@ -28,7 +28,7 @@ export class NavBar extends HTMLElement {
 		this.selectEventEnabled = false;
 
 		// 侦听事件
-		this.on('pointerdown', this.pointerdown);
+		(this as any).on('pointerdown', this.pointerdown);
 	}
 
 	// 读取数据

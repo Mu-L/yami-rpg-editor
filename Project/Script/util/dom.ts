@@ -82,8 +82,8 @@ export const getElementReader = function (prefix) {
 };
 
 // 获取元素写入器
-export const getElementWriter = function (prefix, bindingObject) {
-	return function (suffix, value) {
+export const getElementWriter = function (prefix, bindingObject?) {
+	return function (suffix, value?) {
 		if (value === undefined) {
 			const nodes =
 				typeof suffix === 'string' ? suffix.split('-') : [suffix];

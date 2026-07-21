@@ -15,7 +15,7 @@ import { Scene } from '../../scene/scene-window.ts';
 import { Local } from '../../tools/localization.ts';
 import { Selection } from '../../tools/text-capture.ts';
 
-Command.cases.callEvent = new CommandSchema({
+(Command.cases as any).callEvent = new CommandSchema({
 	name: 'callEvent',
 	windowFrame: $('#callEvent'),
 	gridBox: $('#callEvent').querySelector('grid-box'),
@@ -292,7 +292,7 @@ Command.cases.callEvent = new CommandSchema({
 						continue outer;
 					}
 				}
-				const info = `${Command.setClass('error')}${name}${
+				const info = `${(Command as any).setClass('error')}${name}${
 					Token(': ') +
 					Command.setWeakColor(
 						Local.get('eventParameterTypes.' + type)
@@ -395,7 +395,7 @@ Command.cases.callEvent = new CommandSchema({
 		}
 	},
 	readEventResult() {
-		const eventResult = { type: 'none' };
+		const eventResult: any = { type: 'none' };
 		if (this.eventResult !== null) {
 			eventResult.type = this.eventResult.type;
 			eventResult.variable = this.eventResult.input.read();
@@ -468,7 +468,8 @@ Command.cases.callEvent = new CommandSchema({
 				}
 				if (leftValue) {
 					if (eventResult.type !== event.returnType) {
-						leftValue = Command.setClass('error') + leftValue;
+						leftValue =
+							(Command as any).setClass('error') + leftValue;
 					}
 					leftValue += Token(' = ');
 				}
@@ -518,7 +519,7 @@ Command.cases.callEvent = new CommandSchema({
 		if (eventType) {
 			words.push(Command.parseEventType(type + '-event', eventType));
 		}
-		const contents = [
+		const contents: any[] = [
 			{ color: 'flow' },
 			{ text: Local.get('command.callEvent.alias') + Token(': ') },
 			{ text: words.join() }

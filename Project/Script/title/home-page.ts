@@ -19,6 +19,7 @@ export const Home = {
 	parseRecentProjects: null,
 	removeRecentProject: null,
 	readFileList: null,
+	countFileList: null,
 	// events
 	windowResize: null,
 	windowLocalize: null,
@@ -126,7 +127,7 @@ Home.parseRecentProjects = function () {
 		})
 			.then((data) => {
 				// 设置标题文本
-				const { window } = JSON.parse(data);
+				const { window } = JSON.parse(data as any);
 				eTitle.textContent = window.title;
 
 				// 根据配置选择使用readFileList或countFileList
@@ -278,9 +279,9 @@ Home.countFileList = (function IIFE() {
 		'.woff': 'other',
 		'.woff2': 'other'
 	};
-	const options = { withFileTypes: true };
+	const options: any = { withFileTypes: true };
 	const read = (path, list) => {
-		return FSP.readdir(path, options).then(async (files) => {
+		return FSP.readdir(path, options).then(async (files: any[]) => {
 			if (path) {
 				path += '/';
 			}
@@ -355,9 +356,9 @@ Home.readFileList = (function IIFE() {
 		'.woff': 'other',
 		'.woff2': 'other'
 	};
-	const options = { withFileTypes: true };
+	const options: any = { withFileTypes: true };
 	const read = (path, list) => {
-		return FSP.readdir(path, options).then(async (files) => {
+		return FSP.readdir(path, options).then(async (files: any[]) => {
 			if (path) {
 				path += '/';
 			}

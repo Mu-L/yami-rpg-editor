@@ -15,6 +15,11 @@ export class TextHistory {
 	editingStart; //:number
 	selectionStart; //:number
 	selectionEnd; //:number
+	history: any;
+
+	static restoring: boolean;
+	static eventStruct: { inputType: string; data: string | null };
+	static inputReplace: Function;
 
 	constructor(input) {
 		this.input = input;

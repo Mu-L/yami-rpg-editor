@@ -11,7 +11,7 @@ import { Scene } from '../../scene/scene-window.ts';
 import { Local } from '../../tools/localization.ts';
 import { Variable } from '../../variable/variable.ts';
 
-Command.cases.setString = new CommandSchema({
+(Command.cases as any).setString = new CommandSchema({
 	name: 'setString',
 	onInitialize() {
 		$('#setString-confirm').on('click', () => this.save());
@@ -468,7 +468,7 @@ Command.cases.setString = new CommandSchema({
 	customLoad({
 		variable = { type: 'local', key: '' },
 		operation = 'set',
-		operand = { type: 'constant', value: '' }
+		operand = { type: 'constant', value: '' } as any
 	}) {
 		let commonValue = '';
 		let stringMethod = 'char';

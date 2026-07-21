@@ -19,7 +19,7 @@ export class DragAndDropHint extends HTMLElement {
 
 	// 测量位置
 	measure(item) {
-		const parent = this.parentNode;
+		const parent: any = this.parentNode;
 		let bl = parent.borderLeft;
 		let bt = parent.borderTop;
 		if (bl === undefined) {

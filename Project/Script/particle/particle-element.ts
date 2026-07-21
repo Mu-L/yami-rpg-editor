@@ -8,6 +8,7 @@ Particle.Element = class ParticleElement {
 	layer; //:object
 	data; //:object
 	elapsed; //:number
+	appeared = false;
 	lifetime; //:number
 	fadeout; //:number
 	fadeoutTime; //:number

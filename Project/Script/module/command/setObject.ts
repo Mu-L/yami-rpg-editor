@@ -7,7 +7,7 @@ import { Light } from '../../scene/light.ts';
 import { Local } from '../../tools/localization.ts';
 import { Variable } from '../../variable/variable.ts';
 
-Command.cases.setObject = new CommandSchema({
+(Command.cases as any).setObject = new CommandSchema({
 	name: 'setObject',
 	onInitialize() {
 		$('#setObject-confirm').on('click', () => this.save());
@@ -93,7 +93,20 @@ Command.cases.setObject = new CommandSchema({
 	},
 	customLoad({
 		variable = { type: 'local', key: '' },
-		operand = { type: 'none' }
+		operand = {
+			type: 'none',
+			actor: null,
+			skill: null,
+			state: null,
+			equipment: null,
+			item: null,
+			trigger: null,
+			light: null,
+			object: null,
+			element: null,
+			variable: null,
+			index: null
+		}
 	}) {
 		const write = getElementWriter('setObject');
 		let operandActor = { type: 'trigger' };

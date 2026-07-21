@@ -3,6 +3,13 @@
 // ******************************** 基础纹理类 ********************************
 
 export class BaseTexture {
+	glTexture: WebGLTexture | null;
+	width: number;
+	height: number;
+	format: number;
+	magFilter: number;
+	minFilter: number;
+	image: any;
 	constructor() {
 		this.glTexture = GL.createTexture();
 		this.width = 0;

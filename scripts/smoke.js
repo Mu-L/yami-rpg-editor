@@ -24,14 +24,18 @@ function ok(msg) {
 
 function stripESM(code) {
 	// 去除 import 语句（vm 无模块解析，符号由 sandbox 全局提供）
-	// [^\n;]+ 避免跨行吞掉多行内容（[^;] 会匹配换行导致误删）
+	// 先处理多行 import { ... } from '...' 块
+	code = code.replace(
+		/^\s*import\s*\{[\s\S]*?\}\s*from\s+['"][^'"]+['"]\s*;?\s*$/gm,
+		''
+	);
+	// 再处理单行 import ... from '...' 或 import '...'
 	code = code.replace(/^\s*import\s+[^\n;]+;?\s*$/gm, '');
-	// 逐行处理：去除 import、将 export 声明改写为 window.X = <声明>
+	// 逐行处理：将 export 声明改写为 window.X = <声明>
 	// 逐行可避免 \s 跨行吞掉多行对象字面量
 	code = code
 		.split('\n')
 		.map((line) => {
-			if (/^\s*import\s+/.test(line)) return '';
 			let m = line.match(/^\s*export\s+const\s+(\w+)\s*=/);
 			if (m)
 				return line.replace(
@@ -65,7 +69,6 @@ function stripESM(code) {
 			return line;
 		})
 		.join('\n');
-	return code;
 	return code;
 }
 

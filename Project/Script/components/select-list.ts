@@ -10,10 +10,6 @@ export class SelectList extends HTMLElement {
 	target; //:element
 	elements; //:array
 	selection; //:element
-	windowKeydown; //:function
-	windowPointerdown; //:function
-	windowResize; //:function
-	windowBlur; //:function
 
 	constructor() {
 		super();
@@ -29,10 +25,10 @@ export class SelectList extends HTMLElement {
 		this.elements.head = null;
 		this.elements.foot = null;
 		this.selection = null;
-		this.windowKeydown = SelectList.windowKeydown.bind(this);
-		this.windowPointerdown = SelectList.windowPointerdown.bind(this);
-		this.windowResize = SelectList.windowResize.bind(this);
-		this.windowBlur = SelectList.windowBlur.bind(this);
+		this.windowKeydown = this.windowKeydown.bind(this);
+		this.windowPointerdown = this.windowPointerdown.bind(this);
+		this.windowResize = this.windowResize.bind(this);
+		this.windowBlur = this.windowBlur.bind(this);
 		this.listenDraggingScrollbarEvent();
 
 		// 侦听事件
@@ -256,7 +252,7 @@ export class SelectList extends HTMLElement {
 	}
 
 	// 窗口 - 键盘按下事件
-	static windowKeydown(event) {
+	windowKeydown(event) {
 		event.preventDefault();
 		event.stopPropagation();
 		switch (event.code) {
@@ -303,7 +299,7 @@ export class SelectList extends HTMLElement {
 	}
 
 	// 窗口 - 指针按下事件
-	static windowPointerdown(event) {
+	windowPointerdown(event) {
 		switch (event.button) {
 			case 0: {
 				const target = this.target;
@@ -335,7 +331,7 @@ export class SelectList extends HTMLElement {
 	}
 
 	// 窗口 - 调整大小事件
-	static windowResize(event) {
+	windowResize(event?) {
 		const MAX_LINES = 30;
 		const rect = this.target.rect();
 		const rl = rect.left;
@@ -352,11 +348,11 @@ export class SelectList extends HTMLElement {
 		this.style.top = `${top}px`;
 		this.style.width = `calc(${rw}px - var(--2dpx))`;
 		this.style.height = `${lines * 20}px`;
-		this.style.zIndex = Window.frames.length + 1;
+		this.style.zIndex = `${Window.frames.length + 1}`;
 	}
 
 	// 窗口 - 失去焦点事件
-	static windowBlur(event) {
+	windowBlur(event) {
 		this.close();
 	}
 }

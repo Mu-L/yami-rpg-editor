@@ -84,7 +84,7 @@ EventBus.once('editor_loaded', () => {
 
 export const commandList = document.querySelector('#event-commands');
 
-commandList.getSelectionPosition = function () {
+(commandList as any).getSelectionPosition = function () {
 	return this.elements[this.active].pre.getBoundingClientRect();
 };
 

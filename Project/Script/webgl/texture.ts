@@ -10,6 +10,8 @@ export class Texture {
 	y; //:number
 	width; //:number
 	height; //:number
+	declare on: (type: string, callback: (...args: any[]) => void) => void;
+	declare reply: (type: string, ...args: any[]) => void;
 
 	constructor(options = {}) {
 		if (new.target !== Texture) {
@@ -112,7 +114,7 @@ export class Texture {
 				gl.FRAMEBUFFER,
 				gl.COLOR_ATTACHMENT0,
 				gl.TEXTURE_2D,
-				base.glTexture,
+				(base as any).glTexture,
 				0
 			);
 			gl.readPixels(

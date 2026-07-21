@@ -7,7 +7,7 @@ Updater.updateTilesets = function (verNum) {
 	// 更新到1.0.60版本：添加terrains属性
 	if (verNum < Updater.getVersionNumber('1.0.60')) {
 		const tilesets = Data.tilesets;
-		for (const [guid, tileset] of Object.entries(tilesets)) {
+		for (const [guid, tileset] of Object.entries<any>(tilesets)) {
 			const meta = Data.manifest.guidMap[guid];
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
@@ -20,7 +20,7 @@ Updater.updateTilesets = function (verNum) {
 	// 更新到1.0.85版本：添加tags属性
 	if (verNum < Updater.getVersionNumber('1.0.85')) {
 		const tilesets = Data.tilesets;
-		for (const [guid, tileset] of Object.entries(tilesets)) {
+		for (const [guid, tileset] of Object.entries<any>(tilesets)) {
 			const meta = Data.manifest.guidMap[guid];
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);

@@ -7,6 +7,8 @@ export class SliderBox extends HTMLElement {
 	filler; //:element
 	input; //:element
 	synchronizer; //:element
+	bar; //:element
+	step; //:number
 	activeWheel; //:boolean
 	focusEventEnabled; //:boolean
 	blurEventEnabled; //:boolean
@@ -37,7 +39,7 @@ export class SliderBox extends HTMLElement {
 		this.blurEventEnabled = false;
 
 		// 侦听事件
-		this.on('input', this.sliderInput);
+		(this as any).on('input', this.sliderInput);
 	}
 
 	// 自定义元素升级后（已连入文档）才允许读取属性/操作子节点
@@ -117,13 +119,13 @@ export class SliderBox extends HTMLElement {
 			};
 
 			// 滑动框 - 输入事件
-			const sliderInput = (event) => {
+			const sliderInput = (event?) => {
 				writeNumber.call(number, slider.read());
 				event && number.dispatchEvent(new Event('input'));
 			};
 
 			// 数字框 - 输入事件
-			const numberInput = (event) => {
+			const numberInput = (event?) => {
 				writeSlider.call(slider, number.read());
 				event && slider.dispatchEvent(new Event('input'));
 			};

@@ -233,7 +233,7 @@ Command.cases.setList = new CommandSchema({
 		operation = 'set-empty',
 		list = [],
 		index = 0,
-		constant = 0,
+		constant = 0 as any,
 		operand = { type: 'local', key: '' },
 		separator = '',
 		groupId = '',
@@ -242,9 +242,9 @@ Command.cases.setList = new CommandSchema({
 	}) {
 		let numbers = [];
 		let strings = [];
-		let boolean = false;
-		let number = 0;
-		let string = '';
+		let boolVal = false;
+		let numVal = 0;
+		let strVal = '';
 		let attrGroupId = '';
 		let enumGroupId = '';
 		switch (operation) {
@@ -255,13 +255,13 @@ Command.cases.setList = new CommandSchema({
 				strings = list;
 				break;
 			case 'set-boolean':
-				boolean = constant;
+				boolVal = constant;
 				break;
 			case 'set-number':
-				number = constant;
+				numVal = constant;
 				break;
 			case 'set-string':
-				string = constant;
+				strVal = constant;
 				break;
 			case 'get-attribute-names':
 			case 'get-attribute-keys':
@@ -278,9 +278,9 @@ Command.cases.setList = new CommandSchema({
 		write('numbers', numbers);
 		write('strings', strings);
 		write('index', index);
-		write('boolean', boolean);
-		write('number', number);
-		write('string', string);
+		write('boolean', boolVal);
+		write('number', numVal);
+		write('string', strVal);
 		write('operand', operand);
 		write('separator', separator);
 		write('attribute-groupId', attrGroupId);

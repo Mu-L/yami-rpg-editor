@@ -1266,7 +1266,8 @@ GL.createBlendingUpdater = function () {
 		screen: resume,
 		additive: resume,
 		subtract: resume,
-		max: resume
+		max: resume,
+		copy: resume
 	};
 
 	let updaters = A;
@@ -1763,7 +1764,7 @@ GL.fillTextWithOutline = (function fillTextWithOutline() {
 })();
 
 // WebGL上下文方法 - 创建普通纹理
-GL.createNormalTexture = function (options = {}) {
+GL.createNormalTexture = function (options: any = {}) {
 	const magFilter = options.magFilter ?? this.NEAREST;
 	const minFilter = options.minFilter ?? this.LINEAR;
 	const texture = new BaseTexture();
@@ -1788,10 +1789,10 @@ GL.createNormalTexture = function (options = {}) {
 };
 
 // WebGL上下文方法 - 创建图像纹理
-GL.createImageTexture = function (image, options = {}) {
+GL.createImageTexture = function (image, options: any = {}) {
 	const magFilter = options.magFilter ?? this.NEAREST;
 	const minFilter = options.minFilter ?? this.LINEAR;
-	const guid = image instanceof Image ? image.guid : image;
+	const guid = image instanceof Image ? (image as any).guid : image;
 	const manager = this.textureManager;
 	let texture = manager.images[guid];
 	if (!texture) {

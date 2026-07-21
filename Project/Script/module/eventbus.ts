@@ -27,7 +27,7 @@ export const EventBus = new (class EventBus {
 		}
 	}
 
-	emit(eventName, data) {
+	emit(eventName, data?) {
 		if (!this.events[eventName]) return;
 
 		const callbacks = [...this.events[eventName]];

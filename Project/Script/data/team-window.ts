@@ -326,7 +326,7 @@ Team.listPopup = function (event) {
 	const length = Team.data.length;
 	const selected = !!item;
 	const insertable = length < Team.maximum;
-	const pastable = insertable && Clipboard.has('yami.data.team');
+	const pastable = insertable && (Clipboard as any).has('yami.data.team');
 	const deletable = selected && length > 1;
 	const get = Local.createGetter('menuTeamList');
 	Menu.popup(
@@ -408,13 +408,13 @@ Team.list.insert = function (dItem) {
 // 列表 - 复制
 Team.list.copy = function (item) {
 	if (item) {
-		Clipboard.write('yami.data.team', item);
+		(Clipboard as any).write('yami.data.team', item);
 	}
 };
 
 // 列表 - 粘贴
 Team.list.paste = function (dItem) {
-	const copy = Clipboard.read('yami.data.team');
+	const copy = (Clipboard as any).read('yami.data.team');
 	if (copy) {
 		const dId = Team.createId();
 		const cRelations = copy.relations;

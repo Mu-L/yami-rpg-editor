@@ -20,6 +20,10 @@ export class Manifest {
 	animations = [];
 	particles = [];
 	images = [];
+	metaList = [];
+	guidMap = {};
+	pathMap = {};
+	changed = false;
 	audio = [];
 	videos = [];
 	fonts = [];

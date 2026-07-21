@@ -265,7 +265,7 @@ import { UI } from '../ui/ui-window.ts';
 			case 'effect-type':
 				if (node.effect.type !== value) {
 					const read = getElementReader('uiText-effect');
-					const effect = { type: value };
+					const effect: any = { type: value };
 					switch (value) {
 						case 'none':
 							break;

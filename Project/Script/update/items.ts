@@ -16,7 +16,7 @@ Updater.updateItems = function (verNum) {
 			}
 			const dItem = Inspector.fileItem.create();
 			for (const key of keys) {
-				if (key in sItem) {
+				if (key in (sItem as any)) {
 					dItem[key] = sItem[key];
 				}
 			}

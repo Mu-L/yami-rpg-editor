@@ -13,7 +13,7 @@ export class PageManager extends HTMLElement {
 		if (elements.length > 0) {
 			let i = elements.length;
 			while (--i >= 0) {
-				const element = elements[i];
+				const element: any = elements[i];
 				if (element.tagName === 'PAGE-FRAME') {
 					element.dataValue = element.getAttribute('value');
 				} else {
@@ -34,8 +34,8 @@ export class PageManager extends HTMLElement {
 		if (last !== value) {
 			let target = null;
 			if (value !== null) {
-				for (const element of this.childNodes) {
-					if (element.dataValue === value) {
+				for (const element of <any>this.childNodes) {
+					if ((<any>element).dataValue === value) {
 						target = element;
 						break;
 					}
@@ -52,7 +52,7 @@ export class PageManager extends HTMLElement {
 				//   this.scrollTop = 0
 				// }
 				if (this.switchEventEnabled) {
-					const event = new Event('switch');
+					const event: any = new Event('switch');
 					event.last = last;
 					event.value = value;
 					this.dispatchEvent(event);

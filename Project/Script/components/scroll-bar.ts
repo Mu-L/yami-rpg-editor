@@ -8,8 +8,7 @@ export class ScrollBar extends HTMLElement {
 	thumb; //:element
 	timer; //:object
 	dragging; //:event
-	windowPointerup; //:function
-	windowPointermove; //:function
+	visible;
 
 	constructor() {
 		super();
@@ -20,8 +19,8 @@ export class ScrollBar extends HTMLElement {
 		this.thumb = null;
 		this.timer = null;
 		this.dragging = null;
-		this.windowPointerup = ScrollBar.windowPointerup.bind(this);
-		this.windowPointermove = ScrollBar.windowPointermove.bind(this);
+		this.windowPointerup = this.windowPointerup.bind(this);
+		this.windowPointermove = this.windowPointermove.bind(this);
 
 		// 侦听事件
 		this.on('pointerdown', this.pointerdown);
@@ -277,7 +276,7 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 窗口 - 指针弹起事件
-	static windowPointerup(event) {
+	windowPointerup(event) {
 		const { dragging } = this;
 		if (dragging.relate(event)) {
 			switch (dragging.mode) {
@@ -293,7 +292,7 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 窗口 - 指针移动事件
-	static windowPointermove(event) {
+	windowPointermove(event) {
 		const { dragging } = this;
 		if (dragging.relate(event)) {
 			switch (dragging.mode) {

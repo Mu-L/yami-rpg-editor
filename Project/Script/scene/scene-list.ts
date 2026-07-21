@@ -13,13 +13,13 @@ Scene.list.copy = function (item) {
 				Codec.encodeTilemap(item);
 				break;
 		}
-		Clipboard.write('yami.scene.object', item);
+		(Clipboard as any).write('yami.scene.object', item);
 	}
 };
 
 // 列表 - 粘贴
 Scene.list.paste = function (dItem, callback) {
-	const copy = Clipboard.read('yami.scene.object');
+	const copy = (Clipboard as any).read('yami.scene.object');
 	if (copy && this.data) {
 		switch (copy.class) {
 			case 'tilemap':

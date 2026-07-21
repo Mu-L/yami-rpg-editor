@@ -31,7 +31,7 @@ Updater.updateScenes = function (verNum) {
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
-			forEachObject(scene.objects, replacer, meta);
+			forEachObject((scene as any).objects, replacer, meta);
 		}
 	};
 	// 更新到1.0.116版本
@@ -43,8 +43,8 @@ Updater.updateScenes = function (verNum) {
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
-			delete scene.contrast;
-			scene.ambient.direct = 0;
+			delete (scene as any).contrast;
+			(scene as any).ambient.direct = 0;
 			File.planToSave(meta);
 		}
 	}

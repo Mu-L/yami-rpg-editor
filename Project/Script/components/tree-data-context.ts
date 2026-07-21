@@ -40,8 +40,8 @@ export class TreeDataContext {
 		// 移除无效的分组设置
 		const settings = data.settings;
 		for (const [key, groupId] of Object.entries(settings)) {
-			if (groupId in groupMap) {
-				groupMap[key] = groupMap[groupId];
+			if ((groupId as any) in groupMap) {
+				groupMap[key as any] = groupMap[groupId as any];
 			} else {
 				if (groupId !== '') {
 					settings[key] = '';

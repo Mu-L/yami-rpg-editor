@@ -53,7 +53,7 @@ import { Inspector } from './inspector.ts';
 
 			// 更新图像信息
 			const symbol = (this.symbol = Symbol());
-			new Promise((resolve, reject) => {
+			new Promise<void>((resolve, reject) => {
 				const intervalIndex = setInterval(() => {
 					if (image.naturalWidth !== 0) {
 						clearInterval(intervalIndex);

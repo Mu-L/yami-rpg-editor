@@ -25,7 +25,7 @@ export class TitleBar extends HTMLElement {
 		switch (event.button) {
 			case 0:
 				if (event.target instanceof TitleBar) {
-					const windowFrame = this.parentNode;
+					const windowFrame = this.parentNode as any;
 					const rect = windowFrame.rect();
 					const startX = event.clientX;
 					const startY = event.clientY;
@@ -55,7 +55,7 @@ export class TitleBar extends HTMLElement {
 							cancel();
 						}
 					};
-					const cancel = (event) => {
+					const cancel = (event?) => {
 						this.dragging = null;
 						window.off('pointermove', pointermove);
 						window.off('pointerup', pointerup);
@@ -75,7 +75,7 @@ export class TitleBar extends HTMLElement {
 	mouseclick(event) {
 		switch (event.target.tagName) {
 			case 'MAXIMIZE': {
-				const windowFrame = this.parentNode;
+				const windowFrame = this.parentNode as any;
 				if (!windowFrame.hasClass('maximized')) {
 					windowFrame.maximize();
 				} else {
@@ -84,7 +84,7 @@ export class TitleBar extends HTMLElement {
 				break;
 			}
 			case 'CLOSE': {
-				const windowFrame = this.parentNode;
+				const windowFrame = this.parentNode as any;
 				Window.close(windowFrame.id);
 				break;
 			}
@@ -98,7 +98,7 @@ export class TitleBar extends HTMLElement {
 			event.target.querySelector('maximize')
 		) {
 			this.dragging?.cancel();
-			const windowFrame = this.parentNode;
+			const windowFrame = this.parentNode as any;
 			if (!windowFrame.hasClass('maximized')) {
 				windowFrame.maximize();
 			} else {

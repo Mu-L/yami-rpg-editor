@@ -333,13 +333,13 @@ Easing.insert = function (dItem) {
 // 复制
 Easing.copy = function (item) {
 	if (item) {
-		Clipboard.write('yami.data.easing', item);
+		(Clipboard as any).write('yami.data.easing', item);
 	}
 };
 
 // 粘贴
 Easing.paste = function (dItem) {
-	const copy = Clipboard.read('yami.data.easing');
+	const copy = (Clipboard as any).read('yami.data.easing');
 	if (copy) {
 		copy.name += ' - Copy';
 		copy.id = this.createId();
@@ -955,7 +955,7 @@ Easing.listOpen = function (event) {
 Easing.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
-	const pastable = Clipboard.has('yami.data.easing');
+	const pastable = (Clipboard as any).has('yami.data.easing');
 	const deletable = selected && Easing.data.length > 1;
 	const get = Local.createGetter('menuEasingList');
 	Menu.popup(
@@ -1185,7 +1185,7 @@ Easing.curveWheel = function (event) {
 				const step = event.deltaY < 0 ? -1 : 1;
 				const radio = radios[i + step];
 				if (radio !== undefined) {
-					radio.pointerdown(event);
+					(radio as any).pointerdown(event);
 				}
 				break;
 			}
@@ -1386,6 +1386,7 @@ Easing.EasingMap = (function IIFE() {
 		}
 
 		// 映射
+		// @ts-ignore
 		map(time) {
 			return this[round(time * SCALE)];
 		}
@@ -1479,7 +1480,7 @@ Easing.list.updateTextNode = function (item) {
 // 创建键文本节点
 Easing.list.createKeyTextNode = function (item) {
 	const keyTextNode = document.createElement('text');
-	keyTextNode.key = '';
+	(keyTextNode as any).key = '';
 	keyTextNode.addClass('variable-init-text');
 	item.element.appendChild(keyTextNode);
 	item.element.keyTextNode = keyTextNode;

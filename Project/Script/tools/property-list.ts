@@ -12,11 +12,12 @@ import { Window } from './window-object.ts';
 export class AttributeListInterface {
 	target; //:element
 	type; //:string
+	group; //:string
 	history; //:object
 	editor; //:object
 	owner; //:object
 
-	constructor(editor, owner) {
+	constructor(editor?, owner?) {
 		this.editor = editor ?? null;
 		this.owner = owner ?? null;
 	}
@@ -83,7 +84,7 @@ export class AttributeListInterface {
 	}
 
 	// 打开窗口
-	open(item = { key: '', value: 0 }) {
+	open(item: any = { key: '', value: 0 }) {
 		Window.open('object-attribute');
 		AttributeListInterface.target = this.target;
 		const isNew = item.key === '';
@@ -222,6 +223,8 @@ export class AttributeListInterface {
 			}
 		}
 	}
+
+	static _typeBox: SelectBox | null = null;
 
 	static get typeBox() {
 		if (!this._typeBox) this._typeBox = new SelectBox();

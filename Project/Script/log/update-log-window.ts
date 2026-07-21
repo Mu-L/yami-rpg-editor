@@ -7,9 +7,17 @@ import { Updater } from '../update/updater.ts';
 export const UpdateLog = {
 	// properties
 	content: $('#update-log-content'),
+	currentMode: null,
+	internalItems: null,
+	communityItems: null,
 	// methods
 	open: null,
 	update: null,
+	initialize: null,
+	switchMode: null,
+	loadCommunityReleases: null,
+	displayDonationList: null,
+	parseCommunityReleases: null,
 	// events
 	windowClosed: null
 };

@@ -307,7 +307,7 @@ Project.paramInput = function (event) {
 };
 
 // 过滤重复的语言
-Project.filterDuplicateLanguages = function () {
+(Project as any).filterDuplicateLanguages = function () {
 	const local = this.data.localization;
 	const languages = [];
 	for (const language of local.languages) {

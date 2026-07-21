@@ -128,35 +128,37 @@ Deployment.readShellList = (function IIFE() {
 	let root;
 	const options = { withFileTypes: true };
 	const read = (path, list) => {
-		return FSP.readdir(`${root}${path}`, options).then(async (files) => {
-			if (path) {
-				path += '/';
-			}
-			const promises = [];
-			for (const file of files) {
-				const newPath = `${path}${file.name}`;
-				const srcPath = `${root}${newPath}`;
-				if (file.isDirectory()) {
-					list.push({
-						folder: true,
-						shell: true,
-						srcPath: srcPath,
-						newPath: newPath
-					});
-					promises.push(read(newPath, list));
-				} else {
-					list.push({
-						shell: true,
-						srcPath: srcPath,
-						newPath: newPath
-					});
+		return (FSP.readdir as any)(`${root}${path}`, options).then(
+			async (files: any[]) => {
+				if (path) {
+					path += '/';
 				}
+				const promises = [];
+				for (const file of files) {
+					const newPath = `${path}${file.name}`;
+					const srcPath = `${root}${newPath}`;
+					if (file.isDirectory()) {
+						list.push({
+							folder: true,
+							shell: true,
+							srcPath: srcPath,
+							newPath: newPath
+						});
+						promises.push(read(newPath, list));
+					} else {
+						list.push({
+							shell: true,
+							srcPath: srcPath,
+							newPath: newPath
+						});
+					}
+				}
+				if (promises.length !== 0) {
+					await Promise.all(promises);
+				}
+				return list;
 			}
-			if (promises.length !== 0) {
-				await Promise.all(promises);
-			}
-			return list;
-		});
+		);
 	};
 	return function (rootDir) {
 		root = Path.resolve(__dirname, rootDir) + '/';

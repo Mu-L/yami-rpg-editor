@@ -166,8 +166,8 @@ Palette.initialize = function () {
 
 	// 选框区域自定义组件 - 源选框和目标选框
 	const marquee = this.marquee;
-	const source = document.createElement('selection');
-	const destination = document.createElement('selection');
+	const source: any = document.createElement('selection');
+	const destination: any = document.createElement('selection');
 	const selections = { source, destination };
 	source.id = 'source-selection';
 	destination.id = 'destination-selection';
@@ -181,8 +181,8 @@ Palette.initialize = function () {
 		const realY = y * scaleY;
 		const realWidth = scaleX;
 		const realHeight = scaleY;
-		selection.x = x;
-		selection.y = y;
+		(selection as any).x = x;
+		(selection as any).y = y;
 		if (selection === destination && source.x === x && source.y === y) {
 			return selection.remove();
 		}
@@ -204,8 +204,8 @@ Palette.initialize = function () {
 	marquee.customShiftAutoTile = function () {
 		source.remove();
 		destination.remove();
-		const { x: sx, y: sy } = source;
-		const { x: dx, y: dy } = destination;
+		const { x: sx, y: sy } = source as any;
+		const { x: dx, y: dy } = destination as any;
 		if (sx !== dx || sy !== dy) {
 			const tileset = Palette.tileset;
 			const tiles = tileset.tiles;
@@ -731,7 +731,10 @@ Palette.createMarkCanvas = function () {
 		canvas.fontSize = size;
 		canvas.entries = [];
 		canvas.totalWidth = 0;
-		const positions = (canvas.positions = {});
+		const positions: Record<string, any> = (canvas.positions = {} as Record<
+			string,
+			any
+		>);
 		const context = canvas.getContext('2d');
 		const font = `${size}px sans-serif`;
 		canvas.font = font;
@@ -1226,7 +1229,7 @@ Palette.copyAutoTile = function (index) {
 		const priorities = tileset.priorities;
 		const terrains = tileset.terrains;
 		if (tiles[index]) {
-			Clipboard.write('yami.tile', {
+			(Clipboard as any).write('yami.tile', {
 				tile: tiles[index],
 				priority: priorities[index],
 				terrain: terrains[index]
@@ -1242,7 +1245,7 @@ Palette.pasteAutoTile = function (index) {
 		const tiles = tileset.tiles;
 		const priorities = tileset.priorities;
 		const terrains = tileset.terrains;
-		const copy = Clipboard.read('yami.tile');
+		const copy = (Clipboard as any).read('yami.tile');
 		if (copy && index < tiles.length) {
 			tiles[index] = copy.tile;
 			priorities[index] = copy.priority;
@@ -2205,7 +2208,7 @@ Palette.marqueePopup = function (event) {
 		const existing = !!tiles[index];
 		const editable = true;
 		const copyable = existing;
-		const pastable = Clipboard.has('yami.tile');
+		const pastable = (Clipboard as any).has('yami.tile');
 		const deletable = existing;
 		const get = Local.createGetter('menuTileset');
 		Menu.popup(

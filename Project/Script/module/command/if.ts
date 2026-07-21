@@ -17,7 +17,7 @@ Command.cases.if = new CommandSchema({
 		});
 	},
 	customParse({ branches, elseCommands }) {
-		const contents = [{ fold: true }];
+		const contents: any[] = [{ fold: true }];
 		const textIf = Local.get('command.if');
 		const textElse = Local.get('command.if.else');
 		for (let index = 0; index < branches.length; index++) {

@@ -58,7 +58,7 @@ Command.WordList = class WordList extends Array {
 
 	push(string) {
 		if (string) this[this.count++] = string;
-		return this;
+		return this.count;
 	}
 
 	join(joint = '$_delimiter_$, $_/_$') {

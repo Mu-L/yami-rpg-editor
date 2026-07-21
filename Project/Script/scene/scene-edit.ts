@@ -490,14 +490,14 @@ Scene.setTileFrame = function (x, y) {
 		const r = width - 1;
 		const b = height - 1;
 		const neighbor =
-			((x > 0 && key !== tiles[ti - 1] >> 8) + 1) |
-			(((x > 0 && y > 0 && key !== tiles[ti - 1 - ro] >> 8) + 1) << 2) |
-			(((y > 0 && key !== tiles[ti - ro] >> 8) + 1) << 4) |
-			(((x < r && y > 0 && key !== tiles[ti + 1 - ro] >> 8) + 1) << 6) |
-			(((x < r && key !== tiles[ti + 1] >> 8) + 1) << 8) |
-			(((x < r && y < b && key !== tiles[ti + 1 + ro] >> 8) + 1) << 10) |
-			(((y < b && key !== tiles[ti + ro] >> 8) + 1) << 12) |
-			(((x > 0 && y < b && key !== tiles[ti - 1 + ro] >> 8) + 1) << 14);
+			(+(x > 0 && key !== tiles[ti - 1] >> 8) + 1) |
+			((+(x > 0 && y > 0 && key !== tiles[ti - 1 - ro] >> 8) + 1) << 2) |
+			((+(y > 0 && key !== tiles[ti - ro] >> 8) + 1) << 4) |
+			((+(x < r && y > 0 && key !== tiles[ti + 1 - ro] >> 8) + 1) << 6) |
+			((+(x < r && key !== tiles[ti + 1] >> 8) + 1) << 8) |
+			((+(x < r && y < b && key !== tiles[ti + 1 + ro] >> 8) + 1) << 10) |
+			((+(y < b && key !== tiles[ti + ro] >> 8) + 1) << 12) |
+			((+(x > 0 && y < b && key !== tiles[ti - 1 + ro] >> 8) + 1) << 14);
 		const nodes = template.nodes;
 		const length = nodes.length;
 		let nodeIndex = 0;
@@ -539,7 +539,7 @@ Scene.setTerrain = function (x, y) {
 
 // 创建图块集合
 Scene.createTiles = function (width, height) {
-	const tiles = new Uint32Array(width * height);
+	const tiles: any = new Uint32Array(width * height);
 	tiles.width = width;
 	tiles.height = height;
 	tiles.rowOffset = width;
@@ -548,7 +548,7 @@ Scene.createTiles = function (width, height) {
 
 // 克隆图块集合
 Scene.cloneTiles = function (sTiles) {
-	const dTiles = new Uint32Array(sTiles);
+	const dTiles: any = new Uint32Array(sTiles);
 	dTiles.width = sTiles.width;
 	dTiles.height = sTiles.height;
 	dTiles.rowOffset = sTiles.rowOffset;
@@ -557,7 +557,7 @@ Scene.cloneTiles = function (sTiles) {
 
 // 创建地形
 Scene.createTerrains = function (width, height) {
-	const terrains = new Uint8Array(width * height);
+	const terrains: any = new Uint8Array(width * height);
 	terrains.rowOffset = width;
 	return terrains;
 };

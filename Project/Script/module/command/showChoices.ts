@@ -28,7 +28,7 @@ Command.cases.showChoices = new CommandSchema({
 		];
 	},
 	customParse({ choices, parameters }) {
-		const contents = [
+		const contents: any[] = [
 			{ fold: true },
 			{ color: 'flow' },
 			{ text: Local.get('command.showChoices') + Token(': ') },

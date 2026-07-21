@@ -43,7 +43,7 @@ Updater.updateAnimations = function (verNum) {
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
-			for (const motion of animation.motions) {
+			for (const motion of (animation as any).motions) {
 				for (const dirCase of motion.dirCases) {
 					update(dirCase.layers);
 				}
@@ -81,7 +81,7 @@ Updater.updateAnimations = function (verNum) {
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
-			for (const motion of animation.motions) {
+			for (const motion of (animation as any).motions) {
 				for (const dirCase of motion.dirCases) {
 					update(dirCase.layers);
 				}

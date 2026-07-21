@@ -205,16 +205,6 @@ UI.Button = class ButtonElement extends UI.Element {
 		this.shadowText.verticalAlign = value;
 	}
 
-	// 读取字体大小
-	get size() {
-		return this.shadowText.size;
-	}
-
-	// 写入字体大小
-	set size(value) {
-		this.shadowText.size = value;
-	}
-
 	// 读取行间距
 	get lineSpacing() {
 		return this.shadowText.lineSpacing;
@@ -243,16 +233,6 @@ UI.Button = class ButtonElement extends UI.Element {
 	// 写入颜色
 	set color(value) {
 		this.shadowText.color = value;
-	}
-
-	// 读取字体
-	get font() {
-		return this.shadowText.font;
-	}
-
-	// 写入字体
-	set font(value) {
-		this.shadowText.font = value;
 	}
 
 	// 读取字型

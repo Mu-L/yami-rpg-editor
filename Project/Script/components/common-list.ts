@@ -28,10 +28,10 @@ export class CommonList extends HTMLElement {
 		this.listenDraggingScrollbarEvent();
 
 		// 侦听事件
-		this.on('scroll', this.scroll);
-		this.on('keydown', this.keydown);
-		this.on('pointerdown', this.pointerdown);
-		this.on('pointerup', this.pointerup);
+		(this as any).on('scroll', this.scroll);
+		(this as any).on('keydown', this.keydown);
+		(this as any).on('pointerdown', this.pointerdown);
+		(this as any).on('pointerup', this.pointerup);
 	}
 
 	// 读取数据

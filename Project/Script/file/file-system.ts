@@ -8,7 +8,7 @@ export const FS = nodeFs;
 export const FSP = FS.promises;
 
 // 重写写入文件方法
-FSP.writeFile = function (path, text, check = false) {
+FSP.writeFile = function (path, text, check = false as any) {
 	const { invoke } = ipcRenderer;
 	return invoke('write-file', path, text, check);
 };

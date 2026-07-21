@@ -3,10 +3,13 @@
 // ******************************** 数值操作历史 ********************************
 
 export class NumberHistory {
-	input; //:element
-	stack; //:array
-	index; //:number
-	lastValue; //:string
+	static restoring: boolean;
+	input: any;
+	stack: any[];
+	index: number;
+	lastValue: string;
+	history: any;
+	value: any;
 
 	constructor(input) {
 		this.input = input;

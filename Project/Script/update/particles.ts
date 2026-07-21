@@ -21,7 +21,7 @@ Updater.updateParticles = function (verNum) {
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
-			for (const layer of particle.layers) {
+			for (const layer of (particle as any).layers) {
 				convert(layer.anchor.x);
 				convert(layer.anchor.y);
 				convert(layer.anchor.speedX);
@@ -56,7 +56,7 @@ Updater.updateParticles = function (verNum) {
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
-			const layers = particle.layers;
+			const layers = (particle as any).layers;
 			for (let i = 0; i < layers.length; i++) {
 				const sLayer = layers[i];
 				const dLayer = Inspector.particleLayer.create();

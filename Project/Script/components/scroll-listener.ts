@@ -29,7 +29,7 @@
 	const timer = new Timer({
 		duration: Infinity,
 		update: (timer) => {
-			const { speedX, speedY } = timer;
+			const { speedX, speedY } = timer as any;
 			const { scrollLeft, scrollTop } = target;
 			if (speedX !== 0) {
 				target.scrollLeft += computeScrollDelta(speedX);
@@ -83,22 +83,22 @@
 			: 0;
 		if (scrollSpeedX !== 0 || scrollSpeedY !== 0) {
 			if (
-				timer.speedX !== scrollSpeedX ||
-				timer.speedY !== scrollSpeedY
+				(timer as any).speedX !== scrollSpeedX ||
+				(timer as any).speedY !== scrollSpeedY
 			) {
-				timer.speedX = scrollSpeedX;
-				timer.speedY = scrollSpeedY;
+				(timer as any).speedX = scrollSpeedX;
+				(timer as any).speedY = scrollSpeedY;
 				timer.add();
 			}
 		} else if (timer) {
-			timer.speedX = 0;
-			timer.speedY = 0;
+			(timer as any).speedX = 0;
+			(timer as any).speedY = 0;
 			timer.remove();
 		}
 	};
 
 	// 添加滚动侦听器
-	HTMLElement.prototype.addScrollListener = function (
+	(HTMLElement.prototype as any).addScrollListener = function (
 		mode,
 		speed,
 		shift,
@@ -127,11 +127,11 @@
 	};
 
 	// 移除滚动侦听器
-	HTMLElement.prototype.removeScrollListener = function () {
+	(HTMLElement.prototype as any).removeScrollListener = function () {
 		if (target !== this) return;
-		if (timer.speedX || timer.speedY) {
-			timer.speedX = 0;
-			timer.speedY = 0;
+		if ((timer as any).speedX || (timer as any).speedY) {
+			(timer as any).speedX = 0;
+			(timer as any).speedY = 0;
 			timer.remove();
 		}
 		target = null;

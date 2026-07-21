@@ -84,7 +84,7 @@ Window.open = function (id) {
 				Title.target.focus();
 			}
 		});
-		element.open();
+		(element as any).open();
 	}
 };
 

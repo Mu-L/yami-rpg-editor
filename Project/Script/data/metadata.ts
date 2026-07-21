@@ -33,6 +33,15 @@ export const Meta = (function IIFE() {
 	return class FileMeta {
 		path; //:string
 		size; //:number
+		file = null;
+		guid = '';
+		mtimeMs = null;
+		versionId = -1;
+		group = null;
+		dataMap = null;
+		x = null;
+		y = null;
+		parameters = null;
 
 		constructor(file, guid) {
 			const { type, path } = file;

@@ -7,28 +7,35 @@ import { Timer } from '../util/timer.ts';
 // ******************************** 树状列表 ********************************
 
 export class TreeList extends HTMLElement {
-	display; //:string
-	keyword; //:string
-	searchResults; //:array
-	creators; //:array
-	updaters; //:array
-	elements; //:array
-	root; //:object
-	timer; //:object
-	selections; //:array
-	dragging; //:event
-	padded; //:boolean
-	removable; //:boolean
-	renamable; //:boolean
-	foldable; //:boolean
-	lockDirectory; //:boolean
-	multipleSelect; //:boolean
-	selectEventEnabled; //:boolean
-	unselectEventEnabled; //:boolean
-	recordEventEnabled; //:boolean
-	popupEventEnabled; //:boolean
-	openEventEnabled; //:boolean
-	updateEventEnabled; //:boolean
+	display: string; //:string
+	keyword: string | null; //:string
+	searchResults: any[]; //:array
+	creators: any[]; //:array
+	updaters: any[]; //:array
+	elements: any; //:array
+	root: any; //:object
+	timer: Timer; //:object
+	selections: any[]; //:array
+	dragging: any; //:event
+	padded: boolean; //:boolean
+	removable: boolean; //:boolean
+	renamable: boolean; //:boolean
+	foldable: boolean; //:boolean
+	lockDirectory: boolean; //:boolean
+	multipleSelect: boolean; //:boolean
+	selectEventEnabled: boolean; //:boolean
+	unselectEventEnabled: boolean; //:boolean
+	recordEventEnabled: boolean; //:boolean
+	popupEventEnabled: boolean; //:boolean
+	openEventEnabled: boolean; //:boolean
+	updateEventEnabled: boolean; //:boolean
+	_searchNodesDebounced: any;
+	generateCopyName: (item?: any) => string;
+	onCreate: (...args: any[]) => any;
+	onDelete: (...args: any[]) => any;
+	onRemove: (...args: any[]) => any;
+	onResume: (...args: any[]) => any;
+	data: any;
 
 	constructor() {
 		super();
@@ -88,14 +95,14 @@ export class TreeList extends HTMLElement {
 		this.updateEventEnabled = false;
 
 		// 侦听事件
-		this.on('scroll', this.resize);
-		this.on('keydown', this.keydown);
-		this.on('pointerdown', this.pointerdown);
-		this.on('pointerup', this.pointerup);
-		this.on('doubleclick', this.doubleclick);
-		this.on('dragstart', this.dragstart);
-		this.on('dragend', this.dragend);
-		this.on('change', this.dataChange);
+		(this as any).on('scroll', this.resize);
+		(this as any).on('keydown', this.keydown);
+		(this as any).on('pointerdown', this.pointerdown);
+		(this as any).on('pointerup', this.pointerup);
+		(this as any).on('doubleclick', this.doubleclick);
+		(this as any).on('dragstart', this.dragstart);
+		(this as any).on('dragend', this.dragend);
+		(this as any).on('change', this.dataChange);
 	}
 
 	// 绑定数据
@@ -855,7 +862,7 @@ export class TreeList extends HTMLElement {
 	}
 
 	// 取消选择
-	unselect(item) {
+	unselect(item?: any) {
 		let selections = Array.empty;
 		if (item === undefined) {
 			selections = this.selections;
@@ -1357,15 +1364,15 @@ export class TreeList extends HTMLElement {
 			event.hint.addClass('for-list');
 			this.parentNode.insertBefore(event.hint.hide(), this);
 			this.addClass('dragging');
-			this.on('dragenter', this.dragenter);
-			this.on('dragleave', this.dragleave);
-			this.on('dragover', this.dragover);
-			this.on('drop', this.drop);
+			(this as any).on('dragenter', this.dragenter);
+			(this as any).on('dragleave', this.dragleave);
+			(this as any).on('dragover', this.dragover);
+			(this as any).on('drop', this.drop);
 		}
 	}
 
 	// 拖拽结束事件
-	dragend(event) {
+	dragend(event?: any) {
 		if (this.dragging) {
 			this.removeClass('dragging');
 			this.dragging.hint.target?.removeClass('hint');
@@ -1591,7 +1598,7 @@ export class TreeList extends HTMLElement {
 		textBox.input.addClass('node-list-text-box-input');
 
 		// 键盘按下事件
-		textBox.on('keydown', function (event) {
+		(textBox as any).on('keydown', function (event) {
 			event.stopPropagation();
 			switch (event.code) {
 				case 'Enter':
@@ -1607,22 +1614,22 @@ export class TreeList extends HTMLElement {
 		});
 
 		// 输入事件
-		textBox.on('input', function (event) {
+		(textBox as any).on('input', function (event) {
 			this.fitContent();
 		});
 
 		// 选择事件
-		textBox.on('select', function (event) {
+		(textBox as any).on('select', function (event) {
 			event.stopPropagation();
 		});
 
 		// 改变事件
-		textBox.on('change', function (event) {
+		(textBox as any).on('change', function (event) {
 			event.stopPropagation();
 		});
 
 		// 失去焦点事件
-		textBox.on('blur', function (event) {
+		(textBox as any).on('blur', function (event) {
 			const element = this.parentNode;
 			const list = element.parentNode;
 			const item = element.item;

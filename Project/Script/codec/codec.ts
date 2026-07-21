@@ -121,7 +121,7 @@ Codec.decodeTilemap = function (tilemap) {
 	const { tilesetMap, reverseMap } = tilemap;
 	const entries = Object.entries(tilesetMap);
 	for (const [index, guid] of entries) {
-		reverseMap[guid] = parseInt(index);
+		(reverseMap as any)[guid as string] = parseInt(index);
 	}
 	return tilemap;
 };

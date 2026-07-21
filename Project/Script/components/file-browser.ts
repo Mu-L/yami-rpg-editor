@@ -13,6 +13,7 @@ import { Path } from '../util/config.ts';
 export class FileBrowser extends HTMLElement {
 	display; //:string
 	directory; //:array
+	keyword; //:string
 	dragging; //:event
 	filters; //:array
 	backupFolders; //:array
@@ -136,7 +137,7 @@ export class FileBrowser extends HTMLElement {
 			let i = files.length;
 			while (--i >= 0) {
 				const sFile = files[i];
-				const ino = sFile.stats.ino;
+				const ino = (sFile as any).stats.ino;
 				const dFile = inoMap[ino];
 				if (sFile !== dFile) {
 					modified = true;
@@ -240,7 +241,7 @@ export class FileBrowser extends HTMLElement {
 	}
 
 	// 拖拽结束事件
-	dragend(event) {
+	dragend(event?) {
 		if (this.dragging) {
 			const { dropTarget, page } = this.dragging;
 			if (dropTarget instanceof HTMLElement) {
@@ -422,7 +423,7 @@ export class FileBrowser extends HTMLElement {
 	}
 
 	// 操作系统 - 拖拽结束事件
-	osDragend(event) {
+	osDragend(event?) {
 		if (this.dragging) {
 			const { dropTarget } = this.dragging;
 			if (dropTarget instanceof HTMLElement) {

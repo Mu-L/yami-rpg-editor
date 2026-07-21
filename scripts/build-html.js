@@ -38,24 +38,66 @@ console.log(`[build-html] ✓ index.html 已生成 (${html.length} bytes)`);
 function transformHead(headHtml) {
 	const lines = headHtml.split('\n');
 	const out = [];
+	let skipUntilClose = false;
+	let scriptIsScript = false; // 多行 <script> 标签是否属于 src="Script/" 类
 
 	for (const line of lines) {
 		const trimmed = line.trim();
-		if (!trimmed.startsWith('<script')) {
-			out.push(line);
+
+		// 多行 <script ...> 标签跳过模式：一旦进入，持续跳过直到遇到 </script>
+		if (skipUntilClose) {
+			if (trimmed.includes('</script>')) {
+				skipUntilClose = false;
+				scriptIsScript = false;
+				continue;
+			}
+			// 蜉开所有内部行（含 src="Script/..."、defer 等）
 			continue;
 		}
-		if (trimmed.includes('src="vs/') || trimmed.includes("src='vs/")) {
-			out.push(line);
-			continue;
-		}
+
+		// 内联 <script>...</script> 单行、含 src="Script/" 的单行标签全部保留
+		// 只跳过含 src="Script/" 或 src='Script/' 的单行 <script ...></script>
 		if (
-			!trimmed.includes('src="Script/') &&
-			!trimmed.includes("src='Script/")
+			trimmed.startsWith('<script') &&
+			(trimmed.includes('src="Script/') ||
+				trimmed.includes("src='Script/")) &&
+			!trimmed.includes('src="vs/') &&
+			!trimmed.includes("src='vs/") &&
+			trimmed.includes('</script>')
 		) {
-			out.push(line);
 			continue;
 		}
+
+		// 多行 <script> 开始行（首行只有 <script 或含部分属性但无 </script>）
+		if (trimmed.startsWith('<script') && !trimmed.includes('</script>')) {
+			// 判是否属于 src="Script/" 类（首行或后续行含 src="Script/"）
+			const isScript =
+				trimmed.includes('src="Script/') ||
+				trimmed.includes("src='Script/");
+			// 预扫后续行：直到 </script> 之前，任意行含 src="Script/" 即跳过
+			if (isScript) {
+				skipUntilClose = true;
+				scriptIsScript = true;
+				continue;
+			}
+			// 首行无 src="Script/"，预扫后续行确认
+			// （这里不预扫，直接保守保留——后续行如 src="Script/ 会被下方分支处理）
+		}
+
+		// 单行 src="Script/..."（但不是 <script 开始行，如多行格式中间的 src= 属性行）
+		// 蜉开（保留其他属性行、内联脚本等）
+		if (
+			(trimmed.includes('src="Script/') ||
+				trimmed.includes("src='Script/")) &&
+			!trimmed.startsWith('<script')
+		) {
+			// 若处于多行 <script> 标签内部（且该标签是 src="Script/" 类），上方 skipUntilClose 已处理
+			// 否则属多行 <script>（含 src= 属性）的外部行 — 需要确认
+			// 保守策略：跳过任何 src="Script/ 的属性行（它的父 <script> 蜝被上方分支预判）
+			continue;
+		}
+
+		out.push(line);
 	}
 
 	// import map：渲染进程 ESM (<script type="module">) 走 Chromium fetch loader，不认 node: 协议

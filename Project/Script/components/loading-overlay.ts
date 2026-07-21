@@ -2,6 +2,8 @@
 // 长任务进度反馈；支持嵌套（多次 show 需对应多次 hide）
 
 export class LoadingOverlay extends HTMLElement {
+	_count: number;
+
 	constructor() {
 		super();
 		this._count = 0;
@@ -22,7 +24,7 @@ export class LoadingOverlay extends HTMLElement {
 	}
 
 	// 显示遮罩
-	show(text) {
+	show(text?) {
 		this.setText(text);
 		this._count++;
 		this.classList.add('visible');
@@ -37,7 +39,10 @@ export class LoadingOverlay extends HTMLElement {
 	}
 }
 
-customElements.define('loading-overlay', LoadingOverlay);
+customElements.define(
+	'loading-overlay',
+	LoadingOverlay as CustomElementConstructor
+);
 
 // 全局便捷接口
 export const Loading = {

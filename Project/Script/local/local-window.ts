@@ -154,7 +154,7 @@ Localization.initialize = function () {
 };
 
 // 创建输入框
-Localization.createInputs = function () {
+(Localization as any).createInputs = function () {
 	const inputs = (this.inputs = {});
 	for (const language of this.languages) {
 		const detailBox = new DetailBox();
@@ -162,7 +162,7 @@ Localization.createInputs = function () {
 		const detailSummary = new DetailSummary();
 		detailSummary.textContent = Local.get('languages.' + language);
 		const textarea = new TextArea();
-		textarea.language = language;
+		(textarea as any).language = language;
 		textarea.setAttribute('menu', 'tag-global tag-dynamic-global-var');
 		textarea.addClass('localization-text-area');
 		detailBox.appendChild(detailSummary);
@@ -306,6 +306,10 @@ Localization.closeContentPanel = function () {
 Localization.unpackLocalization = (function IIFE() {
 	// 使用引用文件夹类来保存展开状态
 	class ReferencedFolder {
+		data: any;
+		class: string;
+		name: string;
+		children: any[];
 		constructor(item) {
 			this.data = item;
 			this.class = item.class;
@@ -511,11 +515,11 @@ Localization.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
 	const copyable = selected && item.class !== 'folder';
-	const pastable = Clipboard.has('yami.data.localization');
+	const pastable = (Clipboard as any).has('yami.data.localization');
 	const undoable = Localization.history.canUndo();
 	const redoable = Localization.history.canRedo();
 	const get = Local.createGetter('menuLocalList');
-	const items = [
+	const items: any[] = [
 		{
 			label: get('create'),
 			submenu: [
@@ -693,7 +697,7 @@ Localization.apply = function (event) {
 }.bind(Localization);
 
 // 导入Excel按钮 - 鼠标点击事件
-Localization.fromExcel = async function (event) {
+(Localization as any).fromExcel = async function (event) {
 	const items = await ipcRenderer.invoke('from-excel');
 	if (
 		JSON.stringify(items) == JSON.stringify(Data.localization.list) ||
@@ -709,7 +713,7 @@ Localization.fromExcel = async function (event) {
 }.bind(Localization);
 
 // 导出Excel按钮 - 鼠标点击事件
-Localization.toExcel = function (event) {
+(Localization as any).toExcel = function (event) {
 	ipcRenderer.invoke('to-excel', {
 		langs: this.languages,
 		list: Data.localization.list
@@ -719,13 +723,13 @@ Localization.toExcel = function (event) {
 // 列表 - 复制
 Localization.list.copy = function (item) {
 	if (item?.class !== 'folder') {
-		Clipboard.write('yami.data.localization', item);
+		(Clipboard as any).write('yami.data.localization', item);
 	}
 };
 
 // 列表 - 粘贴
 Localization.list.paste = function (dItem) {
-	const copy = Clipboard.read('yami.data.localization');
+	const copy = (Clipboard as any).read('yami.data.localization');
 	if (copy) {
 		// 只有冲突时进行更换ID
 		// 支持跨项目复制保留ID

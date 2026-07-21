@@ -422,6 +422,11 @@ Attribute.closePropertyPanel = function () {
 Attribute.unpackAttribute = (function IIFE() {
 	// 使用引用文件夹类来保存展开状态
 	class ReferencedFolder {
+		data: any;
+		class: string;
+		id: string;
+		name: string;
+		children: any[];
 		constructor(item) {
 			this.data = item;
 			this.class = item.class;
@@ -668,11 +673,11 @@ Attribute.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
 	const copyable = selected && item.class !== 'folder';
-	const pastable = Clipboard.has('yami.data.attribute');
+	const pastable = (Clipboard as any).has('yami.data.attribute');
 	const undoable = Attribute.history.canUndo();
 	const redoable = Attribute.history.canRedo();
 	const get = Local.createGetter('menuAttributeList');
-	const items = [
+	const items: any[] = [
 		{
 			label: get('create'),
 			submenu: [
@@ -931,13 +936,13 @@ Attribute.apply = function (event) {
 // 列表 - 复制
 Attribute.list.copy = function (item) {
 	if (item.class !== 'folder') {
-		Clipboard.write('yami.data.attribute', item);
+		(Clipboard as any).write('yami.data.attribute', item);
 	}
 };
 
 // 列表 - 粘贴
 Attribute.list.paste = function (dItem) {
-	const copy = Clipboard.read('yami.data.attribute');
+	const copy = (Clipboard as any).read('yami.data.attribute');
 	if (copy) {
 		// 只有冲突时进行更换ID
 		// 支持跨项目复制保留ID

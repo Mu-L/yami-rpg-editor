@@ -4,23 +4,30 @@ import { Window } from '../tools/window-object.ts';
 // ******************************** 菜单列表 ********************************
 
 export class MenuList extends HTMLElement {
-	state; //:string
-	callback; //:function
-	dataItems; //:array
-	selection; //:element
-	popupTimer; //:object
-	closeTimer; //:object
-	parent; //:element
-	submenu; //:element
-	buttonPressed; //:boolean
-	minWidth; //:number
-	parentMenuItem; //:element
-	windowBlur; //:function
-	windowKeydown; //:function
-	windowPointerdown; //:function
-	windowPointerup; //:function
-	windowPointerover; //:function
-	windowPointerout; //:function
+	state: string; //:string
+	callback: (() => void) | null; //:function
+	dataItems: any[] | null; //:array
+	selection: HTMLElement | null; //:element
+	popupTimer: any; //:object
+	closeTimer: any; //:object
+	parent: HTMLElement | null; //:element
+	submenu: MenuList | null; //:element
+	buttonPressed: boolean; //:boolean
+	minWidth: number; //:number
+	parentMenuItem: HTMLElement | null; //:element
+	windowBlur: (event: any) => void; //:function
+	windowKeydown: (event: any) => void; //:function
+	windowPointerdown: (event: any) => void; //:function
+	windowPointerup: (event: any) => void; //:function
+	windowPointerover: (event: any) => void; //:function
+	windowPointerout: (event: any) => void; //:function
+
+	static selection: HTMLElement | null;
+	static popupSubmenu: (menu: MenuList, x?: number, y?: number) => void;
+	static reselect: () => void;
+	static select: (item: HTMLElement) => void;
+	static unselect: () => void;
+	static closeSubmenu: () => void;
 
 	constructor() {
 		super();
@@ -66,7 +73,7 @@ export class MenuList extends HTMLElement {
 		const y = options.y ?? 0;
 		this.style.left = `${Math.min(x + dpx, right)}px`;
 		this.style.top = `${Math.min(y + dpx, bottom)}px`;
-		this.style.zIndex = Window.frames.length + 1;
+		this.style.zIndex = String(Window.frames.length + 1);
 
 		// 侦听事件
 		window.event?.stopPropagation();
@@ -85,7 +92,7 @@ export class MenuList extends HTMLElement {
 		let labelWidth = 0;
 		let acceleratorWidth = 0;
 		for (const li of this.childNodes) {
-			const { label, accelerator } = li;
+			const { label, accelerator } = li as any;
 			if (label !== undefined) {
 				labelWidth = Math.max(labelWidth, label.offsetWidth);
 			}
@@ -129,6 +136,12 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
+	// 清除
+	clear() {
+		this.textContent = '';
+		return this;
+	}
+
 	// 创建项目
 	createItem(item) {
 		switch (item.type) {
@@ -160,7 +173,7 @@ export class MenuList extends HTMLElement {
 				if (item.label !== undefined) {
 					const label = document.createElement('menu-label');
 					label.textContent = item.label;
-					li.label = label;
+					(li as any).label = label;
 					li.appendChild(label);
 				}
 
@@ -169,7 +182,7 @@ export class MenuList extends HTMLElement {
 					const accelerator =
 						document.createElement('menu-accelerator');
 					accelerator.textContent = item.accelerator;
-					li.accelerator = accelerator;
+					(li as any).accelerator = accelerator;
 					li.appendChild(accelerator);
 				}
 
@@ -213,7 +226,8 @@ export class MenuList extends HTMLElement {
 	// 重新选择
 	reselect(offset) {
 		const elements = [];
-		for (const element of this.childNodes) {
+		for (const child of this.childNodes) {
+			const element = child as HTMLElement;
 			if (
 				element.tagName === 'MENU-ITEM' &&
 				!element.hasClass('disabled')
@@ -311,16 +325,16 @@ export class MenuList extends HTMLElement {
 
 	// 指针进入事件
 	pointerenter(event) {
-		this.parent?.select(this.parentMenuItem);
+		(this.parent as unknown as MenuList)?.select(this.parentMenuItem);
 	}
 
 	// 窗口 - 失去焦点事件
-	static windowBlur(event) {
+	static windowBlur(this: MenuList, event: Event) {
 		this.close();
 	}
 
 	// 窗口 - 键盘按下事件
-	static windowKeydown(event) {
+	static windowKeydown(this: MenuList, event: KeyboardEvent) {
 		if (!this.submenu) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -337,9 +351,9 @@ export class MenuList extends HTMLElement {
 							this.submenu && this.submenu.reselect(1);
 						} else {
 							node.click && node.click();
-							let menu = this;
+							let menu: MenuList | null = this;
 							while (menu.parent) {
-								menu = menu.parent;
+								menu = menu.parent as MenuList | null;
 							}
 							menu.close();
 						}
@@ -371,9 +385,9 @@ export class MenuList extends HTMLElement {
 	// }
 
 	// 窗口 - 指针按下事件
-	static windowPointerdown(event) {
+	static windowPointerdown(this: MenuList, event: PointerEvent) {
 		// 阻止 activeElement blur 行为
-		const element = event.target.seek('menu-list');
+		const element = (event.target as HTMLElement).seek('menu-list');
 		if (
 			element instanceof MenuList ||
 			((document.activeElement instanceof HTMLInputElement ||
@@ -403,10 +417,10 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 窗口 - 指针弹起事件
-	static windowPointerup(event) {
+	static windowPointerup(this: MenuList, event: PointerEvent) {
 		switch (event.button) {
 			case 0: {
-				const element = event.target;
+				const element = event.target as HTMLElement;
 				switch (element.tagName) {
 					case 'MENU-ITEM':
 						if (this.buttonPressed) {
@@ -416,9 +430,9 @@ export class MenuList extends HTMLElement {
 								if (node.submenu) {
 									this.popupSubmenu(0);
 								} else if (node.click) {
-									let root = this;
+									let root: MenuList | null = this;
 									while (root.parent) {
-										root = root.parent;
+										root = root.parent as MenuList | null;
 									}
 									node.click();
 									root.close();
@@ -438,8 +452,8 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 窗口 - 指针进入事件
-	static windowPointerover(event) {
-		const element = event.target;
+	static windowPointerover(this: MenuList, event: PointerEvent) {
+		const element = event.target as HTMLElement;
 		if (
 			element !== this.selection &&
 			element.parentNode === this &&
@@ -460,7 +474,7 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 窗口 - 指针离开事件
-	static windowPointerout(event) {
+	static windowPointerout(this: MenuList, event: PointerEvent) {
 		const element = event.target;
 		if (this.selection === element) {
 			if (this.submenu !== null) {

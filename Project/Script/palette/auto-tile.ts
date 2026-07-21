@@ -177,13 +177,13 @@ AutoTile.insertTemplate = function (dItem) {
 // 复制模板
 AutoTile.copyTemplate = function (item) {
 	if (item) {
-		Clipboard.write('yami.ruletile.template', item);
+		(Clipboard as any).write('yami.ruletile.template', item);
 	}
 };
 
 // 粘贴模板
 AutoTile.pasteTemplate = function (dItem) {
-	const copy = Clipboard.read('yami.ruletile.template');
+	const copy = (Clipboard as any).read('yami.ruletile.template');
 	if (copy) {
 		copy.name += ' - Copy';
 		copy.id = this.createTemplateId();
@@ -304,13 +304,13 @@ AutoTile.cutNode = function (id = this.nodeIndex) {
 // 复制节点
 AutoTile.copyNode = function (id = this.nodeIndex) {
 	if (id < this.nodes.length) {
-		Clipboard.write('yami.ruletile.node', this.nodes[id]);
+		(Clipboard as any).write('yami.ruletile.node', this.nodes[id]);
 	}
 };
 
 // 粘贴节点
 AutoTile.pasteNode = function (id = this.nodes.length) {
-	const copy = Clipboard.read('yami.ruletile.node');
+	const copy = (Clipboard as any).read('yami.ruletile.node');
 	if (copy && id <= this.nodes.length) {
 		this.nodes.splice(id, 0, copy);
 		this.createNodeItems(id);
@@ -406,7 +406,7 @@ AutoTile.cutFrame = function (id = this.frameIndex) {
 // 复制帧
 AutoTile.copyFrame = function (id = this.frameIndex) {
 	if (id < this.frames.length) {
-		Clipboard.write('yami.ruletile.frame', {
+		(Clipboard as any).write('yami.ruletile.frame', {
 			frame: this.frames[id]
 		});
 	}
@@ -414,7 +414,7 @@ AutoTile.copyFrame = function (id = this.frameIndex) {
 
 // 粘贴帧
 AutoTile.pasteFrame = function (id = this.frames.length) {
-	const copy = Clipboard.read('yami.ruletile.frame');
+	const copy = (Clipboard as any).read('yami.ruletile.frame');
 	if (copy && id <= this.frames.length) {
 		this.frames.splice(id, 0, copy.frame);
 		this.createFrameItems(id);
@@ -662,7 +662,7 @@ AutoTile.templatesChange = function (event) {
 AutoTile.templatesPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
-	const pastable = Clipboard.has('yami.ruletile.template');
+	const pastable = (Clipboard as any).has('yami.ruletile.template');
 	const deletable = selected && AutoTile.templates.length > 1;
 	const get = Local.createGetter('menuAutoTileTemplateList');
 	Menu.popup(
@@ -755,7 +755,7 @@ AutoTile.nodesPopup = function (event) {
 	const selected = id !== null;
 	const insertable = nodes.length < this.nodeMaximum;
 	const copyable = selected;
-	const pastable = insertable && Clipboard.has('yami.ruletile.node');
+	const pastable = insertable && (Clipboard as any).has('yami.ruletile.node');
 	const deletable = selected && nodes.length > 1;
 	const coverable = selected && id !== cover;
 	const get = Local.createGetter('menuAutoTileNodeList');
@@ -889,7 +889,8 @@ AutoTile.framesPopup = function (event) {
 	const editable = selected && this.image instanceof Image;
 	const insertable = frames.length < this.frameMaximum;
 	const copyable = selected;
-	const pastable = insertable && Clipboard.has('yami.ruletile.frame');
+	const pastable =
+		insertable && (Clipboard as any).has('yami.ruletile.frame');
 	const deletable = selected && frames.length > 1;
 	const get = Local.createGetter('menuAutoTileFrameList');
 	Menu.popup(

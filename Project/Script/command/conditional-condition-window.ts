@@ -786,7 +786,7 @@ IfCondition.open = function (
 		variable: { type: 'local', key: '' },
 		operation: 'equal',
 		operand: { type: 'constant', value: 0 }
-	}
+	} as any
 ) {
 	// 加载快捷键选项
 	$('#if-condition-actor-shortcutKey').loadItems(

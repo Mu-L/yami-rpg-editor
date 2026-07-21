@@ -365,7 +365,7 @@ Browser.bodyPopup = function (event) {
 	const { target } = event.raw;
 	const { browser, nav } = this.links;
 	const get = Local.createGetter('menuFileBrowser');
-	const pastable = Clipboard.has('yami.files');
+	const pastable = (Clipboard as any).has('yami.files');
 	let creatable = false;
 	if (target.seek('file-body-pane') === this) {
 		const folders = nav.selections;

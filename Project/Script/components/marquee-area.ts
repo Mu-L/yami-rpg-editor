@@ -18,7 +18,7 @@ export class MarqueeArea extends HTMLElement {
 
 		// 创建选框
 		const selection = document.createElement('selection');
-		this.appendChild(selection.hide());
+		this.appendChild(selection.hide() as any);
 
 		// 设置属性
 		this.selection = selection;

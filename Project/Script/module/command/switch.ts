@@ -19,7 +19,7 @@ Command.cases.switch = new CommandSchema({
 		});
 	},
 	customParse({ variable, branches, defaultCommands }) {
-		const contents = [
+		const contents: any[] = [
 			{ fold: true },
 			{ color: 'flow' },
 			{ text: Local.get('command.switch') + ' ' },

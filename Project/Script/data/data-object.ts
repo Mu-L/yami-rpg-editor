@@ -13,7 +13,7 @@ import { PluginManager } from '../plugin/plugin.ts';
 
 // ******************************** 数据对象 ********************************
 
-export const Data = {
+export const Data: any = {
 	// properties
 	manifest: null,
 	scenePresets: null,
@@ -379,14 +379,14 @@ Data.createReferencedFileIDMap = function () {
 		markToMap(match[1]);
 	}
 	// 获取自动触发的事件
-	for (const event of Object.values(this.events)) {
+	for (const event of Object.values(this.events) as any[]) {
 		if (event.type !== 'common') {
 			markToMap(event.guid);
 		}
 	}
 	// 获取脚本中可能引用的文件ID
 	const guidInScript = /"[0-9a-f]{16}"|'[0-9a-f]{16}'/g;
-	for (const meta of Object.values(this.scripts)) {
+	for (const meta of Object.values(this.scripts) as any[]) {
 		if (meta.guid in usedMap) {
 			const code = meta.code;
 			while ((match = guidInScript.exec(code))) {
@@ -644,7 +644,7 @@ Data.saveManifest = function () {
 // 过滤元数据
 Data.filterManifest = function (manifest) {
 	// 快速拷贝
-	const copy = {};
+	const copy: any = {};
 	for (const key of Object.keys(manifest)) {
 		copy[key] = manifest[key];
 	}

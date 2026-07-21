@@ -5,6 +5,17 @@ import { Texture } from './texture.ts';
 // ******************************** 图像纹理类 ********************************
 
 export class ImageTexture extends Texture {
+	declare reply: (type: string) => void;
+	sliceClip: Uint32Array;
+	sliceVertices: Float32Array;
+	sliceThresholds: Float32Array;
+	sliceWidth: number;
+	sliceHeight: number;
+	sliceBorder: number;
+	sliceCount: number;
+	guid: string;
+	hframes: number;
+	vframes: number;
 	constructor(image, options = {}) {
 		super(options);
 

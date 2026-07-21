@@ -2,7 +2,8 @@ import { ipcRenderer } from 'electron';
 import nodePath from 'node:path';
 import os from 'node:os';
 import nodeFs from 'node:fs';
-export const Path = nodePath;
+export const Path: typeof nodePath & { slash: (path: string) => string } =
+	nodePath as any;
 
 // const GlobalPathForDir = ipcRenderer.sendSync(
 // 	'get-dir-path-sync',

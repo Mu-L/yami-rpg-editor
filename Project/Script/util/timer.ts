@@ -40,6 +40,17 @@ export class Timer {
 	duration: number;
 	update: (timer: Timer) => boolean | void;
 	callback: (timer: Timer) => boolean | void;
+	// 运行时挂载: tree-list 等用于在 Timer 实例上绑定触发上下文 / 运行状态
+	target: HTMLElement | null;
+	running: boolean;
+	startX: number;
+	endX: number;
+	startY: number;
+	endY: number;
+	start: number;
+	end: number;
+	state: string;
+	offset: number;
 
 	constructor({
 		duration,

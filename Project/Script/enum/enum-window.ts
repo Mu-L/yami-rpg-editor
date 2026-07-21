@@ -378,6 +378,11 @@ Enum.closePropertyPanel = function () {
 Enum.unpackEnumeration = (function IIFE() {
 	// 使用引用文件夹类来保存展开状态
 	class ReferencedFolder {
+		data: any;
+		class: string;
+		id: string;
+		name: string;
+		children: any[];
 		constructor(item) {
 			this.data = item;
 			this.class = item.class;
@@ -620,11 +625,11 @@ Enum.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
 	const copyable = selected && item.class !== 'folder';
-	const pastable = Clipboard.has('yami.data.enumeration');
+	const pastable = (Clipboard as any).has('yami.data.enumeration');
 	const undoable = Enum.history.canUndo();
 	const redoable = Enum.history.canRedo();
 	const get = Local.createGetter('menuEnumList');
-	const items = [
+	const items: any[] = [
 		{
 			label: get('create'),
 			submenu: [
@@ -850,13 +855,13 @@ Enum.apply = function (event) {
 // 列表 - 复制
 Enum.list.copy = function (item) {
 	if (item.class !== 'folder') {
-		Clipboard.write('yami.data.enumeration', item);
+		(Clipboard as any).write('yami.data.enumeration', item);
 	}
 };
 
 // 列表 - 粘贴
 Enum.list.paste = function (dItem) {
-	const copy = Clipboard.read('yami.data.enumeration');
+	const copy = (Clipboard as any).read('yami.data.enumeration');
 	if (copy) {
 		// 只有冲突时进行更换ID
 		// 支持跨项目复制保留ID

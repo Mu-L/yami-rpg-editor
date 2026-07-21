@@ -250,7 +250,7 @@ CustomCommand.listChange = function (event) {
 CustomCommand.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
-	const pastable = Clipboard.has('yami.data.customCommand');
+	const pastable = (Clipboard as any).has('yami.data.customCommand');
 	const deletable = selected;
 	const get = Local.createGetter('menuCustomCommandList');
 	Menu.popup(
@@ -400,13 +400,13 @@ CustomCommand.list.toggle = function (item) {
 // 列表 - 复制
 CustomCommand.list.copy = function (item) {
 	if (item) {
-		Clipboard.write('yami.data.customCommand', item);
+		(Clipboard as any).write('yami.data.customCommand', item);
 	}
 };
 
 // 列表 - 粘贴
 CustomCommand.list.paste = function (dItem) {
-	const copy = Clipboard.read('yami.data.customCommand');
+	const copy = (Clipboard as any).read('yami.data.customCommand');
 	if (copy) {
 		this.addNodeTo(copy, dItem);
 	}

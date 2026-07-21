@@ -229,7 +229,9 @@ Menubar.popupEditMenu = function (target) {
 			case 'scene':
 				if (Scene.state === 'open') {
 					const selected = Scene.target instanceof Object;
-					const pastable = Clipboard.has('yami.scene.object');
+					const pastable = (Clipboard as any).has(
+						'yami.scene.object'
+					);
 					items.cut.enabled = selected;
 					items.copy.enabled = selected;
 					items.paste.enabled = pastable;
@@ -252,7 +254,7 @@ Menubar.popupEditMenu = function (target) {
 			case 'ui':
 				if (UI.state === 'open') {
 					const selected = UI.target instanceof Object;
-					const pastable = Clipboard.has('yami.ui.object');
+					const pastable = (Clipboard as any).has('yami.ui.object');
 					items.cut.enabled = selected;
 					items.copy.enabled = selected;
 					items.paste.enabled = pastable;
@@ -275,7 +277,9 @@ Menubar.popupEditMenu = function (target) {
 			case 'animation':
 				if (Animation.state === 'open') {
 					const selected = Animation.motion instanceof Object;
-					const pastable = Clipboard.has('yami.animation.object');
+					const pastable = (Clipboard as any).has(
+						'yami.animation.object'
+					);
 					items.cut.enabled = selected;
 					items.copy.enabled = selected;
 					items.paste.enabled = pastable;
@@ -822,7 +826,7 @@ Menubar.createRecentItems = function () {
 		return [];
 	}
 	const { recentTabs } = Editor.project;
-	const items = [];
+	const items: any[] = [];
 	const get = Local.createGetter('menuFile');
 	items.push({
 		label: get('openRecent.reopenClosedFile'),
@@ -866,7 +870,7 @@ Menubar.createLanguageItems = function () {
 	const get = Local.createGetter('menuView.language');
 	const autoChecked = Editor.config.language === '';
 	const autoLabel = get('auto');
-	const items = [
+	const items: any[] = [
 		{
 			label: autoLabel,
 			checked: autoChecked,
@@ -931,7 +935,7 @@ Menubar.revealSaveDirectory = async function () {
 	if (location !== 'local') {
 		const dirname = await ipcRenderer.invoke('get-dir-path', location);
 		const folder = this.sanitizeFolderName(subdir);
-		saveDir = path.resolve(dirname, folder);
+		saveDir = Path.resolve(dirname, folder);
 	} else {
 		saveDir = File.path('Save');
 	}

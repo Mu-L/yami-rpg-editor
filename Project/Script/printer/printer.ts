@@ -1076,16 +1076,14 @@ export class Printer {
 	static highDefinition = false;
 	static lineWidth = 0;
 	static charWidths = null;
-	static regexps = null;
 	static commands = null;
 	static commandCount = null;
 	static commandMaximum = null;
 	static drawingMethods = null;
-	static imported = [];
-	static importing = [];
+	static imported: any[] = [];
+	static importing: any[] = [];
 
-	// 标签正则表达式
-	static regexps = {
+	static regexps: any = {
 		// 使用索引颜色: [1]:Index(0-15)
 		colorIndex: /^<color:(\d|1[0-5])>$/i,
 		// 使用指定颜色: [1]:R(00-ff), [2]:G(00-ff), [3]:B(00-ff), [4]:A(00-ff)(可选)
@@ -1169,7 +1167,7 @@ export class Printer {
 		this.updateScale();
 
 		// 导入字体
-		this.imported.signature = text.importedFonts.join();
+		(this.imported as any).signature = text.importedFonts.join();
 		return this.importFonts(text.importedFonts);
 	}
 
@@ -1197,9 +1195,9 @@ export class Printer {
 							(font) => {
 								if (importing.remove(name)) {
 									document.fonts.add(font);
-									font.imported = true;
-									font.guid = guid;
-									font.name = name;
+									(font as any).imported = true;
+									(font as any).guid = guid;
+									(font as any).name = name;
 								}
 							},
 							(error) => {
@@ -1222,9 +1220,9 @@ export class Printer {
 	static deleteFont(guid) {
 		const fonts = document.fonts;
 		for (const font of fonts) {
-			if (font.guid === guid) {
+			if ((font as any).guid === guid) {
 				fonts.delete(font);
-				this.imported.remove(font.name);
+				this.imported.remove((font as any).name);
 				break;
 			}
 		}
@@ -1234,7 +1232,7 @@ export class Printer {
 	static clearFonts() {
 		const fonts = document.fonts;
 		for (const font of fonts) {
-			if (font.imported) {
+			if ((font as any).imported) {
 				fonts.delete(font);
 			}
 		}
@@ -1434,8 +1432,8 @@ export class Printer {
 			// 加载字体
 			const { importedFonts } = Data.config.text;
 			const signature = importedFonts.join();
-			if (Printer.imported.signature !== signature) {
-				Printer.imported.signature = signature;
+			if ((Printer.imported as any).signature !== signature) {
+				(Printer.imported as any).signature = signature;
 				Printer.clearFonts();
 				Printer.importFonts(importedFonts);
 			}

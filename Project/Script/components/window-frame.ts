@@ -38,7 +38,7 @@ export class WindowFrame extends HTMLElement {
 			Window.ambient.update();
 			this.addClass('open');
 			this.computePosition();
-			this.style.zIndex = Window.frames.length;
+			this.style.zIndex = String(Window.frames.length);
 			if (this.openEventEnabled) {
 				this.dispatchEvent(new Event('open'));
 			}

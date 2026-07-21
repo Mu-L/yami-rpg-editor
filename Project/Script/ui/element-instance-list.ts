@@ -2,6 +2,7 @@
 
 export class UIInstanceList extends Array {
 	// 设置属性
+	// @ts-ignore
 	set(key, value) {
 		const keys = key.split('-');
 		const last = keys.length - 1;

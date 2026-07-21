@@ -102,7 +102,7 @@ UI.Element = class UIElement {
 	// 绘制默认图像
 	drawDefaultImage() {
 		GL.alpha = this.opacity;
-		GL.blend = this.blend;
+		GL.blend = (this as any).blend;
 		GL.matrix.set(UI.matrix).multiply(this.matrix);
 		GL.fillRect(this.x, this.y, this.width, this.height, 0x80ffffff);
 	}

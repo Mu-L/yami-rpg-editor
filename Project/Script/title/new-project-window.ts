@@ -119,8 +119,8 @@ NewProject.check = function () {
 NewProject.readFileList = (function IIFE() {
 	const options = { withFileTypes: true };
 	const read = (dirname, idFilter, path, list) => {
-		return FSP.readdir(`${dirname}/${path}`, options).then(
-			async (files) => {
+		return (FSP.readdir as any)(`${dirname}/${path}`, options).then(
+			async (files: any[]) => {
 				if (path) {
 					path += '/';
 				}
@@ -305,7 +305,9 @@ NewProject.confirm = function (event) {
 		})
 		.then(() => {
 			Editor.open(`${dPath}/game.yamirpg`);
-			Editor.config.dialogs.new = Path.slash(Path.resolve(location));
+			Editor.config.dialogs.new = (Path as any).slash(
+				Path.resolve(location)
+			);
 		})
 		.catch((error) => {
 			Editor.close();

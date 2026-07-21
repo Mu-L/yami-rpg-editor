@@ -67,10 +67,7 @@ export default defineConfig({
 		format: 'es'
 	},
 
-	// 主进程用 Node API，define process.env
-	define: {
-		'process.env.NODE_ENV': JSON.stringify('production')
-	},
+	// 主进程用 Node API
 
 	plugins: [
 		{

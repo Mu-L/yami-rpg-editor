@@ -4,6 +4,7 @@ import { Scene } from './scene-window.ts';
 // ******************************** 瓦片地图快捷方式列表类 ********************************
 
 export class TilemapShortcuts {
+	tilemaps;
 	constructor(tilemaps) {
 		this.tilemaps = tilemaps;
 		this.reset();

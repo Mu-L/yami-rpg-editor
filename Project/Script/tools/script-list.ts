@@ -17,8 +17,9 @@ export class ScriptListInterface {
 	script; //:object
 	editor; //:object
 	owner; //:object
+	history; //:object
 
-	constructor(editor, owner) {
+	constructor(editor?, owner?) {
 		this.editor = editor ?? null;
 		this.owner = owner ?? null;
 	}
@@ -87,7 +88,7 @@ export class ScriptListInterface {
 			const element = item.element;
 			const list = element?.parentNode;
 			if (list instanceof TreeList) {
-				list.updateScriptIcon(item);
+				(list as any).updateScriptIcon(item);
 			}
 		}
 	}
@@ -145,8 +146,9 @@ export class ScriptListInterface {
 
 	// 列表 - 拖拽离开事件
 	static listDragleave(event) {
-		if (!this.contains(event.relatedTarget)) {
-			this.removeClass('dragover');
+		const self: any = this;
+		if (!self.contains(event.relatedTarget)) {
+			self.removeClass('dragover');
 		}
 	}
 
@@ -157,7 +159,7 @@ export class ScriptListInterface {
 			if (file instanceof FileItem && file.type === 'script') {
 				event.dataTransfer.dropEffect = 'move';
 				event.preventDefault();
-				this.addClass('dragover');
+				(this as any).addClass('dragover');
 			}
 		}
 	}
@@ -168,12 +170,13 @@ export class ScriptListInterface {
 		if (file instanceof FileItem) {
 			const script = PluginManager.createData();
 			script.id = file.meta.guid;
-			this.object.script = script;
-			this.inserting = true;
-			this.focus();
-			this.select(Infinity);
-			this.save();
-			this.removeClass('dragover');
+			const self: any = this;
+			self.object.script = script;
+			self.inserting = true;
+			self.focus();
+			self.select(Infinity);
+			self.save();
+			self.removeClass('dragover');
 		}
 	}
 }

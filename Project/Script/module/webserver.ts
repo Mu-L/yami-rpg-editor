@@ -91,7 +91,8 @@ export const WebServer = new (class {
 				Window.confirm(
 					{
 						message: 'Failed to deploy project:\n' + error.message
-					}[
+					},
+					[
 						{
 							label: 'Confirm'
 						}

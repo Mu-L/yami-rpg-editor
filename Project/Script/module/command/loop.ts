@@ -20,7 +20,7 @@ Command.cases.loop = new CommandSchema({
 		});
 	},
 	customParse({ mode, conditions, commands }) {
-		const contents = [{ fold: true }, { color: 'flow' }];
+		const contents: any[] = [{ fold: true }, { color: 'flow' }];
 		if (conditions.length !== 0) {
 			const condition = IfBranch.parse({ mode, conditions });
 			contents.push(

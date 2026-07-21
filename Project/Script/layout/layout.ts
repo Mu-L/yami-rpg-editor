@@ -147,8 +147,8 @@ Layout.createGroups = function (item, parent) {
 	const group = document.createElement('group');
 	parent.appendChild(group);
 	if (item.children) {
-		group.end = item.end;
-		group.split = item.split;
+		(group as any).end = item.end;
+		(group as any).split = item.split;
 		group.addClass(item.split);
 
 		// 创建后代群组
@@ -158,12 +158,13 @@ Layout.createGroups = function (item, parent) {
 	} else {
 		// 创建群组内容
 		const { end, tabs } = item;
-		group.end = end;
-		group.tabs = tabs;
+		(group as any).end = end;
+		(group as any).tabs = tabs;
 		this.createGroupContent(group);
 
 		// 添加标签页面
-		const { nav, manager } = group;
+		const nav = (group as any).nav;
+		const manager = (group as any).manager;
 		for (const tab of tabs) {
 			const item = this.items[tab];
 			nav.appendChild(item);
@@ -1324,7 +1325,7 @@ Layout.borderPointerdown = function (event) {
 				const infos = (event.infos = []);
 				for (const group of groups) {
 					const info = document.createElement('group-info');
-					info.manager = group.manager;
+					(info as any).manager = (group as any).manager;
 					group.appendChild(info);
 					infos.push(info);
 				}

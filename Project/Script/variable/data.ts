@@ -6,6 +6,10 @@ import { Variable } from './variable.ts';
 Variable.unpackVariables = (function IIFE() {
 	// 使用引用文件夹类来保存展开状态
 	class ReferencedFolder {
+		data: any;
+		class: string;
+		name: string;
+		children: any[];
 		constructor(item) {
 			this.data = item;
 			this.class = item.class;

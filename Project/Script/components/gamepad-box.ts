@@ -6,6 +6,7 @@ export class GamepadBox extends HTMLElement {
 	// 属性声明
 	input; //:element
 	dataValue; //:array
+	static intervalIndex;
 
 	// 构造函数
 	constructor() {
@@ -62,8 +63,8 @@ export class GamepadBox extends HTMLElement {
 				break;
 			case 'Backspace':
 				event.preventDefault();
-				this.parentNode.write(-1);
-				this.parentNode.dispatchChangeEvent();
+				(this.parentNode as any).write(-1);
+				(this.parentNode as any).dispatchChangeEvent();
 				break;
 			default:
 				event.preventDefault();
@@ -96,8 +97,8 @@ export class GamepadBox extends HTMLElement {
 							buttons[code].pressed &&
 							!lastButtons[code].pressed
 						) {
-							this.parentNode.write(code);
-							this.parentNode.dispatchChangeEvent();
+							(this.parentNode as any).write(code);
+							(this.parentNode as any).dispatchChangeEvent();
 							break;
 						}
 					}

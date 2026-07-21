@@ -154,7 +154,9 @@ SwitchCondition.parse = function (condition, listData) {
 };
 
 // 打开数据
-SwitchCondition.open = function (condition = { type: 'number', value: 0 }) {
+SwitchCondition.open = function (
+	condition: any = { type: 'number', value: 0 }
+) {
 	Window.open('switch-condition');
 	let booleanValue = false;
 	let numberValue = 0;

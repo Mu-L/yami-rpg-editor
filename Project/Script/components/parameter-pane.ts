@@ -36,6 +36,8 @@ export class ParameterPane extends HTMLElement {
 	updateEventEnabled; //:boolean
 	windowLocalize; //:function
 	scriptChange; //:function
+	getData: () => any[];
+	onResize?: () => void;
 
 	constructor() {
 		super();
@@ -60,7 +62,7 @@ export class ParameterPane extends HTMLElement {
 
 		// 侦听事件
 		window.on('localize', this.windowLocalize);
-		this.on('change', this.componentChange);
+		(this as any).on('change', this.componentChange);
 	}
 
 	// 绑定数据
@@ -400,10 +402,10 @@ export class ParameterPane extends HTMLElement {
 		const tag = 'text-box';
 		const label = document.createElement('text');
 		const input = new TextBox();
-		input.on('keydown', Selection.inputKeydown);
-		input.on('keyup', Selection.inputKeyup);
-		input.on('pointerdown', Selection.inputPointerdown);
-		input.on('pointerup', Selection.inputPointerup);
+		(input as any).on('keydown', Selection.inputKeydown);
+		(input as any).on('keyup', Selection.inputKeyup);
+		(input as any).on('pointerdown', Selection.inputPointerdown);
+		(input as any).on('pointerup', Selection.inputPointerup);
 		return { tag, label, input };
 	}
 
@@ -469,22 +471,22 @@ export class ParameterPane extends HTMLElement {
 		addBtn.className = 'add-row-btn';
 		container.appendChild(rowsEl);
 		container.appendChild(addBtn);
-		container.setTooltip = () => {};
-		container.parameters = null;
-		container.key = null;
+		(container as any).setTooltip = () => {};
+		(container as any).parameters = null;
+		(container as any).key = null;
 		const pane = this;
-		container.read = function () {
+		(container as any).read = function () {
 			const result = [];
 			for (const rowEl of rowsEl.children) {
 				const data = {};
-				for (const { param, input } of rowEl.wraps) {
+				for (const { param, input } of (rowEl as any).wraps) {
 					data[param.key] = input.read();
 				}
 				result.push(data);
 			}
 			return result;
 		};
-		container.write = function (value) {
+		(container as any).write = function (value) {
 			rowsEl.innerHTML = '';
 			let arr = value;
 			if (!arr || arr.length === 0) {
@@ -510,7 +512,7 @@ export class ParameterPane extends HTMLElement {
 				row.appendChild(removeBtn);
 				const grid = document.createElement('detail-grid');
 				row.appendChild(grid);
-				row.wraps = template.map((subParam) => {
+				(row as any).wraps = template.map((subParam) => {
 					const wrap = TypeRegistry.get(subParam.type).create(
 						pane,
 						subParam
@@ -544,9 +546,9 @@ export class ParameterPane extends HTMLElement {
 			for (const subParam of template) {
 				empty[subParam.key] = subParam.value;
 			}
-			const data = container.read();
+			const data = (container as any).read();
 			data.push(empty);
-			container.write(data);
+			(container as any).write(data);
 			container.dispatchEvent(new Event('change', { bubbles: true }));
 		};
 		return { tag, label, input: container };
@@ -650,7 +652,7 @@ export class ParameterPane extends HTMLElement {
 				this.recycle(wraps[i]);
 			}
 			wraps.length = 0;
-			super.clear();
+			this.textContent = '';
 		}
 		if (!this.scriptList?.data) {
 			window.off('script-change', this.scriptChange);
@@ -658,14 +660,16 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
-		super.on(type, listener, options);
-		switch (type) {
-			case 'update':
-				this.updateEventEnabled = true;
-				break;
+	on: (
+		type: string,
+		listener: (event: Event) => void,
+		options?: boolean | AddEventListenerOptions
+	) => void = (type, listener, options) => {
+		this.addEventListener(type, listener, options);
+		if (type === 'update') {
+			this.updateEventEnabled = true;
 		}
-	}
+	};
 
 	// 组件 - 改变事件
 	componentChange(event) {
@@ -738,24 +742,24 @@ export class ParameterPane extends HTMLElement {
 
 	// 窗口 - 本地化事件
 	static windowLocalize(event) {
-		for (const { langMap } of this.metas) {
+		for (const { langMap } of (this as any).metas) {
 			const oldMap = langMap.active;
 			const newMap = langMap.update().active;
 			// 更新语言包后如果发生变化则重载脚本组件
 			if (oldMap !== newMap) {
-				return this.update();
+				return (this as any).update();
 			}
 		}
 	}
 
 	// 脚本元数据改变事件
 	static scriptChange(event) {
-		for (const meta of this.metas) {
+		for (const meta of (this as any).metas) {
 			if (meta === event.changedMeta) {
-				if (this.contains(Select.target)) {
+				if ((this as any).contains(Select.target)) {
 					Select.close();
 				}
-				this.update();
+				(this as any).update();
 				return;
 			}
 		}

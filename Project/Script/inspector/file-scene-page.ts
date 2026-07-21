@@ -90,8 +90,11 @@ import { GL } from '../webgl/webgl-init.ts';
 		const filters = {};
 		const folders = Editor.project.scene.defaultFolders;
 		for (const name of Object.values(folders)) {
-			if (name && filters[name] === undefined) {
-				filters[name] = true;
+			if (
+				(name as string) &&
+				(filters as any)[name as string] === undefined
+			) {
+				(filters as any)[name as string] = true;
 				objects.push({
 					class: 'folder',
 					name: name,

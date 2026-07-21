@@ -21,7 +21,7 @@ export class ToastManager extends HTMLElement {
 		// 进场动画
 		requestAnimationFrame(() => el.classList.add('toast-show'));
 		if (duration > 0) {
-			el._timer = setTimeout(() => this.dismiss(el), duration);
+			(el as any)._timer = setTimeout(() => this.dismiss(el), duration);
 		}
 		return el;
 	}
@@ -36,7 +36,7 @@ export class ToastManager extends HTMLElement {
 	}
 }
 
-customElements.define('toast-manager', ToastManager);
+customElements.define('toast-manager', ToastManager as any);
 
 // 全局便捷接口
 export const Toast = {

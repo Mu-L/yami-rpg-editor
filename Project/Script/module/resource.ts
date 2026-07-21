@@ -27,7 +27,7 @@ export const Resources = new (class {
 	_fastGithubArray = [];
 	get fastGithubPrefix() {
 		const config = SettingConfig.config?.github?.accelerationNode || 'auto';
-		if (!this.fastGithubArray) return '';
+		if (!this._fastGithubArray) return '';
 
 		switch (config) {
 			case 'auto':
@@ -97,7 +97,7 @@ export const Resources = new (class {
 
 	getCurrentNodeInfo() {
 		const config = SettingConfig.config?.github?.accelerationNode || 'auto';
-		if (!this.fastGithubArray) return '';
+		if (!this._fastGithubArray) return { nodeName: '', nodeUrl: '' };
 		const get = Local.createGetter('confirmation');
 
 		let nodeName = '';
@@ -116,8 +116,8 @@ export const Resources = new (class {
 				const match = config.match(/^node(\d+)$/);
 				if (match) {
 					const index = parseInt(match[1]) - 1;
-					if (index >= 0 && index < this.fastGithubArray.length) {
-						nodeUrl = this.fastGithubArray[index];
+					if (index >= 0 && index < this._fastGithubArray.length) {
+						nodeUrl = this._fastGithubArray[index];
 						const domain = nodeUrl
 							.replace(/^https?:\/\//, '')
 							.replace(/\/$/, '');
@@ -294,7 +294,7 @@ export const Resources = new (class {
 		setNoResourceObj(isNoResource());
 		return (
 			NoResourceObj &&
-			Object.values(NoResourceObj).every((v) =>
+			Object.values<any>(NoResourceObj).every((v) =>
 				typeof v === 'boolean' ? v : v.check
 			)
 		);
@@ -437,16 +437,16 @@ export const Resources = new (class {
 		const targetPath = Path.resolve(TemplatesPath, `${val}_pack.zip`);
 		const _check = () => {
 			setNoResourceObj(isNoResource()); // 更新最新数据
-			if (NoResourceObj[val].check) {
-				button.disable();
-				buttonDelete.enable();
-				textbox.enable();
-				textbox.write(`v${PackMeta[val]}`);
+			if ((NoResourceObj as any)[val].check) {
+				(button as any).disable();
+				(buttonDelete as any).enable();
+				(textbox as any).enable();
+				(textbox as any).write(`v${PackMeta[val]}`);
 			} else {
-				if (!fs.existsSync(tempPath)) buttonDelete.disable();
-				button.enable();
-				textbox.disable();
-				textbox.write('');
+				if (!fs.existsSync(tempPath)) (buttonDelete as any).disable();
+				(button as any).enable();
+				(textbox as any).disable();
+				(textbox as any).write('');
 			}
 			// 判断目录下是否有zip文件，有则删除它节省空间
 			if (fs.existsSync(targetPath)) fs.unlink(targetPath);
@@ -478,8 +478,8 @@ export const Resources = new (class {
 		const boxDom = domPase.body.firstChild;
 		this.content.append(boxDom);
 		const textbox = boxDom.querySelector('text-box');
-		textbox.disable();
-		textbox.input.readOnly = true;
+		(textbox as any).disable();
+		(textbox as any).input.readOnly = true;
 
 		const button = boxDom.querySelector(`#resource-item-${value}-download`);
 		const pauseButton = boxDom.querySelector(
@@ -531,7 +531,7 @@ export const Resources = new (class {
 			const downloadurl = `${this.fastGithubPrefix}${url}`;
 
 			isDownloading = true;
-			button.disable();
+			(button as any).disable();
 			pauseButton.style.display = 'inline-block';
 			pauseButton.textContent =
 				Local.get('confirmation.resource-pause') || '暂停';
@@ -600,7 +600,7 @@ export const Resources = new (class {
 					button.textContent = Local.get(
 						'confirmation.resource-decompression'
 					);
-					button.disable();
+					(button as any).disable();
 					progressContainer.style.display = 'flex';
 					progressBar.style.background =
 						'linear-gradient(90deg, #2196f3, #42a5f5)';
@@ -636,7 +636,7 @@ export const Resources = new (class {
 						.catch((e) => {
 							// 解压失败
 							isDecompressing = false;
-							button.enable();
+							(button as any).enable();
 							progressContainer.style.display = 'none';
 							progressBar.style.background =
 								'linear-gradient(90deg, #4caf50, #66bb6a)';
@@ -651,7 +651,7 @@ export const Resources = new (class {
 				.catch((e) => {
 					isDownloading = false;
 					isDecompressing = false;
-					button.enable();
+					(button as any).enable();
 					pauseButton.style.display = 'none';
 					progressContainer.style.display = 'none';
 
@@ -677,7 +677,7 @@ export const Resources = new (class {
 			}
 
 			isDownloading = false;
-			button.enable();
+			(button as any).enable();
 			pauseButton.style.display = 'none';
 			progressContainer.style.display = 'none';
 		});

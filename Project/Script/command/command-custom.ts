@@ -209,7 +209,7 @@ Command.custom = {
 						);
 					}
 					if (value.length > 5) {
-						numbers.push(Token('...'));
+						strings.push(Token('...'));
 					}
 					words.push(
 						Token('[') + strings.join(Token(', ')) + Token(']')

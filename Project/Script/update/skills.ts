@@ -16,7 +16,7 @@ Updater.updateSkills = function (verNum) {
 			}
 			const dSkill = Inspector.fileSkill.create();
 			for (const key of keys) {
-				if (key in sSkill) {
+				if (key in (sSkill as any)) {
 					dSkill[key] = sSkill[key];
 				}
 			}

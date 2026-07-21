@@ -10,6 +10,8 @@ export class SelectBox extends HTMLElement {
 	relations; //:array
 	invalid; //:boolean
 	hideUnrelated; //:boolean
+	savedValue; //:any
+	originalTip; //:string
 	writeEventEnabled; //:boolean
 	inputEventEnabled; //:boolean
 
@@ -33,8 +35,8 @@ export class SelectBox extends HTMLElement {
 		this.inputEventEnabled = false;
 
 		// 侦听事件
-		this.on('keydown', this.keydown);
-		this.on('pointerdown', this.pointerdown);
+		(this as any).on('keydown', this.keydown);
+		(this as any).on('pointerdown', this.pointerdown);
 	}
 
 	// 读取数据
@@ -79,7 +81,7 @@ export class SelectBox extends HTMLElement {
 			this.write(value);
 			if (this.inputEventEnabled) {
 				const input = new Event('input', { bubbles: true });
-				input.last = last;
+				(input as any).last = last;
 				input.value = this.dataValue;
 				this.dispatchEvent(input);
 			}
@@ -321,7 +323,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on = (type, listener, options) => {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'write':
@@ -331,7 +333,7 @@ export class SelectBox extends HTMLElement {
 				this.inputEventEnabled = true;
 				break;
 		}
-	}
+	};
 
 	// 键盘按下事件
 	keydown(event) {

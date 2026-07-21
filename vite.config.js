@@ -82,7 +82,8 @@ export default defineConfig({
 				chunkFileNames: 'assets/[name]-[hash].js',
 				assetFileNames: 'assets/[name]-[hash][extname]'
 			}
-		}
+		},
+		sourcemap: true
 	},
 
 	// dev server 配置——Electron 渲染进程 loadURL('http://localhost:5173')
@@ -122,21 +123,61 @@ export default defineConfig({
 	plugins: [
 		// 解析 electron/axios 等 Node 模块——渲染进程 ESM import 走 window.__nodeRequire 桥
 		// Electron nodeIntegration:true 下 renderer 可以 require('electron')/require('axios')
-		// 但 ESM import 'electron' 被 Vite 拦截找不到模块，把 electron 和 axios 映射为虚拟模块
+		// 但 ESM import 'electron' 被 Vite 拦截找不到模块，把 electron 和 axios 的 import 替换为 data URL 桥模块
 		{
 			name: 'electron-renderer-resolve',
-			resolveId(id) {
-				if (id === 'electron' || id === 'axios') {
-					return '\0' + id;
+			transform(code, id) {
+				if (
+					!id.endsWith('.ts') &&
+					!id.endsWith('.js') &&
+					!id.endsWith('.mjs')
+				)
+					return;
+				const b64 = (src) =>
+					'data:text/javascript;base64,' +
+					Buffer.from(src).toString('base64');
+				// 所有裸说明符（node_modules 包）走 window.__nodeRequire 桥接，避免 Vite 预构建破坏 CJS 内部 require
+				// monaco-editor 桥接：源码用 `import * as monaco from 'monaco-editor'`
+				// 注：monaco 不桥接——其 main 入口为 AMD（define），module 入口为 ESM；
+				// 走 ESM 入口让 Vite 正常处理，避免运行时 ReferenceError: define is not defined
+				const bareModules = {
+					electron: `const e = window.__nodeRequire?.('electron') ?? {}; export const { clipboard, ipcRenderer, shell, webFrame } = e; export default e`,
+					axios: `const a = window.__nodeRequire?.('axios') ?? {}; export default a`,
+					'markdown-it': `const M = window.__nodeRequire?.('markdown-it') ?? {}; export default M`,
+					'fs-extra': `const f = window.__nodeRequire?.('fs-extra') ?? {}; export default f`,
+					yauzl: `const y = window.__nodeRequire?.('yauzl') ?? {}; export default y`,
+					'uglify-js': `const u = window.__nodeRequire?.('uglify-js') ?? {}; export default u`
+				};
+				// node:* 内建模块：浏览器端不可用，走 window.__nodeRequire 桥接
+				const nodeModules = {
+					'node:path': `const p = window.__nodeRequire?.('path') ?? {}; export default p; export const { sep, delimiter, posix, win32, resolve, normalize, isAbsolute, join, relative, dirname, basename, extname, parse, format } = p`,
+					'node:fs': `const f = window.__nodeRequire?.('fs') ?? {}; export default f; export const { promises, existsSync, readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, rmSync, unlinkSync, copyFileSync, renameSync } = f`,
+					'node:os': `const o = window.__nodeRequire?.('os') ?? {}; export default o; export const { homedir, platform, tmpdir, hostname, cpus, totalmem, freemem, EOL } = o`,
+					'node:url': `const u = window.__nodeRequire?.('url') ?? {}; export default u; export const { fileURLToPath, URL, pathToFileURL, format, parse, resolve } = u`,
+					'node:child_process': `const c = window.__nodeRequire?.('child_process') ?? {}; export default c; export const { exec, execSync, spawn, spawnSync, fork } = c`
+				};
+				let out = code;
+				const escapeRe = (s) =>
+					s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+				for (const [mod, src] of Object.entries({
+					...bareModules,
+					...nodeModules
+				})) {
+					const dataUrl = b64(src);
+					out = out
+						.replace(
+							new RegExp(`from\\s+['"]${escapeRe(mod)}['"]`, 'g'),
+							`from '${dataUrl}'`
+						)
+						.replace(
+							new RegExp(
+								`import\\s+['"]${escapeRe(mod)}['"]`,
+								'g'
+							),
+							`import '${dataUrl}'`
+						);
 				}
-			},
-			load(id) {
-				if (id === '\0electron') {
-					return `const e = window.__nodeRequire?.('electron') ?? {}; export const { clipboard, ipcRenderer, shell, webFrame } = e; export default e`;
-				}
-				if (id === '\0axios') {
-					return `const a = window.__nodeRequire?.('axios') ?? {}; export default a`;
-				}
+				return out;
 			}
 		},
 		{
@@ -194,8 +235,10 @@ export default defineConfig({
 	],
 
 	// 依赖预构建——axios 等 node_modules 包
+	// electron 不预构建：由 electron-renderer-resolve 插件提供 data URL 桥接模块
 	optimizeDeps: {
-		include: ['axios']
+		include: ['axios'],
+		exclude: ['electron']
 	},
 
 	// Electron 渲染进程 nodeIntegration:true，需兼容 CommonJS require

@@ -14,7 +14,6 @@
 		"strictBindCallApply": false,
 		"strictPropertyInitialization": false,
 		"noImplicitThis": false,
-		"alwaysStrict": false,
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,

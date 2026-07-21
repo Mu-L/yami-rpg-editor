@@ -130,7 +130,7 @@ import { Timer } from '../util/timer.ts';
 
 			// 更新音频信息
 			const symbol = (this.symbol = Symbol());
-			new Promise((resolve) => {
+			new Promise<void>((resolve) => {
 				if (isNaN(audio.duration)) {
 					audio.on(
 						'loadedmetadata',

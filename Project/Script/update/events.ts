@@ -14,7 +14,7 @@ Updater.updateLocalEvents = function (verNum) {
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
-			for (const event of events) {
+			for (const event of events as any) {
 				const { commands } = event;
 				delete event.commands;
 				event.enabled = true;
@@ -39,7 +39,7 @@ Updater.updateGlobalEvents = function (verNum) {
 			}
 			const dEvent = Inspector.fileEvent.create('global');
 			for (const key of keys) {
-				if (key in sEvent) {
+				if (key in (sEvent as any)) {
 					dEvent[key] = sEvent[key];
 					continue;
 				}
@@ -64,7 +64,7 @@ Updater.updateGlobalEvent = function (meta) {
 	if ('namespace' in sEvent || 'priority' in sEvent) return;
 	const dEvent = Inspector.fileEvent.create('global');
 	for (const key of Object.keys(dEvent)) {
-		if (key in sEvent) {
+		if (key in (sEvent as any)) {
 			dEvent[key] = sEvent[key];
 			continue;
 		}

@@ -99,7 +99,7 @@ Command.cases.script = new CommandSchema({
 		});
 	},
 	customParse({ script }) {
-		const contents = [{ script: script }];
+		const contents: any[] = [{ script: script }];
 		if (script.includes('\n')) {
 			contents.unshift({ fold: true });
 		}
@@ -202,9 +202,9 @@ Command.cases.script = new CommandSchema({
 			overviewRulerBorder: false,
 			hideCursorInOverviewRuler: true,
 			automaticLayout: false,
-			hover: true,
+			hover: { enabled: true } as any,
 			lightbulb: {
-				enabled: false
+				enabled: false as any
 			},
 			minimap: {
 				enabled: false
@@ -439,7 +439,7 @@ Command.cases.script = new CommandSchema({
 		};
 		return function (theme) {
 			const options = themeData[theme];
-			if (options instanceof Object && window.monaco instanceof Object) {
+			if (options instanceof Object && monaco instanceof Object) {
 				monaco.editor.defineTheme(theme, options);
 				themeData[theme] = null;
 			}

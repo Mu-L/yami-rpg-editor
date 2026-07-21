@@ -818,7 +818,7 @@ NumberOperand.open = function (
 		operation: 'add',
 		type: 'constant',
 		value: 0
-	}
+	} as any
 ) {
 	Window.open('setNumber-operand');
 

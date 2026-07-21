@@ -3596,7 +3596,7 @@ Animation.copyFrame = function (returnData = false) {
 		if (returnData) {
 			return data;
 		}
-		Clipboard.write(`yami.animFrame.${layer.class}`, data);
+		(Clipboard as any).write(`yami.animFrame.${layer.class}`, data);
 	}
 };
 
@@ -3608,7 +3608,7 @@ Animation.pasteFrame = function (data, destination) {
 		y,
 		length: sLength
 	} = destination ?? this.timelineMarquee;
-	if (!data) data = Clipboard.read(`yami.animFrame.${layer.class}`);
+	if (!data) data = (Clipboard as any).read(`yami.animFrame.${layer.class}`);
 	if (!data || y === -1) {
 		return;
 	}
@@ -5096,11 +5096,11 @@ Animation.listPopup = function (event) {
 	let deletable;
 	if (item) {
 		copyable = true;
-		pastable = Clipboard.has('yami.animation.object');
+		pastable = (Clipboard as any).has('yami.animation.object');
 		deletable = true;
 	} else {
 		copyable = false;
-		pastable = Clipboard.has('yami.animation.object');
+		pastable = (Clipboard as any).has('yami.animation.object');
 		deletable = false;
 	}
 	let headItems = Array.empty;
@@ -5370,12 +5370,12 @@ Animation.layerListPopup = function (event) {
 	let renamable;
 	if (item) {
 		copyable = true;
-		pastable = Clipboard.has('yami.animation.layer');
+		pastable = (Clipboard as any).has('yami.animation.layer');
 		deletable = true;
 		renamable = true;
 	} else {
 		copyable = false;
-		pastable = Clipboard.has('yami.animation.layer');
+		pastable = (Clipboard as any).has('yami.animation.layer');
 		deletable = false;
 		renamable = false;
 	}
@@ -5749,7 +5749,9 @@ Animation.outerTimelineListPointerup = function (event) {
 					if (marquee.isPointIn(x, y)) {
 						const key = marquee.layer.class;
 						const selected = marquee.isSelected();
-						const pastable = Clipboard.has(`yami.animFrame.${key}`);
+						const pastable = (Clipboard as any).has(
+							`yami.animFrame.${key}`
+						);
 						const extendable = selected || marquee.isExtendable();
 						const shrinkable = selected || marquee.isShrinkable();
 						const get = Local.createGetter('menuAnimationTimeline');
@@ -5960,13 +5962,13 @@ Animation.marquee.resize = function () {
 // 列表 - 复制
 Animation.list.copy = function (item) {
 	if (item) {
-		Clipboard.write('yami.animation.object', item);
+		(Clipboard as any).write('yami.animation.object', item);
 	}
 };
 
 // 列表 - 粘贴
 Animation.list.paste = function (dItem) {
-	const copy = Clipboard.read('yami.animation.object');
+	const copy = (Clipboard as any).read('yami.animation.object');
 	if (copy && this.data) {
 		this.addNodeTo(copy, dItem);
 	}
@@ -6102,13 +6104,13 @@ Animation.layerList.create = function (dItem, type) {
 // 图层列表 - 复制
 Animation.layerList.copy = function (item) {
 	if (item) {
-		Clipboard.write('yami.animation.layer', item);
+		(Clipboard as any).write('yami.animation.layer', item);
 	}
 };
 
 // 图层列表 - 粘贴
 Animation.layerList.paste = function (dItem) {
-	const copy = Clipboard.read('yami.animation.layer');
+	const copy = (Clipboard as any).read('yami.animation.layer');
 	if (copy && this.data) {
 		this.addNodeTo(copy, dItem);
 	}

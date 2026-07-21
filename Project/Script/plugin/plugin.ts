@@ -66,7 +66,8 @@ export const PluginManager = {
 	overviewPointerdown: null,
 	parameterPaneUpdate: null,
 	confirm: null,
-	apply: null
+	apply: null,
+	checkValidate: null
 };
 
 // list methods
@@ -687,13 +688,14 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 		const slices = content.split(spacing);
 		if (slices.length === 2) {
+			const numbers = [0, 0];
 			for (let i = 0; i < 2; i++) {
 				const number = parseNumber(slices[i]);
 				if (number === null) return;
-				slices[i] = number;
+				numbers[i] = number;
 			}
-			const min = Math.max(-1000000000, Math.min(...slices));
-			const max = Math.min(+1000000000, Math.max(...slices));
+			const min = Math.max(-1000000000, Math.min(...numbers));
+			const max = Math.min(+1000000000, Math.max(...numbers));
 			parameter.value = Math.clamp(parameter.value, min, max);
 			parameter.min = min;
 			parameter.max = max;
@@ -883,7 +885,7 @@ PluginManager.parseMeta = (function IIFE() {
 	};
 	const setValidate = () => {
 		if (parameter === null) return;
-		const validate = {};
+		const validate = { pattern: null, notEmpty: null };
 		const parts = content.split(/\s+/);
 		for (let i = 0; i < parts.length; i++) {
 			const part = parts[i];
@@ -975,6 +977,8 @@ PluginManager.parseMeta = (function IIFE() {
 
 	// 选项管理器类
 	class OptionManager extends Array {
+		wraps: any;
+		states: any;
 		constructor() {
 			super();
 			this.wraps = {};
@@ -992,7 +996,7 @@ PluginManager.parseMeta = (function IIFE() {
 				owner.type !== 'option' ||
 				states[pKey]
 			) {
-				return;
+				return false;
 			}
 			let wrap = wraps[key];
 			if (wrap === undefined) {
@@ -1002,6 +1006,7 @@ PluginManager.parseMeta = (function IIFE() {
 			}
 			states[pKey] = true;
 			wrap.relate(values);
+			return true;
 		}
 
 		// 排序
@@ -1030,6 +1035,9 @@ PluginManager.parseMeta = (function IIFE() {
 
 	// 条件包装类
 	class ConditionWrap {
+		owner: any;
+		map: any;
+		priority: number;
 		constructor(owner) {
 			this.owner = owner;
 			this.map = {};
@@ -1085,6 +1093,9 @@ PluginManager.parseMeta = (function IIFE() {
 
 	// 语言映射表类
 	class LanguageMap {
+		language: string;
+		active: any;
+		packs: any[];
 		constructor() {
 			this.language = '';
 			this.active = {};
@@ -1298,7 +1309,7 @@ PluginManager.parseMeta = (function IIFE() {
 
 		// 发送脚本改变事件
 		if (updating) {
-			event.changedMeta = meta;
+			(event as any).changedMeta = meta;
 			window.dispatchEvent(event);
 		}
 	};
@@ -1717,7 +1728,7 @@ PluginManager.listChange = function (event) {
 PluginManager.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
-	const pastable = Clipboard.has('yami.data.plugin');
+	const pastable = (Clipboard as any).has('yami.data.plugin');
 	const deletable = selected;
 	const get = Local.createGetter('menuPluginList');
 	Menu.popup(
@@ -1893,13 +1904,13 @@ PluginManager.list.toggle = function (item) {
 // 列表 - 复制
 PluginManager.list.copy = function (item) {
 	if (item) {
-		Clipboard.write('yami.data.plugin', item);
+		(Clipboard as any).write('yami.data.plugin', item);
 	}
 };
 
 // 列表 - 粘贴
 PluginManager.list.paste = function (dItem) {
-	const copy = Clipboard.read('yami.data.plugin');
+	const copy = (Clipboard as any).read('yami.data.plugin');
 	if (copy) {
 		this.addNodeTo(copy, dItem);
 	}

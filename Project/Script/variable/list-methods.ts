@@ -7,13 +7,13 @@ import { Variable } from './variable.ts';
 // 列表 - 复制
 Variable.list.copy = function (item) {
 	if (item && item.class !== 'folder') {
-		Clipboard.write('yami.data.variable', item);
+		(Clipboard as any).write('yami.data.variable', item);
 	}
 };
 
 // 列表 - 粘贴
 Variable.list.paste = function (dItem) {
-	const copy = Clipboard.read('yami.data.variable');
+	const copy = (Clipboard as any).read('yami.data.variable');
 	if (copy) {
 		// 只有冲突时进行更换ID
 		// 支持跨项目复制保留ID

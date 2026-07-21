@@ -52,12 +52,12 @@ export class CustomBox extends HTMLElement {
 		this.inputEventEnabled = false;
 
 		// 侦听事件
-		this.on('keydown', this.keydown);
-		this.on('click', this.click);
-		this.on('dragenter', this.dragenter);
-		this.on('dragleave', this.dragleave);
-		this.on('dragover', this.dragover);
-		this.on('drop', this.drop);
+		(this as any).on('keydown', this.keydown);
+		(this as any).on('click', this.click);
+		(this as any).on('dragenter', this.dragenter);
+		(this as any).on('dragleave', this.dragleave);
+		(this as any).on('dragover', this.dragover);
+		(this as any).on('drop', this.drop);
 	}
 
 	// 获取类型属性
@@ -425,6 +425,7 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 鼠标点击事件
+	// @ts-ignore
 	click(event) {
 		switch (this.type) {
 			case 'file':
@@ -520,6 +521,6 @@ export class CustomBox extends HTMLElement {
 	}
 }
 
-customElements.define('custom-box', CustomBox);
+customElements.define('custom-box', CustomBox as any);
 
 import path from 'node:path';

@@ -1,7 +1,7 @@
 // ******************************** 节点列表方法 ********************************
 
 // 节点列表 - 添加事件
-NodeList.prototype.on = function (type, listener, options) {
+NodeList.prototype.on = function (type, listener, options?) {
 	for (const element of this) {
 		element.on(type, listener, options);
 	}

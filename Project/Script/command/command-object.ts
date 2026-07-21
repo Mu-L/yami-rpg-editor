@@ -93,7 +93,7 @@ export const Command = {
 	// classes
 	WordList: null,
 	// objects
-	cases: {},
+	cases: {} as Record<string, CommandSchema>,
 	custom: null
 };
 

@@ -31,7 +31,7 @@
 		"build:universal": "electron-builder --dir --mac --universal",
 		"build:universalexe": "electron-builder --mac --universal",
 		"dev": "pnpm run buildcss && pnpm run buildhtml && vite",
-		"dev:electron": "concurrently -k -n vite,electron -c green,blue \"vite\" \"wait-on tcp:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron . --dirname=Project\"",
+		"dev:electron": "concurrently -k -n vite,electron -c green,blue \"vite\" \"wait-on tcp:5173 && electron . --dirname=Project --dev-server-url=http://localhost:5173\"",
 		"build:vite": "pnpm run buildcss && pnpm run buildhtml && vite build",
 		"build:electron": "vite build --config vite.electron.config.js",
 		"build:all": "pnpm run build:vite && pnpm run build:electron",

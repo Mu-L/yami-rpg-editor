@@ -522,7 +522,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			});
 		}
 	}
-	for (const [id, actor] of Object.entries(Data.actors)) {
+	for (const [id, actor] of Object.entries<any>(Data.actors)) {
 		for (const event of actor.events) {
 			if (find(event)) {
 				references.push({
@@ -533,7 +533,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			}
 		}
 	}
-	for (const [id, skill] of Object.entries(Data.skills)) {
+	for (const [id, skill] of Object.entries<any>(Data.skills)) {
 		for (const event of skill.events) {
 			if (find(event)) {
 				references.push({
@@ -544,7 +544,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			}
 		}
 	}
-	for (const [id, trigger] of Object.entries(Data.triggers)) {
+	for (const [id, trigger] of Object.entries<any>(Data.triggers)) {
 		for (const event of trigger.events) {
 			if (find(event)) {
 				references.push({
@@ -555,7 +555,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			}
 		}
 	}
-	for (const [id, item] of Object.entries(Data.items)) {
+	for (const [id, item] of Object.entries<any>(Data.items)) {
 		for (const event of item.events) {
 			if (find(event)) {
 				references.push({
@@ -566,7 +566,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			}
 		}
 	}
-	for (const [id, equipment] of Object.entries(Data.equipments)) {
+	for (const [id, equipment] of Object.entries<any>(Data.equipments)) {
 		for (const event of equipment.events) {
 			if (find(event)) {
 				references.push({
@@ -577,7 +577,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			}
 		}
 	}
-	for (const [id, state] of Object.entries(Data.states)) {
+	for (const [id, state] of Object.entries<any>(Data.states)) {
 		for (const event of state.events) {
 			if (find(event)) {
 				references.push({
@@ -588,7 +588,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			}
 		}
 	}
-	for (const preset of Object.values(Data.scenePresets)) {
+	for (const preset of Object.values<any>(Data.scenePresets)) {
 		for (const event of preset.data.events) {
 			if (find(event)) {
 				const rootName = guidMap[preset.sceneId]?.file.basename;
@@ -600,7 +600,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			}
 		}
 	}
-	for (const preset of Object.values(Data.uiPresets)) {
+	for (const preset of Object.values<any>(Data.uiPresets)) {
 		for (const event of preset.data.events) {
 			if (find(event)) {
 				const rootName = guidMap[preset.uiId]?.file.basename;
@@ -618,47 +618,47 @@ EventEditor.findRelatedEvents = function (eventId) {
 // 获取所有本地事件
 EventEditor.getAllLocalEvents = function () {
 	const listMap = {};
-	for (const [id, actor] of Object.entries(Data.actors)) {
+	for (const [id, actor] of Object.entries<any>(Data.actors)) {
 		if (actor.events.length !== 0) {
 			listMap[id] = actor.events;
 		}
 	}
-	for (const [id, skill] of Object.entries(Data.skills)) {
+	for (const [id, skill] of Object.entries<any>(Data.skills)) {
 		if (skill.events.length !== 0) {
 			listMap[id] = skill.events;
 		}
 	}
-	for (const [id, trigger] of Object.entries(Data.triggers)) {
+	for (const [id, trigger] of Object.entries<any>(Data.triggers)) {
 		if (trigger.events.length !== 0) {
 			listMap[id] = trigger.events;
 		}
 	}
-	for (const [id, item] of Object.entries(Data.items)) {
+	for (const [id, item] of Object.entries<any>(Data.items)) {
 		if (item.events.length !== 0) {
 			listMap[id] = item.events;
 		}
 	}
-	for (const [id, equipment] of Object.entries(Data.equipments)) {
+	for (const [id, equipment] of Object.entries<any>(Data.equipments)) {
 		if (equipment.events.length !== 0) {
 			listMap[id] = equipment.events;
 		}
 	}
-	for (const [id, state] of Object.entries(Data.states)) {
+	for (const [id, state] of Object.entries<any>(Data.states)) {
 		if (state.events.length !== 0) {
 			listMap[id] = state.events;
 		}
 	}
-	for (const [id, scene] of Object.entries(Data.scenes)) {
+	for (const [id, scene] of Object.entries<any>(Data.scenes)) {
 		if (scene.events.length !== 0) {
 			listMap[id] = scene.events.slice();
 		}
 	}
-	for (const { sceneId, data } of Object.values(Data.scenePresets)) {
+	for (const { sceneId, data } of Object.values<any>(Data.scenePresets)) {
 		if (data.events.length !== 0) {
 			(listMap[sceneId] ??= []).push(...data.events);
 		}
 	}
-	for (const { uiId, data } of Object.values(Data.uiPresets)) {
+	for (const { uiId, data } of Object.values<any>(Data.uiPresets)) {
 		if (data.events.length !== 0) {
 			(listMap[uiId] ??= []).push(...data.events);
 		}
@@ -810,7 +810,7 @@ EventEditor.resizeGutter = function () {
 		if (i !== length) {
 			if (i < length) {
 				while (i < length) {
-					const node = document.createElement('box');
+					const node = document.createElement('box') as any;
 					node.addClass('event-commands-line-number');
 					node.number = -1;
 					innerGutter.appendChild(node);

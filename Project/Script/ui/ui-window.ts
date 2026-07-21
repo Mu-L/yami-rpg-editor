@@ -192,10 +192,14 @@ export const UI = {
 	TextBox: null,
 	DialogBox: null,
 	ProgressBar: null,
+	Button: null,
+	Animation: null,
 	Video: null,
 	Window: null,
 	Container: null,
-	Reference: null
+	Reference: null,
+	// methods
+	createShortcut: null
 };
 
 // marquee methods
@@ -2780,7 +2784,7 @@ UI.menuPopup = function (event) {
 	const { x, y } = this.getPointerCoords(event);
 	const target = this.target;
 	const selected = !!target;
-	const pastable = Clipboard.has('yami.ui.object');
+	const pastable = (Clipboard as any).has('yami.ui.object');
 	const get = Local.createGetter('menuUIList');
 	const items = [
 		{
@@ -3112,7 +3116,7 @@ UI.listPopup = function (event) {
 	const get = Local.createGetter('menuUIList');
 	const selected = !!item;
 	const copyable = selected;
-	const pastable = Clipboard.has('yami.ui.object');
+	const pastable = (Clipboard as any).has('yami.ui.object');
 	const deletable = selected;
 	const renamable = selected;
 	menuItems.push({
@@ -3359,13 +3363,13 @@ UI.marquee.resize = function () {
 // 列表 - 复制
 UI.list.copy = function (item) {
 	if (item) {
-		Clipboard.write('yami.ui.object', item);
+		(Clipboard as any).write('yami.ui.object', item);
 	}
 };
 
 // 列表 - 粘贴
 UI.list.paste = function (dItem, callback) {
-	const copy = Clipboard.read('yami.ui.object');
+	const copy = (Clipboard as any).read('yami.ui.object');
 	if (copy && this.data) {
 		callback?.(copy);
 		this.addNodeTo(copy, dItem);

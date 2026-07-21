@@ -16,7 +16,7 @@ Updater.updateEquipments = function (verNum) {
 			}
 			const dEquipment = Inspector.fileEquipment.create();
 			for (const key of keys) {
-				if (key in sEquipment) {
+				if (key in (sEquipment as any)) {
 					dEquipment[key] = sEquipment[key];
 				}
 			}

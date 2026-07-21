@@ -21,6 +21,7 @@ export class FileItem {
 	path; //:string
 	type; //:string
 	stats; //:object
+	promise; //:Promise
 	contexts; //:object
 
 	constructor(name, extname, path, type, stats) {

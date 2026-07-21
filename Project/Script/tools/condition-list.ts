@@ -85,7 +85,7 @@ export class ConditionListInterface {
 			const element = item.element;
 			const list = element?.parentNode;
 			if (list instanceof TreeList) {
-				list.updateConditionIcon(item);
+				(list as any).updateConditionIcon(item);
 			}
 		}
 	}
@@ -117,12 +117,12 @@ export class ConditionListInterface {
 			case 'global-number':
 			case 'self-number':
 				numberOperation = condition.operation;
-				numberValue = condition.value;
+				numberValue = condition.value as any;
 				break;
 			case 'global-string':
 			case 'self-string':
 				stringOperation = condition.operation;
-				stringValue = condition.value;
+				stringValue = condition.value as any;
 				break;
 		}
 		write('type', condition.type);

@@ -11,6 +11,7 @@ import { Timer } from '../util/timer.ts';
 // ******************************** 文件导航面板 ********************************
 
 export class FileNavPane extends HTMLElement {
+	_connected; //:boolean
 	timer; //:object
 	elements; //:array
 	selections; //:array
@@ -56,12 +57,12 @@ export class FileNavPane extends HTMLElement {
 		this.listenDraggingScrollbarEvent();
 
 		// 侦听事件
-		this.on('scroll', this.resize);
-		this.on('keydown', this.keydown);
-		this.on('pointerdown', this.pointerdown);
-		this.on('pointerup', this.pointerup);
-		this.on('doubleclick', this.doubleclick);
-		this.on('select', this.listSelect);
+		(this as any).on('scroll', this.resize);
+		(this as any).on('keydown', this.keydown);
+		(this as any).on('pointerdown', this.pointerdown);
+		(this as any).on('pointerup', this.pointerup);
+		(this as any).on('doubleclick', this.doubleclick);
+		(this as any).on('select', this.listSelect);
 		window.on('dirchange', this.dirchange.bind(this));
 	}
 
@@ -644,7 +645,7 @@ export class FileNavPane extends HTMLElement {
 		textBox.input.addClass('file-nav-text-box-input');
 
 		// 键盘按下事件
-		textBox.on('keydown', function (event) {
+		(textBox as any).on('keydown', function (event) {
 			event.stopPropagation();
 			switch (event.code) {
 				case 'Enter':
@@ -660,7 +661,7 @@ export class FileNavPane extends HTMLElement {
 		});
 
 		// 输入前事件
-		textBox.on('beforeinput', function (event) {
+		(textBox as any).on('beforeinput', function (event) {
 			if (
 				event.inputType === 'insertText' &&
 				typeof event.data === 'string'
@@ -674,17 +675,17 @@ export class FileNavPane extends HTMLElement {
 		});
 
 		// 输入事件
-		textBox.on('input', function (event) {
+		(textBox as any).on('input', function (event) {
 			this.fitContent();
 		});
 
 		// 选择事件
-		textBox.on('select', function (event) {
+		(textBox as any).on('select', function (event) {
 			event.stopPropagation();
 		});
 
 		// 失去焦点事件
-		textBox.on('blur', function (event) {
+		(textBox as any).on('blur', function (event) {
 			const item = this.parentNode;
 			const file = item.file;
 			const name = this.read().trim();

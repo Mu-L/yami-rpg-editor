@@ -17,7 +17,7 @@ Updater.updateConfig = function (verNum) {
 		const dConfig = {};
 		for (const key of Object.keys(sConfig)) {
 			if (key === 'font') {
-				dConfig.text = {
+				(dConfig as any).text = {
 					importedFonts: sConfig.font.imports,
 					fontFamily: sConfig.font.default,
 					wordWrap: 'break'
@@ -36,8 +36,8 @@ Updater.updateConfig = function (verNum) {
 				switch (key) {
 					case 'script':
 						// 在script属性后添加localization属性
-						if (!sConfig.localization) {
-							dConfig.localization = {
+						if (!(sConfig as any).localization) {
+							(dConfig as any).localization = {
 								languages: ['en', 'zh-CN'],
 								default: 'auto'
 							};

@@ -140,8 +140,8 @@ Editor.initialize = async function () {
 		// 循环依赖兜底
 		for (const name of initNames) {
 			if (!initializedSet.has(name)) {
-				if (typeof Log !== 'undefined' && Log.warn) {
-					Log.warn(
+				if (typeof Log !== 'undefined' && (Log as any).warn) {
+					(Log as any).warn(
 						`初始化循环依赖：${name} 未被初始化`,
 						singletonMap[name].dependsOn
 					);

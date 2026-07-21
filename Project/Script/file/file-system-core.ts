@@ -33,6 +33,7 @@ export const File = {
 	showInExplorer: null,
 	showOpenDialog: null,
 	showSaveDialog: null,
+	path: null,
 	parseGUID: null,
 	filterGUID: null,
 	updateRoot: null,
@@ -65,7 +66,7 @@ File.get = function (descriptor) {
 				promises[path] ||
 				(promises[path] = new Promise((resolve) => {
 					const image = new Image();
-					image.guid = descriptor.guid ?? '';
+					(image as any).guid = descriptor.guid ?? '';
 					image.onload = () => {
 						delete promises[path];
 						image.onload = null;
@@ -193,7 +194,7 @@ File.saveFile = function (meta) {
 	}
 	const path = meta.path;
 	const route = File.path(path);
-	return FSP.writeFile(route, text, true)
+	return FSP.writeFile(route, text, true as any)
 		.then(() => {
 			console.log(`write: ${path}`);
 		})
@@ -333,7 +334,7 @@ File.showSaveDialog = function (options) {
 };
 
 // 解析元数据对应的文件名称
-File.parseMetaName = function (meta) {
+(File as any).parseMetaName = function (meta) {
 	const alias = File.filterGUID(meta.path);
 	const extname = Path.extname(alias);
 	return Path.basename(alias, extname);
@@ -404,7 +405,7 @@ File.route = function (relativePath) {
 	const route = (
 		isAbsolute ? relativePath : base + '/' + relativePath
 	).replace(/[\\/]{2,}/g, '/');
-	if (import.meta.env?.DEV) {
+	if ((import.meta as any).env?.DEV) {
 		// ?ver= 改 #ver= fragment 避被 URL 当 query 分隔；裸字符串让浏览器 src 自己编码
 		return `/local-file/?path=${route.replace(/\?ver=(\d+)$/, '#ver=$1')}`;
 	}

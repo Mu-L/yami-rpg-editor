@@ -125,28 +125,48 @@ Inspector.initialize = function () {
 	History.processors['inspector-param-insert'] = (operation, data) => {
 		const { history, target } = data;
 		const { owner, list } = history;
-		ParamHistory.restore(list, data, 'insert', operation);
+		(Inspector as any).ParamHistory.restore(
+			list,
+			data,
+			'insert',
+			operation
+		);
 		owner.setTarget(target);
 		owner.planToSave();
 	};
 	History.processors['inspector-param-replace'] = (operation, data) => {
 		const { history, target } = data;
 		const { owner, list } = history;
-		ParamHistory.restore(list, data, 'replace', operation);
+		(Inspector as any).ParamHistory.restore(
+			list,
+			data,
+			'replace',
+			operation
+		);
 		owner.setTarget(target);
 		owner.planToSave();
 	};
 	History.processors['inspector-param-delete'] = (operation, data) => {
 		const { history, target } = data;
 		const { owner, list } = history;
-		ParamHistory.restore(list, data, 'delete', operation);
+		(Inspector as any).ParamHistory.restore(
+			list,
+			data,
+			'delete',
+			operation
+		);
 		owner.setTarget(target);
 		owner.planToSave();
 	};
 	History.processors['inspector-param-toggle'] = (operation, data) => {
 		const { history, target } = data;
 		const { owner, list } = history;
-		ParamHistory.restore(list, data, 'toggle', operation);
+		(Inspector as any).ParamHistory.restore(
+			list,
+			data,
+			'toggle',
+			operation
+		);
 		owner.setTarget(target);
 		owner.planToSave();
 	};

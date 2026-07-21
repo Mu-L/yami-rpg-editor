@@ -1,7 +1,7 @@
 import { SettingConfig } from './settingconfig.ts';
 import { Browser } from '../browser/project-browser.ts';
 // 项目浏览器搜索历史（会话内）
-export const BrowserSearchHistory = {
+export const BrowserSearchHistory: any = {
 	histories: [],
 	input: null,
 	dropdown: null,

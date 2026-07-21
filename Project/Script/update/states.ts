@@ -16,7 +16,7 @@ Updater.updateStates = function (verNum) {
 			}
 			const dState = Inspector.fileState.create();
 			for (const key of keys) {
-				if (key in sState) {
+				if (key in (sState as any)) {
 					dState[key] = sState[key];
 				}
 			}

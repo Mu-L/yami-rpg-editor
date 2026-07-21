@@ -11,6 +11,7 @@ export class TabBar extends HTMLElement {
 	closedEventEnabled; //:boolean
 	popupEventEnabled; //:boolean
 	windowPointerup; //:function
+	dirItem; //:any
 
 	constructor() {
 		super();
@@ -23,12 +24,13 @@ export class TabBar extends HTMLElement {
 		this.selectEventEnabled = false;
 		this.closedEventEnabled = false;
 		this.popupEventEnabled = false;
+		this.dirItem = null;
 		this.windowPointerup = TabBar.windowPointerup.bind(this);
 
 		// 侦听事件
-		this.on('pointerdown', this.pointerdown);
-		this.on('dragstart', this.dragstart);
-		this.on('dragend', this.dragend);
+		(this as any).on('pointerdown', this.pointerdown);
+		(this as any).on('dragstart', this.dragstart);
+		(this as any).on('dragend', this.dragend);
 	}
 
 	// 读取数据
@@ -45,7 +47,7 @@ export class TabBar extends HTMLElement {
 			this.unselect();
 			let target;
 			for (let i = 0; i < length; i++) {
-				if (items[i].item === value) {
+				if ((items[i] as any).item === value) {
 					this.selectionIndex = i;
 					target = items[i];
 					break;
@@ -64,7 +66,7 @@ export class TabBar extends HTMLElement {
 
 	// 更新标签列表
 	update() {
-		super.clear();
+		(this as any).clear();
 		for (const item of this.data) {
 			let tab = item.tab;
 			if (tab === undefined) {
@@ -127,7 +129,7 @@ export class TabBar extends HTMLElement {
 		if (this.data.remove(item)) {
 			this.update();
 			if (this.closedEventEnabled) {
-				const closed = new Event('closed');
+				const closed: any = new Event('closed');
 				closed.closedItems = [item];
 				closed.lastValue = value;
 				this.dispatchEvent(closed);
@@ -162,7 +164,7 @@ export class TabBar extends HTMLElement {
 		if (closedItems.length !== 0) {
 			this.update();
 			if (this.closedEventEnabled) {
-				const closed = new Event('closed');
+				const closed: any = new Event('closed');
 				closed.closedItems = closedItems;
 				closed.lastValue = value;
 				this.dispatchEvent(closed);
@@ -187,7 +189,7 @@ export class TabBar extends HTMLElement {
 		if (closedItems.length !== 0) {
 			this.update();
 			if (this.closedEventEnabled) {
-				const closed = new Event('closed');
+				const closed: any = new Event('closed');
 				closed.closedItems = closedItems;
 				closed.lastValue = value;
 				this.dispatchEvent(closed);
@@ -197,7 +199,7 @@ export class TabBar extends HTMLElement {
 
 	// 查找项目
 	find(meta) {
-		for (const { item } of this.childNodes) {
+		for (const { item } of this.childNodes as any) {
 			if (item.meta === meta) {
 				return item;
 			}
@@ -206,8 +208,8 @@ export class TabBar extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
-		super.on(type, listener, options);
+	on = (type, listener, options) => {
+		EventTarget.prototype.on.call(this, type, listener, options);
 		switch (type) {
 			case 'write':
 				this.writeEventEnabled = true;
@@ -222,7 +224,7 @@ export class TabBar extends HTMLElement {
 				this.popupEventEnabled = true;
 				break;
 		}
-	}
+	};
 
 	// 指针按下事件
 	pointerdown(event) {
@@ -273,15 +275,15 @@ export class TabBar extends HTMLElement {
 			this.parentNode.insertBefore(event.hint.hide(), this);
 			this.addClass('dragging');
 			Title.updateAppRegion();
-			this.on('dragenter', this.dragenter);
-			this.on('dragleave', this.dragleave);
-			this.on('dragover', this.dragover);
-			this.on('drop', this.drop);
+			(this as any).on('dragenter', this.dragenter);
+			(this as any).on('dragleave', this.dragleave);
+			(this as any).on('dragover', this.dragover);
+			(this as any).on('drop', this.drop);
 		}
 	}
 
 	// 拖拽结束事件
-	dragend(event) {
+	dragend(event?) {
 		if (this.dragging) {
 			this.removeClass('dragging');
 			this.parentNode.removeChild(this.dragging.hint);
@@ -418,26 +420,26 @@ export class TabBar extends HTMLElement {
 
 	// 窗口 - 指针弹起事件
 	static windowPointerup(event) {
-		const { dragging } = this;
+		const { dragging } = this as any;
 		if (dragging.relate(event)) {
 			switch (dragging.mode) {
 				case 'close':
 					if (dragging.target === event.target) {
-						this.close(event.target.parentNode.item);
+						(this as any).close(event.target.parentNode.item);
 					}
 					break;
 				case 'popup':
 					if (dragging.target === event.target) {
 						const popup = new Event('popup');
 						const item = event.target.item;
-						popup.value = item ?? null;
-						popup.clientX = event.clientX;
-						popup.clientY = event.clientY;
-						this.dispatchEvent(popup);
+						(popup as any).value = item ?? null;
+						(popup as any).clientX = event.clientX;
+						(popup as any).clientY = event.clientY;
+						(this as any).dispatchEvent(popup);
 					}
 					break;
 			}
-			this.dragging = null;
+			(this as any).dragging = null;
 			window.off('pointerup', this.windowPointerup);
 		}
 	}

@@ -114,7 +114,7 @@ Title.initialize = function () {
 
 	// 标签栏扩展方法 - 解析名称
 	this.tabBar.parseName = function (meta) {
-		return File.parseMetaName(meta);
+		return (File as any).parseMetaName(meta);
 	};
 
 	// 侦听事件

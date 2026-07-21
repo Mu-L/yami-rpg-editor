@@ -796,11 +796,11 @@ Scene.load = function (context) {
 	const firstLoad = !context.editor;
 	if (firstLoad) {
 		// 创建瓦片地图和快捷方式列表
-		const tilemaps = [];
+		const tilemaps = [] as any;
 		tilemaps.shortcuts = new TilemapShortcuts(tilemaps);
 
 		// 创建区域和可见对象列表
-		const regions = [];
+		const regions = [] as any;
 		regions.visibleList = [];
 		regions.visibleList.count = 0;
 

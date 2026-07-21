@@ -234,7 +234,7 @@ Command.cases.registerEvent = new CommandSchema({
 			words.push(Local.get('command.registerEvent.namespace'));
 		}
 
-		const contents = [
+		const contents: any[] = [
 			{ color: 'flow' },
 			{
 				text:

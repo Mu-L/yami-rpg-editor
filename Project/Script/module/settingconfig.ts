@@ -10,7 +10,14 @@ import nodePath from 'node:path';
 export const path = nodePath;
 
 export const SettingConfig = new (class {
-	config = {};
+	config = {
+		server: null,
+		apkbuild: null,
+		signed: null,
+		other: null,
+		recent: null,
+		github: null
+	} as any;
 	get homedir() {
 		return GlobalPathForDir;
 	}

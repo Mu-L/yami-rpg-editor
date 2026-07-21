@@ -5,7 +5,7 @@ import { CommandSchema } from './schema.ts';
 import { Local } from '../../tools/localization.ts';
 import { Variable } from '../../variable/variable.ts';
 
-Command.cases.setBoolean = new CommandSchema({
+(Command.cases as any).setBoolean = new CommandSchema({
 	name: 'setBoolean',
 	onInitialize() {
 		$('#setBoolean-confirm').on('click', () => this.save());
@@ -120,22 +120,23 @@ Command.cases.setBoolean = new CommandSchema({
 		let listIndex = 0;
 		let parameterKey = '';
 		let script = '';
-		switch (operand.type) {
+		const op: any = operand;
+		switch (op.type) {
 			case 'constant':
-				constantValue = operand.value;
+				constantValue = op.value;
 				break;
 			case 'variable':
-				commonVariable = operand.variable;
+				commonVariable = op.variable;
 				break;
 			case 'list':
-				commonVariable = operand.variable;
-				listIndex = operand.index;
+				commonVariable = op.variable;
+				listIndex = op.index;
 				break;
 			case 'parameter':
-				parameterKey = operand.key;
+				parameterKey = op.key;
 				break;
 			case 'script':
-				script = operand.script;
+				script = op.script;
 				break;
 		}
 		write('variable', variable);

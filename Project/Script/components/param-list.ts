@@ -26,6 +26,8 @@ export class ParamList extends HTMLElement {
 	dragging; //:event
 	history; //:object
 	togglable; //:boolean
+	height; //:number
+	autoSwitch; //:boolean
 	windowPointerup; //:function
 	windowPointermove; //:function
 
@@ -131,7 +133,7 @@ export class ParamList extends HTMLElement {
 			const result = object.parse(item, data, i);
 			switch (typeof result) {
 				case 'string': {
-					const li = document.createElement('param-item');
+					const li = document.createElement('param-item') as any;
 					li.addClass('one-column');
 					li.dataValue = i;
 					li.dataItem = item;
@@ -140,7 +142,7 @@ export class ParamList extends HTMLElement {
 					continue;
 				}
 				case 'object': {
-					const li = document.createElement('param-item');
+					const li = document.createElement('param-item') as any;
 					li.dataValue = i;
 					li.dataItem = item;
 					elements[elements.count++] = li;
@@ -195,7 +197,7 @@ export class ParamList extends HTMLElement {
 		}
 
 		// 创建空项目
-		const li = document.createElement('param-item');
+		const li = document.createElement('param-item') as any;
 		const unit = length === 1 ? 'item' : 'items';
 		li.addClass('weak');
 		li.dataValue = length;
@@ -265,7 +267,7 @@ export class ParamList extends HTMLElement {
 		start = Math.clamp(start, 0, count - 1);
 		end = Math.clamp(end, 0, count - 1);
 		if (start !== end) {
-			const element = elements[end];
+			const element = elements[end] as any;
 			if (!element.dataItem) {
 				end--;
 			}
@@ -407,7 +409,7 @@ export class ParamList extends HTMLElement {
 	edit() {
 		if (this.start !== null) {
 			const elements = this.elements;
-			const element = elements[this.start];
+			const element = elements[this.start] as any;
 			this.inserting = element.dataItem === null;
 			switch (this.inserting) {
 				case true:
@@ -491,7 +493,7 @@ export class ParamList extends HTMLElement {
 			const end = this.end + 1;
 			const copies = data.slice(start, end);
 			if (copies.length > 0) {
-				Clipboard.write(this.type, copies);
+				(Clipboard as any).write(this.type, copies);
 			}
 		}
 	}
@@ -499,7 +501,7 @@ export class ParamList extends HTMLElement {
 	// 粘贴项目
 	paste() {
 		if (this.start !== null) {
-			const copies = Clipboard.read(this.type);
+			const copies = (Clipboard as any).read(this.type);
 			if (copies) {
 				const data = this.data;
 				const start = this.start;
@@ -630,7 +632,7 @@ export class ParamList extends HTMLElement {
 			this.windowPointerup(this.dragging);
 		}
 		if (this.focusing) {
-			let element = this;
+			let element: any = this;
 			while ((element = element.parentNode)) {
 				if (element instanceof WindowFrame) {
 					if (element.hasClass('blur')) {
@@ -754,8 +756,8 @@ export class ParamList extends HTMLElement {
 					event.itemHeight = element.clientHeight;
 					window.on('pointerup', this.windowPointerup);
 					window.on('pointermove', this.windowPointermove);
-					this.addScrollListener('vertical', 2, true, () => {
-						this.windowPointermove(event.latest);
+					(this as any).addScrollListener('vertical', 2, true, () => {
+						this.windowPointermove((event as any).latest);
 					});
 				}
 				break;
@@ -793,10 +795,10 @@ export class ParamList extends HTMLElement {
 			case 2:
 				if (this.start !== null && document.activeElement === this) {
 					const elements = this.elements;
-					const element = elements[this.start];
+					const element = elements[this.start] as any;
 					const valid = !!element.dataItem;
 					const editable = this.start === this.end;
-					const pastable = Clipboard.has(this.type);
+					const pastable = (Clipboard as any).has(this.type);
 					const allSelectable = this.data.length > 0;
 					const undoable = this.history.canUndo();
 					const redoable = this.history.canRedo();
@@ -909,37 +911,39 @@ export class ParamList extends HTMLElement {
 
 	// 窗口 - 指针弹起事件
 	static windowPointerup(event) {
-		const { dragging } = this;
+		const self = this as any;
+		const { dragging } = self;
 		if (dragging.relate(event)) {
 			switch (dragging.mode) {
 				case 'select':
-					this.removeScrollListener();
+					self.removeScrollListener();
 					break;
 			}
-			this.dragging = null;
-			window.off('pointerup', this.windowPointerup);
-			window.off('pointermove', this.windowPointermove);
+			self.dragging = null;
+			window.off('pointerup', self.windowPointerup);
+			window.off('pointermove', self.windowPointermove);
 		}
 	}
 
 	// 窗口 - 指针移动事件
 	static windowPointermove(event) {
-		const { dragging } = this;
+		const self = this as any;
+		const { dragging } = self;
 		if (dragging.relate(event)) {
 			switch (dragging.mode) {
 				case 'select': {
 					dragging.latest = event;
-					const elements = this.elements;
+					const elements = self.elements;
 					const count = elements.count;
 					if (count > 0) {
-						const pt = this.paddingTop;
+						const pt = self.paddingTop;
 						const { itemHeight } = dragging;
-						const { y } = event.getRelativeCoords(this);
+						const { y } = event.getRelativeCoords(self);
 						const line = Math.floor((y - pt) / itemHeight);
 						const index = Math.clamp(line, 0, count - 1);
 						if (dragging.itemIndex !== index) {
 							dragging.itemIndex = index;
-							this.selectMultiple(index);
+							self.selectMultiple(index);
 						}
 					}
 					break;

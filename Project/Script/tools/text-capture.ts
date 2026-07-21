@@ -119,7 +119,8 @@ Selection.addEventListeners = function (element) {
 
 // 匹配标签
 Selection.match = function () {
-	const target = document.activeElement;
+	const target = document.activeElement as
+		HTMLInputElement | HTMLTextAreaElement;
 	if (typeof target.selectionStart !== 'number') {
 		return;
 	}
@@ -237,7 +238,7 @@ Selection.match = function () {
 			tag = 'image';
 			params = { mode, image, clip, width, height };
 		} else {
-			const wrap = target.parentNode;
+			const wrap = target.parentNode as HTMLElement;
 			const menu = wrap.getAttribute('menu');
 			if (menu?.includes('tag-local-var')) {
 				if ((match = string.match(this.regexps.local))) {
@@ -284,7 +285,8 @@ Selection.match = function () {
 
 // 插入标签
 Selection.insert = function (tag) {
-	const target = document.activeElement;
+	const target = document.activeElement as
+		HTMLInputElement | HTMLTextAreaElement;
 	if (typeof target.selectionStart === 'number') {
 		this.target = target;
 		this.inserting = true;

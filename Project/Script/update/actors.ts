@@ -20,7 +20,7 @@ Updater.updateActors = function (verNum) {
 			}
 			const dActor = Inspector.fileActor.create();
 			for (const key of keys) {
-				if (key in sActor) {
+				if (key in (sActor as any)) {
 					dActor[key] = sActor[key];
 					continue;
 				}

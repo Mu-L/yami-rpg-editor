@@ -15,6 +15,7 @@ Particle.Layer = class ParticleLayer {
 	unitWidth; //:number
 	unitHeight; //:number
 	elapsed; //:number
+	easing; //:object
 	capacity; //:number
 	count; //:number
 	stocks; //:number
@@ -342,6 +343,10 @@ Particle.Layer = class ParticleLayer {
 			this.texture = null;
 		}
 	}
+
+	// 静态 - 共享数组缓存
+	static _sharedUint32A;
+	static _sharedUint32B;
 
 	// 静态 - 同时存在的最大粒子数量
 	static maximum = 1000;

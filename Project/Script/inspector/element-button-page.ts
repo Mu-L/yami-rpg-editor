@@ -433,7 +433,7 @@ import { UI } from '../ui/ui-window.ts';
 			case 'textEffect-type':
 				if (node.textEffect.type !== value) {
 					const read = getElementReader('uiButton-textEffect');
-					const textEffect = { type: value };
+					const textEffect: any = { type: value };
 					switch (value) {
 						case 'none':
 							break;

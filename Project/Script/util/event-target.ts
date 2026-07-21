@@ -42,7 +42,7 @@
 	};
 
 	// 事件目标方法 - 添加事件
-	EventTarget.prototype.on = function (type, listener, options) {
+	EventTarget.prototype.on = function (type, listener, options?) {
 		switch (type) {
 			case 'doubleclick':
 				this.addEventListener('pointerdown', pointerdown);
@@ -55,7 +55,7 @@
 	};
 
 	// 事件目标方法 - 删除事件
-	EventTarget.prototype.off = function (type, listener, options) {
+	EventTarget.prototype.off = function (type, listener, options?) {
 		switch (type) {
 			case 'doubleclick':
 				this.removeEventListener('pointerdown', pointerdown, options);

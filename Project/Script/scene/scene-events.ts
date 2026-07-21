@@ -1208,9 +1208,9 @@ Scene.menuPopup = function (event) {
 		this.translationKeyup();
 		const target = this.target;
 		const selected = !!target;
-		const pastable = Clipboard.has('yami.scene.object');
+		const pastable = (Clipboard as any).has('yami.scene.object');
 		const get = Local.createGetter('menuScene');
-		const menuItems = [
+		const menuItems: any[] = [
 			{
 				label: get('create'),
 				enabled: isInScene,
@@ -1606,7 +1606,7 @@ Scene.listRecord = function (event) {
 // 列表 - 菜单弹出事件
 Scene.listPopup = function (event) {
 	const item = event.value;
-	const menuItems = [];
+	const menuItems: any[] = [];
 	const get = Local.createGetter('menuSceneList');
 	let copyable;
 	let pastable;
@@ -1671,12 +1671,12 @@ Scene.listPopup = function (event) {
 				});
 				break;
 		}
-		pastable = Clipboard.has('yami.scene.object');
+		pastable = (Clipboard as any).has('yami.scene.object');
 		deletable = true;
 		renamable = true;
 	} else {
 		copyable = false;
-		pastable = Clipboard.has('yami.scene.object');
+		pastable = (Clipboard as any).has('yami.scene.object');
 		deletable = false;
 		renamable = false;
 	}

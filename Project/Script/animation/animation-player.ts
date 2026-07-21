@@ -13,6 +13,7 @@ import { Matrix } from '../webgl/matrix2.ts';
 Animation.Player = class AnimationPlayer {
 	visible; //:boolean
 	index; //:number
+	cycleIndex; //:number
 	length; //:number
 	end; //:number
 	loopStart; //:number
@@ -540,7 +541,7 @@ Animation.Player = class AnimationPlayer {
 		// 销毁上下文的粒子发射器
 		this.destroyContextEmitters();
 		// 销毁编辑器元素
-		for (const motion of Object.values(this.motions)) {
+		for (const motion of Object.values(this.motions) as any[]) {
 			for (const dirCase of motion.dirCases) {
 				if (dirCase.loaded === undefined) continue;
 				delete dirCase.loaded;
@@ -728,7 +729,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 静态 - 上下文方法 - 重置
-	static contextReset() {
+	static contextReset(this: any) {
 		const parent = this.parent;
 		const matrix = this.matrix;
 		if (parent !== null) {
@@ -742,7 +743,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 静态 - 上下文方法 - 更新
-	static contextUpdate(frame, time, next) {
+	static contextUpdate(this: any, frame, time, next) {
 		const parent = this.parent;
 		const matrix = this.matrix;
 		if (parent !== null) {
@@ -776,7 +777,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 静态 - 上下文方法 - 更新精灵
-	static contextUpdateSprite(frame, time, next) {
+	static contextUpdateSprite(this: any, frame, time, next) {
 		AnimationPlayer.contextUpdate.call(this, frame, time, next);
 		// 读取锚点、轴点、色调
 		let anchorX = frame.anchorX;
@@ -820,7 +821,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 静态 - 上下文方法 - 更新粒子
-	static contextUpdateParticle(frame, time, next) {
+	static contextUpdateParticle(this: any, frame, time, next) {
 		AnimationPlayer.contextUpdate.call(this, frame, time, next);
 		// 获取或创建粒子发射器
 		let emitter = this.emitter;

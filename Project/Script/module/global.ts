@@ -65,7 +65,10 @@ EventBus.once('editor_loaded', () => {
 });
 
 export let PackMeta = JSON.parse(
-	nodeFs.readFileSync(Path.join(__dirname, 'Script/module', 'packmeta.json'))
+	nodeFs.readFileSync(
+		Path.join(__dirname, 'Script/module', 'packmeta.json'),
+		'utf-8'
+	)
 ); // 资源 meta 信息
 
 export const TemplatesPath = Path.resolve(GlobalPath, 'Templates'); // 模板路径
@@ -142,7 +145,7 @@ NewProject.confirm = function () {
 			NoResourceObj['arpg-ts-english'].check) ||
 		(template == 'arpg-ts-chinese' &&
 			NoResourceObj['arpg-ts-chinese'].check) ||
-		template != ['arpg-ts-english', 'arpg-ts-chinese']
+		template != (['arpg-ts-english', 'arpg-ts-chinese'] as any)
 	) {
 		TitleConfirmOld.call(Title);
 	} else {
@@ -250,7 +253,7 @@ export function find_dItem(fn) {
 // 列表 - 粘贴（延迟到应用加载完成，避免循环依赖 TDZ）
 EventBus.once('editor_loaded', () => {
 	Scene.list.paste = function (dItem, callback) {
-		const copy = Clipboard.read('yami.scene.object');
+		const copy = (Clipboard as any).read('yami.scene.object');
 		if (copy && this.data) {
 			switch (copy.class) {
 				case 'tilemap':
@@ -274,7 +277,7 @@ EventBus.once('editor_loaded', () => {
 
 	// 列表 - 粘贴
 	Enum.list.paste = function () {
-		const copy = Clipboard.read('yami.data.enumeration');
+		const copy = (Clipboard as any).read('yami.data.enumeration');
 		if (copy) {
 			// 只有冲突时进行更换ID
 			// 支持跨项目复制保留ID
@@ -292,7 +295,7 @@ EventBus.once('editor_loaded', () => {
 
 	// 列表 - 粘贴
 	Variable.list.paste = function () {
-		const copy = Clipboard.read('yami.data.variable');
+		const copy = (Clipboard as any).read('yami.data.variable');
 		if (copy) {
 			// 只有冲突时进行更换ID
 			// 支持跨项目复制保留ID
@@ -310,7 +313,7 @@ EventBus.once('editor_loaded', () => {
 
 	// 列表 - 粘贴
 	Attribute.list.paste = function () {
-		const copy = Clipboard.read('yami.data.attribute');
+		const copy = (Clipboard as any).read('yami.data.attribute');
 		if (copy) {
 			// 只有冲突时进行更换ID
 			// 支持跨项目复制保留ID
@@ -328,7 +331,7 @@ EventBus.once('editor_loaded', () => {
 
 	// 列表 - 粘贴
 	Localization.list.paste = function () {
-		const copy = Clipboard.read('yami.data.localization');
+		const copy = (Clipboard as any).read('yami.data.localization');
 		if (copy) {
 			// 只有冲突时进行更换ID
 			// 支持跨项目复制保留ID
@@ -345,7 +348,7 @@ EventBus.once('editor_loaded', () => {
 
 	// 列表 - 粘贴
 	UI.list.paste = function (_, callback) {
-		const copy = Clipboard.read('yami.ui.object');
+		const copy = (Clipboard as any).read('yami.ui.object');
 		if (copy && this.data) {
 			callback?.(copy);
 			this.addNodeTo(copy, UI.target);

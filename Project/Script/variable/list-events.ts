@@ -40,11 +40,11 @@ Variable.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
 	const copyable = selected && item.class !== 'folder';
-	const pastable = Clipboard.has('yami.data.variable');
+	const pastable = (Clipboard as any).has('yami.data.variable');
 	const undoable = Variable.history.canUndo();
 	const redoable = Variable.history.canRedo();
 	const get = Local.createGetter('menuVariableList');
-	const items = [
+	const items: any[] = [
 		{
 			label: get('create'),
 			submenu: [

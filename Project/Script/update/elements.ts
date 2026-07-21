@@ -32,7 +32,7 @@ Updater.updateElements = function (verNum) {
 			if (meta === undefined) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
-			forEachElement(ui.nodes, replacer, meta);
+			forEachElement((ui as any).nodes, replacer, meta);
 		}
 	};
 	// 更新到1.0.40版本

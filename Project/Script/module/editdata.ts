@@ -105,10 +105,8 @@ export const EditDataInstance = new (class {
 				const result = new (class {
 					id = vaild.id;
 					params = vaild.params;
+					commands = vaild.commands;
 				})();
-				if (vaild.commands) {
-					result.commands = vaild.commands;
-				}
 				return result;
 			}
 			if (Array.isArray(vaild) && vaild.every((v) => v.id && v.params)) {
@@ -116,10 +114,8 @@ export const EditDataInstance = new (class {
 					const result = new (class {
 						id = v.id;
 						params = v.params;
+						commands = v.commands;
 					})();
-					if (v.commands) {
-						result.commands = v.commands;
-					}
 					return result;
 				});
 			}
@@ -200,7 +196,7 @@ export const EditDataInstance = new (class {
 		const options = this.colorOptions;
 		text.textContent = code;
 		options.theme = Title.theme;
-		this.createTheme(Title.theme);
+		(this as any).createTheme(Title.theme);
 		monaco.editor.colorizeElement(text, options);
 		let index = setInterval(() => {
 			if (text.children.length !== 0) {
@@ -222,7 +218,7 @@ export const EditDataInstance = new (class {
 		if (!this.isCreated) {
 			this.isCreated = true;
 			const { theme } = Title;
-			Command.cases.script.createTheme(theme);
+			(Command.cases as any).script.createTheme(theme);
 			// 假设monaco对象已加载完毕
 			this.editor = monaco.editor.create(this.editorDom, {
 				language: 'json',
@@ -244,9 +240,9 @@ export const EditDataInstance = new (class {
 				overviewRulerBorder: false,
 				hideCursorInOverviewRuler: true,
 				automaticLayout: false,
-				hover: false,
+				hover: false as any,
 				lightbulb: {
-					enabled: false
+					enabled: false as any
 				},
 				minimap: {
 					enabled: false
