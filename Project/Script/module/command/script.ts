@@ -139,7 +139,7 @@ Command.cases.script = new CommandSchema({
 				}
 				script = script.res;
 			}
-		} catch (error) {
+		} catch (error: any) {
 			const get = Local.createGetter('confirmation');
 			let continued = false;
 			return Window.confirm(

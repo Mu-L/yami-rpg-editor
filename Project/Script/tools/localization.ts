@@ -140,7 +140,7 @@ Local.setLanguage = async function (language) {
 				this.active = filename;
 				this.language = language;
 				window.dispatchEvent(new Event('localize'));
-			} catch (error) {
+			} catch (error: any) {
 				console.error(new Error('Failed to load language pack'));
 				Log.throw(error);
 			}

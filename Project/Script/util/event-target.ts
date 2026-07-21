@@ -4,7 +4,13 @@
 	let last = null;
 
 	// 重写鼠标双击事件触发方式
-	const pointerdown = function (event) {
+	const pointerdown = function (
+		this: any,
+		event: PointerEvent & {
+			cmdOrCtrlKey?: boolean;
+			doubleclickProcessed?: boolean;
+		}
+	) {
 		if (
 			!event.cmdOrCtrlKey &&
 			!event.altKey &&
@@ -16,10 +22,15 @@
 				case 0:
 					if (
 						last !== null &&
-						event.target === last.target &&
-						event.timeStamp - last.timeStamp < 500 &&
-						Math.abs(event.clientX - last.clientX) < 4 &&
-						Math.abs(event.clientY - last.clientY) < 4 &&
+						event.target === (last as PointerEvent).target &&
+						event.timeStamp - (last as PointerEvent).timeStamp <
+							500 &&
+						Math.abs(
+							event.clientX - (last as PointerEvent).clientX
+						) < 4 &&
+						Math.abs(
+							event.clientY - (last as PointerEvent).clientY
+						) < 4 &&
 						this.isInContent(event)
 					) {
 						if (
@@ -42,7 +53,12 @@
 	};
 
 	// 事件目标方法 - 添加事件
-	EventTarget.prototype.on = function (type, listener, options?) {
+	EventTarget.prototype.on = function (
+		this: EventTarget,
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	) {
 		switch (type) {
 			case 'doubleclick':
 				this.addEventListener('pointerdown', pointerdown);

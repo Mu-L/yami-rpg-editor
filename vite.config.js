@@ -83,6 +83,7 @@ export default defineConfig({
 				assetFileNames: 'assets/[name]-[hash][extname]'
 			}
 		},
+		minify: false,
 		sourcemap: true
 	},
 
@@ -249,7 +250,7 @@ export default defineConfig({
 	},
 
 	// 旧 Electron 20 + Chromium 90，不踩 esbuild target 语法下限
-	esbuild: {
+	oxc: {
 		target: 'chrome90'
 	}
 });

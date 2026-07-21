@@ -3,7 +3,7 @@
 // 限定取值范围 - 范围不正确时返回较大的数(minimum)
 Math.clamp = (function IIFE() {
 	const { max, min } = Math;
-	return (number, minimum, maximum) => {
+	return (number: number, minimum: number, maximum: number): number => {
 		return max(min(number, maximum), minimum);
 	};
 })();
@@ -11,7 +11,7 @@ Math.clamp = (function IIFE() {
 // 四舍五入到指定小数位
 Math.roundTo = (function IIFE() {
 	const { round } = Math;
-	return (number, decimalPlaces) => {
+	return (number: number, decimalPlaces: number): number => {
 		const ratio = 10 ** decimalPlaces;
 		return round(number * ratio) / ratio;
 	};
@@ -21,7 +21,7 @@ Math.roundTo = (function IIFE() {
 // 比 Math.hypot() 快很多
 Math.dist = (function IIFE() {
 	const { sqrt } = Math;
-	return (x1, y1, x2, y2) => {
+	return (x1: number, y1: number, x2: number, y2: number): number => {
 		return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
 	};
 })();
@@ -29,7 +29,7 @@ Math.dist = (function IIFE() {
 // 计算指定范围的随机值
 Math.randomBetween = (function IIFE() {
 	const { random } = Math;
-	return (value1, value2) => {
+	return (value1: number, value2: number): number => {
 		return value1 + (value2 - value1) * random();
 	};
 })();
@@ -37,7 +37,7 @@ Math.randomBetween = (function IIFE() {
 // 角度转弧度
 Math.radians = (function IIFE() {
 	const factor = Math.PI / 180;
-	return (degrees) => {
+	return (degrees: number): number => {
 		return degrees * factor;
 	};
 })();
@@ -45,13 +45,13 @@ Math.radians = (function IIFE() {
 // 弧度转角度
 Math.degrees = (function IIFE() {
 	const factor = 180 / Math.PI;
-	return (radians) => {
+	return (radians: number): number => {
 		return radians * factor;
 	};
 })();
 
 // 角度取余数 [0, 360)
-Math.modDegrees = (degrees, period = 360) => {
+Math.modDegrees = (degrees: number, period = 360): number => {
 	return degrees >= 0
 		? degrees % period
 		: ((degrees % period) + period) % period;
@@ -60,7 +60,7 @@ Math.modDegrees = (degrees, period = 360) => {
 // 弧度取余数 [0, 2π)
 Math.modRadians = (function IIFE() {
 	const PI2 = Math.PI * 2;
-	return (radians, period = PI2) => {
+	return (radians: number, period = PI2): number => {
 		return radians >= 0
 			? radians % period
 			: ((radians % period) + period) % period;

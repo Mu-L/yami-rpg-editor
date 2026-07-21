@@ -154,7 +154,7 @@ Editor.initialize = async function () {
 		// 加载配置文件
 		this.loadConfig();
 		Layout.manager.switch('home');
-	} catch (error) {
+	} catch (error: any) {
 		Log.throw(error);
 		Window.confirm(
 			{

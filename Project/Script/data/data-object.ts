@@ -165,7 +165,7 @@ Data.loadScene = function (guid) {
 	}).then((code) => {
 		try {
 			return Codec.decodeScene((scenes[guid] = code));
-		} catch (error) {
+		} catch (error: any) {
 			error.message = `${path}\n${error.message}`;
 			throw error;
 		}

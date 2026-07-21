@@ -546,7 +546,7 @@ UpdateLog.loadCommunityReleases = async function () {
 		if (!response.ok) throw new Error('Failed to fetch releases');
 		const releases = await response.json();
 		this.communityItems = this.parseCommunityReleases(releases);
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Failed to load community releases:', error);
 		this.communityItems = [
 			{

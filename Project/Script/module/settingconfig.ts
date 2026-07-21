@@ -10,14 +10,7 @@ import nodePath from 'node:path';
 export const path = nodePath;
 
 export const SettingConfig = new (class {
-	config = {
-		server: null,
-		apkbuild: null,
-		signed: null,
-		other: null,
-		recent: null,
-		github: null
-	} as any;
+	config = {} as any;
 	get homedir() {
 		return GlobalPathForDir;
 	}
@@ -197,6 +190,13 @@ export const SettingConfig = new (class {
 		this.config = JSON.parse(nodeFs.readFileSync(this.configPath, 'utf-8'));
 		// 比对，如果有新增字段，则合并
 		const patch = (_p_obj, _t_obj) => {
+			// 兜底：旧 yami-config.json 中某字段可能为 null（用户手动改或旧版写入），
+			// Reflect.has(null, key) 会抛错中断 load()，导致 this.config 保留初始值、
+			// update() 中 this.config.server.port 裸取报错，setting 窗口值全空。
+			// 这里把 null 子段兜底为 {} 再递归合并。
+			if (_t_obj === null || typeof _t_obj !== 'object') {
+				_t_obj = {};
+			}
 			for (const key in _p_obj) {
 				if (!Reflect.has(_t_obj, key)) {
 					_t_obj[key] = _p_obj[key];

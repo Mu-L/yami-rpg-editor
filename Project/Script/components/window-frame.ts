@@ -39,9 +39,12 @@ export class WindowFrame extends HTMLElement {
 			this.addClass('open');
 			this.computePosition();
 			this.style.zIndex = String(Window.frames.length);
-			if (this.openEventEnabled) {
-				this.dispatchEvent(new Event('open'));
-			}
+			// 始终 dispatch 'open' 事件：旧版依赖 openEventEnabled 标志（由 on('open') 设置），
+			// 但 settingconfig.ts 等模块在 constructor 期绑定事件时，#setting 元素可能尚未
+			// 升级为 WindowFrame 实例（customElements 升级异步），会调到 EventTarget.prototype.on
+			// 的 default 分支（addEventListener），openEventEnabled 未被置 true，dispatch 被跳过，
+			// 导致窗口值加载回调不执行。始终 dispatch 可绕过升级时序问题。
+			this.dispatchEvent(new Event('open'));
 			if (this.resizeEventEnabled && this.hasClass('maximized')) {
 				this.dispatchEvent(new Event('resize'));
 				window.on('resize', this.windowResize);

@@ -130,7 +130,7 @@ Timer.appendUpdater = null;
 Timer.removeUpdater = null;
 
 // 初始化
-Timer.initialize = function () {
+Timer.initialize = function (this: typeof Timer) {
 	// 设置初始参数
 	this.timestamp = 0;
 	this.deltaTime = 0;
@@ -140,20 +140,20 @@ Timer.initialize = function () {
 
 	// 监测其他窗口的状态
 	// 在最大化时停止播放动画
-	const windowOpen = (event) => {
+	const windowOpen = (event: any) => {
 		if (event.target.hasClass('maximized')) {
 			this.animationWaiting++;
 		}
 	};
-	const windowClosed = (event) => {
+	const windowClosed = (event: any) => {
 		if (event.target.hasClass('maximized')) {
 			this.animationWaiting--;
 		}
 	};
-	const windowMaximize = (event) => {
+	const windowMaximize = (event: any) => {
 		this.animationWaiting++;
 	};
-	const windowUnmaximize = (event) => {
+	const windowUnmaximize = (event: any) => {
 		this.animationWaiting--;
 	};
 	const windows = $('#event, #selector, #imageClip');
@@ -164,13 +164,13 @@ Timer.initialize = function () {
 };
 
 // 开始动画
-Timer.start = function (timestamp) {
+Timer.start = function (timestamp: number) {
 	Timer.timestamp = timestamp - Timer.deltaTime;
 	Timer.update(timestamp);
 };
 
 // 更新动画
-Timer.update = function (timestamp) {
+Timer.update = function (timestamp: number) {
 	let deltaTime = timestamp - Timer.timestamp;
 
 	// 计算FPS相关数据
@@ -244,14 +244,18 @@ Timer.update = function (timestamp) {
 };
 
 // 播放动画
-Timer.play = function () {
+Timer.play = function (this: typeof Timer) {
 	if (this.animationIndex === -1) {
 		this.animationIndex = requestAnimationFrame(this.start);
 	}
 };
 
 // 添加更新器
-Timer.appendUpdater = function (key, updater) {
+Timer.appendUpdater = function (
+	this: typeof Timer,
+	key: string,
+	updater: (deltaTime: number) => void
+) {
 	const updaters = this.updaters;
 	if (updaters[key] === null) {
 		updaters[key] = updater;
@@ -260,7 +264,11 @@ Timer.appendUpdater = function (key, updater) {
 };
 
 // 移除更新器
-Timer.removeUpdater = function (key, updater) {
+Timer.removeUpdater = function (
+	this: typeof Timer,
+	key: string,
+	updater: (deltaTime: number) => void
+) {
 	const updaters = this.updaters;
 	if (updaters[key] === updater) {
 		updaters[key] = null;

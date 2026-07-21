@@ -2,16 +2,17 @@
 
 // 画布上下文方法 - 绘制图像必要时缩小使之包含于画布
 CanvasRenderingContext2D.prototype.drawAndFitImage = function (
+	this: CanvasRenderingContext2D,
 	image: CanvasImageSource & { width: number; height: number },
 	sx: number = 0,
 	sy: number = 0,
 	sw: number = image.width,
 	sh: number = image.height
-) {
+): void {
 	const width = this.canvas.width;
 	const height = this.canvas.height;
-	let dw;
-	let dh;
+	let dw: number;
+	let dh: number;
 	if (sw <= width && sh <= height) {
 		dw = sw;
 		dh = sh;

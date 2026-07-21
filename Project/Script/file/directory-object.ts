@@ -215,7 +215,7 @@ Directory.readdir = (function IIFE() {
 				} else {
 					dir.push({ name, path });
 				}
-			} catch (error) {
+			} catch (error: any) {
 				// 拖拽在外部被删除的文件会抛出此错误
 				console.log(error);
 			}

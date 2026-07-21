@@ -32,7 +32,7 @@ Editor.saveConfig = function () {
 				Log.throw(error);
 			});
 		}
-	} catch (error) {
+	} catch (error: any) {
 		Log.throw(error);
 	}
 };

@@ -122,7 +122,7 @@ File.get = function (descriptor) {
 					} else {
 						resolve(content);
 					}
-				} catch (error) {
+				} catch (error: any) {
 					reject(new URIError(path));
 				}
 			});

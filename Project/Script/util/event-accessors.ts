@@ -35,9 +35,9 @@ Object.defineProperties(Event.prototype, {
 // 获取Ctrl组合键名称
 export const ctrl =
 	process.platform === 'darwin'
-		? function (keyName) {
+		? function (keyName: string): string {
 				return '⌘+' + keyName;
 			}
-		: function (keyName) {
+		: function (keyName: string): string {
 				return 'Ctrl+' + keyName;
 			};

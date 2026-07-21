@@ -6,14 +6,14 @@
 	let osdragging = false;
 
 	// 拖拽开始事件 - 阻止拖拽元素
-	const dragstart = function (event) {
+	const dragstart = function (event: DragEvent): void {
 		dragging = true;
 		event.preventDefault();
 		window.on('pointerup', pointerup);
 	};
 
 	// 拖拽结束事件 - 比指针弹起事件优先执行
-	const dragend = function (event) {
+	const dragend = function (event: DragEvent): void {
 		if (dragging) {
 			dragging = false;
 			window.off('pointerup', pointerup);
@@ -21,7 +21,7 @@
 	};
 
 	// 指针弹起事件 - 拖拽被阻止时的备用方案
-	const pointerup = function (event) {
+	const pointerup = function (event: PointerEvent): void {
 		if (dragging) {
 			dragging = false;
 			window.off('pointerup', pointerup);
@@ -29,7 +29,7 @@
 	};
 
 	// 拖拽进入事件
-	const dragenter = function (event) {
+	const dragenter = function (event: DragEvent): void {
 		if (!dragging && !osdragging && !event.relatedTarget) {
 			osdragging = true;
 			window.dispatchEvent(new DragEvent('os-dragstart'));
@@ -40,7 +40,7 @@
 	};
 
 	// 拖拽离开事件
-	const dragleave = function (event) {
+	const dragleave = function (event: DragEvent): void {
 		if (osdragging && !event.relatedTarget) {
 			osdragging = false;
 			window.dispatchEvent(new DragEvent('os-dragend'));
@@ -51,13 +51,13 @@
 	};
 
 	// 拖拽悬停事件
-	const dragover = function (event) {
+	const dragover = function (event: DragEvent): void {
 		event.preventDefault();
 	};
 
 	// 拖拽释放事件
 	// 停止冒泡会拦截该事件
-	const drop = function (event) {
+	const drop = function (event: DragEvent): void {
 		if (osdragging) {
 			osdragging = false;
 			window.dispatchEvent(new DragEvent('os-dragend'));

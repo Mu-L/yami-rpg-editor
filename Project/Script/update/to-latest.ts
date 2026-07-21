@@ -73,7 +73,7 @@ Updater.updateToLatest = function (version) {
 			if (FS.statSync(path).isFile()) {
 				FS.unlinkSync(path);
 			}
-		} catch (error) {}
+		} catch (error: any) {}
 	}
 
 	// 复制TS文件

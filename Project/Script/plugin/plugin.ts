@@ -1152,7 +1152,7 @@ PluginManager.parseMeta = (function IIFE() {
 						// 避免循环继承报错
 						try {
 							Object.setPrototypeOf(map, pack.map);
-						} catch (error) {}
+						} catch (error: any) {}
 					}
 				}
 			}

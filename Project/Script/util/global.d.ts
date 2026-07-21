@@ -29,6 +29,44 @@ interface Array<T> {
 	set(array: Array<T>): void;
 }
 
+// ============== String 扩展 (util/string.ts) ==============
+interface StringConstructor {
+	compress(string: string): string;
+}
+
+// ============== Number 扩展 (util/number.ts) ==============
+interface NumberConstructor {
+	computeIndexDigits(length: number): number;
+	padZero(number: number, length: number, padString?: string): string;
+}
+
+// ============== Object 扩展 (util/object.ts) ==============
+interface ObjectConstructor {
+	empty: Record<string, never>;
+	clone<T>(object: T): T;
+}
+
+// ============== RegExp 扩展 (util/regexp.ts) ==============
+interface RegExpConstructor {
+	number: RegExp;
+}
+
+// ============== MouseEvent 扩展 (util/mouse-event.ts) ==============
+interface MouseEvent {
+	getRelativeCoords(element: HTMLElement): { x: number; y: number };
+}
+
+// ============== PointerEvent 扩展 (util/pointer-event.ts) ==============
+interface PointerEvent {
+	relate(event: PointerEvent): boolean;
+}
+
+// ============== NodeList 扩展 (util/node-list.ts) ==============
+interface NodeList {
+	enable(): void;
+	disable(): void;
+}
+
 // ============== Function 扩展 (util/function.ts) ==============
 interface FunctionConstructor {
 	empty: () => void;
@@ -71,6 +109,9 @@ interface HTMLElement {
 	test(name: string): RegExp;
 	seek(name: string): HTMLElement | null;
 	direction: number;
+	// ScrollBar / CommandList 共用的滚动监听方法（scroll-listener.ts 中挂载到 HTMLElement.prototype）
+	addScrollListener: (...args: any[]) => any;
+	removeScrollListener: (...args: any[]) => any;
 }
 
 // ============== TextBox 扩展 (components/text-box.ts + tree-list.ts) ==============

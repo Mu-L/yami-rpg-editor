@@ -40,7 +40,7 @@ Editor.saveProject = function () {
 				Log.throw(error);
 			});
 		}
-	} catch (error) {
+	} catch (error: any) {
 		Log.throw(error);
 		return console.error(error);
 	}

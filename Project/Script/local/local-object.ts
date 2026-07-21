@@ -56,7 +56,7 @@ GameLocal.setLanguage = async function (language) {
 					? 'break'
 					: 'keep'
 			);
-		} catch (error) {
+		} catch (error: any) {
 			Log.throw(error);
 		}
 	}

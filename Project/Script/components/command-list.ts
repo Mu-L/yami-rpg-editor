@@ -38,8 +38,6 @@ export class CommandList extends HTMLElement {
 	varMap: any;
 	windowVariableChange: (event: any) => void;
 	_paddingTop: number;
-	addScrollListener: (...args: any[]) => any;
-	removeScrollListener: (...args: any[]) => any;
 	openEdit: (...args: any[]) => any;
 
 	constructor() {

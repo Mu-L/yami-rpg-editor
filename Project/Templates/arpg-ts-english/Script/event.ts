@@ -1090,7 +1090,7 @@ class ScriptManager {
 	}
 
 	/** 延迟获取函数返回参数的开关 */
-	public static deferredLoading: boolean = false
+	public static deferredLoading: boolean = true
 	/** 延迟获取函数返回参数的数量 */
 	private static deferredCount: number = 0
 	/** 延迟加载的脚本实例列表 */

@@ -3,7 +3,7 @@
 // 事件方法 - 返回相对于元素的坐标
 MouseEvent.prototype.getRelativeCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
-	return function (element) {
+	return function (element: HTMLElement): { x: number; y: number } {
 		const rect = element.getBoundingClientRect();
 		point.x =
 			this.clientX - rect.left - element.clientLeft + element.scrollLeft;

@@ -142,7 +142,7 @@ export const Resources = new (class {
 			if (!response.ok) throw new Error('Failed to fetch announcement');
 			const [{ body }] = await response.json();
 			return body;
-		} catch (error) {
+		} catch (error: any) {
 			console.error('Failed to load community announcement:', error);
 			return '';
 		}
@@ -202,7 +202,7 @@ export const Resources = new (class {
 				return Date.now() - startTime;
 			}
 			return -1;
-		} catch (error) {
+		} catch (error: any) {
 			console.error('Ping failed:', error);
 			return -1;
 		}
@@ -329,7 +329,7 @@ export const Resources = new (class {
 				return contentLength ? parseInt(contentLength) : 0;
 			}
 			return 0;
-		} catch (error) {
+		} catch (error: any) {
 			console.error('Failed to get file size:', error);
 			return 0;
 		}

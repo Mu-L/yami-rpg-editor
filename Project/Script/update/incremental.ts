@@ -101,7 +101,7 @@ Updater.updateIncrementalChanges = function (version) {
 					FS.copyFileSync(srcPath, dstPath);
 					this.logReplace(dstPath);
 				}
-			} catch (error) {
+			} catch (error: any) {
 				console.error(error);
 			}
 		}

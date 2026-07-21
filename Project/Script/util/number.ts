@@ -1,12 +1,16 @@
 // ******************************** 数字静态方法 ********************************
 
 // 数字静态方法 - 计算索引位数
-Number.computeIndexDigits = function (length) {
+Number.computeIndexDigits = function (length: number): number {
 	return Math.floor(Math.log10(Math.max(length - 1, 1))) + 1;
 };
 
 // 数字静态方法 - 填充零
-Number.padZero = function (number, length, padString = '0') {
+Number.padZero = function (
+	number: number,
+	length: number,
+	padString = '0'
+): string {
 	const digits = Number.computeIndexDigits(length);
 	return number.toString().padStart(digits, padString);
 };

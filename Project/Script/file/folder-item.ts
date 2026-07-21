@@ -130,7 +130,7 @@ export class FolderItem {
 							})
 						);
 					}
-				} catch (error) {
+				} catch (error: any) {
 					console.warn(error);
 					continue;
 				}

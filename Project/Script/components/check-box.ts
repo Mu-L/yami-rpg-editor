@@ -1,12 +1,12 @@
 ﻿// ******************************** 复选框 ********************************
 
 export class CheckBox extends HTMLElement {
-	dataValue; //:boolean
-	relations; //:array
-	writeEventEnabled; //:boolean
-	inputEventEnabled; //:boolean
+	dataValue = false; //:boolean
+	relations: HTMLElement[] = [];
+	writeEventEnabled = false; //:boolean
+	inputEventEnabled = false; //:boolean
 
-	constructor(standard) {
+	constructor(standard?: boolean) {
 		super();
 
 		// 设置属性
@@ -35,12 +35,12 @@ export class CheckBox extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): boolean {
 		return this.dataValue;
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: boolean): void {
 		this.dataValue = !!value;
 		this.dataValue
 			? this.addClass('selected')
@@ -50,20 +50,20 @@ export class CheckBox extends HTMLElement {
 		}
 		if (this.writeEventEnabled) {
 			const write = new Event('write');
-			write.value = this.dataValue;
+			(write as any).value = this.dataValue;
 			this.dispatchEvent(write);
 		}
 	}
 
 	// 输入数据
-	input(value) {
+	input(value: boolean): void {
 		if (this.dataValue !== value) {
 			this.write(value);
 			if (this.inputEventEnabled) {
 				const input = new Event('input', {
 					bubbles: true
 				});
-				input.value = this.dataValue;
+				(input as any).value = this.dataValue;
 				this.dispatchEvent(input);
 			}
 			this.dispatchChangeEvent();
@@ -71,40 +71,44 @@ export class CheckBox extends HTMLElement {
 	}
 
 	// 启用元素
-	enable() {
+	enable(): void {
 		if (this.removeClass('disabled')) {
 			this.toggleRelatedElements();
 		}
 	}
 
 	// 禁用元素
-	disable() {
+	disable(): void {
 		if (this.addClass('disabled')) {
 			this.toggleRelatedElements();
 		}
 	}
 
 	// 添加相关元素
-	relate(elements) {
+	relate(elements: HTMLElement[]): void {
 		this.relations = elements;
 	}
 
 	// 启用或禁用相关元素
-	toggleRelatedElements() {
+	toggleRelatedElements(): void {
 		if (!this.hasClass('disabled') && this.dataValue) {
 			for (const element of this.relations) {
-				element.enable();
+				(element as any).enable();
 			}
 		} else {
 			for (const element of this.relations) {
-				element.disable();
+				(element as any).disable();
 			}
 		}
 	}
 
 	// 添加事件
-	on(type, listener, options) {
-		super.on(type, listener, options);
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
+		HTMLElement.prototype.on.call(this as any, type, listener, options);
 		switch (type) {
 			case 'write':
 				this.writeEventEnabled = true;
@@ -116,7 +120,7 @@ export class CheckBox extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: KeyboardEvent & { cmdOrCtrlKey?: boolean }): void {
 		switch (event.code) {
 			case 'Enter':
 			case 'NumpadEnter':
@@ -129,7 +133,7 @@ export class CheckBox extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
 				if (document.activeElement !== document.body) {
@@ -141,9 +145,9 @@ export class CheckBox extends HTMLElement {
 	}
 
 	// 鼠标点击事件
-	mouseclick(event) {
+	mouseclick(event: Event): void {
 		this.input(!this.read());
 	}
 }
 
-customElements.define('check-box', CheckBox);
+customElements.define('check-box', CheckBox as any);
