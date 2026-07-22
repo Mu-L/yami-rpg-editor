@@ -100,6 +100,6 @@ export const getElementWriter = function (
 				value = value[node];
 			}
 		}
-		$(`#${prefix}-${suffix}`).write(value);
+		($(`#${prefix}-${suffix}`) as HTMLElement).write(value);
 	};
 };

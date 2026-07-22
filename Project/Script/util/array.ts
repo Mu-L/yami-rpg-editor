@@ -20,7 +20,7 @@ Array.subtract = function <T>(a: T[], b: T[]): T[] {
 // 数组方法 - 添加
 Object.defineProperty(Array.prototype, 'append', {
 	enumerable: false,
-	value: function (this: any[], value: any): boolean {
+	value: function <T>(this: T[], value: T): boolean {
 		if (this.indexOf(value) === -1) {
 			this.push(value);
 			return true;
@@ -32,7 +32,7 @@ Object.defineProperty(Array.prototype, 'append', {
 // 数组方法 - 移除
 Object.defineProperty(Array.prototype, 'remove', {
 	enumerable: false,
-	value: function (this: any[], value: any): boolean {
+	value: function <T>(this: T[], value: T): boolean {
 		const index = this.indexOf(value);
 		if (index !== -1) {
 			this.splice(index, 1);
@@ -45,7 +45,7 @@ Object.defineProperty(Array.prototype, 'remove', {
 // 数组方法 - 设置
 Object.defineProperty(Array.prototype, 'set', {
 	enumerable: false,
-	value: function (this: any[], array: any[]): void {
+	value: function <T>(this: T[], array: Array<T>): void {
 		const length = Math.min(this.length, array.length);
 		for (let i = 0; i < length; i++) {
 			this[i] = array[i];

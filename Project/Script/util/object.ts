@@ -13,32 +13,36 @@ Object.clone = (function IIFE() {
 		const proto = Object.getPrototypeOf(value);
 		return proto === Object.prototype || proto === null;
 	};
-	const clone = <T>(object: T, seen: WeakMap<object, any>): T => {
+	const clone = <T>(object: T, seen: WeakMap<object, unknown>): T => {
 		// 基础类型与非对象直接返回
 		if (object === null || typeof object !== 'object') return object;
 		// 命中循环引用：返回已克隆的副本，阻断递归
-		if (seen.has(object as object)) return seen.get(object as object);
-		let copy: any;
+		if (seen.has(object as object)) {
+			return seen.get(object as object) as T;
+		}
+		let copy: unknown[] | Record<PropertyKey, unknown>;
 		if (isArray(object)) {
-			copy = new Array((object as any[]).length);
+			const arr = object as unknown[];
+			copy = new Array(arr.length);
 			seen.set(object as object, copy);
-			for (let i = 0; i < (object as any[]).length; i++) {
-				const value = (object as any[])[i];
-				copy[i] = value instanceof Object ? clone(value, seen) : value;
+			for (let i = 0; i < arr.length; i++) {
+				const value = arr[i];
+				(copy as unknown[])[i] =
+					value instanceof Object ? clone(value, seen) : value;
 			}
 		} else if (isPlainObject(object)) {
-			copy = new Object();
+			copy = {} as Record<PropertyKey, unknown>;
 			seen.set(object as object, copy);
-			for (const key in object) {
-				const value = (object as Record<string, any>)[key];
-				copy[key] =
+			for (const key in object as Record<string, unknown>) {
+				const value = (object as Record<string, unknown>)[key];
+				(copy as Record<string, unknown>)[key] =
 					value instanceof Object ? clone(value, seen) : value;
 			}
 		} else {
 			// 非纯对象（类实例、宿主对象等）：原样引用，避免触发其原型链上的 getter/setter 或循环
 			return object;
 		}
-		return copy;
+		return copy as T;
 	};
 	return function <T>(object: T): T {
 		return clone(object, new WeakMap());

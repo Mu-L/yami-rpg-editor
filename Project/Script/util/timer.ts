@@ -145,20 +145,20 @@ Timer.initialize = function (this: typeof Timer) {
 
 	// 监测其他窗口的状态
 	// 在最大化时停止播放动画
-	const windowOpen = (event: any) => {
-		if (event.target.hasClass('maximized')) {
+	const windowOpen = (event: Event) => {
+		if ((event.target as HTMLElement).hasClass('maximized')) {
 			this.animationWaiting++;
 		}
 	};
-	const windowClosed = (event: any) => {
-		if (event.target.hasClass('maximized')) {
+	const windowClosed = (event: Event) => {
+		if ((event.target as HTMLElement).hasClass('maximized')) {
 			this.animationWaiting--;
 		}
 	};
-	const windowMaximize = (event: any) => {
+	const windowMaximize = () => {
 		this.animationWaiting++;
 	};
-	const windowUnmaximize = (event: any) => {
+	const windowUnmaximize = () => {
 		this.animationWaiting--;
 	};
 	const windows = $('#event, #selector, #imageClip');
