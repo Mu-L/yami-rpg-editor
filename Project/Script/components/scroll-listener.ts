@@ -3,15 +3,15 @@
 // ******************************** 滚动侦听器 ********************************
 
 (() => {
-	let target = null;
+	let target: HTMLElement | null = null;
 	let highSpeed = 0;
 	let lowSpeed = 0;
 	let scrollHorizontal = false;
 	let scrollVertical = false;
-	let scrollUpdater = null;
+	let scrollUpdater: (() => void) | null = null;
 
 	// 计算滚动距离
-	const computeScrollDelta = (speed) => {
+	const computeScrollDelta = (speed: number): number => {
 		let delta = speed * Timer.deltaTime;
 		const dpr = window.devicePixelRatio;
 		const tolerance = 0.0001;
@@ -30,32 +30,36 @@
 		duration: Infinity,
 		update: (timer) => {
 			const { speedX, speedY } = timer;
-			const { scrollLeft, scrollTop } = target;
+			const { scrollLeft, scrollTop } = target as HTMLElement & {
+				scrollLeft: number;
+				scrollTop: number;
+			};
 			if (speedX !== 0) {
-				target.scrollLeft += computeScrollDelta(speedX);
+				(target as HTMLElement).scrollLeft +=
+					computeScrollDelta(speedX);
 			}
 			if (speedY !== 0) {
-				target.scrollTop += computeScrollDelta(speedY);
+				(target as HTMLElement).scrollTop += computeScrollDelta(speedY);
 			}
 			if (
-				target.scrollLeft !== scrollLeft ||
-				target.scrollTop !== scrollTop
+				(target as HTMLElement).scrollLeft !== scrollLeft ||
+				(target as HTMLElement).scrollTop !== scrollTop
 			) {
-				scrollUpdater();
+				scrollUpdater?.();
 			}
 		}
 	});
 
 	// 指针移动事件
-	const pointermove = (event) => {
+	const pointermove = (event: PointerEvent) => {
 		const dpr = window.devicePixelRatio;
-		const rect = target.rect();
+		const rect = (target as HTMLElement).rect();
 		const x = event.clientX;
 		const y = event.clientY;
 		const l = rect.left;
 		const t = rect.top;
-		const cr = target.clientWidth + l;
-		const cb = target.clientHeight + t;
+		const cr = (target as HTMLElement).clientWidth + l;
+		const cb = (target as HTMLElement).clientHeight + t;
 		// 对于非100%像素分辨率cr和cb偏大
 		const r = Math.min(rect.right, cr) - dpr;
 		const b = Math.min(rect.bottom, cb) - dpr;
@@ -98,14 +102,24 @@
 	};
 
 	// 添加滚动侦听器
-	(HTMLElement.prototype as any).addScrollListener = function (
-		mode,
-		speed,
-		shift,
-		updater
-	) {
+	(
+		HTMLElement.prototype as HTMLElement & {
+			addScrollListener: (
+				mode: string,
+				speed: number,
+				shift: boolean,
+				updater?: () => void
+			) => void;
+			removeScrollListener: () => void;
+		}
+	).addScrollListener = function (
+		mode: string,
+		speed: number,
+		shift: boolean,
+		updater: () => void
+	): void {
 		target?.removeScrollListener();
-		target = this;
+		target = this as unknown as HTMLElement;
 		switch (mode) {
 			case 'horizontal':
 				scrollHorizontal = true;
@@ -127,8 +141,12 @@
 	};
 
 	// 移除滚动侦听器
-	(HTMLElement.prototype as any).removeScrollListener = function () {
-		if (target !== this) return;
+	(
+		HTMLElement.prototype as HTMLElement & {
+			removeScrollListener: () => void;
+		}
+	).removeScrollListener = function (): void {
+		if (target !== (this as unknown as HTMLElement)) return;
 		if (timer.speedX || timer.speedY) {
 			timer.speedX = 0;
 			timer.speedY = 0;

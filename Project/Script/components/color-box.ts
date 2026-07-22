@@ -27,8 +27,8 @@ export class ColorBox extends HTMLElement {
 		this.inputEventEnabled = false;
 
 		// 侦听事件
-		(this as any).on('keydown', this.keydown);
-		(this as any).on('click', this.mouseclick);
+		this.on('keydown', this.keydown);
+		this.on('click', this.mouseclick);
 	}
 
 	// 读取数据
@@ -53,7 +53,9 @@ export class ColorBox extends HTMLElement {
 		if (this.dataValue !== color) {
 			this.write(color);
 			if (this.inputEventEnabled) {
-				const input: any = new Event('input');
+				const input = new Event('input') as Event & {
+					value: string;
+				};
 				input.value = this.dataValue;
 				this.dispatchEvent(input);
 			}

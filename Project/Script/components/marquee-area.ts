@@ -3,15 +3,15 @@
 // ******************************** 选框区域 ********************************
 
 export class MarqueeArea extends HTMLElement {
-	selection: HTMLElement; //:element
-	x: number; //:number
-	y: number; //:number
-	width: number; //:number
-	height: number; //:number
-	scaleX: number; //:number
-	scaleY: number; //:number
-	visible: boolean; //:boolean
-	saveData: Record<string, any>; //:object
+	selection: HTMLElement;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	scaleX: number;
+	scaleY: number;
+	visible: boolean;
+	saveData: Record<string, any>;
 
 	constructor() {
 		super();

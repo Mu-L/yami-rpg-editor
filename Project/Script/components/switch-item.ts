@@ -1,15 +1,19 @@
 ﻿// ******************************** 开关选项 ********************************
 
 export class SwitchItem extends HTMLElement {
-	dataValue; //:number
-	class; //:string
-	length; //:number
-	inputEventEnabled; //:boolean
+	dataValue: number;
+	class: string;
+	length: number;
+	inputEventEnabled: boolean;
 
 	constructor() {
 		super();
 
-		const length = Math.clamp(parseInt(this.getAttribute('length')), 1, 4);
+		const length = Math.clamp(
+			parseInt(this.getAttribute('length') ?? ''),
+			1,
+			4
+		);
 
 		// 设置属性
 		this.dataValue = 0;
@@ -18,28 +22,32 @@ export class SwitchItem extends HTMLElement {
 		this.inputEventEnabled = false;
 
 		// 侦听事件
-		(this as any).on('pointerdown', this.pointerdown);
+		this.on('pointerdown', this.pointerdown);
 	}
 
 	// 读取数据
-	read() {
+	read(): number {
 		return this.dataValue;
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: number): void {
 		this.dataValue = value;
 		this.update();
 	}
 
 	// 更新样式
-	update() {
+	update(): void {
 		this.removeClass(this.class);
 		this.addClass((this.class = SwitchItem.classes[this.dataValue]));
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'input':
@@ -49,7 +57,7 @@ export class SwitchItem extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0: {
 				this.write((this.dataValue + 1) % this.length);

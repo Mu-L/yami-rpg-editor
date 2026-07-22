@@ -1,8 +1,8 @@
 ﻿// ******************************** 导航栏 ********************************
 
 export class NavBar extends HTMLElement {
-	writeEventEnabled; //:boolean
-	selectEventEnabled; //:boolean
+	writeEventEnabled: boolean;
+	selectEventEnabled: boolean;
 
 	constructor() {
 		super();
@@ -12,11 +12,13 @@ export class NavBar extends HTMLElement {
 		if (elements.length > 0) {
 			let i = elements.length;
 			while (--i >= 0) {
-				const element = elements[i];
+				const element = elements[i] as HTMLElement;
 				if (element.tagName === 'NAV-ITEM') {
-					const string = element.getAttribute('value');
+					const string = element.getAttribute('value') ?? '';
 					const isNumber = RegExp.number.test(string);
-					element.dataValue = isNumber ? parseFloat(string) : string;
+					(element as any).dataValue = isNumber
+						? parseFloat(string)
+						: string;
 				} else {
 					this.removeChild(element);
 				}
@@ -28,7 +30,7 @@ export class NavBar extends HTMLElement {
 		this.selectEventEnabled = false;
 
 		// 侦听事件
-		(this as any).on('pointerdown', this.pointerdown);
+		this.on('pointerdown', this.pointerdown);
 	}
 
 	// 读取数据
@@ -81,7 +83,11 @@ export class NavBar extends HTMLElement {
 	// }
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'write':
@@ -94,18 +100,18 @@ export class NavBar extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0: {
-				const element = event.target;
+				const element = event.target as HTMLElement;
 				if (
 					element.tagName === 'NAV-ITEM' &&
 					!element.hasClass('selected')
 				) {
-					this.write(element.dataValue);
+					this.write((element as any).dataValue);
 					if (this.selectEventEnabled) {
 						const select = new Event('select');
-						select.value = element.dataValue;
+						select.value = (element as any).dataValue;
 						this.dispatchEvent(select);
 					}
 				}

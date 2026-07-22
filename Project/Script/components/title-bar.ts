@@ -3,7 +3,7 @@
 // ******************************** 标题栏 ********************************
 
 export class TitleBar extends HTMLElement {
-	dragging: PointerEvent | null; //:event
+	dragging: PointerEvent | null;
 
 	constructor() {
 		super();
@@ -25,13 +25,19 @@ export class TitleBar extends HTMLElement {
 		switch (event.button) {
 			case 0:
 				if (event.target instanceof TitleBar) {
-					const windowFrame = this.parentNode as any;
+					const windowFrame = this.parentNode as HTMLElement & {
+						rect(): DOMRect;
+						maximize(): void;
+						unmaximize(): void;
+						style: CSSStyleDeclaration;
+						id: string;
+					};
 					const rect = windowFrame.rect();
 					const startX = event.clientX;
 					const startY = event.clientY;
 					const { left, top, width, height } = rect;
 					const pointermove = (event: PointerEvent) => {
-						if ((this.dragging as any).relate(event)) {
+						if ((this.dragging as PointerEvent).relate(event)) {
 							let right = window.innerWidth - width;
 							let bottom = window.innerHeight - height;
 							if (document.body.hasClass('border')) {
@@ -51,7 +57,7 @@ export class TitleBar extends HTMLElement {
 						}
 					};
 					const pointerup = (event: PointerEvent) => {
-						if ((this.dragging as any).relate(event)) {
+						if ((this.dragging as PointerEvent).relate(event)) {
 							cancel();
 						}
 					};
@@ -62,7 +68,9 @@ export class TitleBar extends HTMLElement {
 						window.off('blur', cancel);
 					};
 					this.dragging = event;
-					(event as any).cancel = cancel;
+					(
+						event as PointerEvent & { cancel(event?: Event): void }
+					).cancel = cancel;
 					window.on('pointermove', pointermove);
 					window.on('pointerup', pointerup);
 					window.on('blur', cancel);
@@ -76,7 +84,12 @@ export class TitleBar extends HTMLElement {
 		const target = event.target as HTMLElement;
 		switch (target.tagName) {
 			case 'MAXIMIZE': {
-				const windowFrame = this.parentNode as any;
+				const windowFrame = this.parentNode as HTMLElement & {
+					hasClass(name: string): boolean;
+					maximize(): void;
+					unmaximize(): void;
+					id: string;
+				};
 				if (!windowFrame.hasClass('maximized')) {
 					windowFrame.maximize();
 				} else {
@@ -85,7 +98,9 @@ export class TitleBar extends HTMLElement {
 				break;
 			}
 			case 'CLOSE': {
-				const windowFrame = this.parentNode as any;
+				const windowFrame = this.parentNode as HTMLElement & {
+					id: string;
+				};
 				Window.close(windowFrame.id);
 				break;
 			}
@@ -96,8 +111,14 @@ export class TitleBar extends HTMLElement {
 	doubleclick(event: Event): void {
 		const target = event.target as HTMLElement;
 		if (target instanceof TitleBar && target.querySelector('maximize')) {
-			(this.dragging as any)?.cancel();
-			const windowFrame = this.parentNode as any;
+			(
+				this.dragging as (PointerEvent & { cancel(): void }) | null
+			)?.cancel();
+			const windowFrame = this.parentNode as HTMLElement & {
+				hasClass(name: string): boolean;
+				maximize(): void;
+				unmaximize(): void;
+			};
 			if (!windowFrame.hasClass('maximized')) {
 				windowFrame.maximize();
 			} else {

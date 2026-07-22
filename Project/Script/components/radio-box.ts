@@ -3,8 +3,8 @@
 // ******************************** 单选框 ********************************
 
 export class RadioBox extends HTMLElement {
-	proxy; //:element
-	dataValue; //:any
+	proxy: RadioProxy;
+	dataValue: number | string | boolean;
 
 	constructor() {
 		super();
@@ -19,7 +19,7 @@ export class RadioBox extends HTMLElement {
 			RadioProxy.map[proxy.id] = proxy;
 		}
 
-		const string = this.getAttribute('value');
+		const string = this.getAttribute('value') ?? '';
 		const isNumber = RegExp.number.test(string);
 		const value = isNumber
 			? parseFloat(string)

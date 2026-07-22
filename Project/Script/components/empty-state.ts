@@ -2,7 +2,7 @@
 // 列表/面板为空时的占位提示（通过 message / icon 属性配置）
 
 export class EmptyState extends HTMLElement {
-	connectedCallback() {
+	connectedCallback(): void {
 		if (this.querySelector('.empty-icon') == null) {
 			this.innerHTML =
 				'<div class="empty-icon">' +
@@ -13,18 +13,18 @@ export class EmptyState extends HTMLElement {
 		this._render();
 	}
 
-	static get observedAttributes() {
+	static get observedAttributes(): string[] {
 		return ['message', 'icon'];
 	}
 
-	attributeChangedCallback() {
+	attributeChangedCallback(): void {
 		if (this.querySelector('.empty-text') != null) {
 			this._render();
 		}
 	}
 
 	// 默认内联 SVG 图标（避免依赖外部资源与 emoji）
-	_icon() {
+	_icon(): string {
 		return (
 			'<svg viewBox="0 0 24 24" width="48" height="48" ' +
 			'fill="none" stroke="currentColor" stroke-width="1.5">' +
@@ -33,7 +33,7 @@ export class EmptyState extends HTMLElement {
 		);
 	}
 
-	_render() {
+	_render(): void {
 		const iconAttr = this.getAttribute('icon');
 		const msg =
 			this.getAttribute('message') || this.getAttribute('label') || '';

@@ -41,7 +41,9 @@ export class KeyboardBox extends HTMLElement {
 		if (this.dataValue !== code) {
 			this.write(code);
 			if (this.inputEventEnabled) {
-				const input: any = new InputEvent('input');
+				const input = new InputEvent('input') as InputEvent & {
+					value: number;
+				};
 				input.value = this.dataValue;
 				this.dispatchEvent(input);
 			}

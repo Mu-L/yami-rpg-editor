@@ -30,13 +30,25 @@ export class FilterBox extends HTMLElement {
 			canvas = document.createElement('canvas');
 			canvas.width = parseInt(this.getAttribute('width') || '0');
 			canvas.height = parseInt(this.getAttribute('height') || '0');
-			const ctx = canvas.getContext('2d') as any;
-			(canvas as any).context = ctx;
+			const ctx = canvas.getContext('2d') as CanvasRenderingContext2D & {
+				gradient?: CanvasGradient;
+			};
+			(
+				canvas as HTMLCanvasElement & {
+					context: CanvasRenderingContext2D & {
+						gradient?: CanvasGradient;
+					};
+				}
+			).context = ctx;
 			this.appendChild((this.canvas = canvas));
 		}
 
 		// 绘制垂直渐变色带
-		const { context, width, height } = canvas as any;
+		const { context, width, height } = canvas as HTMLCanvasElement & {
+			context: CanvasRenderingContext2D & {
+				gradient?: CanvasGradient;
+			};
+		};
 		const [red, green, blue, gray] = this.dataValue as number[];
 		if (!context.gradient) {
 			const gradient = context.createLinearGradient(0, 0, 0, height);

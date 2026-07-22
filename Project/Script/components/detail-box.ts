@@ -4,7 +4,7 @@
 
 // 默认 details 的子元素无法正确获得 css 百分比高度属性
 export class DetailBox extends HTMLElement {
-	toggleEventEnabled; //:boolean
+	toggleEventEnabled: boolean;
 
 	constructor() {
 		super();
@@ -14,7 +14,7 @@ export class DetailBox extends HTMLElement {
 	}
 
 	// 开关窗口
-	toggle() {
+	toggle(): void {
 		if (this.hasAttribute('open')) {
 			this.close();
 		} else {
@@ -23,12 +23,12 @@ export class DetailBox extends HTMLElement {
 	}
 
 	// 打开窗口
-	open() {
+	open(): void {
 		if (!this.hasAttribute('open')) {
 			this.setAttribute('open', '');
 			for (const node of this.children) {
 				if (!(node instanceof DetailSummary)) {
-					node.show();
+					(node as HTMLElement).show();
 				}
 			}
 			if (this.toggleEventEnabled) {
@@ -40,12 +40,12 @@ export class DetailBox extends HTMLElement {
 	}
 
 	// 关闭窗口
-	close() {
+	close(): void {
 		if (this.hasAttribute('open')) {
 			this.removeAttribute('open');
 			for (const node of this.children) {
 				if (!(node instanceof DetailSummary)) {
-					node.hide();
+					(node as HTMLElement).hide();
 				}
 			}
 			if (this.toggleEventEnabled) {
@@ -57,7 +57,11 @@ export class DetailBox extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'toggle':

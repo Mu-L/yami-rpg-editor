@@ -13,12 +13,12 @@ Object.defineProperty(HTMLElement.prototype, 'name', {
 // 元素访问器 - 内部高度
 Object.defineProperty(HTMLElement.prototype, 'innerHeight', {
 	get: function (this: HTMLElement): number {
-		let padding = (this as any)._padding;
+		let padding = this._paddingTop;
 		if (padding === undefined) {
 			const css = this.css();
 			const pt = parseInt(css.paddingTop);
 			const pb = parseInt(css.paddingBottom);
-			padding = (this as any)._padding = pt + pb;
+			padding = this._paddingTop = pt + pb;
 		}
 		const outerHeight = this.clientHeight;
 		const innerHeight = outerHeight - padding;

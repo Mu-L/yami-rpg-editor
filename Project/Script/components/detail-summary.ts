@@ -15,7 +15,7 @@ export class DetailSummary extends HTMLElement {
 	}
 
 	// 开关父元素
-	toggle() {
+	toggle(): void {
 		const parent = this.parentNode;
 		if (parent instanceof DetailBox) {
 			parent.toggle();

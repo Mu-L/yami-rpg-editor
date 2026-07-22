@@ -25,7 +25,9 @@ export class ToastManager extends HTMLElement {
 		// 进场动画
 		requestAnimationFrame(() => el.classList.add('toast-show'));
 		if (duration > 0) {
-			(el as any)._timer = setTimeout(() => this.dismiss(el), duration);
+			(
+				el as HTMLDivElement & { _timer: ReturnType<typeof setTimeout> }
+			)._timer = setTimeout(() => this.dismiss(el), duration);
 		}
 		return el;
 	}
@@ -33,14 +35,20 @@ export class ToastManager extends HTMLElement {
 	// 关闭一条提示
 	dismiss(el: HTMLElement | null): void {
 		if (!el || el.parentNode !== this) return;
-		clearTimeout((el as any)._timer);
+		clearTimeout(
+			(el as HTMLElement & { _timer: ReturnType<typeof setTimeout> })
+				._timer
+		);
 		el.classList.remove('toast-show');
 		el.classList.add('toast-hide');
 		setTimeout(() => el.remove(), 200);
 	}
 }
 
-customElements.define('toast-manager', ToastManager as any);
+customElements.define(
+	'toast-manager',
+	ToastManager as CustomElementConstructor
+);
 
 // 全局便捷接口
 export const Toast = {
@@ -71,7 +79,14 @@ export const Toast = {
 };
 
 // 接入上一步的 reportError：将全局错误事件转为用户可见的 Toast
-window.addEventListener('yami:error', (event: any) => {
-	const detail = event.detail || {};
-	Toast.error(detail.message || String(event.detail));
-});
+window.addEventListener(
+	'yami:error',
+	(event: Event & { detail: { message?: string } | string }) => {
+		const detail = event.detail;
+		if (typeof detail === 'string') {
+			Toast.error(detail);
+		} else {
+			Toast.error(detail.message || String(detail));
+		}
+	}
+);
