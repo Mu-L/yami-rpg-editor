@@ -5,7 +5,11 @@ import { reportError } from '../util/safe.ts';
 
 export class ToastManager extends HTMLElement {
 	// 显示一条提示
-	show(message, type = 'info', duration = 4000) {
+	show(
+		message: string,
+		type: string = 'info',
+		duration: number = 4000
+	): HTMLDivElement {
 		const el = document.createElement('div');
 		el.className = `toast toast-${type}`;
 		const text = document.createElement('span');
@@ -21,15 +25,15 @@ export class ToastManager extends HTMLElement {
 		// 进场动画
 		requestAnimationFrame(() => el.classList.add('toast-show'));
 		if (duration > 0) {
-			el._timer = setTimeout(() => this.dismiss(el), duration);
+			(el as any)._timer = setTimeout(() => this.dismiss(el), duration);
 		}
 		return el;
 	}
 
 	// 关闭一条提示
-	dismiss(el) {
+	dismiss(el: HTMLElement | null): void {
 		if (!el || el.parentNode !== this) return;
-		clearTimeout(el._timer);
+		clearTimeout((el as any)._timer);
 		el.classList.remove('toast-show');
 		el.classList.add('toast-hide');
 		setTimeout(() => el.remove(), 200);
@@ -40,30 +44,34 @@ customElements.define('toast-manager', ToastManager as any);
 
 // 全局便捷接口
 export const Toast = {
-	_manager() {
+	_manager(): ToastManager {
 		let m = document.querySelector('toast-manager');
 		if (!m) {
 			m = document.createElement('toast-manager');
 			document.body.appendChild(m);
 		}
-		return m;
+		return m as ToastManager;
 	},
-	show(message, type, duration) {
-		return this._manager().show(message, type, duration);
+	show(message: string, type?: string, duration?: number): HTMLDivElement {
+		return (this._manager() as ToastManager).show(
+			message,
+			type ?? 'info',
+			duration ?? 4000
+		);
 	},
-	error(message) {
+	error(message: string): HTMLDivElement {
 		return this.show(message, 'error');
 	},
-	info(message) {
+	info(message: string): HTMLDivElement {
 		return this.show(message, 'info');
 	},
-	success(message) {
+	success(message: string): HTMLDivElement {
 		return this.show(message, 'success');
 	}
 };
 
 // 接入上一步的 reportError：将全局错误事件转为用户可见的 Toast
-window.addEventListener('yami:error', (event) => {
+window.addEventListener('yami:error', (event: any) => {
 	const detail = event.detail || {};
 	Toast.error(detail.message || String(event.detail));
 });

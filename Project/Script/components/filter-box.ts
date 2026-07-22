@@ -1,8 +1,8 @@
 ﻿// ******************************** 滤镜框 ********************************
 
 export class FilterBox extends HTMLElement {
-	canvas; //:element
-	dataValue; //:object
+	canvas: HTMLCanvasElement | null; //:element
+	dataValue: [number, number, number, number] | null; //:object
 
 	constructor() {
 		super();
@@ -13,30 +13,31 @@ export class FilterBox extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): [number, number, number, number] | null {
 		return this.dataValue;
 	}
 
 	// 写入数据
-	write(tint) {
+	write(tint: [number, number, number, number]): void {
 		this.dataValue = tint;
 		this.update();
 	}
 
 	// 更新画面
-	update() {
+	update(): void {
 		let { canvas } = this;
 		if (!canvas) {
 			canvas = document.createElement('canvas');
-			canvas.width = this.getAttribute('width');
-			canvas.height = this.getAttribute('height');
-			canvas.context = canvas.getContext('2d');
+			canvas.width = parseInt(this.getAttribute('width') || '0');
+			canvas.height = parseInt(this.getAttribute('height') || '0');
+			const ctx = canvas.getContext('2d') as any;
+			(canvas as any).context = ctx;
 			this.appendChild((this.canvas = canvas));
 		}
 
 		// 绘制垂直渐变色带
-		const { context, width, height } = canvas;
-		const [red, green, blue, gray] = this.dataValue;
+		const { context, width, height } = canvas as any;
+		const [red, green, blue, gray] = this.dataValue as number[];
 		if (!context.gradient) {
 			const gradient = context.createLinearGradient(0, 0, 0, height);
 			gradient.addColorStop(0, '#ff0000');
@@ -106,7 +107,7 @@ export class FilterBox extends HTMLElement {
 	}
 
 	// 清除画布
-	clear() {
+	clear(): void {
 		if (this.canvas) {
 			this.removeChild(this.canvas);
 			this.canvas = null;

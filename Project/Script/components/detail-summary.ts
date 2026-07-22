@@ -23,7 +23,7 @@ export class DetailSummary extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: KeyboardEvent): void {
 		switch (event.code) {
 			case 'Enter':
 			case 'NumpadEnter':
@@ -35,7 +35,7 @@ export class DetailSummary extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
 				if (event.target === this) {

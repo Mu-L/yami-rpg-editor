@@ -95,12 +95,12 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): any {
 		return this.data;
 	}
 
 	// 写入数据
-	write(data) {
+	write(data: any): void {
 		this.data = data;
 		this.textContent = '';
 		this.update();
@@ -116,7 +116,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 更新列表
-	update() {
+	update(): void {
 		// 分析变量数据
 		this.analyzeVariables();
 
@@ -144,8 +144,8 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 重新调整
-	resize(...args: any[]) {
-		CommonList.resize(this);
+	resize(...args: any[]): void {
+		CommonList.resize(this as unknown as CommonList);
 
 		// 检查变量有效性
 		this.scheduleCheckVariables();
@@ -153,7 +153,7 @@ export class CommandList extends HTMLElement {
 
 	// 更新头部和尾部元素
 	updateHeadAndFoot() {
-		return CommonList.updateHeadAndFoot(this);
+		return CommonList.updateHeadAndFoot(this as unknown as CommonList);
 	}
 
 	// 在重新调整时更新
@@ -1481,7 +1481,7 @@ try {
 
 	// 清除元素
 	clearElements(start) {
-		return CommonList.clearElements(this, start);
+		return CommonList.clearElements(this as unknown as CommonList, start);
 	}
 
 	// 清除列表

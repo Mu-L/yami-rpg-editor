@@ -4,7 +4,12 @@ import { Enum } from '../enum/enum-window.ts';
 
 // ******************************** 类型注册表 ********************************
 
-export const TypeRegistry = {
+export const TypeRegistry: {
+	types: Record<string, any>;
+	register(type: string, config: any): void;
+	get(type: string): any;
+	has(type: string): boolean;
+} = {
 	types: {},
 
 	register(type, config) {

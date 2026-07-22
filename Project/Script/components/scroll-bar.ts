@@ -3,12 +3,12 @@
 // ******************************** 滚动条 ********************************
 
 export class ScrollBar extends HTMLElement {
-	target; //:element
-	type; //:string
-	thumb; //:element
-	timer; //:object
-	dragging; //:event
-	visible;
+	target: HTMLElement | null; //:element
+	type: string | null; //:string
+	thumb: HTMLElement | null; //:element
+	timer: any; //:object
+	dragging: PointerEvent | null; //:event
+	visible: boolean; //:boolean
 
 	constructor() {
 		super();
@@ -19,6 +19,7 @@ export class ScrollBar extends HTMLElement {
 		this.thumb = null;
 		this.timer = null;
 		this.dragging = null;
+		this.visible = false;
 		this.windowPointerup = this.windowPointerup.bind(this);
 		this.windowPointermove = this.windowPointermove.bind(this);
 
@@ -27,7 +28,7 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 绑定目标元素
-	bind(target, type) {
+	bind(target: HTMLElement, type: string): void {
 		this.appendChild((this.thumb = document.createElement('scroll-thumb')));
 		this.thumb.appendChild(document.createElement('scroll-thumb-inner'));
 		this.target = target;
@@ -44,8 +45,8 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 更新水平滚动条
-	updateHorizontalBar() {
-		const target = this.target;
+	updateHorizontalBar(): void {
+		const target = this.target!;
 		const cw = target.clientWidth;
 		const sw = target.scrollWidth;
 		if (cw < sw) {
@@ -60,8 +61,8 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 更新垂直滚动条
-	updateVerticalBar() {
-		const target = this.target;
+	updateVerticalBar(): void {
+		const target = this.target!;
 		const ch = target.clientHeight;
 		const sh = target.scrollHeight;
 		if (ch < sh) {
@@ -76,8 +77,8 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 更新水平滑块
-	updateHorizontalThumb(left, width) {
-		const thumb = this.thumb;
+	updateHorizontalThumb(left: number, width: number): void {
+		const thumb = this.thumb! as any;
 		if (thumb.left !== left) {
 			thumb.left = left;
 			thumb.style.left = `${left}%`;
@@ -89,8 +90,8 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 更新垂直滑块
-	updateVerticalThumb(top, height) {
-		const thumb = this.thumb;
+	updateVerticalThumb(top: number, height: number): void {
+		const thumb = this.thumb! as any;
 		if (thumb.top !== top) {
 			thumb.top = top;
 			thumb.style.top = `${top}%`;
@@ -102,7 +103,7 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 更新显示状态
-	updateDisplay(state) {
+	updateDisplay(state: boolean): void {
 		if (this.visible !== state) {
 			this.visible = state;
 			switch (state) {
@@ -117,24 +118,24 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 滚动相对位置
-	scrollRelative(sign) {
+	scrollRelative(sign: number): void {
 		const { target } = this;
 		let { timer } = this;
 		if (!timer) {
 			timer = this.timer = new Timer({
 				duration: 0,
-				update: (timer) => {
+				update: (timer: any) => {
 					switch (timer.state) {
 						case 'wait': {
 							const { dragging } = this;
 							if (!dragging) {
 								return false;
 							}
-							if (dragging.target !== this) {
+							if ((dragging as any).target !== this) {
 								break;
 							}
 							const type = this.type;
-							const rect = this.thumb.rect();
+							const rect = this.thumb!.rect();
 							const offset = timer.offset;
 							if (type === 'horizontal') {
 								const { clientX } = dragging;
@@ -170,18 +171,19 @@ export class ScrollBar extends HTMLElement {
 							const { start, end, offset } = timer;
 							const time = elapsed / duration;
 							const value = start * (1 - time) + end * time;
-							let max;
+							let max: number;
 							switch (this.type) {
 								case 'horizontal':
 									max =
-										target.scrollWidth - target.clientWidth;
-									target.setScrollLeft(value);
+										target!.scrollWidth -
+										target!.clientWidth;
+									target!.setScrollLeft(value);
 									break;
 								case 'vertical':
 									max =
-										target.scrollHeight -
-										target.clientHeight;
-									target.setScrollTop(value);
+										target!.scrollHeight -
+										target!.clientHeight;
+									target!.setScrollTop(value);
 									break;
 							}
 							if (
@@ -196,7 +198,7 @@ export class ScrollBar extends HTMLElement {
 							break;
 					}
 				},
-				callback: (timer) => {
+				callback: (timer: any) => {
 					if (this.dragging) {
 						switch (timer.state) {
 							case 'first':
@@ -214,16 +216,16 @@ export class ScrollBar extends HTMLElement {
 				}
 			});
 		}
-		let start;
-		let offset;
+		let start: number;
+		let offset: number;
 		switch (this.type) {
 			case 'horizontal':
-				start = target.scrollLeft;
-				offset = target.clientWidth * sign;
+				start = target!.scrollLeft;
+				offset = target!.clientWidth * sign;
 				break;
 			case 'vertical':
-				start = target.scrollTop;
-				offset = target.clientHeight * sign;
+				start = target!.scrollTop;
+				offset = target!.clientHeight * sign;
 				break;
 		}
 		timer.state = 'first';
@@ -236,24 +238,24 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: PointerEvent): void {
 		if (this.dragging) {
 			return;
 		}
 		switch (event.button) {
 			case 0:
-				this.target.focus();
+				this.target!.focus();
 				event.preventDefault();
 				event.stopImmediatePropagation();
 				if (event.target === this.thumb) {
 					this.dragging = event;
-					event.mode = 'scroll';
-					event.scrollLeft = this.target.scrollLeft;
-					event.scrollTop = this.target.scrollTop;
+					(event as any).mode = 'scroll';
+					(event as any).scrollLeft = this.target!.scrollLeft;
+					(event as any).scrollTop = this.target!.scrollTop;
 					window.on('pointerup', this.windowPointerup);
 					window.on('pointermove', this.windowPointermove);
 				} else {
-					const rect = this.thumb.rect();
+					const rect = this.thumb!.rect();
 					switch (this.type) {
 						case 'horizontal':
 							this.scrollRelative(
@@ -267,7 +269,7 @@ export class ScrollBar extends HTMLElement {
 							break;
 					}
 					this.dragging = event;
-					event.mode = 'repeat';
+					(event as any).mode = 'repeat';
 					window.on('pointerup', this.windowPointerup);
 					window.on('pointermove', this.windowPointermove);
 				}
@@ -276,10 +278,10 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 窗口 - 指针弹起事件
-	windowPointerup(event) {
+	windowPointerup(event: PointerEvent): void {
 		const { dragging } = this;
-		if (dragging.relate(event)) {
-			switch (dragging.mode) {
+		if ((dragging as any).relate(event)) {
+			switch ((dragging as any).mode) {
 				case 'scroll':
 					break;
 				case 'repeat':
@@ -292,18 +294,19 @@ export class ScrollBar extends HTMLElement {
 	}
 
 	// 窗口 - 指针移动事件
-	windowPointermove(event) {
+	windowPointermove(event: PointerEvent): void {
 		const { dragging } = this;
-		if (dragging.relate(event)) {
-			switch (dragging.mode) {
+		if ((dragging as any).relate(event)) {
+			switch ((dragging as any).mode) {
 				case 'scroll': {
-					const target = this.target;
+					const target = this.target!;
 					switch (this.type) {
 						case 'horizontal':
 							if (this.clientWidth !== 0) {
 								target.setScrollLeft(
-									dragging.scrollLeft +
-										((event.clientX - dragging.clientX) *
+									(dragging as any).scrollLeft +
+										((event.clientX -
+											(dragging as any).clientX) *
 											target.scrollWidth) /
 											this.clientWidth
 								);
@@ -312,8 +315,9 @@ export class ScrollBar extends HTMLElement {
 						case 'vertical':
 							if (this.clientHeight !== 0) {
 								target.setScrollTop(
-									dragging.scrollTop +
-										((event.clientY - dragging.clientY) *
+									(dragging as any).scrollTop +
+										((event.clientY -
+											(dragging as any).clientY) *
 											target.scrollHeight) /
 											this.clientHeight
 								);
@@ -324,7 +328,7 @@ export class ScrollBar extends HTMLElement {
 				}
 				case 'repeat':
 					this.dragging = event;
-					event.mode = 'repeat';
+					(event as any).mode = 'repeat';
 					break;
 			}
 		}

@@ -45,14 +45,14 @@ export class EmptyState extends HTMLElement {
 		if (textEl) textEl.textContent = msg;
 	}
 
-	_escape(s) {
+	_escape(s: string): string {
 		const d = document.createElement('div');
 		d.textContent = s;
 		return d.innerHTML;
 	}
 
 	// 设置提示文案
-	setMessage(msg) {
+	setMessage(msg: string): void {
 		this.setAttribute('message', msg);
 	}
 }

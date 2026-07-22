@@ -32,21 +32,21 @@ export class NavBar extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): any {
 		const item = this.querySelector('.selected');
-		return item ? item.dataValue : undefined;
+		return item ? (item as any).dataValue : undefined;
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any): void {
 		const items = this.childNodes;
 		const length = items.length;
 		if (length !== 0) {
 			this.unselect();
-			let target;
+			let target: HTMLElement | undefined;
 			for (let i = 0; i < length; i++) {
-				if (items[i].dataValue === value) {
-					target = items[i];
+				if ((items[i] as any).dataValue === value) {
+					target = items[i] as HTMLElement;
 					break;
 				}
 			}
@@ -54,7 +54,7 @@ export class NavBar extends HTMLElement {
 				target.addClass('selected');
 			}
 			if (this.writeEventEnabled) {
-				const write = new Event('write');
+				const write: any = new Event('write');
 				write.value = target ? value : undefined;
 				this.dispatchEvent(write);
 			}
@@ -62,10 +62,10 @@ export class NavBar extends HTMLElement {
 	}
 
 	// 取消选择
-	unselect() {
+	unselect(): void {
 		const item = this.querySelector('.selected');
 		if (item) {
-			item.removeClass('selected');
+			(item as HTMLElement).removeClass('selected');
 		}
 	}
 

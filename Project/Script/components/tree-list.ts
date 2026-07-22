@@ -170,12 +170,12 @@ export class TreeList extends HTMLElement {
 
 	// 重新调整
 	resize() {
-		return CommonList.resize(this);
+		return CommonList.resize(this as unknown as CommonList);
 	}
 
 	// 更新头部和尾部元素
 	updateHeadAndFoot() {
-		return CommonList.updateHeadAndFoot(this);
+		return CommonList.updateHeadAndFoot(this as unknown as CommonList);
 	}
 
 	// 在重新调整时更新
@@ -1136,7 +1136,7 @@ export class TreeList extends HTMLElement {
 
 	// 清除元素
 	clearElements(start) {
-		return CommonList.clearElements(this, start);
+		return CommonList.clearElements(this as unknown as CommonList, start);
 	}
 
 	// 清除列表

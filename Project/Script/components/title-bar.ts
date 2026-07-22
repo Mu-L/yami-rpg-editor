@@ -3,7 +3,7 @@
 // ******************************** 标题栏 ********************************
 
 export class TitleBar extends HTMLElement {
-	dragging; //:event
+	dragging: PointerEvent | null; //:event
 
 	constructor() {
 		super();
@@ -18,7 +18,7 @@ export class TitleBar extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: PointerEvent): void {
 		if (this.dragging) {
 			return;
 		}
@@ -30,8 +30,8 @@ export class TitleBar extends HTMLElement {
 					const startX = event.clientX;
 					const startY = event.clientY;
 					const { left, top, width, height } = rect;
-					const pointermove = (event) => {
-						if (this.dragging.relate(event)) {
+					const pointermove = (event: PointerEvent) => {
+						if ((this.dragging as any).relate(event)) {
 							let right = window.innerWidth - width;
 							let bottom = window.innerHeight - height;
 							if (document.body.hasClass('border')) {
@@ -50,19 +50,19 @@ export class TitleBar extends HTMLElement {
 							windowFrame.style.top = `${Math.clamp(y, 0, bottom)}px`;
 						}
 					};
-					const pointerup = (event) => {
-						if (this.dragging.relate(event)) {
+					const pointerup = (event: PointerEvent) => {
+						if ((this.dragging as any).relate(event)) {
 							cancel();
 						}
 					};
-					const cancel = (event?) => {
+					const cancel = (event?: Event) => {
 						this.dragging = null;
 						window.off('pointermove', pointermove);
 						window.off('pointerup', pointerup);
 						window.off('blur', cancel);
 					};
 					this.dragging = event;
-					event.cancel = cancel;
+					(event as any).cancel = cancel;
 					window.on('pointermove', pointermove);
 					window.on('pointerup', pointerup);
 					window.on('blur', cancel);
@@ -72,8 +72,9 @@ export class TitleBar extends HTMLElement {
 	}
 
 	// 鼠标点击事件
-	mouseclick(event) {
-		switch (event.target.tagName) {
+	mouseclick(event: Event): void {
+		const target = event.target as HTMLElement;
+		switch (target.tagName) {
 			case 'MAXIMIZE': {
 				const windowFrame = this.parentNode as any;
 				if (!windowFrame.hasClass('maximized')) {
@@ -92,12 +93,10 @@ export class TitleBar extends HTMLElement {
 	}
 
 	// 鼠标双击事件
-	doubleclick(event) {
-		if (
-			event.target instanceof TitleBar &&
-			event.target.querySelector('maximize')
-		) {
-			this.dragging?.cancel();
+	doubleclick(event: Event): void {
+		const target = event.target as HTMLElement;
+		if (target instanceof TitleBar && target.querySelector('maximize')) {
+			(this.dragging as any)?.cancel();
 			const windowFrame = this.parentNode as any;
 			if (!windowFrame.hasClass('maximized')) {
 				windowFrame.maximize();

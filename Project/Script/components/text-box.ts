@@ -9,6 +9,7 @@ export class TextBox extends HTMLElement {
 	// tree-list 等用于在 TextBox 实例上绑定重命名前的原文与被隐藏的子节点
 	lastText: string;
 	hiddenNodes: any[];
+	declare closeButton: HTMLElement | null;
 
 	constructor() {
 		super();
@@ -62,18 +63,18 @@ export class TextBox extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): string {
 		return this.input.value;
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: string): void {
 		this.input.value = value;
 		this.input.history.reset();
 	}
 
 	// 插入数据
-	insert(value) {
+	insert(value: string): void {
 		this.input.dispatchEvent(
 			new InputEvent('beforeinput', {
 				inputType: 'insertFromPaste',
@@ -85,43 +86,43 @@ export class TextBox extends HTMLElement {
 	}
 
 	// 启用元素
-	enable() {
+	enable(): void {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
 	// 禁用元素
-	disable() {
+	disable(): void {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
 	// 设置焦点
-	focus() {
+	focus(): void {
 		super.focus();
 		this.input.focus();
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: string | null): HTMLInputElement {
 		return this.input.getFocus(mode);
 	}
 
 	// 设置占位符
-	setPlaceholder(placeholder) {
+	setPlaceholder(placeholder: string): void {
 		this.input.placeholder = placeholder;
 	}
 
 	// 设置最大长度
-	setMaxLength(length) {
+	setMaxLength(length: number): void {
 		this.input.maxLength = length;
 	}
 
 	// 调整输入框大小来适应内容
-	fitContent() {
-		const parent = this.parentNode;
+	fitContent(): void {
+		const parent = this.parentNode as HTMLElement;
 		this.style.width = '0';
 		this.style.width = `${Math.clamp(
 			this.input.scrollWidth + 2,
@@ -131,7 +132,7 @@ export class TextBox extends HTMLElement {
 	}
 
 	// 删除输入框内容
-	deleteInputContent() {
+	deleteInputContent(): void {
 		if (this.read() !== '') {
 			this.input.select();
 			this.input.dispatchEvent(
@@ -145,23 +146,27 @@ export class TextBox extends HTMLElement {
 	}
 
 	// 添加关闭按钮
-	addCloseButton() {
+	addCloseButton(): void {
 		return TextBox.addCloseButton(this);
 	}
 
 	// 添加键盘按下过滤器
-	addKeydownFilter() {
+	addKeydownFilter(): void {
 		return TextBox.addKeydownFilter(this);
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'focus':
 				if (!this.focusEventEnabled) {
 					this.focusEventEnabled = true;
-					this.input.on('focus', (event) => {
+					this.input.on('focus', (event: Event) => {
 						this.dispatchEvent(new FocusEvent('focus'));
 					});
 				}
@@ -169,7 +174,7 @@ export class TextBox extends HTMLElement {
 			case 'blur':
 				if (!this.blurEventEnabled) {
 					this.blurEventEnabled = true;
-					this.input.on('blur', (event) => {
+					this.input.on('blur', (event: Event) => {
 						this.dispatchEvent(new FocusEvent('blur'));
 					});
 				}
@@ -180,18 +185,18 @@ export class TextBox extends HTMLElement {
 	// 静态 - 添加关闭按钮
 	static addCloseButton = (function IIFE() {
 		// 重写写入方法
-		const write = function (value) {
+		const write = function (this: TextBox, value: string): void {
 			TextBox.prototype.write.call(this, value);
 			updateCloseButton(this);
 		};
 		// 更新关闭按钮
-		const updateCloseButton = function (textBox) {
+		const updateCloseButton = function (textBox: TextBox): void {
 			return textBox.read() !== ''
-				? textBox.closeButton.show()
-				: textBox.closeButton.hide();
+				? (textBox.closeButton as HTMLElement).show()
+				: (textBox.closeButton as HTMLElement).hide();
 		};
 		// 键盘按下事件
-		const keydown = function (event) {
+		const keydown = function (this: TextBox, event: KeyboardEvent): void {
 			switch (event.code) {
 				case 'Escape':
 					if (this.read() !== '') {
@@ -202,35 +207,41 @@ export class TextBox extends HTMLElement {
 			}
 		};
 		// 输入事件
-		const input = function (event) {
+		const input = function (this: TextBox, event: Event): void {
 			updateCloseButton(this);
 		};
 		// 关闭按钮 - 鼠标按下事件
-		const closeButtonPointerdown = function (event) {
+		const closeButtonPointerdown = function (event: PointerEvent): void {
 			// 阻止默认的失去焦点行为并停止传递事件
 			event.preventDefault();
 			event.stopPropagation();
 		};
 		// 关闭按钮 - 鼠标点击事件
-		const closeButtonClick = function (event) {
-			this.parentNode.deleteInputContent();
+		const closeButtonClick = function (
+			this: HTMLElement,
+			event: Event
+		): void {
+			(this.parentNode as TextBox).deleteInputContent();
 		};
-		return (textBox) => {
+		return (textBox: TextBox): void => {
 			textBox.write = write;
 			textBox.on('keydown', keydown);
 			textBox.on('input', input);
 			textBox.closeButton = document.createElement('box');
-			textBox.closeButton.addClass('close-button');
-			textBox.closeButton.textContent = '\u2716';
-			textBox.closeButton.on('pointerdown', closeButtonPointerdown);
-			textBox.closeButton.on('click', closeButtonClick);
-			textBox.appendChild(textBox.closeButton.hide());
+			(textBox.closeButton as HTMLElement).addClass('close-button');
+			(textBox.closeButton as HTMLElement).textContent = '\u2716';
+			(textBox.closeButton as HTMLElement).on(
+				'pointerdown',
+				closeButtonPointerdown
+			);
+			(textBox.closeButton as HTMLElement).on('click', closeButtonClick);
+			textBox.appendChild((textBox.closeButton as HTMLElement).hide());
 		};
 	})();
 
 	// 静态 - 添加键盘按下过滤器
 	static addKeydownFilter = (function IIFE() {
-		const keydown = function (event) {
+		const keydown = function (event: KeyboardEvent): void {
 			if (event.altKey) {
 				return;
 			} else if (!event.cmdOrCtrlKey && !event.shiftKey) {
@@ -245,14 +256,14 @@ export class TextBox extends HTMLElement {
 			}
 			event.stopImmediatePropagation();
 		};
-		return (textBox) => {
+		return (textBox: TextBox): void => {
 			textBox.on('keydown', keydown);
 		};
 	})();
 
 	// 静态 - 输入框键盘按下事件
 	// Mac版不存在默认的复制/粘贴/剪切操作
-	static macInputKeydown(event) {
+	static macInputKeydown(event: KeyboardEvent): void {
 		if (event.metaKey) {
 			switch (event.code) {
 				case 'KeyC':

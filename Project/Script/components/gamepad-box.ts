@@ -27,12 +27,12 @@ export class GamepadBox extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): number | null {
 		return this.dataValue;
 	}
 
 	// 写入数据
-	write(button) {
+	write(button: number): void {
 		this.dataValue = button;
 		this.input.value = GamepadBox.getButtonName(button);
 	}

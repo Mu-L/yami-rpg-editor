@@ -1,11 +1,11 @@
 ﻿// ******************************** 键盘按键框 ********************************
 
 export class KeyboardBox extends HTMLElement {
-	input; //:element
-	dataValue; //:number
-	inputEventEnabled; //:boolean
-	focusEventEnabled; //:boolean
-	blurEventEnabled; //:boolean
+	input: HTMLInputElement; //:element
+	dataValue: number; //:number
+	inputEventEnabled: boolean; //:boolean
+	focusEventEnabled: boolean; //:boolean
+	blurEventEnabled: boolean; //:boolean
 
 	constructor() {
 		super();
@@ -26,22 +26,22 @@ export class KeyboardBox extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): number {
 		return this.dataValue;
 	}
 
 	// 写入数据
-	write(code) {
+	write(code: number): void {
 		this.dataValue = code;
-		this.input.value = code;
+		this.input.value = String(code);
 	}
 
 	// 输入键值
-	inputCode(code) {
+	inputCode(code: number): void {
 		if (this.dataValue !== code) {
 			this.write(code);
 			if (this.inputEventEnabled) {
-				const input = new InputEvent('input');
+				const input: any = new InputEvent('input');
 				input.value = this.dataValue;
 				this.dispatchEvent(input);
 			}
@@ -50,26 +50,30 @@ export class KeyboardBox extends HTMLElement {
 	}
 
 	// 启用元素
-	enable() {
+	enable(): void {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
 	// 禁用元素
-	disable() {
+	disable(): void {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: string): HTMLInputElement {
 		return this.input.getFocus(mode);
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'input':
@@ -78,7 +82,7 @@ export class KeyboardBox extends HTMLElement {
 			case 'focus':
 				if (!this.focusEventEnabled) {
 					this.focusEventEnabled = true;
-					this.input.on('focus', (event) => {
+					this.input.on('focus', (event: Event) => {
 						this.dispatchEvent(new FocusEvent('focus'));
 					});
 				}
@@ -86,7 +90,7 @@ export class KeyboardBox extends HTMLElement {
 			case 'blur':
 				if (!this.blurEventEnabled) {
 					this.blurEventEnabled = true;
-					this.input.on('blur', (event) => {
+					this.input.on('blur', (event: Event) => {
 						this.dispatchEvent(new FocusEvent('blur'));
 					});
 				}
@@ -95,18 +99,20 @@ export class KeyboardBox extends HTMLElement {
 	}
 
 	// 输入框 - 键盘按下事件
-	inputKeydown(event) {
+	inputKeydown(event: KeyboardEvent): void {
 		event.stopPropagation();
 		event.preventDefault();
 		switch (event.code) {
 			case 'Backspace':
-				this.parentNode.inputCode('');
+				(this.parentNode as KeyboardBox).inputCode(0);
 				break;
 			case 'Enter':
 			case 'NumpadEnter':
 				event.stopImmediatePropagation();
 			default:
-				this.parentNode.inputCode(event.code);
+				(this.parentNode as KeyboardBox).inputCode(
+					parseInt(event.code) || 0
+				);
 				break;
 		}
 	}

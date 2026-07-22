@@ -53,7 +53,7 @@ export class RadioBox extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: KeyboardEvent): void {
 		switch (event.code) {
 			case 'Enter':
 			case 'NumpadEnter':
@@ -66,7 +66,7 @@ export class RadioBox extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
 				if (!this.hasClass('selected')) {
@@ -85,7 +85,7 @@ export class RadioBox extends HTMLElement {
 	}
 
 	// 鼠标点击事件
-	mouseclick(event) {
+	mouseclick(event: Event): void {
 		if (!this.hasClass('selected')) {
 			this.proxy.input(this.dataValue);
 		} else if (this.proxy.cancelable) {

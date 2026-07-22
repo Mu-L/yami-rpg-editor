@@ -18,20 +18,20 @@ export class LoadingOverlay extends HTMLElement {
 	}
 
 	// 设置提示文字
-	setText(text) {
+	setText(text: string): void {
 		const t = this.querySelector('.loading-text');
 		if (t) t.textContent = text || '';
 	}
 
 	// 显示遮罩
-	show(text?) {
-		this.setText(text);
+	show(text?: string): void {
+		this.setText(text ?? '');
 		this._count++;
 		this.classList.add('visible');
 	}
 
 	// 隐藏遮罩（嵌套计数归零才真正隐藏）
-	hide() {
+	hide(): void {
 		this._count = Math.max(0, this._count - 1);
 		if (this._count === 0) {
 			this.classList.remove('visible');
@@ -46,21 +46,21 @@ customElements.define(
 
 // 全局便捷接口
 export const Loading = {
-	_el() {
+	_el(): LoadingOverlay {
 		let el = document.querySelector('loading-overlay');
 		if (!el) {
 			el = document.createElement('loading-overlay');
 			document.body.appendChild(el);
 		}
-		return el;
+		return el as LoadingOverlay;
 	},
-	show(text) {
+	show(text?: string): void {
 		this._el().show(text);
 	},
-	hide() {
+	hide(): void {
 		this._el().hide();
 	},
-	setText(text) {
+	setText(text: string): void {
 		this._el().setText(text);
 	}
 };

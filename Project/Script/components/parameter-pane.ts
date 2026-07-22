@@ -20,22 +20,22 @@ import { measureText } from '../util/dom.ts';
 // ******************************** 脚本参数面板 ********************************
 
 export class ParameterPane extends HTMLElement {
-	scriptList; //:element
-	headPad; //:element
-	metas; //:array
-	wraps; //:array
-	detailBoxes; //:array
-	checkBoxes; //:array
-	numberBoxes; //:array
-	numberVars; //:array
-	textBoxes; //:array
-	selectBoxes; //:array
-	keyboardBoxes; //:array
-	colorBoxes; //:array
-	customBoxes; //:array
-	updateEventEnabled; //:boolean
-	windowLocalize; //:function
-	scriptChange; //:function
+	scriptList: HTMLElement | null; //:element
+	headPad: HTMLElement | null; //:element
+	metas: any[]; //:array
+	wraps: any[]; //:array
+	detailBoxes: any[]; //:array
+	checkBoxes: any[]; //:array
+	numberBoxes: any[]; //:array
+	numberVars: any[]; //:array
+	textBoxes: any[]; //:array
+	selectBoxes: any[]; //:array
+	keyboardBoxes: any[]; //:array
+	colorBoxes: any[]; //:array
+	customBoxes: any[]; //:array
+	updateEventEnabled: boolean; //:boolean
+	windowLocalize: (event: Event) => void; //:function
+	scriptChange: (event: any) => void; //:function
 	getData: () => any[];
 	onResize?: () => void;
 
@@ -66,27 +66,27 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 绑定数据
-	bind(scriptList) {
+	bind(scriptList: HTMLElement): void {
 		this.scriptList = scriptList;
 		if (scriptList instanceof ParamList) {
-			const { object } = scriptList;
+			const { object } = scriptList as any;
 			const { update } = object;
-			this.getData = () => scriptList.data;
-			object.update = (...args) => {
+			this.getData = () => (scriptList as any).data;
+			object.update = (...args: any[]) => {
 				update.apply(object, args);
 				this.update();
 			};
 		}
 		if (scriptList instanceof TreeList) {
 			this.getData = () => {
-				const item = scriptList.read();
+				const item = (scriptList as any).read();
 				return item ? [item] : [];
 			};
 		}
 	}
 
 	// 重新写入
-	rewrite(parameters, key) {
+	rewrite(parameters: any, key: string): void {
 		for (const wrap of this.wraps) {
 			const script = wrap.box.data;
 			const map = script.parameters;
@@ -94,10 +94,10 @@ export class ParameterPane extends HTMLElement {
 			for (const { input } of wrap.children) {
 				if (input.key === key) {
 					input.write(parameters[key]);
-					this.scriptList?.dispatchChangeEvent();
+					(this.scriptList as any)?.dispatchChangeEvent();
 					// 更新参数可见性
 					if (input.branched) {
-						PluginManager.reconstruct(script);
+						(PluginManager as any).reconstruct(script);
 						this.updateParamDisplay(wrap.box);
 						this.onResize?.();
 					}
@@ -108,17 +108,17 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 更新
-	update() {
+	update(): void {
 		this.clear();
 		this.appendHeadPad();
 		let changed = false;
 		const scripts = this.getData();
-		const map = Data.manifest.guidMap;
+		const map = (Data as any).manifest.guidMap;
 		for (const script of scripts) {
 			const meta = map[script.id];
 			if (!meta) continue;
 			this.metas.push(meta);
-			if (PluginManager.reconstruct(script)) {
+			if ((PluginManager as any).reconstruct(script)) {
 				changed = true;
 			}
 			const paramList = meta.parameters;
@@ -127,7 +127,7 @@ export class ParameterPane extends HTMLElement {
 			const parameters = script.parameters;
 			if (meta.overview?.deprecated && paramList.length) {
 				const banner = document.createElement('div');
-				banner.addClass('deprecated-banner');
+				(banner as any).addClass('deprecated-banner');
 				banner.textContent =
 					typeof meta.overview.deprecated === 'string'
 						? 'deprecated: ' + meta.overview.deprecated
@@ -135,22 +135,27 @@ export class ParameterPane extends HTMLElement {
 				this.appendChild(banner);
 			}
 			// 按 group 分组（保留首次出现顺序），无 group 的参数归到空串主段
-			const groupOrder = [];
-			const groupMap = new Map();
+			const groupOrder: string[] = [];
+			const groupMap = new Map<string, any[]>();
 			for (const parameter of paramList) {
 				const g = parameter.group || '';
 				if (!groupMap.has(g)) {
 					groupMap.set(g, []);
 					groupOrder.push(g);
 				}
-				groupMap.get(g).push(parameter);
+				groupMap.get(g)!.push(parameter);
 			}
 			if (!groupMap.has('')) {
 				groupMap.set('', []);
 				groupOrder.unshift('');
 			}
-			const createParamRow = (box, grid, children, parameter) => {
-				const inputWrap = this.createParamInput(parameter);
+			const createParamRow = (
+				box: any,
+				grid: HTMLElement,
+				children: any[],
+				parameter: any
+			) => {
+				const inputWrap = this.createParamInput(parameter)!;
 				const { label, input } = inputWrap;
 				const key = parameter.key;
 				const name = langMap.get(parameter.alias) ?? key;
@@ -158,31 +163,36 @@ export class ParameterPane extends HTMLElement {
 				const tip = desc ? `<b>${name}</b>\n${desc}` : '';
 				this.updateParamInput(inputWrap, parameters[key]);
 				label.textContent = name;
-				input.setTooltip(tip);
-				input.parameters = parameters;
-				input.key = key;
+				(input as any).setTooltip(tip);
+				(input as any).parameters = parameters;
+				(input as any).key = key;
 				grid.appendChild(label);
 				if (parameter.prefix || parameter.suffix) {
 					this.applyAffix(input, parameter);
 				}
 				grid.appendChild(input);
-				input.enable();
+				(input as any).enable();
 				if (parameter.readonly) {
-					input.disable();
+					(input as any).disable();
 				}
 				if (parameter.validate) {
 					const validateInput = () => {
-						const val = input.parameters?.[input.key];
+						const val = (input as any).parameters?.[
+							(input as any).key
+						];
 						const ok =
 							val !== undefined &&
-							PluginManager.checkValidate(parameter, val);
+							(PluginManager as any).checkValidate(
+								parameter,
+								val
+							);
 						if (ok) {
-							input.removeClass('validate-error');
+							(input as any).removeClass('validate-error');
 						} else {
-							input.addClass('validate-error');
+							(input as any).addClass('validate-error');
 						}
 					};
-					const nativeInput = input.input || input;
+					const nativeInput = (input as any).input || input;
 					nativeInput.addEventListener('input', validateInput);
 				}
 				children.push(inputWrap);
@@ -203,7 +213,7 @@ export class ParameterPane extends HTMLElement {
 						summary.textContent = langMap.get(g) ?? g;
 					}
 				}
-				for (const parameter of groupMap.get(g)) {
+				for (const parameter of groupMap.get(g)!) {
 					if (parameter.hidden) continue;
 					createParamRow(box, grid, children, parameter);
 				}
@@ -213,7 +223,7 @@ export class ParameterPane extends HTMLElement {
 		}
 		// 脚本列表 - 发送改变事件
 		if (changed) {
-			this.scriptList?.dispatchChangeEvent();
+			(this.scriptList as any)?.dispatchChangeEvent();
 		}
 		// 发送更新事件
 		if (this.updateEventEnabled) {
@@ -225,7 +235,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 添加头部填充元素
-	appendHeadPad() {
+	appendHeadPad(): void {
 		let { headPad } = this;
 		if (headPad === null) {
 			// 用填充元素占据首元素的位置
@@ -238,9 +248,9 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 创建细节框
-	createDetailBox() {
+	createDetailBox(): any {
 		const { detailBoxes } = this;
-		let box;
+		let box: HTMLElement;
 		if (detailBoxes.length !== 0) {
 			box = detailBoxes.pop().box;
 			// 复用池内 box 时先清空残留的 summary/grid，避免多次复用累积
@@ -254,23 +264,24 @@ export class ParameterPane extends HTMLElement {
 		const tag = 'detail-box';
 		const summary = document.createElement('detail-summary');
 		const grid = document.createElement('detail-grid');
-		const wrap = { tag, box, summary, grid, children: [] };
+		const wrap = { tag, box, summary, grid, children: [] as any[] };
 		box.appendChild(summary);
 		box.appendChild(grid);
-		box.wrap = wrap;
+		(box as any).wrap = wrap;
 		return wrap;
 	}
 
 	// 创建参数输入框
-	createParamInput(parameter) {
+	createParamInput(parameter: any): any {
 		const config = TypeRegistry.get(parameter.type);
 		if (config) {
 			return config.create(this, parameter);
 		}
+		return undefined;
 	}
 
 	// 更新参数输入框
-	updateParamInput(wrap, value) {
+	updateParamInput(wrap: any, value: any): void {
 		// if (value === undefined) {
 		//   return
 		// }
@@ -317,10 +328,10 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 更新参数可见性
-	updateParamDisplay(detailBox) {
+	updateParamDisplay(detailBox: any): void {
 		const { states } = detailBox.meta.manager;
 		const mParams = detailBox.meta.parameters;
-		const paramMap = {};
+		const paramMap: Record<string, any> = {};
 		for (const p of mParams) paramMap[p.key] = p;
 		for (const wrap of detailBox.wrap.children) {
 			const key = wrap.input.key;
@@ -342,7 +353,7 @@ export class ParameterPane extends HTMLElement {
 			const parameters = wrap.input.parameters;
 			if (param?.validate && parameters) {
 				const value = parameters[key];
-				const ok = PluginManager.checkValidate(param, value);
+				const ok = (PluginManager as any).checkValidate(param, value);
 				if (ok) {
 					wrap.input.removeClass('validate-error');
 				} else {
@@ -355,7 +366,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 创建复选框
-	createCheckBox() {
+	createCheckBox(): any {
 		const { checkBoxes } = this;
 		if (checkBoxes.length !== 0) {
 			return checkBoxes.pop();
@@ -363,14 +374,14 @@ export class ParameterPane extends HTMLElement {
 		const tag = 'check-box';
 		const label = document.createElement('text');
 		const input = new CheckBox(true);
-		input.inputEventEnabled = true;
-		input.addClass('standard');
-		input.addClass('large');
+		(input as any).inputEventEnabled = true;
+		(input as any).addClass('standard');
+		(input as any).addClass('large');
 		return { tag, label, input };
 	}
 
 	// 创建数字框
-	createNumberBox() {
+	createNumberBox(): any {
 		const { numberBoxes } = this;
 		if (numberBoxes.length !== 0) {
 			return numberBoxes.pop();
@@ -382,7 +393,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 创建可变数字框
-	createNumberVar() {
+	createNumberVar(): any {
 		const { numberVars } = this;
 		if (numberVars.length !== 0) {
 			return numberVars.pop();
@@ -394,7 +405,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 创建文本框
-	createTextBox() {
+	createTextBox(): any {
 		const { textBoxes } = this;
 		if (textBoxes.length !== 0) {
 			return textBoxes.pop();
@@ -402,15 +413,15 @@ export class ParameterPane extends HTMLElement {
 		const tag = 'text-box';
 		const label = document.createElement('text');
 		const input = new TextBox();
-		(input as any).on('keydown', Selection.inputKeydown);
-		(input as any).on('keyup', Selection.inputKeyup);
-		(input as any).on('pointerdown', Selection.inputPointerdown);
-		(input as any).on('pointerup', Selection.inputPointerup);
+		(input as any).on('keydown', (Selection as any).inputKeydown);
+		(input as any).on('keyup', (Selection as any).inputKeyup);
+		(input as any).on('pointerdown', (Selection as any).inputPointerdown);
+		(input as any).on('pointerup', (Selection as any).inputPointerup);
 		return { tag, label, input };
 	}
 
 	// 创建选择框
-	createSelectBox() {
+	createSelectBox(): any {
 		const { selectBoxes } = this;
 		if (selectBoxes.length !== 0) {
 			return selectBoxes.pop();
@@ -422,7 +433,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 创建按键框
-	createKeyboardBox() {
+	createKeyboardBox(): any {
 		const { keyboardBoxes } = this;
 		if (keyboardBoxes.length !== 0) {
 			return keyboardBoxes.pop();
@@ -434,7 +445,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 创建颜色框
-	createColorBox() {
+	createColorBox(): any {
 		const { colorBoxes } = this;
 		if (colorBoxes.length !== 0) {
 			return colorBoxes.pop();
@@ -446,7 +457,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 创建自定义框
-	createCustomBox() {
+	createCustomBox(): any {
 		const { customBoxes } = this;
 		if (customBoxes.length !== 0) {
 			return customBoxes.pop();
@@ -458,7 +469,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 创建可重复参数组
-	createRepeatableGroup(parameter) {
+	createRepeatableGroup(parameter: any): any {
 		const template = parameter.repeatableGroup.parameters;
 		const tag = 'repeatable-group';
 		const label = document.createElement('text');
@@ -471,26 +482,26 @@ export class ParameterPane extends HTMLElement {
 		addBtn.className = 'add-row-btn';
 		container.appendChild(rowsEl);
 		container.appendChild(addBtn);
-		container.setTooltip = () => {};
-		container.parameters = null;
-		container.key = null;
+		(container as any).setTooltip = () => {};
+		(container as any).parameters = null;
+		(container as any).key = null;
 		const pane = this;
-		container.read = function () {
-			const result = [];
-			for (const rowEl of rowsEl.children) {
-				const data = {};
-				for (const { param, input } of rowEl.wraps) {
+		(container as any).read = function () {
+			const result: any[] = [];
+			for (const rowEl of rowsEl.children as any) {
+				const data: Record<string, any> = {};
+				for (const { param, input } of (rowEl as any).wraps) {
 					data[param.key] = input.read();
 				}
 				result.push(data);
 			}
 			return result;
 		};
-		container.write = function (value) {
+		(container as any).write = function (value: any[]) {
 			rowsEl.innerHTML = '';
 			let arr = value;
 			if (!arr || arr.length === 0) {
-				const empty = {};
+				const empty: Record<string, any> = {};
 				for (const subParam of template) {
 					empty[subParam.key] = subParam.value;
 				}
@@ -502,7 +513,7 @@ export class ParameterPane extends HTMLElement {
 				const removeBtn = document.createElement('button');
 				removeBtn.className = 'repeatable-group-remove';
 				removeBtn.textContent = '×';
-				removeBtn.onclick = function (e) {
+				removeBtn.onclick = function (e: MouseEvent) {
 					e.stopPropagation();
 					row.remove();
 					container.dispatchEvent(
@@ -512,7 +523,7 @@ export class ParameterPane extends HTMLElement {
 				row.appendChild(removeBtn);
 				const grid = document.createElement('detail-grid');
 				row.appendChild(grid);
-				row.wraps = template.map((subParam) => {
+				(row as any).wraps = template.map((subParam: any) => {
 					const wrap = TypeRegistry.get(subParam.type).create(
 						pane,
 						subParam
@@ -521,41 +532,41 @@ export class ParameterPane extends HTMLElement {
 						item[subParam.key] !== undefined
 							? item[subParam.key]
 							: subParam.value;
-					wrap.label.textContent = '';
-					wrap.input.parameters = item;
-					wrap.input.key = subParam.key;
-					wrap.input.write(val);
-					wrap.input.enable();
-					wrap.input.removeClass('validate-error');
+					(wrap as any).label.textContent = '';
+					(wrap as any).input.parameters = item;
+					(wrap as any).input.key = subParam.key;
+					(wrap as any).input.write(val);
+					(wrap as any).input.enable();
+					(wrap as any).input.removeClass('validate-error');
 					if (subParam.readonly) {
-						wrap.input.disable();
+						(wrap as any).input.disable();
 					}
-					grid.appendChild(wrap.label);
+					grid.appendChild((wrap as any).label);
 					if (subParam.prefix || subParam.suffix) {
-						pane.applyAffix(wrap.input, subParam);
+						pane.applyAffix((wrap as any).input, subParam);
 					}
-					grid.appendChild(wrap.input);
+					grid.appendChild((wrap as any).input);
 					return { param: subParam, ...wrap };
 				});
 				rowsEl.appendChild(row);
 			}
 		};
-		addBtn.onclick = function (e) {
+		addBtn.onclick = function (e: MouseEvent) {
 			e.stopPropagation();
-			const empty = {};
+			const empty: Record<string, any> = {};
 			for (const subParam of template) {
 				empty[subParam.key] = subParam.value;
 			}
-			const data = container.read();
+			const data = (container as any).read();
 			data.push(empty);
-			container.write(data);
+			(container as any).write(data);
 			container.dispatchEvent(new Event('change', { bubbles: true }));
 		};
 		return { tag, label, input: container };
 	}
 
 	// 回收组件
-	recycle(wrap) {
+	recycle(wrap: any): void {
 		switch (wrap.tag) {
 			case 'detail-box': {
 				const { children } = wrap;
@@ -643,7 +654,7 @@ export class ParameterPane extends HTMLElement {
 	}
 
 	// 清除内容
-	clear() {
+	clear(): void {
 		this.metas = [];
 		const { wraps } = this;
 		let i = wraps.length;
@@ -654,7 +665,7 @@ export class ParameterPane extends HTMLElement {
 			wraps.length = 0;
 			this.textContent = '';
 		}
-		if (!this.scriptList?.data) {
+		if (!(this.scriptList as any)?.data) {
 			window.off('script-change', this.scriptChange);
 		}
 	}
@@ -672,18 +683,18 @@ export class ParameterPane extends HTMLElement {
 	};
 
 	// 组件 - 改变事件
-	componentChange(event) {
-		let element = event.target;
+	componentChange(event: Event): void {
+		let element = event.target as any as HTMLElement;
 		if (element.tagName === 'INPUT') {
-			element = element.parentNode;
+			element = element.parentNode as HTMLElement;
 		}
 		if (element.parentNode instanceof NumberVar) {
-			element = element.parentNode;
+			element = element.parentNode as HTMLElement;
 		}
-		const { parameters, key } = element;
+		const { parameters, key } = element as any;
 		const { scriptList } = this;
 		if (scriptList instanceof ParamList) {
-			const { history } = scriptList;
+			const { history } = scriptList as any;
 			const { editor } = history;
 			if (editor) {
 				history.save({
@@ -698,62 +709,63 @@ export class ParameterPane extends HTMLElement {
 				});
 			}
 		}
-		parameters[key] = element.read();
-		scriptList?.dispatchChangeEvent(1);
+		parameters[key] = (element as any).read();
+		(scriptList as any)?.dispatchChangeEvent(1);
 		// 更新参数可见性与校验状态
-		const grid = element.parentNode;
-		const detail = grid.parentNode;
+		const grid = element.parentNode as HTMLElement;
+		const detail = grid.parentNode as any;
 		if (detail?.meta) {
-			if (element.branched) {
-				PluginManager.reconstruct(detail.data);
+			if ((element as any).branched) {
+				(PluginManager as any).reconstruct(detail.data);
 			}
 			this.updateParamDisplay(detail);
 			this.onResize?.();
 		}
 	}
 
-	applyAffix(input, param) {
+	applyAffix(input: HTMLElement, param: any): void {
 		const font = 'var(--font-family-mono)';
 		if (param.prefix) {
 			const pre = document.createElement('text');
 			pre.textContent = param.prefix;
-			pre.addClass('param-affix');
-			pre.addClass('left');
-			input.insertBefore(pre, input.input);
+			(pre as any).addClass('param-affix');
+			(pre as any).addClass('left');
+			(input as any).insertBefore(pre, (input as any).input);
 		}
 		if (param.suffix) {
 			const suf = document.createElement('text');
 			suf.textContent = param.suffix;
-			suf.addClass('param-affix');
-			suf.addClass('right');
-			input.insertBefore(suf, input.input);
+			(suf as any).addClass('param-affix');
+			(suf as any).addClass('right');
+			(input as any).insertBefore(suf, (input as any).input);
 		}
-		if (input.input) {
+		if ((input as any).input) {
 			if (param.prefix) {
 				const pw = measureText(param.prefix, font).width + 8;
-				input.input.style.paddingLeft = pw + 'px';
+				(input as any).input.style.paddingLeft = pw + 'px';
 			}
 			if (param.suffix) {
 				const sw = measureText(param.suffix, font).width + 8;
-				input.input.style.paddingRight = sw + 'px';
+				(input as any).input.style.paddingRight = sw + 'px';
 			}
 		}
 	}
 
 	// 窗口 - 本地化事件
-	static windowLocalize(event) {
+	static windowLocalize(this: ParameterPane, event: Event): void {
 		for (const { langMap } of (this as any).metas) {
 			const oldMap = langMap.active;
 			const newMap = langMap.update().active;
 			// 更新语言包后如果发生变化则重载脚本组件
 			if (oldMap !== newMap) {
-				return (this as any).update();
+				(this as any).update();
+				return;
 			}
 		}
 	}
 
 	// 脚本元数据改变事件
-	static scriptChange(event) {
+	static scriptChange(this: ParameterPane, event: any): void {
 		for (const meta of (this as any).metas) {
 			if (meta === event.changedMeta) {
 				if ((this as any).contains(Select.target)) {

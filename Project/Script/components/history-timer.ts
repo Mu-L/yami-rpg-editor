@@ -17,7 +17,7 @@ export const HistoryTimer = new Timer({
 HistoryTimer.complete = true;
 
 // 开始计时
-HistoryTimer.start = function (type) {
+HistoryTimer.start = function (type: string): void {
 	if (this.complete) {
 		this.complete = false;
 		this.add();
@@ -27,7 +27,7 @@ HistoryTimer.start = function (type) {
 };
 
 // 完成计时
-HistoryTimer.finish = function () {
+HistoryTimer.finish = function (): void {
 	if (!this.complete) {
 		this.complete = true;
 		this.remove();

@@ -5,16 +5,16 @@ import { Window } from '../tools/window-object.ts';
 // ******************************** 窗口框架 ********************************
 
 export class WindowFrame extends HTMLElement {
-	enableAmbient; //:boolean
-	activeElement; //:element
-	focusableElements; //:array
-	windowResize; //:function
-	openEventEnabled; //:boolean
-	closeEventEnabled; //:boolean
-	closedEventEnabled; //:boolean
-	resizeEventEnabled; //:boolean
-	maximizeEventEnabled; //:boolean
-	unmaximizeEventEnabled; //:boolean
+	enableAmbient: boolean; //:boolean
+	activeElement: HTMLElement | null; //:element
+	focusableElements: HTMLElement[] | null; //:array
+	windowResize: ((event: Event) => void) | null; //:function
+	openEventEnabled: boolean; //:boolean
+	closeEventEnabled: boolean; //:boolean
+	closedEventEnabled: boolean; //:boolean
+	resizeEventEnabled: boolean; //:boolean
+	maximizeEventEnabled: boolean; //:boolean
+	unmaximizeEventEnabled: boolean; //:boolean
 
 	constructor() {
 		super();
@@ -33,7 +33,7 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 打开窗口
-	open() {
+	open(): void {
 		if (Window.frames.append(this)) {
 			Window.ambient.update();
 			this.addClass('open');
@@ -47,13 +47,13 @@ export class WindowFrame extends HTMLElement {
 			this.dispatchEvent(new Event('open'));
 			if (this.resizeEventEnabled && this.hasClass('maximized')) {
 				this.dispatchEvent(new Event('resize'));
-				window.on('resize', this.windowResize);
+				window.on('resize', this.windowResize!);
 			}
 		}
 	}
 
 	// 关闭窗口
-	close() {
+	close(): boolean {
 		if (
 			this.closeEventEnabled &&
 			!this.dispatchEvent(
@@ -71,7 +71,7 @@ export class WindowFrame extends HTMLElement {
 				this.dispatchEvent(new Event('closed'));
 			}
 			if (this.resizeEventEnabled && this.hasClass('maximized')) {
-				window.off('resize', this.windowResize);
+				window.off('resize', this.windowResize!);
 			}
 			// 快捷键操作不会触发 blur
 			if (document.activeElement !== document.body) {
@@ -83,7 +83,7 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 最大化窗口
-	maximize() {
+	maximize(): void {
 		if (this.addClass('maximized')) {
 			this.style.left = '0';
 			this.style.top = '0';
@@ -92,13 +92,13 @@ export class WindowFrame extends HTMLElement {
 			}
 			if (this.resizeEventEnabled) {
 				this.dispatchEvent(new Event('resize'));
-				window.on('resize', this.windowResize);
+				window.on('resize', this.windowResize!);
 			}
 		}
 	}
 
 	// 取消最大化窗口
-	unmaximize() {
+	unmaximize(): void {
 		if (this.removeClass('maximized')) {
 			this.computePosition();
 			if (this.unmaximizeEventEnabled) {
@@ -106,18 +106,20 @@ export class WindowFrame extends HTMLElement {
 			}
 			if (this.resizeEventEnabled) {
 				this.dispatchEvent(new Event('resize'));
-				window.off('resize', this.windowResize);
+				window.off('resize', this.windowResize!);
 			}
 		}
 	}
 
 	// 获得焦点
-	focus() {
+	focus(): void {
 		if (this.removeClass('blur')) {
 			this.removeClass('translucent');
 			const elements = this.focusableElements;
-			for (const element of elements) {
-				element.tabIndex += 1;
+			if (elements) {
+				for (const element of elements) {
+					element.tabIndex += 1;
+				}
 			}
 			this.focusableElements = null;
 			if (this.activeElement) {
@@ -128,7 +130,7 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 失去焦点
-	blur() {
+	blur(): void {
 		if (this.addClass('blur')) {
 			if (!this.hasClass('opaque') && !this.hasClass('maximized')) {
 				this.addClass('translucent');
@@ -138,16 +140,16 @@ export class WindowFrame extends HTMLElement {
 			for (const element of elements) {
 				element.tabIndex -= 1;
 			}
-			this.focusableElements = elements;
+			this.focusableElements = Array.from(elements) as HTMLElement[];
 			if (document.activeElement !== document.body) {
-				this.activeElement = document.activeElement;
+				this.activeElement = document.activeElement as HTMLElement;
 				this.activeElement.blur();
 			}
 		}
 	}
 
 	// 计算位置
-	computePosition() {
+	computePosition(): void {
 		const mode = this.getAttribute('mode');
 		switch (mode ?? Window.positionMode) {
 			case 'center':
@@ -168,7 +170,7 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 居中位置
-	center() {
+	center(): void {
 		const rect = this.rect();
 		const x = CSS.rasterize((window.innerWidth - rect.width) / 2);
 		const y = CSS.rasterize((window.innerHeight - rect.height) / 2);
@@ -176,7 +178,7 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 绝对位置
-	absolute(left, top) {
+	absolute(left: number, top: number): void {
 		const rect = this.rect();
 		const x = CSS.rasterize(left);
 		const y = CSS.rasterize(top);
@@ -184,7 +186,7 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 堆叠位置
-	overlap(parent) {
+	overlap(parent: WindowFrame): void {
 		const rect = this.rect();
 		const { left, top } = parent.style;
 		const x = CSS.rasterize(parseFloat(left) + 24);
@@ -193,7 +195,7 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 设置位置
-	setPosition(x, y, rect) {
+	setPosition(x: number, y: number, rect: DOMRect): void {
 		// 应用窗口带边框需要减去1px的margin
 		if (document.body.hasClass('border')) {
 			const dpx = 1 / window.devicePixelRatio;
@@ -207,7 +209,7 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 设置标题
-	setTitle(text) {
+	setTitle(text: string): void {
 		const titleBar = this.firstElementChild;
 		if (titleBar instanceof TitleBar) {
 			for (const childNode of titleBar.childNodes) {
@@ -220,7 +222,11 @@ export class WindowFrame extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'open':
@@ -234,7 +240,7 @@ export class WindowFrame extends HTMLElement {
 				break;
 			case 'resize':
 				this.resizeEventEnabled = true;
-				this.windowResize = (event) => {
+				this.windowResize = (event: Event) => {
 					this.dispatchEvent(new Event('resize'));
 				};
 				break;

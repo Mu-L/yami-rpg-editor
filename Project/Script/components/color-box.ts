@@ -3,9 +3,9 @@ import { Color } from '../tools/color-picker-window.ts';
 // ******************************** 颜色框 ********************************
 
 export class ColorBox extends HTMLElement {
-	dataValue; //:string
-	foreground; //:element
-	inputEventEnabled; //:boolean
+	dataValue: string; //:string
+	foreground: HTMLElement; //:element
+	inputEventEnabled: boolean; //:boolean
 
 	constructor() {
 		super();
@@ -32,12 +32,12 @@ export class ColorBox extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): string {
 		return this.dataValue;
 	}
 
 	// 写入数据
-	write(color) {
+	write(color: string): void {
 		this.dataValue = color;
 
 		// 更新样式
@@ -49,11 +49,11 @@ export class ColorBox extends HTMLElement {
 	}
 
 	// 输入数据
-	input(color) {
+	input(color: string): void {
 		if (this.dataValue !== color) {
 			this.write(color);
 			if (this.inputEventEnabled) {
-				const input = new Event('input');
+				const input: any = new Event('input');
 				input.value = this.dataValue;
 				this.dispatchEvent(input);
 			}
@@ -62,21 +62,25 @@ export class ColorBox extends HTMLElement {
 	}
 
 	// 启用元素
-	enable() {
+	enable(): void {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
 	// 禁用元素
-	disable() {
+	disable(): void {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'input':
@@ -86,7 +90,7 @@ export class ColorBox extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: KeyboardEvent): void {
 		switch (event.code) {
 			case 'Enter':
 			case 'NumpadEnter':
@@ -99,7 +103,7 @@ export class ColorBox extends HTMLElement {
 	}
 
 	// 鼠标点击事件
-	mouseclick(event) {
+	mouseclick(event: Event): void {
 		Color.open(this);
 	}
 }

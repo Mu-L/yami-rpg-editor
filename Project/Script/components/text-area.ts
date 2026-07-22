@@ -34,18 +34,18 @@ export class TextArea extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): string {
 		return this.input.value;
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: string): void {
 		this.input.value = value;
 		this.input.history.reset();
 	}
 
 	// 插入数据
-	insert(value) {
+	insert(value: string): void {
 		this.input.dispatchEvent(
 			new InputEvent('beforeinput', {
 				inputType: 'insertFromPaste',

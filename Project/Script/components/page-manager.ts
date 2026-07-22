@@ -1,9 +1,9 @@
 ﻿// ******************************** 页面管理器 ********************************
 
 export class PageManager extends HTMLElement {
-	index; //:string
-	active; //:element
-	switchEventEnabled; //:boolean
+	index: any; //:string
+	active: HTMLElement | null; //:element
+	switchEventEnabled: boolean; //:boolean
 
 	constructor() {
 		super();
@@ -29,10 +29,10 @@ export class PageManager extends HTMLElement {
 	}
 
 	// 切换页面
-	switch(value) {
+	switch(value: any): void {
 		const last = this.index;
 		if (last !== value) {
-			let target = null;
+			let target: HTMLElement | null = null;
 			if (value !== null) {
 				for (const element of <any>this.childNodes) {
 					if ((<any>element).dataValue === value) {
@@ -64,7 +64,11 @@ export class PageManager extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'switch':

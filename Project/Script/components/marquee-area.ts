@@ -3,15 +3,15 @@
 // ******************************** 选框区域 ********************************
 
 export class MarqueeArea extends HTMLElement {
-	selection; //:element
-	x; //:number
-	y; //:number
-	width; //:number
-	height; //:number
-	scaleX; //:number
-	scaleY; //:number
-	visible; //:boolean
-	saveData; //:object
+	selection: HTMLElement; //:element
+	x: number; //:number
+	y: number; //:number
+	width: number; //:number
+	height: number; //:number
+	scaleX: number; //:number
+	scaleY: number; //:number
+	visible: boolean; //:boolean
+	saveData: Record<string, any>; //:object
 
 	constructor() {
 		super();
@@ -33,7 +33,7 @@ export class MarqueeArea extends HTMLElement {
 	}
 
 	// 保存状态
-	save(key = 'default') {
+	save(key: string = 'default'): void {
 		this.saveData[key] = {
 			x: this.x,
 			y: this.y,
@@ -45,24 +45,24 @@ export class MarqueeArea extends HTMLElement {
 	}
 
 	// 恢复状态
-	restore(key = 'default') {
+	restore(key: string = 'default'): void {
 		const data = this.saveData[key];
 		if (data) {
-			for (const key of Object.keys(data)) {
-				this[key] = data[key];
+			for (const k of Object.keys(data)) {
+				(this as any)[k] = data[k];
 			}
 			this.saveData[key] = null;
 		}
 	}
 
 	// 调整大小
-	resize({ width, height }) {
+	resize({ width, height }: { width: number; height: number }): void {
 		this.style.width = `${width}px`;
 		this.style.height = `${height}px`;
 	}
 
 	// 擦除矩形
-	clear() {
+	clear(): void {
 		if (this.visible) {
 			this.visible = false;
 			this.selection.hide();
@@ -70,7 +70,12 @@ export class MarqueeArea extends HTMLElement {
 	}
 
 	// 选取矩形
-	select(x = this.x, y = this.y, width = this.width, height = this.height) {
+	select(
+		x: number = this.x,
+		y: number = this.y,
+		width: number = this.width,
+		height: number = this.height
+	): void {
 		// 记录属性
 		this.x = x;
 		this.y = y;

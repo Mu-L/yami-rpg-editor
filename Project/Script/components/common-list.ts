@@ -3,18 +3,25 @@
 // ******************************** 普通列表 ********************************
 
 export class CommonList extends HTMLElement {
-	elements; //:array
-	selection; //:element
-	writeEventEnabled; //:boolean
-	selectEventEnabled; //:boolean
-	popupEventEnabled; //:boolean
+	elements: any[] & {
+		versionId: number;
+		count: number;
+		start: number;
+		end: number;
+		head: HTMLElement | null;
+		foot: HTMLElement | null;
+	}; //:array
+	selection: HTMLElement | null; //:element
+	writeEventEnabled: boolean; //:boolean
+	selectEventEnabled: boolean; //:boolean
+	popupEventEnabled: boolean; //:boolean
 
 	constructor() {
 		super();
 
 		// 设置属性
 		this.tabIndex = 0;
-		this.elements = [];
+		this.elements = [] as any;
 		this.elements.versionId = 0;
 		this.elements.count = 0;
 		this.elements.start = -1;
@@ -28,19 +35,19 @@ export class CommonList extends HTMLElement {
 		this.listenDraggingScrollbarEvent();
 
 		// 侦听事件
-		(this as any).on('scroll', this.scroll);
+		(this as any).on('scroll', this.onScroll);
 		(this as any).on('keydown', this.keydown);
 		(this as any).on('pointerdown', this.pointerdown);
 		(this as any).on('pointerup', this.pointerup);
 	}
 
 	// 读取数据
-	read() {
+	read(): any {
 		return this.selection?.dataValue;
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any): void {
 		const elements = this.elements;
 		const count = elements.count;
 		if (count !== 0) {
@@ -57,7 +64,7 @@ export class CommonList extends HTMLElement {
 			this.selection = target;
 			this.scrollToItem(index);
 			if (this.writeEventEnabled) {
-				const write = new Event('write');
+				const write: any = new Event('write');
 				write.value = target.dataValue;
 				this.dispatchEvent(write);
 			}
@@ -65,7 +72,7 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 重新装填
-	reload() {
+	reload(): this {
 		const { elements } = this;
 		elements.start = -1;
 		elements.count = 0;
@@ -73,13 +80,13 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 添加元素
-	appendElement(element) {
+	appendElement(element: HTMLElement): void {
 		const { elements } = this;
 		elements[elements.count++] = element;
 	}
 
 	// 更新列表
-	update() {
+	update(): void {
 		// 清除多余的元素
 		this.clearElements(this.elements.count);
 
@@ -88,32 +95,32 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 重新调整
-	resize() {
-		return CommonList.resize(this);
+	resize(): void {
+		CommonList.resize(this);
 	}
 
 	// 更新头部和尾部元素
-	updateHeadAndFoot() {
-		return CommonList.updateHeadAndFoot(this);
+	updateHeadAndFoot(): void {
+		CommonList.updateHeadAndFoot(this);
 	}
 
 	// 在重新调整时更新
-	updateOnResize() {}
+	updateOnResize(_element?: HTMLElement): void {}
 
 	// 选择项目
-	select(element) {
+	select(element: HTMLElement): void {
 		if (element instanceof HTMLElement && this.selection !== element) {
-			this.write(element.dataValue);
+			this.write((element as any).dataValue);
 			if (this.selectEventEnabled) {
-				const select = new Event('select');
-				select.value = element.dataValue;
+				const select: any = new Event('select');
+				select.value = (element as any).dataValue;
 				this.dispatchEvent(select);
 			}
 		}
 	}
 
 	// 取消选择
-	unselect() {
+	unselect(): void {
 		if (this.selection) {
 			this.selection.removeClass('selected');
 			this.selection = null;
@@ -121,7 +128,7 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 滚动到项目
-	scrollToItem(index) {
+	scrollToItem(index: number): void {
 		const scrollTop = Math.clamp(
 			this.scrollTop,
 			index * 20 + 20 - this.innerHeight,
@@ -133,7 +140,7 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 选择相对位置的项目
-	selectRelative(direction) {
+	selectRelative(direction: 'up' | 'down'): void {
 		const elements = this.elements;
 		const count = elements.count;
 		if (count > 0) {
@@ -164,12 +171,12 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 清除元素
-	clearElements(start) {
-		return CommonList.clearElements(this, start);
+	clearElements(start: number): void {
+		CommonList.clearElements(this, start);
 	}
 
 	// 清除列表
-	clear() {
+	clear(): this {
 		this.unselect();
 		this.textContent = '';
 		this.clearElements(0);
@@ -181,7 +188,11 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'write':
@@ -197,13 +208,13 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 滚动事件
-	scroll(event) {
+	onScroll(event: Event): void {
 		// 可调用重写的resize
-		return this.resize();
+		this.resize();
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: KeyboardEvent): void {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
 				case 'ArrowUp':
@@ -233,11 +244,11 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
 			case 2: {
-				const element = event.target;
+				const element = event.target as HTMLElement;
 				if (
 					element.tagName === 'COMMON-ITEM' &&
 					!element.hasClass('selected')
@@ -250,22 +261,24 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 指针弹起事件
-	pointerup(event) {
+	pointerup(event: PointerEvent): void {
 		switch (event.button) {
 			case 2:
 				if (this.popupEventEnabled && document.activeElement === this) {
-					const element = event.target.seek('common-item');
+					const element = (event.target as HTMLElement).seek(
+						'common-item'
+					);
 					if (
 						element.tagName === 'COMMON-ITEM' &&
 						element.hasClass('selected')
 					) {
-						const popup = new Event('popup');
-						popup.value = element.dataValue;
+						const popup: any = new Event('popup');
+						popup.value = (element as any).dataValue;
 						popup.clientX = event.clientX;
 						popup.clientY = event.clientY;
 						this.dispatchEvent(popup);
 					} else {
-						const popup = new Event('popup');
+						const popup: any = new Event('popup');
 						popup.value = null;
 						popup.clientX = event.clientX;
 						popup.clientY = event.clientY;
@@ -277,7 +290,7 @@ export class CommonList extends HTMLElement {
 	}
 
 	// 静态 - 重新调整
-	static resize = (self) => {
+	static resize = (self: CommonList): void => {
 		const st = self.scrollTop;
 		const ch = self.innerHeight;
 		const elements = self.elements;
@@ -299,13 +312,13 @@ export class CommonList extends HTMLElement {
 			const versionId = elements.versionId++;
 			for (let i = start; i < end; i++) {
 				const element = elements[i];
-				element.versionId = versionId;
+				(element as any).versionId = versionId;
 				self.updateOnResize(element);
 			}
 			const nodes = self.childNodes;
 			const last = nodes.length - 1;
 			for (let i = last; i >= 0; i--) {
-				const element = nodes[i];
+				const element = nodes[i] as any;
 				if (element.versionId !== versionId) {
 					element.remove();
 				}
@@ -325,7 +338,7 @@ export class CommonList extends HTMLElement {
 	};
 
 	// 静态 - 更新头部和尾部元素
-	static updateHeadAndFoot = (self) => {
+	static updateHeadAndFoot = (self: CommonList): void => {
 		const { elements } = self;
 		if (elements.head) {
 			elements.head.style.marginTop = '';
@@ -338,7 +351,7 @@ export class CommonList extends HTMLElement {
 		// 设置头部和尾部元素的外边距
 		const { count, start, end } = elements;
 		if (count !== 0) {
-			const pad = self.padded ? 1 : 0;
+			const pad = (self as any).padded ? 1 : 0;
 			const mt = start * 20;
 			const mb = (count - end + pad) * 20;
 			elements.head = elements[start];
@@ -349,7 +362,7 @@ export class CommonList extends HTMLElement {
 	};
 
 	// 静态 - 清除元素
-	static clearElements(self, start) {
+	static clearElements(self: CommonList, start: number): void {
 		let i = start;
 		const { elements } = self;
 		while (elements[i] !== undefined) {

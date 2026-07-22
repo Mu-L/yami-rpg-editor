@@ -31,10 +31,10 @@ import { Variable } from '../variable/variable.ts';
 // ******************************** 自定义框 ********************************
 
 export class CustomBox extends HTMLElement {
-	info; //:element
-	dataValue; //:any
-	writeEventEnabled; //:boolean
-	inputEventEnabled; //:boolean
+	info: HTMLElement; //:element
+	dataValue: any; //:any
+	writeEventEnabled: boolean; //:boolean
+	inputEventEnabled: boolean; //:boolean
 
 	constructor() {
 		super();
@@ -61,45 +61,45 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 获取类型属性
-	get type() {
+	get type(): string | null {
 		return this.getAttribute('type');
 	}
 
-	set type(value) {
+	set type(value: string) {
 		this.setAttribute('type', value);
 	}
 
 	// 获取过滤属性
-	get filter() {
+	get filter(): string | null {
 		return this.getAttribute('filter');
 	}
 
-	set filter(value) {
+	set filter(value: string) {
 		this.setAttribute('filter', value);
 	}
 
 	// 读取数据
-	read() {
+	read(): any {
 		return this.dataValue;
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any): void {
 		this.dataValue = value;
 		this.update();
 		if (this.writeEventEnabled) {
-			const write = new Event('write');
+			const write: any = new Event('write');
 			write.value = this.dataValue;
 			this.dispatchEvent(write);
 		}
 	}
 
 	// 输入数据
-	input(value) {
+	input(value: any): void {
 		if (this.dataValue !== value) {
 			this.write(value);
 			if (this.inputEventEnabled) {
-				const input = new Event('input');
+				const input: any = new Event('input');
 				input.value = this.dataValue;
 				this.dispatchEvent(input);
 			}
@@ -112,7 +112,7 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 更新信息
-	update() {
+	update(): void {
 		this.info.removeClass('invalid');
 		const value = this.dataValue;
 		switch (this.type) {
@@ -171,25 +171,25 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 更新文件信息
-	updateFile(guid) {
-		Command.invalid = false;
-		this.info.textContent = Command.removeTextTags(
-			Command.parseFileName(guid)
+	updateFile(guid: string): void {
+		(Command as any).invalid = false;
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseFileName(guid)
 		);
-		if (Command.invalid) this.info.addClass('invalid');
+		if ((Command as any).invalid) this.info.addClass('invalid');
 	}
 
 	// 更新对话框目录
-	updateDialogDir(path) {
+	updateDialogDir(path: string): void {
 		this.info.textContent = path;
 	}
 
 	// 打开对话框目录
-	openDialogDir(input) {
+	openDialogDir(input: { read(): any; write(v: any): void }): void {
 		File.showOpenDialog({
 			defaultPath: input.read(),
 			properties: ['openDirectory']
-		}).then(({ filePaths }) => {
+		}).then(({ filePaths }: { filePaths: string[] }) => {
 			if (filePaths.length === 1) {
 				input.write(filePaths[0]);
 			}
@@ -197,16 +197,16 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 更新图像剪辑信息
-	updateClip(clip) {
+	updateClip(clip: number[]): void {
 		this.info.textContent = clip.join(', ');
 	}
 
 	// 更新变量信息
-	updateVariable(variable) {
+	updateVariable(variable: any): void {
 		// 类型是独立变量，或存在变量键，则判定为有效变量
 		if (variable.type === 'self' || variable.key) {
-			this.info.textContent = Command.removeTextTags(
-				Command.parseVariable(variable)
+			this.info.textContent = (Command as any).removeTextTags(
+				(Command as any).parseVariable(variable)
 			);
 		} else {
 			this.info.textContent = Local.get('common.none');
@@ -214,176 +214,178 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 更新全局变量信息
-	updateGlobalVariable(id) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseGlobalVariable(id)
+	updateGlobalVariable(id: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseGlobalVariable(id)
 		);
 	}
 
 	// 更新角色信息
-	updateActor(actor) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseActor(actor)
+	updateActor(actor: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseActor(actor)
 		);
 	}
 
 	// 更新技能信息
-	updateSkill(skill) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseSkill(skill)
+	updateSkill(skill: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseSkill(skill)
 		);
 	}
 
 	// 更新状态信息
-	updateState(state) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseState(state)
+	updateState(state: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseState(state)
 		);
 	}
 
 	// 更新装备信息
-	updateEquipment(equipment) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseEquipment(equipment)
+	updateEquipment(equipment: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseEquipment(equipment)
 		);
 	}
 
 	// 更新物品信息
-	updateItem(item) {
-		this.info.textContent = Command.removeTextTags(Command.parseItem(item));
+	updateItem(item: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseItem(item)
+		);
 	}
 
 	// 更新位置信息
-	updatePosition(point) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parsePosition(point)
+	updatePosition(point: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parsePosition(point)
 		);
 	}
 
 	// 更新角度信息
-	updateAngle(angle) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseAngle(angle)
+	updateAngle(angle: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseAngle(angle)
 		);
 	}
 
 	// 更新触发器信息
-	updateTrigger(trigger) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseTrigger(trigger)
+	updateTrigger(trigger: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseTrigger(trigger)
 		);
 	}
 
 	// 更新光源信息
-	updateLight(light) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseLight(light)
+	updateLight(light: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseLight(light)
 		);
 	}
 
 	// 更新区域信息
-	updateRegion(region) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseRegion(region)
+	updateRegion(region: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseRegion(region)
 		);
 	}
 
 	// 更新瓦片地图信息
-	updateTilemap(tilemap) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseTilemap(tilemap)
+	updateTilemap(tilemap: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseTilemap(tilemap)
 		);
 	}
 
 	// 更新场景对象信息
-	updateObject(object) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseObject(object)
+	updateObject(object: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseObject(object)
 		);
 	}
 
 	// 更新元素信息
-	updateElement(element) {
-		Command.invalid = false;
-		this.info.textContent = Command.removeTextTags(
-			Command.parseElement(element)
+	updateElement(element: any): void {
+		(Command as any).invalid = false;
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseElement(element)
 		);
-		if (Command.invalid) this.info.addClass('invalid');
+		if ((Command as any).invalid) this.info.addClass('invalid');
 	}
 
 	// 更新预设对象信息
-	updatePresetObject(preset) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parsePresetObject(preset)
+	updatePresetObject(preset: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parsePresetObject(preset)
 		);
 	}
 
 	// 更新预设元素信息
-	updatePresetElement(preset) {
-		this.info.textContent = Command.removeTextTags(
-			Command.parsePresetElement(preset)
+	updatePresetElement(preset: any): void {
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parsePresetElement(preset)
 		);
-		if (Command.invalid) this.info.addClass('invalid');
+		if ((Command as any).invalid) this.info.addClass('invalid');
 	}
 
 	// 更新数组信息
-	updateArray(array) {
+	updateArray(array: any[]): void {
 		this.info.textContent =
 			array.length !== 0
-				? Command.parseMultiLineString(array.join(', '))
+				? (Command as any).parseMultiLineString(array.join(', '))
 				: Local.get('common.empty');
 	}
 
 	// 更新属性群组信息
-	updateAttributeGroup(groupId) {
-		Command.invalid = false;
-		this.info.textContent = Command.removeTextTags(
-			Command.parseAttributeGroup(groupId)
+	updateAttributeGroup(groupId: string): void {
+		(Command as any).invalid = false;
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseAttributeGroup(groupId)
 		);
-		if (Command.invalid) this.info.addClass('invalid');
+		if ((Command as any).invalid) this.info.addClass('invalid');
 	}
 
 	// 更新属性信息
-	updateAttribute(attrId) {
+	updateAttribute(attrId: string): void {
 		if (attrId === '') {
 			this.info.textContent = Local.get('common.none');
 			return;
 		}
-		const attribute = Attribute.getAttribute(attrId);
+		const attribute = (Attribute as any).getAttribute(attrId);
 		if (attribute) {
 			this.info.textContent = GameLocal.replace(attribute.name);
 		} else {
-			this.info.textContent = Command.parseUnlinkedId(attrId);
+			this.info.textContent = (Command as any).parseUnlinkedId(attrId);
 			this.info.addClass('invalid');
 		}
 	}
 
 	// 更新枚举群组信息
-	updateEnumGroup(groupId) {
-		Command.invalid = false;
-		this.info.textContent = Command.removeTextTags(
-			Command.parseEnumGroup(groupId)
+	updateEnumGroup(groupId: string): void {
+		(Command as any).invalid = false;
+		this.info.textContent = (Command as any).removeTextTags(
+			(Command as any).parseEnumGroup(groupId)
 		);
-		if (Command.invalid) this.info.addClass('invalid');
+		if ((Command as any).invalid) this.info.addClass('invalid');
 	}
 
 	// 更新枚举字符串信息
-	updateEnumString(stringId) {
+	updateEnumString(stringId: string): void {
 		if (stringId === '') {
 			this.info.textContent = Local.get('common.none');
 			return;
 		}
-		const string = Enum.getString(stringId);
+		const string = (Enum as any).getString(stringId);
 		if (string) {
 			this.info.textContent = GameLocal.replace(string.name);
 		} else {
-			this.info.textContent = Command.parseUnlinkedId(stringId);
+			this.info.textContent = (Command as any).parseUnlinkedId(stringId);
 			this.info.addClass('invalid');
 		}
 	}
 
 	// 启用元素
-	enable() {
+	enable(): void {
 		if (this.removeClass('disabled')) {
 			this.tabIndex += 1;
 			this.showChildNodes();
@@ -391,7 +393,7 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 禁用元素
-	disable() {
+	disable(): void {
 		if (this.addClass('disabled')) {
 			this.tabIndex -= 1;
 			this.hideChildNodes();
@@ -399,7 +401,11 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'write':
@@ -412,7 +418,7 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: KeyboardEvent): void {
 		switch (event.code) {
 			case 'Enter':
 			case 'NumpadEnter':
@@ -426,84 +432,84 @@ export class CustomBox extends HTMLElement {
 
 	// 鼠标点击事件
 	// @ts-ignore
-	click(event) {
+	click(event: Event): void {
 		switch (this.type) {
 			case 'file':
-				return Selector.open(this);
+				return (Selector as any).open(this);
 			case 'dialog-dir':
 				return this.openDialogDir(this);
 			case 'clip':
-				return ImageClip.open(this);
+				return (ImageClip as any).open(this);
 			case 'variable':
-				return VariableGetter.open(this);
+				return (VariableGetter as any).open(this);
 			case 'global-variable':
-				return Variable.open(this);
+				return (Variable as any).open(this);
 			case 'actor':
-				return ActorGetter.open(this);
+				return (ActorGetter as any).open(this);
 			case 'skill':
-				return SkillGetter.open(this);
+				return (SkillGetter as any).open(this);
 			case 'state':
-				return StateGetter.open(this);
+				return (StateGetter as any).open(this);
 			case 'equipment':
-				return EquipmentGetter.open(this);
+				return (EquipmentGetter as any).open(this);
 			case 'item':
-				return ItemGetter.open(this);
+				return (ItemGetter as any).open(this);
 			case 'position':
-				return PositionGetter.open(this);
+				return (PositionGetter as any).open(this);
 			case 'angle':
-				return AngleGetter.open(this);
+				return (AngleGetter as any).open(this);
 			case 'trigger':
-				return TriggerGetter.open(this);
+				return (TriggerGetter as any).open(this);
 			case 'light':
-				return LightGetter.open(this);
+				return (LightGetter as any).open(this);
 			case 'region':
-				return RegionGetter.open(this);
+				return (RegionGetter as any).open(this);
 			case 'tilemap':
-				return TilemapGetter.open(this);
+				return (TilemapGetter as any).open(this);
 			case 'object':
-				return ObjectGetter.open(this);
+				return (ObjectGetter as any).open(this);
 			case 'element':
-				return ElementGetter.open(this);
+				return (ElementGetter as any).open(this);
 			case 'ancestor-element':
-				return AncestorGetter.open(this);
+				return (AncestorGetter as any).open(this);
 			case 'preset-object':
-				return PresetObject.open(this);
+				return (PresetObject as any).open(this);
 			case 'preset-element':
-				return PresetElement.open(this);
+				return (PresetElement as any).open(this);
 			case 'array':
-				return ArrayList.open(this);
+				return (ArrayList as any).open(this);
 			case 'attribute':
-				return Attribute.open(this, 'attribute');
+				return (Attribute as any).open(this, 'attribute');
 			case 'attribute-group':
-				return Attribute.open(this, 'group');
+				return (Attribute as any).open(this, 'group');
 			case 'enum-group':
-				return Enum.open(this, 'group');
+				return (Enum as any).open(this, 'group');
 			case 'enum-string':
-				return Enum.open(this, 'string');
+				return (Enum as any).open(this, 'string');
 		}
 	}
 
 	// 拖拽进入事件
-	dragenter(event) {
+	dragenter(event: DragEvent): void {
 		return this.dragover(event);
 	}
 
 	// 拖拽离开事件
-	dragleave(event) {
-		if (!this.contains(event.relatedTarget)) {
+	dragleave(event: DragEvent): void {
+		if (!this.contains(event.relatedTarget as Node)) {
 			this.removeClass('dragover');
 		}
 	}
 
 	// 拖拽悬停事件
-	dragover(event) {
-		if (this.type === 'file' && Browser.dragging) {
-			const file = Browser.body.activeFile;
+	dragover(event: DragEvent): void {
+		if (this.type === 'file' && (Browser as any).dragging) {
+			const file = (Browser.body as any).activeFile;
 			if (
 				file instanceof FileItem &&
-				(!this.filter || this.filter.indexOf(file.type) !== -1)
+				(!this.filter || this.filter.indexOf((file as any).type) !== -1)
 			) {
-				event.dataTransfer.dropEffect = 'move';
+				(event as any).dataTransfer.dropEffect = 'move';
 				event.preventDefault();
 				this.addClass('dragover');
 			}
@@ -511,11 +517,11 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 拖拽释放事件
-	drop(event) {
-		const file = Browser.body.activeFile;
+	drop(event: DragEvent): void {
+		const file = (Browser.body as any).activeFile;
 		if (file instanceof FileItem) {
 			this.focus();
-			this.input(file.meta.guid);
+			this.input((file.meta as any).guid);
 			this.removeClass('dragover');
 		}
 	}
