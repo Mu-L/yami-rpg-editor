@@ -5,7 +5,7 @@
 export const HistoryTimer = new Timer({
 	duration: 2000,
 	callback: (timer) => {
-		(timer as any).complete = true;
+		timer.complete = true;
 	}
 }) as unknown as Omit<Timer, 'start'> & {
 	complete: boolean;

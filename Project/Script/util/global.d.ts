@@ -3,7 +3,15 @@
 // 避免 TS2339 / TS2551 报错。所有扩展均来自 util/*.ts 的实际运行时挂载。
 
 // ============== Clipboard 静态扩展 (util/clipboard.ts) ==============
-// 见 clipboard-augment.d.ts — 模块级 declare global 覆盖
+// util/clipboard.ts 中 Object.assign(Clipboard, {...}) 挂载到全局 Clipboard 构造函数对象本身（静态方法）
+// 注：Clipboard 是构造函数对象，interface Clipboard 声明的是实例方法；
+// Object.assign 挂载点是构造函数对象本身（静态方法），与 instance interface 不同。
+// 调用方用 (Clipboard as any).write/read 绕过静态方法 vs 实例方法的类型冲突。
+interface Clipboard {
+	has(format: string): boolean;
+	read(format: string): any;
+	write(format: string, object: any): void;
+}
 
 // ============== Math 扩展 (util/math.ts) ==============
 interface Math {
@@ -112,12 +120,78 @@ interface HTMLElement {
 	// ScrollBar / CommandList 共用的滚动监听方法（scroll-listener.ts 中挂载到 HTMLElement.prototype）
 	addScrollListener: (...args: any[]) => any;
 	removeScrollListener: (...args: any[]) => any;
+	// element-methods.ts 中挂载到 HTMLElement.prototype 的元素方法
+	// 注：show/hide/clear 等方法被子类（FilterBox/LoadingOverlay/ToastManager 等）重写为不同签名，
+	// 故返回类型用 any 兼容子类，避免 TS2416 冲突。
+	dataValue: any;
+	read(): any;
+	write(value: any): any;
+	clear(): any;
+	enable(): void;
+	disable(): void;
+	hasClass(className: string): boolean;
+	addClass(className: string): boolean;
+	removeClass(className: string): boolean;
+	seekUp(tagName: string, count?: number): HTMLElement | null;
+	css(...args: any[]): CSSStyleDeclaration;
+	rect(): DOMRect;
+	hide(): any;
+	show(...args: any[]): any;
+	hideChildNodes(): void;
+	showChildNodes(): void;
+	getFocus(mode?: string | null): void;
+	setTooltip(content?: string): void;
+	addScrollbars(): void;
+	addSetScrollMethod(): void;
+	hasScrollBar(): boolean;
+	isInContent(event: any): boolean;
+	dispatchChangeEvent(index?: number): void;
+	dispatchResizeEvent(): void;
+	dispatchUpdateEvent(): void;
+	listenDraggingScrollbarEvent(...args: any[]): void;
+	beginScrolling(): void;
+	endScrolling(): void;
+	setScroll(left: number, top: number): void;
+	setScrollLeft(left: number): void;
+	setScrollTop(top: number): void;
+	updateScrollbars(): void;
+	scrollPointerup: (event: any) => void;
+	scrollPointermove: (event: any) => void;
+	scrollPointerdown?: (event: any) => void;
+	dragging: any;
+	// scroll-bar.ts 中 ScrollBar 类方法（addScrollbars 内 hBar/vBar 调用）
+	bind(target: HTMLElement, type: string): void;
+	updateHorizontalBar(): void;
+	updateVerticalBar(): void;
+	// file-body-pane.ts 中局使用
+	isImageChanged: () => boolean;
+	content: HTMLElement;
+	// parameter-pane.ts 中局使用（container/row 元素属性）
+	parameters: any;
+	key: any;
+	wraps: any[];
+	// tab-bar.ts 中局使用（items[i].item / popup menu 元素属性）
+	item: any;
+	value: any;
+	clientX: number;
+	clientY: number;
+	// file-head-pane.ts 中局使用（elFolder/elArrow/head 元素属性）
+	file: any;
+	folders: any[];
+	target: any;
+	links: any;
+	// toast.ts 中局使用（el._timer 挂载 setTimeout 句柄）
+	_timer: any;
+	// file-browser.ts 中局使用（sFile.stats.ino 取文件 inode）
+	stats: { ino: number };
 }
 
 // ============== TextBox 扩展 (components/text-box.ts + tree-list.ts) ==============
 interface TextBox extends HTMLElement {
 	lastText: string;
 	hiddenNodes: any[];
+	// module/resource.ts 中局使用（textbox.input.readOnly 访问内部 input 元素）
+	input: HTMLInputElement;
 }
 
 // ============== path 扩展 (util/config.ts: path.slash) ==============
@@ -146,6 +220,14 @@ interface Event {
 	spaceKey: boolean;
 	cmdOrCtrlKey: boolean;
 	doubleclickProcessed: boolean;
+	// file-body-pane.ts 中局使用（popup menu 的原始事件）
+	raw: any;
+	// param-list.ts 中局使用（event.latest）
+	latest: any;
+	// check-box.ts 中局使用（write/input 事件挂载 .value）
+	value: any;
+	// select-box.ts 中局使用（input 事件挂载 .last）
+	last: any;
 }
 
 // ============== EventTarget 扩展 (util/event-target.ts) ==============
@@ -234,6 +316,10 @@ interface Element {
 	blur(): void;
 	show(...args: any[]): any;
 	hide(...args: any[]): any;
+	// parameter-pane.ts 中局使用（rowsEl.children 迭代为 Element，需访问 .wraps）
+	wraps: any[];
+	// transition-window.ts 中局使用（keyTextNode = createElement('text') 为 Element，需访问 .key）
+	key: any;
 }
 
 interface ParentNode {
@@ -242,6 +328,8 @@ interface ParentNode {
 	directory: any;
 	activeWheel: any;
 	inputCode(code: any): void;
+	// file-head-pane.ts 中局使用（head = this.parentNode 为 ParentNode，需访问 .links）
+	links: any;
 }
 
 interface ChildNode {
@@ -249,6 +337,11 @@ interface ChildNode {
 	tagName: string;
 	getAttribute(name: string): string | null;
 	dataValue: any;
+	// tab-bar.ts 中局使用（items[i] 为 ChildNode，需访问 .item）
+	item: any;
+	// menu-list.ts 中局使用（li 为 ChildNode，需访问 .label/.accelerator）
+	label: any;
+	accelerator: any;
 }
 
 // ============== Event / KeyboardEvent 扩展 ==============
@@ -287,6 +380,8 @@ interface NodeList {
 	on(type: string, listener: (event: any) => void, options?: any): NodeList;
 	enable(): void;
 	disable(): void;
+	// tab-bar.ts 中局使用（this.childNodes 解构 { item }）
+	item: any;
 }
 
 // ============== MouseEvent 扩展 (util/mouse-event.ts) ==============

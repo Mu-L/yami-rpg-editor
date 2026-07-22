@@ -4,6 +4,9 @@ export const Updater = {
 	// properties
 	latestEditorVersion: '1.0.18',
 	latestProjectVersion: '1.0.147',
+	// runtime 挂载: version-warning.ts 中挂载 TS 版本警告函数
+	getTSVersionWarning: null as
+		(() => { message: string; confirm: string; cancel: string }) | null,
 	// methods
 	updateProject: null,
 	updateConfig: null,

@@ -471,22 +471,22 @@ export class ParameterPane extends HTMLElement {
 		addBtn.className = 'add-row-btn';
 		container.appendChild(rowsEl);
 		container.appendChild(addBtn);
-		(container as any).setTooltip = () => {};
-		(container as any).parameters = null;
-		(container as any).key = null;
+		container.setTooltip = () => {};
+		container.parameters = null;
+		container.key = null;
 		const pane = this;
-		(container as any).read = function () {
+		container.read = function () {
 			const result = [];
 			for (const rowEl of rowsEl.children) {
 				const data = {};
-				for (const { param, input } of (rowEl as any).wraps) {
+				for (const { param, input } of rowEl.wraps) {
 					data[param.key] = input.read();
 				}
 				result.push(data);
 			}
 			return result;
 		};
-		(container as any).write = function (value) {
+		container.write = function (value) {
 			rowsEl.innerHTML = '';
 			let arr = value;
 			if (!arr || arr.length === 0) {
@@ -512,7 +512,7 @@ export class ParameterPane extends HTMLElement {
 				row.appendChild(removeBtn);
 				const grid = document.createElement('detail-grid');
 				row.appendChild(grid);
-				(row as any).wraps = template.map((subParam) => {
+				row.wraps = template.map((subParam) => {
 					const wrap = TypeRegistry.get(subParam.type).create(
 						pane,
 						subParam
@@ -546,9 +546,9 @@ export class ParameterPane extends HTMLElement {
 			for (const subParam of template) {
 				empty[subParam.key] = subParam.value;
 			}
-			const data = (container as any).read();
+			const data = container.read();
 			data.push(empty);
-			(container as any).write(data);
+			container.write(data);
 			container.dispatchEvent(new Event('change', { bubbles: true }));
 		};
 		return { tag, label, input: container };

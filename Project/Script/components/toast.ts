@@ -21,7 +21,7 @@ export class ToastManager extends HTMLElement {
 		// 进场动画
 		requestAnimationFrame(() => el.classList.add('toast-show'));
 		if (duration > 0) {
-			(el as any)._timer = setTimeout(() => this.dismiss(el), duration);
+			el._timer = setTimeout(() => this.dismiss(el), duration);
 		}
 		return el;
 	}

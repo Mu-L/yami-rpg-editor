@@ -72,7 +72,7 @@ Editor.open = async function (path, agreed = false) {
 		// 升级到1.0.122：破坏性更新
 		if (verNum < Updater.getVersionNumber('1.0.122')) {
 			if (!agreed) {
-				const warning = (Updater as any).getTSVersionWarning();
+				const warning = Updater.getTSVersionWarning();
 				return Window.confirm(
 					{
 						message: warning.message,

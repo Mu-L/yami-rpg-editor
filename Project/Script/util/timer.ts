@@ -43,6 +43,11 @@ export class Timer {
 	// 运行时挂载: tree-list 等用于在 Timer 实例上绑定触发上下文 / 运行状态
 	target: HTMLElement | null;
 	running: boolean;
+	// scroll-listener.ts 中用于滚动检测计时器的速度挂载
+	speedX: number;
+	speedY: number;
+	// history-timer.ts 中用于标记完成状态
+	complete: boolean;
 	startX: number;
 	endX: number;
 	startY: number;

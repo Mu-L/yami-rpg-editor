@@ -33,12 +33,17 @@ export const Meta = (function IIFE() {
 	return class FileMeta {
 		path; //:string
 		size; //:number
-		file = null;
-		guid = '';
-		mtimeMs = null;
-		versionId = -1;
-		group = null;
-		dataMap = null;
+		// 以下字段用 `declare` 仅作类型声明，运行期完全由
+		// Object.defineProperties(this, descriptors) 定义为不可枚举属性。
+		// 切勿写成类字段（如 `file;` 或 `file = null`）——useDefineForClassFields:true
+		// 下 TS 会发射 `Object.defineProperty(this,'file',{enumerable:true,...})`，
+		// 使 JSON.stringify 看到 file -> FileItem.meta 循环引用。
+		declare file;
+		declare guid;
+		declare mtimeMs;
+		declare versionId;
+		declare group;
+		declare dataMap;
 		x = null;
 		y = null;
 		parameters = null;

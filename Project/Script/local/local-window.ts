@@ -61,7 +61,11 @@ export const Localization = {
 	panelKeydown: null,
 	searcherInput: null,
 	confirm: null,
-	apply: null
+	apply: null,
+	// runtime 挂载: createInputs/fromExcel/toExcel 在本文件下方动态挂载
+	createInputs: null as any,
+	fromExcel: null as any,
+	toExcel: null as any
 };
 
 // list methods
@@ -154,7 +158,7 @@ Localization.initialize = function () {
 };
 
 // 创建输入框
-(Localization as any).createInputs = function () {
+Localization.createInputs = function () {
 	const inputs = (this.inputs = {});
 	for (const language of this.languages) {
 		const detailBox = new DetailBox();
@@ -697,7 +701,7 @@ Localization.apply = function (event) {
 }.bind(Localization);
 
 // 导入Excel按钮 - 鼠标点击事件
-(Localization as any).fromExcel = async function (event) {
+Localization.fromExcel = async function (event) {
 	const items = await ipcRenderer.invoke('from-excel');
 	if (
 		JSON.stringify(items) == JSON.stringify(Data.localization.list) ||
@@ -713,7 +717,7 @@ Localization.apply = function (event) {
 }.bind(Localization);
 
 // 导出Excel按钮 - 鼠标点击事件
-(Localization as any).toExcel = function (event) {
+Localization.toExcel = function (event) {
 	ipcRenderer.invoke('to-excel', {
 		langs: this.languages,
 		list: Data.localization.list

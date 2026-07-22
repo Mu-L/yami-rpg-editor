@@ -17,6 +17,8 @@ export const Log = {
 	clear: null,
 	update: null,
 	tick: null,
+	// runtime 挂载: main/initialize.ts 中挂载警告输出
+	warn: null as ((message: string, ...args: any[]) => void) | null,
 	// events
 	catchError: null,
 	catchRejection: null,

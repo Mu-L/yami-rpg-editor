@@ -521,7 +521,7 @@ export class FileBodyPane extends HTMLElement {
 				if (!meta || cw * ch === 0) break;
 				const version = meta.mtimeMs;
 				const path = `${File.getPath(data.portrait)}?ver=${version}`;
-				(icon as any).isImageChanged = () => version !== meta.mtimeMs;
+				icon.isImageChanged = () => version !== meta.mtimeMs;
 				this.setIconClip(icon, path, cx, cy, cw, ch);
 				break;
 			}
@@ -539,7 +539,7 @@ export class FileBodyPane extends HTMLElement {
 				if (!meta || cw * ch === 0) break;
 				const version = meta.mtimeMs;
 				const path = `${File.getPath(data.icon)}?ver=${version}`;
-				(icon as any).isImageChanged = () => version !== meta.mtimeMs;
+				icon.isImageChanged = () => version !== meta.mtimeMs;
 				this.setIconClip(icon, path, cx, cy, cw, ch);
 				break;
 			}
@@ -1183,7 +1183,7 @@ export class FileBodyPane extends HTMLElement {
 				const promises = [];
 				const length = filePaths.length;
 				for (let i = 0; i < length; i++) {
-					const src = (Path as any).slash(filePaths[i]);
+					const src = Path.slash(filePaths[i]);
 					const ext = Path.extname(src);
 					const base = Path.basename(src, ext);
 					const dst = File.getFileName(dir, base, ext).route;
@@ -1196,9 +1196,7 @@ export class FileBodyPane extends HTMLElement {
             browser.dirchange()
           }
         }) */
-				dialogs.import = (Path as any).slash(
-					Path.dirname(filePaths[0])
-				);
+				dialogs.import = Path.slash(Path.dirname(filePaths[0]));
 			}
 		});
 	}
@@ -1217,9 +1215,7 @@ export class FileBodyPane extends HTMLElement {
 			})
 				.then(({ filePath }) => {
 					if (filePath) {
-						dialogs.export = (Path as any).slash(
-							Path.dirname(filePath)
-						);
+						dialogs.export = Path.slash(Path.dirname(filePath));
 						return FSP.copyFile(File.path(file.path), filePath);
 					}
 				})
@@ -1235,7 +1231,7 @@ export class FileBodyPane extends HTMLElement {
 				.then(({ filePaths }) => {
 					if (filePaths.length === 1) {
 						const dirPath = filePaths[0];
-						dialogs.export = (Path as any).slash(dirPath);
+						dialogs.export = Path.slash(dirPath);
 						return Directory.readdir(
 							files.map((file) => File.path(file.path))
 						).then((dir) => {
@@ -1411,7 +1407,7 @@ export class FileBodyPane extends HTMLElement {
 				if (element === this) {
 					if (
 						this.contains(document.activeElement) &&
-						(this as any).isInContent(event)
+						this.isInContent(event)
 					) {
 						this.unselect();
 					}
@@ -1553,7 +1549,7 @@ export class FileBodyPane extends HTMLElement {
 					this.popupEventEnabled
 				) {
 					const popup = new Event('popup');
-					(popup as any).raw = event;
+					popup.raw = event;
 					popup.clientX = event.clientX;
 					popup.clientY = event.clientY;
 					this.dispatchEvent(popup);

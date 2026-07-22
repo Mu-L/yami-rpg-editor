@@ -92,7 +92,7 @@ export class MenuList extends HTMLElement {
 		let labelWidth = 0;
 		let acceleratorWidth = 0;
 		for (const li of this.childNodes) {
-			const { label, accelerator } = li as any;
+			const { label, accelerator } = li;
 			if (label !== undefined) {
 				labelWidth = Math.max(labelWidth, label.offsetWidth);
 			}
@@ -173,7 +173,7 @@ export class MenuList extends HTMLElement {
 				if (item.label !== undefined) {
 					const label = document.createElement('menu-label');
 					label.textContent = item.label;
-					(li as any).label = label;
+					li.label = label;
 					li.appendChild(label);
 				}
 
@@ -182,7 +182,7 @@ export class MenuList extends HTMLElement {
 					const accelerator =
 						document.createElement('menu-accelerator');
 					accelerator.textContent = item.accelerator;
-					(li as any).accelerator = accelerator;
+					li.accelerator = accelerator;
 					li.appendChild(accelerator);
 				}
 

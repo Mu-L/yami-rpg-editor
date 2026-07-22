@@ -625,7 +625,9 @@ Data.saveManifest = function () {
 	if (manifest?.changed) {
 		manifest.changed = false;
 		const copy = Data.filterManifest(manifest);
-		const json = JSON.stringify(copy, null, 2);
+		// replacer 剥离运行期反引用（dataMap→Data、file→FileItem、
+		// group→manifest[key]、manifest→Data.manifest 等），避免循环
+		const json = JSON.stringify(copy, Data.jsonReplacer, 2);
 		const last = manifest.code;
 		if (json && json !== last) {
 			const path = File.path('Data/manifest.json');
@@ -641,13 +643,33 @@ Data.saveManifest = function () {
 	return null;
 };
 
+// JSON.stringify replacer：丢弃运行期反引用键，阻断循环
+// 这些键指向运行期单例（Data / FileItem / Manifest 等），
+// 不属于 manifest.json 落盘内容
+Data.jsonReplacer = function (key, value) {
+	switch (key) {
+		case 'dataMap':
+		case 'file':
+		case 'group':
+		case 'manifest':
+		case 'code':
+		case 'meta':
+		case 'project':
+		case 'changes':
+		case 'metaList':
+			return undefined;
+	}
+	return value;
+};
+
 // 过滤元数据
 Data.filterManifest = function (manifest) {
-	// 快速拷贝
+	// 浅拷贝顶层键
 	const copy: any = {};
 	for (const key of Object.keys(manifest)) {
 		copy[key] = manifest[key];
 	}
+	// 克隆 images/audio 以便原地改写 size，不污染原 manifest
 	copy.images = Object.clone(manifest.images);
 	copy.audio = Object.clone(manifest.audio);
 	// 把未使用的图像和音频文件大小设置为0

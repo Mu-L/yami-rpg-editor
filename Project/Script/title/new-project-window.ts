@@ -305,9 +305,7 @@ NewProject.confirm = function (event) {
 		})
 		.then(() => {
 			Editor.open(`${dPath}/game.yamirpg`);
-			Editor.config.dialogs.new = (Path as any).slash(
-				Path.resolve(location)
-			);
+			Editor.config.dialogs.new = Path.slash(Path.resolve(location));
 		})
 		.catch((error) => {
 			Editor.close();

@@ -17,7 +17,10 @@ export const Variable = {
 		value: $('#variable-value-box'),
 		number: $('#variable-value-number'),
 		string: $('#variable-value-string'),
-		note: $('#variable-note')
+		note: $('#variable-note'),
+		// runtime 挂载: panel.ts 中挂载 boolean 读取器与类型写入器
+		boolean: { read: null as any },
+		type: { write: null as any }
 	},
 	target: null,
 	data: null,

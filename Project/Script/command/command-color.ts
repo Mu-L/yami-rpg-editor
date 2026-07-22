@@ -87,6 +87,6 @@ Command.setTooltip = function (tip) {
 };
 
 // 设置自定义类名
-(Command as any).setClass = function (className) {
+Command.setClass = function (className) {
 	return `$_class_$${className}$_/_$`;
 };

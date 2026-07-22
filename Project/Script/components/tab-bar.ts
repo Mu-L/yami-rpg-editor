@@ -47,7 +47,7 @@ export class TabBar extends HTMLElement {
 			this.unselect();
 			let target;
 			for (let i = 0; i < length; i++) {
-				if ((items[i] as any).item === value) {
+				if (items[i].item === value) {
 					this.selectionIndex = i;
 					target = items[i];
 					break;
@@ -66,7 +66,7 @@ export class TabBar extends HTMLElement {
 
 	// 更新标签列表
 	update() {
-		(this as any).clear();
+		this.clear();
 		for (const item of this.data) {
 			let tab = item.tab;
 			if (tab === undefined) {
@@ -199,7 +199,7 @@ export class TabBar extends HTMLElement {
 
 	// 查找项目
 	find(meta) {
-		for (const { item } of this.childNodes as any) {
+		for (const { item } of this.childNodes) {
 			if (item.meta === meta) {
 				return item;
 			}
@@ -432,9 +432,9 @@ export class TabBar extends HTMLElement {
 					if (dragging.target === event.target) {
 						const popup = new Event('popup');
 						const item = event.target.item;
-						(popup as any).value = item ?? null;
-						(popup as any).clientX = event.clientX;
-						(popup as any).clientY = event.clientY;
+						popup.value = item ?? null;
+						popup.clientX = event.clientX;
+						popup.clientY = event.clientY;
 						(this as any).dispatchEvent(popup);
 					}
 					break;

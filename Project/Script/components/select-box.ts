@@ -81,7 +81,7 @@ export class SelectBox extends HTMLElement {
 			this.write(value);
 			if (this.inputEventEnabled) {
 				const input = new Event('input', { bubbles: true });
-				(input as any).last = last;
+				input.last = last;
 				input.value = this.dataValue;
 				this.dispatchEvent(input);
 			}

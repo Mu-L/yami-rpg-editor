@@ -8,38 +8,38 @@ import { Cursor } from '../tools/pointer-object.ts';
 // ******************************** 元素方法 ********************************
 
 // 元素方法 - 读取数据
-(HTMLElement.prototype as any).read = function () {
+HTMLElement.prototype.read = function () {
 	return this.dataValue;
 };
 
 // 元素方法 - 写入数据
-(HTMLElement.prototype as any).write = function (value) {
+HTMLElement.prototype.write = function (value) {
 	this.dataValue = value;
 };
 
 // 元素方法 - 清除子元素
-(HTMLElement.prototype as any).clear = function () {
+HTMLElement.prototype.clear = function () {
 	this.textContent = '';
 	return this;
 };
 
 // 元素方法 - 启用元素
-(HTMLElement.prototype as any).enable = function () {
+HTMLElement.prototype.enable = function () {
 	this.removeClass('disabled');
 };
 
 // 元素方法 - 禁用元素
-(HTMLElement.prototype as any).disable = function () {
+HTMLElement.prototype.disable = function () {
 	this.addClass('disabled');
 };
 
 // 元素方法 - 检查类名
-(HTMLElement.prototype as any).hasClass = function (className) {
+HTMLElement.prototype.hasClass = function (className) {
 	return this.classList.contains(className);
 };
 
 // 元素方法 - 添加类名
-(HTMLElement.prototype as any).addClass = function (className) {
+HTMLElement.prototype.addClass = function (className) {
 	if (!this.classList.contains(className)) {
 		this.classList.add(className);
 		return true;
@@ -48,7 +48,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 };
 
 // 元素方法 - 删除 Class
-(HTMLElement.prototype as any).removeClass = function (className) {
+HTMLElement.prototype.removeClass = function (className) {
 	if (this.classList.contains(className)) {
 		this.classList.remove(className);
 		return true;
@@ -57,7 +57,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 };
 
 // 元素方法 - 往上搜索目标元素
-(HTMLElement.prototype as any).seek = function (tagName, count = 1) {
+HTMLElement.prototype.seek = function (tagName, count = 1) {
 	let element = this;
 	while (count-- > 0) {
 		if (
@@ -78,31 +78,31 @@ import { Cursor } from '../tools/pointer-object.ts';
 };
 
 // 元素方法 - 返回边框矩形对象
-(HTMLElement.prototype as any).rect = function () {
+HTMLElement.prototype.rect = function () {
 	return this.getBoundingClientRect();
 };
 
 // 元素方法 - 隐藏
-(HTMLElement.prototype as any).hide = function () {
+HTMLElement.prototype.hide = function () {
 	this.addClass('hidden');
 	return this;
 };
 
 // 元素方法 - 显示
-(HTMLElement.prototype as any).show = function () {
+HTMLElement.prototype.show = function () {
 	this.removeClass('hidden');
 	return this;
 };
 
 // 元素方法 - 隐藏子元素
-(HTMLElement.prototype as any).hideChildNodes = function () {
+HTMLElement.prototype.hideChildNodes = function () {
 	for (const childNode of this.childNodes) {
 		childNode.hide();
 	}
 };
 
 // 元素方法 - 显示子元素
-(HTMLElement.prototype as any).showChildNodes = function () {
+HTMLElement.prototype.showChildNodes = function () {
 	for (const childNode of this.childNodes) {
 		childNode.show();
 	}
@@ -110,7 +110,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 
 // 元素方法 - 获得焦点
 // 异步执行可以避免与指针按下行为起冲突
-(HTMLElement.prototype as any).getFocus = function (mode = null) {
+HTMLElement.prototype.getFocus = function (mode = null) {
 	setTimeout(() => {
 		this.focus();
 		switch (mode) {
@@ -132,7 +132,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 };
 
 // 元素方法 - 设置工具提示
-(HTMLElement.prototype as any).setTooltip = (function IIFE() {
+HTMLElement.prototype.setTooltip = (function IIFE() {
 	const tooltip = $('#tooltip');
 	const capture = { capture: true };
 	const timer = new Timer({
@@ -265,7 +265,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 })();
 
 // 元素方法 - 添加滚动条
-(HTMLElement.prototype as any).addScrollbars = function () {
+HTMLElement.prototype.addScrollbars = function () {
 	const hBar = document.createElement('scroll-bar');
 	const vBar = document.createElement('scroll-bar');
 	const corner = document.createElement('scroll-corner');
@@ -280,8 +280,8 @@ import { Cursor } from '../tools/pointer-object.ts';
 		parent.appendChild(vBar);
 		parent.appendChild(corner);
 	}
-	(hBar as any).bind(this, 'horizontal');
-	(vBar as any).bind(this, 'vertical');
+	hBar.bind(this, 'horizontal');
+	vBar.bind(this, 'vertical');
 
 	// 鼠标滚轮事件
 	const wheel = (event) => {
@@ -359,13 +359,13 @@ import { Cursor } from '../tools/pointer-object.ts';
 				corner.removeClass('visible');
 			}
 		}
-		(hBar as any).updateHorizontalBar();
-		(vBar as any).updateVerticalBar();
+		hBar.updateHorizontalBar();
+		vBar.updateVerticalBar();
 	};
 };
 
 // 元素方法 - 添加设置滚动方法
-(HTMLElement.prototype as any).addSetScrollMethod = function () {
+HTMLElement.prototype.addSetScrollMethod = function () {
 	// 用户滚动事件
 	const userscroll = new Event('userscroll');
 
@@ -383,7 +383,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 // 元素方法 - 检查是否出现滚动条
 // 缩放率不是 100% 有可能出现
 // clientWidth > scrollWidth
-(HTMLElement.prototype as any).hasScrollBar = function () {
+HTMLElement.prototype.hasScrollBar = function () {
 	return (
 		this.clientWidth < this.scrollWidth ||
 		this.clientHeight < this.scrollHeight
@@ -391,7 +391,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 };
 
 // 元素方法 - 判断事件坐标在内容区域上
-(HTMLElement.prototype as any).isInContent = function (event) {
+HTMLElement.prototype.isInContent = function (event) {
 	const coords = event.getRelativeCoords(this);
 	const x = coords.x - this.scrollLeft;
 	const y = coords.y - this.scrollTop;
@@ -399,7 +399,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 };
 
 // 元素方法 - 发送改变事件
-(HTMLElement.prototype as any).dispatchChangeEvent = (function IIFE() {
+HTMLElement.prototype.dispatchChangeEvent = (function IIFE() {
 	const changes = [
 		new Event('change', { bubbles: true }),
 		new Event('change', { bubbles: true })
@@ -410,7 +410,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 })();
 
 // 元素方法 - 发送调整事件
-(HTMLElement.prototype as any).dispatchResizeEvent = (function IIFE() {
+HTMLElement.prototype.dispatchResizeEvent = (function IIFE() {
 	const resize = new Event('resize');
 	return function () {
 		this.dispatchEvent(resize);
@@ -418,7 +418,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 })();
 
 // 元素方法 - 发送更新事件
-(HTMLElement.prototype as any).dispatchUpdateEvent = (function IIFE() {
+HTMLElement.prototype.dispatchUpdateEvent = (function IIFE() {
 	const update = new Event('update');
 	return function () {
 		this.dispatchEvent(update);

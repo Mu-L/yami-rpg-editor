@@ -75,7 +75,7 @@ export class FileHeadPane extends HTMLElement {
 						const elFolder = document.createElement(
 							'file-head-address-folder'
 						);
-						(elFolder as any).file = folder;
+						elFolder.file = folder;
 						elFolder.textContent = folder.name;
 						nodes.push(elFolder);
 						const { parent } = folder;
@@ -83,8 +83,8 @@ export class FileHeadPane extends HTMLElement {
 							const elArrow = document.createElement(
 								'file-head-address-arrow'
 							);
-							(elArrow as any).folders = parent.subfolders;
-							(elArrow as any).target = folder;
+							elArrow.folders = parent.subfolders;
+							elArrow.target = folder;
 							nodes.push(elArrow);
 							folder = parent;
 						} else {
@@ -102,7 +102,7 @@ export class FileHeadPane extends HTMLElement {
 						const elFolder = document.createElement(
 							'file-head-address-folder'
 						);
-						(elFolder as any).file = folder;
+						elFolder.file = folder;
 						elFolder.textContent = folder.name;
 						address.appendChild(elFolder);
 						if (folders[i + 1]) {
@@ -152,7 +152,7 @@ export class FileHeadPane extends HTMLElement {
 								element === event.target
 							) {
 								const head = this.parentNode;
-								const nav = (head as any).links.nav;
+								const nav = head.links.nav;
 								switch (element.tagName) {
 									case 'FILE-HEAD-ADDRESS-FOLDER':
 										if (!element.disabled) {
@@ -217,7 +217,7 @@ export class FileHeadPane extends HTMLElement {
 	// 返回按钮 - 鼠标点击事件
 	backButtonClick(event) {
 		const head = this.parentNode;
-		const { browser } = (head as any).links;
+		const { browser } = head.links;
 		browser.backToParentFolder();
 	}
 
@@ -225,21 +225,21 @@ export class FileHeadPane extends HTMLElement {
 	searcherInput(event) {
 		if (event.inputType !== 'insertCompositionText') {
 			const head = this.parentNode;
-			const text = (this as any).input.value;
-			(head as any).links.browser.searchFiles(text);
+			const text = this.input.value;
+			head.links.browser.searchFiles(text);
 		}
 	}
 
 	// 视图模式 - 获得焦点事件
 	viewFocus(event) {
 		const head = this.parentNode;
-		(head as any).links.body.content.focus();
+		head.links.body.content.focus();
 	}
 
 	// 视图模式 - 输入事件
 	viewInput(event) {
 		const head = this.parentNode;
-		(head as any).links.body.setViewIndex(this.read());
+		head.links.body.setViewIndex(this.read());
 	}
 }
 

@@ -1480,7 +1480,7 @@ Easing.list.updateTextNode = function (item) {
 // 创建键文本节点
 Easing.list.createKeyTextNode = function (item) {
 	const keyTextNode = document.createElement('text');
-	(keyTextNode as any).key = '';
+	keyTextNode.key = '';
 	keyTextNode.addClass('variable-init-text');
 	item.element.appendChild(keyTextNode);
 	item.element.keyTextNode = keyTextNode;

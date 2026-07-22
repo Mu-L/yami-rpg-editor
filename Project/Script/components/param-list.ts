@@ -756,8 +756,8 @@ export class ParamList extends HTMLElement {
 					event.itemHeight = element.clientHeight;
 					window.on('pointerup', this.windowPointerup);
 					window.on('pointermove', this.windowPointermove);
-					(this as any).addScrollListener('vertical', 2, true, () => {
-						this.windowPointermove((event as any).latest);
+					this.addScrollListener('vertical', 2, true, () => {
+						this.windowPointermove(event.latest);
 					});
 				}
 				break;

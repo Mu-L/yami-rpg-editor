@@ -1263,10 +1263,7 @@ export class CommandList extends HTMLElement {
 				let indent = element.dataIndent;
 				// 如果当前缩进已经打印过至少一条指令，跳过无效指令
 				if (element.dataItem === null && lastIndent === indent) {
-					if (
-						(SettingConfig.config as any).other
-							.copyAsTextKeepEmptyLine
-					)
+					if (SettingConfig.config.other.copyAsTextKeepEmptyLine)
 						string += '\n';
 					continue;
 				}

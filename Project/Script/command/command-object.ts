@@ -16,6 +16,10 @@ export const Command = {
 	variables: [],
 	varMap: {},
 	dependsOn: ['Inspector'],
+	// runtime 挂载: command-parse.ts 中赋值当前正在解析的指令上下文
+	currentCommand: null as any,
+	// runtime 挂载: command-color.ts 中挂载类名染色函数
+	setClass: null as ((className: string) => void) | null,
 	// methods
 	initialize: null,
 	insert: null,

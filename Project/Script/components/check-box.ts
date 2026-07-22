@@ -50,7 +50,7 @@ export class CheckBox extends HTMLElement {
 		}
 		if (this.writeEventEnabled) {
 			const write = new Event('write');
-			(write as any).value = this.dataValue;
+			write.value = this.dataValue;
 			this.dispatchEvent(write);
 		}
 	}
@@ -63,7 +63,7 @@ export class CheckBox extends HTMLElement {
 				const input = new Event('input', {
 					bubbles: true
 				});
-				(input as any).value = this.dataValue;
+				input.value = this.dataValue;
 				this.dispatchEvent(input);
 			}
 			this.dispatchChangeEvent();
@@ -93,11 +93,11 @@ export class CheckBox extends HTMLElement {
 	toggleRelatedElements(): void {
 		if (!this.hasClass('disabled') && this.dataValue) {
 			for (const element of this.relations) {
-				(element as any).enable();
+				element.enable();
 			}
 		} else {
 			for (const element of this.relations) {
-				(element as any).disable();
+				element.disable();
 			}
 		}
 	}

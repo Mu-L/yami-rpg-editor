@@ -63,8 +63,8 @@ Variable.sortInput = function (event) {
 	});
 	// 如果从临时变量对象类型切换到其他分类，修改变量的值为布尔值
 	if (item.value === null) {
-		item.value = (Variable.inputs as any).boolean.read();
-		(Variable.inputs as any).type.write('boolean');
+		item.value = Variable.inputs.boolean.read();
+		Variable.inputs.type.write('boolean');
 		Variable.list.updateIcon(item);
 		Variable.list.updateInitText(item);
 	}

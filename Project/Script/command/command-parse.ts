@@ -59,7 +59,7 @@ Command.fetchVariables = function (commands) {
 		for (const command of commands) {
 			const { id, params } = command;
 			if (id == null || id[0] === '!') continue;
-			(Command as any).currentCommand = command;
+			Command.currentCommand = command;
 			if (id === 'callEvent') {
 				if (
 					params?.type === 'global' &&
@@ -94,7 +94,7 @@ Command.fetchVariables = function (commands) {
 				}
 			}
 		}
-		(Command as any).currentCommand = null;
+		Command.currentCommand = null;
 	};
 	fetchParameters(eventId);
 	fetchVariables(commands);
@@ -124,7 +124,7 @@ Command.parseVariable = function (
 						evIndex: Command.eventIndex,
 						isLeftValue: isLeftValue,
 						refCount: 0,
-						command: (Command as any).currentCommand
+						command: Command.currentCommand
 					});
 				}
 			}
