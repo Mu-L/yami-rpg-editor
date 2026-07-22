@@ -13,22 +13,24 @@ import { Local } from '../tools/localization.ts';
 // ******************************** 指令解析函数库 ********************************
 
 // 解析混合模式
-Command.parseBlend = function (blend) {
+Command.parseBlend = function (blend: string): string {
 	return Local.get('blend.' + blend);
 };
 
 // 获取变量列表
-Command.fetchVariables = function (commands) {
+Command.fetchVariables = function (
+	commands: any[] & { eventId?: string }
+): void {
 	const eventId = commands.eventId;
-	const calledEvents = [eventId];
+	const calledEvents: any[] = [eventId];
 	let eventIndex = 0;
 	this.returnType = Data.events[eventId]?.returnType ?? 'none';
 	this.saveVars = true;
-	const fetchParameters = (guid) => {
+	const fetchParameters = (guid: string): void => {
 		const globalEvent = Data.events[guid];
 		if (!globalEvent) return;
 		for (const { type, key } of globalEvent.parameters) {
-			let varType;
+			let varType: string;
 			switch (type) {
 				case 'boolean':
 					varType = 'boolean';
@@ -55,7 +57,7 @@ Command.fetchVariables = function (commands) {
 			});
 		}
 	};
-	const fetchVariables = (commands) => {
+	const fetchVariables = (commands: any[]): void => {
 		for (const command of commands) {
 			const { id, params } = command;
 			if (id == null || id[0] === '!') continue;
@@ -107,11 +109,12 @@ Command.fetchVariables = function (commands) {
 };
 
 // 解析变量
+// variable: { type: 'local'|'global'|'self'|'actor'|'skill'|'state'|'equipment'|'item'|'element'; key: string; actor?; skill?; state?; equipment?; item?; element? }
 Command.parseVariable = function (
-	variable,
-	valueType = '',
-	isLeftValue = false
-) {
+	variable: any,
+	valueType: string = '',
+	isLeftValue: boolean = false
+): string {
 	const key = variable.key;
 	switch (variable.type) {
 		case 'local': {
@@ -203,14 +206,14 @@ Command.parseVariable = function (
 };
 
 // 解析全局变量
-Command.parseGlobalVariable = function (id) {
+Command.parseGlobalVariable = function (id: string): string {
 	if (id === '') return Token('none');
 	const variable = getVariable(id);
 	return variable ? variable.name : Command.parseUnlinkedId(id);
 };
 
 // 解析属性群组
-Command.parseAttributeGroup = function (groupKey) {
+Command.parseAttributeGroup = function (groupKey: string): string {
 	if (groupKey === '') return Token('none');
 	const group = Attribute.getGroup(groupKey);
 	if (group) return GameLocal.replace(group.groupName);
@@ -221,7 +224,11 @@ Command.parseAttributeGroup = function (groupKey) {
 // 解析属性键
 Command.parseAttributeKey = (function () {
 	const i = / +/g;
-	return function (groupKey, attrId, valueType) {
+	return function (
+		groupKey: string,
+		attrId: string,
+		valueType?: string
+	): string {
 		const attr = groupKey
 			? Attribute.getGroupAttribute(groupKey, attrId)
 			: Attribute.getAttribute(attrId);
@@ -249,7 +256,7 @@ Command.parseAttributeKey = (function () {
 })();
 
 // 解析属性标签
-Command.parseAttributeTag = function (id, valueType) {
+Command.parseAttributeTag = function (id: string, valueType?: string): string {
 	return (
 		Token('<') + Command.parseAttributeKey('', id, valueType) + Token('>')
 	);
@@ -261,21 +268,26 @@ Command.parseVariableTag = (function IIFE() {
 	const global = /(?<=<)global(::?)([0-9a-f]{16})(?=>)/g;
 	const localVar = { type: 'local', key: '' };
 	const globalVar = { type: 'global', key: '' };
-	const localReplacer = (match, varKey) => {
+	const localReplacer = (match: string, varKey: string): string => {
 		localVar.key = varKey;
-		return Command.parseVariable(localVar, 'any');
+		return Command.parseVariable!(localVar, 'any');
 	};
-	const globalReplacer = (match, delimiter, varKey) => {
+	const globalReplacer = (
+		match: string,
+		delimiter: string,
+		varKey: string
+	): string => {
 		globalVar.key = varKey;
 		const varSign = delimiter === '::' ? '@' : '';
-		return varSign + Command.parseVariable(globalVar, 'any');
+		return varSign + Command.parseVariable!(globalVar, 'any');
 	};
-	return (string) =>
+	return (string: string): string =>
 		string.replace(local, localReplacer).replace(global, globalReplacer);
 })();
 
 // 解析可变数值
-Command.parseVariableNumber = function (number, unit) {
+// number: number | { type: 'global'|'local'|...; key: string }
+Command.parseVariableNumber = function (number: any, unit?: string): string {
 	switch (typeof number) {
 		case 'number': {
 			const text = Command.setNumberColor(number);
@@ -289,7 +301,8 @@ Command.parseVariableNumber = function (number, unit) {
 };
 
 // 解析可变字符串
-Command.parseVariableString = function (string) {
+// string: string | 变量对象
+Command.parseVariableString = function (string: any): string {
 	switch (typeof string) {
 		case 'string':
 			return Command.setStringColor(
@@ -301,7 +314,10 @@ Command.parseVariableString = function (string) {
 };
 
 // 解析可变模板字符串
-Command.parseVariableTemplate = function (content, maxLength = 0) {
+Command.parseVariableTemplate = function (
+	content: any,
+	maxLength: number = 0
+): string {
 	switch (typeof content) {
 		case 'string': {
 			const tag = Command.parseVariableTag(GameLocal.replace(content));
@@ -317,7 +333,7 @@ Command.parseVariableTemplate = function (content, maxLength = 0) {
 };
 
 // 解析可变属性
-Command.parseVariableAttr = function (groupKey, attrId) {
+Command.parseVariableAttr = function (groupKey: string, attrId: any): string {
 	switch (typeof attrId) {
 		case 'string':
 			return Command.parseAttributeKey(groupKey, attrId);
@@ -327,7 +343,7 @@ Command.parseVariableAttr = function (groupKey, attrId) {
 };
 
 // 解析可变枚举值
-Command.parseVariableEnum = function (groupKey, enumId) {
+Command.parseVariableEnum = function (groupKey: string, enumId: any): string {
 	switch (typeof enumId) {
 		case 'string':
 			return Command.parseGroupEnumString(groupKey, enumId);
@@ -337,7 +353,7 @@ Command.parseVariableEnum = function (groupKey, enumId) {
 };
 
 // 解析可变文件
-Command.parseVariableFile = function (fileId) {
+Command.parseVariableFile = function (fileId: any): string {
 	switch (typeof fileId) {
 		case 'string':
 			return Command.parseFileName(fileId);
@@ -347,7 +363,7 @@ Command.parseVariableFile = function (fileId) {
 };
 
 // 解析可变队伍
-Command.parseVariableTeam = function (id) {
+Command.parseVariableTeam = function (id: any): string {
 	switch (typeof id) {
 		case 'string':
 			return Command.parseTeam(id);
@@ -359,13 +375,16 @@ Command.parseVariableTeam = function (id) {
 // 解析多行字符串
 Command.parseMultiLineString = (function IIFE() {
 	const regexp = /\n/g;
-	return function (string) {
+	return function (string: string): string {
 		return string.replace(regexp, '\\n');
 	};
 })();
 
 // 解析精灵图名称
-Command.parseSpriteName = function (animationId, spriteId) {
+Command.parseSpriteName = function (
+	animationId: string,
+	spriteId: string
+): string {
 	if (spriteId === '') return Token('none');
 	const animation = Data.animations[animationId];
 	const sprite = animation?.sprites.find((a) => a.id === spriteId);
@@ -375,7 +394,10 @@ Command.parseSpriteName = function (animationId, spriteId) {
 };
 
 // 解析事件类型
-Command.parseEventType = function (groupKey, eventType) {
+Command.parseEventType = function (
+	groupKey: string,
+	eventType: string
+): string {
 	return (
 		Local.get('eventTypes.' + eventType) ||
 		Command.parseGroupEnumString(groupKey, eventType)
@@ -383,7 +405,7 @@ Command.parseEventType = function (groupKey, eventType) {
 };
 
 // 解析枚举群组
-Command.parseEnumGroup = function (groupKey) {
+Command.parseEnumGroup = function (groupKey: string): string {
 	if (groupKey === '') return Token('none');
 	const group = Enum.getGroup(groupKey);
 	if (group) return GameLocal.replace(group.groupName);
@@ -392,7 +414,7 @@ Command.parseEnumGroup = function (groupKey) {
 };
 
 // 解析枚举字符串
-Command.parseEnumString = function (stringId) {
+Command.parseEnumString = function (stringId: string): string {
 	if (stringId === '') return Token('none');
 	const string = Enum.getString(stringId);
 	if (string) {
@@ -407,12 +429,15 @@ Command.parseEnumString = function (stringId) {
 };
 
 // 解析枚举字符串标签
-Command.parseEnumStringTag = function (stringId) {
+Command.parseEnumStringTag = function (stringId: string): string {
 	return Token('<') + Command.parseEnumString(stringId) + Token('>');
 };
 
 // 解析群组枚举字符串
-Command.parseGroupEnumString = function (groupKey, stringId) {
+Command.parseGroupEnumString = function (
+	groupKey: string,
+	stringId: string
+): string {
 	if (stringId === '') return Token('none');
 	const string = Enum.getGroupString(groupKey, stringId);
 	const textId = Command.setTextId(`enum-string-${stringId}-${stringId}`);
@@ -423,21 +448,22 @@ Command.parseGroupEnumString = function (groupKey, stringId) {
 };
 
 // 解析列表项目
-Command.parseListItem = function (variable, index) {
+Command.parseListItem = function (variable: any, index: any): string {
 	const listName = Command.parseVariable(variable, 'object');
 	const listIndex = Command.parseVariableNumber(index);
 	return listName + Token('[') + listIndex + Token(']');
 };
 
 // 解析参数
-Command.parseParameter = function (key) {
+Command.parseParameter = function (key: any): string {
 	const label = Local.get('parameter.param');
 	const paramKey = Command.parseVariableString(key);
 	return label + Token('(') + paramKey + Token(')');
 };
 
 // 解析角色
-Command.parseActor = function (actor) {
+// actor: { type: 'trigger'|'caster'|'latest'|'target'|'player'|'member'|'global'|'by-id'|'variable'; memberId?; actorId?; presetId?; variable? }
+Command.parseActor = function (actor: any): string {
 	switch (actor.type) {
 		case 'trigger':
 			return (
@@ -489,7 +515,7 @@ Command.parseActor = function (actor) {
 };
 
 // 解析技能
-Command.parseSkill = function (skill) {
+Command.parseSkill = function (skill: any): string {
 	switch (skill.type) {
 		case 'trigger':
 			return (
@@ -531,7 +557,7 @@ Command.parseSkill = function (skill) {
 };
 
 // 解析状态
-Command.parseState = function (state) {
+Command.parseState = function (state: any): string {
 	switch (state.type) {
 		case 'trigger':
 			return (
@@ -558,7 +584,7 @@ Command.parseState = function (state) {
 };
 
 // 解析装备
-Command.parseEquipment = function (equipment) {
+Command.parseEquipment = function (equipment: any): string {
 	switch (equipment.type) {
 		case 'trigger':
 			return (
@@ -618,7 +644,7 @@ Command.parseEquipment = function (equipment) {
 };
 
 // 解析物品
-Command.parseItem = function (item) {
+Command.parseItem = function (item: any): string {
 	switch (item.type) {
 		case 'trigger':
 			return (
@@ -660,7 +686,7 @@ Command.parseItem = function (item) {
 };
 
 // 解析位置
-Command.parsePosition = function (position) {
+Command.parsePosition = function (position: any): string {
 	switch (position.type) {
 		case 'absolute': {
 			const x = Command.parseVariableNumber(position.x);
@@ -737,7 +763,7 @@ Command.parsePosition = function (position) {
 };
 
 // 解析角度
-Command.parseAngle = function (angle) {
+Command.parseAngle = function (angle: any): string {
 	const type = angle.type;
 	const desc = Local.get('angle.' + type);
 	switch (type) {
@@ -753,7 +779,7 @@ Command.parseAngle = function (angle) {
 };
 
 // 解析触发器
-Command.parseTrigger = function (trigger) {
+Command.parseTrigger = function (trigger: any): string {
 	switch (trigger.type) {
 		case 'trigger':
 			return (
@@ -775,7 +801,7 @@ Command.parseTrigger = function (trigger) {
 };
 
 // 解析光源
-Command.parseLight = function (light) {
+Command.parseLight = function (light: any): string {
 	switch (light.type) {
 		case 'trigger':
 			return (
@@ -799,7 +825,7 @@ Command.parseLight = function (light) {
 };
 
 // 解析区域
-Command.parseRegion = function (region) {
+Command.parseRegion = function (region: any): string {
 	switch (region.type) {
 		case 'trigger':
 			return (
@@ -812,7 +838,7 @@ Command.parseRegion = function (region) {
 };
 
 // 解析瓦片地图
-Command.parseTilemap = function (tilemap) {
+Command.parseTilemap = function (tilemap: any): string {
 	switch (tilemap.type) {
 		case 'trigger':
 			return (
@@ -827,7 +853,7 @@ Command.parseTilemap = function (tilemap) {
 };
 
 // 解析场景对象
-Command.parseObject = function (object) {
+Command.parseObject = function (object: any): string {
 	switch (object.type) {
 		case 'trigger':
 			return (
@@ -851,7 +877,7 @@ Command.parseObject = function (object) {
 };
 
 // 解析元素
-Command.parseElement = function (element) {
+Command.parseElement = function (element: any): string {
 	switch (element.type) {
 		case 'trigger':
 			return (
@@ -916,7 +942,7 @@ Command.parseElement = function (element) {
 };
 
 // 解析预设对象
-Command.parsePresetObject = function (presetId) {
+Command.parsePresetObject = function (presetId: string): string {
 	if (presetId === '') return Token('none');
 	const name = Data.scenePresets[presetId]?.data.name;
 	const textId = Command.setTextId(`scene-object-${presetId}`);
@@ -926,7 +952,10 @@ Command.parsePresetObject = function (presetId) {
 };
 
 // 解析预设元素
-Command.parsePresetElement = function (presetId, detailed = true) {
+Command.parsePresetElement = function (
+	presetId: string,
+	detailed: boolean = true
+): string {
 	if (presetId === '') return Token('none');
 	const uiId = Data.uiPresets[presetId]?.uiId ?? '';
 	const preset = Data.uiPresets[presetId]?.data;
@@ -949,7 +978,7 @@ Command.parsePresetElement = function (presetId, detailed = true) {
 };
 
 // 解析队伍
-Command.parseTeam = function (id) {
+Command.parseTeam = function (id: string): string {
 	const team = Data.teams.map[id];
 	if (team) return team.name;
 	this.invalid = true;
@@ -957,12 +986,12 @@ Command.parseTeam = function (id) {
 };
 
 // 解析十六进制颜色
-Command.parseHexColor = function (hex) {
+Command.parseHexColor = function (hex: string): string {
 	return Command.setStringColor('#' + hex);
 };
 
 // 解析角色选择器
-Command.parseActorSelector = function (selector) {
+Command.parseActorSelector = function (selector: string): string {
 	switch (selector) {
 		case 'enemy':
 		case 'friend':
@@ -975,7 +1004,7 @@ Command.parseActorSelector = function (selector) {
 };
 
 // 解析文件名称
-Command.parseFileName = function (id) {
+Command.parseFileName = function (id: string): string {
 	if (id === '') return Token('none');
 	const meta = Data.manifest.guidMap[id];
 	const textId = Command.setTextId(`file-string-${id}`);
@@ -986,7 +1015,7 @@ Command.parseFileName = function (id) {
 };
 
 // 解析音频类型
-Command.parseAudioType = function (type) {
+Command.parseAudioType = function (type: string): string {
 	switch (type) {
 		case 'bgm':
 			return 'BGM';
@@ -1003,7 +1032,7 @@ Command.parseAudioType = function (type) {
 };
 
 // 解析等待参数
-Command.parseWait = function (wait) {
+Command.parseWait = function (wait: boolean): string {
 	switch (wait) {
 		case false:
 			return '';
@@ -1013,7 +1042,11 @@ Command.parseWait = function (wait) {
 };
 
 // 解析过渡方式
-Command.parseEasing = function (easingId, duration, wait) {
+Command.parseEasing = function (
+	easingId: string,
+	duration: number,
+	wait: boolean
+): string {
 	if (duration === 0) return '';
 	const easing = Data.easings.map[easingId];
 	const time = Command.parseVariableNumber(duration, 'ms');
@@ -1022,14 +1055,14 @@ Command.parseEasing = function (easingId, duration, wait) {
 };
 
 // 解析失去连接的ID
-Command.parseUnlinkedId = function (name) {
+Command.parseUnlinkedId = function (name: string): string {
 	return name ? `#${name}` : '';
 };
 
 // 解析文本标签
 Command.parseTextTags = (function IIFE() {
 	const regexp = /\$_(\S+?)_\$([\s\S]*?)\$_\/_\$/g;
-	return function (contents) {
+	return function (contents: any[]): any[] {
 		let i = contents.length;
 		while (--i >= 0) {
 			const content = contents[i];
@@ -1075,7 +1108,7 @@ Command.parseTextTags = (function IIFE() {
 // 移除文本标签
 Command.removeTextTags = (function IIFE() {
 	const regexp = /\$_textId_\$(?:\S+?)_\/_\$|\$_(?:\S+?)_\$/g;
-	return function (string) {
+	return function (string: string): string {
 		return string.replace(regexp, '');
 	};
 })();

@@ -51,6 +51,8 @@ Command.forEachCommand = function (
 };
 
 // 词语列表类
+// 注：WordList.push 沿用基类 Array.push 的 number 契约（避免 TS2416），
+// 链式调用方需分离语句（见 command-tip.ts createCommandTip）
 Command.WordList = class WordList extends Array {
 	count: number;
 

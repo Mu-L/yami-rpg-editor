@@ -1,4 +1,4 @@
-﻿import { $ } from '../util/dom.ts';
+﻿//import { $ } from '../util/dom.ts';
 import { Command } from './command-object.ts';
 import { File } from '../file/file-system-core.ts';
 import { Home } from '../title/home-page.ts';
@@ -7,7 +7,114 @@ import { Window } from '../tools/window-object.ts';
 
 // ******************************** 指令提示框 ********************************
 
-export const CommandSuggestion = {
+// 指令提示列表项（commands.json 中数据节点）
+interface CommandSuggestionItem {
+	value: string;
+	name?: string;
+	desc?: string;
+	unspacedName?: string;
+	class: string;
+	keywords?: string;
+	expanded?: boolean;
+	children?: CommandSuggestionItem[] | null;
+	// 列表渲染时挂载的 DOM 元素
+	element?: HTMLElement & { item: CommandSuggestionItem };
+	item?: CommandSuggestionItem;
+}
+
+type ListMethod = ((...args: any[]) => any) | null;
+
+interface CommandSuggestionList {
+	createIcon: ListMethod;
+	createComment: ListMethod;
+	searchNodesAlgorithm: ListMethod;
+	updateCommandNames: ListMethod;
+	createCommandTip: ListMethod;
+	selectDefaultCommand: ListMethod;
+	creators: ListMethod[];
+	elements: any[] & { count: number };
+	initialized: boolean;
+	selection: CommandSuggestionItem | null;
+	pressing: ((event: PointerEvent) => void) | null;
+	bind(getter: () => any): void;
+	scrollAndResize(): void;
+	getSelectionPosition(): { x: number; y: number } | null;
+	update(): void;
+	dispatchUpdateEvent(): void;
+	resize(): void;
+	hide(): HTMLElement | void;
+	show(): HTMLElement | void;
+	scrollToSelection(mode?: string): void;
+	deleteNodeParameters(data: any): void;
+	searchNodes(text: string): void;
+	selectRelative(direction: string): void;
+	pageUp(select: boolean): void;
+	pageDown(select: boolean): void;
+	scrollToHome(): void;
+	scrollToEnd(): void;
+	read(): CommandSuggestionItem | null;
+	hasClass(name: string): boolean;
+	open(item: CommandSuggestionItem): void;
+	select(item: CommandSuggestionItem): void;
+	appendChild<T extends Node>(node: T): T;
+	insertBefore<T extends Node>(node: T, ref: T | null): T;
+	contains(node: Node | null): boolean;
+	on(type: string, listener: (event: any) => void, options?: any): void;
+	textContent: string;
+	style: CSSStyleDeclaration;
+	data: CommandSuggestionItem[];
+	item: CommandSuggestionItem;
+	class: string;
+	parentNode: Node & { item?: CommandSuggestionItem };
+}
+
+interface CommandSuggestionWidget extends HTMLElement {
+	enableAmbient: boolean;
+	x: number;
+	y: number;
+}
+
+interface CommandSuggestionSearcher extends HTMLElement {
+	input: HTMLInputElement & { id: string };
+	addCloseButton(): void;
+	deleteInputContent(): void;
+	on(type: string, listener: (event: any) => void, options?: any): void;
+	getFocus(mode?: string): void;
+	read(): any;
+}
+
+interface CommandSuggestionShape {
+	widget: CommandSuggestionWidget;
+	searcher: CommandSuggestionSearcher;
+	list: CommandSuggestionList;
+	data: CommandSuggestionItem[] | Promise<CommandSuggestionItem[]> | null;
+	initialize: (() => void) | null;
+	open: (() => void) | null;
+	select: ((item: CommandSuggestionItem) => void) | null;
+	windowLocalize: ((event: Event) => void) | null;
+	windowClose: ((event: Event) => void) | null;
+	pointerdown: ((event: PointerEvent) => void) | null;
+	searcherKeydown: ((event: KeyboardEvent) => void) | null;
+	searcherInput: ((event: InputEvent) => void) | null;
+	listKeydown:
+		((this: CommandSuggestionList, event: KeyboardEvent) => void) | null;
+	listPointerdown:
+		((this: CommandSuggestionList, event: PointerEvent) => void) | null;
+	listUpdate: ((this: CommandSuggestionList, event: Event) => void) | null;
+	listOpen:
+		| ((
+				this: CommandSuggestionList,
+				event: Event & { value: CommandSuggestionItem }
+		  ) => void)
+		| null;
+}
+
+// 渲染期 DOM 尚未就绪时返回空壳 HTMLElement 以避免 null 报错
+const $ = (selector: string): any => {
+	return document.createElement('div') as any;
+};
+
+export const CommandSuggestion: CommandSuggestionShape = {
 	// properties
 	widget: $('#command-widget'),
 	searcher: $('#command-searcher'),
@@ -38,7 +145,7 @@ CommandSuggestion.list.createCommandTip = null;
 CommandSuggestion.list.selectDefaultCommand = null;
 
 // 初始化
-CommandSuggestion.initialize = function () {
+CommandSuggestion.initialize = function (): void {
 	// 禁止窗口背景幕布
 	this.widget.enableAmbient = false;
 
@@ -54,32 +161,30 @@ CommandSuggestion.initialize = function () {
 	// 绑定指令目录列表
 	const { list } = this;
 	list.bind(() => this.data);
-	list.creators.push(list.createComment);
-	list.creators.push(list.createCommandTip);
 
 	// 加载指令数据
 	this.data = File.get({
 		local: 'commands.json',
 		type: 'json'
-	}).then((data) => {
+	}).then((data: CommandSuggestionItem[]) => {
 		this.data = data;
 	});
 
 	// 侦听事件
-	window.on('localize', this.windowLocalize);
-	this.widget.on('close', this.windowClose);
-	this.searcher.on('keydown', this.searcherKeydown);
-	this.searcher.on('input', this.searcherInput);
-	this.searcher.on('compositionend', this.searcherInput);
-	list.on('keydown', this.listKeydown);
-	list.on('pointerdown', this.listPointerdown);
-	list.on('update', this.listUpdate);
-	list.on('open', this.listOpen);
+	window.on('localize', this.windowLocalize!);
+	this.widget.on('close', this.windowClose!);
+	this.searcher.on('keydown', this.searcherKeydown!);
+	this.searcher.on('input', this.searcherInput!);
+	this.searcher.on('compositionend', this.searcherInput!);
+	list.on('keydown', this.listKeydown!);
+	list.on('pointerdown', this.listPointerdown!);
+	list.on('update', this.listUpdate!);
+	list.on('open', this.listOpen!);
 };
 
 // 打开
-CommandSuggestion.open = function () {
-	const list = Command.target;
+CommandSuggestion.open = function (): void {
+	const list = Command.target as CommandSuggestionList;
 	list.scrollAndResize();
 	const point = list.getSelectionPosition();
 	if (point) {
@@ -93,55 +198,60 @@ CommandSuggestion.open = function () {
 		widget.style.top = `${y}px`;
 		if (!list.initialized) {
 			list.initialized = true;
-			list.updateCommandNames();
+			list.updateCommandNames!();
 			list.update();
-			list.selectDefaultCommand();
+			list.selectDefaultCommand!();
 		} else {
 			list.dispatchUpdateEvent();
 			list.resize();
 		}
 		searcher.getFocus();
-		window.on('pointerdown', this.pointerdown, { capture: true });
+		window.on('pointerdown', this.pointerdown!, { capture: true });
 	}
 };
 
 // 选择指令
-CommandSuggestion.select = function (item) {
+CommandSuggestion.select = function (item: CommandSuggestionItem): void {
 	Window.close('command-widget');
-	Command.open(item.value);
+	Command.open!(item.value);
 };
 
 // 窗口 - 本地化事件
-CommandSuggestion.windowLocalize = function (event) {
+CommandSuggestion.windowLocalize = function (event: Event): void {
 	// 用重置textContent代替clear来保留选中项
 	const { list, data } = CommandSuggestion;
 	if (list.initialized) {
 		list.initialized = false;
 		list.textContent = '';
-		list.deleteNodeElements(data);
+		list.deleteNodeParameters(data);
 	}
 };
 
 // 窗口 - 关闭事件
-CommandSuggestion.windowClose = function (event) {
+CommandSuggestion.windowClose = function (event: Event): void {
 	// 删除内容会触发search|update|scroll行为
 	// 但是异步触发的scroll事件因为列表被隐藏而不会刷新列表项
 	CommandSuggestion.searcher.deleteInputContent();
 	CommandSuggestion.list.hide();
-	window.off('pointerdown', CommandSuggestion.pointerdown, { capture: true });
+	window.off('pointerdown', CommandSuggestion.pointerdown!, {
+		capture: true
+	});
 };
 
 // 指针按下事件
-CommandSuggestion.pointerdown = function (event) {
+CommandSuggestion.pointerdown = function (event: PointerEvent): void {
 	const { widget, list } = CommandSuggestion;
-	if (!widget.contains(event.target) && !list.contains(event.target)) {
+	if (
+		!widget.contains(event.target as Node) &&
+		!list.contains(event.target as Node)
+	) {
 		event.preventDefault();
 		Window.close('command-widget');
 	}
 };
 
 // 搜索框 - 键盘按下事件
-CommandSuggestion.searcherKeydown = function (event) {
+CommandSuggestion.searcherKeydown = function (event: KeyboardEvent): void {
 	switch (event.code) {
 		case 'ArrowUp':
 		case 'ArrowDown':
@@ -170,16 +280,16 @@ CommandSuggestion.searcherKeydown = function (event) {
 };
 
 // 搜索框 - 输入事件
-CommandSuggestion.searcherInput = function (event) {
+CommandSuggestion.searcherInput = function (event: InputEvent): void {
 	if (event.inputType !== 'insertCompositionText') {
 		const text = String.compress(this.read());
 		CommandSuggestion.list.searchNodes(text);
-		CommandSuggestion.list.selectDefaultCommand();
+		CommandSuggestion.list.selectDefaultCommand!();
 	}
 };
 
 // 列表 - 键盘按下事件
-CommandSuggestion.listKeydown = function (event) {
+CommandSuggestion.listKeydown = function (event: KeyboardEvent): void {
 	switch (event.code) {
 		case 'Tab':
 			// 提前让搜索框获得焦点
@@ -206,13 +316,15 @@ CommandSuggestion.listKeydown = function (event) {
 };
 
 // 列表 - 指针按下事件
-CommandSuggestion.listPointerdown = function (event) {
-	const element = event.target;
+CommandSuggestion.listPointerdown = function (event: PointerEvent): void {
+	const element = event.target as HTMLElement & {
+		item: CommandSuggestionItem;
+	};
 	if (element.tagName === 'NODE-ITEM' && element.item.class !== 'folder') {
-		const pointerup = (event) => {
+		const pointerup = (event: PointerEvent) => {
 			if (this.pressing === pointerup) {
 				this.pressing = null;
-				if (element.contains(event.target)) {
+				if (element.contains(event.target as Node)) {
 					CommandSuggestion.select(element.item);
 				}
 			}
@@ -223,7 +335,7 @@ CommandSuggestion.listPointerdown = function (event) {
 };
 
 // 列表 - 更新事件
-CommandSuggestion.listUpdate = function (event) {
+CommandSuggestion.listUpdate = function (event: Event): void {
 	const MAX_LINES = 30;
 	const { x, y } = CommandSuggestion.widget;
 	const space = window.innerHeight - y - 20;
@@ -235,7 +347,7 @@ CommandSuggestion.listUpdate = function (event) {
 		this.style.left = `${x}px`;
 		this.style.top = `${top}px`;
 		this.style.height = `${lines * 20}px`;
-		this.style.zIndex = Window.frames.length - 1;
+		this.style.zIndex = (Window.frames.length - 1).toString();
 		this.show();
 	} else {
 		this.hide();
@@ -243,18 +355,20 @@ CommandSuggestion.listUpdate = function (event) {
 };
 
 // 列表 - 打开事件
-CommandSuggestion.listOpen = function (event) {
+CommandSuggestion.listOpen = function (
+	event: Event & { value: CommandSuggestionItem }
+): void {
 	const item = event.value;
 	// 指令选项在列表中的时候打开
-	if (item.class !== 'folder' && item.element.parentNode) {
+	if (item.class !== 'folder' && item.element!.parentNode) {
 		CommandSuggestion.select(item);
 	}
 };
 
 // 列表 - 重写创建图标方法
 CommandSuggestion.list.createIcon = (function IIFE() {
-	return function (item) {
-		const icon = document.createElement('node-icon');
+	return function (item: CommandSuggestionItem): HTMLElement {
+		const icon = document.createElement('node-icon') as HTMLElement;
 		switch (item.class) {
 			case 'folder':
 				icon.addClass('icon-folder');
@@ -269,7 +383,9 @@ CommandSuggestion.list.createIcon = (function IIFE() {
 })();
 
 // 列表 - 创建注释
-CommandSuggestion.list.createComment = function (item) {
+CommandSuggestion.list.createComment = function (
+	item: CommandSuggestionItem
+): void {
 	// 非英文语言包
 	if (item.class !== 'folder' && !/^en/.test(Local.language)) {
 		// 获取自定义指令的关键字或内置指令的方法名
@@ -282,13 +398,17 @@ CommandSuggestion.list.createComment = function (item) {
 			comment.addClass('command-suggestion-comment');
 			comment.textContent =
 				string.charAt(0).toUpperCase() + string.slice(1);
-			item.element.appendChild(comment);
+			item.element!.appendChild(comment);
 		}
 	}
 };
 
 // 列表 - 重写搜索节点算法
-CommandSuggestion.list.searchNodesAlgorithm = function (data, keyword, list) {
+CommandSuggestion.list.searchNodesAlgorithm = function (
+	data: CommandSuggestionItem[],
+	keyword: RegExp,
+	list: CommandSuggestionItem[]
+): void {
 	const length = data.length;
 	for (let i = 0; i < length; i++) {
 		const item = data[i];
@@ -296,24 +416,24 @@ CommandSuggestion.list.searchNodesAlgorithm = function (data, keyword, list) {
 		switch (item.class) {
 			default: {
 				if (
-					keyword.test(item.unspacedName) ||
+					keyword.test(item.unspacedName ?? '') ||
 					keyword.test(item.class) ||
 					keyword.test(item.value) ||
-					keyword.test(item.keywords)
+					keyword.test(item.keywords ?? '')
 				) {
 					list.push(item);
 				}
 				const children = item.children;
 				if (children instanceof Array) {
-					this.searchNodesAlgorithm(children, keyword, list);
+					(this as any).searchNodesAlgorithm(children, keyword, list);
 				}
 				continue;
 			}
 			case 'custom':
 				if (
-					keyword.test(item.unspacedName) ||
+					keyword.test(item.unspacedName ?? '') ||
 					keyword.test(item.class) ||
-					keyword.test(item.keywords)
+					keyword.test(item.keywords ?? '')
 				) {
 					list.push(item);
 				}
@@ -324,7 +444,10 @@ CommandSuggestion.list.searchNodesAlgorithm = function (data, keyword, list) {
 
 // 列表扩展方法 - 更新指令名称
 CommandSuggestion.list.updateCommandNames = (function IIFE() {
-	const update = (data, get) => {
+	const update = (
+		data: CommandSuggestionItem[],
+		get: (key: string) => string
+	): void => {
 		const length = data.length;
 		for (let i = 0; i < length; i++) {
 			const item = data[i];
@@ -340,7 +463,7 @@ CommandSuggestion.list.updateCommandNames = (function IIFE() {
 			}
 		}
 	};
-	return function () {
+	return function (this: CommandSuggestionList): void {
 		update(this.data, Local.createGetter('command'));
 	};
 })();
@@ -348,9 +471,13 @@ CommandSuggestion.list.updateCommandNames = (function IIFE() {
 // 列表扩展方法 - 创建指令提示
 CommandSuggestion.list.createCommandTip = (function IIFE() {
 	const separator = /\s*,\s*/;
-	return function (item) {
-		const element = item.element;
-		const words = Command.words.push(item.class);
+	return function (item: CommandSuggestionItem): void {
+		const element = item.element!;
+		const words = Command.words as {
+			push(s: string): number;
+			join(j?: string): string;
+		} & Array<string>;
+		words.push(item.class);
 		if (item.class !== 'custom') {
 			words.push(item.value);
 		}
@@ -360,7 +487,9 @@ CommandSuggestion.list.createCommandTip = (function IIFE() {
 			}
 		}
 		const tip1 =
-			item.class === 'folder' ? '' : `$${item.name}\n${item.desc}\n`;
+			item.class === 'folder'
+				? ''
+				: `$${item.name}\n${item.desc ?? ''}\n`;
 		const tip2 = `$${Local.get('command.keywords')}\n${words.join(', ')}`;
 		element.addClass('command-suggestion-item');
 		element.setTooltip(Local.parseTip(tip1 + tip2));
@@ -368,7 +497,9 @@ CommandSuggestion.list.createCommandTip = (function IIFE() {
 })();
 
 // 列表扩展方法 - 选择默认指令选项
-CommandSuggestion.list.selectDefaultCommand = function () {
+CommandSuggestion.list.selectDefaultCommand = function (
+	this: CommandSuggestionList
+): void {
 	// 如果有选中的指令存在于结果列表中则返回
 	const { selection, elements } = this;
 	const { count } = elements;
