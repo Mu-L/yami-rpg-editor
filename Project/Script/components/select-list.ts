@@ -391,42 +391,8 @@ export class SelectList extends HTMLElement {
 
 customElements.define('select-list', SelectList);
 
-// 全局Select管理
-export const Select: {
-	target: SelectTarget | null;
-	open(target: SelectTarget): SelectList;
-	close(target?: SelectTarget): void;
-} = {
-	target: null,
-	open(target: SelectTarget): SelectList {
-		let list = document.querySelector('select-list') as SelectList | null;
-		if (!list) {
-			list = document.createElement(
-				'select-list'
-			) as unknown as SelectList;
-		}
-		this.target = target;
-		target.selectList = list;
-		target.on('pointerleave', () => {
-			target.selectList = null;
-		});
-		(Home as any).eventWindow.addEventListener(
-			'pointerdown',
-			(event: Event) => {
-				if (target.selectList === list) {
-					list.open(target);
-				}
-			},
-			{ once: true }
-		);
-		return list;
-	},
-	close(target?: SelectTarget): void {
-		if (target) {
-			target.selectList?.close();
-		} else {
-			(document.querySelector('select-list') as SelectList)?.close();
-		}
-		this.target = null;
-	}
-};
+// 创建选择列表实例
+// 注：Select 必须是真实的 SelectList 实例（继承其 windowPointerdown/windowKeydown/
+// resize/createItems 等所有类方法）。此前类型化时误改为简化对象字面量 {target,open,close}，
+// 导致所有 Select.windowPointerdown 等调用失效 —— 下拉列表点击行为全部断裂。
+export const Select = new SelectList();

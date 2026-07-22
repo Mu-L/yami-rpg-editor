@@ -133,66 +133,66 @@ export const ButtonProperty = createPropertyWindow({
 		}
 	},
 	parsers: {
-		normalImage: (value) => Command.parseFileName(value),
-		hoverImage: (value) => Command.parseFileName(value),
-		activeImage: (value) => Command.parseFileName(value),
-		normalClip: (value) => {
+		normalImage: (value: string): string => Command.parseFileName!(value),
+		hoverImage: (value: string): string => Command.parseFileName!(value),
+		activeImage: (value: string): string => Command.parseFileName!(value),
+		normalClip: (value: number[]): string => {
 			const params = [
-				Command.setNumberColor(value[0]),
-				Command.setNumberColor(value[1]),
-				Command.setNumberColor(value[2]),
-				Command.setNumberColor(value[3])
+				Command.setNumberColor!(value[0]),
+				Command.setNumberColor!(value[1]),
+				Command.setNumberColor!(value[2]),
+				Command.setNumberColor!(value[3])
 			];
 			return params.join(Token(', '));
 		},
-		hoverClip: (value) => {
+		hoverClip: (value: number[]): string => {
 			const params = [
-				Command.setNumberColor(value[0]),
-				Command.setNumberColor(value[1]),
-				Command.setNumberColor(value[2]),
-				Command.setNumberColor(value[3])
+				Command.setNumberColor!(value[0]),
+				Command.setNumberColor!(value[1]),
+				Command.setNumberColor!(value[2]),
+				Command.setNumberColor!(value[3])
 			];
 			return params.join(Token(', '));
 		},
-		activeClip: (value) => {
+		activeClip: (value: number[]): string => {
 			const params = [
-				Command.setNumberColor(value[0]),
-				Command.setNumberColor(value[1]),
-				Command.setNumberColor(value[2]),
-				Command.setNumberColor(value[3])
+				Command.setNumberColor!(value[0]),
+				Command.setNumberColor!(value[1]),
+				Command.setNumberColor!(value[2]),
+				Command.setNumberColor!(value[3])
 			];
 			return params.join(Token(', '));
 		},
-		normalTint: (value) => {
+		normalTint: (value: number[]): string => {
 			const params = [
-				Command.setNumberColor(value[0]),
-				Command.setNumberColor(value[1]),
-				Command.setNumberColor(value[2]),
-				Command.setNumberColor(value[3])
+				Command.setNumberColor!(value[0]),
+				Command.setNumberColor!(value[1]),
+				Command.setNumberColor!(value[2]),
+				Command.setNumberColor!(value[3])
 			];
 			return params.join(Token(', '));
 		},
-		hoverTint: (value) => {
+		hoverTint: (value: number[]): string => {
 			const params = [
-				Command.setNumberColor(value[0]),
-				Command.setNumberColor(value[1]),
-				Command.setNumberColor(value[2]),
-				Command.setNumberColor(value[3])
+				Command.setNumberColor!(value[0]),
+				Command.setNumberColor!(value[1]),
+				Command.setNumberColor!(value[2]),
+				Command.setNumberColor!(value[3])
 			];
 			return params.join(Token(', '));
 		},
-		activeTint: (value) => {
+		activeTint: (value: number[]): string => {
 			const params = [
-				Command.setNumberColor(value[0]),
-				Command.setNumberColor(value[1]),
-				Command.setNumberColor(value[2]),
-				Command.setNumberColor(value[3])
+				Command.setNumberColor!(value[0]),
+				Command.setNumberColor!(value[1]),
+				Command.setNumberColor!(value[2]),
+				Command.setNumberColor!(value[3])
 			];
 			return params.join(Token(', '));
 		},
-		content: (value) => Command.parseVariableTemplate(value),
-		imageOpacity: (value) => Command.setNumberColor(value),
-		size: (value) => Command.setNumberColor(value),
-		letterSpacing: (value) => Command.setNumberColor(value)
+		content: (value: any): string => Command.parseVariableTemplate!(value),
+		imageOpacity: (value: number): string => Command.setNumberColor!(value),
+		size: (value: number): string => Command.setNumberColor!(value),
+		letterSpacing: (value: number): string => Command.setNumberColor!(value)
 	}
 });

@@ -1,7 +1,7 @@
 import { $ } from '../util/dom.ts';
 import { Command } from './command-object.ts';
 import { Window } from '../tools/window-object.ts';
-import { CommandSuggestion } from './command-tip.ts';
+import { CommandSuggestion, CommandSuggestionItem } from './command-tip.ts';
 import { Token } from './mark-string-manager.ts';
 import { TreeList } from '../components/tree-list.ts';
 import { Data } from '../data/data-object.ts';
@@ -336,9 +336,9 @@ Command.custom = {
 		const { list } = CommandSuggestion;
 		if (!this.customFolder) {
 			if (list.data instanceof Promise) {
-				await list.data;
+				list.data = await list.data;
 			}
-			list.data.push(
+			(list.data as CommandSuggestionItem[]).push(
 				(this.customFolder = {
 					class: 'folder',
 					value: 'custom',

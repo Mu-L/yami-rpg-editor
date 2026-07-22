@@ -1,4 +1,4 @@
-﻿//import { $ } from '../util/dom.ts';
+import { $ } from '../util/dom.ts';
 import { Command } from './command-object.ts';
 import { File } from '../file/file-system-core.ts';
 import { Home } from '../title/home-page.ts';
@@ -8,7 +8,7 @@ import { Window } from '../tools/window-object.ts';
 // ******************************** 指令提示框 ********************************
 
 // 指令提示列表项（commands.json 中数据节点）
-interface CommandSuggestionItem {
+export interface CommandSuggestionItem {
 	value: string;
 	name?: string;
 	desc?: string;
@@ -62,7 +62,7 @@ interface CommandSuggestionList {
 	on(type: string, listener: (event: any) => void, options?: any): void;
 	textContent: string;
 	style: CSSStyleDeclaration;
-	data: CommandSuggestionItem[];
+	data: CommandSuggestionItem[] | Promise<CommandSuggestionItem[]> | null;
 	item: CommandSuggestionItem;
 	class: string;
 	parentNode: Node & { item?: CommandSuggestionItem };
@@ -108,11 +108,6 @@ interface CommandSuggestionShape {
 		  ) => void)
 		| null;
 }
-
-// 渲染期 DOM 尚未就绪时返回空壳 HTMLElement 以避免 null 报错
-const $ = (selector: string): any => {
-	return document.createElement('div') as any;
-};
 
 export const CommandSuggestion: CommandSuggestionShape = {
 	// properties
@@ -161,6 +156,14 @@ CommandSuggestion.initialize = function (): void {
 	// 绑定指令目录列表
 	const { list } = this;
 	list.bind(() => this.data);
+
+	// 挂载列表项创建器/更新器 ——
+	// createIcon 创建指令图标，createComment 创建英文注释/方法名提示，
+	// createCommandTip 添加 command-suggestion-item class 与 tooltip。
+	// 此前这些方法定义了却未挂进 creators/updaters，导致新版 DOM 丢失 class 与 comment 元素。
+	list.creators.push(list.createIcon!);
+	list.creators.push(list.createComment!);
+	list.creators.push(list.createCommandTip!);
 
 	// 加载指令数据
 	this.data = File.get({
@@ -464,7 +467,10 @@ CommandSuggestion.list.updateCommandNames = (function IIFE() {
 		}
 	};
 	return function (this: CommandSuggestionList): void {
-		update(this.data, Local.createGetter('command'));
+		update(
+			this.data as CommandSuggestionItem[],
+			Local.createGetter('command')
+		);
 	};
 })();
 

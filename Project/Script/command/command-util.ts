@@ -51,19 +51,22 @@ Command.forEachCommand = function (
 };
 
 // 词语列表类
-// 注：WordList.push 沿用基类 Array.push 的 number 契约（避免 TS2416），
-// 链式调用方需分离语句（见 command-tip.ts createCommandTip）
-Command.WordList = class WordList extends Array {
-	count: number;
+// 注：WordList.push 必须返回 this 以支持链式契约（showText.ts / transition.ts /
+// jumpTo.ts / renderOutline.ts 等依赖 `words.push(x).push(y)` 链式）。
+// TS2416 不允许子类把继承方法改成不兼容签名 —— 故 WordList 不 extends Array，
+// 改为独立类持数组 + 声明索引访问/length/迭代等数组语义，让外部仍可当数组用。
+Command.WordList = class WordList {
+	count: number = 0;
+	#arr: string[] = [];
 
 	constructor() {
-		super();
 		this.count = 0;
 	}
 
-	push(string: string): number {
-		if (string) (this as any)[this.count++] = string;
-		return this.count;
+	// 链式 push：返回 this（而非基类 Array.push 的 number）
+	push(string: string): this {
+		if (string) this.#arr[this.count++] = string;
+		return this;
 	}
 
 	join(joint: string = '$_delimiter_$, $_/_$'): string {
@@ -72,10 +75,25 @@ Command.WordList = class WordList extends Array {
 			return '';
 		}
 		this.count = 0;
-		let string = (this as any)[0];
+		const arr = this.#arr;
+		let string = arr[0];
 		for (let i = 1; i < length; i++) {
-			string += joint + (this as any)[i];
+			string += joint + arr[i];
 		}
 		return string;
 	}
+
+	// 数组语义兼容：索引访问、length、迭代、forEach
+	get length(): number {
+		return this.count;
+	}
+	*[Symbol.iterator](): IterableIterator<string> {
+		const arr = this.#arr;
+		for (let i = 0; i < this.count; i++) yield arr[i];
+	}
 };
+
+// 让 WordList 实例支持索引访问 `words[i]` 与 `words.length`
+interface WordList {
+	[index: number]: string;
+}

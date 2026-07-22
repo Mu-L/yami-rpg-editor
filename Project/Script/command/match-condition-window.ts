@@ -1,4 +1,4 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
+import { $, getElementReader, getElementWriter } from '../util/dom.ts';
 import { GamepadBox } from '../components/gamepad-box.ts';
 import { Attribute } from '../attribute/attribute-window.ts';
 import { Command } from './command-object.ts';
@@ -12,7 +12,43 @@ import { Variable } from '../variable/variable.ts';
 
 // ******************************** 匹配 - 条件窗口 ********************************
 
-export const SwitchCondition = {
+// 匹配条件对象（由调用方传入 / save 返回）
+interface SwitchConditionData {
+	type:
+		| 'none'
+		| 'boolean'
+		| 'number'
+		| 'string'
+		| 'attribute'
+		| 'enum'
+		| 'keyboard'
+		| 'gamepad'
+		| 'mouse'
+		| 'variable';
+	value?: any;
+	attributeId?: string;
+	stringId?: string;
+	keycode?: string;
+	button?: number;
+	variable?: { type: string; key: string };
+}
+
+// 调用方目标对象（含 save 方法）
+interface SwitchConditionTarget {
+	save: () => SwitchConditionData;
+}
+
+interface SwitchConditionShape {
+	target: SwitchConditionTarget | null;
+	initialize: (() => void) | null;
+	parse:
+		((condition: SwitchConditionData, listData?: boolean) => string) | null;
+	open: ((condition?: SwitchConditionData) => void) | null;
+	save: (() => SwitchConditionData) | null;
+	confirm: ((event: Event) => SwitchConditionData) | null;
+}
+
+export const SwitchCondition: SwitchConditionShape = {
 	// properties
 	target: null,
 	// methods
@@ -25,9 +61,9 @@ export const SwitchCondition = {
 };
 
 // 初始化
-SwitchCondition.initialize = function () {
+SwitchCondition.initialize = function (): void {
 	// 创建条件类型选项
-	$('#switch-condition-type').loadItems([
+	($('#switch-condition-type') as any).loadItems([
 		{ name: 'None', value: 'none' },
 		{ name: 'Boolean', value: 'boolean' },
 		{ name: 'Number', value: 'number' },
@@ -41,43 +77,41 @@ SwitchCondition.initialize = function () {
 	]);
 
 	// 设置条件类型关联元素
-	$('#switch-condition-type')
-		.enableHiddenMode()
-		.relate([
-			{
-				case: 'boolean',
-				targets: [$('#switch-condition-boolean-value')]
-			},
-			{ case: 'number', targets: [$('#switch-condition-number-value')] },
-			{ case: 'string', targets: [$('#switch-condition-string-value')] },
-			{
-				case: 'attribute',
-				targets: [$('#switch-condition-attribute-attributeId')]
-			},
-			{ case: 'enum', targets: [$('#switch-condition-enum-stringId')] },
-			{
-				case: 'keyboard',
-				targets: [$('#switch-condition-keyboard-keycode')]
-			},
-			{
-				case: 'gamepad',
-				targets: [$('#switch-condition-gamepad-button')]
-			},
-			{ case: 'mouse', targets: [$('#switch-condition-mouse-button')] },
-			{
-				case: 'variable',
-				targets: [$('#switch-condition-variable-variable')]
-			}
-		]);
+	($('#switch-condition-type') as any).enableHiddenMode().relate([
+		{
+			case: 'boolean',
+			targets: [$('#switch-condition-boolean-value')]
+		},
+		{ case: 'number', targets: [$('#switch-condition-number-value')] },
+		{ case: 'string', targets: [$('#switch-condition-string-value')] },
+		{
+			case: 'attribute',
+			targets: [$('#switch-condition-attribute-attributeId')]
+		},
+		{ case: 'enum', targets: [$('#switch-condition-enum-stringId')] },
+		{
+			case: 'keyboard',
+			targets: [$('#switch-condition-keyboard-keycode')]
+		},
+		{
+			case: 'gamepad',
+			targets: [$('#switch-condition-gamepad-button')]
+		},
+		{ case: 'mouse', targets: [$('#switch-condition-mouse-button')] },
+		{
+			case: 'variable',
+			targets: [$('#switch-condition-variable-variable')]
+		}
+	]);
 
 	// 创建布尔值常量选项
-	$('#switch-condition-boolean-value').loadItems([
+	($('#switch-condition-boolean-value') as any).loadItems([
 		{ name: 'False', value: false },
 		{ name: 'True', value: true }
 	]);
 
 	// 创建鼠标按键选项
-	$('#switch-condition-mouse-button').loadItems([
+	($('#switch-condition-mouse-button') as any).loadItems([
 		{ name: 'Left Button', value: 0 },
 		{ name: 'Middle Button', value: 1 },
 		{ name: 'Right Button', value: 2 },
@@ -86,77 +120,83 @@ SwitchCondition.initialize = function () {
 	]);
 
 	// 侦听事件
-	$('#switch-condition-confirm').on('click', this.confirm);
+	($('#switch-condition-confirm') as HTMLElement).on('click', this.confirm!);
 };
 
 // 解析条件
-SwitchCondition.parse = function (condition, listData) {
-	let string;
+SwitchCondition.parse = function (
+	condition: SwitchConditionData,
+	listData?: boolean
+): string {
+	let string: string;
 	switch (condition.type) {
 		case 'none':
 			string = Token('null');
 			break;
 		case 'boolean':
-			string = Command.setBooleanColor(condition.value.toString());
+			string = Command.setBooleanColor!(condition.value!.toString());
 			break;
 		case 'number':
-			string = Command.setNumberColor(condition.value.toString());
+			string = Command.setNumberColor!(condition.value!.toString());
 			break;
 		case 'string':
-			string = Command.setStringColor(
-				`"${Command.parseMultiLineString(condition.value)}"`
+			string = Command.setStringColor!(
+				`"${Command.parseMultiLineString!(condition.value)}"`
 			);
 			break;
 		case 'attribute':
-			string = Command.parseAttributeTag(condition.attributeId, 'string');
+			string = Command.parseAttributeTag!(
+				condition.attributeId!,
+				'string'
+			);
 			break;
 		case 'enum':
-			string = Command.parseEnumStringTag(condition.stringId);
+			string = Command.parseEnumStringTag!(condition.stringId!);
 			break;
 		case 'keyboard': {
-			const key = condition.keycode;
+			const key = condition.keycode!;
 			const keyboard = Local.get('command.switch.keyboard');
 			string =
 				keyboard +
 				Token('[') +
-				Command.setStringColor(key) +
+				Command.setStringColor!(key) +
 				Token(']');
 			break;
 		}
 		case 'gamepad': {
-			const button = GamepadBox.getButtonName(condition.button);
+			const button = GamepadBox.getButtonName(condition.button!);
 			const gamepad = Local.get('command.switch.gamepad');
 			string =
 				gamepad +
 				Token('[') +
-				Command.setStringColor(button) +
+				Command.setStringColor!(button) +
 				Token(']');
 			break;
 		}
 		case 'mouse': {
-			const button = IfCondition.parseMouseButton(condition.button);
+			const button = IfCondition.parseMouseButton(condition.button!);
 			const mouse = Local.get('command.switch.mouse');
 			string =
 				mouse +
 				Token('[') +
-				Command.setStringColor(button) +
+				Command.setStringColor!(button) +
 				Token(']');
 			break;
 		}
 		case 'variable':
-			string = Command.parseVariable(condition.variable, 'any');
+			string = Command.parseVariable!(condition.variable!, 'any');
 			break;
 	}
 	if (listData) {
-		string = Command.removeTextTags(string);
+		string = Command.removeTextTags!(string);
 	}
 	return string;
 };
 
 // 打开数据
 SwitchCondition.open = function (
-	condition: any = { type: 'number', value: 0 }
-) {
+	condition: SwitchConditionData = { type: 'number', value: 0 }
+): void {
 	Window.open('switch-condition');
 	let booleanValue = false;
 	let numberValue = 0;
@@ -172,31 +212,31 @@ SwitchCondition.open = function (
 		case 'none':
 			break;
 		case 'boolean':
-			booleanValue = condition.value;
+			booleanValue = condition.value!;
 			break;
 		case 'number':
-			numberValue = condition.value;
+			numberValue = condition.value!;
 			break;
 		case 'string':
-			stringValue = condition.value;
+			stringValue = condition.value!;
 			break;
 		case 'attribute':
-			attributeId = condition.attributeId;
+			attributeId = condition.attributeId!;
 			break;
 		case 'enum':
-			enumStringId = condition.stringId;
+			enumStringId = condition.stringId!;
 			break;
 		case 'keyboard':
-			keyboardKeycode = condition.keycode;
+			keyboardKeycode = condition.keycode!;
 			break;
 		case 'gamepad':
-			gamepadButton = condition.button;
+			gamepadButton = condition.button!;
 			break;
 		case 'mouse':
-			mouseButton = condition.button;
+			mouseButton = condition.button!;
 			break;
 		case 'variable':
-			variableVariable = condition.variable;
+			variableVariable = condition.variable!;
 			break;
 	}
 	write('type', condition.type);
@@ -209,14 +249,16 @@ SwitchCondition.open = function (
 	write('gamepad-button', gamepadButton);
 	write('mouse-button', mouseButton);
 	write('variable-variable', variableVariable);
-	$('#switch-condition-type').getFocus();
+	(
+		$('#switch-condition-type') as HTMLElement & { getFocus(): void }
+	).getFocus();
 };
 
 // 保存数据
-SwitchCondition.save = function () {
+SwitchCondition.save = function (): SwitchConditionData {
 	const read = getElementReader('switch-condition');
-	const type = read('type');
-	let condition;
+	const type = read('type') as SwitchConditionData['type'];
+	let condition: SwitchConditionData | undefined;
 	switch (type) {
 		case 'none':
 			condition = { type };
@@ -237,33 +279,49 @@ SwitchCondition.save = function () {
 			break;
 		}
 		case 'attribute': {
-			const attributeId = read('attribute-attributeId');
+			const attributeId = read('attribute-attributeId') as string;
 			if (attributeId === '') {
-				return $('#switch-condition-attribute-attributeId').getFocus();
+				return (
+					$(
+						'#switch-condition-attribute-attributeId'
+					) as HTMLElement & { getFocus(): void }
+				).getFocus() as unknown as SwitchConditionData;
 			}
 			condition = { type, attributeId };
 			break;
 		}
 		case 'enum': {
-			const stringId = read('enum-stringId');
+			const stringId = read('enum-stringId') as string;
 			if (stringId === '') {
-				return $('#switch-condition-enum-stringId').getFocus();
+				return (
+					$('#switch-condition-enum-stringId') as HTMLElement & {
+						getFocus(): void;
+					}
+				).getFocus() as unknown as SwitchConditionData;
 			}
 			condition = { type, stringId };
 			break;
 		}
 		case 'keyboard': {
-			const keycode = read('keyboard-keycode');
+			const keycode = read('keyboard-keycode') as string;
 			if (keycode === '') {
-				return $('#switch-condition-keyboard-keycode').getFocus();
+				return (
+					$('#switch-condition-keyboard-keycode') as HTMLElement & {
+						getFocus(): void;
+					}
+				).getFocus() as unknown as SwitchConditionData;
 			}
 			condition = { type, keycode };
 			break;
 		}
 		case 'gamepad': {
-			const button = read('gamepad-button');
+			const button = read('gamepad-button') as number;
 			if (button === -1) {
-				return $('#switch-condition-gamepad-button').getFocus();
+				return (
+					$('#switch-condition-gamepad-button') as HTMLElement & {
+						getFocus(): void;
+					}
+				).getFocus() as unknown as SwitchConditionData;
 			}
 			condition = { type, button };
 			break;
@@ -274,19 +332,26 @@ SwitchCondition.save = function () {
 			break;
 		}
 		case 'variable': {
-			const variable = read('variable-variable');
-			if (VariableGetter.isNone(variable)) {
-				return $('#switch-condition-variable-variable').getFocus();
+			const variable = read('variable-variable') as {
+				type: string;
+				key: string;
+			};
+			if (VariableGetter.isNone!(variable)) {
+				return (
+					$('#switch-condition-variable-variable') as HTMLElement & {
+						getFocus(): void;
+					}
+				).getFocus() as unknown as SwitchConditionData;
 			}
 			condition = { type, variable };
 			break;
 		}
 	}
 	Window.close('switch-condition');
-	return condition;
+	return condition!;
 };
 
 // 确定按钮 - 鼠标点击事件
-SwitchCondition.confirm = function (event) {
-	return SwitchCondition.target.save();
+SwitchCondition.confirm = function (event: Event): SwitchConditionData {
+	return SwitchCondition.target!.save();
 };

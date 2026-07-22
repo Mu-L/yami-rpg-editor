@@ -1,11 +1,51 @@
-﻿import { $, getElementReader } from '../util/dom.ts';
+import { $, getElementReader } from '../util/dom.ts';
 import { Light } from '../scene/light.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
 
 // ******************************** 位置访问器窗口 ********************************
 
-export const PositionGetter = {
+// 位置访问器目标对象（由调用方传入）
+interface PositionGetterTarget {
+	dataValue: PositionData;
+	input: (getter: any) => void;
+	isPluginInput?: boolean;
+}
+
+// 位置数据对象（switch 各 type 含不同字段）
+interface PositionData {
+	type:
+		| 'absolute'
+		| 'relative'
+		| 'actor'
+		| 'trigger'
+		| 'light'
+		| 'region'
+		| 'object'
+		| 'mouse';
+	x?: number;
+	y?: number;
+	actor?: any;
+	trigger?: any;
+	light?: any;
+	region?: any;
+	mode?: string;
+	objectId?: string;
+}
+
+type PositionGetterMethod = ((...args: any[]) => any) | null;
+
+interface PositionGetterShape {
+	target: PositionGetterTarget | null;
+	initialize: (() => void) | null;
+	open: ((target: PositionGetterTarget) => void) | null;
+	checkDataForPlugin: ((data: any) => boolean) | null;
+	createDefaultForPlugin:
+		(() => { getter: string; type: string; x: number; y: number }) | null;
+	confirm: ((event: Event) => void) | null;
+}
+
+export const PositionGetter: PositionGetterShape = {
 	// properties
 	target: null,
 	// methods
@@ -18,9 +58,9 @@ export const PositionGetter = {
 };
 
 // 初始化
-PositionGetter.initialize = function () {
+PositionGetter.initialize = function (): void {
 	// 创建类型选项
-	$('#positionGetter-type').loadItems([
+	($('#positionGetter-type') as any).loadItems([
 		{ name: 'Absolute Coordinates', value: 'absolute' },
 		{ name: 'Relative Coordinates', value: 'relative' },
 		{ name: 'Position of Actor', value: 'actor' },
@@ -32,38 +72,36 @@ PositionGetter.initialize = function () {
 	]);
 
 	// 设置类型关联元素
-	$('#positionGetter-type')
-		.enableHiddenMode()
-		.relate([
-			{
-				case: 'absolute',
-				targets: [
-					$('#positionGetter-common-x'),
-					$('#positionGetter-common-y')
-				]
-			},
-			{
-				case: 'relative',
-				targets: [
-					$('#positionGetter-common-x'),
-					$('#positionGetter-common-y')
-				]
-			},
-			{ case: 'actor', targets: [$('#positionGetter-actor')] },
-			{ case: 'trigger', targets: [$('#positionGetter-trigger')] },
-			{ case: 'light', targets: [$('#positionGetter-light')] },
-			{
-				case: 'region',
-				targets: [
-					$('#positionGetter-region'),
-					$('#positionGetter-region-mode')
-				]
-			},
-			{ case: 'object', targets: [$('#positionGetter-objectId')] }
-		]);
+	($('#positionGetter-type') as any).enableHiddenMode().relate([
+		{
+			case: 'absolute',
+			targets: [
+				$('#positionGetter-common-x'),
+				$('#positionGetter-common-y')
+			]
+		},
+		{
+			case: 'relative',
+			targets: [
+				$('#positionGetter-common-x'),
+				$('#positionGetter-common-y')
+			]
+		},
+		{ case: 'actor', targets: [$('#positionGetter-actor')] },
+		{ case: 'trigger', targets: [$('#positionGetter-trigger')] },
+		{ case: 'light', targets: [$('#positionGetter-light')] },
+		{
+			case: 'region',
+			targets: [
+				$('#positionGetter-region'),
+				$('#positionGetter-region-mode')
+			]
+		},
+		{ case: 'object', targets: [$('#positionGetter-objectId')] }
+	]);
 
 	// 创建区域模式选项
-	$('#positionGetter-region-mode').loadItems([
+	($('#positionGetter-region-mode') as any).loadItems([
 		{ name: 'Center', value: 'center' },
 		{ name: 'Random', value: 'random' },
 		{ name: 'Random - Land', value: 'random-land' },
@@ -72,11 +110,14 @@ PositionGetter.initialize = function () {
 	]);
 
 	// 侦听事件
-	$('#positionGetter-confirm').on('click', this.confirm);
+	($('#positionGetter-confirm') as HTMLElement).on('click', this.confirm!);
 };
 
 // 打开窗口
-PositionGetter.open = function (target) {
+PositionGetter.open = function (
+	this: PositionGetterShape,
+	target: PositionGetterTarget
+): void {
 	this.target = target;
 	Window.open('positionGetter');
 
@@ -91,60 +132,90 @@ PositionGetter.open = function (target) {
 	const position = target.dataValue;
 	switch (position.type) {
 		case 'absolute':
-			commonX = position.x;
-			commonY = position.y;
+			commonX = position.x!;
+			commonY = position.y!;
 			break;
 		case 'relative':
-			commonX = position.x;
-			commonY = position.y;
+			commonX = position.x!;
+			commonY = position.y!;
 			break;
 		case 'actor':
-			actor = position.actor;
+			actor = position.actor!;
 			break;
 		case 'trigger':
-			trigger = position.trigger;
+			trigger = position.trigger!;
 			break;
 		case 'light':
-			light = position.light;
+			light = position.light!;
 			break;
 		case 'region':
-			region = position.region;
-			regionMode = position.mode;
+			region = position.region!;
+			regionMode = position.mode!;
 			break;
 		case 'object':
-			objectId = position.objectId;
+			objectId = position.objectId!;
 			break;
 	}
-	$('#positionGetter-type').write(position.type);
-	$('#positionGetter-common-x').write(commonX);
-	$('#positionGetter-common-y').write(commonY);
-	$('#positionGetter-actor').write(actor);
-	$('#positionGetter-trigger').write(trigger);
-	$('#positionGetter-light').write(light);
-	$('#positionGetter-region').write(region);
-	$('#positionGetter-region-mode').write(regionMode);
-	$('#positionGetter-objectId').write(objectId);
-	$('#positionGetter-type').getFocus();
+	($('#positionGetter-type') as HTMLElement & { write(v: any): void }).write(
+		position.type
+	);
+	(
+		$('#positionGetter-common-x') as HTMLElement & { write(v: any): void }
+	).write(commonX);
+	(
+		$('#positionGetter-common-y') as HTMLElement & { write(v: any): void }
+	).write(commonY);
+	($('#positionGetter-actor') as HTMLElement & { write(v: any): void }).write(
+		actor
+	);
+	(
+		$('#positionGetter-trigger') as HTMLElement & { write(v: any): void }
+	).write(trigger);
+	($('#positionGetter-light') as HTMLElement & { write(v: any): void }).write(
+		light
+	);
+	(
+		$('#positionGetter-region') as HTMLElement & { write(v: any): void }
+	).write(region);
+	(
+		$('#positionGetter-region-mode') as HTMLElement & {
+			write(v: any): void;
+		}
+	).write(regionMode);
+	(
+		$('#positionGetter-objectId') as HTMLElement & { write(v: any): void }
+	).write(objectId);
+	(
+		$('#positionGetter-type') as HTMLElement & { getFocus(): void }
+	).getFocus();
 };
 
 // 检查插件版本的位置访问器数据有效性
-PositionGetter.checkDataForPlugin = function (data) {
+PositionGetter.checkDataForPlugin = function (data: any): boolean {
 	if (data instanceof Object) {
-		return data.getter === 'position';
+		return (data as { getter?: string }).getter === 'position';
 	}
 	return false;
 };
 
 // 创建插件版本的默认位置访问器
-PositionGetter.createDefaultForPlugin = function () {
+PositionGetter.createDefaultForPlugin = function (): {
+	getter: string;
+	type: string;
+	x: number;
+	y: number;
+} {
 	return { getter: 'position', type: 'absolute', x: 0, y: 0 };
 };
 
 // 确定按钮 - 鼠标点击事件
-PositionGetter.confirm = function (event) {
+PositionGetter.confirm = function (
+	this: PositionGetterShape,
+	event: Event
+): void {
 	const read = getElementReader('positionGetter');
 	const type = read('type');
-	let getter;
+	let getter: any;
 	switch (type) {
 		case 'absolute': {
 			const x = read('common-x');
@@ -182,7 +253,11 @@ PositionGetter.confirm = function (event) {
 		case 'object': {
 			const objectId = read('objectId');
 			if (objectId === '') {
-				return $('#positionGetter-objectId').getFocus();
+				return (
+					$('#positionGetter-objectId') as HTMLElement & {
+						getFocus(): void;
+					}
+				).getFocus();
 			}
 			getter = { type, objectId };
 			break;
@@ -192,9 +267,9 @@ PositionGetter.confirm = function (event) {
 			break;
 	}
 	// 如果是插件输入框，额外附加一个属性
-	if (this.target.isPluginInput) {
+	if (this.target!.isPluginInput) {
 		getter = { getter: 'position', ...getter };
 	}
-	this.target.input(getter);
+	this.target!.input(getter);
 	Window.close('positionGetter');
 }.bind(PositionGetter);

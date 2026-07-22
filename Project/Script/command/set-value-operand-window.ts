@@ -1,4 +1,4 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
+import { $, getElementReader, getElementWriter } from '../util/dom.ts';
 import { Command } from './command-object.ts';
 import { Token } from './mark-string-manager.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
@@ -13,7 +13,32 @@ import { Variable } from '../variable/variable.ts';
 
 // ******************************** 设置数值 - 操作数窗口 ********************************
 
-export const NumberOperand = {
+// 操作数目标对象（由调用方传入，含 save/dataValue 等）
+interface NumberOperandTarget {
+	start: number;
+	save: () => any;
+	dataValue?: any;
+	isPluginInput?: boolean;
+}
+
+type NumberOperandMethod = ((...args: any[]) => any) | null;
+
+interface NumberOperandShape {
+	target: NumberOperandTarget | null;
+	initialize: (() => void) | null;
+	parseMathMethod: ((operand: any) => string) | null;
+	parseStringMethod: ((operand: any) => string) | null;
+	parseObjectProperty: ((operand: any) => string) | null;
+	parseElementProperty: ((operand: any) => string) | null;
+	parseOther: ((operand: any) => string) | null;
+	parseOperand: ((operand: any) => string) | null;
+	parse: ((operand: any, data?: any, index?: number) => string) | null;
+	open: ((operand?: any) => void) | null;
+	save: (() => any) | null;
+	confirm: ((event: Event) => any) | null;
+}
+
+export const NumberOperand: NumberOperandShape = {
 	// properties
 	target: null,
 	// methods

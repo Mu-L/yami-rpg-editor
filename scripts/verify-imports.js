@@ -9,7 +9,9 @@ function collectExports(file) {
 	const code = fs.readFileSync(file, 'utf-8');
 	const names = new Set();
 	// JS 标识符含 $ 和 _，\w 不匹配 $ — 用 [\w$]+ 修复
-	const re = /export\s+(?:const|let|var|function|class)\s+([\w$]+)/g;
+	// 含 interface / type：TS 类型导出也需校验闭合
+	const re =
+		/export\s+(?:const|let|var|function|class|interface|type)\s+([\w$]+)/g;
 	let m;
 	while ((m = re.exec(code)) !== null) names.add(m[1]);
 	// export { a, b }

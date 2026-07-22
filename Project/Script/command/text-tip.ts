@@ -1,10 +1,97 @@
-﻿import { $ } from '../util/dom.ts';
+import { $ } from '../util/dom.ts';
 import { Window } from '../tools/window-object.ts';
 import { StringVar } from '../components/string-var.ts';
 
 // ******************************** 文本提示框 ********************************
 
-export const TextSuggestion = {
+// 文本提示列表项
+interface TextSuggestionItem {
+	name: string;
+	icon?: string;
+	class?: string;
+	comment?: string;
+	refCount?: number;
+	// 列表渲染时挂载的 DOM 元素
+	element?: HTMLElement & { item: TextSuggestionItem };
+}
+
+type ListMethod = ((...args: any[]) => any) | null;
+
+interface TextSuggestionList {
+	createIcon: ListMethod;
+	createText: ListMethod;
+	createRefCount: ListMethod;
+	createComment: ListMethod;
+	selectDefaultCommand: ListMethod;
+	updateNodeElement: ListMethod;
+	elements: any[] & { count: number };
+	selection: TextSuggestionItem | null;
+	pressing: ((event: PointerEvent) => void) | null;
+	style: CSSStyleDeclaration;
+	bind(getter: () => any): void;
+	on(type: string, listener: (event: any) => void, options?: any): void;
+	off(type: string, listener: (event: any) => void, options?: any): void;
+	update(): HTMLElement | void;
+	clear(): void;
+	hide(): HTMLElement | void;
+	show(): HTMLElement | void;
+	hasClass(name: string): boolean;
+	searchNodes(text: string): void;
+	selectRelative(direction: string): void;
+	pageUp(select: boolean): void;
+	pageDown(select: boolean): void;
+	read(): TextSuggestionItem | null;
+	scrollToSelection(mode?: string): void;
+	select(item: TextSuggestionItem): void;
+	open(item: TextSuggestionItem): void;
+	textContent: string;
+}
+
+interface TextSuggestionTarget {
+	generator: () => TextSuggestionItem[];
+	input: { select(): void };
+	insert(name: string): void;
+	rect(): { left: number; top: number; bottom: number; width: number };
+	read(): string;
+	contains(node: Node | null): boolean;
+	on(type: string, listener: (event: any) => void, options?: any): void;
+	off(type: string, listener: (event: any) => void, options?: any): void;
+}
+
+type TextBoxMethod = ((this: TextSuggestionTarget, event: any) => void) | null;
+
+interface TextSuggestionShape {
+	list: TextSuggestionList;
+	inserting: boolean;
+	target: TextSuggestionTarget | null;
+	data: TextSuggestionItem[] | null;
+	initialize: (() => void) | null;
+	listen:
+		| ((
+				textBox: TextSuggestionTarget,
+				generator: () => TextSuggestionItem[]
+		  ) => void)
+		| null;
+	open: ((target: TextSuggestionTarget) => void) | null;
+	close: (() => void) | null;
+	select: ((item: TextSuggestionItem) => void) | null;
+	createData: (() => void) | null;
+	textBoxFocus: TextBoxMethod;
+	textBoxBlur: TextBoxMethod;
+	textBoxKeydown: TextBoxMethod;
+	textBoxInput: TextBoxMethod;
+	listPointerdown:
+		((this: TextSuggestionList, event: PointerEvent) => void) | null;
+	listUpdate: ((this: TextSuggestionList, event: Event) => void) | null;
+	listOpen:
+		| ((
+				this: TextSuggestionList,
+				event: Event & { value: TextSuggestionItem }
+		  ) => void)
+		| null;
+}
+
+export const TextSuggestion: TextSuggestionShape = {
 	// properties
 	list: $('#text-suggestions'),
 	inserting: false,
@@ -36,39 +123,46 @@ TextSuggestion.list.createComment = null;
 TextSuggestion.list.selectDefaultCommand = null;
 
 // 初始化
-TextSuggestion.initialize = function () {
+TextSuggestion.initialize = function (this: TextSuggestionShape): void {
 	// 绑定指令目录列表
 	const { list } = this;
 	list.bind(() => this.data);
 
 	// 侦听事件
-	list.on('pointerdown', this.listPointerdown);
-	list.on('update', this.listUpdate);
-	list.on('open', this.listOpen);
+	list.on('pointerdown', this.listPointerdown!);
+	list.on('update', this.listUpdate!);
+	list.on('open', this.listOpen!);
 };
 
 // 侦听文本输入框
-TextSuggestion.listen = function (textBox, generator) {
+TextSuggestion.listen = function (
+	this: TextSuggestionShape,
+	textBox: TextSuggestionTarget,
+	generator: () => TextSuggestionItem[]
+): void {
 	textBox.generator = generator;
-	textBox.on('focus', this.textBoxFocus);
-	textBox.on('blur', this.textBoxBlur);
-	textBox.on('keydown', this.textBoxKeydown);
-	textBox.on('input', this.textBoxInput);
-	textBox.on('compositionend', this.textBoxInput);
+	textBox.on('focus', this.textBoxFocus!);
+	textBox.on('blur', this.textBoxBlur!);
+	textBox.on('keydown', this.textBoxKeydown!);
+	textBox.on('input', this.textBoxInput!);
+	textBox.on('compositionend', this.textBoxInput!);
 };
 
 // 打开
-TextSuggestion.open = function (target) {
+TextSuggestion.open = function (
+	this: TextSuggestionShape,
+	target: TextSuggestionTarget
+): void {
 	if (this.target !== target) {
 		this.target = target;
-		this.createData();
+		this.createData!();
 		this.list.update();
-		this.list.selectDefaultCommand();
+		this.list.selectDefaultCommand!();
 	}
 };
 
 // 关闭
-TextSuggestion.close = function () {
+TextSuggestion.close = function (this: TextSuggestionShape): void {
 	this.target = null;
 	this.data = null;
 	this.list.clear();
@@ -76,40 +170,55 @@ TextSuggestion.close = function () {
 };
 
 // 选择文本
-TextSuggestion.select = function (item) {
+TextSuggestion.select = function (
+	this: TextSuggestionShape,
+	item: TextSuggestionItem
+): void {
 	this.inserting = true;
-	let { target } = this;
+	let target:
+		| TextSuggestionTarget
+		| { input: { select(): void }; insert(name: string): void } =
+		this.target!;
 	if (target instanceof StringVar) {
-		target = target.strBox;
+		target = (target as unknown as { strBox: TextSuggestionTarget }).strBox;
 	}
 	target.input.select();
 	target.insert(item.name);
 	this.inserting = false;
-	this.close();
+	this.close!();
 };
 
 // 创建数据
-TextSuggestion.createData = function () {
+TextSuggestion.createData = function (this: TextSuggestionShape): void {
 	if (!this.data) {
-		this.data = this.target.generator();
+		this.data = this.target!.generator();
 	}
 };
 
 // 文本框 - 获得焦点事件
-TextSuggestion.textBoxFocus = function (event) {
+TextSuggestion.textBoxFocus = function (
+	this: TextSuggestionTarget,
+	event: Event
+): void {
 	const text = this.read().trim();
 	TextSuggestion.open(this);
 	TextSuggestion.list.searchNodes(text);
-	TextSuggestion.list.selectDefaultCommand();
+	TextSuggestion.list.selectDefaultCommand!();
 };
 
 // 文本框 - 失去焦点事件
-TextSuggestion.textBoxBlur = function (event) {
-	TextSuggestion.close();
+TextSuggestion.textBoxBlur = function (
+	this: TextSuggestionTarget,
+	event: Event
+): void {
+	TextSuggestion.close!();
 };
 
 // 文本框 - 键盘按下事件
-TextSuggestion.textBoxKeydown = function (event) {
+TextSuggestion.textBoxKeydown = function (
+	this: TextSuggestionTarget,
+	event: KeyboardEvent
+): void {
 	if (!TextSuggestion.list.hasClass('hidden')) {
 		switch (event.code) {
 			case 'ArrowUp':
@@ -137,36 +246,46 @@ TextSuggestion.textBoxKeydown = function (event) {
 			}
 			case 'Escape':
 				event.stopPropagation();
-				TextSuggestion.close();
+				TextSuggestion.close!();
 				break;
 		}
 	}
 };
 
 // 文本框 - 输入事件
-TextSuggestion.textBoxInput = function (event) {
+TextSuggestion.textBoxInput = function (
+	this: TextSuggestionTarget,
+	event: InputEvent
+): void {
 	if (
-		this.contains(document.activeElement) &&
+		this.contains(document.activeElement as Node | null) &&
 		TextSuggestion.inserting === false &&
 		event.inputType !== 'insertCompositionText'
 	) {
 		const text = this.read().trim();
 		TextSuggestion.open(this);
 		TextSuggestion.list.searchNodes(text);
-		TextSuggestion.list.selectDefaultCommand();
+		TextSuggestion.list.selectDefaultCommand!();
 	}
 };
 
 // 列表 - 指针按下事件
-TextSuggestion.listPointerdown = function (event) {
-	const element = event.target;
+TextSuggestion.listPointerdown = function (
+	this: TextSuggestionList,
+	event: PointerEvent
+): void {
+	const element = event.target as HTMLElement & {
+		item: TextSuggestionItem;
+		tagName: string;
+	};
 	if (element.tagName === 'NODE-ITEM') {
 		// 阻止文本输入框的blur行为
 		event.preventDefault();
-		const pointerup = (event) => {
-			if (this.pressing === pointerup) {
+		const pressing = this.pressing;
+		const pointerup = (event: PointerEvent): void => {
+			if (pressing === pointerup) {
 				this.pressing = null;
-				if (element.contains(event.target)) {
+				if (element.contains(event.target as Node)) {
 					TextSuggestion.select(element.item);
 				}
 			}
@@ -177,9 +296,12 @@ TextSuggestion.listPointerdown = function (event) {
 };
 
 // 列表 - 更新事件
-TextSuggestion.listUpdate = function (event) {
+TextSuggestion.listUpdate = function (
+	this: TextSuggestionList,
+	event: Event
+): void {
 	const MAX_LINES = 30;
-	const rect = TextSuggestion.target.rect();
+	const rect = TextSuggestion.target!.rect();
 	const rl = rect.left;
 	const rt = rect.top;
 	const rb = rect.bottom;
@@ -193,14 +315,14 @@ TextSuggestion.listUpdate = function (event) {
 		lines !== 0 &&
 		!(
 			lines === 1 &&
-			this.elements[0].item.name === TextSuggestion.target.read()
+			this.elements[0].item.name === TextSuggestion.target!.read()
 		)
 	) {
 		this.style.left = `${rl}px`;
 		this.style.top = `${top}px`;
 		this.style.width = `calc(${rw}px - var(--2dpx))`;
 		this.style.height = `${lines * 20}px`;
-		this.style.zIndex = Window.frames.length + 1;
+		this.style.zIndex = (Window.frames.length + 1).toString();
 		this.show();
 	} else {
 		this.hide();
@@ -208,37 +330,49 @@ TextSuggestion.listUpdate = function (event) {
 };
 
 // 列表 - 打开事件
-TextSuggestion.listOpen = function (event) {
+TextSuggestion.listOpen = function (
+	this: TextSuggestionList,
+	event: Event & { value: TextSuggestionItem }
+): void {
 	const item = event.value;
 	// 指令选项在列表中的时候打开
-	if (item.element.parentNode) {
+	if (item.element!.parentNode) {
 		TextSuggestion.select(item);
 	}
 };
 
 // 列表 - 重写更新节点元素方法
-TextSuggestion.list.updateNodeElement = function (element) {
+TextSuggestion.list.updateNodeElement = function (
+	this: TextSuggestionList,
+	element: HTMLElement & { item: TextSuggestionItem; initialized?: boolean }
+): void {
 	if (!element.initialized) {
-		element.initialized = true;
-		this.createIcon(element);
-		this.createText(element);
-		this.createRefCount(element);
-		this.createComment(element);
+		(element as any).initialized = true;
+		(this as any).createIcon(element);
+		(this as any).createText(element);
+		(this as any).createRefCount(element);
+		(this as any).createComment(element);
 		element.addClass('text-suggestion-item');
 	}
 };
 
 // 列表 - 创建图标
-TextSuggestion.list.createIcon = function (element) {
+TextSuggestion.list.createIcon = function (
+	this: TextSuggestionList,
+	element: HTMLElement & { item: TextSuggestionItem }
+): void {
 	if (element.item.icon) {
-		const icon = document.createElement('node-icon');
+		const icon = document.createElement('node-icon') as HTMLElement;
 		icon.addClass(element.item.icon);
 		element.appendChild(icon);
 	}
 };
 
 // 列表 - 创建文本
-TextSuggestion.list.createText = function (element) {
+TextSuggestion.list.createText = function (
+	this: TextSuggestionList,
+	element: HTMLElement & { item: TextSuggestionItem }
+): void {
 	const item = element.item;
 	const text = document.createElement('text');
 	text.addClass('text-suggestion-content');
@@ -248,17 +382,23 @@ TextSuggestion.list.createText = function (element) {
 };
 
 // 列表 - 创建引用计数
-TextSuggestion.list.createRefCount = function (element) {
+TextSuggestion.list.createRefCount = function (
+	this: TextSuggestionList,
+	element: HTMLElement & { item: TextSuggestionItem }
+): void {
 	if (element.item.refCount) {
 		const comment = document.createElement('text');
 		comment.addClass('text-suggestion-ref-count');
-		comment.textContent = element.item.refCount;
+		comment.textContent = String(element.item.refCount);
 		element.appendChild(comment);
 	}
 };
 
 // 列表 - 创建注释
-TextSuggestion.list.createComment = function (element) {
+TextSuggestion.list.createComment = function (
+	this: TextSuggestionList,
+	element: HTMLElement & { item: TextSuggestionItem }
+): void {
 	if (element.item.comment) {
 		const comment = document.createElement('text');
 		comment.addClass('text-suggestion-comment');
@@ -268,7 +408,9 @@ TextSuggestion.list.createComment = function (element) {
 };
 
 // 列表扩展方法 - 选择默认指令选项
-TextSuggestion.list.selectDefaultCommand = function () {
+TextSuggestion.list.selectDefaultCommand = function (
+	this: TextSuggestionList
+): void {
 	// 如果有选中的指令存在于结果列表中则返回
 	const { selection, elements } = this;
 	const { count } = elements;

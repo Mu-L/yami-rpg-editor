@@ -6,7 +6,58 @@ import { Window } from '../tools/window-object.ts';
 
 // ******************************** 属性窗口工厂 ********************************
 
-export function createPropertyWindow(config) {
+// 属性键配置项
+interface PropertyKeyConfig {
+	name: string;
+	value: string;
+	cases?: string[];
+	uiName?: string;
+	default?: any;
+	targets?: string[];
+}
+
+// parsers 闭包签名：(value, get, name) => string
+type ParserFn = (
+	value: any,
+	get: (key: string) => string,
+	name: string
+) => string;
+
+// 属性窗口工厂配置
+interface PropertyWindowConfig {
+	prefix: string;
+	locale: string;
+	keys: PropertyKeyConfig[];
+	parseValue?: (
+		key: string,
+		value: any,
+		get: (key: string) => string
+	) => string;
+	parsers?: Record<string, ParserFn>;
+	init?: (this: any) => void;
+	openData?: (defaults: Record<string, any>, key: string, value: any) => void;
+	saveData?: (key: string, read: (k: string) => any) => any;
+	subRelates?: Array<{
+		selector: string;
+		cases: Array<{ case: string; targets: string[] }>;
+	}>;
+}
+
+// 属性窗口返回契约
+interface PropertyWindow {
+	target: any;
+	initialize: (() => void) | null;
+	parse:
+		| ((data: { key: string; value: any }, listData?: boolean) => string)
+		| null;
+	open: ((data?: { key: string; value: any }) => void) | null;
+	save: (() => { key: string; value: any }) | null;
+	confirm: ((event: Event) => { key: string; value: any }) | null;
+}
+
+export function createPropertyWindow(
+	config: PropertyWindowConfig
+): PropertyWindow {
 	const {
 		prefix,
 		locale,

@@ -1,4 +1,4 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
+import { $, getElementReader, getElementWriter } from '../util/dom.ts';
 import { getVariable } from '../util/safe.ts';
 import { Attribute } from '../attribute/attribute-window.ts';
 import { EventEditor } from './event-editor.ts';
@@ -10,7 +10,80 @@ import { Variable } from '../variable/variable.ts';
 
 // ******************************** 变量访问器窗口 ********************************
 
-export const VariableGetter = {
+// 变量访问器目标对象（由调用方传入，含 input/filter/dataValue 等）
+interface VariableGetterTarget {
+	filter: string;
+	dataValue: {
+		type: string;
+		key: string;
+		actor?: any;
+		skill?: any;
+		state?: any;
+		equipment?: any;
+		item?: any;
+		element?: any;
+	};
+	input: (getter: any) => void;
+	isPluginInput?: boolean;
+}
+
+// 变量类型集合（all/object/object2/writable/deletable）
+type VarTypeItem = { name: string; value: string };
+type VarTypeSet = {
+	all: VarTypeItem[];
+	object: VarTypeItem[];
+	object2: VarTypeItem[];
+	writable: VarTypeItem[];
+	deletable: VarTypeItem[];
+};
+
+// 递归状态条目（按窗口名隔离）
+interface VarGetterState {
+	target: VariableGetterTarget;
+	filter: string;
+}
+
+type VarGetterMethod = ((...args: any[]) => any) | null;
+
+interface VariableGetterShape {
+	keyBox: HTMLElement & {
+		loadItems(items: any[]): void;
+		selectBox: HTMLElement & {
+			textContent: string;
+			write(v: any): void;
+			read(): any;
+			invalid: boolean;
+			dataItems: any[];
+		};
+	};
+	target: VariableGetterTarget | null;
+	filter: string | null;
+	types: VarTypeSet | null;
+	_state: Record<string, VarGetterState | null>;
+	initialize: (() => void) | null;
+	open: ((target: VariableGetterTarget) => void) | null;
+	_openCore:
+		| ((
+				target: VariableGetterTarget,
+				filter: string,
+				prefix: string
+		  ) => void)
+		| null;
+	isNone: ((variable: { key: string }) => boolean) | null;
+	loadPresetKeys: ((group: string) => void) | null;
+	checkDataForPlugin: ((data: any) => boolean) | null;
+	createDefaultForPlugin:
+		(() => { getter: string; type: string; key: string }) | null;
+	createVarListGenerator:
+		((filterObject: VariableGetterShape) => () => any[]) | null;
+	typeWrite: ((event: Event & { value: string }) => void) | null;
+	typeInput: ((event: Event & { value: string }) => void) | null;
+	confirm: ((event: Event) => void) | null;
+	confirm2: ((event: Event) => void) | null;
+	_confirmCore: ((prefix: string) => void) | null;
+}
+
+export const VariableGetter: VariableGetterShape = {
 	// properties
 	keyBox: $('#variableGetter-preset-key'),
 	target: null,
@@ -35,7 +108,7 @@ export const VariableGetter = {
 };
 
 // 初始化
-VariableGetter.initialize = function () {
+VariableGetter.initialize = function (this: VariableGetterShape): void {
 	// 设置变量类型集合
 	const types = {
 		local: { name: 'Local', value: 'local' },
@@ -128,18 +201,26 @@ VariableGetter.initialize = function () {
 };
 
 // 打开窗口
-VariableGetter.open = function (target) {
+VariableGetter.open = function (
+	this: VariableGetterShape,
+	target: VariableGetterTarget
+): void {
 	const filter = target.filter;
 	// 若主窗口已打开，则叠加打开窗口2（避免递归冲突）
 	if (Window.isWindowOpen('variableGetter')) {
-		this._openCore(target, filter, 'variableGetter2');
+		this._openCore!(target, filter, 'variableGetter2');
 	} else {
-		this._openCore(target, filter, 'variableGetter');
+		this._openCore!(target, filter, 'variableGetter');
 	}
 };
 
 // 内部：按窗口前缀打开并填充
-VariableGetter._openCore = function (target, filter, prefix) {
+VariableGetter._openCore = function (
+	this: VariableGetterShape,
+	target: VariableGetterTarget,
+	filter: string,
+	prefix: string
+): void {
 	// 递归状态按窗口名隔离（窗口2不污染主窗口的 target/filter）
 	this._state[prefix] = { target, filter };
 	const types = this.types;
@@ -271,12 +352,15 @@ VariableGetter._openCore = function (target, filter, prefix) {
 };
 
 // 判断变量是否为空
-VariableGetter.isNone = function (variable) {
+VariableGetter.isNone = function (variable: { key: string }): boolean {
 	return variable.key === '';
 };
 
 // 加载预设属性键
-VariableGetter.loadPresetKeys = function (group) {
+VariableGetter.loadPresetKeys = function (
+	this: VariableGetterShape,
+	group: string
+): void {
 	let type = undefined;
 	switch (this.filter) {
 		case 'boolean':
@@ -295,21 +379,27 @@ VariableGetter.loadPresetKeys = function (group) {
 };
 
 // 检查插件版本的变量访问器数据有效性
-VariableGetter.checkDataForPlugin = function (data) {
+VariableGetter.checkDataForPlugin = function (data: any): boolean {
 	if (data instanceof Object) {
-		return data.getter === 'variable';
+		return (data as { getter?: string }).getter === 'variable';
 	}
 	return false;
 };
 
 // 创建插件版本的默认变量访问器
-VariableGetter.createDefaultForPlugin = function () {
+VariableGetter.createDefaultForPlugin = function (): {
+	getter: string;
+	type: string;
+	key: string;
+} {
 	return { getter: 'variable', type: 'local', key: '' };
 };
 
 // 创建本地变量列表生成器
-VariableGetter.createVarListGenerator = function (filterObject) {
-	return function () {
+VariableGetter.createVarListGenerator = function (
+	filterObject: VariableGetterShape
+): () => any[] {
+	return function (): any[] {
 		if (!EventEditor.commandList.read()) return [];
 
 		// 生成过滤字符串
@@ -323,7 +413,11 @@ VariableGetter.createVarListGenerator = function (filterObject) {
 						? 'object'
 						: 'any';
 
-		const list = EventEditor.commandList;
+		const list = EventEditor.commandList as unknown as {
+			elements: any[] & { count?: number };
+			active: number | null | undefined;
+			varList?: any[];
+		};
 		const elements = list.elements;
 		const count = elements.count ?? 0;
 		const parentMap = new Map();
@@ -346,7 +440,7 @@ VariableGetter.createVarListGenerator = function (filterObject) {
 				stack.push({ command: element.dataItem, indent });
 			}
 		}
-		const getNamespaceRoot = (command) => {
+		const getNamespaceRoot = (command: any): any => {
 			let current = command;
 			while (current) {
 				if (
@@ -391,7 +485,7 @@ VariableGetter.createVarListGenerator = function (filterObject) {
 };
 
 // 类型写入事件
-VariableGetter.typeWrite = function (event) {
+VariableGetter.typeWrite = function (event: Event & { value: string }): void {
 	const type = event.value;
 	switch (type) {
 		case 'actor':
@@ -406,7 +500,7 @@ VariableGetter.typeWrite = function (event) {
 };
 
 // 类型输入事件
-VariableGetter.typeInput = function (event) {
+VariableGetter.typeInput = function (event: Event & { value: string }): void {
 	const type = event.value;
 	switch (type) {
 		case 'actor':
@@ -439,17 +533,26 @@ VariableGetter.typeInput = function (event) {
 };
 
 // 确定按钮 - 鼠标点击事件（主窗口）
-VariableGetter.confirm = function (event) {
-	this._confirmCore('variableGetter');
+VariableGetter.confirm = function (
+	this: VariableGetterShape,
+	event: Event
+): void {
+	this._confirmCore!('variableGetter');
 }.bind(VariableGetter);
 
 // 确定按钮 - 鼠标点击事件（递归窗口2）
-VariableGetter.confirm2 = function (event) {
-	this._confirmCore('variableGetter2');
+VariableGetter.confirm2 = function (
+	this: VariableGetterShape,
+	event: Event
+): void {
+	this._confirmCore!('variableGetter2');
 }.bind(VariableGetter);
 
 // 内部：按窗口前缀执行确认（统一校验逻辑，消除双实现行为漂移）
-VariableGetter._confirmCore = function (prefix) {
+VariableGetter._confirmCore = function (
+	this: VariableGetterShape,
+	prefix: string
+): void {
 	const state = this._state[prefix];
 	const target = state.target;
 	const filter = state.filter;

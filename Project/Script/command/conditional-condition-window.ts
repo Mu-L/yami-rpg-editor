@@ -1,4 +1,4 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
+import { $, getElementReader, getElementWriter } from '../util/dom.ts';
 import { GamepadBox } from '../components/gamepad-box.ts';
 import { Command } from './command-object.ts';
 import { Token } from './mark-string-manager.ts';
@@ -14,7 +14,42 @@ import { Variable } from '../variable/variable.ts';
 
 // ******************************** 条件分支 - 条件窗口 ********************************
 
-export const IfCondition = {
+// 条件目标对象（由调用方传入，含 save/dataValue 等）
+interface IfConditionTarget {
+	save: () => any;
+	dataValue?: any;
+	isPluginInput?: boolean;
+}
+
+type IfConditionMethod = ((...args: any[]) => any) | null;
+
+interface IfConditionShape {
+	type: string;
+	target: IfConditionTarget | null;
+	initialize: (() => void) | null;
+	parseBooleanOperation: ((condition: any) => string) | null;
+	parseBooleanOperand: ((condition: any) => string) | null;
+	parseNumberOperation: ((condition: any) => string) | null;
+	parseNumberOperand: ((condition: any) => string) | null;
+	parseStringOperation: ((condition: any) => string) | null;
+	parseStringOperand: ((condition: any) => string) | null;
+	parseObjectOperation: ((condition: any) => string) | null;
+	parseObjectOperand: ((condition: any) => string) | null;
+	parseActorOperation: ((condition: any) => string) | null;
+	parseElementOperation: ((condition: any) => string) | null;
+	parseKeyboardState: ((state: any) => string) | null;
+	parseGamepadState: ((state: any) => string) | null;
+	parseMouseButton: ((button: number) => string) | null;
+	parseMouseState: ((state: any) => string) | null;
+	parseListOperation: ((condition: any) => string) | null;
+	parseOther: ((condition: any) => string) | null;
+	parse: ((condition: any, listData?: boolean) => string) | null;
+	open: ((condition?: any) => void) | null;
+	save: (() => any) | null;
+	confirm: ((event: Event) => any) | null;
+}
+
+export const IfCondition: IfConditionShape = {
 	// properties
 	type: 'condition',
 	target: null,

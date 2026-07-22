@@ -1,4 +1,4 @@
-﻿//import { CommandSchema } from '../module/command/schema.ts';
+import { CommandSchema } from '../module/command/schema.ts';
 import { Inspector } from '../inspector/inspector.ts';
 
 // ******************************** 指令对象 ********************************
@@ -198,15 +198,16 @@ export const Command: {
 };
 
 // 委托到 CommandSchema 静态分发
-// （CommandSchema 导入在此文件顶部被注释掉以避免循环依赖;
-//  实际 initialize / insert / open / edit / save / parse 的绑定
-//  发生在 module/command/schema.ts 加载之后。）
-// Command.initialize = CommandSchema.initAll;
-// Command.insert = CommandSchema.insert;
-// Command.open = CommandSchema.open;
-// Command.edit = CommandSchema.edit;
-// Command.save = CommandSchema.save;
-// Command.parse = CommandSchema.parse;
+// 注：此前为避免循环依赖被注释，但这是运行时绑定的关键链路 ——
+//  CommandSchema.parse / .initAll 等通过此绑定挂载到 Command.parse / Command.words 等，
+//  注释掉会导致运行时 Command.parse is not a function / Command.words 为 null。
+//  循环依赖问题应通过 module-init.js 的加载顺序（head.html SOT）保证 schema.ts 先于此文件加载。
+Command.initialize = CommandSchema.initAll;
+Command.insert = CommandSchema.insert;
+Command.open = CommandSchema.open;
+Command.edit = CommandSchema.edit;
+Command.save = CommandSchema.save;
+Command.parse = CommandSchema.parse;
 
 // 显示文本
 // Command.cases.showText extracted -> module/command/showText.js

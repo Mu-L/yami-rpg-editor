@@ -1,4 +1,4 @@
-﻿import { $, getElementWriter } from '../util/dom.ts';
+import { $, getElementWriter } from '../util/dom.ts';
 import { ctrl } from '../util/event-accessors.ts';
 import { Command } from './command-object.ts';
 import { File } from '../file/file-system-core.ts';
@@ -17,7 +17,129 @@ import { Window } from '../tools/window-object.ts';
 
 // ******************************** 事件编辑器 ********************************
 
-export const EventEditor = {
+// 事件编辑器列表子对象契约（大量动态挂载方法 + DOM 扩展）
+interface EventEditorList {
+	lastScrollTop: number;
+	selectIndex: ((index: number) => void) | null;
+	close: ((item?: any) => void) | null;
+	closeMultiple: ((items: any[], callback?: () => void) => void) | null;
+	closeBelow: ((item: any) => void) | null;
+	closeOthers: ((item: any) => void) | null;
+	closeAll: (() => void) | null;
+	saveScroll: (() => void) | null;
+	restoreScroll: (() => void) | null;
+	defineProperties: ((item: any) => any) | null;
+	createLocalEventItem:
+		| ((
+				inserting: any,
+				filter: any,
+				name: any,
+				event: any,
+				callback: any
+		  ) => any)
+		| null;
+	createGlobalEventItem: ((guid: string) => any) | null;
+	createIcon: ((item: any) => HTMLElement) | null;
+	updateItemClass: ((item: any) => void) | null;
+	createInitText: ((item: any) => void) | null;
+	updateInitText: ((item: any) => void) | null;
+	updateItemName: ((item: any) => void) | null;
+	closeButtonClick: ((event: Event) => void) | null;
+	removable: boolean;
+	foldable: boolean;
+	creators: any[];
+	updaters: any[];
+	// DOM 扩展方法（HTMLElement 子类化）
+	bind(getter: () => any): void;
+	on(type: string, listener: (event: any) => void, options?: any): void;
+	off(type: string, listener: (event: any) => void, options?: any): void;
+	resize(): void;
+	update(): void;
+	hide(): HTMLElement | void;
+	show(): HTMLElement | void;
+	hasClass(name: string): boolean;
+	addClass(name: string): void;
+	removeClass(name: string): void;
+	getFocus(): void;
+	read(): any;
+	select(item: any): void;
+	scrollToSelection(mode?: string): void;
+	deleteNodeParameters(data: any): void;
+	scrollToHome(): void;
+	scrollToEnd(): void;
+	style: CSSStyleDeclaration;
+	textContent: string;
+	parentNode: Node & { item?: any };
+	contains(node: Node | null): boolean;
+	item: any;
+	class: string;
+	filter: string;
+	type: string;
+	name: string;
+	meta?: any;
+	event?: any;
+	callback?: any;
+	inserting?: boolean;
+	changed?: boolean;
+	// 运行时挂载的列表项集合
+	elements: any[] & { count: number };
+	active: number | null;
+	varList?: any[];
+	commandList?: any;
+}
+
+type EventEditorMethod = ((...args: any[]) => any) | null;
+
+interface EventEditorShape {
+	list: EventEditorList;
+	commandList: HTMLElement & { [k: string]: any; innerHeight?: number };
+	outerGutter: HTMLElement;
+	innerGutter: HTMLElement;
+	closing: boolean;
+	data: any[] | null;
+	caches: any[];
+	types: any;
+	initialize: (() => void) | null;
+	openLocalEvent: EventEditorMethod;
+	openGlobalEvent: EventEditorMethod;
+	openRelatedEvents: EventEditorMethod;
+	findRelatedEvents: EventEditorMethod;
+	getAllLocalEvents: EventEditorMethod;
+	clearAllEventClasses: EventEditorMethod;
+	clearRelatedEventClasses: EventEditorMethod;
+	save: EventEditorMethod;
+	isChanged: EventEditorMethod;
+	getItemById: EventEditorMethod;
+	getItemByEvent: EventEditorMethod;
+	openCommandList: EventEditorMethod;
+	closeCommandList: EventEditorMethod;
+	unpackOpenEvents: EventEditorMethod;
+	packOpenEvents: EventEditorMethod;
+	resizeGutter: EventEditorMethod;
+	updateGutter: EventEditorMethod;
+	appendCommandsToCaches: EventEditorMethod;
+	fetchCommandBuffer: EventEditorMethod;
+	clearCommandBuffers: EventEditorMethod;
+	getGlobalEventName: EventEditorMethod;
+	windowLocalize: EventEditorMethod;
+	windowClose: EventEditorMethod;
+	windowClosed: EventEditorMethod;
+	windowResize: EventEditorMethod;
+	windowKeydown: EventEditorMethod;
+	windowKeyup: EventEditorMethod;
+	windowPointermove: EventEditorMethod;
+	listPointerdown: EventEditorMethod;
+	listSelect: EventEditorMethod;
+	listPopup: EventEditorMethod;
+	typeInput: EventEditorMethod;
+	commandListChange: EventEditorMethod;
+	commandListUpdate: EventEditorMethod;
+	commandListScroll: EventEditorMethod;
+	confirm: EventEditorMethod;
+	apply: EventEditorMethod;
+}
+
+export const EventEditor: EventEditorShape = {
 	// properties
 	list: $('#event-open-list'),
 	commandList: $('#event-commands'),
@@ -837,7 +959,7 @@ EventEditor.updateGutter = function (force) {
 		const nodes = innerGutter.childNodes;
 		const length = nodes.length;
 		for (let i = 0; i < length; i++) {
-			const node = nodes[i];
+			const node = nodes[i] as any;
 			const number = start + i;
 			if (number < end) {
 				if (node.number !== number) {
@@ -1006,7 +1128,7 @@ EventEditor.windowClosed = function (event) {
 EventEditor.windowResize = function (event) {
 	// 设置指令列表的内部高度
 	const { list, commandList } = EventEditor;
-	const parent = commandList.parentNode;
+	const parent = commandList.parentNode as HTMLElement;
 	const outerHeight = parent.clientHeight;
 	const innerHeight = Math.max(outerHeight - 20, 0);
 	Object.defineProperty(commandList, 'innerHeight', {
@@ -1485,5 +1607,5 @@ EventEditor.list.updateItemName = function (item) {
 
 // 列表 - 关闭按钮点击事件
 EventEditor.list.closeButtonClick = function (event) {
-	EventEditor.list.close(event.target.parentNode.item);
+	EventEditor.list.close((event.target as any).parentNode.item);
 };
