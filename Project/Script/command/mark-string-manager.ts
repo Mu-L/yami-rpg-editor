@@ -3,8 +3,8 @@ import { Local } from '../tools/localization.ts';
 
 // ******************************** 标记字符串管理器 ********************************
 
-let _tokenMap;
-function buildTokenMap() {
+let _tokenMap: Record<string, string> | null = null;
+function buildTokenMap(): Record<string, string> {
 	return {
 		'=': Command.setOperatorColor('='),
 		' = ': Command.setOperatorColor(' = '),
@@ -39,7 +39,7 @@ function buildTokenMap() {
 	};
 }
 
-export const Token = (key) => {
+export const Token = (key: string): string => {
 	if (!_tokenMap) _tokenMap = buildTokenMap();
 	return _tokenMap[key];
 };

@@ -3,8 +3,11 @@ import { Command } from './command-object.ts';
 // ******************************** 指令工具函数 ********************************
 
 // 遍历指令列表中的每个指令
-Command.forEachCommand = function (commands, handler) {
-	const forEach = (commands) => {
+Command.forEachCommand = function (
+	commands: any[],
+	handler: (command: any) => void
+): void {
+	const forEach = (commands: any[]): void => {
 		for (const command of commands) {
 			handler(command);
 			switch (command.id) {
@@ -44,32 +47,32 @@ Command.forEachCommand = function (commands, handler) {
 			}
 		}
 	};
-	return forEach(commands);
+	forEach(commands);
 };
 
 // 词语列表类
 Command.WordList = class WordList extends Array {
-	count;
+	count: number;
 
 	constructor() {
 		super();
 		this.count = 0;
 	}
 
-	push(string) {
-		if (string) this[this.count++] = string;
-		return this as any;
+	push(string: string): number {
+		if (string) (this as any)[this.count++] = string;
+		return this.count;
 	}
 
-	join(joint = '$_delimiter_$, $_/_$') {
+	join(joint: string = '$_delimiter_$, $_/_$'): string {
 		const length = this.count;
 		if (length === 0) {
 			return '';
 		}
 		this.count = 0;
-		let string = this[0];
+		let string = (this as any)[0];
 		for (let i = 1; i < length; i++) {
-			string += joint + this[i];
+			string += joint + (this as any)[i];
 		}
 		return string;
 	}

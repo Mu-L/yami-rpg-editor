@@ -2,16 +2,39 @@ import { Title } from '../title/title-bar.ts';
 
 // ******************************** 标签栏 ********************************
 
+// 拖拽中的事件聚合体（pointerdown / dragstart 共用）
+interface TabDraggingEvent {
+	hint: HTMLElement & {
+		target: HTMLElement;
+		position: 'before' | 'after';
+		measure(item: HTMLElement): {
+			left: number;
+			top: number;
+			width: number;
+			height: number;
+		};
+		set(rect: {
+			left: number;
+			top: number;
+			width: number;
+			height: number;
+		}): void;
+	};
+	target: HTMLElement;
+	offsetX: number;
+	mode?: 'close' | 'popup';
+}
+
 export class TabBar extends HTMLElement {
-	data: any[] | null; //:array
-	dragging: DragEvent | PointerEvent | null; //:event
-	selectionIndex: number; //:number
-	writeEventEnabled: boolean; //:boolean
-	selectEventEnabled: boolean; //:boolean
-	closedEventEnabled: boolean; //:boolean
-	popupEventEnabled: boolean; //:boolean
-	windowPointerup: (event: PointerEvent) => void; //:function
-	dirItem: any; //:any
+	data: any[] | null;
+	dragging: TabDraggingEvent | null;
+	selectionIndex: number;
+	writeEventEnabled: boolean;
+	selectEventEnabled: boolean;
+	closedEventEnabled: boolean;
+	popupEventEnabled: boolean;
+	windowPointerup: (event: PointerEvent) => void;
+	dirItem: any;
 
 	constructor() {
 		super();
@@ -28,15 +51,15 @@ export class TabBar extends HTMLElement {
 		this.windowPointerup = TabBar.windowPointerup.bind(this);
 
 		// 侦听事件
-		(this as any).on('pointerdown', this.pointerdown);
-		(this as any).on('dragstart', this.dragstart);
-		(this as any).on('dragend', this.dragend);
+		this.on('pointerdown', this.pointerdown);
+		this.on('dragstart', this.dragstart);
+		this.on('dragend', this.dragend);
 	}
 
 	// 读取数据
 	read(): any {
-		const item = this.querySelector('.selected') as any;
-		return item ? item.item : undefined;
+		const item = this.querySelector('.selected') as HTMLElement | null;
+		return item ? (item as any).item : undefined;
 	}
 
 	// 写入数据
@@ -57,7 +80,9 @@ export class TabBar extends HTMLElement {
 				target.addClass('selected');
 			}
 			if (this.writeEventEnabled) {
-				const write: any = new Event('write');
+				const write = new Event('write') as Event & {
+					value: any;
+				};
 				write.value = target ? value : undefined;
 				this.dispatchEvent(write);
 			}
@@ -73,7 +98,13 @@ export class TabBar extends HTMLElement {
 				tab = (item as any).tab = document.createElement('tab-item');
 				const text = document.createElement('tab-text');
 				text.textContent = this.parseTabName(item);
-				(tab as any).draggable = true;
+				(
+					tab as HTMLElement & {
+						draggable: boolean;
+						item: any;
+						text: HTMLElement;
+					}
+				).draggable = true;
 				(tab as any).item = item;
 				(tab as any).text = text;
 				tab.appendChild(text);
@@ -98,7 +129,9 @@ export class TabBar extends HTMLElement {
 		if (this.read() !== item) {
 			this.write(item);
 			if (this.selectEventEnabled) {
-				const select: any = new Event('select');
+				const select = new Event('select') as Event & {
+					value: any;
+				};
 				select.value = item;
 				this.dispatchEvent(select);
 			}
@@ -129,7 +162,10 @@ export class TabBar extends HTMLElement {
 		if (this.data!.remove(item)) {
 			this.update();
 			if (this.closedEventEnabled) {
-				const closed: any = new Event('closed');
+				const closed = new Event('closed') as Event & {
+					closedItems: any[];
+					lastValue: any;
+				};
 				closed.closedItems = [item];
 				closed.lastValue = value;
 				this.dispatchEvent(closed);
@@ -164,7 +200,10 @@ export class TabBar extends HTMLElement {
 		if (closedItems.length !== 0) {
 			this.update();
 			if (this.closedEventEnabled) {
-				const closed: any = new Event('closed');
+				const closed = new Event('closed') as Event & {
+					closedItems: any[];
+					lastValue: any;
+				};
 				closed.closedItems = closedItems;
 				closed.lastValue = value;
 				this.dispatchEvent(closed);
@@ -189,7 +228,10 @@ export class TabBar extends HTMLElement {
 		if (closedItems.length !== 0) {
 			this.update();
 			if (this.closedEventEnabled) {
-				const closed: any = new Event('closed');
+				const closed = new Event('closed') as Event & {
+					closedItems: any[];
+					lastValue: any;
+				};
 				closed.closedItems = closedItems;
 				closed.lastValue = value;
 				this.dispatchEvent(closed);
@@ -245,8 +287,13 @@ export class TabBar extends HTMLElement {
 				if (element.tagName === 'TAB-CLOSE') {
 					// 阻止拖拽开始事件
 					event.preventDefault();
-					this.dragging = event;
-					(event as any).mode = 'close';
+					const dragging: TabDraggingEvent = {
+						hint: null as any,
+						target: element.parentNode as HTMLElement,
+						offsetX: event.offsetX,
+						mode: 'close'
+					};
+					this.dragging = dragging;
 					window.on('pointerup', this.windowPointerup);
 					return;
 				}
@@ -262,11 +309,17 @@ export class TabBar extends HTMLElement {
 				if (this.popupEventEnabled) {
 					switch ((event.target as HTMLElement).tagName) {
 						case 'TAB-ITEM':
-						case 'TAB-BAR':
-							this.dragging = event;
-							(event as any).mode = 'popup';
+						case 'TAB-BAR': {
+							const dragging: TabDraggingEvent = {
+								hint: null as any,
+								target: event.target as HTMLElement,
+								offsetX: event.offsetX,
+								mode: 'popup'
+							};
+							this.dragging = dragging;
 							window.on('pointerup', this.windowPointerup);
 							break;
+						}
 					}
 				}
 				break;
@@ -276,19 +329,44 @@ export class TabBar extends HTMLElement {
 	// 拖拽开始事件
 	dragstart(event: DragEvent): void {
 		if (!this.dragging) {
-			this.dragging = event;
+			const hint = document.createElement(
+				'drag-and-drop-hint'
+			) as HTMLElement & {
+				target: HTMLElement;
+				position: 'before' | 'after';
+				measure(item: HTMLElement): {
+					left: number;
+					top: number;
+					width: number;
+					height: number;
+				};
+				set(rect: {
+					left: number;
+					top: number;
+					width: number;
+					height: number;
+				}): void;
+				hide(): HTMLElement;
+				addClass(name: string): boolean;
+				hasClass(name: string): boolean;
+			};
+			const dragging: TabDraggingEvent = {
+				hint,
+				target: event.target as HTMLElement,
+				offsetX: event.offsetX
+			};
+			this.dragging = dragging;
 			Object.defineProperty(event, 'offsetX', { writable: true });
 			event.preventDefault = Function.empty as any;
-			(event as any).dataTransfer.hideDragImage();
-			(event as any).hint = document.createElement('drag-and-drop-hint');
-			((event as any).hint as HTMLElement).addClass('for-tab');
-			this.parentNode!.insertBefore((event as any).hint.hide(), this);
+			(event.dataTransfer as any).hideDragImage();
+			hint.addClass('for-tab');
+			this.parentNode!.insertBefore(hint.hide(), this);
 			this.addClass('dragging');
 			Title.updateAppRegion();
-			(this as any).on('dragenter', this.dragenter);
-			(this as any).on('dragleave', this.dragleave);
-			(this as any).on('dragover', this.dragover);
-			(this as any).on('drop', this.drop);
+			this.on('dragenter', this.dragenter);
+			this.on('dragleave', this.dragleave);
+			this.on('dragover', this.dragover);
+			this.on('drop', this.drop);
 		}
 	}
 
@@ -296,7 +374,7 @@ export class TabBar extends HTMLElement {
 	dragend(event?: DragEvent): void {
 		if (this.dragging) {
 			this.removeClass('dragging');
-			this.parentNode!.removeChild((this.dragging as any).hint);
+			this.parentNode!.removeChild(this.dragging.hint);
 			this.dragging = null;
 			this.off('dragenter', this.dragenter);
 			this.off('dragleave', this.dragleave);
@@ -309,15 +387,15 @@ export class TabBar extends HTMLElement {
 	dragenter(event: DragEvent): void {
 		if (this.dragging) {
 			event.preventDefault();
-			(event as any).dataTransfer.dropEffect = 'move';
+			(event.dataTransfer as any).dropEffect = 'move';
 		}
 	}
 
 	// 拖拽离开事件
 	dragleave(event: DragEvent): void {
 		if (this.dragging && !this.contains(event.relatedTarget as Node)) {
-			(this.dragging as any).offsetX = -1;
-			(this.dragging as any).hint.hide();
+			this.dragging.offsetX = -1;
+			this.dragging.hint.hide();
 		}
 	}
 
@@ -326,15 +404,15 @@ export class TabBar extends HTMLElement {
 		const { dragging } = this;
 		if (dragging) {
 			event.preventDefault();
-			(event as any).dataTransfer.dropEffect = 'move';
-			if ((dragging as any).offsetX === event.offsetX) {
+			(event.dataTransfer as any).dropEffect = 'move';
+			if (dragging.offsetX === event.offsetX) {
 				return;
 			}
-			(dragging as any).offsetX = event.offsetX;
+			dragging.offsetX = event.offsetX;
 			const element = (event.target as HTMLElement).seek('tab-item');
-			const hint = (dragging as any).hint.show();
+			const hint = dragging.hint.show();
 			if (element.tagName === 'TAB-ITEM') {
-				const sItem = (dragging as any).target.item;
+				const sItem = (dragging.target as any).item;
 				const dItem = (element as any).item;
 				if (sItem === dItem) {
 					return hint.hide();
@@ -348,39 +426,34 @@ export class TabBar extends HTMLElement {
 				switch (position) {
 					case 'before':
 						if (
-							(hint as any).target !== element ||
-							(hint as any).position !== position
+							hint.target !== element ||
+							hint.position !== position
 						) {
-							if (
-								element.previousSibling ===
-								(dragging as any).target
-							) {
+							if (element.previousSibling === dragging.target) {
 								return hint.hide();
 							}
-							const rect = (hint as any).measure(element);
-							rect.left -= 1;
-							rect.width = 2;
-							(hint as any).target = element;
-							(hint as any).position = position;
-							(hint as any).set(rect);
+							const r = hint.measure(element);
+							r.left -= 1;
+							r.width = 2;
+							hint.target = element;
+							hint.position = position;
+							hint.set(r);
 						}
 						break;
 					case 'after':
 						if (
-							(hint as any).target !== element ||
-							(hint as any).position !== position
+							hint.target !== element ||
+							hint.position !== position
 						) {
-							if (
-								element.nextSibling === (dragging as any).target
-							) {
+							if (element.nextSibling === dragging.target) {
 								return hint.hide();
 							}
-							const rect = (hint as any).measure(element);
-							rect.left += rect.width - 1;
-							rect.width = 2;
-							(hint as any).target = element;
-							(hint as any).position = position;
-							(hint as any).set(rect);
+							const r = hint.measure(element);
+							r.left += r.width - 1;
+							r.width = 2;
+							hint.target = element;
+							hint.position = position;
+							hint.set(r);
 						}
 						break;
 				}
@@ -388,20 +461,19 @@ export class TabBar extends HTMLElement {
 				const elements = this.childNodes;
 				const index = elements.length - 1;
 				const element = elements[index] as HTMLElement;
-				if (element === (dragging as any).target) {
+				if (element === dragging.target) {
 					return hint.hide();
 				}
 				if (
 					element !== undefined &&
-					((hint as any).target !== element ||
-						(hint as any).position !== 'after')
+					(hint.target !== element || hint.position !== 'after')
 				) {
-					const rect = (hint as any).measure(element);
-					rect.left += rect.width - 1;
-					rect.width = 2;
-					(hint as any).target = element;
-					(hint as any).position = 'after';
-					(hint as any).set(rect);
+					const r = hint.measure(element);
+					r.left += r.width - 1;
+					r.width = 2;
+					hint.target = element;
+					hint.position = 'after';
+					hint.set(r);
 				}
 			}
 		}
@@ -414,14 +486,14 @@ export class TabBar extends HTMLElement {
 			return;
 		}
 		event.stopPropagation();
-		const hint = (dragging as any).hint;
+		const hint = dragging.hint;
 		if (!hint.hasClass('hidden')) {
 			const items = this.data!;
-			const sItem = (dragging as any).target.item;
-			const dItem = (hint as any).target.item;
+			const sItem = (dragging.target as any).item;
+			const dItem = (hint.target as any).item;
 			if (items.remove(sItem)) {
 				let dIndex = items.indexOf(dItem);
-				if ((hint as any).position === 'after') {
+				if (hint.position === 'after') {
 					dIndex++;
 				}
 				items.splice(dIndex, 0, sItem);
@@ -436,17 +508,23 @@ export class TabBar extends HTMLElement {
 
 	// 窗口 - 指针弹起事件
 	static windowPointerup(this: TabBar, event: PointerEvent): void {
-		const { dragging } = this as any;
-		if (dragging.relate(event)) {
+		const { dragging } = this;
+		if (dragging && (dragging as any).relate(event)) {
 			switch (dragging.mode) {
 				case 'close':
 					if (dragging.target === event.target) {
-						this.close((event.target as any).parentNode.item);
+						this.close(
+							((event.target as any).parentNode as any).item
+						);
 					}
 					break;
 				case 'popup':
 					if (dragging.target === event.target) {
-						const popup: any = new Event('popup');
+						const popup = new Event('popup') as Event & {
+							value: any;
+							clientX: number;
+							clientY: number;
+						};
 						const item = (event.target as any).item;
 						popup.value = item ?? null;
 						popup.clientX = event.clientX;
@@ -455,7 +533,7 @@ export class TabBar extends HTMLElement {
 					}
 					break;
 			}
-			(this as any).dragging = null;
+			this.dragging = null;
 			window.off('pointerup', this.windowPointerup);
 		}
 	}

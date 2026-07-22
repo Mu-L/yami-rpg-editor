@@ -12,7 +12,7 @@ export class RadioBox extends HTMLElement {
 		// 获取集合节点
 		let proxy = RadioProxy.map[this.name];
 		if (proxy === undefined) {
-			proxy = document.createElement('radio-proxy');
+			proxy = document.createElement('radio-proxy') as RadioProxy;
 			proxy.id = this.name;
 			proxy.style.display = 'none';
 			this.appendChild(proxy);

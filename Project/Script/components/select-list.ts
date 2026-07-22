@@ -4,18 +4,30 @@ import { Home } from '../title/home-page.ts';
 
 // ******************************** 下拉列表 ********************************
 
+// 下拉列表的宿主元素（SelectBox 等）需提供的契约
+interface SelectTarget extends HTMLElement {
+	dataItems: Array<{ value: any; name: string; tip?: string }>;
+	dataValue: any;
+	input(value: any): void;
+	selectList?: SelectList | null;
+}
+
+interface SelectItemElement extends HTMLElement {
+	dataValue: any;
+}
+
 export class SelectList extends HTMLElement {
-	state: 'open' | 'closed'; //:string
-	target: HTMLElement | null; //:element
-	elements: any[] & {
+	state: 'open' | 'closed';
+	target: SelectTarget | null;
+	elements: SelectItemElement[] & {
 		versionId: number;
 		count: number;
 		start: number;
 		end: number;
 		head: HTMLElement | null;
 		foot: HTMLElement | null;
-	}; //:array
-	selection: HTMLElement | null; //:element
+	};
+	selection: HTMLElement | null;
 
 	constructor() {
 		super();
@@ -23,7 +35,14 @@ export class SelectList extends HTMLElement {
 		// 设置属性
 		this.state = 'closed';
 		this.target = null;
-		this.elements = [] as any;
+		this.elements = [] as SelectItemElement[] & {
+			versionId: number;
+			count: number;
+			start: number;
+			end: number;
+			head: HTMLElement | null;
+			foot: HTMLElement | null;
+		};
 		this.elements.versionId = 0;
 		this.elements.count = 0;
 		this.elements.start = -1;
@@ -38,12 +57,12 @@ export class SelectList extends HTMLElement {
 		this.listenDraggingScrollbarEvent();
 
 		// 侦听事件
-		(this as any).on('scroll', this.resize);
+		this.on('scroll', this.resize);
 	}
 
 	// 读取数据
 	read(): any {
-		return this.selection?.dataValue;
+		return (this.selection as SelectItemElement | null)?.dataValue;
 	}
 
 	// 写入数据
@@ -90,7 +109,7 @@ export class SelectList extends HTMLElement {
 	}
 
 	// 打开下拉列表
-	open(target: HTMLElement): void {
+	open(target: SelectTarget): void {
 		this.close();
 		this.state = 'open';
 
@@ -98,7 +117,7 @@ export class SelectList extends HTMLElement {
 		this.target = target;
 
 		// 创建选项
-		this.createItems((target as any).dataItems);
+		this.createItems(target.dataItems);
 
 		// 设置位置
 		this.windowResize();
@@ -110,7 +129,7 @@ export class SelectList extends HTMLElement {
 		this.resize();
 
 		// 写入数据
-		this.write((target as any).dataValue);
+		this.write(target.dataValue);
 		this.scrollToSelection();
 
 		// 侦听事件
@@ -250,12 +269,14 @@ export class SelectList extends HTMLElement {
 
 	// 指针移动事件
 	pointermove(event: PointerEvent): void {
-		const element = (event.target as HTMLElement).seek('select-item');
+		const element = (event.target as HTMLElement).seek(
+			'select-item'
+		) as SelectItemElement;
 		if (
 			element.tagName === 'SELECT-ITEM' &&
 			!element.hasClass('selected')
 		) {
-			this.write((element as any).dataValue);
+			this.write(element.dataValue);
 		}
 	}
 
@@ -271,7 +292,7 @@ export class SelectList extends HTMLElement {
 			case 'NumpadEnter': {
 				const value = this.read();
 				if (value !== undefined) {
-					(this.target as any).input(value);
+					this.target!.input(value);
 				}
 				this.close();
 				break;
@@ -310,7 +331,7 @@ export class SelectList extends HTMLElement {
 	windowPointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0: {
-				const target = this.target as HTMLElement;
+				const target = this.target!;
 				let element = event.target as HTMLElement;
 				if (element instanceof SelectList) {
 					event.preventDefault();
@@ -321,7 +342,7 @@ export class SelectList extends HTMLElement {
 					this.close();
 					return;
 				}
-				element = element.seek('select-item');
+				element = element.seek('select-item') as SelectItemElement;
 				if (
 					element.tagName === 'SELECT-ITEM' &&
 					element.parentNode === this
@@ -330,7 +351,7 @@ export class SelectList extends HTMLElement {
 					if (event.altKey) {
 						return;
 					}
-					(target as any).input((element as any).dataValue);
+					target.input(element.dataValue);
 				}
 				this.close();
 				return;
@@ -344,7 +365,7 @@ export class SelectList extends HTMLElement {
 	// 窗口 - 调整大小事件
 	windowResize(event?: Event): void {
 		const MAX_LINES = 30;
-		const rect = (this.target as HTMLElement).rect();
+		const rect = this.target!.rect();
 		const rl = rect.left;
 		const rt = rect.top;
 		const rb = rect.bottom;
@@ -372,12 +393,12 @@ customElements.define('select-list', SelectList);
 
 // 全局Select管理
 export const Select: {
-	target: HTMLElement | null;
-	open(target: HTMLElement): SelectList;
-	close(target?: HTMLElement): void;
+	target: SelectTarget | null;
+	open(target: SelectTarget): SelectList;
+	close(target?: SelectTarget): void;
 } = {
 	target: null,
-	open(target: HTMLElement): SelectList {
+	open(target: SelectTarget): SelectList {
 		let list = document.querySelector('select-list') as SelectList | null;
 		if (!list) {
 			list = document.createElement(
@@ -385,14 +406,14 @@ export const Select: {
 			) as unknown as SelectList;
 		}
 		this.target = target;
-		(target as any).selectList = list;
-		(target as any).on('pointerleave', () => {
-			(target as any).selectList = null;
+		target.selectList = list;
+		target.on('pointerleave', () => {
+			target.selectList = null;
 		});
 		(Home as any).eventWindow.addEventListener(
 			'pointerdown',
 			(event: Event) => {
-				if ((target as any).selectList === list) {
+				if (target.selectList === list) {
 					list.open(target);
 				}
 			},
@@ -400,9 +421,9 @@ export const Select: {
 		);
 		return list;
 	},
-	close(target?: HTMLElement): void {
+	close(target?: SelectTarget): void {
 		if (target) {
-			(target as any).selectList?.close();
+			target.selectList?.close();
 		} else {
 			(document.querySelector('select-list') as SelectList)?.close();
 		}

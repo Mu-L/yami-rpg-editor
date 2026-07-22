@@ -1,11 +1,16 @@
 ﻿// ******************************** 单选框代理 ********************************
 
+interface RadioRelationEntry {
+	case: any;
+	targets: HTMLElement[];
+}
+
 export class RadioProxy extends HTMLElement {
-	dataValue; //:any
-	relations; //:array
-	cancelable; //:boolean
-	writeEventEnabled; //:boolean
-	inputEventEnabled; //:boolean
+	dataValue: any;
+	relations: RadioRelationEntry[];
+	cancelable: boolean;
+	writeEventEnabled: boolean;
+	inputEventEnabled: boolean;
 
 	constructor() {
 		super();
@@ -19,38 +24,43 @@ export class RadioProxy extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): any {
 		return this.dataValue;
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any): void {
 		const elements = document.getElementsByName(this.id);
 		for (const element of elements) {
-			if (element.dataValue === value) {
-				element.addClass('selected');
+			if ((element as any).dataValue === value) {
+				(element as HTMLElement).addClass('selected');
 				this.dataValue = value;
 			} else {
-				element.removeClass('selected');
+				(element as HTMLElement).removeClass('selected');
 			}
 		}
 		if (!this.hasClass('disabled')) {
 			this.toggleRelatedElements();
 		}
 		if (this.writeEventEnabled) {
-			const write = new Event('write');
+			const write = new Event('write') as Event & {
+				value: any;
+			};
 			write.value = this.dataValue;
 			this.dispatchEvent(write);
 		}
 	}
 
 	// 输入数据
-	input(value) {
+	input(value: any): void {
 		const lastValue = this.dataValue;
 		if (lastValue !== value) {
 			this.write(value);
 			if (this.inputEventEnabled) {
-				const input = new Event('input');
+				const input = new Event('input') as Event & {
+					value: any;
+					lastValue: any;
+				};
 				input.value = this.dataValue;
 				input.lastValue = lastValue;
 				this.dispatchEvent(input);
@@ -60,12 +70,12 @@ export class RadioProxy extends HTMLElement {
 	}
 
 	// 重置数据
-	reset() {
+	reset(): void {
 		if (this.dataValue !== null) {
 			const elements = document.getElementsByName(this.id);
 			for (const element of elements) {
-				if (element.dataValue === this.dataValue) {
-					element.removeClass('selected');
+				if ((element as any).dataValue === this.dataValue) {
+					(element as HTMLElement).removeClass('selected');
 					break;
 				}
 			}
@@ -74,34 +84,34 @@ export class RadioProxy extends HTMLElement {
 	}
 
 	// 启用元素
-	enable() {
+	enable(): void {
 		if (this.removeClass('disabled')) {
 			const elements = document.getElementsByName(this.id);
 			for (const element of elements) {
-				element.removeClass('disabled');
+				(element as HTMLElement).removeClass('disabled');
 			}
 			this.toggleRelatedElements();
 		}
 	}
 
 	// 禁用元素
-	disable() {
+	disable(): void {
 		if (this.addClass('disabled')) {
 			const elements = document.getElementsByName(this.id);
 			for (const element of elements) {
-				element.addClass('disabled');
+				(element as HTMLElement).addClass('disabled');
 			}
 			this.toggleRelatedElements();
 		}
 	}
 
 	// 添加相关元素
-	relate(entries) {
+	relate(entries: RadioRelationEntry[]): void {
 		this.relations = entries;
 	}
 
 	// 启用或禁用相关元素
-	toggleRelatedElements() {
+	toggleRelatedElements(): void {
 		if (this.relations.length !== 0) {
 			if (!this.hasClass('disabled')) {
 				const entries = this.relations;
@@ -111,13 +121,13 @@ export class RadioProxy extends HTMLElement {
 				for (const entry of entries) {
 					if (entry.case === this.dataValue) {
 						for (const element of entry.targets) {
-							element.enable();
+							(element as any).enable();
 						}
 					} else {
 						for (const element of selection
 							? Array.subtract(entry.targets, selection.targets)
 							: entry.targets) {
-							element.disable();
+							(element as any).disable();
 						}
 					}
 				}
@@ -125,7 +135,7 @@ export class RadioProxy extends HTMLElement {
 				const entries = this.relations;
 				for (const entry of entries) {
 					for (const element of entry.targets) {
-						element.disable();
+						(element as any).disable();
 					}
 				}
 			}
@@ -133,7 +143,11 @@ export class RadioProxy extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'write':
@@ -146,7 +160,7 @@ export class RadioProxy extends HTMLElement {
 	}
 
 	// 静态 - 代理映射表
-	static map = {};
+	static map: Record<string, RadioProxy> = {};
 }
 
 customElements.define('radio-proxy', RadioProxy);

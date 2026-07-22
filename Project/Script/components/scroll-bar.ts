@@ -3,12 +3,12 @@
 // ******************************** 滚动条 ********************************
 
 export class ScrollBar extends HTMLElement {
-	target: HTMLElement | null; //:element
-	type: string | null; //:string
-	thumb: HTMLElement | null; //:element
-	timer: any; //:object
-	dragging: PointerEvent | null; //:event
-	visible: boolean; //:boolean
+	target: HTMLElement | null;
+	type: string | null;
+	thumb: HTMLElement | null;
+	timer: Timer | null;
+	dragging: PointerEvent | null;
+	visible: boolean;
 
 	constructor() {
 		super();

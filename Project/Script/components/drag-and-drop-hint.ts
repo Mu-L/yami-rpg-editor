@@ -24,17 +24,20 @@ export class DragAndDropHint extends HTMLElement {
 		width: number;
 		height: number;
 	} {
-		const parent: any = this.parentNode;
+		const parent = this.parentNode as HTMLElement & {
+			borderLeft?: number;
+			borderTop?: number;
+		};
 		let bl = parent.borderLeft;
 		let bt = parent.borderTop;
 		if (bl === undefined) {
-			const css = parent.css();
+			const css = (parent as HTMLElement).css();
 			bl = parseInt(css.borderLeftWidth);
 			bt = parseInt(css.borderTopWidth);
 			parent.borderLeft = bl;
 			parent.borderTop = bt;
 		}
-		const pRect = parent.rect();
+		const pRect = (parent as HTMLElement).rect();
 		const tRect = item.rect();
 		const left = tRect.left - pRect.left - bl;
 		const top = tRect.top - pRect.top - bt;
