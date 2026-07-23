@@ -1,6 +1,8 @@
 ﻿// ******************************** 参数操作历史 ********************************
 
-export class ParamListHistory {
+import { IEditableHistory } from '../types/history.ts';
+
+export class ParamListHistory implements IEditableHistory {
 	list: HTMLElement;
 	stack: any[];
 	index: number;

@@ -14,7 +14,31 @@ import { UI } from '../ui/ui-window.ts';
 
 // ******************************** 文件系统 ********************************
 
-export const File = {
+type FileMethod = (...args: any[]) => any;
+
+export const File: {
+	root: string;
+	promises: Record<string, any>;
+	get: FileMethod | null;
+	getPath: FileMethod | null;
+	save: FileMethod | null;
+	saveFile: FileMethod | null;
+	planToSave: FileMethod | null;
+	cancelSave: FileMethod | null;
+	parseFileSize: FileMethod | null;
+	getFileName: FileMethod | null;
+	getImageResolution: FileMethod | null;
+	openPath: FileMethod | null;
+	openURL: FileMethod | null;
+	showInExplorer: FileMethod | null;
+	showOpenDialog: FileMethod | null;
+	showSaveDialog: FileMethod | null;
+	path: FileMethod | null;
+	parseGUID: FileMethod | null;
+	filterGUID: FileMethod | null;
+	updateRoot: FileMethod | null;
+	route: FileMethod | null;
+} = {
 	// properties
 	root: '',
 	promises: {},

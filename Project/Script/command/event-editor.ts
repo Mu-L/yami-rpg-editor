@@ -307,7 +307,7 @@ EventEditor.initialize = function () {
 		preload: { name: 'Preload', value: 'preload', tip: '' }
 	};
 	this.types = {
-		all: Object.values(types),
+		all: Object.values<any>(types),
 		global: [
 			types.common,
 			types.autorun,
@@ -636,7 +636,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 		}
 		return false;
 	};
-	for (const [id, event] of Object.entries(Data.events)) {
+	for (const [id, event] of Object.entries<any>(Data.events)) {
 		if (find(event)) {
 			references.push({
 				filter: 'global',

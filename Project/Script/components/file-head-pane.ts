@@ -136,17 +136,26 @@ export class FileHeadPane extends HTMLElement {
 	}
 
 	// 地址栏 - 指针按下事件
-	addressPointerdown(event: any) {
+	addressPointerdown(event: PointerEvent) {
 		switch (event.button) {
 			case 0: {
-				const element = event.target;
+				const element = event.target as HTMLElement & {
+					disabled: boolean;
+					file: any;
+					folders: any[];
+					target: any;
+					rect(): DOMRect;
+					hasClass(cls: string): boolean;
+					addClass(cls: string): void;
+					removeClass(cls: string): void;
+				};
 				if (element.parentNode === this) {
 					if (element.hasClass('active')) {
 						return;
 					}
 					window.on(
 						'pointerup',
-						(event) => {
+						(event: PointerEvent) => {
 							if (
 								event.button === 0 &&
 								element === event.target

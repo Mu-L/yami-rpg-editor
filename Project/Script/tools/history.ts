@@ -1,6 +1,8 @@
 ﻿// ******************************** 操作历史类 ********************************
 
-export class History extends Array {
+import { IArrayHistory } from '../types/history.ts';
+
+export class History extends Array implements IArrayHistory {
 	index: number;
 	capacity: number;
 	onSave: ((data: any) => void) | null;

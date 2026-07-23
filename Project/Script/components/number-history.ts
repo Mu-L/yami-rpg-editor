@@ -1,8 +1,9 @@
 ﻿import { HistoryTimer } from './history-timer.ts';
+import { IEditableHistory } from '../types/history.ts';
 
 // ******************************** 数值操作历史 ********************************
 
-export class NumberHistory {
+export class NumberHistory implements IEditableHistory {
 	static restoring: boolean;
 	input: any;
 	stack: any[];

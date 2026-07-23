@@ -1,6 +1,8 @@
 ﻿// ******************************** 指令操作历史 ********************************
 
-export class CommandHistory {
+import { ICapacityHistory } from '../types/history.ts';
+
+export class CommandHistory implements ICapacityHistory {
 	list: HTMLElement & {
 		select(start: any, end?: any): void;
 		scrollToSelection(mode?: string): void;

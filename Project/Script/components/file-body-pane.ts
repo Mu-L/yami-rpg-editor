@@ -417,7 +417,7 @@ export class FileBodyPane extends HTMLElement {
 
 	// 创建扁平排列的项目
 	createFlatItems(dir: any[]): void {
-		(Directory as any).sortFiles(dir);
+		Directory.sortFiles(dir);
 		const elements = this.elements;
 		const length = dir.length;
 		for (let i = 0; i < length; i++) {
@@ -991,17 +991,14 @@ export class FileBodyPane extends HTMLElement {
 	createFolder(): void {
 		const dirname = this.getDirName();
 		if (dirname) {
-			const { path, route } = (File as any).getFileName(
-				dirname,
-				'New Folder'
-			);
+			const { path, route } = File.getFileName(dirname, 'New Folder');
 			FSP.mkdir(route, { recursive: true })
 				.then(() => {
-					return (Directory as any).update();
+					return Directory.update();
 				})
 				.then((changed: boolean) => {
 					if (changed) {
-						const folder = (Directory as any).getFolder(path);
+						const folder = Directory.getFolder(path);
 						if (folder.path === path) {
 							this.links.nav.load(folder.parent);
 							this.select(folder);
@@ -1019,7 +1016,7 @@ export class FileBodyPane extends HTMLElement {
 		for (const file of this.selections) {
 			const { element } = file.getContext(this);
 			if (elements.includes(element)) {
-				(File as any).showInExplorer(File.path(file.path));
+				File.showInExplorer(File.path(file.path));
 				if (++length === 10) {
 					break;
 				}
@@ -1030,7 +1027,7 @@ export class FileBodyPane extends HTMLElement {
 	// 打开文件位置
 	openFileLocation(file: any): void {
 		if (file) {
-			const folder = (Directory as any).getFolder(file.path);
+			const folder = Directory.getFolder(file.path);
 			if (folder instanceof FolderItem) {
 				const { nav } = this.links;
 				nav.load(folder);
@@ -1088,15 +1085,13 @@ export class FileBodyPane extends HTMLElement {
 					.then((dir: any[]) => {
 						const path = File.path(targetPath);
 						return copy.cut
-							? (Directory as any).moveFiles(path, dir)
+							? Directory.moveFiles(path, dir)
 							: (Directory as any)
 									.saveFiles(files)
-									.then(() =>
-										(Directory as any).copyFiles(path, dir)
-									);
+									.then(() => Directory.copyFiles(path, dir));
 					})
 					.finally(() => {
-						(Directory as any).update();
+						Directory.update();
 					});
 			}
 			// 剪切后擦除剪切板数据
@@ -1110,7 +1105,7 @@ export class FileBodyPane extends HTMLElement {
 	deleteFiles(): void {
 		const files: any[] = [];
 		const { selections } = this;
-		if (!selections.includes((Directory as any).assets)) {
+		if (!selections.includes(Directory.assets)) {
 			const elements = this.elements;
 			for (const file of selections) {
 				const { element } = file.getContext(this);
@@ -1142,7 +1137,7 @@ export class FileBodyPane extends HTMLElement {
 								(Directory as any)
 									.deleteFiles(files)
 									.then(() => {
-										return (Directory as any).update();
+										return Directory.update();
 									});
 							}
 						},
@@ -1167,8 +1162,8 @@ export class FileBodyPane extends HTMLElement {
 				{
 					label: get('yes'),
 					click: () => {
-						(Directory as any).deleteFiles(files).then(() => {
-							return (Directory as any).update();
+						Directory.deleteFiles(files).then(() => {
+							return Directory.update();
 						});
 					}
 				},
@@ -1184,7 +1179,7 @@ export class FileBodyPane extends HTMLElement {
 		const { textBox } = FileBodyPane;
 		if (
 			document.activeElement === this.content &&
-			file !== (Directory as any).assets &&
+			file !== Directory.assets &&
 			!textBox.parentNode
 		) {
 			const context = file.getContext(this);
@@ -1256,15 +1251,11 @@ export class FileBodyPane extends HTMLElement {
 						const src = Path.slash(filePaths[i]);
 						const ext = Path.extname(src);
 						const base = Path.basename(src, ext);
-						const dst = (File as any).getFileName(
-							dir,
-							base,
-							ext
-						).route;
+						const dst = File.getFileName(dir, base, ext).route;
 						promises.push(FSP.copyFile(src, dst));
 					}
 					Promise.all(promises).then(() => {
-						return (Directory as any).update();
+						return Directory.update();
 					});
 					dialogs.import = Path.slash(Path.dirname(filePaths[0]));
 				}
@@ -1291,7 +1282,7 @@ export class FileBodyPane extends HTMLElement {
 					}
 				})
 				.finally(() => {
-					(Directory as any).update();
+					Directory.update();
 				});
 		} else {
 			// 导出文件夹或多个文件
@@ -1309,16 +1300,12 @@ export class FileBodyPane extends HTMLElement {
 								files.map((file: any) => File.path(file.path))
 							)
 							.then((dir: any[]) => {
-								return (Directory as any).copyFiles(
-									dirPath,
-									dir,
-									''
-								);
+								return Directory.copyFiles(dirPath, dir, '');
 							});
 					}
 				})
 				.finally(() => {
-					(Directory as any).update();
+					Directory.update();
 				});
 		}
 	}
@@ -1807,7 +1794,7 @@ export class FileBodyPane extends HTMLElement {
 						return FSP.rename(File.path(file.path), path).then(
 							() => {
 								item.nameBox.textContent = name;
-								return (Directory as any).update();
+								return Directory.update();
 							}
 						);
 					});

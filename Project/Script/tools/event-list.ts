@@ -5,9 +5,10 @@ import { TreeList } from '../components/tree-list.ts';
 import { Inspector } from '../inspector/inspector.ts';
 import { Local } from './localization.ts';
 
+import { IListInterface } from '../types/list-interface.ts';
 // ******************************** 事件列表接口类 ********************************
 
-export class EventListInterface {
+export class EventListInterface implements IListInterface {
 	target: HTMLElement | null;
 	type: string;
 	filter: string;

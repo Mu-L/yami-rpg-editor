@@ -1,8 +1,9 @@
 ﻿import { HistoryTimer } from './history-timer.ts';
+import { IEditableHistory } from '../types/history.ts';
 
 // ******************************** 文本操作历史 ********************************
 
-export class TextHistory {
+export class TextHistory implements IEditableHistory {
 	input: HTMLElement & { [k: string]: any };
 	stack: any[];
 	index: number;

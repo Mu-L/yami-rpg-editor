@@ -172,11 +172,11 @@ export class CustomBox extends HTMLElement {
 
 	// 更新文件信息
 	updateFile(guid: string): void {
-		(Command as any).invalid = false;
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseFileName(guid)
+		Command.invalid = false;
+		this.info.textContent = Command.removeTextTags(
+			Command.parseFileName(guid)
 		);
-		if ((Command as any).invalid) this.info.addClass('invalid');
+		if (Command.invalid) this.info.addClass('invalid');
 	}
 
 	// 更新对话框目录
@@ -205,8 +205,8 @@ export class CustomBox extends HTMLElement {
 	updateVariable(variable: any): void {
 		// 类型是独立变量，或存在变量键，则判定为有效变量
 		if (variable.type === 'self' || variable.key) {
-			this.info.textContent = (Command as any).removeTextTags(
-				(Command as any).parseVariable(variable)
+			this.info.textContent = Command.removeTextTags(
+				Command.parseVariable(variable)
 			);
 		} else {
 			this.info.textContent = Local.get('common.none');
@@ -215,134 +215,132 @@ export class CustomBox extends HTMLElement {
 
 	// 更新全局变量信息
 	updateGlobalVariable(id: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseGlobalVariable(id)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseGlobalVariable(id)
 		);
 	}
 
 	// 更新角色信息
 	updateActor(actor: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseActor(actor)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseActor(actor)
 		);
 	}
 
 	// 更新技能信息
 	updateSkill(skill: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseSkill(skill)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseSkill(skill)
 		);
 	}
 
 	// 更新状态信息
 	updateState(state: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseState(state)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseState(state)
 		);
 	}
 
 	// 更新装备信息
 	updateEquipment(equipment: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseEquipment(equipment)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseEquipment(equipment)
 		);
 	}
 
 	// 更新物品信息
 	updateItem(item: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseItem(item)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseItem(item));
 	}
 
 	// 更新位置信息
 	updatePosition(point: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parsePosition(point)
+		this.info.textContent = Command.removeTextTags(
+			Command.parsePosition(point)
 		);
 	}
 
 	// 更新角度信息
 	updateAngle(angle: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseAngle(angle)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseAngle(angle)
 		);
 	}
 
 	// 更新触发器信息
 	updateTrigger(trigger: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseTrigger(trigger)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseTrigger(trigger)
 		);
 	}
 
 	// 更新光源信息
 	updateLight(light: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseLight(light)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseLight(light)
 		);
 	}
 
 	// 更新区域信息
 	updateRegion(region: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseRegion(region)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseRegion(region)
 		);
 	}
 
 	// 更新瓦片地图信息
 	updateTilemap(tilemap: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseTilemap(tilemap)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseTilemap(tilemap)
 		);
 	}
 
 	// 更新场景对象信息
 	updateObject(object: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseObject(object)
+		this.info.textContent = Command.removeTextTags(
+			Command.parseObject(object)
 		);
 	}
 
 	// 更新元素信息
 	updateElement(element: any): void {
-		(Command as any).invalid = false;
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseElement(element)
+		Command.invalid = false;
+		this.info.textContent = Command.removeTextTags(
+			Command.parseElement(element)
 		);
-		if ((Command as any).invalid) this.info.addClass('invalid');
+		if (Command.invalid) this.info.addClass('invalid');
 	}
 
 	// 更新预设对象信息
 	updatePresetObject(preset: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parsePresetObject(preset)
+		this.info.textContent = Command.removeTextTags(
+			Command.parsePresetObject(preset)
 		);
 	}
 
 	// 更新预设元素信息
 	updatePresetElement(preset: any): void {
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parsePresetElement(preset)
+		this.info.textContent = Command.removeTextTags(
+			Command.parsePresetElement(preset)
 		);
-		if ((Command as any).invalid) this.info.addClass('invalid');
+		if (Command.invalid) this.info.addClass('invalid');
 	}
 
 	// 更新数组信息
 	updateArray(array: any[]): void {
 		this.info.textContent =
 			array.length !== 0
-				? (Command as any).parseMultiLineString(array.join(', '))
+				? Command.parseMultiLineString(array.join(', '))
 				: Local.get('common.empty');
 	}
 
 	// 更新属性群组信息
 	updateAttributeGroup(groupId: string): void {
-		(Command as any).invalid = false;
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseAttributeGroup(groupId)
+		Command.invalid = false;
+		this.info.textContent = Command.removeTextTags(
+			Command.parseAttributeGroup(groupId)
 		);
-		if ((Command as any).invalid) this.info.addClass('invalid');
+		if (Command.invalid) this.info.addClass('invalid');
 	}
 
 	// 更新属性信息
@@ -355,18 +353,18 @@ export class CustomBox extends HTMLElement {
 		if (attribute) {
 			this.info.textContent = GameLocal.replace(attribute.name);
 		} else {
-			this.info.textContent = (Command as any).parseUnlinkedId(attrId);
+			this.info.textContent = Command.parseUnlinkedId(attrId);
 			this.info.addClass('invalid');
 		}
 	}
 
 	// 更新枚举群组信息
 	updateEnumGroup(groupId: string): void {
-		(Command as any).invalid = false;
-		this.info.textContent = (Command as any).removeTextTags(
-			(Command as any).parseEnumGroup(groupId)
+		Command.invalid = false;
+		this.info.textContent = Command.removeTextTags(
+			Command.parseEnumGroup(groupId)
 		);
-		if ((Command as any).invalid) this.info.addClass('invalid');
+		if (Command.invalid) this.info.addClass('invalid');
 	}
 
 	// 更新枚举字符串信息
@@ -379,7 +377,7 @@ export class CustomBox extends HTMLElement {
 		if (string) {
 			this.info.textContent = GameLocal.replace(string.name);
 		} else {
-			this.info.textContent = (Command as any).parseUnlinkedId(stringId);
+			this.info.textContent = Command.parseUnlinkedId(stringId);
 			this.info.addClass('invalid');
 		}
 	}

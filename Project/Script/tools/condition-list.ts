@@ -3,12 +3,13 @@ import { Command } from '../command/command-object.ts';
 import { IfCondition } from '../command/conditional-condition-window.ts';
 import { TreeList } from '../components/tree-list.ts';
 import { Inspector } from '../inspector/inspector.ts';
+import { IListInterface } from '../types/list-interface.ts';
 import { Local } from './localization.ts';
 import { Window } from './window-object.ts';
 
 // ******************************** 条件列表接口类 ********************************
 
-export class ConditionListInterface {
+export class ConditionListInterface implements IListInterface {
 	target: HTMLElement | null;
 	type: string;
 	history: any | null;

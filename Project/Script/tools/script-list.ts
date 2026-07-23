@@ -8,9 +8,10 @@ import { FileItem } from '../file/file-item.ts';
 import { Inspector } from '../inspector/inspector.ts';
 import { PluginManager } from '../plugin/plugin.ts';
 
+import { IScriptListInterface } from '../types/list-interface.ts';
 // ******************************** 脚本列表接口 ********************************
 
-export class ScriptListInterface {
+export class ScriptListInterface implements IScriptListInterface {
 	target: (HTMLElement & { [k: string]: any }) | null;
 	type: string;
 	filter: string;

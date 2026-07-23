@@ -12,7 +12,32 @@ import { Window } from '../tools/window-object.ts';
 
 // ******************************** 目录对象 ********************************
 
-export const Directory = {
+type DirectoryMethod = (...args: any[]) => any;
+
+export const Directory: {
+	inoMap: Record<string, any>;
+	assets: any | null;
+	symbol: any | null;
+	reading: boolean;
+	updating: any | null;
+	initialize: DirectoryMethod | null;
+	read: DirectoryMethod | null;
+	close: DirectoryMethod | null;
+	update: DirectoryMethod | null;
+	getFolder: DirectoryMethod | null;
+	getFile: DirectoryMethod | null;
+	readdir: DirectoryMethod | null;
+	searchFiles: DirectoryMethod | null;
+	existFiles: DirectoryMethod | null;
+	filterFiles: DirectoryMethod | null;
+	deleteFiles: DirectoryMethod | null;
+	moveFiles: DirectoryMethod | null;
+	saveFiles: DirectoryMethod | null;
+	copyFiles: DirectoryMethod | null;
+	sortFiles: DirectoryMethod | null;
+	createInoMap: DirectoryMethod | null;
+	windowFocus: DirectoryMethod | null;
+} = {
 	// properties
 	inoMap: {},
 	assets: null,

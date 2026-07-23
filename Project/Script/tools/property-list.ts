@@ -7,9 +7,10 @@ import { Inspector } from '../inspector/inspector.ts';
 import { GameLocal } from '../local/local-object.ts';
 import { Window } from './window-object.ts';
 
+import { IListInterface } from '../types/list-interface.ts';
 // ******************************** 属性列表接口 ********************************
 
-export class AttributeListInterface {
+export class AttributeListInterface implements IListInterface {
 	target: HTMLElement | null;
 	type: string;
 	group: string;

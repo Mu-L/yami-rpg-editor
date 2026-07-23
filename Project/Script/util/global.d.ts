@@ -2,6 +2,17 @@
 // 本文件集中声明 Project/Script/util/ 各模块对内置对象 / window 的新增成员类型,
 // 避免 TS2339 / TS2551 报错。所有扩展均来自 util/*.ts 的实际运行时挂载。
 
+// 注：本文件保持 ambient script（无顶层 import/export），interface 声明才能自动合并到全局。
+// 故 EditorEvent 别名在此内联，不 import types/editor-event.ts（顶层 import 会破坏 ambient 语义）。
+type EditorEvent =
+	| KeyboardEvent
+	| MouseEvent
+	| PointerEvent
+	| DragEvent
+	| WheelEvent
+	| InputEvent
+	| Event;
+
 // ============== Clipboard 静态扩展 (util/clipboard.ts) ==============
 // util/clipboard.ts 中 Object.assign(Clipboard, {...}) 挂载到全局 Clipboard 构造函数对象本身（静态方法）
 // 注：Clipboard 是构造函数对象，interface Clipboard 声明的是实例方法；
@@ -146,7 +157,7 @@ interface HTMLElement {
 	addScrollbars(): void;
 	addSetScrollMethod(): void;
 	hasScrollBar(): boolean;
-	isInContent(event: any): boolean;
+	isInContent(event: EditorEvent): boolean;
 	dispatchChangeEvent(index?: number): void;
 	dispatchResizeEvent(): void;
 	dispatchUpdateEvent(): void;
@@ -157,9 +168,9 @@ interface HTMLElement {
 	setScrollLeft(left: number): void;
 	setScrollTop(top: number): void;
 	updateScrollbars(): void;
-	scrollPointerup: (event: any) => void;
-	scrollPointermove: (event: any) => void;
-	scrollPointerdown?: (event: any) => void;
+	scrollPointerup: (event: EditorEvent) => void;
+	scrollPointermove: (event: EditorEvent) => void;
+	scrollPointerdown?: (event: EditorEvent) => void;
 	dragging: any;
 	// scroll-bar.ts 中 ScrollBar 类方法（addScrollbars 内 hBar/vBar 调用）
 	bind(target: HTMLElement, type: string): void;
@@ -206,12 +217,12 @@ interface Window {
 	config: any;
 	on: (
 		eventName: string,
-		handler: (event: any) => void,
+		handler: (event: EditorEvent) => void,
 		options?: boolean | AddEventListenerOptions
 	) => void;
 	off: (
 		eventName: string,
-		handler: (event: any) => void,
+		handler: (event: EditorEvent) => void,
 		options?: boolean | EventListenerOptions
 	) => void;
 	spaceKey: boolean;
@@ -233,19 +244,19 @@ interface Event {
 }
 
 // ============== EventTarget 扩展 (util/event-target.ts) ==============
-// 注：listener 签名 `(event: any) => void` 对齐 event-target.ts 实现签名，
+// 注：listener 签名 `(event: EditorEvent) => void` 对齐 event-target.ts 实现签名，
 // 兼容 EventListenerOrEventListenerObject（lib.dom.d.ts 的 addEventListener 重载要求）。
 // 协变冲突（子类 `(event: PointerEvent) => void` 比基类更具体）不在此根上消除 ——
 // 因 `addEventListener` 重载约束，改用调用点 `as unknown as` 绕。
 interface EventTarget {
 	on(
 		type: string,
-		listener: (event: any) => void,
+		listener: (event: EditorEvent) => void,
 		options?: boolean | AddEventListenerOptions
 	): void;
 	off(
 		type: string,
-		listener: (event: any) => void,
+		listener: (event: EditorEvent) => void,
 		options?: boolean | EventListenerOptions
 	): void;
 }
@@ -295,7 +306,7 @@ interface HTMLElement {
 	restoring: boolean;
 	_built: boolean;
 	_checkVariablesScheduled: boolean;
-	windowVariableChange: (event: any) => void;
+	windowVariableChange: (event: EditorEvent) => void;
 	speedX: number;
 	speedY: number;
 	complete: boolean;
@@ -371,19 +382,23 @@ interface KeyboardEvent {
 interface NodeListOf<TNode extends Node> {
 	on: (
 		type: string,
-		listener: (event: any) => void,
+		listener: (event: EditorEvent) => void,
 		options?: boolean | AddEventListenerOptions
 	) => void;
 	off: (
 		type: string,
-		listener: (event: any) => void,
+		listener: (event: EditorEvent) => void,
 		options?: boolean | EventListenerOptions
 	) => void;
 }
 
 // ============== NodeList 扩展 (util/node-list.ts) ==============
 interface NodeList {
-	on(type: string, listener: (event: any) => void, options?: any): NodeList;
+	on(
+		type: string,
+		listener: (event: EditorEvent) => void,
+		options?: any
+	): NodeList;
 	enable(): void;
 	disable(): void;
 	// tab-bar.ts 中局使用（this.childNodes 解构 { item }）

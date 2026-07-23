@@ -18,9 +18,27 @@ export class FileBrowser extends HTMLElement {
 	filters: any[] | null;
 	backupFolders: any[];
 	searchResults: any[];
-	nav: FileNavPane;
-	head: HTMLElement;
-	body: FileBodyPane;
+	nav: FileNavPane & {
+		selections: any[];
+		unselect(): void;
+		load(...folders: any[]): void;
+		contains(node: Node): boolean;
+		clear(): void;
+	};
+	head: HTMLElement & {
+		updateAddress(): void;
+		searcher: {
+			write(content: string): void;
+			deleteInputContent(): void;
+		};
+		address: { clear(): void };
+	};
+	body: FileBodyPane & {
+		selections: any[];
+		select(...files: any[]): void;
+		contains(node: Node): boolean;
+		clear(): void;
+	};
 	links: Record<string, any>;
 	declare _built: boolean;
 
@@ -541,7 +559,16 @@ export class FileBrowser extends HTMLElement {
 			this.nav = document.createElement(
 				'file-nav-pane'
 			) as unknown as FileNavPane;
-			this.head = document.createElement('file-head-pane');
+			this.head = document.createElement(
+				'file-head-pane'
+			) as unknown as HTMLElement & {
+				updateAddress(): void;
+				searcher: {
+					write(content: string): void;
+					deleteInputContent(): void;
+				};
+				address: { clear(): void };
+			};
 			this.body = document.createElement(
 				'file-body-pane'
 			) as unknown as FileBodyPane;
