@@ -1734,6 +1734,8 @@
       "resource-not-found":"Resource pack not found",
       "setting-title-recent":"Recent Projects",
       "setting-recent-statsMode-label":"Stats Mode",
+      "setting-title-update":"Update",
+      "setting-update-checkOnStart-label":"Check for updates on startup",
       "recent-statsMode-count":"Count Only",
       "recent-statsMode-size":"Calculate Size"
     }

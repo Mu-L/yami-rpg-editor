@@ -11,6 +11,7 @@ import { Editor } from '../main/editor.ts';
 import { EditDataInstance } from './editdata.ts';
 import { EventBus } from './eventbus.ts';
 import { Resources } from './resource.ts';
+import { SettingConfig } from './settingconfig.ts';
 import { AutoTile } from '../palette/auto-tile.ts';
 import { Scene } from '../scene/scene-window.ts';
 import { NewProject } from '../title/new-project-window.ts';
@@ -116,8 +117,15 @@ window.addEventListener('localize', () => {
 	if (!NoResourceObj['arpg-ts-english'].check && !NoResourceObj['arpg-ts-chinese'].check) {
 		Resources.open();
 		Resources.checkEditorVersion(); // 只检测编辑器版本
+		// 启动时是否检测更新（settingconfig.update.checkOnStart 开关，默认 true）
+		if (SettingConfig.config?.update?.checkOnStart !== false) {
+			Resources.checkVersion();
+		}
 	} else {
-		Resources.checkVersion();
+		// 启动时是否检测更新（settingconfig.update.checkOnStart 开关，默认 true）
+		if (SettingConfig.config?.update?.checkOnStart !== false) {
+			Resources.checkVersion();
+		}
 	}
 	Resources.loaded = true; // 已检查过资源
 });

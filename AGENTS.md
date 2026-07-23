@@ -46,7 +46,6 @@
 
 - `scripts/build-module.js`：`realEsmExclude` 集合内的路径 **必须使用 `.ts` 后缀**（与重命名后的实际文件匹配）；正则 `src="(Script/[^"]+)"` 已兼容 `.ts`。
 - `scripts/verify-imports.js`：文件遍历过滤从 `endsWith('.js')` 改为 `/\.(js|ts)$/`；import 解析兼容 `.ts`。
-- `scripts/check-syntax.js`：`.ts` 文件不能用 `node --check`，改用 `tsc --noEmit <file>` 单文件检查。
 
 ### 3.5 迁移禁忌
 
@@ -106,8 +105,7 @@
 | `scripts/build-module.js`            | 生成 module-init.js + 注入 export/window 绑定        |
 | `scripts/build-html.js`              | 拼装 index.html + 注入 importmap 桥                  |
 | `scripts/verify-imports.js`          | 校验 import 闭合（迁移后兼容 .ts）                   |
-| `scripts/check-syntax.js`            | git status 改动文件语法检查（迁移后用 tsc）          |
-| `vite.config.js`                     | Vite 8 配置（root: Project, target: chrome90）       |
+| `vite.config.js`                     | Vite 8 配置（root: Project, target: chrome150）      |
 | `tsconfig.json`                      | TS 7 类型检查配置（迁移后新增）                      |
 
 ## 8. 已知陷阱

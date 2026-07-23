@@ -60,6 +60,9 @@ export const SettingConfig = new (class {
 			},
 			github: {
 				accelerationNode: 'auto' // GitHub加速节点: auto, node..., none
+			},
+			update: {
+				checkOnStart: true // 启动时是否检测更新
 			}
 		};
 	}
@@ -145,6 +148,9 @@ export const SettingConfig = new (class {
 		$('#setting-recent-statsMode').on('input', (e) => InputEvent(e, 'recent', 'statsMode'));
 		$('#setting-github-accelerationNode').on('input', (e) =>
 			InputEvent(e, 'github', 'accelerationNode')
+		);
+		$('#setting-update-checkOnStart').on('input', (e) =>
+			InputEvent(e, 'update', 'checkOnStart')
 		);
 		this.update();
 	}
@@ -248,6 +254,9 @@ export const SettingConfig = new (class {
 		$('#setting-title-recent').textContent = get('setting-title-recent') || 'Recent Projects';
 		$('#setting-recent-statsMode-label').textContent =
 			get('setting-recent-statsMode-label') || 'Stats Mode';
+		$('#setting-title-update').textContent = get('setting-title-update') || 'Update';
+		$('#setting-update-checkOnStart-label').textContent =
+			get('setting-update-checkOnStart-label') || 'Check for updates on startup';
 
 		// 监听本地化事件，更新文本
 		window.on('localize', () => {
@@ -256,6 +265,9 @@ export const SettingConfig = new (class {
 				get('setting-title-recent') || 'Recent Projects';
 			$('#setting-recent-statsMode-label').textContent =
 				get('setting-recent-statsMode-label') || 'Stats Mode';
+			$('#setting-title-update').textContent = get('setting-title-update') || 'Update';
+			$('#setting-update-checkOnStart-label').textContent =
+				get('setting-update-checkOnStart-label') || 'Check for updates on startup';
 
 			// 更新下拉选项
 			const recentStatsModeItems = [
@@ -295,6 +307,8 @@ export const SettingConfig = new (class {
 		write5('statsMode', this.config.recent.statsMode);
 		const write6 = getElementWriter('setting-github');
 		write6('accelerationNode', this.config.github.accelerationNode);
+		const write7 = getElementWriter('setting-update');
+		write7('checkOnStart', this.config.update.checkOnStart);
 	}
 	save() {
 		if (!nodeFs.existsSync(this.configPath)) {

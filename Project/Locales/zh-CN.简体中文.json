@@ -1735,6 +1735,8 @@
       "resource-not-found":"未找到资源包",
       "setting-title-recent":"最近项目",
       "setting-recent-statsMode-label":"统计方式",
+      "setting-title-update":"更新",
+      "setting-update-checkOnStart-label":"启动时检测更新",
       "recent-statsMode-count":"只统计数量",
       "recent-statsMode-size":"计算大小"
     }
