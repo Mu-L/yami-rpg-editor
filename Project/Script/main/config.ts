@@ -90,5 +90,3 @@ Editor.loadConfig = function () {
 	Animation.loadFromConfig(config);
 	Particle.loadFromConfig(config);
 };
-
-import path from 'node:path';

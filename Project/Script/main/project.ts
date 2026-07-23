@@ -66,5 +66,3 @@ Editor.loadProject = function () {
 Editor.saveManifest = function () {
 	return Data.saveManifest();
 };
-
-import path from 'node:path';

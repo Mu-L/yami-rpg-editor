@@ -5,7 +5,6 @@ import { Data } from './data-object.ts';
 import { File } from '../file/file-system-core.ts';
 import { Window } from '../tools/window-object.ts';
 import { Inspector } from '../inspector/inspector.ts';
-import { UI } from '../ui/ui-window.ts';
 import { GUID } from '../file/guid.ts';
 import { Menu } from '../components/menu-list.ts';
 import { TreeList } from '../components/tree-list.ts';

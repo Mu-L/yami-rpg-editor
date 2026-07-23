@@ -10,8 +10,6 @@ import { SelectBox } from '../../components/select-box.ts';
 import { Data } from '../../data/data-object.ts';
 import { Enum } from '../../enum/enum-window.ts';
 import { CommandSchema } from './schema.ts';
-import { Light } from '../../scene/light.ts';
-import { Scene } from '../../scene/scene-window.ts';
 import { Local } from '../../tools/localization.ts';
 import { Selection } from '../../tools/text-capture.ts';
 

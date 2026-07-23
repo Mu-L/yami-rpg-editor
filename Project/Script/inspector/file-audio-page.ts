@@ -470,5 +470,3 @@ import { Timer } from '../util/timer.ts';
 
 	Inspector.fileAudio = FileAudio;
 }
-
-import path from 'node:path';

@@ -2,7 +2,6 @@ import { $ } from '../util/dom.ts';
 import { Attribute } from '../attribute/attribute-window.ts';
 import { Codec } from '../codec/codec.ts';
 import { CommandList } from '../components/command-list.ts';
-import { Menu } from '../components/menu-list.ts';
 import { Data } from '../data/data-object.ts';
 import { Project } from '../data/project-settings-window.ts';
 import { Enum } from '../enum/enum-window.ts';

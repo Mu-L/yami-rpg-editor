@@ -39,7 +39,10 @@
 				"argsIgnorePattern": "^_",
 				"varsIgnorePattern": "^_",
 				"caughtErrorsIgnorePattern": "^_",
-				"destructuredArrayIgnorePattern": "^_"
+				"destructuredArrayIgnorePattern": "^_",
+				"fix": {
+					"imports": "safe-fix"
+				}
 			}
 		],
 		"typescript/no-explicit-any": "off",

@@ -1,4 +1,3 @@
-import { clipboard } from 'electron';
 import { $ } from '../util/dom.ts';
 import { Data } from '../data/data-object.ts';
 import { AudioManager } from '../audio/audio-manager.ts';
@@ -317,5 +316,3 @@ Selector.confirm = function (event) {
 			break;
 	}
 };
-
-import path from 'node:path';

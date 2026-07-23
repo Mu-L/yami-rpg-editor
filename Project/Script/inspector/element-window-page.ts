@@ -1,6 +1,5 @@
 ﻿import { $, getElementWriter } from '../util/dom.ts';
 import { Inspector } from './inspector.ts';
-import { Window } from '../tools/window-object.ts';
 import { UI } from '../ui/ui-window.ts';
 
 // ******************************** 元素 - 窗口页面 ********************************

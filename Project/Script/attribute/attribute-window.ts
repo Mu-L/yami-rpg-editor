@@ -1,5 +1,4 @@
-﻿import { clipboard } from 'electron';
-import { $ } from '../util/dom.ts';
+﻿import { $ } from '../util/dom.ts';
 import { ctrl } from '../util/event-accessors.ts';
 import { Data } from '../data/data-object.ts';
 import { File } from '../file/file-system-core.ts';

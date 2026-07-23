@@ -4,8 +4,6 @@ import { EventEditor } from '../../command/event-editor.ts';
 import { Token } from '../../command/mark-string-manager.ts';
 import { Enum } from '../../enum/enum-window.ts';
 import { CommandSchema } from './schema.ts';
-import { Light } from '../../scene/light.ts';
-import { Scene } from '../../scene/scene-window.ts';
 import { Local } from '../../tools/localization.ts';
 
 Command.cases.stopEvent = new CommandSchema({

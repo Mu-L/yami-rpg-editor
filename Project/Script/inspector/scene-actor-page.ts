@@ -4,7 +4,6 @@ import { Inspector } from './inspector.ts';
 import { Scene } from '../scene/scene-window.ts';
 import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';
-import { Local } from '../tools/localization.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
 // ******************************** 场景 - 角色页面 ********************************

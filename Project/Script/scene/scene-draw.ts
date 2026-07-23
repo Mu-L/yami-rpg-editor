@@ -1,6 +1,5 @@
 import { INTRGBA } from '../util/color-utils.ts';
 import { Data } from '../data/data-object.ts';
-import { range } from '../module/eslints.ts';
 import { Animation } from '../animation/animation-window.ts';
 import { Palette } from '../palette/palette.ts';
 import { Scene } from './scene-window.ts';

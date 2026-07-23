@@ -1,5 +1,4 @@
-﻿import { clipboard } from 'electron';
-import { $ } from '../util/dom.ts';
+﻿import { $ } from '../util/dom.ts';
 import { ctrl } from '../util/event-accessors.ts';
 import { TextSuggestion } from '../command/text-tip.ts';
 import { VariableGetter } from '../command/variable-accessor-window.ts';

@@ -4,7 +4,6 @@ import { Command } from '../../command/command-object.ts';
 import { Token } from '../../command/mark-string-manager.ts';
 import { VariableGetter } from '../../command/variable-accessor-window.ts';
 import { Data } from '../../data/data-object.ts';
-import { Team } from '../../data/team-window.ts';
 import { CommandSchema } from './schema.ts';
 import { Local } from '../../tools/localization.ts';
 

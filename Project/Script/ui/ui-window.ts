@@ -1,5 +1,4 @@
-﻿import { clipboard } from 'electron';
-import { $ } from '../util/dom.ts';
+﻿import { $ } from '../util/dom.ts';
 import { Timer } from '../util/timer.ts';
 import { ctrl } from '../util/event-accessors.ts';
 import { Inspector } from '../inspector/inspector.ts';
@@ -12,7 +11,6 @@ import { UndoManager } from '../tools/undo-manager.ts';
 import { UIInstanceList } from './element-instance-list.ts';
 import { Scene } from '../scene/scene-window.ts';
 import { Menu } from '../components/menu-list.ts';
-import { TextBox } from '../components/text-box.ts';
 import { TreeList } from '../components/tree-list.ts';
 import { Data } from '../data/data-object.ts';
 import { Easing } from '../data/transition-window.ts';

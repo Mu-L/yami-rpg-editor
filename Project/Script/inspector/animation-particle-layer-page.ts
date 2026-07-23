@@ -1,7 +1,6 @@
 ﻿import { $, getElementWriter } from '../util/dom.ts';
 import { Animation } from '../animation/animation-window.ts';
 import { Inspector } from './inspector.ts';
-import { Particle } from '../particle/particle-window.ts';
 
 // ******************************** 动画 - 粒子层页面 ********************************
 

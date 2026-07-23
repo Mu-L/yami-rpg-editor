@@ -131,5 +131,3 @@ import { Inspector } from './inspector.ts';
 
 	Inspector.fileImage = FileImage;
 }
-
-import path from 'node:path';

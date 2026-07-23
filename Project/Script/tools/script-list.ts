@@ -1,4 +1,3 @@
-import { ParamList } from '../components/param-list.ts';
 import { File } from '../file/file-system-core.ts';
 import { Browser } from '../browser/project-browser.ts';
 import { Selector } from '../browser/resource-selector.ts';
@@ -174,5 +173,3 @@ export class ScriptListInterface implements IScriptListInterface {
 		}
 	}
 }
-
-import path from 'node:path';

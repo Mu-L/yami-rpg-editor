@@ -1,15 +1,9 @@
 import { $, getElementReader, getElementWriter } from '../../util/dom.ts';
-import { Attribute } from '../../attribute/attribute-window.ts';
 import { Command } from '../../command/command-object.ts';
 import { Token } from '../../command/mark-string-manager.ts';
-import { Choices } from '../../command/show-options-window.ts';
 import { VariableGetter } from '../../command/variable-accessor-window.ts';
-import { Team } from '../../data/team-window.ts';
-import { File } from '../../file/file-system-core.ts';
 import { CommandSchema } from './schema.ts';
-import { Scene } from '../../scene/scene-window.ts';
 import { Local } from '../../tools/localization.ts';
-import { Variable } from '../../variable/variable.ts';
 
 (Command.cases as any).setString = new CommandSchema({
 	name: 'setString',

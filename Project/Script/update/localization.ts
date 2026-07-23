@@ -1,4 +1,3 @@
-import { Data } from '../data/data-object.ts';
 import { File } from '../file/file-system-core.ts';
 import { FSP } from '../file/file-system.ts';
 import { Updater } from './updater.ts';
@@ -11,5 +10,3 @@ Updater.createLocalization = async function (verNum) {
 		await FSP.writeFile(path, json);
 	}
 };
-
-import path from 'node:path';

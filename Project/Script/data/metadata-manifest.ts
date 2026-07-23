@@ -2,7 +2,6 @@ import { Data } from './data-object.ts';
 import { Meta } from './metadata.ts';
 import { File } from '../file/file-system-core.ts';
 import { Title } from '../title/title-bar.ts';
-import { UI } from '../ui/ui-window.ts';
 
 // ******************************** 元数据清单类 ********************************
 
@@ -101,5 +100,3 @@ export class Manifest {
 		console.log(`delete meta: ${meta.path}`);
 	}
 }
-
-import path from 'node:path';

@@ -1,7 +1,5 @@
 ﻿import { $, getElementWriter } from '../util/dom.ts';
 import { Inspector } from './inspector.ts';
-import { Light } from '../scene/light.ts';
-import { Parallax } from '../scene/parallax.ts';
 import { Scene } from '../scene/scene-window.ts';
 import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';

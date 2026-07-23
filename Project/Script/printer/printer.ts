@@ -5,7 +5,6 @@ import { Inspector } from '../inspector/inspector.ts';
 import { GL } from '../webgl/webgl-init.ts';
 import { Texture } from '../webgl/texture.ts';
 import { UI } from '../ui/ui-window.ts';
-import { GUID } from '../file/guid.ts';
 import { Title } from '../title/title-bar.ts';
 
 // ******************************** 打印机类 ********************************
@@ -1417,5 +1416,3 @@ export class Printer {
 		}
 	}
 }
-
-import path from 'node:path';

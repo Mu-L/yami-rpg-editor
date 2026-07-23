@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
-import { dirname, join, resolve } from 'path';
+import { join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 // 递归复制目录（保留 monaco vs/ 等静态资源到 dist）

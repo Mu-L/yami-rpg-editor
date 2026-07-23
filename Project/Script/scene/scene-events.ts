@@ -1,4 +1,3 @@
-import { clipboard } from 'electron';
 import { ctrl } from '../util/event-accessors.ts';
 import { Data } from '../data/data-object.ts';
 import { File } from '../file/file-system-core.ts';
@@ -1777,5 +1776,3 @@ Scene.listPageResize = function (event) {
 	Scene.list.updateHead();
 	Scene.list.resize();
 };
-
-import path from 'node:path';

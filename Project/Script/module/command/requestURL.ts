@@ -1,4 +1,4 @@
-import { $, getElementReader, getElementWriter, request } from '../../util/dom.ts';
+import { $, getElementReader, getElementWriter } from '../../util/dom.ts';
 import { Command } from '../../command/command-object.ts';
 import { VariableGetter } from '../../command/variable-accessor-window.ts';
 import { CommandSchema } from './schema.ts';

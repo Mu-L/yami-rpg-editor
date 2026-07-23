@@ -1,11 +1,7 @@
 ﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Animation } from '../animation/animation-window.ts';
 import { Data } from '../data/data-object.ts';
-import { Easing } from '../data/transition-window.ts';
 import { Inspector } from './inspector.ts';
 import { Particle } from '../particle/particle-window.ts';
-import { Light } from '../scene/light.ts';
-import { Texture } from '../webgl/texture.ts';
 
 // ******************************** 粒子 - 图层页面 ********************************
 

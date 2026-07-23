@@ -5,7 +5,6 @@ import { MarqueeArea } from '../components/marquee-area.ts';
 import { Window } from '../tools/window-object.ts';
 import { Animation } from '../animation/animation-window.ts';
 import { Log } from '../log/log-window.ts';
-import { range } from '../module/eslints.ts';
 import { History } from '../tools/history.ts';
 import { Cursor } from '../tools/pointer-object.ts';
 import { ParamListHistory } from '../components/param-history.ts';

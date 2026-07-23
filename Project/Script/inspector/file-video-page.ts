@@ -115,5 +115,3 @@ import { Inspector } from './inspector.ts';
 
 	Inspector.fileVideo = FileVideo;
 }
-
-import path from 'node:path';

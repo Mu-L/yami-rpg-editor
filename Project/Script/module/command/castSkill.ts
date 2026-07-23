@@ -4,7 +4,6 @@ import { Token } from '../../command/mark-string-manager.ts';
 import { Enum } from '../../enum/enum-window.ts';
 import { CommandSchema } from './schema.ts';
 import { Local } from '../../tools/localization.ts';
-import { Variable } from '../../variable/variable.ts';
 
 Command.cases.castSkill = new CommandSchema({
 	name: 'castSkill',

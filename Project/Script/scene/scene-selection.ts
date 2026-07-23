@@ -1,6 +1,5 @@
 import { Scene } from './scene-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
-import { range } from '../module/eslints.ts';
 import { Vector } from '../webgl/vector2.ts';
 Scene.selectObject = function (x, y) {
 	let precise = false;

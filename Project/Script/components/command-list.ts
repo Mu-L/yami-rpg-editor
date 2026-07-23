@@ -5,7 +5,6 @@ import { ctrl } from '../util/event-accessors.ts';
 import { Command } from '../command/command-object.ts';
 import { Data } from '../data/data-object.ts';
 import { CommonList } from './common-list.ts';
-import { range, updateCommandElement } from '../module/eslints.ts';
 import { Attribute } from '../attribute/attribute-window.ts';
 import { CommandSuggestion } from '../command/command-tip.ts';
 import { EventEditor } from '../command/event-editor.ts';

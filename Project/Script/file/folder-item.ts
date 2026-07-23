@@ -198,5 +198,3 @@ export class FolderItem {
 		return item;
 	}
 }
-
-import path from 'node:path';

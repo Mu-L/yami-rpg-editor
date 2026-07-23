@@ -78,5 +78,3 @@ export class AudioPlayer {
 		};
 	}
 }
-
-import path from 'node:path';

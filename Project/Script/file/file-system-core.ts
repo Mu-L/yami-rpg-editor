@@ -1,8 +1,6 @@
 ﻿import { ipcRenderer, shell } from 'electron';
 import nodeFs from 'node:fs';
-import { request } from '../util/dom.ts';
 import { Path } from '../util/config.ts';
-import { GUID } from './guid.ts';
 import { Animation } from '../animation/animation-window.ts';
 import { Data } from '../data/data-object.ts';
 import { FS, FSP } from './file-system.ts';

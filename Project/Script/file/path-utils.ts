@@ -21,5 +21,3 @@ Object.assign(Path, {
 // Path.ext = function (path) {
 //   return path.slice(path.lastIndexOf('.') + 1)
 // }
-
-import path from 'node:path';

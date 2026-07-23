@@ -4,7 +4,6 @@ import { Token } from '../../command/mark-string-manager.ts';
 import { Enum } from '../../enum/enum-window.ts';
 import { CommandSchema } from './schema.ts';
 import { Local } from '../../tools/localization.ts';
-import { Shortcuts } from '../../tools/shortcut-registry.ts';
 
 Command.cases.setShortcut = new CommandSchema({
 	name: 'setShortcut',

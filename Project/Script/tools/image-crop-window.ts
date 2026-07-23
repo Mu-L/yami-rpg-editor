@@ -363,5 +363,3 @@ ImageClip.confirm = function (event) {
 	this.target.input([read('x'), read('y'), read('width'), read('height')]);
 	Window.close('imageClip');
 }.bind(ImageClip);
-
-import path from 'node:path';

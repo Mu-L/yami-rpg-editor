@@ -1,7 +1,6 @@
 ﻿import { $, getElementWriter } from '../util/dom.ts';
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
-import { Texture } from '../webgl/texture.ts';
 
 // ******************************** 元素 - 进度条页面 ********************************
 

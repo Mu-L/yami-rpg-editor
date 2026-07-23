@@ -1,5 +1,4 @@
-﻿import { Window } from '../tools/window-object.ts';
-import { UI } from './ui-window.ts';
+﻿import { UI } from './ui-window.ts';
 import { Matrix } from '../webgl/matrix2.ts';
 import { GL } from '../webgl/webgl-init.ts';
 

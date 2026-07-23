@@ -3,9 +3,7 @@ import { Command } from '../../command/command-object.ts';
 import { Token } from '../../command/mark-string-manager.ts';
 import { VariableGetter } from '../../command/variable-accessor-window.ts';
 import { CommandSchema } from './schema.ts';
-import { Light } from '../../scene/light.ts';
 import { Local } from '../../tools/localization.ts';
-import { Variable } from '../../variable/variable.ts';
 
 (Command.cases as any).setObject = new CommandSchema({
 	name: 'setObject',

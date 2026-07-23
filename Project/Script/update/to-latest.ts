@@ -99,5 +99,3 @@ Updater.updateToLatest = function (version) {
 	// 打开更新日志窗口
 	UpdateLog.open();
 };
-
-import path from 'node:path';

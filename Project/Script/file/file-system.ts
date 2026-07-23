@@ -1,5 +1,4 @@
 ﻿import { ipcRenderer } from 'electron';
-import { fs } from '../module/global.ts';
 import nodeFs from 'node:fs';
 
 // ******************************** 文件系统 ********************************

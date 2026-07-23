@@ -1,5 +1,4 @@
 ﻿import { File } from '../file/file-system-core.ts';
-import { UI } from '../ui/ui-window.ts';
 import { GUID } from '../file/guid.ts';
 import { AttributeContext } from '../attribute/attribute-context.ts';
 import { Codec } from '../codec/codec.ts';

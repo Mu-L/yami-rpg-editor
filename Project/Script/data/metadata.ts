@@ -1,7 +1,6 @@
 import { Data } from './data-object.ts';
 import { FileItem } from '../file/file-item.ts';
 import { File } from '../file/file-system-core.ts';
-import { GUID } from '../file/guid.ts';
 import { Updater } from '../update/updater.ts';
 
 // ******************************** 元数据类 ********************************
@@ -156,5 +155,3 @@ export const Meta = (function IIFE() {
 		static versionId = 0;
 	};
 })();
-
-import path from 'node:path';

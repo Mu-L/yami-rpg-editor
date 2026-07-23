@@ -3,7 +3,6 @@ import { Command } from '../../command/command-object.ts';
 import { VariableGetter } from '../../command/variable-accessor-window.ts';
 import { CommandSchema } from './schema.ts';
 import { Local } from '../../tools/localization.ts';
-import { Variable } from '../../variable/variable.ts';
 
 (Command.cases as any).setBoolean = new CommandSchema({
 	name: 'setBoolean',

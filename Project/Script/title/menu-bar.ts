@@ -36,7 +36,6 @@ import { Zoom } from '../tools/zoom-window.ts';
 import { UI } from '../ui/ui-window.ts';
 import { ctrl } from '../util/event-accessors.ts';
 import { Variable } from '../variable/variable.ts';
-import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 菜单栏对象 ********************************
 

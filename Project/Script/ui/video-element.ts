@@ -1,5 +1,4 @@
-﻿import { Window } from '../tools/window-object.ts';
-import { UI } from './ui-window.ts';
+﻿import { UI } from './ui-window.ts';
 
 // ******************************** 视频元素 ********************************
 

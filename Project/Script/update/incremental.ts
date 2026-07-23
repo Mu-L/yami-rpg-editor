@@ -1,18 +1,11 @@
 import { Path } from '../util/config.ts';
-import { Animation } from '../animation/animation-window.ts';
 import { Data } from '../data/data-object.ts';
-import { Project } from '../data/project-settings-window.ts';
 import { File } from '../file/file-system-core.ts';
 import { FS } from '../file/file-system.ts';
-import { Reference } from '../log/related-references.ts';
 import { UpdateLog } from '../log/update-log-window.ts';
 import { Editor } from '../main/editor.ts';
-import { Particle } from '../particle/particle-window.ts';
-import { Light } from '../scene/light.ts';
-import { Parallax } from '../scene/parallax.ts';
 import { UI } from '../ui/ui-window.ts';
 import { Updater } from './updater.ts';
-import { Texture } from '../webgl/texture.ts';
 // ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
 import { fileURLToPath, URL } from 'node:url';
 const _moduleURL = new URL(import.meta.url);
@@ -387,5 +380,3 @@ Updater.updateIncrementalChanges = function (version) {
 	}
 	updater.showMessage();
 };
-
-import path from 'node:path';

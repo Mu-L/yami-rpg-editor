@@ -1,6 +1,5 @@
 ﻿import { $, getElementWriter } from '../util/dom.ts';
 import { Browser } from '../browser/project-browser.ts';
-import { FileItem } from '../file/file-item.ts';
 import { File } from '../file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
 import { EventListInterface } from '../tools/event-list.ts';

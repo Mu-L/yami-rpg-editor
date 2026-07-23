@@ -8,7 +8,6 @@ import { Animation } from '../animation/animation-window.ts';
 import { AudioManager } from '../audio/audio-manager.ts';
 import { Menu } from '../components/menu-list.ts';
 import { Data } from '../data/data-object.ts';
-import { Project } from '../data/project-settings-window.ts';
 import { Directory } from '../file/directory-object.ts';
 import { FileItem } from '../file/file-item.ts';
 import { File } from '../file/file-system-core.ts';

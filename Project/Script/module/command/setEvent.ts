@@ -4,7 +4,6 @@ import { Token } from '../../command/mark-string-manager.ts';
 import { VariableGetter } from '../../command/variable-accessor-window.ts';
 import { CommandSchema } from './schema.ts';
 import { Local } from '../../tools/localization.ts';
-import { Variable } from '../../variable/variable.ts';
 
 Command.cases.setEvent = new CommandSchema({
 	name: 'setEvent',

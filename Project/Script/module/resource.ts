@@ -3,9 +3,7 @@ import { GlobalPath, Path } from '../util/config.ts';
 import { SettingConfig } from './settingconfig.ts';
 import { $ } from '../util/dom.ts';
 import { Window } from '../tools/window-object.ts';
-import { Editor } from '../main/editor.ts';
 import { Net, axios } from './net.ts';
-import { Project } from '../data/project-settings-window.ts';
 import {
 	fs,
 	CommunityVersion,

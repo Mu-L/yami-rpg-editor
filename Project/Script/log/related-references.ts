@@ -1,13 +1,9 @@
-import path from 'node:path';
 import { $ } from '../util/dom.ts';
-import { ctrl } from '../util/event-accessors.ts';
 import { Window } from '../tools/window-object.ts';
 import { Menu } from '../components/menu-list.ts';
 import { Data } from '../data/data-object.ts';
-import { GUID } from '../file/guid.ts';
 import { Local } from '../tools/localization.ts';
 
-import { clipboard } from 'electron';
 // ******************************** 相关引用 ********************************
 
 export const Reference = {

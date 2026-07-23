@@ -2,7 +2,6 @@ import { $, getElementReader, getElementWriter } from '../../util/dom.ts';
 import { Attribute } from '../../attribute/attribute-window.ts';
 import { Command } from '../../command/command-object.ts';
 import { Token } from '../../command/mark-string-manager.ts';
-import { Team } from '../../data/team-window.ts';
 import { CommandSchema } from './schema.ts';
 import { Local } from '../../tools/localization.ts';
 

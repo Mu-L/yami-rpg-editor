@@ -1,5 +1,4 @@
-﻿import { Window } from '../tools/window-object.ts';
-import { Inspector } from '../inspector/inspector.ts';
+﻿import { Inspector } from '../inspector/inspector.ts';
 import { UI } from './ui-window.ts';
 
 // ******************************** 按钮元素 ********************************

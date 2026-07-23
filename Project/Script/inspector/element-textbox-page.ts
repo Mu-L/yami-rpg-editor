@@ -1,5 +1,4 @@
 ﻿import { $, getElementWriter } from '../util/dom.ts';
-import { TextBox } from '../components/text-box.ts';
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 

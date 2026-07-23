@@ -550,5 +550,3 @@ Scene.list.onResume = function (item) {
 	Scene.reloadObjectContext(item);
 	Scene.requestRendering();
 };
-
-import path from 'node:path';

@@ -6,7 +6,6 @@ import { Data } from '../data/data-object.ts';
 import { Enum } from '../enum/enum-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 设置数值 - 操作数窗口 ********************************
 

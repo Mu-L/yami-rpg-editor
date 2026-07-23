@@ -1,6 +1,5 @@
 import { $, getElementWriter } from '../util/dom.ts';
 import { Inspector } from './inspector.ts';
-import { Reference } from '../log/related-references.ts';
 import { UI } from '../ui/ui-window.ts';
 
 // ******************************** 元素 - 引用页面 ********************************

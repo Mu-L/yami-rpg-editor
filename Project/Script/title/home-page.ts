@@ -3,7 +3,6 @@ import { $ } from '../util/dom.ts';
 import { Path } from '../util/config.ts';
 import { File } from '../file/file-system-core.ts';
 import { Menu } from '../components/menu-list.ts';
-import { Project } from '../data/project-settings-window.ts';
 import { FS, FSP } from '../file/file-system.ts';
 import { Layout } from '../layout/layout.ts';
 import { Editor } from '../main/editor.ts';
@@ -496,5 +495,3 @@ Home.recentPointerup = function (event) {
 		}
 	}
 };
-
-import path from 'node:path';

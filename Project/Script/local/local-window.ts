@@ -17,7 +17,7 @@ import { Local } from '../tools/localization.ts';
 import { Selection } from '../tools/text-capture.ts';
 import { UndoManager } from '../tools/undo-manager.ts';
 import { Window } from '../tools/window-object.ts';
-import { clipboard, ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron';
 // ******************************** 游戏本地化窗口 ********************************
 
 export const Localization = {

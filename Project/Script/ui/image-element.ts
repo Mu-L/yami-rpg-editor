@@ -1,5 +1,4 @@
-﻿import { Window } from '../tools/window-object.ts';
-import { UI } from './ui-window.ts';
+﻿import { UI } from './ui-window.ts';
 import { ImageTexture } from '../webgl/image-texture.ts';
 import { Texture } from '../webgl/texture.ts';
 import { GL } from '../webgl/webgl-init.ts';

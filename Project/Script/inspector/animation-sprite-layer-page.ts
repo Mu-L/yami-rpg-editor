@@ -1,7 +1,6 @@
 ﻿import { $, getElementWriter } from '../util/dom.ts';
 import { Animation } from '../animation/animation-window.ts';
 import { Inspector } from './inspector.ts';
-import { Sprite } from '../sprite/sprite.ts';
 
 // ******************************** 动画 - 精灵层页面 ********************************
 

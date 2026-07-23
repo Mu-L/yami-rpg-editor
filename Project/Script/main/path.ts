@@ -26,5 +26,3 @@ Editor.updatePath = function (path) {
 		}
 	}
 };
-
-import path from 'node:path';

@@ -1,11 +1,9 @@
 import { $, getElementReader, getElementWriter } from '../../util/dom.ts';
-import { Attribute } from '../../attribute/attribute-window.ts';
 import { Command } from '../../command/command-object.ts';
 import { Token } from '../../command/mark-string-manager.ts';
 import { VariableGetter } from '../../command/variable-accessor-window.ts';
 import { CommandSchema } from './schema.ts';
 import { Local } from '../../tools/localization.ts';
-import { Variable } from '../../variable/variable.ts';
 
 Command.cases.setList = new CommandSchema({
 	name: 'setList',

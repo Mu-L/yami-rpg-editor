@@ -3,7 +3,6 @@ import { Animation } from '../../animation/animation-window.ts';
 import { Command } from '../../command/command-object.ts';
 import { Token } from '../../command/mark-string-manager.ts';
 import { CommandSchema } from './schema.ts';
-import { Sprite } from '../../sprite/sprite.ts';
 import { Local } from '../../tools/localization.ts';
 
 Command.cases.setAnimationComponent = new CommandSchema({

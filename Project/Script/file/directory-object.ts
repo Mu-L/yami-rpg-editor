@@ -517,5 +517,3 @@ Directory.windowFocus = function (event) {
 	// 因此延时更新目录
 	setTimeout(() => Directory.update(), 100);
 };
-
-import path from 'node:path';

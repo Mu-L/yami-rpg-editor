@@ -4,7 +4,6 @@ import { EventEditor } from '../command/event-editor.ts';
 import { Enum } from '../enum/enum-window.ts';
 import { File } from '../file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
-import { Light } from '../scene/light.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 

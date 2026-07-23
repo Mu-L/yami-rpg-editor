@@ -1,7 +1,5 @@
-﻿import { clipboard } from 'electron';
-import { $ } from '../util/dom.ts';
+﻿import { $ } from '../util/dom.ts';
 import { Path } from '../util/config.ts';
-import { Animation } from '../animation/animation-window.ts';
 import { EventEditor } from '../command/event-editor.ts';
 import { Menu } from '../components/menu-list.ts';
 import { Data } from '../data/data-object.ts';
@@ -16,11 +14,8 @@ import { Layout } from '../layout/layout.ts';
 import { Reference } from '../log/related-references.ts';
 import { Editor } from '../main/editor.ts';
 import { TemplatesPath } from '../module/global.ts';
-import { Particle } from '../particle/particle-window.ts';
-import { Scene } from '../scene/scene-window.ts';
 import { Title } from '../title/title-bar.ts';
 import { Local } from '../tools/localization.ts';
-import { UI } from '../ui/ui-window.ts';
 import { ctrl } from '../util/event-accessors.ts';
 import child_process from 'node:child_process';
 
@@ -831,5 +826,3 @@ Browser.bodyPopup = function (event) {
 		);
 	}
 };
-
-import path from 'node:path';

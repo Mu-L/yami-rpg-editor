@@ -2,7 +2,6 @@ import { $ } from '../util/dom.ts';
 import { File } from '../file/file-system-core.ts';
 import { Browser } from '../browser/project-browser.ts';
 import { Inspector } from './inspector.ts';
-import { Editor } from '../main/editor.ts';
 
 // ******************************** 文件 - 字体页面 ********************************
 
@@ -111,5 +110,3 @@ import { Editor } from '../main/editor.ts';
 
 	Inspector.fileFont = FileFont;
 }
-
-import path from 'node:path';

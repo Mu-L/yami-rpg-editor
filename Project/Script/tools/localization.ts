@@ -311,5 +311,3 @@ Local.showInExplorer = function () {
 			return 'showInFinder';
 	}
 };
-
-import path from 'node:path';

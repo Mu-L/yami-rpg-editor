@@ -218,5 +218,3 @@ export class FileItem {
 		FileItem.oversizeImagePaths.length = 0;
 	}
 }
-
-import path from 'node:path';

@@ -6,7 +6,6 @@ import { Token } from './mark-string-manager.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 匹配 - 条件窗口 ********************************
 
