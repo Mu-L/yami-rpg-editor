@@ -126,9 +126,7 @@ export class RadioProxy extends HTMLElement {
 		if (this.relations.length !== 0) {
 			if (!this.hasClass('disabled')) {
 				const entries = this.relations;
-				const selection = entries.find(
-					(entry) => entry.case === this.dataValue
-				);
+				const selection = entries.find((entry) => entry.case === this.dataValue);
 				for (const entry of entries) {
 					if (entry.case === this.dataValue) {
 						for (const element of entry.targets) {

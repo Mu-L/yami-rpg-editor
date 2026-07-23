@@ -113,21 +113,11 @@ export const ButtonProperty = createPropertyWindow({
 			case 'normalClip':
 			case 'hoverClip':
 			case 'activeClip':
-				return [
-					read('clip-0'),
-					read('clip-1'),
-					read('clip-2'),
-					read('clip-3')
-				];
+				return [read('clip-0'), read('clip-1'), read('clip-2'), read('clip-3')];
 			case 'normalTint':
 			case 'hoverTint':
 			case 'activeTint':
-				return [
-					read('tint-0'),
-					read('tint-1'),
-					read('tint-2'),
-					read('tint-3')
-				];
+				return [read('tint-0'), read('tint-1'), read('tint-2'), read('tint-3')];
 			default:
 				return read(key);
 		}

@@ -408,10 +408,7 @@ Browser.bodyPopup = function (event) {
 		}
 	} else {
 		const element = target.seek('file-body-item', 2);
-		if (
-			element.tagName === 'FILE-BODY-ITEM' &&
-			element.hasClass('selected')
-		) {
+		if (element.tagName === 'FILE-BODY-ITEM' && element.hasClass('selected')) {
 			const { selections } = this;
 			const { file } = element;
 			const single = selections.length === 1;
@@ -471,9 +468,7 @@ Browser.bodyPopup = function (event) {
 					accelerator: ctrl('V'),
 					enabled: pastable,
 					click: () => {
-						this.pasteFiles(
-							creatable ? selections[0].path : undefined
-						);
+						this.pasteFiles(creatable ? selections[0].path : undefined);
 					}
 				},
 				{
@@ -548,11 +543,8 @@ Browser.bodyPopup = function (event) {
 									]
 								}).then(({ filePaths }) => {
 									if (filePaths.length === 1) {
-										scriptEditor.mode =
-											'specified-application';
-										scriptEditor.path = Path.slash(
-											filePaths[0]
-										);
+										scriptEditor.mode = 'specified-application';
+										scriptEditor.path = Path.slash(filePaths[0]);
 									}
 								});
 							}
@@ -576,82 +568,55 @@ Browser.bodyPopup = function (event) {
 					{
 						label: get('create.actor'),
 						click: () => {
-							Browser.createFile(
-								'Actor.actor',
-								Inspector.fileActor.create()
-							);
+							Browser.createFile('Actor.actor', Inspector.fileActor.create());
 						}
 					},
 					{
 						label: get('create.skill'),
 						click: () => {
-							Browser.createFile(
-								'Skill.skill',
-								Inspector.fileSkill.create()
-							);
+							Browser.createFile('Skill.skill', Inspector.fileSkill.create());
 						}
 					},
 					{
 						label: get('create.trigger'),
 						click: () => {
-							Browser.createFile(
-								'Trigger.trigger',
-								Inspector.fileTrigger.create()
-							);
+							Browser.createFile('Trigger.trigger', Inspector.fileTrigger.create());
 						}
 					},
 					{
 						label: get('create.item'),
 						click: () => {
-							Browser.createFile(
-								'Item.item',
-								Inspector.fileItem.create()
-							);
+							Browser.createFile('Item.item', Inspector.fileItem.create());
 						}
 					},
 					{
 						label: get('create.equipment'),
 						click: () => {
-							Browser.createFile(
-								'Equipment.equip',
-								Inspector.fileEquipment.create()
-							);
+							Browser.createFile('Equipment.equip', Inspector.fileEquipment.create());
 						}
 					},
 					{
 						label: get('create.state'),
 						click: () => {
-							Browser.createFile(
-								'State.state',
-								Inspector.fileState.create()
-							);
+							Browser.createFile('State.state', Inspector.fileState.create());
 						}
 					},
 					{
 						label: get('create.scene'),
 						click: () => {
-							Browser.createFile(
-								'Scene.scene',
-								Inspector.fileScene.create()
-							);
+							Browser.createFile('Scene.scene', Inspector.fileScene.create());
 						}
 					},
 					{
 						label: get('create.ui'),
 						click: () => {
-							Browser.createFile(
-								'UI.ui',
-								Inspector.fileUI.create()
-							);
+							Browser.createFile('UI.ui', Inspector.fileUI.create());
 						}
 					},
 					{
 						label: get('create.animation'),
 						click: () => {
-							Browser.createFile(
-								'Animation.anim',
-								Inspector.fileAnimation.create()
-							);
+							Browser.createFile('Animation.anim', Inspector.fileAnimation.create());
 						}
 					},
 					{
@@ -684,10 +649,7 @@ Browser.bodyPopup = function (event) {
 					{
 						label: get('create.event'),
 						click: () => {
-							Browser.createFile(
-								'Event.event',
-								Inspector.fileEvent.create('global')
-							);
+							Browser.createFile('Event.event', Inspector.fileEvent.create('global'));
 						}
 					},
 					{

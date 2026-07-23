@@ -71,12 +71,7 @@ export class FilterBox extends HTMLElement {
 		leftGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 		context.fillStyle = leftGradient;
 		context.fillRect(0, 0, width >> 1, height);
-		const rightGradient = context.createLinearGradient(
-			width >> 1,
-			0,
-			width,
-			0
-		);
+		const rightGradient = context.createLinearGradient(width >> 1, 0, width, 0);
 		rightGradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
 		rightGradient.addColorStop(1, 'rgba(255, 255, 255, 1)');
 		context.fillStyle = rightGradient;

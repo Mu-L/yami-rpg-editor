@@ -185,12 +185,7 @@ export class CommandList extends HTMLElement {
 		const elements = this.elements;
 		const length = commands.length;
 		for (let i = 0; i < length; i++) {
-			const buffer = this.createCommandBuffer(
-				commands,
-				i,
-				indent,
-				parent
-			);
+			const buffer = this.createCommandBuffer(commands, i, indent, parent);
 			if (buffer[0].dataItem?.folded) {
 				elements[elements.count++] = buffer[0];
 				this.createFoldedCommandBuffer(buffer, indent + 1, commands[i]);
@@ -209,12 +204,7 @@ export class CommandList extends HTMLElement {
 		}
 
 		// 创建空项目
-		elements[elements.count++] = this.createBlankElement(
-			commands,
-			length,
-			indent,
-			parent
-		);
+		elements[elements.count++] = this.createBlankElement(commands, length, indent, parent);
 	}
 
 	// 创建指令缓冲区
@@ -370,10 +360,7 @@ export class CommandList extends HTMLElement {
 						text.addClass('gray');
 						li.appendChild(text);
 					}
-					(Command.cases as any).script.colorizeCodeLines(
-						items,
-						code
-					);
+					(Command.cases as any).script.colorizeCodeLines(items, code);
 				}
 			}
 		}
@@ -510,8 +497,7 @@ export class CommandList extends HTMLElement {
 					element.fold.textContent = '+';
 					// 在头部列表项中添加省略号
 					if (!element.ellipsis) {
-						element.ellipsis =
-							document.createElement('command-text');
+						element.ellipsis = document.createElement('command-text');
 						element.ellipsis.textContent = ' ......';
 						element.appendChild(element.ellipsis);
 					}
@@ -728,10 +714,7 @@ export class CommandList extends HTMLElement {
 					const data = eElement.dataItem;
 					while (--i >= 0) {
 						const element = elements[i];
-						if (
-							element.dataItem === data &&
-							element.dataKey === true
-						) {
+						if (element.dataItem === data && element.dataKey === true) {
 							break;
 						}
 					}
@@ -804,21 +787,14 @@ export class CommandList extends HTMLElement {
 			if (sIndent < aIndent) {
 				for (let i = n - 1; i >= 0; i--) {
 					const element = elements[i];
-					if (
-						element.dataIndent === sIndent &&
-						element.dataKey === true
-					) {
+					if (element.dataIndent === sIndent && element.dataKey === true) {
 						n = i;
 						break;
 					}
 				}
 			}
 			const range = this.getRangeByIndex(n);
-			if (
-				this.origin < this.active &&
-				this.origin > range[0] &&
-				this.origin < range[1]
-			) {
+			if (this.origin < this.active && this.origin > range[0] && this.origin < range[1]) {
 				this.active = range[1];
 			} else {
 				this.active = range[0];
@@ -836,10 +812,7 @@ export class CommandList extends HTMLElement {
 				let i = this.start;
 				while (--i >= 0) {
 					const element = elements[i];
-					if (
-						element.dataIndent <= indent &&
-						element.dataKey === true
-					) {
+					if (element.dataIndent <= indent && element.dataKey === true) {
 						this.selectMultiple(i);
 						break;
 					}
@@ -864,11 +837,7 @@ export class CommandList extends HTMLElement {
 					}
 				}
 				const range = this.getRangeByIndex(n);
-				if (
-					this.origin < n &&
-					this.origin > range[0] &&
-					this.origin < range[1]
-				) {
+				if (this.origin < n && this.origin > range[0] && this.origin < range[1]) {
 					n = range[1];
 				} else {
 					n = range[0];
@@ -912,10 +881,7 @@ export class CommandList extends HTMLElement {
 					if (element.dataIndent < indent) {
 						indent = element.dataIndent;
 					}
-					if (
-						element.dataIndent === indent &&
-						element.dataKey === true
-					) {
+					if (element.dataIndent === indent && element.dataKey === true) {
 						n = i;
 					}
 				}
@@ -1264,8 +1230,7 @@ export class CommandList extends HTMLElement {
 				let indent = element.dataIndent;
 				// 如果当前缩进已经打印过至少一条指令，跳过无效指令
 				if (element.dataItem === null && lastIndent === indent) {
-					if (SettingConfig.config.other.copyAsTextKeepEmptyLine)
-						string += '\n';
+					if (SettingConfig.config.other.copyAsTextKeepEmptyLine) string += '\n';
 					continue;
 				}
 				lastIndent = indent;
@@ -1625,9 +1590,7 @@ try {
 		// 检查本地变量
 		const varMap = this.varMap;
 		const varTypes = ['boolean', 'number', 'string', 'object', 'any'];
-		for (const text of this.getElementsByClassName(
-			'local-variable-identifier'
-		)) {
+		for (const text of this.getElementsByClassName('local-variable-identifier')) {
 			const type = text.varType;
 			const key = text.varKey;
 			// 排除none变量
@@ -1647,9 +1610,7 @@ try {
 					}
 				}
 			}
-			if (
-				varItem ? varItem.isLeftValue && varItem.refCount === 0 : false
-			) {
+			if (varItem ? varItem.isLeftValue && varItem.refCount === 0 : false) {
 				text.addClass('no-ref');
 			} else {
 				text.removeClass('no-ref');
@@ -1662,9 +1623,7 @@ try {
 		}
 
 		// 检查全局变量
-		for (const text of this.getElementsByClassName(
-			'global-variable-identifier'
-		)) {
+		for (const text of this.getElementsByClassName('global-variable-identifier')) {
 			const key = text.varKey;
 			if (key === '') continue;
 			const variable = getVariable(key);
@@ -1673,18 +1632,14 @@ try {
 			} else {
 				text.addClass('invalid');
 			}
-			const varName = variable
-				? variable.name
-				: Command.parseUnlinkedId(key);
+			const varName = variable ? variable.name : Command.parseUnlinkedId(key);
 			if (text.textContent !== varName) {
 				text.textContent = varName;
 			}
 		}
 
 		// 检查属性
-		for (const text of this.getElementsByClassName(
-			'attribute-identifier'
-		)) {
+		for (const text of this.getElementsByClassName('attribute-identifier')) {
 			const id = text.varId;
 			const attr = Attribute.getAttribute(id);
 			if (attr) {
@@ -1694,9 +1649,7 @@ try {
 			}
 			// 忽略textId的更新，重开一下事件编辑器就好了
 			const attrName = String.compress(
-				attr
-					? GameLocal.replace(attr.name)
-					: Command.parseUnlinkedId(id)
+				attr ? GameLocal.replace(attr.name) : Command.parseUnlinkedId(id)
 			);
 			if (text.textContent !== attrName) {
 				text.textContent = attrName;
@@ -1731,9 +1684,7 @@ try {
 			} else {
 				text.addClass('invalid');
 			}
-			const fileName = meta
-				? meta.file.basename
-				: Command.parseUnlinkedId(fileId);
+			const fileName = meta ? meta.file.basename : Command.parseUnlinkedId(fileId);
 			if (text.textContent !== fileName) {
 				text.textContent = fileName;
 			}
@@ -1814,10 +1765,7 @@ try {
 			const strOri = str.trim();
 			try {
 				str = new RegExp(
-					strOri.substring(
-						strOri.indexOf('/') + 1,
-						strOri.lastIndexOf('/')
-					),
+					strOri.substring(strOri.indexOf('/') + 1, strOri.lastIndexOf('/')),
 					strOri.substring(strOri.lastIndexOf('/') + 1)
 				);
 			} catch {}
@@ -1841,9 +1789,7 @@ try {
 								});
 						} else if (
 							searchMode.caseInsensitive &&
-							element.textContent
-								.toLowerCase()
-								.includes(str.toLowerCase())
+							element.textContent.toLowerCase().includes(str.toLowerCase())
 						)
 							findList.push({
 								node: element,
@@ -1866,11 +1812,7 @@ try {
 				for (const item of buffer) {
 					if (item instanceof Array) {
 						const realNode = item.map((v) => v.buffer[0]);
-						const _subfind = this.findString(
-							str,
-							realNode,
-							searchMode
-						).map((v) => ({
+						const _subfind = this.findString(str, realNode, searchMode).map((v) => ({
 							...v,
 							sub: element
 						}));
@@ -1885,9 +1827,7 @@ try {
 					} else if (
 						item.textContent.includes(str) ||
 						(searchMode.caseInsensitive &&
-							item.textContent
-								.toLowerCase()
-								.includes(str.toLowerCase()))
+							item.textContent.toLowerCase().includes(str.toLowerCase()))
 					) {
 						findList.push({ node: item, index: i, sub: element });
 					}
@@ -1913,9 +1853,7 @@ try {
 					} else if (
 						node.textContent.includes(str) ||
 						(searchMode.caseInsensitive &&
-							node.textContent
-								.toLowerCase()
-								.includes(str.toLowerCase()))
+							node.textContent.toLowerCase().includes(str.toLowerCase()))
 					) {
 						findList.push({ node, index: i, sub: null });
 					}
@@ -2130,9 +2068,7 @@ try {
 					} else {
 						this.select(index);
 						if (event.altKey) {
-							const eventId = this.tryGetEventId(
-								element.dataItem
-							);
+							const eventId = this.tryGetEventId(element.dataItem);
 							if (eventId) {
 								EventEditor.openGlobalEvent(eventId);
 								// 阻止focus后快捷键不被禁用的情况
@@ -2195,8 +2131,7 @@ try {
 					const pEnabled = this.isParentEnabled(sElement);
 					const sEnabled = valid ? sData.buffer.enabled : pEnabled;
 					const editable = sEnabled && sData === eData;
-					const pastable =
-						pEnabled && (Clipboard as any).has('yami.commands');
+					const pastable = pEnabled && (Clipboard as any).has('yami.commands');
 					const allSelectable = this.data.length > 0;
 					const undoable = this.history.canUndo();
 					const redoable = this.history.canRedo();
@@ -2417,29 +2352,17 @@ try {
 			case 'string':
 			case 'object':
 				CommandList.highlightedTexts = [
-					...document.getElementsByName(
-						`${varSpace}-${varType}-${varKey}`
-					),
+					...document.getElementsByName(`${varSpace}-${varType}-${varKey}`),
 					...document.getElementsByName(`${varSpace}-any-${varKey}`)
 				];
 				break;
 			case 'any':
 				CommandList.highlightedTexts = [
-					...document.getElementsByName(
-						`${varSpace}-${varType}-${varKey}`
-					),
-					...document.getElementsByName(
-						`${varSpace}-boolean-${varKey}`
-					),
-					...document.getElementsByName(
-						`${varSpace}-number-${varKey}`
-					),
-					...document.getElementsByName(
-						`${varSpace}-string-${varKey}`
-					),
-					...document.getElementsByName(
-						`${varSpace}-object-${varKey}`
-					)
+					...document.getElementsByName(`${varSpace}-${varType}-${varKey}`),
+					...document.getElementsByName(`${varSpace}-boolean-${varKey}`),
+					...document.getElementsByName(`${varSpace}-number-${varKey}`),
+					...document.getElementsByName(`${varSpace}-string-${varKey}`),
+					...document.getElementsByName(`${varSpace}-object-${varKey}`)
 				];
 				break;
 		}

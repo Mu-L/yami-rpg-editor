@@ -172,9 +172,7 @@ export class SelectList extends HTMLElement {
 	updateOnResize(): void {}
 
 	// 创建选项
-	createItems(
-		items: Array<{ value: any; name: string; tip?: string }>
-	): void {
+	createItems(items: Array<{ value: any; name: string; tip?: string }>): void {
 		const { elements } = this;
 		elements.start = -1;
 		elements.count = 0;
@@ -268,13 +266,8 @@ export class SelectList extends HTMLElement {
 
 	// 指针移动事件
 	pointermove(event: PointerEvent): void {
-		const element = (event.target as HTMLElement).seek(
-			'select-item'
-		) as SelectItemElement;
-		if (
-			element.tagName === 'SELECT-ITEM' &&
-			!element.hasClass('selected')
-		) {
+		const element = (event.target as HTMLElement).seek('select-item') as SelectItemElement;
+		if (element.tagName === 'SELECT-ITEM' && !element.hasClass('selected')) {
 			this.write(element.dataValue);
 		}
 	}
@@ -342,10 +335,7 @@ export class SelectList extends HTMLElement {
 					return;
 				}
 				element = element.seek('select-item') as SelectItemElement;
-				if (
-					element.tagName === 'SELECT-ITEM' &&
-					element.parentNode === this
-				) {
+				if (element.tagName === 'SELECT-ITEM' && element.parentNode === this) {
 					event.preventDefault();
 					if (event.altKey) {
 						return;

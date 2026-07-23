@@ -46,12 +46,8 @@ import { UI } from '../ui/ui-window.ts';
 
 		// 同步滑动框和数字框的数值
 		$('#uiDialogBox-size-slider').synchronize($('#uiDialogBox-size'));
-		$('#uiDialogBox-lineSpacing-slider').synchronize(
-			$('#uiDialogBox-lineSpacing')
-		);
-		$('#uiDialogBox-letterSpacing-slider').synchronize(
-			$('#uiDialogBox-letterSpacing')
-		);
+		$('#uiDialogBox-lineSpacing-slider').synchronize($('#uiDialogBox-lineSpacing'));
+		$('#uiDialogBox-letterSpacing-slider').synchronize($('#uiDialogBox-letterSpacing'));
 
 		// 设置文字效果类型关联元素
 		$('#uiDialogBox-effect-type')
@@ -67,10 +63,7 @@ import { UI } from '../ui/ui-window.ts';
 				},
 				{
 					case: 'stroke',
-					targets: [
-						$('#uiDialogBox-effect-strokeWidth'),
-						$('#uiDialogBox-effect-color')
-					]
+					targets: [$('#uiDialogBox-effect-strokeWidth'), $('#uiDialogBox-effect-color')]
 				},
 				{
 					case: 'outline',
@@ -79,8 +72,7 @@ import { UI } from '../ui/ui-window.ts';
 			]);
 
 		// 侦听事件
-		const elements =
-			$(`#uiDialogBox-content, #uiDialogBox-interval, #uiDialogBox-size,
+		const elements = $(`#uiDialogBox-content, #uiDialogBox-interval, #uiDialogBox-size,
     #uiDialogBox-lineSpacing, #uiDialogBox-letterSpacing, #uiDialogBox-color, #uiDialogBox-font,
     #uiDialogBox-typeface, #uiDialogBox-effect-type, #uiDialogBox-effect-shadowOffsetX, #uiDialogBox-effect-shadowOffsetY,
     #uiDialogBox-effect-strokeWidth, #uiDialogBox-effect-color, #uiDialogBox-blend`);
@@ -237,11 +229,7 @@ import { UI } from '../ui/ui-window.ts';
 
 	// 参数 - 输入事件
 	UIDialogBox.paramInput = function (event) {
-		UIDialogBox.update(
-			UIDialogBox.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		UIDialogBox.update(UIDialogBox.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.uiDialogBox = UIDialogBox;

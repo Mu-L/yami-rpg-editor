@@ -228,24 +228,15 @@ export class ConditionListInterface implements IListInterface {
 				},
 				{
 					case: 'self-boolean',
-					targets: [
-						$('#condition-boolean-operation'),
-						$('#condition-boolean-value')
-					]
+					targets: [$('#condition-boolean-operation'), $('#condition-boolean-value')]
 				},
 				{
 					case: 'self-number',
-					targets: [
-						$('#condition-number-operation'),
-						$('#condition-number-value')
-					]
+					targets: [$('#condition-number-operation'), $('#condition-number-value')]
 				},
 				{
 					case: 'self-string',
-					targets: [
-						$('#condition-string-operation'),
-						$('#condition-string-value')
-					]
+					targets: [$('#condition-string-operation'), $('#condition-string-value')]
 				}
 			]);
 

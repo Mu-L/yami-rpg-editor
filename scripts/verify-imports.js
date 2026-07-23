@@ -10,8 +10,7 @@ function collectExports(file) {
 	const names = new Set();
 	// JS 标识符含 $ 和 _，\w 不匹配 $ — 用 [\w$]+ 修复
 	// 含 interface / type：TS 类型导出也需校验闭合
-	const re =
-		/export\s+(?:const|let|var|function|class|interface|type)\s+([\w$]+)/g;
+	const re = /export\s+(?:const|let|var|function|class|interface|type)\s+([\w$]+)/g;
 	let m;
 	while ((m = re.exec(code)) !== null) names.add(m[1]);
 	// export { a, b }
@@ -36,8 +35,7 @@ const isScriptSource = (name) => name.endsWith('.js') || name.endsWith('.ts');
 		const full = path.join(dir, entry.name);
 		if (entry.isDirectory()) walk(full);
 		else if (isScriptSource(entry.name)) {
-			exportMap[path.relative(scriptDir, full).replace(/\\/g, '/')] =
-				collectExports(full);
+			exportMap[path.relative(scriptDir, full).replace(/\\/g, '/')] = collectExports(full);
 		}
 	}
 })(scriptDir);
@@ -56,8 +54,7 @@ function err(msg) {
 		else if (isScriptSource(entry.name)) {
 			const rel = path.relative(scriptDir, full).replace(/\\/g, '/');
 			const code = fs.readFileSync(full, 'utf-8');
-			const re =
-				/import\s*(?:\*\s*as\s*\w+|\{([^}]+)\}|\w+)?\s*from\s*['"]([^'"]+)['"]/g;
+			const re = /import\s*(?:\*\s*as\s*\w+|\{([^}]+)\}|\w+)?\s*from\s*['"]([^'"]+)['"]/g;
 			let m;
 			while ((m = re.exec(code)) !== null) {
 				const named = m[1];
@@ -66,9 +63,7 @@ function err(msg) {
 				const target = path
 					.normalize(path.resolve(path.dirname(full), spec))
 					.replace(/\\/g, '/');
-				const targetRel = path
-					.relative(scriptDir, target)
-					.replace(/\\/g, '/');
+				const targetRel = path.relative(scriptDir, target).replace(/\\/g, '/');
 				if (!fs.existsSync(target)) {
 					err(`${rel}: 导入路径不存在 ${spec}`);
 					continue;

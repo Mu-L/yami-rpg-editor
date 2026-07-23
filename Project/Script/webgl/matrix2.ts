@@ -33,14 +33,7 @@ export class Matrix extends Float32Array {
 	}
 
 	// 设置参数
-	set6f(
-		a: number,
-		b: number,
-		c: number,
-		d: number,
-		e: number,
-		f: number
-	): this {
+	set6f(a: number, b: number, c: number, d: number, e: number, f: number): this {
 		this[0] = a;
 		this[1] = b;
 		this[3] = c;

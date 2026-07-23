@@ -465,9 +465,7 @@ Scene.list.updateScriptIcon = function (item) {
 		const scriptEnabled = item.scripts.length !== 0;
 		if (element.scriptEnabled !== scriptEnabled) {
 			element.scriptEnabled = scriptEnabled;
-			scriptEnabled
-				? element.scriptIcon.show()
-				: element.scriptIcon.hide();
+			scriptEnabled ? element.scriptIcon.show() : element.scriptIcon.hide();
 		}
 	}
 };

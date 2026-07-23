@@ -17,22 +17,14 @@ interface PropertyKeyConfig {
 }
 
 // parsers 闭包签名：(value, get, name) => string
-type ParserFn = (
-	value: any,
-	get: (key: string) => string,
-	name: string
-) => string;
+type ParserFn = (value: any, get: (key: string) => string, name: string) => string;
 
 // 属性窗口工厂配置
 interface PropertyWindowConfig {
 	prefix: string;
 	locale: string;
 	keys: PropertyKeyConfig[];
-	parseValue?: (
-		key: string,
-		value: any,
-		get: (key: string) => string
-	) => string;
+	parseValue?: (key: string, value: any, get: (key: string) => string) => string;
 	parsers?: Record<string, ParserFn>;
 	init?: (this: any) => void;
 	openData?: (defaults: Record<string, any>, key: string, value: any) => void;
@@ -47,28 +39,15 @@ interface PropertyWindowConfig {
 interface PropertyWindow {
 	target: any;
 	initialize: (() => void) | null;
-	parse:
-		| ((data: { key: string; value: any }, listData?: boolean) => string)
-		| null;
+	parse: ((data: { key: string; value: any }, listData?: boolean) => string) | null;
 	open: ((data?: { key: string; value: any }) => void) | null;
 	save: (() => { key: string; value: any }) | null;
 	confirm: ((event: Event) => { key: string; value: any }) | null;
 }
 
-export function createPropertyWindow(
-	config: PropertyWindowConfig
-): PropertyWindow {
-	const {
-		prefix,
-		locale,
-		keys,
-		parseValue,
-		parsers,
-		init,
-		openData,
-		saveData,
-		subRelates
-	} = config;
+export function createPropertyWindow(config: PropertyWindowConfig): PropertyWindow {
+	const { prefix, locale, keys, parseValue, parsers, init, openData, saveData, subRelates } =
+		config;
 
 	const PropertyWindow = {
 		target: null,
@@ -97,13 +76,9 @@ export function createPropertyWindow(
 			for (const sr of subRelates) {
 				const subRelates2 = sr.cases.map((c) => ({
 					case: c.case,
-					targets: c.targets.map((id) =>
-						$(`#${prefix}-property-${id}`)
-					)
+					targets: c.targets.map((id) => $(`#${prefix}-property-${id}`))
 				}));
-				$(`#${prefix}-property-${sr.selector}`)
-					.enableHiddenMode()
-					.relate(subRelates2);
+				$(`#${prefix}-property-${sr.selector}`).enableHiddenMode().relate(subRelates2);
 			}
 		}
 
@@ -123,8 +98,7 @@ export function createPropertyWindow(
 				string = parser(value, get, name);
 			}
 		} else if (parseValue) {
-			string =
-				name + Token('(') + parseValue(key, value, get) + Token(')');
+			string = name + Token('(') + parseValue(key, value, get) + Token(')');
 		}
 
 		if (listData) {

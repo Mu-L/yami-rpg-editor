@@ -116,11 +116,7 @@ import { UI } from '../ui/ui-window.ts';
 
 	// 参数 - 输入事件
 	UIAnimation.paramInput = function (event) {
-		UIAnimation.update(
-			UIAnimation.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		UIAnimation.update(UIAnimation.target, Inspector.getKey(this), this.read());
 	};
 
 	// 动画ID - 写入事件

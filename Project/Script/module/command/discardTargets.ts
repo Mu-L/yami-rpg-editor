@@ -28,9 +28,7 @@ Command.cases.discardTargets = new CommandSchema({
 			.push(Command.parseActor(actor))
 			.push(Command.parseActorSelector(selector));
 		if (distance !== 0) {
-			words.push(
-				Token('>=') + Command.parseVariableNumber(distance, 't')
-			);
+			words.push(Token('>=') + Command.parseVariableNumber(distance, 't'));
 		}
 		return [
 			{ color: 'actor' },

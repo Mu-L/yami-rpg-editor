@@ -175,8 +175,7 @@ Easing.initialize = () => {
 					// 如果存在等待时间
 					if (Easing.delay !== 0) {
 						timer.state = 'waiting';
-						timer.elapsed =
-							timer.playbackRate > 0 ? 0 : Easing.delay;
+						timer.elapsed = timer.playbackRate > 0 ? 0 : Easing.delay;
 						timer.duration = Easing.delay;
 						break;
 					}
@@ -354,10 +353,7 @@ Easing.delete = function (item) {
 		const get = Local.createGetter('confirmation');
 		Window.confirm(
 			{
-				message: get('deleteSingleFile').replace(
-					'<filename>',
-					item.name
-				)
+				message: get('deleteSingleFile').replace('<filename>', item.name)
 			},
 			[
 				{
@@ -431,8 +427,7 @@ Easing.updateMaps = function () {
 Easing.updateCanvases = function () {
 	// 更新曲线画布
 	const { curve } = this;
-	const { width: cWidth, height: cHeight } =
-		CSS.getDevicePixelContentBoxSize(curve);
+	const { width: cWidth, height: cHeight } = CSS.getDevicePixelContentBoxSize(curve);
 	if (curve.width !== cWidth || curve.height !== cHeight) {
 		if (curve.width !== cWidth) {
 			curve.width = cWidth;
@@ -448,8 +443,7 @@ Easing.updateCanvases = function () {
 
 	// 更新预览画布
 	const { preview } = this;
-	const { width: pWidth, height: pHeight } =
-		CSS.getDevicePixelContentBoxSize(preview);
+	const { width: pWidth, height: pHeight } = CSS.getDevicePixelContentBoxSize(preview);
 	if (preview.width !== pWidth) {
 		preview.width = pWidth;
 	}
@@ -574,9 +568,7 @@ Easing.drawCurve = function () {
 		const dx = originX + Math.round(linkPoint.x * fullSize);
 		const dy = originY - Math.round(linkPoint.y * fullSize);
 		const isActive = active === point;
-		context.strokeStyle = isActive
-			? canvas.linkColorActive
-			: canvas.axisColor;
+		context.strokeStyle = isActive ? canvas.linkColorActive : canvas.axisColor;
 		context.beginPath();
 		context.moveTo(sx + 0.5, sy + 0.5);
 		context.lineTo(dx + 0.5, dy + 0.5);
@@ -593,63 +585,13 @@ Easing.drawCurve = function () {
 		const sx = i * 3;
 		const isActive = active === point;
 		if (y - 3 < 0) {
-			context.drawImage(
-				image,
-				7,
-				isActive ? 22 : 15,
-				7,
-				4,
-				x - 3,
-				0,
-				7,
-				4
-			);
-			context.drawImage(
-				image,
-				sx,
-				isActive ? 10 : 5,
-				3,
-				5,
-				x - 1,
-				3,
-				3,
-				5
-			);
+			context.drawImage(image, 7, isActive ? 22 : 15, 7, 4, x - 3, 0, 7, 4);
+			context.drawImage(image, sx, isActive ? 10 : 5, 3, 5, x - 1, 3, 3, 5);
 		} else if (y + 4 >= height) {
-			context.drawImage(
-				image,
-				7,
-				isActive ? 25 : 18,
-				7,
-				4,
-				x - 3,
-				height - 4,
-				7,
-				4
-			);
-			context.drawImage(
-				image,
-				sx,
-				isActive ? 10 : 5,
-				3,
-				5,
-				x - 1,
-				height - 8,
-				3,
-				5
-			);
+			context.drawImage(image, 7, isActive ? 25 : 18, 7, 4, x - 3, height - 4, 7, 4);
+			context.drawImage(image, sx, isActive ? 10 : 5, 3, 5, x - 1, height - 8, 3, 5);
 		} else {
-			context.drawImage(
-				image,
-				0,
-				isActive ? 22 : 15,
-				7,
-				7,
-				x - 3,
-				y - 3,
-				7,
-				7
-			);
+			context.drawImage(image, 0, isActive ? 22 : 15, 7, 7, x - 3, y - 3, 7, 7);
 			context.drawImage(image, sx, 0, 3, 5, x - 1, y - 2, 3, 5);
 		}
 	}
@@ -707,17 +649,7 @@ Easing.drawPreview = function () {
 		const oy = spacingY + 20;
 		context.translate(ox, oy);
 		context.rotate(angle);
-		context.drawImage(
-			image,
-			size * 2,
-			0,
-			size,
-			size,
-			-halfsize,
-			-halfsize,
-			size,
-			size
-		);
+		context.drawImage(image, size * 2, 0, size, size, -halfsize, -halfsize, size, size);
 		context.setTransform(1, 0, 0, 1, 0, 0);
 	}
 
@@ -1225,24 +1157,10 @@ Easing.pointermove = function (event) {
 		const point = this.activePoint;
 		const index = this.points.indexOf(point);
 		const fullSize = this.curve.spacing * this.scale * 10;
-		const transX = Math.roundTo(
-			(event.clientX - dragging.clientX) / fullSize,
-			2
-		);
-		const transY = Math.roundTo(
-			(dragging.clientY - event.clientY) / fullSize,
-			2
-		);
-		const pointX = Math.clamp(
-			Math.roundTo(dragging.pointStartX + transX, 2),
-			0,
-			1
-		);
-		const pointY = Math.clamp(
-			Math.roundTo(dragging.pointStartY + transY, 2),
-			-5,
-			5
-		);
+		const transX = Math.roundTo((event.clientX - dragging.clientX) / fullSize, 2);
+		const transY = Math.roundTo((dragging.clientY - event.clientY) / fullSize, 2);
+		const pointX = Math.clamp(Math.roundTo(dragging.pointStartX + transX, 2), 0, 1);
+		const pointY = Math.clamp(Math.roundTo(dragging.pointStartY + transY, 2), -5, 5);
 		const xInput = $(`#easing-points-${index}-x`);
 		const yInput = $(`#easing-points-${index}-y`);
 		xInput.write(pointX);
@@ -1370,9 +1288,7 @@ Easing.EasingMap = (function IIFE() {
 						if (i > pos + 1) {
 							for (let j = pos + 1; j < i; j++) {
 								this[j] =
-									this[pos] +
-									((this[i] - this[pos]) * (j - pos)) /
-										(i - pos);
+									this[pos] + ((this[i] - this[pos]) * (j - pos)) / (i - pos);
 							}
 						}
 						pos = i;

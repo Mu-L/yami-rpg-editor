@@ -75,8 +75,7 @@ ImportLanguage.importLanguagePack = function (language, string) {
 // 解析语言包
 ImportLanguage.parseLanguagePack = function (string) {
 	// 翻译后键名可能变成大写英文字母
-	const regexp =
-		/\$([0-9a-fA-F]{16})\n([\s\S]*?)\n?(?=\n?\$[0-9a-fA-F]{16}|$)/g;
+	const regexp = /\$([0-9a-fA-F]{16})\n([\s\S]*?)\n?(?=\n?\$[0-9a-fA-F]{16}|$)/g;
 	const map = {};
 	let match;
 	while ((match = regexp.exec(string))) {

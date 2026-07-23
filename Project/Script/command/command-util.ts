@@ -3,10 +3,7 @@ import { Command } from './command-object.ts';
 // ******************************** 指令工具函数 ********************************
 
 // 遍历指令列表中的每个指令
-Command.forEachCommand = function (
-	commands: any[],
-	handler: (command: any) => void
-): void {
+Command.forEachCommand = function (commands: any[], handler: (command: any) => void): void {
 	const forEach = (commands: any[]): void => {
 		for (const command of commands) {
 			handler(command);

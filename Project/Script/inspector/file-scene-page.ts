@@ -44,18 +44,10 @@ import { GL } from '../webgl/webgl-init.ts';
 		};
 
 		// 同步滑动框和数字框的数值
-		$('#fileScene-ambient-red-slider').synchronize(
-			$('#fileScene-ambient-red')
-		);
-		$('#fileScene-ambient-green-slider').synchronize(
-			$('#fileScene-ambient-green')
-		);
-		$('#fileScene-ambient-blue-slider').synchronize(
-			$('#fileScene-ambient-blue')
-		);
-		$('#fileScene-ambient-direct-slider').synchronize(
-			$('#fileScene-ambient-direct')
-		);
+		$('#fileScene-ambient-red-slider').synchronize($('#fileScene-ambient-red'));
+		$('#fileScene-ambient-green-slider').synchronize($('#fileScene-ambient-green'));
+		$('#fileScene-ambient-blue-slider').synchronize($('#fileScene-ambient-blue'));
+		$('#fileScene-ambient-direct-slider').synchronize($('#fileScene-ambient-direct'));
 
 		// 绑定事件列表
 		$('#fileScene-events').bind(new EventListInterface(this, this.owner));
@@ -69,8 +61,7 @@ import { GL } from '../webgl/webgl-init.ts';
 		// 侦听事件
 		const elements = $(`#fileScene-tileWidth, #fileScene-tileHeight,
     #fileScene-ambient-red, #fileScene-ambient-green, #fileScene-ambient-blue, #fileScene-ambient-direct`);
-		const sliders =
-			$(`#fileScene-ambient-red-slider, #fileScene-ambient-green-slider,
+		const sliders = $(`#fileScene-ambient-red-slider, #fileScene-ambient-green-slider,
     #fileScene-ambient-blue-slider, #fileScene-ambient-direct-slider`);
 		elements.on('input', this.paramInput);
 		elements.on('focus', Inspector.inputFocus);
@@ -78,10 +69,7 @@ import { GL } from '../webgl/webgl-init.ts';
 		sliders.on('focus', Inspector.sliderFocus);
 		sliders.on('blur', Inspector.sliderBlur);
 		$('#fileScene-width, #fileScene-height').on('change', this.paramInput);
-		$('#fileScene-events, #fileScene-scripts').on(
-			'change',
-			Scene.listChange
-		);
+		$('#fileScene-events, #fileScene-scripts').on('change', Scene.listChange);
 	};
 
 	// 创建场景
@@ -90,10 +78,7 @@ import { GL } from '../webgl/webgl-init.ts';
 		const filters = {};
 		const folders = Editor.project.scene.defaultFolders;
 		for (const name of Object.values(folders)) {
-			if (
-				(name as string) &&
-				(filters as any)[name as string] === undefined
-			) {
+			if ((name as string) && (filters as any)[name as string] === undefined) {
 				(filters as any)[name as string] = true;
 				objects.push({
 					class: 'folder',

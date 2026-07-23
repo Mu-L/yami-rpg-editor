@@ -40,14 +40,8 @@ export class Parallax {
 		if (shiftSpeedX !== 0 || shiftSpeedY !== 0) {
 			const texture = this.texture;
 			if (texture instanceof ImageTexture) {
-				this.shiftX =
-					(this.shiftX +
-						(shiftSpeedX * deltaTime) / 1000 / texture.width) %
-					1;
-				this.shiftY =
-					(this.shiftY +
-						(shiftSpeedY * deltaTime) / 1000 / texture.height) %
-					1;
+				this.shiftX = (this.shiftX + (shiftSpeedX * deltaTime) / 1000 / texture.width) % 1;
+				this.shiftY = (this.shiftY + (shiftSpeedY * deltaTime) / 1000 / texture.height) % 1;
 			}
 		}
 	}
@@ -110,9 +104,7 @@ export class Parallax {
 				const modeMap = Parallax.lightSamplingModes;
 				const lightMode = Scene.showLight ? parallax.light : 'raw';
 				const lightModeIndex = modeMap[lightMode];
-				const matrix = gl.matrix
-					.project(gl.flip, cr - cl, cb - ct)
-					.translate(-cl, -ct);
+				const matrix = gl.matrix.project(gl.flip, cr - cl, cb - ct).translate(-cl, -ct);
 				gl.bindVertexArray(program.vao);
 				gl.uniformMatrix3fv(program.u_Matrix, false, matrix);
 				gl.uniform1i(program.u_LightMode, lightModeIndex);

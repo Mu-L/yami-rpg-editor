@@ -112,9 +112,7 @@ import { Timer } from '../util/timer.ts';
 				this.progress.removeClass('visible');
 				// 保留对返回的原始promise的引用
 				// 以便可以取消解码音频数据的操作
-				const promise = (this.promise = AudioManager.getWaveform(
-					meta.guid
-				));
+				const promise = (this.promise = AudioManager.getWaveform(meta.guid));
 				promise.then((url) => {
 					if (this.promise === promise) {
 						this.promise = null;

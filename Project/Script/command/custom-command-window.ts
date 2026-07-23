@@ -81,8 +81,7 @@ interface CustomCommandShape {
 	windowClosed: ((event: Event) => void) | null;
 	pointerdown: CustomCommandMethod;
 	scriptChange: ((event: Event & { changedMeta: any }) => void) | null;
-	listKeydown:
-		((this: CustomCommandList, event: KeyboardEvent) => void) | null;
+	listKeydown: ((this: CustomCommandList, event: KeyboardEvent) => void) | null;
 	listSelect: ((event: Event & { value: CustomCommandData }) => void) | null;
 	listUnselect: (() => void) | null;
 	listChange: (() => void) | null;
@@ -97,17 +96,9 @@ interface CustomCommandShape {
 		  ) => void)
 		| null;
 	listOpen:
-		| ((
-				this: CustomCommandList,
-				event: Event & { value: CustomCommandData }
-		  ) => void)
+		| ((this: CustomCommandList, event: Event & { value: CustomCommandData }) => void)
 		| null;
-	paramInput:
-		| ((
-				this: HTMLElement & { id: string; read(): string },
-				event: Event
-		  ) => void)
-		| null;
+	paramInput: ((this: HTMLElement & { id: string; read(): string }, event: Event) => void) | null;
 	confirm: ((event: Event) => void) | null;
 	apply: ((event: any) => void) | null;
 }
@@ -181,10 +172,7 @@ CustomCommand.initialize = function (this: CustomCommandShape): void {
 	list.on('popup', this.listPopup!);
 	list.on('open', this.listOpen!);
 	list.on('pointerdown', ScriptListInterface.listPointerdown);
-	($('#command-alias, #command-keywords') as HTMLElement).on(
-		'input',
-		this.paramInput!
-	);
+	($('#command-alias, #command-keywords') as HTMLElement).on('input', this.paramInput!);
 	($('#command-confirm') as HTMLElement).on('click', this.confirm!);
 	($('#command-apply') as HTMLElement).on('click', this.apply!);
 };
@@ -250,10 +238,7 @@ CustomCommand.loadOverview = function (this: CustomCommandShape): void {
 };
 
 // 创建数据
-CustomCommand.createData = function (
-	this: CustomCommandShape,
-	id: string
-): CustomCommandData {
+CustomCommand.createData = function (this: CustomCommandShape, id: string): CustomCommandData {
 	return {
 		id: id,
 		enabled: true,
@@ -266,10 +251,7 @@ CustomCommand.createData = function (
 CustomCommand.getItemById = Easing.getItemById;
 
 // 窗口 - 关闭事件
-CustomCommand.windowClose = function (
-	this: CustomCommandShape,
-	event: Event
-): void {
+CustomCommand.windowClose = function (this: CustomCommandShape, event: Event): void {
 	if (this.changed) {
 		event.preventDefault();
 		const get = Local.createGetter('confirmation');
@@ -294,10 +276,7 @@ CustomCommand.windowClose = function (
 }.bind(CustomCommand);
 
 // 窗口 - 已关闭事件
-CustomCommand.windowClosed = function (
-	this: CustomCommandShape,
-	event: Event
-): void {
+CustomCommand.windowClosed = function (this: CustomCommandShape, event: Event): void {
 	this.list.saveSelection!();
 	this.data = null;
 	this.list.clear();
@@ -309,9 +288,7 @@ CustomCommand.windowClosed = function (
 CustomCommand.pointerdown = PluginManager.pointerdown;
 
 // 脚本元数据改变事件
-CustomCommand.scriptChange = function (
-	event: Event & { changedMeta: any }
-): void {
+CustomCommand.scriptChange = function (event: Event & { changedMeta: any }): void {
 	if (CustomCommand.meta === event.changedMeta) {
 		CustomCommand.loadOverview!();
 	}
@@ -350,9 +327,7 @@ CustomCommand.listKeydown = function (
 };
 
 // 列表 - 选择事件
-CustomCommand.listSelect = function (
-	event: Event & { value: CustomCommandData }
-): void {
+CustomCommand.listSelect = function (event: Event & { value: CustomCommandData }): void {
 	CustomCommand.load!(event.value);
 };
 
@@ -463,10 +438,7 @@ CustomCommand.paramInput = function (
 };
 
 // 确定按钮 - 鼠标点击事件
-CustomCommand.confirm = function (
-	this: CustomCommandShape,
-	event: Event
-): void {
+CustomCommand.confirm = function (this: CustomCommandShape, event: Event): void {
 	this.apply!(event);
 	Window.close('command');
 }.bind(CustomCommand);
@@ -490,10 +462,7 @@ CustomCommand.apply = function (this: CustomCommandShape, event: any): void {
 }.bind(CustomCommand);
 
 // 列表 - 编辑
-CustomCommand.list.edit = function (
-	this: CustomCommandList,
-	item: CustomCommandData
-): void {
+CustomCommand.list.edit = function (this: CustomCommandList, item: CustomCommandData): void {
 	Selector.open(
 		{
 			filter: 'script',
@@ -514,10 +483,7 @@ CustomCommand.list.edit = function (
 };
 
 // 列表 - 插入
-CustomCommand.list.insert = function (
-	this: CustomCommandList,
-	dItem?: any
-): void {
+CustomCommand.list.insert = function (this: CustomCommandList, dItem?: any): void {
 	Selector.open(
 		{
 			filter: 'script',
@@ -550,10 +516,7 @@ CustomCommand.list.copy = function (item: CustomCommandData | null): void {
 };
 
 // 列表 - 粘贴
-CustomCommand.list.paste = function (
-	this: CustomCommandList,
-	dItem?: any
-): void {
+CustomCommand.list.paste = function (this: CustomCommandList, dItem?: any): void {
 	const copy = (Clipboard as any).read('yami.data.customCommand');
 	if (copy) {
 		this.addNodeTo(copy, dItem);

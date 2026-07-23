@@ -268,14 +268,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 					const sw = Math.min(this.textWidth, this.innerWidth);
 					const sh = this.innerHeight;
 					texture.clip(0, sy * scale, sw * scale, sh * scale);
-					GL.drawImageWithColor(
-						texture,
-						this.textX,
-						this.textY,
-						sw,
-						sh,
-						this._colorInt
-					);
+					GL.drawImageWithColor(texture, this.textX, this.textY, sw, sh, this._colorInt);
 				}
 			}
 		}
@@ -309,15 +302,9 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 			this.textWidth = textWidth;
 			this.textShiftY = Math.max(paddingTop - vpadding, 0);
 			this.innerWidth = Math.max(this.width - this.padding * 2, 0);
-			this.innerHeight = Math.min(
-				this.height + this.y - this.textY,
-				textHeight
-			);
+			this.innerHeight = Math.min(this.height + this.y - this.textY, textHeight);
 			this.selectionY = this.y + Math.max(vpadding, 0);
-			this.selectionWidth = Math.min(
-				this.innerWidth,
-				printer.width / scale
-			);
+			this.selectionWidth = Math.min(this.innerWidth, printer.width / scale);
 			this.selectionHeight = Math.min(this.height, size);
 			switch (this.align) {
 				case 'center':

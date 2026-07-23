@@ -28,11 +28,7 @@ export class AudioPlayer {
 	play(path: string): void {
 		if (path) {
 			const audio = this.audio;
-			if (
-				audio.path !== path ||
-				audio.readyState !== 4 ||
-				audio.ended === true
-			) {
+			if (audio.path !== path || audio.readyState !== 4 || audio.ended === true) {
 				audio.src = File.route(path);
 				audio.path = path;
 				audio.play();
@@ -77,12 +73,8 @@ export class AudioPlayer {
 		return {
 			volume: Math.roundTo(this.audio.volume, 2),
 			pan: Math.roundTo(this.panner.pan.value, 2),
-			dry: this.reverb
-				? Math.roundTo(this.reverb.dryGain.gain.value, 2)
-				: 1,
-			wet: this.reverb
-				? Math.roundTo(this.reverb.wetGain.gain.value / 2, 2)
-				: 0
+			dry: this.reverb ? Math.roundTo(this.reverb.dryGain.gain.value, 2) : 1,
+			wet: this.reverb ? Math.roundTo(this.reverb.wetGain.gain.value / 2, 2) : 0
 		};
 	}
 }

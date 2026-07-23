@@ -35,11 +35,7 @@ const _moduleURL = new URL(import.meta.url);
 const _modulePath =
 	_moduleURL.protocol === 'file:'
 		? fileURLToPath(_moduleURL)
-		: Path.resolve(
-				process.cwd(),
-				'Project',
-				_moduleURL.pathname.split('/').pop()
-			);
+		: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 const __dirname =
 	_moduleURL.protocol === 'file:'
 		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
@@ -65,15 +61,11 @@ EventBus.once('editor_loaded', () => {
 });
 
 export let PackMeta = JSON.parse(
-	nodeFs.readFileSync(
-		Path.join(__dirname, 'Script/module', 'packmeta.json'),
-		'utf-8'
-	)
+	nodeFs.readFileSync(Path.join(__dirname, 'Script/module', 'packmeta.json'), 'utf-8')
 ); // 资源 meta 信息
 
 export const TemplatesPath = Path.resolve(GlobalPath, 'Templates'); // 模板路径
-if (!fs.existsSync(TemplatesPath))
-	fs.mkdirSync(TemplatesPath, { recursive: true });
+if (!fs.existsSync(TemplatesPath)) fs.mkdirSync(TemplatesPath, { recursive: true });
 
 // 检测是否安装了资源包
 export function isNoResource() {
@@ -122,10 +114,7 @@ export function setNoResourceObj(value) {
 
 window.addEventListener('localize', () => {
 	Resources.initialize(); // 初始化
-	if (
-		!NoResourceObj['arpg-ts-english'].check &&
-		!NoResourceObj['arpg-ts-chinese'].check
-	) {
+	if (!NoResourceObj['arpg-ts-english'].check && !NoResourceObj['arpg-ts-chinese'].check) {
 		Resources.open();
 		Resources.checkEditorVersion(); // 只检测编辑器版本
 	} else {
@@ -141,12 +130,9 @@ NewProject.confirm = function () {
 	const template = $('#newProject-template').read();
 	NoResourceObj = isNoResource();
 	if (
-		(template == 'arpg-ts-english' &&
-			NoResourceObj['arpg-ts-english'].check) ||
-		(template == 'arpg-ts-chinese' &&
-			NoResourceObj['arpg-ts-chinese'].check) ||
-		template !=
-			(['arpg-ts-english', 'arpg-ts-chinese'] as unknown as string)
+		(template == 'arpg-ts-english' && NoResourceObj['arpg-ts-english'].check) ||
+		(template == 'arpg-ts-chinese' && NoResourceObj['arpg-ts-chinese'].check) ||
+		template != (['arpg-ts-english', 'arpg-ts-chinese'] as unknown as string)
 	) {
 		TitleConfirmOld.call(Title);
 	} else {
@@ -190,9 +176,7 @@ export const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
 
 					writeStream.on('close', () => {
 						extractedFiles++;
-						const progress = Math.round(
-							(extractedFiles / totalFiles) * 100
-						);
+						const progress = Math.round((extractedFiles / totalFiles) * 100);
 						onProgress?.(progress);
 
 						zipfile.readEntry();
@@ -421,18 +405,9 @@ window.on('localize', () => {
 	const tabInternal = $('#update-log-tab-internal');
 	const tabCommunity = $('#update-log-tab-community');
 	const tabDonation = $('#update-log-tab-donation');
-	if (tabInternal)
-		tabInternal.innerHTML = Local.get(
-			'menuOpenYami.update-log-tab-internal'
-		);
-	if (tabCommunity)
-		tabCommunity.textContent = Local.get(
-			'menuOpenYami.update-log-tab-community'
-		);
-	if (tabDonation)
-		tabDonation.textContent = Local.get(
-			'menuOpenYami.update-log-tab-donation'
-		);
+	if (tabInternal) tabInternal.innerHTML = Local.get('menuOpenYami.update-log-tab-internal');
+	if (tabCommunity) tabCommunity.textContent = Local.get('menuOpenYami.update-log-tab-community');
+	if (tabDonation) tabDonation.textContent = Local.get('menuOpenYami.update-log-tab-donation');
 });
 UpdateLog.initialize = function () {
 	UpdateLogInitializeOrigin.call(this);
@@ -692,10 +667,7 @@ export function loadDtsFolder(folderPath, monaco, recursive = true) {
 
 						console.log(`[Monaco] Loaded d.ts: ${fileUri}`);
 					} catch (readErr) {
-						console.error(
-							`Failed to read file: ${fullPath}`,
-							readErr
-						);
+						console.error(`Failed to read file: ${fullPath}`, readErr);
 					}
 				}
 			});

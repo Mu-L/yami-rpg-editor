@@ -12,8 +12,7 @@ export class LoadingOverlay extends HTMLElement {
 	connectedCallback() {
 		if (this.querySelector('.loading-spinner') == null) {
 			this.innerHTML =
-				'<div class="loading-spinner"></div>' +
-				'<div class="loading-text"></div>';
+				'<div class="loading-spinner"></div>' + '<div class="loading-text"></div>';
 		}
 	}
 
@@ -39,10 +38,7 @@ export class LoadingOverlay extends HTMLElement {
 	}
 }
 
-customElements.define(
-	'loading-overlay',
-	LoadingOverlay as CustomElementConstructor
-);
+customElements.define('loading-overlay', LoadingOverlay as CustomElementConstructor);
 
 // 全局便捷接口
 export const Loading = {

@@ -35,8 +35,7 @@
 				scrollTop: number;
 			};
 			if (speedX !== 0) {
-				(target as HTMLElement).scrollLeft +=
-					computeScrollDelta(speedX);
+				(target as HTMLElement).scrollLeft += computeScrollDelta(speedX);
 			}
 			if (speedY !== 0) {
 				(target as HTMLElement).scrollTop += computeScrollDelta(speedY);
@@ -86,10 +85,7 @@
 					: 0
 			: 0;
 		if (scrollSpeedX !== 0 || scrollSpeedY !== 0) {
-			if (
-				timer.speedX !== scrollSpeedX ||
-				timer.speedY !== scrollSpeedY
-			) {
+			if (timer.speedX !== scrollSpeedX || timer.speedY !== scrollSpeedY) {
 				timer.speedX = scrollSpeedX;
 				timer.speedY = scrollSpeedY;
 				timer.add();

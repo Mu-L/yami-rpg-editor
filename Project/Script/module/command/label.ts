@@ -6,9 +6,7 @@ import { Local } from '../../tools/localization.ts';
 
 Command.cases.label = new CommandSchema({
 	name: 'label',
-	fields: [
-		{ key: 'name', domId: 'name', default: '', required: true, trim: true }
-	],
+	fields: [{ key: 'name', domId: 'name', default: '', required: true, trim: true }],
 	customParse({ name }) {
 		return [
 			{ color: 'flow' },

@@ -29,17 +29,11 @@ Command.cases.createElement = new CommandSchema({
 				},
 				{
 					case: 'append-all-to-element',
-					targets: [
-						$('#createElement-parent'),
-						$('#createElement-uiId')
-					]
+					targets: [$('#createElement-parent'), $('#createElement-uiId')]
 				},
 				{
 					case: 'append-one-to-element',
-					targets: [
-						$('#createElement-parent'),
-						$('#createElement-presetId')
-					]
+					targets: [$('#createElement-parent'), $('#createElement-presetId')]
 				}
 			]);
 	},
@@ -75,9 +69,7 @@ Command.cases.createElement = new CommandSchema({
 				break;
 			case 'append-all-to-element':
 				info =
-					Command.parseElement(parent) +
-					Token(' -> ') +
-					this.parseUIAndNodeNames(uiId);
+					Command.parseElement(parent) + Token(' -> ') + this.parseUIAndNodeNames(uiId);
 				break;
 			case 'append-one-to-element':
 				info =

@@ -28,10 +28,7 @@ import { Scene } from '../scene/scene-window.ts';
 		$(`#fileTileset-image, #fileTileset-tileWidth, #fileTileset-tileHeight,
     #fileTileset-globalOffsetX, #fileTileset-globalOffsetY,
     #fileTileset-globalPriority`).on('input', this.paramInput);
-		$('#fileTileset-width, #fileTileset-height').on(
-			'change',
-			this.paramInput
-		);
+		$('#fileTileset-width, #fileTileset-height').on('change', this.paramInput);
 
 		// 初始化调色板
 		Palette.initialize();
@@ -159,11 +156,7 @@ import { Scene } from '../scene/scene-window.ts';
 
 	// 参数 - 输入事件
 	FileTileset.paramInput = function (event) {
-		FileTileset.update(
-			FileTileset.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		FileTileset.update(FileTileset.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.fileTileset = FileTileset;

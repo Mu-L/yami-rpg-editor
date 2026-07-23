@@ -43,10 +43,7 @@ Command.cases.stopEvent = new CommandSchema({
 				},
 				{
 					case: 'equipment',
-					targets: [
-						$('#stopEvent-equipment'),
-						$('#stopEvent-eventType')
-					]
+					targets: [$('#stopEvent-equipment'), $('#stopEvent-eventType')]
 				},
 				{
 					case: 'item',
@@ -58,20 +55,14 @@ Command.cases.stopEvent = new CommandSchema({
 				},
 				{
 					case: 'element',
-					targets: [
-						$('#stopEvent-element'),
-						$('#stopEvent-eventType')
-					]
+					targets: [$('#stopEvent-element'), $('#stopEvent-eventType')]
 				}
 			]);
 		$('#stopEvent-type').on('write', (event) => {
 			const type = event.value;
 			if (type !== 'current') {
 				const elEventType = $('#stopEvent-eventType');
-				const eventTypes = Enum.getMergedItems(
-					EventEditor.types[type],
-					type + '-event'
-				);
+				const eventTypes = Enum.getMergedItems(EventEditor.types[type], type + '-event');
 				elEventType.loadItems(eventTypes);
 				elEventType.createTooltip();
 				elEventType.write(eventTypes[0].value);

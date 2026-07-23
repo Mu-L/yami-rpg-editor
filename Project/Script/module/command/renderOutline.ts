@@ -19,10 +19,7 @@ Command.cases.renderOutline = new CommandSchema({
 			.relate([
 				{
 					case: 'add',
-					targets: [
-						$('#renderOutline-actor'),
-						$('#renderOutline-color')
-					]
+					targets: [$('#renderOutline-actor'), $('#renderOutline-color')]
 				},
 				{ case: 'remove', targets: [$('#renderOutline-actor')] }
 			]);
@@ -50,11 +47,7 @@ Command.cases.renderOutline = new CommandSchema({
 			{ text: words.join() }
 		];
 	},
-	customLoad({
-		operation = 'add',
-		actor = { type: 'trigger' },
-		color = 'ffffffff'
-	}) {
+	customLoad({ operation = 'add', actor = { type: 'trigger' }, color = 'ffffffff' }) {
 		$('#renderOutline-operation').write(operation);
 		$('#renderOutline-actor').write(actor);
 		$('#renderOutline-color').write(color);

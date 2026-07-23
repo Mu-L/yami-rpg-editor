@@ -202,10 +202,7 @@ Selector.bodyPopup = function (event) {
 		});
 	} else {
 		const element = target.seek('file-body-item', 2);
-		if (
-			element.tagName === 'FILE-BODY-ITEM' &&
-			element.hasClass('selected')
-		) {
+		if (element.tagName === 'FILE-BODY-ITEM' && element.hasClass('selected')) {
 			const { selections } = this;
 			const { file } = element;
 			const single = selections.length === 1;

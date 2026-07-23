@@ -97,10 +97,7 @@ export class MenuList extends HTMLElement {
 				labelWidth = Math.max(labelWidth, label.offsetWidth);
 			}
 			if (accelerator !== undefined) {
-				acceleratorWidth = Math.max(
-					acceleratorWidth,
-					accelerator.offsetWidth
-				);
+				acceleratorWidth = Math.max(acceleratorWidth, accelerator.offsetWidth);
 			}
 		}
 		let padding = 48;
@@ -179,8 +176,7 @@ export class MenuList extends HTMLElement {
 
 				// 创建快捷键元素
 				if (item.accelerator !== undefined) {
-					const accelerator =
-						document.createElement('menu-accelerator');
+					const accelerator = document.createElement('menu-accelerator');
 					accelerator.textContent = item.accelerator;
 					li.accelerator = accelerator;
 					li.appendChild(accelerator);
@@ -228,10 +224,7 @@ export class MenuList extends HTMLElement {
 		const elements = [];
 		for (const child of this.childNodes) {
 			const element = child as HTMLElement;
-			if (
-				element.tagName === 'MENU-ITEM' &&
-				!element.hasClass('disabled')
-			) {
+			if (element.tagName === 'MENU-ITEM' && !element.hasClass('disabled')) {
 				elements.push(element);
 			}
 		}
@@ -258,10 +251,7 @@ export class MenuList extends HTMLElement {
 	// 弹出子菜单
 	popupSubmenu(delay: any) {
 		const element = this.selection;
-		if (
-			element instanceof HTMLElement &&
-			element !== this.submenu?.parentMenuItem
-		) {
+		if (element instanceof HTMLElement && element !== this.submenu?.parentMenuItem) {
 			const node = element.dataValue;
 			if (node.submenu) {
 				if (!this.popupTimer) {
@@ -311,10 +301,7 @@ export class MenuList extends HTMLElement {
 					duration: delay,
 					callback: () => {
 						this.closeTimer = null;
-						if (
-							submenu === this.submenu &&
-							selection !== this.selection
-						) {
+						if (submenu === this.submenu && selection !== this.selection) {
 							submenu.close();
 						}
 					}

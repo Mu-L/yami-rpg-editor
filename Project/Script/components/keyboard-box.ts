@@ -112,9 +112,7 @@ export class KeyboardBox extends HTMLElement {
 			case 'NumpadEnter':
 				event.stopImmediatePropagation();
 			default:
-				(this.parentNode as KeyboardBox).inputCode(
-					parseInt(event.code) || 0
-				);
+				(this.parentNode as KeyboardBox).inputCode(parseInt(event.code) || 0);
 				break;
 		}
 	}

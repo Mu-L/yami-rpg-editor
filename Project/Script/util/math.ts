@@ -52,17 +52,13 @@ Math.degrees = (function IIFE() {
 
 // 角度取余数 [0, 360)
 Math.modDegrees = (degrees: number, period = 360): number => {
-	return degrees >= 0
-		? degrees % period
-		: ((degrees % period) + period) % period;
+	return degrees >= 0 ? degrees % period : ((degrees % period) + period) % period;
 };
 
 // 弧度取余数 [0, 2π)
 Math.modRadians = (function IIFE() {
 	const PI2 = Math.PI * 2;
 	return (radians: number, period = PI2): number => {
-		return radians >= 0
-			? radians % period
-			: ((radians % period) + period) % period;
+		return radians >= 0 ? radians % period : ((radians % period) + period) % period;
 	};
 })();

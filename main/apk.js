@@ -134,11 +134,7 @@ async function main(options = {}) {
 
 		for (const file of requiredFiles) {
 			if (!fileExists(file.path)) {
-				sendLog(
-					`${file.name}文件不存在: ${file.path}`,
-					currentProgress,
-					true
-				);
+				sendLog(`${file.name}文件不存在: ${file.path}`, currentProgress, true);
 				return false;
 			}
 		}
@@ -263,9 +259,7 @@ async function main(options = {}) {
 		onProgress?.('APK处理完成', currentProgress);
 		sendLog('APK处理完成', currentProgress);
 
-		sendLog(
-			`✅ APK修改完成! 新文件: ${config.signedApkPath}\n可以直接安装到设备`
-		);
+		sendLog(`✅ APK修改完成! 新文件: ${config.signedApkPath}\n可以直接安装到设备`);
 		return true;
 	} catch (err) {
 		onProgress?.('处理失败: ' + err.message, currentProgress, true);
@@ -331,8 +325,7 @@ async function modifyManifest(config) {
 			result.manifest.$['android:versionName'] = config.versionName;
 		}
 		if (config.versionCode !== undefined) {
-			result.manifest.$['android:versionCode'] =
-				config.versionCode.toString();
+			result.manifest.$['android:versionCode'] = config.versionCode.toString();
 		}
 		// 确保application标签中只保留正确的icon引用和设置应用名称
 		if (result.manifest.application) {
@@ -344,10 +337,7 @@ async function modifyManifest(config) {
 			delete app.$.roundIcon; // 删除可能残留的roundIcon
 
 			// 删除任何硬编码的应用名称
-			if (
-				app.$['android:label'] &&
-				app.$['android:label'].startsWith('"')
-			) {
+			if (app.$['android:label'] && app.$['android:label'].startsWith('"')) {
 				app.$['android:label'] = '@string/app_name';
 			}
 		}
@@ -388,11 +378,7 @@ async function modifyStrings(config) {
 
 		for (const dirent of valuesDirs) {
 			if (dirent.isDirectory() && dirent.name.startsWith('values')) {
-				const stringsPath = path.join(
-					resDir,
-					dirent.name,
-					'strings.xml'
-				);
+				const stringsPath = path.join(resDir, dirent.name, 'strings.xml');
 
 				if (fileExists(stringsPath)) {
 					await updateStringsFile(stringsPath, config);
@@ -485,9 +471,7 @@ async function replaceIconsWithSharp(config) {
 			.filter((dir) => fs.existsSync(dir) && !dir.includes('anydpi'));
 
 		if (iconDirs.length === 0) {
-			throw new Error(
-				'未找到任何图标目录（mipmap/drawable），无法替换图标'
-			);
+			throw new Error('未找到任何图标目录（mipmap/drawable），无法替换图标');
 		}
 		console.log(`找到图标目录: ${iconDirs.join(', ')}`);
 
@@ -548,10 +532,7 @@ async function removeAdaptiveIconConfigs(config) {
 			// 删除ic_launcher.xml和ic_launcher_round.xml
 			const files = await fs.promises.readdir(anydpiPath);
 			for (const file of files) {
-				if (
-					file === 'ic_launcher.xml' ||
-					file === 'ic_launcher_round.xml'
-				) {
+				if (file === 'ic_launcher.xml' || file === 'ic_launcher_round.xml') {
 					const filePath = path.join(anydpiPath, file);
 					await fs.promises.unlink(filePath);
 					// console.log(`已删除自适应图标配置: ${filePath}`);
@@ -582,9 +563,7 @@ async function removeRoundIcons(config) {
 				for (const file of files) {
 					if (file.includes('_round')) {
 						await fs.promises.unlink(path.join(dirPath, file));
-						console.log(
-							`已删除圆形图标: ${path.join(dirPath, file)}`
-						);
+						console.log(`已删除圆形图标: ${path.join(dirPath, file)}`);
 					}
 				}
 			}
@@ -606,24 +585,14 @@ async function fixResourceReferences(config) {
 
 	try {
 		// 1. 清理public.xml中的无效引用
-		const publicXmlPath = path.join(
-			config.outputDir,
-			'res',
-			'values',
-			'public.xml'
-		);
+		const publicXmlPath = path.join(config.outputDir, 'res', 'values', 'public.xml');
 		if (fs.existsSync(publicXmlPath)) {
 			// console.log("清理 public.xml 中的无效引用...");
 			await cleanPublicXml(publicXmlPath);
 		}
 
 		// 2. 处理styles.xml中的可能引用
-		const stylesPath = path.join(
-			config.outputDir,
-			'res',
-			'values',
-			'styles.xml'
-		);
+		const stylesPath = path.join(config.outputDir, 'res', 'values', 'styles.xml');
 		if (fs.existsSync(stylesPath)) {
 			console.log('检查 styles.xml 中的圆形图标引用...');
 			await cleanStylesXml(stylesPath);
@@ -677,17 +646,11 @@ async function cleanPublicXml(publicXmlPath) {
 			const type = item.$.type;
 
 			// 只保留ic_launcher的资源映射，删除其他 launcher 相关资源
-			if (
-				name === 'ic_launcher' &&
-				(type === 'mipmap' || type === 'drawable')
-			) {
+			if (name === 'ic_launcher' && (type === 'mipmap' || type === 'drawable')) {
 				return true; // 保留新图标的资源映射
 			}
 			// 删除其他 launcher 相关资源（如ic_launcher_round）
-			return !(
-				name.includes('ic_launcher') &&
-				(type === 'mipmap' || type === 'drawable')
-			);
+			return !(name.includes('ic_launcher') && (type === 'mipmap' || type === 'drawable'));
 		});
 	}
 

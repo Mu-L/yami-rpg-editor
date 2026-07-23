@@ -46,10 +46,7 @@ import { Variable } from '../../variable/variable.ts';
 				},
 				{
 					case: 'list',
-					targets: [
-						$('#setObject-operand-variable'),
-						$('#setObject-operand-list-index')
-					]
+					targets: [$('#setObject-operand-variable'), $('#setObject-operand-list-index')]
 				}
 			]);
 	},

@@ -28,9 +28,7 @@ Choices.initialize = function () {
 
 // 解析项目
 Choices.parse = function (choice) {
-	return Command.removeTextTags(
-		Command.parseVariableTag(GameLocal.replace(choice.content))
-	);
+	return Command.removeTextTags(Command.parseVariableTag(GameLocal.replace(choice.content)));
 };
 
 // 打开数据

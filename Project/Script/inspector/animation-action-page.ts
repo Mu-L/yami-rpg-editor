@@ -48,9 +48,7 @@ import { Inspector } from './inspector.ts';
 
 		// 侦听事件
 		const elMode = $('#animMotion-mode');
-		const elements = $(
-			'#animMotion-skip, #animMotion-loop, #animMotion-loopStart'
-		);
+		const elements = $('#animMotion-skip, #animMotion-loop, #animMotion-loopStart');
 		elMode.on('input', this.paramInput);
 		elements.on('input', this.paramInput);
 		elements.on('focus', Inspector.inputFocus);
@@ -133,11 +131,7 @@ import { Inspector } from './inspector.ts';
 
 	// 参数 - 输入事件
 	AnimMotion.paramInput = function (event) {
-		AnimMotion.update(
-			AnimMotion.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		AnimMotion.update(AnimMotion.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.animMotion = AnimMotion;

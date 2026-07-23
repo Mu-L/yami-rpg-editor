@@ -4,10 +4,7 @@ const archiver = require('archiver');
 const path = require('path');
 const crypto = require('crypto');
 
-async function calculateMultipleHashes(
-	filePath,
-	algorithms = ['md5', 'sha1', 'sha256']
-) {
+async function calculateMultipleHashes(filePath, algorithms = ['md5', 'sha1', 'sha256']) {
 	return new Promise((resolve, reject) => {
 		if (!fs.existsSync(filePath)) {
 			return reject(new Error(`文件不存在: ${filePath}`));
@@ -39,9 +36,7 @@ async function calculateMultipleHashes(
 	});
 }
 
-const packageJson = JSON.parse(
-	fs.readFileSync('Project/Script/module/packmeta.json')
-);
+const packageJson = JSON.parse(fs.readFileSync('Project/Script/module/packmeta.json'));
 
 const tempaltePath = 'Project/Templates';
 
@@ -99,28 +94,17 @@ const zipBuild = async (src, targetSrc) => {
 (async () => {
 	const promiseArray = resArray.map(async (v) => {
 		console.log(`⌛ 开始处理: ${v.path}`);
-		await zipBuild(
-			v.realPath,
-			path.resolve('build', 'resources', `${v.path}_pack.zip`)
-		);
+		await zipBuild(v.realPath, path.resolve('build', 'resources', `${v.path}_pack.zip`));
 	});
 
 	await Promise.all(promiseArray);
 
 	const packageArray = await Promise.all(
 		resArray.map(async (v) => {
-			const zipPath = path.resolve(
-				'build',
-				'resources',
-				`${v.path}_pack.zip`
-			);
+			const zipPath = path.resolve('build', 'resources', `${v.path}_pack.zip`);
 			return {
 				...v,
-				...(await calculateMultipleHashes(zipPath, [
-					'md5',
-					'sha1',
-					'sha256'
-				]))
+				...(await calculateMultipleHashes(zipPath, ['md5', 'sha1', 'sha256']))
 			};
 		})
 	);

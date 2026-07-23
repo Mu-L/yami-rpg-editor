@@ -106,8 +106,7 @@ export class TextHistory implements IEditableHistory {
 		if (index >= 0 && index < this.stack.length) {
 			const input = this.input;
 			const data = this.stack[index];
-			const { deleted, inserted, lastStart, lastEnd, editingStart } =
-				data;
+			const { deleted, inserted, lastStart, lastEnd, editingStart } = data;
 
 			// 撤销或重做
 			let inputType;
@@ -177,10 +176,7 @@ export class TextHistory implements IEditableHistory {
 			this.lastEnd = input.selectionEnd;
 			this.editingStart = input.selectionStart;
 			if (input.selectionStart !== input.selectionEnd) {
-				this.deleted = input.value.slice(
-					input.selectionStart,
-					input.selectionEnd
-				);
+				this.deleted = input.value.slice(input.selectionStart, input.selectionEnd);
 			}
 		}
 		switch (inputType) {
@@ -202,10 +198,7 @@ export class TextHistory implements IEditableHistory {
 				}
 				break;
 			case 'deleteContentBackward':
-				if (
-					input.selectionStart > 0 &&
-					input.selectionStart === input.selectionEnd
-				) {
+				if (input.selectionStart > 0 && input.selectionStart === input.selectionEnd) {
 					const char = input.value[input.selectionStart - 1];
 					this.deleted = char + this.deleted;
 					this.editingStart--;
@@ -292,8 +285,7 @@ export class TextHistory implements IEditableHistory {
 			case 'replaceText':
 				if (
 					history.inputType !== null &&
-					(HistoryTimer.complete ||
-						HistoryTimer.type !== event.inputType)
+					(HistoryTimer.complete || HistoryTimer.type !== event.inputType)
 				) {
 					history.save();
 				}

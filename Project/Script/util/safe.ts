@@ -17,9 +17,7 @@ export function reportError(err: unknown, context?: string): void {
 	const message = `[Yami] ${context ?? '运行时错误'}: ${(err as Error)?.message ?? err}`;
 	console.error(message, err);
 	if (typeof window !== 'undefined') {
-		window.dispatchEvent(
-			new CustomEvent('yami:error', { detail: { message, error: err } })
-		);
+		window.dispatchEvent(new CustomEvent('yami:error', { detail: { message, error: err } }));
 	}
 }
 
@@ -51,9 +49,7 @@ export function debounce<T extends (...args: any[]) => void>(
 
 // rAF 节流：同一帧内的多次调用只在下一帧执行最后一次
 // 适用于滚动/拖动/连续输入等每帧至多重渲染一次的场景
-export function rafThrottle<T extends (...args: any[]) => void>(
-	fn: T
-): T & { cancel(): void } {
+export function rafThrottle<T extends (...args: any[]) => void>(fn: T): T & { cancel(): void } {
 	let handle: number | undefined;
 	let lastArgs: any[];
 	const throttled = function (this: any, ...args: any[]) {

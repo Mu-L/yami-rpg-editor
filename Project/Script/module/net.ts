@@ -22,8 +22,7 @@ const proxyRewrite = (url) => {
 const _axiosGet = axios.get;
 const _axiosPost = axios.post;
 axios.get = (url, config) => _axiosGet.call(axios, proxyRewrite(url), config);
-axios.post = (url, data, config) =>
-	_axiosPost.call(axios, proxyRewrite(url), data, config);
+axios.post = (url, data, config) => _axiosPost.call(axios, proxyRewrite(url), data, config);
 
 export const Net = new (class {
 	get = (url, config) => axios.get(url, config);
@@ -31,18 +30,10 @@ export const Net = new (class {
 	cancelQueue = [];
 
 	constructor() {
-		window.addEventListener('beforeunload', () =>
-			this.cancelAllDownloads()
-		);
+		window.addEventListener('beforeunload', () => this.cancelAllDownloads());
 	}
 
-	async downloadFileWithProgress({
-		url,
-		outputPath,
-		onProgress,
-		onCancelToken,
-		method = 'get'
-	}) {
+	async downloadFileWithProgress({ url, outputPath, onProgress, onCancelToken, method = 'get' }) {
 		const source = axios.CancelToken.source();
 
 		this.cancelQueue.push(source);
@@ -65,9 +56,7 @@ export const Net = new (class {
 			});
 
 			// 下载完成后从队列中移除
-			this.cancelQueue = this.cancelQueue.filter(
-				(item) => item !== source
-			);
+			this.cancelQueue = this.cancelQueue.filter((item) => item !== source);
 
 			if (outputPath) {
 				const arrayBuffer = await response.data.arrayBuffer();
@@ -79,9 +68,7 @@ export const Net = new (class {
 			}
 		} catch (err) {
 			// 无论成功或失败都从队列中移除
-			this.cancelQueue = this.cancelQueue.filter(
-				(item) => item !== source
-			);
+			this.cancelQueue = this.cancelQueue.filter((item) => item !== source);
 
 			if (axios.isCancel(err)) {
 				console.log('下载已取消：', err.message);

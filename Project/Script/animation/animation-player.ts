@@ -315,11 +315,8 @@ Animation.Player = class AnimationPlayer {
 		}
 		const lastFrame = length - 1;
 		this.length = length;
-		this.loopStart = motion.loop
-			? Math.min(motion.loopStart, lastFrame)
-			: 0;
-		this.end =
-			motion.skip && this.loopStart < lastFrame ? lastFrame : length;
+		this.loopStart = motion.loop ? Math.min(motion.loopStart, lastFrame) : 0;
+		this.end = motion.skip && this.loopStart < lastFrame ? lastFrame : length;
 	}
 
 	// 发射粒子
@@ -779,10 +776,7 @@ Animation.Player = class AnimationPlayer {
 			scaleY = scaleY * reverse + next.scaleY * time;
 			opacity = opacity * reverse + next.opacity * time;
 		}
-		matrix
-			.translate(positionX, positionY)
-			.rotate(Math.radians(rotation))
-			.scale(scaleX, scaleY);
+		matrix.translate(positionX, positionY).rotate(Math.radians(rotation)).scale(scaleX, scaleY);
 		this.opacity *= opacity;
 		this.frame = frame;
 	}
@@ -807,11 +801,7 @@ Animation.Player = class AnimationPlayer {
 			pivotX = pivotX * reverse + next.pivotX * time;
 			pivotY = pivotY * reverse + next.pivotY * time;
 			red = Math.clamp(red * reverse + next.tint[0] * time, -255, 255);
-			green = Math.clamp(
-				green * reverse + next.tint[1] * time,
-				-255,
-				255
-			);
+			green = Math.clamp(green * reverse + next.tint[1] * time, -255, 255);
 			blue = Math.clamp(blue * reverse + next.tint[2] * time, -255, 255);
 			gray = Math.clamp(gray * reverse + next.tint[3] * time, 0, 255);
 		}

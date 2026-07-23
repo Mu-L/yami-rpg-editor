@@ -7,15 +7,7 @@ import Mime from 'mime-types';
 import QRCode from 'qrcode';
 import ExcelJS from 'exceljs';
 import * as apkProcessor from './apk.js';
-import {
-	app,
-	Menu,
-	BrowserWindow,
-	ipcMain,
-	dialog,
-	shell,
-	session
-} from 'electron';
+import { app, Menu, BrowserWindow, ipcMain, dialog, shell, session } from 'electron';
 import fs from 'fs';
 import { spawn } from 'child_process';
 import path from 'path';
@@ -45,9 +37,7 @@ for (const arg of process.argv) {
 // prod 模式（start:prod）不传此参数，走 dist/index.html（vite build 产物）。
 // 注：判据须用 devServerUrl 存在性——不能用 debug（--debug-mode 触发与 dev/prod 无关），
 // 否则 start:prod 腹本带 --debug-mode 时误判走 dev URL 致空白页
-const devServerUrl = process.argv
-	.find((arg) => arg.startsWith('--dev-server-url='))
-	?.split('=')[1];
+const devServerUrl = process.argv.find((arg) => arg.startsWith('--dev-server-url='))?.split('=')[1];
 const VITE_DEV_URL = devServerUrl || 'http://localhost:5173';
 const useViteDev = !!devServerUrl;
 const generate32bit = () => {
@@ -239,8 +229,7 @@ ipcMain.handle('from-excel', async (event) => {
 				Object.keys(colMap).forEach((key) => {
 					if (!['ID', 'Name', 'parentID', 'isDir'].includes(key)) {
 						const cellValue = row.getCell(colMap[key]).value;
-						rowData.contents[key] =
-							cellValue !== null ? cellValue : '';
+						rowData.contents[key] = cellValue !== null ? cellValue : '';
 					}
 				});
 			}
@@ -452,10 +441,7 @@ const createEditorWindow = function () {
 			nodeIntegration: true,
 			contextIsolation: false,
 			spellcheck: false,
-			additionalArguments: [
-				'--disable-security-warnings',
-				...(debug ? ['--debug-mode'] : [])
-			]
+			additionalArguments: ['--disable-security-warnings', ...(debug ? ['--debug-mode'] : [])]
 		}
 	});
 
@@ -479,10 +465,7 @@ const createEditorWindow = function () {
 	editor.on('leave-full-screen', () => editor.send('leave-full-screen'));
 
 	// 加载配置文件并设置缩放系数
-	const configPath = path.resolve(
-		path.join(os.homedir(), '.openyami'),
-		'config.json'
-	);
+	const configPath = path.resolve(path.join(os.homedir(), '.openyami'), 'config.json');
 	const promise = FSP.readFile(configPath);
 	editor.once('ready-to-show', () => {
 		// 窗口最大化
@@ -595,26 +578,14 @@ const createEditorWindow = function () {
 		let exeDir;
 		try {
 			// 尝试通过 require.resolve 解析平台包路径
-			const packageJsonPath = require.resolve(
-				platformPackageName + '/package.json'
-			);
+			const packageJsonPath = require.resolve(platformPackageName + '/package.json');
 			exeDir = path.join(path.dirname(packageJsonPath), 'lib');
 		} catch {
 			try {
-				const nativePreviewDir = path.dirname(
-					require.resolve('typescript/package.json')
-				);
-				exeDir = path.join(
-					nativePreviewDir,
-					'..',
-					expectedPackage,
-					'lib'
-				);
+				const nativePreviewDir = path.dirname(require.resolve('typescript/package.json'));
+				exeDir = path.join(nativePreviewDir, '..', expectedPackage, 'lib');
 			} catch {
-				const nodeModulesDir = path.resolve(
-					__dirname,
-					'../node_modules'
-				);
+				const nodeModulesDir = path.resolve(__dirname, '../node_modules');
 				exeDir = path.join(nodeModulesDir, platformPackageName, 'lib');
 			}
 		}
@@ -982,10 +953,7 @@ ipcMain.handle('relaunch-app', async (event) => {
 			return await new Promise((resolve) => {
 				// 监听窗口关闭完成
 				currentPlayerWindow.once('closed', () => {
-					currentPlayerWindow = createPlayerWindow(
-						window,
-						currentprojectPath
-					);
+					currentPlayerWindow = createPlayerWindow(window, currentprojectPath);
 					resolve({ success: true });
 				});
 				currentPlayerWindow.destroy();

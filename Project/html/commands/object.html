@@ -3,16 +3,9 @@
 	<content-frame>
 		<grid-box>
 			<text>Object</text
-			><custom-box
-				id="createObject-presetId"
-				type="preset-object"
-				filter="any"
-			></custom-box>
+			><custom-box id="createObject-presetId" type="preset-object" filter="any"></custom-box>
 			<text>Position</text
-			><custom-box
-				id="createObject-position"
-				type="position"
-			></custom-box>
+			><custom-box id="createObject-position" type="position"></custom-box>
 		</grid-box>
 		<button id="createObject-confirm" name="confirm">Confirm</button>
 		<button id="createObject-cancel" name="cancel">Cancel</button>
@@ -22,12 +15,9 @@
 	<title-bar>Move Light<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Light</text
-			><custom-box id="moveLight-light" type="light"></custom-box>
-			<text>Properties</text
-			><param-list id="moveLight-properties"></param-list>
-			<text>Easing</text
-			><select-box id="moveLight-easingId" name="easing"></select-box>
+			<text>Light</text><custom-box id="moveLight-light" type="light"></custom-box>
+			<text>Properties</text><param-list id="moveLight-properties"></param-list>
+			<text>Easing</text><select-box id="moveLight-easingId" name="easing"></select-box>
 			<text>Duration</text
 			><number-box
 				id="moveLight-duration"
@@ -36,8 +26,7 @@
 				max="3600000"
 				unit="ms"
 			></number-box>
-			<text>Wait</text
-			><select-box id="moveLight-wait" name="wait"></select-box>
+			<text>Wait</text><select-box id="moveLight-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="moveLight-confirm" name="confirm">Confirm</button>
 		<button id="moveLight-cancel" name="cancel">Cancel</button>
@@ -47,8 +36,7 @@
 	<title-bar>Delete Object<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Object</text
-			><custom-box id="deleteObject-object" type="object"></custom-box>
+			<text>Object</text><custom-box id="deleteObject-object" type="object"></custom-box>
 		</grid-box>
 		<button id="deleteObject-confirm" name="confirm">Confirm</button>
 		<button id="deleteObject-cancel" name="cancel">Cancel</button>
@@ -58,16 +46,9 @@
 	<title-bar>Set State<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>State</text
-			><custom-box id="setState-state" type="state"></custom-box>
-			<text>Operation</text
-			><select-box id="setState-operation"></select-box> <text>Time</text
-			><number-var
-				id="setState-time"
-				min="0"
-				max="36000000"
-				unit="ms"
-			></number-var>
+			<text>State</text><custom-box id="setState-state" type="state"></custom-box>
+			<text>Operation</text><select-box id="setState-operation"></select-box> <text>Time</text
+			><number-var id="setState-time" min="0" max="36000000" unit="ms"></number-var>
 		</grid-box>
 		<button id="setState-confirm" name="confirm">Confirm</button>
 		<button id="setState-cancel" name="cancel">Cancel</button>
@@ -77,30 +58,14 @@
 	<title-bar>Play Animation<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Mode</text><select-box id="playAnimation-mode"></select-box>
-			<text>Position</text
-			><custom-box
-				id="playAnimation-position"
-				type="position"
-			></custom-box>
-			<text>Actor</text
-			><custom-box id="playAnimation-actor" type="actor"></custom-box>
-			<text>Animation</text
-			><custom-box
-				id="playAnimation-animationId"
-				type="file"
-				filter="animation"
-			></custom-box>
-			<text>Motion</text
-			><select-box id="playAnimation-motion"></select-box>
-			<text>Rotatable</text
-			><select-box id="playAnimation-rotatable"></select-box>
+			<text>Mode</text><select-box id="playAnimation-mode"></select-box> <text>Position</text
+			><custom-box id="playAnimation-position" type="position"></custom-box> <text>Actor</text
+			><custom-box id="playAnimation-actor" type="actor"></custom-box> <text>Animation</text
+			><custom-box id="playAnimation-animationId" type="file" filter="animation"></custom-box>
+			<text>Motion</text><select-box id="playAnimation-motion"></select-box>
+			<text>Rotatable</text><select-box id="playAnimation-rotatable"></select-box>
 			<text>Priority</text
-			><number-box
-				id="playAnimation-priority"
-				min="-100"
-				max="100"
-			></number-box>
+			><number-box id="playAnimation-priority" min="-100" max="100"></number-box>
 			<text>Offset Y</text
 			><number-var
 				id="playAnimation-offsetY"
@@ -124,8 +89,7 @@
 				step="0.1"
 				decimals="4"
 			></number-var>
-			<text>Wait</text
-			><select-box id="playAnimation-wait" name="wait"></select-box>
+			<text>Wait</text><select-box id="playAnimation-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="playAnimation-confirm" name="confirm">Confirm</button>
 		<button id="playAnimation-cancel" name="cancel">Cancel</button>
@@ -135,53 +99,21 @@
 	<title-bar>Set Object Animation<close></close></title-bar>
 	<content-frame>
 		<grid-box id="setObjectAnimation-grid-box">
-			<text>Sort</text
-			><select-box id="setObjectAnimation-sort"></select-box>
-			<text>Actor</text
-			><custom-box
-				id="setObjectAnimation-actor"
-				type="actor"
-			></custom-box>
+			<text>Sort</text><select-box id="setObjectAnimation-sort"></select-box>
+			<text>Actor</text><custom-box id="setObjectAnimation-actor" type="actor"></custom-box>
 			<text>Trigger</text
-			><custom-box
-				id="setObjectAnimation-trigger"
-				type="trigger"
-			></custom-box>
+			><custom-box id="setObjectAnimation-trigger" type="trigger"></custom-box>
 			<text>Animation</text
-			><custom-box
-				id="setObjectAnimation-animation"
-				type="object"
-			></custom-box>
-			<text>Operation</text
-			><select-box id="setObjectAnimation-operation"></select-box>
+			><custom-box id="setObjectAnimation-animation" type="object"></custom-box>
+			<text>Operation</text><select-box id="setObjectAnimation-operation"></select-box>
 			<text>Tint - Red</text
-			><number-box
-				id="setObjectAnimation-tint-0"
-				min="-255"
-				max="255"
-				step="5"
-			></number-box>
+			><number-box id="setObjectAnimation-tint-0" min="-255" max="255" step="5"></number-box>
 			<text>Tint - Green</text
-			><number-box
-				id="setObjectAnimation-tint-1"
-				min="-255"
-				max="255"
-				step="5"
-			></number-box>
+			><number-box id="setObjectAnimation-tint-1" min="-255" max="255" step="5"></number-box>
 			<text>Tint - Blue</text
-			><number-box
-				id="setObjectAnimation-tint-2"
-				min="-255"
-				max="255"
-				step="5"
-			></number-box>
+			><number-box id="setObjectAnimation-tint-2" min="-255" max="255" step="5"></number-box>
 			<text>Tint - Grayscale</text
-			><number-box
-				id="setObjectAnimation-tint-3"
-				min="0"
-				max="255"
-				step="5"
-			></number-box>
+			><number-box id="setObjectAnimation-tint-3" min="0" max="255" step="5"></number-box>
 			<text>Opacity</text
 			><number-var
 				id="setObjectAnimation-opacity"
@@ -207,10 +139,7 @@
 				decimals="4"
 			></number-var>
 			<text>Easing</text
-			><select-box
-				id="setObjectAnimation-easingId"
-				name="easing"
-			></select-box>
+			><select-box id="setObjectAnimation-easingId" name="easing"></select-box>
 			<text>Duration</text
 			><number-box
 				id="setObjectAnimation-duration"
@@ -219,8 +148,7 @@
 				max="3600000"
 				unit="ms"
 			></number-box>
-			<text>Wait</text
-			><select-box id="setObjectAnimation-wait" name="wait"></select-box>
+			<text>Wait</text><select-box id="setObjectAnimation-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="setObjectAnimation-confirm" name="confirm">Confirm</button>
 		<button id="setObjectAnimation-cancel" name="cancel">Cancel</button>

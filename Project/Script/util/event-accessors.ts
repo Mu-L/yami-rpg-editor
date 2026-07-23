@@ -20,11 +20,7 @@ Object.defineProperties(Event.prototype, {
 		get:
 			process.platform === 'darwin'
 				? function () {
-						return (
-							this.metaKey &&
-							this.shiftKey &&
-							this.code === 'KeyZ'
-						);
+						return this.metaKey && this.shiftKey && this.code === 'KeyZ';
 					}
 				: function () {
 						return false;

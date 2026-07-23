@@ -44,9 +44,7 @@ export class EnumerationContext extends TreeDataContext {
 					}
 					const name = GameLocal.replace(string.name);
 					item.name = name;
-					item.tip = string.note
-						? Local.parseTip(string.note, name)
-						: undefined;
+					item.tip = string.note ? Local.parseTip(string.note, name) : undefined;
 					items.push(item);
 				}
 			}
@@ -77,9 +75,7 @@ export class EnumerationContext extends TreeDataContext {
 					}
 					const name = GameLocal.replace(string.name);
 					item.name = name;
-					item.tip = string.note
-						? Local.parseTip(string.note, name)
-						: undefined;
+					item.tip = string.note ? Local.parseTip(string.note, name) : undefined;
 					items.push(item);
 				}
 			}

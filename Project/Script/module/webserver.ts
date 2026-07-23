@@ -82,9 +82,7 @@ export const WebServer = new (class {
 				}
 			})
 			.then(() => {
-				Editor.config.dialogs.deploy = Path.slash(
-					Path.resolve(location)
-				);
+				Editor.config.dialogs.deploy = Path.slash(Path.resolve(location));
 			})
 			.catch((error) => {
 				Log.throw(error);

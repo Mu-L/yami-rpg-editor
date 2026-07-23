@@ -37,28 +37,18 @@ Command.cases.setShortcut = new CommandSchema({
 			.push(Local.get('command.setShortcut.' + operation));
 		switch (operation) {
 			case 'set-item-shortcut': {
-				words.push(
-					shortcutKey +
-						Token(' = ') +
-						Command.parseVariableFile(itemId)
-				);
+				words.push(shortcutKey + Token(' = ') + Command.parseVariableFile(itemId));
 				break;
 			}
 			case 'set-skill-shortcut':
-				words.push(
-					shortcutKey +
-						Token(' = ') +
-						Command.parseVariableFile(skillId)
-				);
+				words.push(shortcutKey + Token(' = ') + Command.parseVariableFile(skillId));
 				break;
 			case 'delete-shortcut':
 				words.push(shortcutKey);
 				break;
 			case 'swap-shortcuts':
 				words.push(
-					shortcutKey +
-						Token(' <-> ') +
-						Command.parseVariableEnum('shortcut-key', key2)
+					shortcutKey + Token(' <-> ') + Command.parseVariableEnum('shortcut-key', key2)
 				);
 				break;
 		}

@@ -13,10 +13,7 @@ export const measureText = (function IIFE() {
 	const cache = new Map<string, { width: number; lines: number }>();
 	const MAX_CACHE = 4096;
 	const MAX_CACHE_TEXT = 256;
-	return function (
-		text: string,
-		font = ''
-	): { width: number; lines: number } {
+	return function (text: string, font = ''): { width: number; lines: number } {
 		const cacheable = text.length <= MAX_CACHE_TEXT;
 		const key = font + ' ' + text;
 		const cached = cacheable ? cache.get(key) : undefined;
@@ -87,14 +84,10 @@ export const getElementReader = function (prefix: string) {
 };
 
 // 获取元素写入器
-export const getElementWriter = function (
-	prefix: string,
-	bindingObject?: Record<string, any>
-) {
+export const getElementWriter = function (prefix: string, bindingObject?: Record<string, any>) {
 	return function (suffix: string | number, value?: any): void {
 		if (value === undefined) {
-			const nodes =
-				typeof suffix === 'string' ? suffix.split('-') : [suffix];
+			const nodes = typeof suffix === 'string' ? suffix.split('-') : [suffix];
 			value = bindingObject;
 			for (const node of nodes) {
 				value = value[node];

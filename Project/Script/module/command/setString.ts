@@ -159,11 +159,7 @@ import { Variable } from '../../variable/variable.ts';
 			.enableHiddenMode()
 			.relate([
 				{
-					case: [
-						'actor-team-id',
-						'actor-file-id',
-						'actor-animation-motion-name'
-					],
+					case: ['actor-team-id', 'actor-file-id', 'actor-animation-motion-name'],
 					targets: [$('#setString-operand-common-actor')]
 				},
 				{
@@ -213,9 +209,7 @@ import { Variable } from '../../variable/variable.ts';
 			.relate([
 				{
 					case: 'showChoices-content',
-					targets: [
-						$('#setString-operand-showChoices-content-choiceIndex')
-					]
+					targets: [$('#setString-operand-showChoices-content-choiceIndex')]
 				},
 				{
 					case: 'parse-timestamp',
@@ -249,14 +243,7 @@ import { Variable } from '../../variable/variable.ts';
 		switch (method) {
 			case 'char': {
 				const index = Command.parseVariableNumber(operand.index);
-				return (
-					methodName +
-					Token('(') +
-					varName +
-					Token(', ') +
-					index +
-					Token(')')
-				);
+				return methodName + Token('(') + varName + Token(', ') + index + Token(')');
 			}
 			case 'slice': {
 				const begin = Command.parseVariableNumber(operand.begin);
@@ -289,9 +276,7 @@ import { Variable } from '../../variable/variable.ts';
 			case 'replace':
 			case 'replace-all': {
 				const pattern = Command.parseVariableString(operand.pattern);
-				const replacement = Command.parseVariableString(
-					operand.replacement
-				);
+				const replacement = Command.parseVariableString(operand.replacement);
 				return (
 					methodName +
 					Token('(') +
@@ -306,9 +291,7 @@ import { Variable } from '../../variable/variable.ts';
 		}
 	},
 	parseObjectProperty(operand: any) {
-		const property = Local.get(
-			'command.setString.object.' + operand.property
-		);
+		const property = Local.get('command.setString.object.' + operand.property);
 		switch (operand.property) {
 			case 'actor-team-id':
 			case 'actor-file-id':
@@ -319,49 +302,27 @@ import { Variable } from '../../variable/variable.ts';
 					property.replace('.', Token('.'))
 				);
 			case 'skill-file-id':
-				return (
-					Command.parseSkill(operand.skill) + Token(' -> ') + property
-				);
+				return Command.parseSkill(operand.skill) + Token(' -> ') + property;
 			case 'trigger-file-id':
-				return (
-					Command.parseTrigger(operand.trigger) +
-					Token(' -> ') +
-					property
-				);
+				return Command.parseTrigger(operand.trigger) + Token(' -> ') + property;
 			case 'state-file-id':
-				return (
-					Command.parseState(operand.state) + Token(' -> ') + property
-				);
+				return Command.parseState(operand.state) + Token(' -> ') + property;
 			case 'equipment-file-id':
 			case 'equipment-slot':
-				return (
-					Command.parseEquipment(operand.equipment) +
-					Token(' -> ') +
-					property
-				);
+				return Command.parseEquipment(operand.equipment) + Token(' -> ') + property;
 			case 'item-file-id':
-				return (
-					Command.parseItem(operand.item) + Token(' -> ') + property
-				);
+				return Command.parseItem(operand.item) + Token(' -> ') + property;
 			case 'file-id':
-				return (
-					Command.parseFileName(operand.fileId) +
-					Token(' -> ') +
-					property
-				);
+				return Command.parseFileName(operand.fileId) + Token(' -> ') + property;
 		}
 	},
 	parseElementProperty(operand: any) {
 		const element = Command.parseElement(operand.element);
-		const property = Local.get(
-			'command.setString.element.' + operand.property
-		);
+		const property = Local.get('command.setString.element.' + operand.property);
 		return element + Token(' -> ') + property.replace('.', Token('.'));
 	},
 	parseOther(operand: any) {
-		const label = Local.get(
-			'command.setString.other.' + operand.data
-		).replace('.', Token('.'));
+		const label = Local.get('command.setString.other.' + operand.data).replace('.', Token('.'));
 		switch (operand.data) {
 			case 'trigger-key':
 			case 'start-position-scene-id':
@@ -372,14 +333,9 @@ import { Variable } from '../../variable/variable.ts';
 			case 'showChoices-content-1':
 			case 'showChoices-content-2':
 			case 'showChoices-content-3': {
-				const label = Local.get(
-					'command.setString.other.showChoices-content'
-				);
+				const label = Local.get('command.setString.other.showChoices-content');
 				return (
-					label +
-					Token('[') +
-					Command.setNumberColor(operand.data.slice(-1)) +
-					Token(']')
+					label + Token('[') + Command.setNumberColor(operand.data.slice(-1)) + Token(']')
 				);
 			}
 			case 'showChoices-content':
@@ -390,40 +346,21 @@ import { Variable } from '../../variable/variable.ts';
 					Token(']')
 				);
 			case 'parse-timestamp': {
-				const variable = Command.parseVariable(
-					operand.variable,
-					'number'
-				);
+				const variable = Command.parseVariable(operand.variable, 'number');
 				const format = Command.parseVariableString(operand.format);
-				return (
-					label +
-					Token('(') +
-					variable +
-					Token(', ') +
-					format +
-					Token(')')
-				);
+				return label + Token('(') + variable + Token(', ') + format + Token(')');
 			}
 			case 'screenshot': {
 				const width = Command.setNumberColor(operand.width);
 				const height = Command.setNumberColor(operand.height);
-				return (
-					label +
-					Token('(') +
-					width +
-					Token(', ') +
-					height +
-					Token(')')
-				);
+				return label + Token('(') + width + Token(', ') + height + Token(')');
 			}
 		}
 	},
 	parseOperand(operand: any) {
 		switch (operand.type) {
 			case 'constant':
-				return Command.setStringColor(
-					`"${Command.parseMultiLineString(operand.value)}"`
-				);
+				return Command.setStringColor(`"${Command.parseMultiLineString(operand.value)}"`);
 			case 'template':
 				return Command.parseVariableTemplate(operand.value);
 			case 'variable':
@@ -449,14 +386,8 @@ import { Variable } from '../../variable/variable.ts';
 		}
 	},
 	customParse({ variable, operation, operand }) {
-		const varDesc = Command.parseVariable(
-			variable,
-			'string',
-			operation === 'set'
-		);
-		const operator = Command.setOperatorColor(
-			this.parseOperation(operation)
-		);
+		const varDesc = Command.parseVariable(variable, 'string', operation === 'set');
+		const operator = Command.setOperatorColor(this.parseOperation(operation));
 		const expression = this.parseOperand(operand);
 		return [
 			{ color: 'variable' },
@@ -518,8 +449,7 @@ import { Variable } from '../../variable/variable.ts';
 				stringPadStartLength = operand.length ?? stringPadStartLength;
 				stringPadStartPad = operand.pad ?? stringPadStartPad;
 				stringReplacePattern = operand.pattern ?? stringReplacePattern;
-				stringReplaceReplacement =
-					operand.replacement ?? stringReplaceReplacement;
+				stringReplaceReplacement = operand.replacement ?? stringReplaceReplacement;
 				break;
 			case 'attribute':
 				attributeId = operand.attributeId;
@@ -563,8 +493,7 @@ import { Variable } from '../../variable/variable.ts';
 				}
 				otherData = operand.data;
 				showChoicesIndex = operand.choiceIndex ?? showChoicesIndex;
-				parseTimestampVariable =
-					operand.variable ?? parseTimestampVariable;
+				parseTimestampVariable = operand.variable ?? parseTimestampVariable;
 				parseTimestampFormat = operand.format ?? parseTimestampFormat;
 				screenshotWidth = operand.width ?? screenshotWidth;
 				screenshotHeight = operand.height ?? screenshotHeight;
@@ -659,13 +588,9 @@ import { Variable } from '../../variable/variable.ts';
 					case 'replace-all': {
 						const pattern = read('operand-string-replace-pattern');
 						if (pattern === '') {
-							return $(
-								'#setString-operand-string-replace-pattern'
-							).getFocus();
+							return $('#setString-operand-string-replace-pattern').getFocus();
 						}
-						const replacement = read(
-							'operand-string-replace-replacement'
-						);
+						const replacement = read('operand-string-replace-replacement');
 						operand = {
 							type,
 							method,
@@ -681,9 +606,7 @@ import { Variable } from '../../variable/variable.ts';
 			case 'attribute': {
 				const attributeId = read('operand-attribute-attributeId');
 				if (attributeId === '') {
-					return $(
-						'#setString-operand-attribute-attributeId'
-					).getFocus();
+					return $('#setString-operand-attribute-attributeId').getFocus();
 				}
 				operand = { type, attributeId };
 				break;
@@ -735,9 +658,7 @@ import { Variable } from '../../variable/variable.ts';
 					case 'file-id': {
 						const fileId = read('operand-object-fileId');
 						if (fileId === '') {
-							return $(
-								'#setString-operand-object-fileId'
-							).getFocus();
+							return $('#setString-operand-object-fileId').getFocus();
 						}
 						operand = { type, property, fileId };
 						break;
@@ -780,21 +701,15 @@ import { Variable } from '../../variable/variable.ts';
 				const data = read('operand-other-data');
 				switch (data) {
 					case 'showChoices-content': {
-						const choiceIndex = read(
-							'operand-showChoices-content-choiceIndex'
-						);
+						const choiceIndex = read('operand-showChoices-content-choiceIndex');
 						operand = { type, data, choiceIndex };
 						break;
 					}
 					case 'parse-timestamp': {
-						const variable = read(
-							'operand-parse-timestamp-variable'
-						);
+						const variable = read('operand-parse-timestamp-variable');
 						const format = read('operand-parse-timestamp-format');
 						if (VariableGetter.isNone(variable)) {
-							return $(
-								'#setString-operand-parse-timestamp-variable'
-							).getFocus();
+							return $('#setString-operand-parse-timestamp-variable').getFocus();
 						}
 						operand = { type, data, variable, format };
 						break;

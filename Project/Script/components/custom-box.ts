@@ -173,9 +173,7 @@ export class CustomBox extends HTMLElement {
 	// 更新文件信息
 	updateFile(guid: string): void {
 		Command.invalid = false;
-		this.info.textContent = Command.removeTextTags(
-			Command.parseFileName(guid)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseFileName(guid));
 		if (Command.invalid) this.info.addClass('invalid');
 	}
 
@@ -205,9 +203,7 @@ export class CustomBox extends HTMLElement {
 	updateVariable(variable: any): void {
 		// 类型是独立变量，或存在变量键，则判定为有效变量
 		if (variable.type === 'self' || variable.key) {
-			this.info.textContent = Command.removeTextTags(
-				Command.parseVariable(variable)
-			);
+			this.info.textContent = Command.removeTextTags(Command.parseVariable(variable));
 		} else {
 			this.info.textContent = Local.get('common.none');
 		}
@@ -215,37 +211,27 @@ export class CustomBox extends HTMLElement {
 
 	// 更新全局变量信息
 	updateGlobalVariable(id: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseGlobalVariable(id)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseGlobalVariable(id));
 	}
 
 	// 更新角色信息
 	updateActor(actor: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseActor(actor)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseActor(actor));
 	}
 
 	// 更新技能信息
 	updateSkill(skill: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseSkill(skill)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseSkill(skill));
 	}
 
 	// 更新状态信息
 	updateState(state: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseState(state)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseState(state));
 	}
 
 	// 更新装备信息
 	updateEquipment(equipment: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseEquipment(equipment)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseEquipment(equipment));
 	}
 
 	// 更新物品信息
@@ -255,74 +241,54 @@ export class CustomBox extends HTMLElement {
 
 	// 更新位置信息
 	updatePosition(point: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parsePosition(point)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parsePosition(point));
 	}
 
 	// 更新角度信息
 	updateAngle(angle: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseAngle(angle)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseAngle(angle));
 	}
 
 	// 更新触发器信息
 	updateTrigger(trigger: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseTrigger(trigger)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseTrigger(trigger));
 	}
 
 	// 更新光源信息
 	updateLight(light: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseLight(light)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseLight(light));
 	}
 
 	// 更新区域信息
 	updateRegion(region: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseRegion(region)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseRegion(region));
 	}
 
 	// 更新瓦片地图信息
 	updateTilemap(tilemap: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseTilemap(tilemap)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseTilemap(tilemap));
 	}
 
 	// 更新场景对象信息
 	updateObject(object: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parseObject(object)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseObject(object));
 	}
 
 	// 更新元素信息
 	updateElement(element: any): void {
 		Command.invalid = false;
-		this.info.textContent = Command.removeTextTags(
-			Command.parseElement(element)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseElement(element));
 		if (Command.invalid) this.info.addClass('invalid');
 	}
 
 	// 更新预设对象信息
 	updatePresetObject(preset: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parsePresetObject(preset)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parsePresetObject(preset));
 	}
 
 	// 更新预设元素信息
 	updatePresetElement(preset: any): void {
-		this.info.textContent = Command.removeTextTags(
-			Command.parsePresetElement(preset)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parsePresetElement(preset));
 		if (Command.invalid) this.info.addClass('invalid');
 	}
 
@@ -337,9 +303,7 @@ export class CustomBox extends HTMLElement {
 	// 更新属性群组信息
 	updateAttributeGroup(groupId: string): void {
 		Command.invalid = false;
-		this.info.textContent = Command.removeTextTags(
-			Command.parseAttributeGroup(groupId)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseAttributeGroup(groupId));
 		if (Command.invalid) this.info.addClass('invalid');
 	}
 
@@ -361,9 +325,7 @@ export class CustomBox extends HTMLElement {
 	// 更新枚举群组信息
 	updateEnumGroup(groupId: string): void {
 		Command.invalid = false;
-		this.info.textContent = Command.removeTextTags(
-			Command.parseEnumGroup(groupId)
-		);
+		this.info.textContent = Command.removeTextTags(Command.parseEnumGroup(groupId));
 		if (Command.invalid) this.info.addClass('invalid');
 	}
 

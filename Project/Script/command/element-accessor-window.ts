@@ -75,10 +75,7 @@ ElementGetter.initialize = function (): void {
 		{ case: 'by-id', targets: [$('#elementGetter-presetId')] },
 		{
 			case: 'by-ancestor-and-id',
-			targets: [
-				$('#elementGetter-ancestor'),
-				$('#elementGetter-presetId')
-			]
+			targets: [$('#elementGetter-ancestor'), $('#elementGetter-presetId')]
 		},
 		{
 			case: ['by-index', 'by-button-index'],
@@ -99,10 +96,7 @@ ElementGetter.initialize = function (): void {
 };
 
 // 打开窗口
-ElementGetter.open = function (
-	this: ElementGetterShape,
-	target: ElementGetterTarget
-): void {
+ElementGetter.open = function (this: ElementGetterShape, target: ElementGetterTarget): void {
 	this.target = target;
 	Window.open('elementGetter');
 
@@ -139,21 +133,11 @@ ElementGetter.open = function (
 			variable = element.variable!;
 			break;
 	}
-	($('#elementGetter-type') as HTMLElement & { write(v: any): void }).write(
-		element.type
-	);
-	(
-		$('#elementGetter-ancestor') as HTMLElement & { write(v: any): void }
-	).write(ancestor);
-	(
-		$('#elementGetter-presetId') as HTMLElement & { write(v: any): void }
-	).write(presetId);
-	($('#elementGetter-index') as HTMLElement & { write(v: any): void }).write(
-		index
-	);
-	(
-		$('#elementGetter-variable') as HTMLElement & { write(v: any): void }
-	).write(variable);
+	($('#elementGetter-type') as HTMLElement & { write(v: any): void }).write(element.type);
+	($('#elementGetter-ancestor') as HTMLElement & { write(v: any): void }).write(ancestor);
+	($('#elementGetter-presetId') as HTMLElement & { write(v: any): void }).write(presetId);
+	($('#elementGetter-index') as HTMLElement & { write(v: any): void }).write(index);
+	($('#elementGetter-variable') as HTMLElement & { write(v: any): void }).write(variable);
 	($('#elementGetter-type') as HTMLElement & { getFocus(): void }).getFocus();
 };
 
@@ -174,10 +158,7 @@ ElementGetter.createDefaultForPlugin = function (): {
 };
 
 // 确定按钮 - 鼠标点击事件
-ElementGetter.confirm = function (
-	this: ElementGetterShape,
-	event: Event
-): void {
+ElementGetter.confirm = function (this: ElementGetterShape, event: Event): void {
 	const read = getElementReader('elementGetter');
 	const type = read('type');
 	let getter: any;

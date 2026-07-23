@@ -188,12 +188,8 @@ Team.packTeams = function () {
 		};
 	}
 	Data.teams.list = copies;
-	Data.teams.relations = Codec.encodeTeamData(
-		new Uint8Array(dRelations.buffer, 0, ri)
-	);
-	Data.teams.collisions = Codec.encodeTeamData(
-		new Uint8Array(dCollisions.buffer, 0, ri)
-	);
+	Data.teams.relations = Codec.encodeTeamData(new Uint8Array(dRelations.buffer, 0, ri));
+	Data.teams.collisions = Codec.encodeTeamData(new Uint8Array(dCollisions.buffer, 0, ri));
 	Data.createTeamMap();
 };
 
@@ -449,10 +445,7 @@ Team.list.delete = function (item) {
 		const get = Local.createGetter('confirmation');
 		Window.confirm(
 			{
-				message: get('deleteSingleFile').replace(
-					'<filename>',
-					item.name
-				)
+				message: get('deleteSingleFile').replace('<filename>', item.name)
 			},
 			[
 				{

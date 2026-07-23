@@ -333,8 +333,7 @@ UI.Button = class ButtonElement extends UI.Element {
 					// 鼠标悬停状态
 					this.image = this.hoverImage || this.normalImage;
 					this.color = this.hoverColor || this.normalColor;
-					this.clip =
-						(this.hoverImage && this.hoverClip) || this.normalClip;
+					this.clip = (this.hoverImage && this.hoverClip) || this.normalClip;
 					switch (this.imageEffect) {
 						case 'none':
 							break;
@@ -349,10 +348,8 @@ UI.Button = class ButtonElement extends UI.Element {
 					break;
 				case 'active':
 					// 鼠标按下状态
-					this.image =
-						this.activeImage || this.hoverImage || this.normalImage;
-					this.color =
-						this.activeColor || this.hoverColor || this.normalColor;
+					this.image = this.activeImage || this.hoverImage || this.normalImage;
+					this.color = this.activeColor || this.hoverColor || this.normalColor;
 					this.clip =
 						(this.activeImage && this.activeClip) ||
 						(this.hoverImage && this.hoverClip) ||

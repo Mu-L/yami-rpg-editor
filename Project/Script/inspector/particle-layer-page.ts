@@ -41,10 +41,7 @@ import { Texture } from '../webgl/texture.ts';
 			.relate([
 				{
 					case: 'point',
-					targets: [
-						$('#particleLayer-area-x'),
-						$('#particleLayer-area-y')
-					]
+					targets: [$('#particleLayer-area-x'), $('#particleLayer-area-y')]
 				},
 				{
 					case: 'rectangle',
@@ -121,10 +118,7 @@ import { Texture } from '../webgl/texture.ts';
 				},
 				{
 					case: 'random',
-					targets: [
-						$('#particleLayer-color-min-box'),
-						$('#particleLayer-color-max-box')
-					]
+					targets: [$('#particleLayer-color-min-box'), $('#particleLayer-color-max-box')]
 				},
 				{
 					case: 'easing',
@@ -148,18 +142,10 @@ import { Texture } from '../webgl/texture.ts';
 			]);
 
 		// 同步滑动框和数字框的数值
-		$('#particleLayer-color-tint-0-slider').synchronize(
-			$('#particleLayer-color-tint-0')
-		);
-		$('#particleLayer-color-tint-1-slider').synchronize(
-			$('#particleLayer-color-tint-1')
-		);
-		$('#particleLayer-color-tint-2-slider').synchronize(
-			$('#particleLayer-color-tint-2')
-		);
-		$('#particleLayer-color-tint-3-slider').synchronize(
-			$('#particleLayer-color-tint-3')
-		);
+		$('#particleLayer-color-tint-0-slider').synchronize($('#particleLayer-color-tint-0'));
+		$('#particleLayer-color-tint-1-slider').synchronize($('#particleLayer-color-tint-1'));
+		$('#particleLayer-color-tint-2-slider').synchronize($('#particleLayer-color-tint-2'));
+		$('#particleLayer-color-tint-3-slider').synchronize($('#particleLayer-color-tint-3'));
 
 		// 侦听事件
 		const elements = $(`#particleLayer-name,
@@ -289,24 +275,12 @@ import { Texture } from '../webgl/texture.ts';
 			this.target = layer;
 
 			// 创建过渡方式选项
-			$('#particleLayer-color-easingId').loadItems(
-				Data.createEasingItems()
-			);
+			$('#particleLayer-color-easingId').loadItems(Data.createEasingItems());
 
 			// 写入数据
 			const write = getElementWriter('particleLayer', layer);
 			const { area, color } = layer;
-			const {
-				rgba,
-				min,
-				max,
-				easingId,
-				startMin,
-				startMax,
-				endMin,
-				endMax,
-				tint
-			} = color;
+			const { rgba, min, max, easingId, startMin, startMax, endMin, endMax, tint } = color;
 			write('name');
 			write('area-type');
 			write('area-x', area.x ?? 0);
@@ -714,11 +688,7 @@ import { Texture } from '../webgl/texture.ts';
 
 	// 参数 - 输入事件
 	ParticleLayer.paramInput = function (event) {
-		ParticleLayer.update(
-			ParticleLayer.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		ParticleLayer.update(ParticleLayer.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.particleLayer = ParticleLayer;

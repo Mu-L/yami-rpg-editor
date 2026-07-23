@@ -24,10 +24,7 @@ Command.cases.setTerrain = new CommandSchema({
 			{ text: words.join() }
 		];
 	},
-	customLoad({
-		position = { type: 'absolute', x: 0, y: 0 },
-		terrain = 'land'
-	}) {
+	customLoad({ position = { type: 'absolute', x: 0, y: 0 }, terrain = 'land' }) {
 		const write = getElementWriter('setTerrain');
 		write('position', position);
 		write('terrain', terrain);

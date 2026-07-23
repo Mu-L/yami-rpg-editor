@@ -35,8 +35,7 @@ export class EmptyState extends HTMLElement {
 
 	_render(): void {
 		const iconAttr = this.getAttribute('icon');
-		const msg =
-			this.getAttribute('message') || this.getAttribute('label') || '';
+		const msg = this.getAttribute('message') || this.getAttribute('label') || '';
 		const iconEl = this.querySelector('.empty-icon');
 		const textEl = this.querySelector('.empty-text');
 		if (iconEl) {

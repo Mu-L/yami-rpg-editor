@@ -54,15 +54,8 @@ export class ScriptListInterface implements IScriptListInterface {
 		box.addClass('script-edit-button');
 		Command.invalid = false;
 		const scriptName = Command.parseFileName(script.id);
-		const scriptClass = Command.invalid
-			? 'invalid'
-			: script.enabled
-				? ''
-				: 'weak';
-		return [
-			{ content: Command.removeTextTags(scriptName), class: scriptClass },
-			box
-		];
+		const scriptClass = Command.invalid ? 'invalid' : script.enabled ? '' : 'weak';
+		return [{ content: Command.removeTextTags(scriptName), class: scriptClass }, box];
 	}
 
 	// 更新

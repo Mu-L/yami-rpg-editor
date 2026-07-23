@@ -255,9 +255,7 @@ export class SelectBox extends HTMLElement {
 				const entries = this.relations;
 				const value = this.dataValue;
 				const selection = entries.find((entry) =>
-					entry.case instanceof Array
-						? entry.case.includes(value)
-						: entry.case === value
+					entry.case instanceof Array ? entry.case.includes(value) : entry.case === value
 				);
 				const deferredList = [];
 				for (const entry of entries) {

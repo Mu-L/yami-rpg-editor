@@ -87,11 +87,7 @@ import { Inspector } from './inspector.ts';
 
 	// 参数 - 输入事件
 	AnimSoundLayer.paramInput = function (event) {
-		AnimSoundLayer.update(
-			AnimSoundLayer.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		AnimSoundLayer.update(AnimSoundLayer.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.animSoundLayer = AnimSoundLayer;

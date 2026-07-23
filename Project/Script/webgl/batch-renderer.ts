@@ -105,13 +105,7 @@ export class BatchRenderer {
 				}
 				const vLength = endIndex * attrSize;
 				if (vLength > 0) {
-					gl.bufferData(
-						gl.ARRAY_BUFFER,
-						vertices,
-						gl.STREAM_DRAW,
-						0,
-						vLength
-					);
+					gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STREAM_DRAW, 0, vLength);
 				}
 				gl.blend = blendMode;
 				gl.updateBlending();
@@ -122,18 +116,10 @@ export class BatchRenderer {
 					const end = queue[offset - 1] * 1.5;
 					for (let si = length - 1; si >= 0; si--) {
 						gl.activeTexture(gl.TEXTURE0 + si);
-						gl.bindTexture(
-							gl.TEXTURE_2D,
-							texMap[queue[qi + si]].glTexture
-						);
+						gl.bindTexture(gl.TEXTURE_2D, texMap[queue[qi + si]].glTexture);
 					}
 					gl.updateSamplerNum(length);
-					gl.drawElements(
-						gl.TRIANGLES,
-						end - start,
-						gl.UNSIGNED_INT,
-						start * 4
-					);
+					gl.drawElements(gl.TRIANGLES, end - start, gl.UNSIGNED_INT, start * 4);
 				}
 				queueIndex = 0;
 				startIndex = 0;

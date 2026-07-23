@@ -31,9 +31,7 @@ Command.cases.setLoop = new CommandSchema({
 		}
 	},
 	customParse({ type, loop }) {
-		const words = Command.words
-			.push(Command.parseAudioType(type))
-			.push(this.parseLoop(loop));
+		const words = Command.words.push(Command.parseAudioType(type)).push(this.parseLoop(loop));
 		return [
 			{ color: 'audio' },
 			{ text: Local.get('command.setLoop') + Token(': ') },

@@ -349,9 +349,7 @@ Localization.unpackLocalization = (function IIFE() {
 	return function () {
 		this.idMap = {};
 		this.data = clone(Data.localization.list);
-		this.languages = Data.config.localization.languages.map(
-			(lang) => lang.name
-		);
+		this.languages = Data.config.localization.languages.map((lang) => lang.name);
 	};
 })();
 
@@ -385,11 +383,7 @@ Localization.packLocalization = (function IIFE() {
 Localization.resizeTextArea = function (textarea) {
 	const shadowDOM = textarea.querySelector('textarea');
 	textarea.style.height = '0';
-	textarea.style.height = `${Math.clamp(
-		shadowDOM.scrollHeight + 11,
-		40,
-		200
-	)}px`;
+	textarea.style.height = `${Math.clamp(shadowDOM.scrollHeight + 11, 40, 200)}px`;
 };
 
 // 窗口 - 关闭事件
@@ -703,11 +697,7 @@ Localization.apply = function (event) {
 // 导入Excel按钮 - 鼠标点击事件
 Localization.fromExcel = async function (event) {
 	const items = await ipcRenderer.invoke('from-excel');
-	if (
-		JSON.stringify(items) == JSON.stringify(Data.localization.list) ||
-		!items.length
-	)
-		return;
+	if (JSON.stringify(items) == JSON.stringify(Data.localization.list) || !items.length) return;
 	Data.localization.list = items;
 	Localization.windowClose(event);
 	Localization.windowClosed(event);
@@ -751,10 +741,7 @@ Localization.list.delete = function (item) {
 		const get = Local.createGetter('confirmation');
 		Window.confirm(
 			{
-				message: get('deleteSingleFile').replace(
-					'<filename>',
-					item.name
-				)
+				message: get('deleteSingleFile').replace('<filename>', item.name)
 			},
 			[
 				{

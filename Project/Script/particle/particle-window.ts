@@ -757,17 +757,9 @@ Particle.updateCamera = function (x = this.centerX, y = this.centerY) {
 	const scrollY = y * this.scaleY + this.outerHeight / 2;
 	const toleranceForDPR = 0.0001;
 	screen.rawScrollLeft =
-		Math.clamp(
-			scrollX - this.centerOffsetX,
-			0,
-			this.outerWidth - GL.width
-		) / dpr;
+		Math.clamp(scrollX - this.centerOffsetX, 0, this.outerWidth - GL.width) / dpr;
 	screen.rawScrollTop =
-		Math.clamp(
-			scrollY - this.centerOffsetY,
-			0,
-			this.outerHeight - GL.height
-		) / dpr;
+		Math.clamp(scrollY - this.centerOffsetY, 0, this.outerHeight - GL.height) / dpr;
 	screen.scrollLeft = (scrollX - (GL.width >> 1) + toleranceForDPR) / dpr;
 	screen.scrollTop = (scrollY - (GL.height >> 1) + toleranceForDPR) / dpr;
 };
@@ -776,14 +768,8 @@ Particle.updateCamera = function (x = this.centerX, y = this.centerY) {
 Particle.updateTransform = function () {
 	const screen = this.screen;
 	const dpr = window.devicePixelRatio;
-	const left = Math.roundTo(
-		screen.scrollLeft * dpr - (this.outerWidth >> 1),
-		4
-	);
-	const top = Math.roundTo(
-		screen.scrollTop * dpr - (this.outerHeight >> 1),
-		4
-	);
+	const left = Math.roundTo(screen.scrollLeft * dpr - (this.outerWidth >> 1), 4);
+	const top = Math.roundTo(screen.scrollTop * dpr - (this.outerHeight >> 1), 4);
 	const right = left + GL.width;
 	const bottom = top + GL.height;
 	this.scrollLeft = left / this.scaleX;
@@ -796,14 +782,8 @@ Particle.updateTransform = function () {
 		.translate(-this.scrollLeft, -this.scrollTop);
 	const scrollX = screen.rawScrollLeft * dpr + this.centerOffsetX;
 	const scrollY = screen.rawScrollTop * dpr + this.centerOffsetY;
-	this.centerX = Math.roundTo(
-		(scrollX - this.outerWidth / 2) / this.scaleX,
-		4
-	);
-	this.centerY = Math.roundTo(
-		(scrollY - this.outerHeight / 2) / this.scaleY,
-		4
-	);
+	this.centerX = Math.roundTo((scrollX - this.outerWidth / 2) / this.scaleX, 4);
+	this.centerY = Math.roundTo((scrollY - this.outerHeight / 2) / this.scaleY, 4);
 };
 
 // 更新元素
@@ -911,9 +891,7 @@ Particle.drawEmitterWireframe = function () {
 	vertices[10] = T;
 	colors[11] = color;
 	const program = gl.graphicProgram.use();
-	const matrix = gl.matrix
-		.project(gl.flip, gl.width, gl.height)
-		.multiply(Particle.matrix);
+	const matrix = gl.matrix.project(gl.flip, gl.width, gl.height).multiply(Particle.matrix);
 	gl.bindVertexArray(program.vao);
 	gl.uniformMatrix3fv(program.u_Matrix, false, matrix);
 	gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STREAM_DRAW, 0, 12);
@@ -1009,9 +987,7 @@ Particle.drawAreaWireframe = function () {
 	}
 	if (vi !== 0) {
 		const program = gl.graphicProgram.use();
-		const matrix = gl.matrix
-			.project(gl.flip, gl.width, gl.height)
-			.multiply(Particle.matrix);
+		const matrix = gl.matrix.project(gl.flip, gl.width, gl.height).multiply(Particle.matrix);
 		gl.bindVertexArray(program.vao.a10);
 		gl.uniformMatrix3fv(program.u_Matrix, false, matrix);
 		gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STREAM_DRAW, 0, vi);
@@ -1621,12 +1597,8 @@ Particle.pointermove = function (event) {
 				}
 				const emitter = Particle.emitter;
 				const dpr = window.devicePixelRatio;
-				const distX =
-					((event.clientX - dragging.clientX) * dpr) /
-					Particle.scaleX;
-				const distY =
-					((event.clientY - dragging.clientY) * dpr) /
-					Particle.scaleY;
+				const distX = ((event.clientX - dragging.clientX) * dpr) / Particle.scaleX;
+				const distY = ((event.clientY - dragging.clientY) * dpr) / Particle.scaleY;
 				const x = Math.round(dragging.startX + distX);
 				const y = Math.round(dragging.startY + distY);
 				if (emitter.startX !== x || emitter.startY !== y) {
@@ -1639,10 +1611,7 @@ Particle.pointermove = function (event) {
 			case 'scroll': {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
-				Particle.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				Particle.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				break;
 			}
 		}

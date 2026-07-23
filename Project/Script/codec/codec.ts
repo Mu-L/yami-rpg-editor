@@ -53,11 +53,7 @@ Codec.encodeScene = function (scene) {
 // 解码场景
 Codec.decodeScene = function (scene) {
 	if (scene.terrainArray === undefined) {
-		const terrainArray = this.decodeTerrains(
-			scene.terrains,
-			scene.width,
-			scene.height
-		);
+		const terrainArray = this.decodeTerrains(scene.terrains, scene.width, scene.height);
 		Object.defineProperty(scene, 'terrainArray', {
 			writable: true,
 			value: terrainArray
@@ -109,11 +105,7 @@ Codec.encodeTilemap = function (tilemap) {
 
 // 解码瓦片地图
 Codec.decodeTilemap = function (tilemap) {
-	const tiles = Codec.decodeTiles(
-		tilemap.code,
-		tilemap.width,
-		tilemap.height
-	);
+	const tiles = Codec.decodeTiles(tilemap.code, tilemap.width, tilemap.height);
 	Object.defineProperty(tilemap, 'tiles', { writable: true, value: tiles });
 	Object.defineProperty(tilemap, 'changed', { writable: true, value: false });
 	Object.defineProperty(tilemap, 'reverseMap', { writable: true, value: {} });
@@ -258,10 +250,7 @@ Codec.encodeTerrains = function (terrains) {
 				BYTES[Bi++] = 126;
 				Bi = encodeClone(BYTES, Bi, blankCount);
 			}
-		} else if (
-			TERRAINS[Ti] === TERRAINS[Ti - 1] &&
-			TERRAINS[Ti] === TERRAINS[Ti + 1]
-		) {
+		} else if (TERRAINS[Ti] === TERRAINS[Ti - 1] && TERRAINS[Ti] === TERRAINS[Ti + 1]) {
 			let cloneCount = 2;
 			Ti += 2;
 			while (TERRAINS[Ti] === TERRAINS[Ti - 1]) {

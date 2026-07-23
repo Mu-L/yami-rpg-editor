@@ -43,8 +43,7 @@ Command.cases.playAnimation = new CommandSchema({
 	},
 	parseOffsetY(offsetY: any) {
 		let num;
-		if (typeof offsetY === 'number')
-			num = Command.setNumberColor(Math.abs(offsetY)) + 'px';
+		if (typeof offsetY === 'number') num = Command.setNumberColor(Math.abs(offsetY)) + 'px';
 		return typeof offsetY === 'number'
 			? offsetY > 0
 				? num
@@ -71,9 +70,7 @@ Command.cases.playAnimation = new CommandSchema({
 				break;
 			case 'actor': {
 				const bind = Local.get('command.playAnimation.bind');
-				words.push(
-					bind + Token('(') + Command.parseActor(actor) + Token(')')
-				);
+				words.push(bind + Token('(') + Command.parseActor(actor) + Token(')'));
 				break;
 			}
 		}

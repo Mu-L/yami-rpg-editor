@@ -33,28 +33,19 @@ Command.cases.setInventory = new CommandSchema({
 				},
 				{
 					case: ['increase-items', 'decrease-items'],
-					targets: [
-						$('#setInventory-itemId'),
-						$('#setInventory-quantity')
-					]
+					targets: [$('#setInventory-itemId'), $('#setInventory-quantity')]
 				},
 				{
 					case: ['gain-equipment', 'lose-equipment'],
 					targets: [$('#setInventory-equipmentId')]
 				},
 				{
-					case: [
-						'gain-equipment-instance',
-						'lose-equipment-instance'
-					],
+					case: ['gain-equipment-instance', 'lose-equipment-instance'],
 					targets: [$('#setInventory-equipment')]
 				},
 				{
 					case: 'swap',
-					targets: [
-						$('#setInventory-order1'),
-						$('#setInventory-order2')
-					]
+					targets: [$('#setInventory-order1'), $('#setInventory-order2')]
 				},
 				{ case: 'reference', targets: [$('#setInventory-refActor')] }
 			]);

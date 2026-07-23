@@ -282,19 +282,10 @@ export class Printer {
 		switch (effect.type) {
 			case 'none':
 				// 文字效果：无，负数x/y将会增加左/上的内边距
-				this.paddingLeft = Math.max(
-					paddingItalic / 4 - this.x,
-					this.paddingLeft
-				);
-				this.paddingTop = Math.max(
-					paddingVertical - this.y,
-					this.paddingTop
-				);
+				this.paddingLeft = Math.max(paddingItalic / 4 - this.x, this.paddingLeft);
+				this.paddingTop = Math.max(paddingVertical - this.y, this.paddingTop);
 				this.paddingRight = Math.max(paddingItalic, this.paddingRight);
-				this.paddingBottom = Math.max(
-					paddingVertical,
-					this.paddingBottom
-				);
+				this.paddingBottom = Math.max(paddingVertical, this.paddingBottom);
 				break;
 			case 'shadow': {
 				// 文字效果：阴影，根据阴影偏移方向来增加内边距
@@ -312,10 +303,7 @@ export class Printer {
 					shadowOffsetTop + paddingVertical - this.y,
 					this.paddingTop
 				);
-				this.paddingRight = Math.max(
-					shadowOffsetRight + paddingItalic,
-					this.paddingRight
-				);
+				this.paddingRight = Math.max(shadowOffsetRight + paddingItalic, this.paddingRight);
 				this.paddingBottom = Math.max(
 					shadowOffsetBottom + paddingVertical,
 					this.paddingBottom
@@ -324,45 +312,23 @@ export class Printer {
 			}
 			case 'stroke': {
 				// 文字效果：描边，上下左右增加描边宽度一半的内边距
-				const halfWidth =
-					Math.ceil(effect.strokeWidth / 2) * Printer.scale;
+				const halfWidth = Math.ceil(effect.strokeWidth / 2) * Printer.scale;
 				this.paddingLeft = Math.max(
 					halfWidth + paddingItalic / 4 - this.x,
 					this.paddingLeft
 				);
-				this.paddingTop = Math.max(
-					halfWidth + paddingVertical - this.y,
-					this.paddingTop
-				);
-				this.paddingRight = Math.max(
-					halfWidth + paddingItalic,
-					this.paddingRight
-				);
-				this.paddingBottom = Math.max(
-					halfWidth + paddingVertical,
-					this.paddingBottom
-				);
+				this.paddingTop = Math.max(halfWidth + paddingVertical - this.y, this.paddingTop);
+				this.paddingRight = Math.max(halfWidth + paddingItalic, this.paddingRight);
+				this.paddingBottom = Math.max(halfWidth + paddingVertical, this.paddingBottom);
 				break;
 			}
 			case 'outline': {
 				// 文字效果：轮廓，上下左右增加1px的内边距
 				const offset = Printer.scale;
-				this.paddingLeft = Math.max(
-					offset + paddingItalic / 4 - this.x,
-					this.paddingLeft
-				);
-				this.paddingTop = Math.max(
-					offset + paddingVertical - this.y,
-					this.paddingTop
-				);
-				this.paddingRight = Math.max(
-					offset + paddingItalic,
-					this.paddingRight
-				);
-				this.paddingBottom = Math.max(
-					offset + paddingVertical,
-					this.paddingBottom
-				);
+				this.paddingLeft = Math.max(offset + paddingItalic / 4 - this.x, this.paddingLeft);
+				this.paddingTop = Math.max(offset + paddingVertical - this.y, this.paddingTop);
+				this.paddingRight = Math.max(offset + paddingItalic, this.paddingRight);
+				this.paddingBottom = Math.max(offset + paddingVertical, this.paddingBottom);
 				break;
 			}
 		}
@@ -454,10 +420,8 @@ export class Printer {
 			this.wordWrap &&
 			this.breakable &&
 			(horizontal
-				? this.x + Printer.lineWidth + imageWidth >
-					this.getScaledPrintWidth()
-				: this.y + Printer.lineWidth + imageHeight >
-					this.getScaledPrintHeight())
+				? this.x + Printer.lineWidth + imageWidth > this.getScaledPrintWidth()
+				: this.y + Printer.lineWidth + imageHeight > this.getScaledPrintHeight())
 		) {
 			this.newLine();
 		}
@@ -487,8 +451,7 @@ export class Printer {
 		command.image = imageElement;
 		command.imageWidth = imageWidth;
 		command.imageHeight = imageHeight;
-		command.imageSpacing =
-			(horizontal ? imageWidth : imageHeight) + letterSpacing;
+		command.imageSpacing = (horizontal ? imageWidth : imageHeight) + letterSpacing;
 		command.drawingMethod = Function.empty;
 
 		// 重置属性(通用)
@@ -528,10 +491,8 @@ export class Printer {
 							const command = commands[index++];
 							command.x = x - lineHeight;
 							if (command.image) {
-								command.image.startX =
-									command.x / Printer.scale;
-								command.image.transform.x =
-									command.image.startX;
+								command.image.startX = command.x / Printer.scale;
+								command.image.transform.x = command.image.startX;
 							}
 						}
 						if (lineX !== undefined) {
@@ -540,11 +501,7 @@ export class Printer {
 						lineX = command.x;
 						lineHeight = 0;
 					}
-					lineHeight = Math.max(
-						lineHeight,
-						command.horizontalWidth,
-						command.imageWidth
-					);
+					lineHeight = Math.max(lineHeight, command.horizontalWidth, command.imageWidth);
 				}
 				while (index < length) {
 					// 最后一行文本的位置 = 右侧位置 - 行高
@@ -601,8 +558,7 @@ export class Printer {
 							(lineWidth -
 								command.y -
 								command.imageSpacing -
-								command.string.length *
-									(command.size + letterSpacing));
+								command.string.length * (command.size + letterSpacing));
 					}
 					command.y += lineY;
 					if (command.image) {
@@ -694,14 +650,10 @@ export class Printer {
 			this.breakable = false;
 			if (this.horizontal) {
 				this.x = 0;
-				this.y +=
-					(this.lineHeight || this.getScaledSize()) +
-					this.getScaledLineSpacing();
+				this.y += (this.lineHeight || this.getScaledSize()) + this.getScaledLineSpacing();
 				this.lineHeight = 0;
 			} else {
-				this.x +=
-					(this.lineHeight || this.getScaledSize()) +
-					this.getScaledLineSpacing();
+				this.x += (this.lineHeight || this.getScaledSize()) + this.getScaledLineSpacing();
 				this.y = 0;
 				this.lineHeight = 0;
 			}
@@ -770,18 +722,8 @@ export class Printer {
 			if (
 				truncate &&
 				(horizontal
-					? this.y +
-							Math.max(
-								this.lineHeight,
-								this.measureHeight(char)
-							) >
-						printHeight
-					: this.x +
-							Math.max(
-								this.lineHeight,
-								this.measureHeight(char)
-							) >
-						printWidth)
+					? this.y + Math.max(this.lineHeight, this.measureHeight(char)) > printHeight
+					: this.x + Math.max(this.lineHeight, this.measureHeight(char)) > printWidth)
 			) {
 				this.drawBuffer();
 				break;
@@ -791,13 +733,9 @@ export class Printer {
 			if (
 				wordWrap &&
 				(horizontal
-					? this.x +
-							Printer.lineWidth +
-							(charWidth = this.measureWidth(char)) >
+					? this.x + Printer.lineWidth + (charWidth = this.measureWidth(char)) >
 						printWidth
-					: this.y +
-							Printer.lineWidth +
-							(charWidth = this.measureWidth(char)) >
+					: this.y + Printer.lineWidth + (charWidth = this.measureWidth(char)) >
 						printHeight) &&
 				(this.breakable || this.buffer.length !== 0)
 			) {
@@ -872,10 +810,7 @@ export class Printer {
 			this.index += match[0].length;
 			return true;
 		}
-		if (
-			(match = string.match(regexps.colorRestore)) &&
-			this.colors.length > 1
-		) {
+		if ((match = string.match(regexps.colorRestore)) && this.colors.length > 1) {
 			this.drawBuffer();
 			this.colors.shift();
 			this.index += match[0].length;
@@ -889,10 +824,7 @@ export class Printer {
 			this.index += match[0].length;
 			return true;
 		}
-		if (
-			(match = string.match(regexps.fontRestore)) &&
-			this.fonts.length > 1
-		) {
+		if ((match = string.match(regexps.fontRestore)) && this.fonts.length > 1) {
 			this.drawBuffer();
 			this.fonts.shift();
 			this.updateFont();
@@ -906,10 +838,7 @@ export class Printer {
 			this.index += match[0].length;
 			return true;
 		}
-		if (
-			(match = string.match(regexps.italicRestore)) &&
-			this.styles.length > 1
-		) {
+		if ((match = string.match(regexps.italicRestore)) && this.styles.length > 1) {
 			this.drawBuffer();
 			this.styles.shift();
 			this.updateFont();
@@ -923,10 +852,7 @@ export class Printer {
 			this.index += match[0].length;
 			return true;
 		}
-		if (
-			(match = string.match(regexps.boldRestore)) &&
-			this.weights.length > 1
-		) {
+		if ((match = string.match(regexps.boldRestore)) && this.weights.length > 1) {
 			this.drawBuffer();
 			this.weights.shift();
 			this.updateFont();
@@ -941,10 +867,7 @@ export class Printer {
 			this.index += match[0].length;
 			return true;
 		}
-		if (
-			(match = string.match(regexps.fontSizeRestore)) &&
-			this.sizes.length > 1
-		) {
+		if ((match = string.match(regexps.fontSizeRestore)) && this.sizes.length > 1) {
 			this.drawBuffer();
 			this.sizes.shift();
 			this.updateFont();
@@ -957,11 +880,7 @@ export class Printer {
 			const value = parseInt(match[3]);
 			this.drawBuffer();
 			const position =
-				operation === 'set'
-					? value
-					: operation === 'add'
-						? this[axis] + value
-						: null;
+				operation === 'set' ? value : operation === 'add' ? this[axis] + value : null;
 			this[axis] = Math.max(position, 0);
 			this.index += match[0].length;
 			return true;
@@ -1129,8 +1048,7 @@ export class Printer {
 		// 结束描边效果
 		textStrokeRestore: /^<\/stroke>$/i,
 		// 使用轮廓效果: [1]:R(00-ff), [2]:G(00-ff), [3]:B(00-ff), [4]:A(00-ff)(可选)
-		textOutline:
-			/^<outline:([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})?>$/i,
+		textOutline: /^<outline:([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})?>$/i,
 		// 结束轮廓效果
 		textOutlineRestore: /^<\/outline>$/i,
 		// 使用指定图像: [1]:GUID(16个字符), [2]:参数1(0-10000)(可选), [3]:参数2(0-10000)(可选), [4]:参数1(0-10000)(可选), [5]:参数2(0-10000)(可选), [6]:参数1(0-10000)(可选), [7]:参数2(0-10000)(可选)
@@ -1177,8 +1095,7 @@ export class Printer {
 		this.updateScale();
 
 		// 导入字体
-		(this.imported as unknown as { signature: string }).signature =
-			text.importedFonts.join();
+		(this.imported as unknown as { signature: string }).signature = text.importedFonts.join();
 		return this.importFonts(text.importedFonts);
 	}
 
@@ -1485,13 +1402,8 @@ export class Printer {
 			// 加载字体
 			const { importedFonts } = Data.config.text;
 			const signature = importedFonts.join();
-			if (
-				(Printer.imported as unknown as { signature: string })
-					.signature !== signature
-			) {
-				(
-					Printer.imported as unknown as { signature: string }
-				).signature = signature;
+			if ((Printer.imported as unknown as { signature: string }).signature !== signature) {
+				(Printer.imported as unknown as { signature: string }).signature = signature;
 				Printer.clearFonts();
 				Printer.importFonts(importedFonts);
 			}

@@ -75,21 +75,13 @@ export const SettingConfig = new (class {
 			else SettingConfig.config[summary][name] = e.value;
 		};
 		// 本地服务
-		$('#setting-server-port').on('input', (e) =>
-			InputEvent(e, 'server', 'port')
-		);
-		$('#setting-server-auto').on('input', (e) =>
-			InputEvent(e, 'server', 'auto')
-		);
+		$('#setting-server-port').on('input', (e) => InputEvent(e, 'server', 'port'));
+		$('#setting-server-auto').on('input', (e) => InputEvent(e, 'server', 'auto'));
 		// 反编译
-		$('#setting-apkbuild-outputDir').on('input', (e) =>
-			InputEvent(e, 'apkbuild', 'outputDir')
-		);
+		$('#setting-apkbuild-outputDir').on('input', (e) => InputEvent(e, 'apkbuild', 'outputDir'));
 		$('#setting-apkbuild-outputDir').on('mouseenter', (e) =>
 			$('#setting-apkbuild-outputDir').setTooltip(
-				ApkBuilder.processPathOnly(
-					SettingConfig.config.apkbuild.outputDir
-				)
+				ApkBuilder.processPathOnly(SettingConfig.config.apkbuild.outputDir)
 			)
 		);
 		$('#setting-apkbuild-newApkPath').on('input', (e) =>
@@ -97,9 +89,7 @@ export const SettingConfig = new (class {
 		);
 		$('#setting-apkbuild-apktoolPath').on('mouseenter', (e) =>
 			$('#setting-apkbuild-apktoolPath').setTooltip(
-				ApkBuilder.processPathOnly(
-					SettingConfig.config.apkbuild.apktoolPath
-				)
+				ApkBuilder.processPathOnly(SettingConfig.config.apkbuild.apktoolPath)
 			)
 		);
 		$('#setting-apkbuild-apktoolPath').on('input', (e) =>
@@ -107,15 +97,11 @@ export const SettingConfig = new (class {
 		);
 		$('#setting-apkbuild-apktoolPath').on('mouseenter', (e) =>
 			$('#setting-apkbuild-apktoolPath').setTooltip(
-				ApkBuilder.processPathOnly(
-					SettingConfig.config.apkbuild.apktoolPath
-				)
+				ApkBuilder.processPathOnly(SettingConfig.config.apkbuild.apktoolPath)
 			)
 		);
 		// 签名
-		$('#setting-signed-jksPath').on('input', (e) =>
-			InputEvent(e, 'signed', 'jksPath')
-		);
+		$('#setting-signed-jksPath').on('input', (e) => InputEvent(e, 'signed', 'jksPath'));
 		$('#setting-signed-jksPath').on('mouseenter', (e) =>
 			$('#setting-signed-jksPath').setTooltip(
 				ApkBuilder.processPathOnly(SettingConfig.config.signed.jksPath)
@@ -124,20 +110,14 @@ export const SettingConfig = new (class {
 		$('#setting-signed-keyStorePassword').on('input', (e) =>
 			InputEvent(e, 'signed', 'keyStorePassword')
 		);
-		$('#setting-signed-keyAlias').on('input', (e) =>
-			InputEvent(e, 'signed', 'keyAlias')
-		);
-		$('#setting-signed-keyPassword').on('input', (e) =>
-			InputEvent(e, 'signed', 'keyPassword')
-		);
+		$('#setting-signed-keyAlias').on('input', (e) => InputEvent(e, 'signed', 'keyAlias'));
+		$('#setting-signed-keyPassword').on('input', (e) => InputEvent(e, 'signed', 'keyPassword'));
 		$('#setting-signed-apksignerPath').on('input', (e) =>
 			InputEvent(e, 'signed', 'apksignerPath')
 		);
 		$('#setting-signed-apksignerPath').on('mouseenter', (e) =>
 			$('#setting-signed-apksignerPath').setTooltip(
-				ApkBuilder.processPathOnly(
-					SettingConfig.config.signed.apksignerPath
-				)
+				ApkBuilder.processPathOnly(SettingConfig.config.signed.apksignerPath)
 			)
 		);
 		$('#setting-signed-zipalignPath').on('input', (e) =>
@@ -145,9 +125,7 @@ export const SettingConfig = new (class {
 		);
 		$('#setting-signed-zipalignPath').on('mouseenter', (e) =>
 			$('#setting-signed-zipalignPath').setTooltip(
-				ApkBuilder.processPathOnly(
-					SettingConfig.config.signed.zipalignPath
-				)
+				ApkBuilder.processPathOnly(SettingConfig.config.signed.zipalignPath)
 			)
 		);
 		$('#setting-signed-signedApkPath').on('input', (e) =>
@@ -155,9 +133,7 @@ export const SettingConfig = new (class {
 		);
 		$('#setting-signed-signedApkPath').on('mouseenter', (e) =>
 			$('#setting-signed-signedApkPath').setTooltip(
-				ApkBuilder.processPathOnly(
-					SettingConfig.config.signed.signedApkPath
-				)
+				ApkBuilder.processPathOnly(SettingConfig.config.signed.signedApkPath)
 			)
 		);
 		$('#setting-other-copyAsTextKeepEmptyLine').on('input', (e) =>
@@ -166,9 +142,7 @@ export const SettingConfig = new (class {
 		$('#setting-other-browserSearchHistoryLimit').on('input', (e) =>
 			InputEvent(e, 'other', 'browserSearchHistoryLimit')
 		);
-		$('#setting-recent-statsMode').on('input', (e) =>
-			InputEvent(e, 'recent', 'statsMode')
-		);
+		$('#setting-recent-statsMode').on('input', (e) => InputEvent(e, 'recent', 'statsMode'));
 		$('#setting-github-accelerationNode').on('input', (e) =>
 			InputEvent(e, 'github', 'accelerationNode')
 		);
@@ -179,11 +153,7 @@ export const SettingConfig = new (class {
 	}
 	load() {
 		if (!nodeFs.existsSync(this.configPath)) {
-			nodeFs.writeFileSync(
-				this.configPath,
-				JSON.stringify(this.defaultConfig),
-				'utf-8'
-			);
+			nodeFs.writeFileSync(this.configPath, JSON.stringify(this.defaultConfig), 'utf-8');
 			this.config = JSON.parse(JSON.stringify(this.defaultConfig));
 			return;
 		}
@@ -221,9 +191,7 @@ export const SettingConfig = new (class {
 		const browserSearchHistoryLimit = Math.floor(
 			Number(this.config.other.browserSearchHistoryLimit)
 		);
-		this.config.other.browserSearchHistoryLimit = Number.isFinite(
-			browserSearchHistoryLimit
-		)
+		this.config.other.browserSearchHistoryLimit = Number.isFinite(browserSearchHistoryLimit)
 			? Math.min(Math.max(browserSearchHistoryLimit, 1), 9)
 			: 9;
 	}
@@ -237,13 +205,10 @@ export const SettingConfig = new (class {
 		];
 
 		if (typeof Resources !== 'undefined' && Resources._fastGithubArray) {
-			Resources._fastGithubArray =
-				await Resources.updateFastGithubArray();
+			Resources._fastGithubArray = await Resources.updateFastGithubArray();
 			Resources._fastGithubArray.forEach((url, index) => {
 				const nodeNumber = index + 1;
-				const domain = url
-					.replace(/^https?:\/\//, '')
-					.replace(/\/$/, '');
+				const domain = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 				const nodeLabel = get('github-acceleration-node') || '节点';
 				githubNodes.push({
 					name: `${nodeLabel} ${nodeNumber} (${domain})`,
@@ -257,16 +222,13 @@ export const SettingConfig = new (class {
 			value: 'none'
 		});
 
-		const browserSearchHistoryLimitItems = Array.from(
-			{ length: 9 },
-			(_, index) => {
-				const value = index + 1;
-				return {
-					name: String(value),
-					value
-				};
-			}
-		);
+		const browserSearchHistoryLimitItems = Array.from({ length: 9 }, (_, index) => {
+			const value = index + 1;
+			return {
+				name: String(value),
+				value
+			};
+		});
 
 		const recentStatsModeItems = [
 			{
@@ -279,14 +241,11 @@ export const SettingConfig = new (class {
 			}
 		];
 
-		$('#setting-other-browserSearchHistoryLimit').loadItems(
-			browserSearchHistoryLimitItems
-		);
+		$('#setting-other-browserSearchHistoryLimit').loadItems(browserSearchHistoryLimitItems);
 		$('#setting-recent-statsMode').loadItems(recentStatsModeItems);
 
 		// 设置本地化文本
-		$('#setting-title-recent').textContent =
-			get('setting-title-recent') || 'Recent Projects';
+		$('#setting-title-recent').textContent = get('setting-title-recent') || 'Recent Projects';
 		$('#setting-recent-statsMode-label').textContent =
 			get('setting-recent-statsMode-label') || 'Stats Mode';
 
@@ -330,14 +289,8 @@ export const SettingConfig = new (class {
 		write3('zipalignPath', this.config.signed.zipalignPath);
 		write3('signedApkPath', this.config.signed.signedApkPath);
 		const write4 = getElementWriter('setting-other');
-		write4(
-			'copyAsTextKeepEmptyLine',
-			this.config.other.copyAsTextKeepEmptyLine
-		);
-		write4(
-			'browserSearchHistoryLimit',
-			this.config.other.browserSearchHistoryLimit
-		);
+		write4('copyAsTextKeepEmptyLine', this.config.other.copyAsTextKeepEmptyLine);
+		write4('browserSearchHistoryLimit', this.config.other.browserSearchHistoryLimit);
 		const write5 = getElementWriter('setting-recent');
 		write5('statsMode', this.config.recent.statsMode);
 		const write6 = getElementWriter('setting-github');
@@ -351,11 +304,7 @@ export const SettingConfig = new (class {
 				'utf-8'
 			);
 		}
-		nodeFs.writeFileSync(
-			this.configPath,
-			JSON.stringify(this.config),
-			'utf-8'
-		);
+		nodeFs.writeFileSync(this.configPath, JSON.stringify(this.config), 'utf-8');
 		// 应用配置
 		this.apply();
 	}

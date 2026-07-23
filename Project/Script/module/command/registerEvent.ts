@@ -116,11 +116,7 @@ Command.cases.registerEvent = new CommandSchema({
 		const operation = $('#registerEvent-operation').read();
 		const type = $('#registerEvent-type').read();
 		const priority = $('#registerEvent-priority');
-		if (
-			target === 'global' &&
-			operation === 'register' &&
-			type in priorityTypes
-		) {
+		if (target === 'global' && operation === 'register' && type in priorityTypes) {
 			priority.previousElementSibling.show();
 			priority.show();
 			this.priorityEnabled = true;
@@ -141,55 +137,28 @@ Command.cases.registerEvent = new CommandSchema({
 			namespace.hide();
 		}
 	},
-	customParse({
-		target,
-		actor,
-		element,
-		operation,
-		type,
-		priority,
-		tag,
-		commands,
-		namespace
-	}) {
+	customParse({ target, actor, element, operation, type, priority, tag, commands, namespace }) {
 		const words = Command.words;
 		switch (target) {
 			case 'global':
 				switch (operation) {
 					case 'register': {
-						const priorityFlag = priority
-							? Command.setOperatorColor('*')
-							: '';
+						const priorityFlag = priority ? Command.setOperatorColor('*') : '';
 						const tagName = tag
-							? Token('(') +
-								Command.parseVariableString(tag) +
-								Token(')')
+							? Token('(') + Command.parseVariableString(tag) + Token(')')
 							: '';
 						words.push(
-							Command.parseEventType(target + '-event', type) +
-								priorityFlag +
-								tagName
+							Command.parseEventType(target + '-event', type) + priorityFlag + tagName
 						);
 						break;
 					}
 					case 'unregister': {
-						const tagName =
-							Token('(') +
-							Command.parseVariableString(tag) +
-							Token(')');
-						words.push(
-							Local.get(
-								'command.registerEvent.reset.global-event'
-							) + tagName
-						);
+						const tagName = Token('(') + Command.parseVariableString(tag) + Token(')');
+						words.push(Local.get('command.registerEvent.reset.global-event') + tagName);
 						break;
 					}
 					case 'reset':
-						words.push(
-							Local.get(
-								'command.registerEvent.reset.global-events'
-							)
-						);
+						words.push(Local.get('command.registerEvent.reset.global-events'));
 						break;
 				}
 				break;
@@ -198,9 +167,7 @@ Command.cases.registerEvent = new CommandSchema({
 					case 'register':
 					case 'unregister':
 						words.push(Command.parseActor(actor));
-						words.push(
-							Command.parseEventType(target + '-event', type)
-						);
+						words.push(Command.parseEventType(target + '-event', type));
 						break;
 					case 'reset':
 						words.push(
@@ -216,9 +183,7 @@ Command.cases.registerEvent = new CommandSchema({
 					case 'register':
 					case 'unregister':
 						words.push(Command.parseElement(element));
-						words.push(
-							Command.parseEventType(target + '-event', type)
-						);
+						words.push(Command.parseEventType(target + '-event', type));
 						break;
 					case 'reset':
 						words.push(
@@ -237,9 +202,7 @@ Command.cases.registerEvent = new CommandSchema({
 		const contents: any[] = [
 			{ color: 'flow' },
 			{
-				text:
-					Local.get('command.registerEvent.alias.' + operation) +
-					Token(': ')
+				text: Local.get('command.registerEvent.alias.' + operation) + Token(': ')
 			},
 			{ text: words.join() }
 		];
@@ -292,9 +255,7 @@ Command.cases.registerEvent = new CommandSchema({
 						if (typeof tag === 'string') {
 							tag = tag.trim();
 						}
-						const priority = this.priorityEnabled
-							? read('priority')
-							: false;
+						const priority = this.priorityEnabled ? read('priority') : false;
 						Command.save({
 							target,
 							operation,
@@ -308,10 +269,7 @@ Command.cases.registerEvent = new CommandSchema({
 					}
 					case 'unregister': {
 						let tag = read('tag');
-						if (
-							typeof tag === 'string' &&
-							(tag = tag.trim()) === ''
-						) {
+						if (typeof tag === 'string' && (tag = tag.trim()) === '') {
 							return $('#registerEvent-tag').getFocus();
 						}
 						Command.save({ target, operation, tag });

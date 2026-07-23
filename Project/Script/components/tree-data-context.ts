@@ -1,10 +1,5 @@
 import { Local } from '../tools/localization.ts';
-import {
-	TreeDataItem,
-	TreeDataGroup,
-	TreeDataCache,
-	TreeDataLists
-} from '../types/tree-data.ts';
+import { TreeDataItem, TreeDataGroup, TreeDataCache, TreeDataLists } from '../types/tree-data.ts';
 
 // ******************************** 树形数据上下文基类 ********************************
 

@@ -48,11 +48,7 @@ export class History extends Array implements IArrayHistory {
 	// 恢复数据
 	restore(operation: any) {
 		const index =
-			operation === 'undo'
-				? this.index
-				: operation === 'redo'
-					? this.index + 1
-					: null;
+			operation === 'undo' ? this.index : operation === 'redo' ? this.index + 1 : null;
 
 		if (index >= 0 && index < this.length) {
 			const data = this[index];

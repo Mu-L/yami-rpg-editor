@@ -120,9 +120,7 @@ export class CommonList extends HTMLElement {
 			this.write((element as HTMLElement & { dataValue: any }).dataValue);
 			if (this.selectEventEnabled) {
 				const select: any = new Event('select');
-				select.value = (
-					element as HTMLElement & { dataValue: any }
-				).dataValue;
+				select.value = (element as HTMLElement & { dataValue: any }).dataValue;
 				this.dispatchEvent(select);
 			}
 		}
@@ -258,10 +256,7 @@ export class CommonList extends HTMLElement {
 			case 0:
 			case 2: {
 				const element = event.target as HTMLElement;
-				if (
-					element.tagName === 'COMMON-ITEM' &&
-					!element.hasClass('selected')
-				) {
+				if (element.tagName === 'COMMON-ITEM' && !element.hasClass('selected')) {
 					this.select(element);
 				}
 				break;
@@ -274,17 +269,10 @@ export class CommonList extends HTMLElement {
 		switch (event.button) {
 			case 2:
 				if (this.popupEventEnabled && document.activeElement === this) {
-					const element = (event.target as HTMLElement).seek(
-						'common-item'
-					);
-					if (
-						element.tagName === 'COMMON-ITEM' &&
-						element.hasClass('selected')
-					) {
+					const element = (event.target as HTMLElement).seek('common-item');
+					if (element.tagName === 'COMMON-ITEM' && element.hasClass('selected')) {
 						const popup: any = new Event('popup');
-						popup.value = (
-							element as HTMLElement & { dataValue: any }
-						).dataValue;
+						popup.value = (element as HTMLElement & { dataValue: any }).dataValue;
 						popup.clientX = event.clientX;
 						popup.clientY = event.clientY;
 						this.dispatchEvent(popup);
@@ -323,8 +311,7 @@ export class CommonList extends HTMLElement {
 			const versionId = elements.versionId++;
 			for (let i = start; i < end; i++) {
 				const element = elements[i];
-				(element as HTMLElement & { versionId?: number }).versionId =
-					versionId;
+				(element as HTMLElement & { versionId?: number }).versionId = versionId;
 				self.updateOnResize(element);
 			}
 			const nodes = self.childNodes;
@@ -365,9 +352,7 @@ export class CommonList extends HTMLElement {
 		// 设置头部和尾部元素的外边距
 		const { count, start, end } = elements;
 		if (count !== 0) {
-			const pad = (self as HTMLElement & { padded?: boolean }).padded
-				? 1
-				: 0;
+			const pad = (self as HTMLElement & { padded?: boolean }).padded ? 1 : 0;
 			const mt = start * 20;
 			const mb = (count - end + pad) * 20;
 			elements.head = elements[start];

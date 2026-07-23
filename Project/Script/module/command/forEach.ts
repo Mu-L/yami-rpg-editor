@@ -43,17 +43,11 @@ Command.cases.forEach = new CommandSchema({
 				{ case: 'member', targets: [$('#forEach-variable')] },
 				{
 					case: 'attribute',
-					targets: [
-						$('#forEach-attribute-groupId'),
-						$('#forEach-variable')
-					]
+					targets: [$('#forEach-attribute-groupId'), $('#forEach-variable')]
 				},
 				{
 					case: 'enum',
-					targets: [
-						$('#forEach-enum-groupId'),
-						$('#forEach-variable')
-					]
+					targets: [$('#forEach-enum-groupId'), $('#forEach-variable')]
 				},
 				{ case: 'save', targets: [$('#forEach-saveIndex')] },
 				{
@@ -65,26 +59,14 @@ Command.cases.forEach = new CommandSchema({
 			this.commands = null;
 		});
 	},
-	customParse({
-		data,
-		list,
-		actor,
-		element,
-		groupId,
-		variable,
-		saveIndex,
-		touchId,
-		commands
-	}) {
+	customParse({ data, list, actor, element, groupId, variable, saveIndex, touchId, commands }) {
 		const dataInfo = Local.get('command.forEach.' + data);
 		const words = Command.words;
 		switch (data) {
 			case 'list': {
 				const varName = Command.parseVariable(variable, 'any', true);
 				const listName = Command.parseVariable(list, 'object');
-				words.push(
-					varName + Token(' = ') + listName + Token(' -> ') + dataInfo
-				);
+				words.push(varName + Token(' = ') + listName + Token(' -> ') + dataInfo);
 				break;
 			}
 			case 'skill':
@@ -93,21 +75,13 @@ Command.cases.forEach = new CommandSchema({
 			case 'inventory': {
 				const varName = Command.parseVariable(variable, 'object', true);
 				const actorInfo = Command.parseActor(actor);
-				words.push(
-					varName +
-						Token(' = ') +
-						actorInfo +
-						Token(' -> ') +
-						dataInfo
-				);
+				words.push(varName + Token(' = ') + actorInfo + Token(' -> ') + dataInfo);
 				break;
 			}
 			case 'element': {
 				const varName = Command.parseVariable(variable, 'object', true);
 				const elInfo = Command.parseElement(element);
-				words.push(
-					varName + Token(' = ') + elInfo + Token(' -> ') + dataInfo
-				);
+				words.push(varName + Token(' = ') + elInfo + Token(' -> ') + dataInfo);
 				break;
 			}
 			case 'member': {
@@ -118,25 +92,17 @@ Command.cases.forEach = new CommandSchema({
 			case 'attribute': {
 				const varName = Command.parseVariable(variable, 'string', true);
 				const group = Command.parseAttributeGroup(groupId);
-				words.push(
-					varName + Token(' = ') + group + Token(' -> ') + dataInfo
-				);
+				words.push(varName + Token(' = ') + group + Token(' -> ') + dataInfo);
 				break;
 			}
 			case 'enum': {
 				const varName = Command.parseVariable(variable, 'string', true);
 				const group = Command.parseEnumGroup(groupId);
-				words.push(
-					varName + Token(' = ') + group + Token(' -> ') + dataInfo
-				);
+				words.push(varName + Token(' = ') + group + Token(' -> ') + dataInfo);
 				break;
 			}
 			case 'save': {
-				const varName = Command.parseVariable(
-					saveIndex,
-					'number',
-					true
-				);
+				const varName = Command.parseVariable(saveIndex, 'number', true);
 				words.push(
 					Token('{') +
 						varName +

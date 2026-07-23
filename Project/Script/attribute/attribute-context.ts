@@ -32,11 +32,7 @@ export class AttributeContext extends TreeDataContext {
 	}
 
 	// 获取属性选项列表
-	getAttributeItems(
-		groupKey: string,
-		attrType: string = '',
-		allowNone: boolean = false
-	): any[] {
+	getAttributeItems(groupKey: string, attrType: string = '', allowNone: boolean = false): any[] {
 		let key = groupKey + attrType;
 		if (allowNone) {
 			key += '-allowNone';

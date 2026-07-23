@@ -29,11 +29,7 @@ Scene.selectObject = function (x, y) {
 				const b = ay + radius;
 				if (x >= l && x < r && y >= t && y < b) {
 					const p = Math.dist(x, y, ax, ay) <= radius;
-					const w =
-						(p ? 0 : -100) +
-						ay / 2 -
-						Math.abs(x - ax) -
-						Math.abs(y - ay);
+					const w = (p ? 0 : -100) + ay / 2 - Math.abs(x - ax) - Math.abs(y - ay);
 					if (target === null || weight < w) {
 						if (!precise) {
 							precise = p;
@@ -87,10 +83,7 @@ Scene.selectRegion = function (x, y) {
 		const rr = rl + rw;
 		const rb = rt + rh;
 		if (x >= rl && y >= rt && x < rr && y < rb) {
-			const w =
-				-Math.min(rw, rh) -
-				Math.abs(x - region.x) -
-				Math.abs(y - region.y);
+			const w = -Math.min(rw, rh) - Math.abs(x - region.x) - Math.abs(y - region.y);
 			if (target === null || weight < w) {
 				target = region;
 				weight = w;
@@ -186,8 +179,7 @@ Scene.selectParticleEmitter = function (x, y) {
 			const px = rx * cos - ry * sin;
 			const py = rx * sin + ry * cos;
 			if (px >= rl && py >= rt && px < rr && py < rb) {
-				const w =
-					-rect.width * rect.height - Math.abs(rx) - Math.abs(ry);
+				const w = -rect.width * rect.height - Math.abs(rx) - Math.abs(ry);
 				if (target === null || weight < w) {
 					target = particle;
 					weight = w;

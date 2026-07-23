@@ -39,10 +39,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#fileSkill-parameter-pane').bind($('#fileSkill-scripts'));
 
 		// 侦听事件
-		$('#fileSkill-icon, #fileSkill-clip, #fileSkill-inherit').on(
-			'input',
-			this.paramInput
-		);
+		$('#fileSkill-icon, #fileSkill-clip, #fileSkill-inherit').on('input', this.paramInput);
 		$('#fileSkill-attributes, #fileSkill-events, #fileSkill-scripts').on(
 			'change',
 			this.listChange

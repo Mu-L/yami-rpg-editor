@@ -216,10 +216,7 @@ Curve.resize = function () {
 		const screenHeight = screenBox.height;
 
 		// 调整画布
-		if (
-			this.canvas.width !== screenWidth ||
-			this.canvas.height !== screenHeight
-		) {
+		if (this.canvas.width !== screenWidth || this.canvas.height !== screenHeight) {
 			this.canvas.width = screenWidth;
 			this.canvas.height = screenHeight;
 		}

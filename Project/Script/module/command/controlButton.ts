@@ -20,20 +20,13 @@ Command.cases.controlButton = new CommandSchema({
 			.enableHiddenMode()
 			.relate([
 				{
-					case: [
-						'select',
-						'hover-mode',
-						'active-mode',
-						'normal-mode'
-					],
+					case: ['select', 'hover-mode', 'active-mode', 'normal-mode'],
 					targets: [$('#controlButton-element')]
 				}
 			]);
 	},
 	customParse({ operation, element }) {
-		const words = Command.words.push(
-			Local.get('command.controlButton.' + operation)
-		);
+		const words = Command.words.push(Local.get('command.controlButton.' + operation));
 		switch (operation) {
 			case 'select':
 			case 'hover-mode':
@@ -48,10 +41,7 @@ Command.cases.controlButton = new CommandSchema({
 			{ text: words.join() }
 		];
 	},
-	customLoad({
-		operation = 'select-default',
-		element = { type: 'trigger' }
-	}) {
+	customLoad({ operation = 'select-default', element = { type: 'trigger' } }) {
 		const write = getElementWriter('controlButton');
 		write('operation', operation);
 		write('element', element);

@@ -72,17 +72,13 @@ export class FileHeadPane extends HTMLElement {
 					let folder = folders[0];
 					const nodes = [];
 					while (true) {
-						const elFolder = document.createElement(
-							'file-head-address-folder'
-						);
+						const elFolder = document.createElement('file-head-address-folder');
 						elFolder.file = folder;
 						elFolder.textContent = folder.name;
 						nodes.push(elFolder);
 						const { parent } = folder;
 						if (parent instanceof FolderItem) {
-							const elArrow = document.createElement(
-								'file-head-address-arrow'
-							);
+							const elArrow = document.createElement('file-head-address-arrow');
 							elArrow.folders = parent.subfolders;
 							elArrow.target = folder;
 							nodes.push(elArrow);
@@ -99,16 +95,12 @@ export class FileHeadPane extends HTMLElement {
 					const length = folders.length;
 					for (let i = 0; i < length; i++) {
 						const folder = folders[i];
-						const elFolder = document.createElement(
-							'file-head-address-folder'
-						);
+						const elFolder = document.createElement('file-head-address-folder');
 						elFolder.file = folder;
 						elFolder.textContent = folder.name;
 						address.appendChild(elFolder);
 						if (folders[i + 1]) {
-							const elLink = document.createElement(
-								'file-head-address-link'
-							);
+							const elLink = document.createElement('file-head-address-link');
 							elLink.textContent = '&';
 							address.appendChild(elLink);
 						}
@@ -156,10 +148,7 @@ export class FileHeadPane extends HTMLElement {
 					window.on(
 						'pointerup',
 						(event: PointerEvent) => {
-							if (
-								event.button === 0 &&
-								element === event.target
-							) {
+							if (event.button === 0 && element === event.target) {
 								const head = this.parentNode;
 								const nav = head.links.nav;
 								switch (element.tagName) {
@@ -173,10 +162,7 @@ export class FileHeadPane extends HTMLElement {
 										const MAX_MENU_ITEMS = 32;
 										const { folders, target } = element;
 										const rect = element.rect();
-										const length = Math.min(
-											folders.length,
-											MAX_MENU_ITEMS
-										);
+										const length = Math.min(folders.length, MAX_MENU_ITEMS);
 										const menuItems = new Array(length);
 										const click = function () {
 											nav.load(this.folder);
@@ -203,9 +189,7 @@ export class FileHeadPane extends HTMLElement {
 												x: rect.left,
 												y: rect.bottom,
 												close: () => {
-													element.removeClass(
-														'active'
-													);
+													element.removeClass('active');
 												}
 											},
 											menuItems

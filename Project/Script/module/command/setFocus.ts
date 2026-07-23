@@ -36,9 +36,7 @@ Command.cases.setFocus = new CommandSchema({
 			]);
 	},
 	customParse({ operation, element, mode, cancelable }) {
-		const words = Command.words.push(
-			Local.get('command.setFocus.' + operation)
-		);
+		const words = Command.words.push(Local.get('command.setFocus.' + operation));
 		switch (operation) {
 			case 'add':
 				if (mode === undefined) {

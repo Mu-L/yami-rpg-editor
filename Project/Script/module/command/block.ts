@@ -14,8 +14,7 @@ Command.cases.block = new CommandSchema({
 			asynchronous = false;
 		}
 		const asyncFlag = asynchronous ? Command.setOperatorColor('*') : '';
-		const blockNote =
-			note || asyncFlag ? Token(': ') + note + asyncFlag : '';
+		const blockNote = note || asyncFlag ? Token(': ') + note + asyncFlag : '';
 		return [
 			{ fold: true },
 			{ color: 'flow' },

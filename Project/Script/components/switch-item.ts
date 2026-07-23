@@ -9,11 +9,7 @@ export class SwitchItem extends HTMLElement {
 	constructor() {
 		super();
 
-		const length = Math.clamp(
-			parseInt(this.getAttribute('length') ?? ''),
-			1,
-			4
-		);
+		const length = Math.clamp(parseInt(this.getAttribute('length') ?? ''), 1, 4);
 
 		// 设置属性
 		this.dataValue = 0;

@@ -62,10 +62,7 @@ Command.cases.uploadFile = new CommandSchema({
 			{ text: `, ${Local.get('command.uploadFilePath')} = ` },
 			{ color: 'normal' },
 			{
-				text:
-					typeof path === 'string'
-						? path
-						: Command.parseVariable(path, 'any')
+				text: typeof path === 'string' ? path : Command.parseVariable(path, 'any')
 			},
 			{ text: ' , ' },
 			{ color: 'normal' },

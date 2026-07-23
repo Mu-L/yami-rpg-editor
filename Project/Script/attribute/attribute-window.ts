@@ -387,11 +387,7 @@ Attribute.getDefAttributeId = function (groupKey, type) {
 
 // 获取属性选项列表
 Attribute.getAttributeItems = function (groupKey, attrType, allowNone) {
-	return Data.attribute.context.getAttributeItems(
-		groupKey,
-		attrType,
-		allowNone
-	);
+	return Data.attribute.context.getAttributeItems(groupKey, attrType, allowNone);
 };
 
 // 打开属性面板
@@ -960,10 +956,7 @@ Attribute.list.delete = function (item) {
 		const get = Local.createGetter('confirmation');
 		Window.confirm(
 			{
-				message: get('deleteSingleFile').replace(
-					'<filename>',
-					item.name
-				)
+				message: get('deleteSingleFile').replace('<filename>', item.name)
 			},
 			[
 				{

@@ -72,8 +72,7 @@ GL.initialize = function () {
 	this.directLightMap.fbo = this.createTextureFBO(this.directLightMap);
 
 	// 创建模板纹理
-	this.stencilTexture =
-		this.stencilTexture ?? new Texture({ format: this.ALPHA });
+	this.stencilTexture = this.stencilTexture ?? new Texture({ format: this.ALPHA });
 	this.stencilTexture.base.protected = true;
 
 	// 创建遮罩纹理
@@ -136,13 +135,7 @@ GL.initialize = function () {
 	}
 	this.elementBuffer = this.createBuffer();
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
-	this.bufferData(
-		this.ELEMENT_ARRAY_BUFFER,
-		indices,
-		this.STATIC_DRAW,
-		0,
-		size * 6
-	);
+	this.bufferData(this.ELEMENT_ARRAY_BUFFER, indices, this.STATIC_DRAW, 0, size * 6);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, null);
 
 	// 创建更新混合模式方法(闭包)
@@ -318,10 +311,7 @@ GL.createImageProgram = function () {
 	const u_LightMode = this.getUniformLocation(program, 'u_LightMode');
 	const u_LightCoord = this.getUniformLocation(program, 'u_LightCoord');
 	const u_LightTexSize = this.getUniformLocation(program, 'u_LightTexSize');
-	this.uniform1i(
-		this.getUniformLocation(program, 'u_LightSampler'),
-		this.maxTexUnits - 1
-	);
+	this.uniform1i(this.getUniformLocation(program, 'u_LightSampler'), this.maxTexUnits - 1);
 
 	// 片元着色器属性
 	const u_Viewport = this.getUniformLocation(program, 'u_Viewport');
@@ -473,10 +463,7 @@ GL.createTileProgram = function () {
 	const u_Ambient = this.getUniformLocation(program, 'u_Ambient');
 	const u_LightMode = this.getUniformLocation(program, 'u_LightMode');
 	const u_LightTexSize = this.getUniformLocation(program, 'u_LightTexSize');
-	this.uniform1i(
-		this.getUniformLocation(program, 'u_LightSampler'),
-		this.maxTexUnits - 1
-	);
+	this.uniform1i(this.getUniformLocation(program, 'u_LightSampler'), this.maxTexUnits - 1);
 
 	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
@@ -710,10 +697,7 @@ GL.createSpriteProgram = function () {
 	const u_Flip = this.getUniformLocation(program, 'u_Flip');
 	const u_Matrix = this.getUniformLocation(program, 'u_Matrix');
 	const u_LightTexSize = this.getUniformLocation(program, 'u_LightTexSize');
-	this.uniform1i(
-		this.getUniformLocation(program, 'u_LightSampler'),
-		this.maxTexUnits - 1
-	);
+	this.uniform1i(this.getUniformLocation(program, 'u_LightSampler'), this.maxTexUnits - 1);
 
 	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
@@ -737,14 +721,7 @@ GL.createSpriteProgram = function () {
 	this.vertexAttribPointer(a_TexCoord, 2, this.FLOAT, false, 32, 8);
 	this.vertexAttribPointer(a_TexParam, 3, this.UNSIGNED_BYTE, false, 32, 16);
 	this.vertexAttribPointer(a_Tint, 4, this.UNSIGNED_SHORT, false, 32, 20);
-	this.vertexAttribPointer(
-		a_LightCoord,
-		2,
-		this.UNSIGNED_SHORT,
-		true,
-		32,
-		28
-	);
+	this.vertexAttribPointer(a_LightCoord, 2, this.UNSIGNED_SHORT, true, 32, 28);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
 
 	// 使用程序对象
@@ -870,10 +847,7 @@ GL.createParticleProgram = function () {
 	const u_Ambient = this.getUniformLocation(program, 'u_Ambient');
 	const u_LightMode = this.getUniformLocation(program, 'u_LightMode');
 	const u_LightTexSize = this.getUniformLocation(program, 'u_LightTexSize');
-	this.uniform1i(
-		this.getUniformLocation(program, 'u_LightSampler'),
-		this.maxTexUnits - 1
-	);
+	this.uniform1i(this.getUniformLocation(program, 'u_LightSampler'), this.maxTexUnits - 1);
 
 	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
@@ -1211,12 +1185,7 @@ GL.createBlendingUpdater = function () {
 		// 正常模式
 		normal: () => {
 			this.blendEquation(this.FUNC_ADD);
-			this.blendFuncSeparate(
-				this.SRC_ALPHA,
-				this.ONE_MINUS_SRC_ALPHA,
-				this.ONE,
-				this.ZERO
-			);
+			this.blendFuncSeparate(this.SRC_ALPHA, this.ONE_MINUS_SRC_ALPHA, this.ONE, this.ZERO);
 		},
 		// 滤色模式
 		screen: () => {
@@ -1226,22 +1195,12 @@ GL.createBlendingUpdater = function () {
 		// 加法模式
 		additive: () => {
 			this.blendEquation(this.FUNC_ADD);
-			this.blendFuncSeparate(
-				this.SRC_ALPHA,
-				this.DST_ALPHA,
-				this.ONE,
-				this.ZERO
-			);
+			this.blendFuncSeparate(this.SRC_ALPHA, this.DST_ALPHA, this.ONE, this.ZERO);
 		},
 		// 减法模式
 		subtract: () => {
 			this.blendEquation(this.FUNC_REVERSE_SUBTRACT);
-			this.blendFuncSeparate(
-				this.SRC_ALPHA,
-				this.DST_ALPHA,
-				this.ONE,
-				this.ZERO
-			);
+			this.blendFuncSeparate(this.SRC_ALPHA, this.DST_ALPHA, this.ONE, this.ZERO);
 		},
 		// 最大值模式
 		max: () => {
@@ -1283,11 +1242,7 @@ GL.createBlendingUpdater = function () {
 // WebGL上下文方法 - 设置环境光
 GL.setAmbientLight = function ({ red, green, blue }) {
 	const ambient = this.ambient;
-	if (
-		ambient.red !== red ||
-		ambient.green !== green ||
-		ambient.blue !== blue
-	) {
+	if (ambient.red !== red || ambient.green !== green || ambient.blue !== blue) {
 		ambient.red = red;
 		ambient.green = green;
 		ambient.blue = blue;
@@ -1295,11 +1250,7 @@ GL.setAmbientLight = function ({ red, green, blue }) {
 		const r = ambient.red / 255;
 		const g = ambient.green / 255;
 		const b = ambient.blue / 255;
-		for (const program of [
-			this.imageProgram,
-			this.tileProgram,
-			this.particleProgram
-		]) {
+		for (const program of [this.imageProgram, this.tileProgram, this.particleProgram]) {
 			this.useProgram(program);
 			this.uniform3f(program.u_Ambient, r, g, b);
 		}
@@ -1322,10 +1273,7 @@ GL.resizeLightMap = function () {
 			texture.paddingLeft = Math.min(lightArea.expansionLeft * 4, 1024);
 			texture.paddingTop = Math.min(lightArea.expansionTop * 4, 1024);
 			texture.paddingRight = Math.min(lightArea.expansionRight * 4, 1024);
-			texture.paddingBottom = Math.min(
-				lightArea.expansionBottom * 4,
-				1024
-			);
+			texture.paddingBottom = Math.min(lightArea.expansionBottom * 4, 1024);
 		}
 		const pl = texture.paddingLeft;
 		const pt = texture.paddingTop;
@@ -1423,10 +1371,7 @@ GL.resize = function (width, height) {
 	if (canvas.height !== height) {
 		canvas.height = height;
 	}
-	if (
-		this.binding === null &&
-		(this.width !== width || this.height !== height)
-	) {
+	if (this.binding === null && (this.width !== width || this.height !== height)) {
 		this.width = width;
 		this.height = height;
 		this.viewport(0, 0, width, height);
@@ -1602,13 +1547,7 @@ GL.drawSliceImage = function (texture, dx, dy, dw, dh, clip, border, tint) {
 	this.uniform1i(program.u_LightMode, 0);
 	this.uniform1i(program.u_ColorMode, 2);
 	this.uniform4f(program.u_Tint, red, green, blue, gray);
-	this.bufferData(
-		this.ARRAY_BUFFER,
-		vertices,
-		this.STREAM_DRAW,
-		0,
-		count * 16
-	);
+	this.bufferData(this.ARRAY_BUFFER, vertices, this.STREAM_DRAW, 0, count * 16);
 	this.bindTexture(this.TEXTURE_2D, texture.base.glTexture);
 
 	// 绑定纹理并绘制图像
@@ -1687,12 +1626,7 @@ GL.fillTextWithOutline = (function fillTextWithOutline() {
 		const oy = size * 0.85;
 		const height = size + padding;
 		const width = Math.min(this.maxTexSize, Math.ceil(measureWidth + ox));
-		if (
-			x + width > 0 &&
-			x < this.width &&
-			y + height > 0 &&
-			y < this.height
-		) {
+		if (x + width > 0 && x < this.width && y + height > 0 && y < this.height) {
 			const font = context.font;
 			context.resize(width, height);
 			context.font = font;
@@ -1706,11 +1640,7 @@ GL.fillTextWithOutline = (function fillTextWithOutline() {
 			const program = this.textProgram.use();
 			const vertices = this.arrays[0].float32;
 			const colors = this.arrays[0].uint32;
-			const matrix = this.matrix.project(
-				this.flip,
-				this.width,
-				this.height
-			);
+			const matrix = this.matrix.project(this.flip, this.width, this.height);
 			const a = matrix[0];
 			const b = matrix[1];
 			const c = matrix[3];
@@ -1751,13 +1681,7 @@ GL.fillTextWithOutline = (function fillTextWithOutline() {
 			}
 			this.stencilTexture.fromImage(context.canvas);
 			this.bindVertexArray(program.vao);
-			this.bufferData(
-				this.ARRAY_BUFFER,
-				vertices,
-				this.STREAM_DRAW,
-				0,
-				vi
-			);
+			this.bufferData(this.ARRAY_BUFFER, vertices, this.STREAM_DRAW, 0, vi);
 			this.drawElements(this.TRIANGLES, 30, this.UNSIGNED_INT, 0);
 		}
 	};
@@ -1774,16 +1698,8 @@ GL.createNormalTexture = function (options: any = {}) {
 	this.bindTexture(this.TEXTURE_2D, texture.glTexture);
 	this.texParameteri(this.TEXTURE_2D, this.TEXTURE_MAG_FILTER, magFilter);
 	this.texParameteri(this.TEXTURE_2D, this.TEXTURE_MIN_FILTER, minFilter);
-	this.texParameteri(
-		this.TEXTURE_2D,
-		this.TEXTURE_WRAP_S,
-		this.CLAMP_TO_EDGE
-	);
-	this.texParameteri(
-		this.TEXTURE_2D,
-		this.TEXTURE_WRAP_T,
-		this.CLAMP_TO_EDGE
-	);
+	this.texParameteri(this.TEXTURE_2D, this.TEXTURE_WRAP_S, this.CLAMP_TO_EDGE);
+	this.texParameteri(this.TEXTURE_2D, this.TEXTURE_WRAP_T, this.CLAMP_TO_EDGE);
 	this.textureManager.append(texture);
 	return texture;
 };
@@ -1810,26 +1726,10 @@ GL.createImageTexture = function (image, options: any = {}) {
 				texture.width = Math.min(image.naturalWidth, this.maxTexSize);
 				texture.height = Math.min(image.naturalHeight, this.maxTexSize);
 				this.bindTexture(this.TEXTURE_2D, texture.glTexture);
-				this.texParameteri(
-					this.TEXTURE_2D,
-					this.TEXTURE_MAG_FILTER,
-					magFilter
-				);
-				this.texParameteri(
-					this.TEXTURE_2D,
-					this.TEXTURE_MIN_FILTER,
-					minFilter
-				);
-				this.texParameteri(
-					this.TEXTURE_2D,
-					this.TEXTURE_WRAP_S,
-					this.CLAMP_TO_EDGE
-				);
-				this.texParameteri(
-					this.TEXTURE_2D,
-					this.TEXTURE_WRAP_T,
-					this.CLAMP_TO_EDGE
-				);
+				this.texParameteri(this.TEXTURE_2D, this.TEXTURE_MAG_FILTER, magFilter);
+				this.texParameteri(this.TEXTURE_2D, this.TEXTURE_MIN_FILTER, minFilter);
+				this.texParameteri(this.TEXTURE_2D, this.TEXTURE_WRAP_S, this.CLAMP_TO_EDGE);
+				this.texParameteri(this.TEXTURE_2D, this.TEXTURE_WRAP_T, this.CLAMP_TO_EDGE);
 				this.texImage2D(
 					this.TEXTURE_2D,
 					0,
@@ -1896,12 +1796,7 @@ GL.createTextureFBO = function (texture) {
 
 		// 调整深度模板缓冲区大小
 		this.bindRenderbuffer(this.RENDERBUFFER, depthStencilBuffer);
-		this.renderbufferStorage(
-			this.RENDERBUFFER,
-			this.DEPTH_STENCIL,
-			width,
-			height
-		);
+		this.renderbufferStorage(this.RENDERBUFFER, this.DEPTH_STENCIL, width, height);
 		this.bindRenderbuffer(this.RENDERBUFFER, null);
 	};
 	// 还需要一个方法来恢复

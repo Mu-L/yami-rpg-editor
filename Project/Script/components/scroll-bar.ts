@@ -193,22 +193,15 @@ export class ScrollBar extends HTMLElement {
 							let max: number;
 							switch (this.type) {
 								case 'horizontal':
-									max =
-										target!.scrollWidth -
-										target!.clientWidth;
+									max = target!.scrollWidth - target!.clientWidth;
 									target!.setScrollLeft(value);
 									break;
 								case 'vertical':
-									max =
-										target!.scrollHeight -
-										target!.clientHeight;
+									max = target!.scrollHeight - target!.clientHeight;
 									target!.setScrollTop(value);
 									break;
 							}
-							if (
-								(offset < 0 && value <= 0) ||
-								(offset > 0 && value >= max)
-							) {
+							if ((offset < 0 && value <= 0) || (offset > 0 && value >= max)) {
 								return false;
 							}
 							break;
@@ -269,24 +262,18 @@ export class ScrollBar extends HTMLElement {
 				if (event.target === this.thumb) {
 					this.dragging = event as unknown as ScrollDragging;
 					(event as unknown as ScrollDragging).mode = 'scroll';
-					(event as unknown as ScrollDragging).scrollLeft =
-						this.target!.scrollLeft;
-					(event as unknown as ScrollDragging).scrollTop =
-						this.target!.scrollTop;
+					(event as unknown as ScrollDragging).scrollLeft = this.target!.scrollLeft;
+					(event as unknown as ScrollDragging).scrollTop = this.target!.scrollTop;
 					window.on('pointerup', this.windowPointerup);
 					window.on('pointermove', this.windowPointermove);
 				} else {
 					const rect = this.thumb!.rect();
 					switch (this.type) {
 						case 'horizontal':
-							this.scrollRelative(
-								event.clientX < rect.left ? -1 : 1
-							);
+							this.scrollRelative(event.clientX < rect.left ? -1 : 1);
 							break;
 						case 'vertical':
-							this.scrollRelative(
-								event.clientY < rect.top ? -1 : 1
-							);
+							this.scrollRelative(event.clientY < rect.top ? -1 : 1);
 							break;
 					}
 					this.dragging = event as unknown as ScrollDragging;
@@ -326,8 +313,7 @@ export class ScrollBar extends HTMLElement {
 							if (this.clientWidth !== 0) {
 								target.setScrollLeft(
 									dragging!.scrollLeft +
-										((event.clientX - dragging!.clientX) *
-											target.scrollWidth) /
+										((event.clientX - dragging!.clientX) * target.scrollWidth) /
 											this.clientWidth
 								);
 							}

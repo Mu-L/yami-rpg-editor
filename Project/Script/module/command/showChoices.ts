@@ -41,11 +41,7 @@ Command.cases.showChoices = new CommandSchema({
 				{ color: 'gray' },
 				{ color: 'save' },
 				{
-					text:
-						' ' +
-						Token('(') +
-						Command.setCommaColors(parameters) +
-						Token(')')
+					text: ' ' + Token('(') + Command.setCommaColors(parameters) + Token(')')
 				}
 			);
 		}
@@ -58,17 +54,12 @@ Command.cases.showChoices = new CommandSchema({
 				{ text: when + ' ' },
 				{ color: 'text' },
 				{
-					text: Command.parseVariableTag(
-						GameLocal.replace(choice.content)
-					)
+					text: Command.parseVariableTag(GameLocal.replace(choice.content))
 				},
 				{ children: choice.commands }
 			);
 		}
-		contents.push(
-			{ color: 'flow' },
-			{ text: Local.get('command.showChoices.end') }
-		);
+		contents.push({ color: 'flow' }, { text: Local.get('command.showChoices.end') });
 		return contents;
 	},
 	customLoad({ choices = this.createDefaultChoices(), parameters = '' }) {

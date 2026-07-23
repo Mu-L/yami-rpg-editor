@@ -59,8 +59,7 @@ function transformHead(headHtml) {
 		// 只跳过含 src="Script/" 或 src='Script/' 的单行 <script ...></script>
 		if (
 			trimmed.startsWith('<script') &&
-			(trimmed.includes('src="Script/') ||
-				trimmed.includes("src='Script/")) &&
+			(trimmed.includes('src="Script/') || trimmed.includes("src='Script/")) &&
 			!trimmed.includes('src="vs/') &&
 			!trimmed.includes("src='vs/") &&
 			trimmed.includes('</script>')
@@ -71,9 +70,7 @@ function transformHead(headHtml) {
 		// 多行 <script> 开始行（首行只有 <script 或含部分属性但无 </script>）
 		if (trimmed.startsWith('<script') && !trimmed.includes('</script>')) {
 			// 判是否属于 src="Script/" 类（首行或后续行含 src="Script/"）
-			const isScript =
-				trimmed.includes('src="Script/') ||
-				trimmed.includes("src='Script/");
+			const isScript = trimmed.includes('src="Script/') || trimmed.includes("src='Script/");
 			// 预扫后续行：直到 </script> 之前，任意行含 src="Script/" 即跳过
 			if (isScript) {
 				skipUntilClose = true;
@@ -87,8 +84,7 @@ function transformHead(headHtml) {
 		// 单行 src="Script/..."（但不是 <script 开始行，如多行格式中间的 src= 属性行）
 		// 蜉开（保留其他属性行、内联脚本等）
 		if (
-			(trimmed.includes('src="Script/') ||
-				trimmed.includes("src='Script/")) &&
+			(trimmed.includes('src="Script/') || trimmed.includes("src='Script/")) &&
 			!trimmed.startsWith('<script')
 		) {
 			// 若处于多行 <script> 标签内部（且该标签是 src="Script/" 类），上方 skipUntilClose 已处理
@@ -136,12 +132,8 @@ function transformHead(headHtml) {
 		imports[specifier] = `data:text/javascript;base64,${b64}`;
 	}
 	const importMap = { imports };
-	out.push(
-		`  <script type="importmap">${JSON.stringify(importMap)}</script>`
-	);
-	out.push(
-		'  <script type="module" src="Script/main/module-init.js"></script>'
-	);
+	out.push(`  <script type="importmap">${JSON.stringify(importMap)}</script>`);
+	out.push('  <script type="module" src="Script/main/module-init.js"></script>');
 
 	return out.join('\n');
 }

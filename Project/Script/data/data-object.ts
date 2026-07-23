@@ -464,8 +464,7 @@ Data.generateVariableEnumScript = function () {
 				}
 				let note = item.note.trim();
 				if (note !== '') {
-					note =
-						'\n   *  \n   *  ' + note.replace(wraps, '  \n   *  ');
+					note = '\n   *  \n   *  ' + note.replace(wraps, '  \n   *  ');
 				}
 				contents.push(`  /** ${type}${init}${note} */`);
 				contents.push(`  ${item.name} = '${item.id}',`);

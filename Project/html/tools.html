@@ -7,47 +7,29 @@
 	<content-frame>
 		<grid-box id="setting-grid">
 			<text id="setting-title-server" class="setting-title">Server</text>
-			<text></text
-			><number-box
-				id="setting-server-port"
-				min="0"
-				max="65535"
-			></number-box>
-			<text></text
-			><check-box id="setting-server-auto" class="standard"></check-box>
-			<text id="setting-title-apkbuild" class="setting-title"
-				>APK Build</text
-			>
-			<text></text><text-box id="setting-apkbuild-outputDir"></text-box>
-			<text></text><text-box id="setting-apkbuild-newApkPath"></text-box>
-			<text></text><text-box id="setting-apkbuild-apktoolPath"></text-box>
-			<text id="setting-title-signed" class="setting-title"
-				>签名配置</text
-			>
-			<text></text><text-box id="setting-signed-jksPath"></text-box>
-			<text></text
-			><text-box id="setting-signed-keyStorePassword"></text-box>
-			<text></text><text-box id="setting-signed-keyAlias"></text-box>
-			<text></text><text-box id="setting-signed-keyPassword"></text-box>
-			<text></text><text-box id="setting-signed-apksignerPath"></text-box>
-			<text></text><text-box id="setting-signed-zipalignPath"></text-box>
-			<text></text><text-box id="setting-signed-signedApkPath"></text-box>
+			<text></text><number-box id="setting-server-port" min="0" max="65535"></number-box>
+			<text></text><check-box id="setting-server-auto" class="standard"></check-box>
+			<text id="setting-title-apkbuild" class="setting-title">APK Build</text>
+			<text></text><text-box id="setting-apkbuild-outputDir"></text-box> <text></text
+			><text-box id="setting-apkbuild-newApkPath"></text-box> <text></text
+			><text-box id="setting-apkbuild-apktoolPath"></text-box>
+			<text id="setting-title-signed" class="setting-title">签名配置</text>
+			<text></text><text-box id="setting-signed-jksPath"></text-box> <text></text
+			><text-box id="setting-signed-keyStorePassword"></text-box> <text></text
+			><text-box id="setting-signed-keyAlias"></text-box> <text></text
+			><text-box id="setting-signed-keyPassword"></text-box> <text></text
+			><text-box id="setting-signed-apksignerPath"></text-box> <text></text
+			><text-box id="setting-signed-zipalignPath"></text-box> <text></text
+			><text-box id="setting-signed-signedApkPath"></text-box>
 			<text id="setting-title-other" class="setting-title">other</text>
 			<text></text
-			><check-box
-				id="setting-other-copyAsTextKeepEmptyLine"
-				class="standard"
-			></check-box>
-			<text></text
-			><select-box
-				id="setting-other-browserSearchHistoryLimit"
-			></select-box>
+			><check-box id="setting-other-copyAsTextKeepEmptyLine" class="standard"></check-box>
+			<text></text><select-box id="setting-other-browserSearchHistoryLimit"></select-box>
 			<text id="setting-title-recent" class="setting-title"></text>
 			<text id="setting-recent-statsMode-label"></text
 			><select-box id="setting-recent-statsMode"></select-box>
 			<text id="setting-title-github" class="setting-title">GitHub</text>
-			<text></text
-			><select-box id="setting-github-accelerationNode"></select-box>
+			<text></text><select-box id="setting-github-accelerationNode"></select-box>
 		</grid-box>
 		<button id="setting-confirm" name="confirm">Confirm</button>
 		<button id="setting-cancel" name="cancel">Cancel</button>
@@ -62,15 +44,9 @@
 			<legend>General</legend>
 			<grid-box id="autoTile-general-grid">
 				<text>Image</text
-				><custom-box
-					id="autoTile-image"
-					type="file"
-					filter="image"
-				></custom-box>
-				<text>Offset X</text
-				><number-box id="autoTile-x" min="0" max="255"></number-box>
-				<text>Offset Y</text
-				><number-box id="autoTile-y" min="0" max="255"></number-box>
+				><custom-box id="autoTile-image" type="file" filter="image"></custom-box>
+				<text>Offset X</text><number-box id="autoTile-x" min="0" max="255"></number-box>
+				<text>Offset Y</text><number-box id="autoTile-y" min="0" max="255"></number-box>
 			</grid-box>
 		</field-set>
 		<field-set id="autoTile-templates-fieldset" class="input pad">
@@ -146,30 +122,14 @@
 	<content-frame>
 		<grid-box>
 			<text>Stride X</text
-			><number-box
-				id="autoTile-generateFrames-strideX"
-				min="-128"
-				max="128"
-			></number-box>
+			><number-box id="autoTile-generateFrames-strideX" min="-128" max="128"></number-box>
 			<text>Stride Y</text
-			><number-box
-				id="autoTile-generateFrames-strideY"
-				min="-128"
-				max="128"
-			></number-box>
+			><number-box id="autoTile-generateFrames-strideY" min="-128" max="128"></number-box>
 			<text>Count</text
-			><number-box
-				id="autoTile-generateFrames-count"
-				min="1"
-				max="255"
-			></number-box>
+			><number-box id="autoTile-generateFrames-count" min="1" max="255"></number-box>
 		</grid-box>
-		<button id="autoTile-generateFrames-confirm" name="confirm">
-			Confirm
-		</button>
-		<button id="autoTile-generateFrames-cancel" name="cancel">
-			Cancel
-		</button>
+		<button id="autoTile-generateFrames-confirm" name="confirm">Confirm</button>
+		<button id="autoTile-generateFrames-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
 
@@ -204,10 +164,8 @@
 	<title-bar>Shift<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Shift X</text
-			><number-box id="scene-shift-x" min="-512" max="512"></number-box>
-			<text>Shift Y</text
-			><number-box id="scene-shift-y" min="-512" max="512"></number-box>
+			<text>Shift X</text><number-box id="scene-shift-x" min="-512" max="512"></number-box>
+			<text>Shift Y</text><number-box id="scene-shift-y" min="-512" max="512"></number-box>
 		</grid-box>
 		<button id="scene-shift-confirm" name="confirm">Confirm</button>
 		<button id="scene-shift-cancel" name="cancel">Cancel</button>
@@ -219,15 +177,12 @@
 	<title-bar>Default Object Folders<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Tilemap</text><text-box id="object-folder-tilemap"></text-box>
-			<text>Actor</text><text-box id="object-folder-actor"></text-box>
-			<text>Region</text><text-box id="object-folder-region"></text-box>
-			<text>Light</text><text-box id="object-folder-light"></text-box>
-			<text>Animation</text
-			><text-box id="object-folder-animation"></text-box>
-			<text>Particle</text
-			><text-box id="object-folder-particle"></text-box>
-			<text>Parallax</text
+			<text>Tilemap</text><text-box id="object-folder-tilemap"></text-box> <text>Actor</text
+			><text-box id="object-folder-actor"></text-box> <text>Region</text
+			><text-box id="object-folder-region"></text-box> <text>Light</text
+			><text-box id="object-folder-light"></text-box> <text>Animation</text
+			><text-box id="object-folder-animation"></text-box> <text>Particle</text
+			><text-box id="object-folder-particle"></text-box> <text>Parallax</text
 			><text-box id="object-folder-parallax"></text-box>
 		</grid-box>
 		<button id="object-folder-confirm" name="confirm">Confirm</button>
@@ -255,8 +210,7 @@
 	<title-bar>New Project<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Template</text
-			><select-box id="newProject-template"></select-box>
+			<text>Template</text><select-box id="newProject-template"></select-box>
 			<text>Folder</text><text-box id="newProject-folder"></text-box>
 			<text>Location</text>
 			<flex-box id="newProject-location-box">
@@ -275,8 +229,7 @@
 	<title-bar>Deployment<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Platform</text
-			><select-box id="deployment-platform"></select-box>
+			<text>Platform</text><select-box id="deployment-platform"></select-box>
 			<text>Folder</text><text-box id="deployment-folder"></text-box>
 			<text>Output Location</text>
 			<flex-box id="deployment-location-box">
@@ -312,25 +265,13 @@
 	<content-frame>
 		<box id="project-page">
 			<box id="project-grid-box">
-				<text id="config-window-summary" class="project-summary"
-					>Window</text
-				>
+				<text id="config-window-summary" class="project-summary">Window</text>
 				<text class="project-label">Title</text
 				><text-box id="config-window-title"></text-box>
 				<text class="project-label">Width</text
-				><number-box
-					id="config-window-width"
-					min="240"
-					max="7680"
-					unit="px"
-				></number-box>
+				><number-box id="config-window-width" min="240" max="7680" unit="px"></number-box>
 				<text class="project-label">Height</text
-				><number-box
-					id="config-window-height"
-					min="240"
-					max="7680"
-					unit="px"
-				></number-box>
+				><number-box id="config-window-height" min="240" max="7680" unit="px"></number-box>
 				<text class="project-label">Display</text
 				><select-box id="config-window-display"></select-box>
 				<text id="config-resolution-summary" class="project-summary"
@@ -364,16 +305,9 @@
 					max="4"
 					decimals="10"
 				></number-box>
-				<text id="config-scene-summary" class="project-summary"
-					>Scene</text
-				>
+				<text id="config-scene-summary" class="project-summary">Scene</text>
 				<text class="project-label">Padding</text
-				><number-box
-					id="config-scene-padding"
-					min="0"
-					max="7680"
-					unit="px"
-				></number-box>
+				><number-box id="config-scene-padding" min="0" max="7680" unit="px"></number-box>
 				<text class="project-label">Tile Animation Interval</text
 				><number-box
 					id="config-scene-animationInterval"
@@ -474,9 +408,7 @@
 					max="400"
 					unit="px"
 				></number-box>
-				<text id="config-virtualAxis-summary" class="project-summary"
-					>Virtual Axis</text
-				>
+				<text id="config-virtualAxis-summary" class="project-summary">Virtual Axis</text>
 				<text class="project-label">Axis Up</text
 				><keyboard-box id="config-virtualAxis-up"></keyboard-box>
 				<text class="project-label">Axis Down</text
@@ -485,9 +417,7 @@
 				><keyboard-box id="config-virtualAxis-left"></keyboard-box>
 				<text class="project-label">Axis Right</text
 				><keyboard-box id="config-virtualAxis-right"></keyboard-box>
-				<text id="config-collision-summary" class="project-summary"
-					>Collision System</text
-				>
+				<text id="config-collision-summary" class="project-summary">Collision System</text>
 				<text class="project-label">Actor Collision</text
 				><select-box id="config-collision-actor-enabled"></select-box>
 				<text class="project-label">Scene Collision</text
@@ -502,33 +432,18 @@
 					unit="tile"
 				></number-box>
 				<text class="project-label">Trigger Collision Mode</text
-				><select-box
-					id="config-collision-trigger-collideWithActorShape"
-				></select-box>
-				<text id="config-text-summary" class="project-summary"
-					>Text</text
-				>
+				><select-box id="config-collision-trigger-collideWithActorShape"></select-box>
+				<text id="config-text-summary" class="project-summary">Text</text>
 				<text class="project-label">Imported Fonts</text
-				><param-list
-					id="config-text-importedFonts"
-					flexible
-				></param-list>
+				><param-list id="config-text-importedFonts" flexible></param-list>
 				<text class="project-label">Default Font Family</text
 				><text-box id="config-text-fontFamily"></text-box>
 				<text class="project-label">High Definition</text
 				><select-box id="config-text-highDefinition"></select-box>
-				<text id="config-actor-summary" class="project-summary"
-					>Actor</text
-				>
+				<text id="config-actor-summary" class="project-summary">Actor</text>
 				<text class="project-label">Temporary Attributes</text
-				><param-list
-					id="config-actor-tempAttributes"
-					group="actor"
-					flexible
-				></param-list>
-				<text id="config-animation-summary" class="project-summary"
-					>Animation</text
-				>
+				><param-list id="config-actor-tempAttributes" group="actor" flexible></param-list>
+				<text id="config-animation-summary" class="project-summary">Animation</text>
 				<text class="project-label">Frame Rate</text
 				><number-box
 					id="config-animation-frameRate"
@@ -536,9 +451,7 @@
 					max="240"
 					unit="fps"
 				></number-box>
-				<text
-					id="config-soundAttenuation-summary"
-					class="project-summary"
+				<text id="config-soundAttenuation-summary" class="project-summary"
 					>Sound Attenuation</text
 				>
 				<text class="project-label">Attenuation Distance</text
@@ -550,40 +463,27 @@
 				></number-box>
 				<text class="project-label">Attenuation Easing</text
 				><select-box id="config-soundAttenuation-easingId"></select-box>
-				<text id="config-webgl-summary" class="project-summary"
-					>WebGL</text
-				>
+				<text id="config-webgl-summary" class="project-summary">WebGL</text>
 				<text class="project-label">Low Latency Mode</text
 				><select-box id="config-webgl-desynchronized"></select-box>
 				<text class="project-label">Texture Mag Filter</text
 				><select-box id="config-webgl-textureMagFilter"></select-box>
 				<text class="project-label">Texture Min Filter</text
 				><select-box id="config-webgl-textureMinFilter"></select-box>
-				<text id="config-script-summary" class="project-summary"
-					>Script</text
-				>
+				<text id="config-script-summary" class="project-summary">Script</text>
 				<text class="project-label">Auto Compile</text
 				><select-box id="config-script-autoCompile"></select-box>
-				<text id="config-save-summary" class="project-summary"
-					>Save</text
-				>
+				<text id="config-save-summary" class="project-summary">Save</text>
 				<text class="project-label">Save Location</text
 				><select-box id="config-save-location"></select-box>
 				<text class="project-label">Subdirectory</text
 				><text-box id="config-save-subdir"></text-box>
-				<text id="config-localization-summary" class="project-summary"
-					>Localization</text
-				>
+				<text id="config-localization-summary" class="project-summary">Localization</text>
 				<text class="project-label">Languages</text
-				><param-list
-					id="config-localization-languages"
-					flexible
-				></param-list>
+				><param-list id="config-localization-languages" flexible></param-list>
 				<text class="project-label">Default Game Language</text
 				><select-box id="config-localization-default"></select-box>
-				<text id="config-other-summary" class="project-summary"
-					>Other Options</text
-				>
+				<text id="config-other-summary" class="project-summary">Other Options</text>
 				<text class="project-label">Preload Files</text
 				><select-box id="config-preload"></select-box>
 				<text class="project-label">dead Zone</text
@@ -614,151 +514,66 @@
 			<grid-box id="easing-points-grid">
 				<text>Mode</text><select-box id="easing-mode"></select-box>
 				<text id="easing-points-0">Point 1</text>
-				<number-box
-					id="easing-points-0-x"
-					min="0"
-					max="1"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-0-x" min="0" max="1" step="0.01" decimals="2"
 					><text class="label">X</text></number-box
 				>
-				<number-box
-					id="easing-points-0-y"
-					min="-5"
-					max="5"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-0-y" min="-5" max="5" step="0.01" decimals="2"
 					><text class="label">Y</text></number-box
 				>
 				<text id="easing-points-1">Point 2</text>
-				<number-box
-					id="easing-points-1-x"
-					min="0"
-					max="1"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-1-x" min="0" max="1" step="0.01" decimals="2"
 					><text class="label">X</text></number-box
 				>
-				<number-box
-					id="easing-points-1-y"
-					min="-5"
-					max="5"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-1-y" min="-5" max="5" step="0.01" decimals="2"
 					><text class="label">Y</text></number-box
 				>
 				<text id="easing-points-2">Point 3</text>
-				<number-box
-					id="easing-points-2-x"
-					min="0"
-					max="1"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-2-x" min="0" max="1" step="0.01" decimals="2"
 					><text class="label">X</text></number-box
 				>
-				<number-box
-					id="easing-points-2-y"
-					min="-5"
-					max="5"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-2-y" min="-5" max="5" step="0.01" decimals="2"
 					><text class="label">Y</text></number-box
 				>
 				<text id="easing-points-3">Point 4</text>
-				<number-box
-					id="easing-points-3-x"
-					min="0"
-					max="1"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-3-x" min="0" max="1" step="0.01" decimals="2"
 					><text class="label">X</text></number-box
 				>
-				<number-box
-					id="easing-points-3-y"
-					min="-5"
-					max="5"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-3-y" min="-5" max="5" step="0.01" decimals="2"
 					><text class="label">Y</text></number-box
 				>
 				<text id="easing-points-4">Point 5</text>
-				<number-box
-					id="easing-points-4-x"
-					min="0"
-					max="1"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-4-x" min="0" max="1" step="0.01" decimals="2"
 					><text class="label">X</text></number-box
 				>
-				<number-box
-					id="easing-points-4-y"
-					min="-5"
-					max="5"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-4-y" min="-5" max="5" step="0.01" decimals="2"
 					><text class="label">Y</text></number-box
 				>
 				<text id="easing-points-5">Point 6</text>
-				<number-box
-					id="easing-points-5-x"
-					min="0"
-					max="1"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-5-x" min="0" max="1" step="0.01" decimals="2"
 					><text class="label">X</text></number-box
 				>
-				<number-box
-					id="easing-points-5-y"
-					min="-5"
-					max="5"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-5-y" min="-5" max="5" step="0.01" decimals="2"
 					><text class="label">Y</text></number-box
 				>
 				<text id="easing-points-6">Point 7</text>
-				<number-box
-					id="easing-points-6-x"
-					min="0"
-					max="1"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-6-x" min="0" max="1" step="0.01" decimals="2"
 					><text class="label">X</text></number-box
 				>
-				<number-box
-					id="easing-points-6-y"
-					min="-5"
-					max="5"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-6-y" min="-5" max="5" step="0.01" decimals="2"
 					><text class="label">Y</text></number-box
 				>
 				<text id="easing-points-7">Point 8</text>
-				<number-box
-					id="easing-points-7-x"
-					min="0"
-					max="1"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-7-x" min="0" max="1" step="0.01" decimals="2"
 					><text class="label">X</text></number-box
 				>
-				<number-box
-					id="easing-points-7-y"
-					min="-5"
-					max="5"
-					step="0.01"
-					decimals="2"
+				<number-box id="easing-points-7-y" min="-5" max="5" step="0.01" decimals="2"
 					><text class="label">Y</text></number-box
 				>
 			</grid-box>
 		</field-set>
 		<field-set id="easing-curve-fieldset">
 			<legend>Curve</legend>
-			<canvas
-				id="easing-curve-canvas"
-				width="0"
-				height="0"
-				tabindex="-1"
-			></canvas>
+			<canvas id="easing-curve-canvas" width="0" height="0" tabindex="-1"></canvas>
 			<radio-box name="easing-scale" value="1">100%</radio-box>
 			<radio-box name="easing-scale" value="0.5">50%</radio-box>
 		</field-set>
@@ -766,8 +581,7 @@
 			<legend>Preview</legend>
 			<canvas id="easing-preview-canvas" width="0" height="0"></canvas>
 			<grid-box id="easing-preview-grid">
-				<text>Reverse</text
-				><select-box id="easing-preview-reverse"></select-box>
+				<text>Reverse</text><select-box id="easing-preview-reverse"></select-box>
 				<text>Duration</text
 				><number-box
 					id="easing-preview-duration"
@@ -776,12 +590,7 @@
 					unit="ms"
 				></number-box>
 				<text>Wait</text
-				><number-box
-					id="easing-preview-delay"
-					min="0"
-					max="5000"
-					unit="ms"
-				></number-box>
+				><number-box id="easing-preview-delay" min="0" max="5000" unit="ms"></number-box>
 			</grid-box>
 		</field-set>
 		<button id="easing-confirm" name="confirm">Confirm</button>
@@ -806,10 +615,8 @@
 	<title-bar>Attribute<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Key</text><select-box id="object-attribute-key"></select-box>
-			<text>Boolean</text
-			><select-box id="object-attribute-boolean-value"></select-box>
-			<text>Number</text
+			<text>Key</text><select-box id="object-attribute-key"></select-box> <text>Boolean</text
+			><select-box id="object-attribute-boolean-value"></select-box> <text>Number</text
 			><number-box
 				id="object-attribute-number-value"
 				min="-1000000000"
@@ -817,12 +624,8 @@
 				decimals="6"
 			></number-box>
 			<text>String</text
-			><text-area
-				id="object-attribute-string-value"
-				menu="tag-localization"
-			></text-area>
-			<text>Option</text
-			><select-box id="object-attribute-enum-value"></select-box>
+			><text-area id="object-attribute-string-value" menu="tag-localization"></text-area>
+			<text>Option</text><select-box id="object-attribute-enum-value"></select-box>
 		</grid-box>
 		<button id="object-attribute-confirm" name="confirm">Confirm</button>
 		<button id="object-attribute-cancel" name="cancel">Cancel</button>
@@ -834,19 +637,12 @@
 	<title-bar>Condition<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Condition Type</text
-			><select-box id="condition-type"></select-box> <text>Variable</text
-			><custom-box
-				id="condition-key"
-				type="global-variable"
-				filter="all"
-			></custom-box>
-			<text>Operation</text
-			><select-box id="condition-boolean-operation"></select-box>
-			<text>Boolean</text
-			><select-box id="condition-boolean-value"></select-box>
-			<text>Operation</text
-			><select-box id="condition-number-operation"></select-box>
+			<text>Condition Type</text><select-box id="condition-type"></select-box>
+			<text>Variable</text
+			><custom-box id="condition-key" type="global-variable" filter="all"></custom-box>
+			<text>Operation</text><select-box id="condition-boolean-operation"></select-box>
+			<text>Boolean</text><select-box id="condition-boolean-value"></select-box>
+			<text>Operation</text><select-box id="condition-number-operation"></select-box>
 			<text>Number</text
 			><number-box
 				id="condition-number-value"
@@ -854,10 +650,8 @@
 				max="1000000000"
 				decimals="10"
 			></number-box>
-			<text>Operation</text
-			><select-box id="condition-string-operation"></select-box>
-			<text>String</text
-			><text-area id="condition-string-value"></text-area>
+			<text>Operation</text><select-box id="condition-string-operation"></select-box>
+			<text>String</text><text-area id="condition-string-value"></text-area>
 		</grid-box>
 		<button id="condition-confirm" name="confirm">Confirm</button>
 		<button id="condition-cancel" name="cancel">Cancel</button>
@@ -869,30 +663,14 @@
 	<title-bar>Sprite<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Name</text
-			><text-box id="fileAnimation-sprite-name"></text-box>
-			<text>Image</text
-			><custom-box
-				id="fileAnimation-sprite-image"
-				type="file"
-				filter="image"
-			></custom-box>
+			<text>Name</text><text-box id="fileAnimation-sprite-name"></text-box> <text>Image</text
+			><custom-box id="fileAnimation-sprite-image" type="file" filter="image"></custom-box>
 			<text>Horiz Frames</text
-			><number-box
-				id="fileAnimation-sprite-hframes"
-				min="1"
-				max="256"
-			></number-box>
+			><number-box id="fileAnimation-sprite-hframes" min="1" max="256"></number-box>
 			<text>Vert Frames</text
-			><number-box
-				id="fileAnimation-sprite-vframes"
-				min="1"
-				max="256"
-			></number-box>
+			><number-box id="fileAnimation-sprite-vframes" min="1" max="256"></number-box>
 		</grid-box>
-		<button id="fileAnimation-sprite-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="fileAnimation-sprite-confirm" name="confirm">Confirm</button>
 		<button id="fileAnimation-sprite-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -902,13 +680,8 @@
 	<title-bar>Sprite<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Name</text><select-box id="fileActor-sprite-id"></select-box>
-			<text>Image</text
-			><custom-box
-				id="fileActor-sprite-image"
-				type="file"
-				filter="image"
-			></custom-box>
+			<text>Name</text><select-box id="fileActor-sprite-id"></select-box> <text>Image</text
+			><custom-box id="fileActor-sprite-image" type="file" filter="image"></custom-box>
 		</grid-box>
 		<button id="fileActor-sprite-confirm" name="confirm">Confirm</button>
 		<button id="fileActor-sprite-cancel" name="cancel">Cancel</button>
@@ -921,13 +694,8 @@
 	<content-frame>
 		<grid-box>
 			<text>Skill</text
-			><custom-box
-				id="fileActor-skill-id"
-				type="file"
-				filter="skill"
-			></custom-box>
-			<text>Shortcut Key</text
-			><select-box id="fileActor-skill-key"></select-box>
+			><custom-box id="fileActor-skill-id" type="file" filter="skill"></custom-box>
+			<text>Shortcut Key</text><select-box id="fileActor-skill-key"></select-box>
 		</grid-box>
 		<button id="fileActor-skill-confirm" name="confirm">Confirm</button>
 		<button id="fileActor-skill-cancel" name="cancel">Cancel</button>
@@ -940,13 +708,8 @@
 	<content-frame>
 		<grid-box>
 			<text>Equipment</text
-			><custom-box
-				id="fileActor-equipment-id"
-				type="file"
-				filter="equipment"
-			></custom-box>
-			<text>Slot</text
-			><select-box id="fileActor-equipment-slot"></select-box>
+			><custom-box id="fileActor-equipment-id" type="file" filter="equipment"></custom-box>
+			<text>Slot</text><select-box id="fileActor-equipment-slot"></select-box>
 		</grid-box>
 		<button id="fileActor-equipment-confirm" name="confirm">Confirm</button>
 		<button id="fileActor-equipment-cancel" name="cancel">Cancel</button>
@@ -958,20 +721,11 @@
 	<title-bar>Inventory<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text
-			><select-box id="fileActor-inventory-type"></select-box>
+			<text>Type</text><select-box id="fileActor-inventory-type"></select-box>
 			<text>Item</text
-			><custom-box
-				id="fileActor-inventory-item-id"
-				type="file"
-				filter="item"
-			></custom-box>
+			><custom-box id="fileActor-inventory-item-id" type="file" filter="item"></custom-box>
 			<text>Quantity</text
-			><number-box
-				id="fileActor-inventory-item-quantity"
-				min="1"
-				max="10000"
-			></number-box>
+			><number-box id="fileActor-inventory-item-quantity" min="1" max="10000"></number-box>
 			<text>Equipment</text
 			><custom-box
 				id="fileActor-inventory-equipment-id"
@@ -979,11 +733,7 @@
 				filter="equipment"
 			></custom-box>
 			<text>Money</text
-			><number-box
-				id="fileActor-inventory-money"
-				min="1"
-				max="100000000"
-			></number-box>
+			><number-box id="fileActor-inventory-money" min="1" max="100000000"></number-box>
 		</grid-box>
 		<button id="fileActor-inventory-confirm" name="confirm">Confirm</button>
 		<button id="fileActor-inventory-cancel" name="cancel">Cancel</button>
@@ -995,10 +745,8 @@
 	<title-bar>Parameter<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text
-			><select-box id="fileEvent-parameter-type"></select-box>
-			<text>Key</text><text-box id="fileEvent-parameter-key"></text-box>
-			<text>Note</text
+			<text>Type</text><select-box id="fileEvent-parameter-type"></select-box> <text>Key</text
+			><text-box id="fileEvent-parameter-key"></text-box> <text>Note</text
 			><text-area id="fileEvent-parameter-note"></text-area>
 		</grid-box>
 		<button id="fileEvent-parameter-confirm" name="confirm">Confirm</button>
@@ -1017,9 +765,7 @@
 		<field-set id="variable-properties-fieldset">
 			<legend>Properties</legend>
 			<flex-box id="variable-properties-flex">
-				<flex-item
-					><text>Name</text><text-box id="variable-name"></text-box
-				></flex-item>
+				<flex-item><text>Name</text><text-box id="variable-name"></text-box></flex-item>
 				<flex-item
 					><text>Sort</text>
 					<radio-box
@@ -1027,27 +773,21 @@
 						name="variable-sort"
 						class="standard"
 						value="0"
-						><text id="variable-sort-normal-label"
-							>Normal</text
-						></radio-box
+						><text id="variable-sort-normal-label">Normal</text></radio-box
 					>
 					<radio-box
 						id="variable-sort-shared"
 						name="variable-sort"
 						class="standard"
 						value="1"
-						><text id="variable-sort-shared-label"
-							>Shared</text
-						></radio-box
+						><text id="variable-sort-shared-label">Shared</text></radio-box
 					>
 					<radio-box
 						id="variable-sort-temporary"
 						name="variable-sort"
 						class="standard"
 						value="2"
-						><text id="variable-sort-temporary-label"
-							>Temporary</text
-						></radio-box
+						><text id="variable-sort-temporary-label">Temporary</text></radio-box
 					>
 				</flex-item>
 				<flex-item
@@ -1057,36 +797,28 @@
 						name="variable-type"
 						class="standard"
 						value="boolean"
-						><text id="variable-type-boolean-label"
-							>Boolean</text
-						></radio-box
+						><text id="variable-type-boolean-label">Boolean</text></radio-box
 					>
 					<radio-box
 						id="variable-type-number"
 						name="variable-type"
 						class="standard"
 						value="number"
-						><text id="variable-type-number-label"
-							>Number</text
-						></radio-box
+						><text id="variable-type-number-label">Number</text></radio-box
 					>
 					<radio-box
 						id="variable-type-string"
 						name="variable-type"
 						class="standard"
 						value="string"
-						><text id="variable-type-string-label"
-							>String</text
-						></radio-box
+						><text id="variable-type-string-label">String</text></radio-box
 					>
 					<radio-box
 						id="variable-type-object"
 						name="variable-type"
 						class="standard"
 						value="object"
-						><text id="variable-type-object-label"
-							>Object</text
-						></radio-box
+						><text id="variable-type-object-label">Object</text></radio-box
 					>
 				</flex-item>
 				<flex-item id="variable-value-box"
@@ -1121,9 +853,7 @@
 						</page-frame>
 					</page-manager>
 				</flex-item>
-				<flex-item
-					><text>Note</text><text-area id="variable-note"></text-area
-				></flex-item>
+				<flex-item><text>Note</text><text-area id="variable-note"></text-area></flex-item>
 			</flex-box>
 		</field-set>
 		<text-box id="variable-searcher" name="search"></text-box>
@@ -1146,14 +876,9 @@
 			<flex-box id="attribute-properties-flex">
 				<flex-item
 					><text>Name</text
-					><text-box
-						id="attribute-name"
-						menu="tag-localization"
-					></text-box
+					><text-box id="attribute-name" menu="tag-localization"></text-box
 				></flex-item>
-				<flex-item
-					><text>Key</text><text-box id="attribute-key"></text-box
-				></flex-item>
+				<flex-item><text>Key</text><text-box id="attribute-key"></text-box></flex-item>
 				<flex-item id="attribute-type-box"
 					><text>Type</text>
 					<radio-box
@@ -1161,36 +886,28 @@
 						name="attribute-type"
 						class="standard"
 						value="boolean"
-						><text id="attribute-type-boolean-label"
-							>Boolean</text
-						></radio-box
+						><text id="attribute-type-boolean-label">Boolean</text></radio-box
 					>
 					<radio-box
 						id="attribute-type-number"
 						name="attribute-type"
 						class="standard"
 						value="number"
-						><text id="attribute-type-number-label"
-							>Number</text
-						></radio-box
+						><text id="attribute-type-number-label">Number</text></radio-box
 					>
 					<radio-box
 						id="attribute-type-string"
 						name="attribute-type"
 						class="standard"
 						value="string"
-						><text id="attribute-type-string-label"
-							>String</text
-						></radio-box
+						><text id="attribute-type-string-label">String</text></radio-box
 					>
 					<radio-box
 						id="attribute-type-enum"
 						name="attribute-type"
 						class="standard"
 						value="enum"
-						><text id="attribute-type-enum-label"
-							>String(Enum)</text
-						></radio-box
+						><text id="attribute-type-enum-label">String(Enum)</text></radio-box
 					>
 					<radio-box
 						id="attribute-type-object"
@@ -1204,14 +921,9 @@
 				</flex-item>
 				<flex-item id="attribute-enum-box"
 					><text>Options</text>
-					<custom-box
-						id="attribute-enum"
-						type="enum-group"
-					></custom-box>
+					<custom-box id="attribute-enum" type="enum-group"></custom-box>
 				</flex-item>
-				<flex-item
-					><text>Note</text><text-area id="attribute-note"></text-area
-				></flex-item>
+				<flex-item><text>Note</text><text-area id="attribute-note"></text-area></flex-item>
 			</flex-box>
 		</field-set>
 		<text-box id="attribute-searcher" name="search"></text-box>
@@ -1233,20 +945,13 @@
 			<legend>Properties</legend>
 			<flex-box id="enum-properties-flex">
 				<flex-item
-					><text>Name</text
-					><text-box id="enum-name" menu="tag-localization"></text-box
+					><text>Name</text><text-box id="enum-name" menu="tag-localization"></text-box
 				></flex-item>
 				<flex-item
-					><text>Value</text
-					><text-box
-						id="enum-value"
-						menu="tag-localization"
-					></text-box
+					><text>Value</text><text-box id="enum-value" menu="tag-localization"></text-box
 				></flex-item>
 				<flex-item id="enum-spacing-box"></flex-item>
-				<flex-item
-					><text>Note</text><text-area id="enum-note"></text-area
-				></flex-item>
+				<flex-item><text>Note</text><text-area id="enum-note"></text-area></flex-item>
 			</flex-box>
 		</field-set>
 		<text-box id="enum-searcher" name="search"></text-box>
@@ -1266,9 +971,7 @@
 		</field-set>
 		<box id="localization-inspector"></box>
 		<text-box id="localization-searcher" name="search"></text-box>
-		<button id="localization-from-excel" name="from-excel">
-			from-excel
-		</button>
+		<button id="localization-from-excel" name="from-excel">from-excel</button>
 		<button id="localization-to-excel" name="to-excel">to-excel</button>
 		<button id="localization-confirm" name="confirm">Confirm</button>
 		<button id="localization-cancel" name="cancel">Cancel</button>
@@ -1280,11 +983,7 @@
 <window-frame id="presetObject" mode="center">
 	<title-bar>Object<close></close></title-bar>
 	<content-frame>
-		<custom-box
-			id="presetObject-sceneId"
-			type="file"
-			filter="scene"
-		></custom-box>
+		<custom-box id="presetObject-sceneId" type="file" filter="scene"></custom-box>
 		<node-list id="presetObject-list"></node-list>
 		<text-box id="presetObject-searcher" name="search"></text-box>
 		<button id="presetObject-confirm" name="confirm">Confirm</button>
@@ -1296,11 +995,7 @@
 <window-frame id="presetElement" mode="center">
 	<title-bar>Element<close></close></title-bar>
 	<content-frame>
-		<custom-box
-			id="presetElement-uiId"
-			type="file"
-			filter="ui"
-		></custom-box>
+		<custom-box id="presetElement-uiId" type="file" filter="ui"></custom-box>
 		<node-list id="presetElement-list"></node-list>
 		<text-box id="presetElement-searcher" name="search"></text-box>
 		<button id="presetElement-confirm" name="confirm">Confirm</button>
@@ -1350,8 +1045,7 @@
 			<detail-box id="command-settings-detail" open>
 				<detail-summary>Settings</detail-summary>
 				<detail-grid id="command-settings-grid">
-					<text>Alias</text><text-box id="command-alias"></text-box>
-					<text>Keywords</text
+					<text>Alias</text><text-box id="command-alias"></text-box> <text>Keywords</text
 					><text-box id="command-keywords"></text-box>
 				</detail-grid>
 			</detail-box>
@@ -1378,15 +1072,9 @@
 	<title-bar>Update Log<close></close></title-bar>
 	<content-frame>
 		<box id="update-log-tabs">
-			<button id="update-log-tab-internal" class="update-log-tab active">
-				Origin
-			</button>
-			<button id="update-log-tab-community" class="update-log-tab">
-				Community
-			</button>
-			<button id="update-log-tab-donation" class="update-log-tab">
-				捐赠名单
-			</button>
+			<button id="update-log-tab-internal" class="update-log-tab active">Origin</button>
+			<button id="update-log-tab-community" class="update-log-tab">Community</button>
+			<button id="update-log-tab-donation" class="update-log-tab">捐赠名单</button>
 		</box>
 		<box id="update-log-container">
 			<box id="update-log-content"></box>
@@ -1433,21 +1121,14 @@
 		<box id="export-apk-out">
 			<grid-box id="export-apk-grid">
 				<text class="project-summary">应用配置</text>
-				<text>应用名称</text
-				><text-box id="export-apk-apkName"></text-box>
-				<text>应用图标</text
-				><text-box id="export-apk-apkIcon"></text-box>
-				<text>应用包名</text
-				><text-box id="export-apk-apkPackageName"></text-box>
-				<text>应用版本</text
-				><text-box id="export-apk-apkVersionName"></text-box>
-				<text>应用版本号</text
-				><text-box id="export-apk-apkVersionCode"></text-box>
+				<text>应用名称</text><text-box id="export-apk-apkName"></text-box>
+				<text>应用图标</text><text-box id="export-apk-apkIcon"></text-box>
+				<text>应用包名</text><text-box id="export-apk-apkPackageName"></text-box>
+				<text>应用版本</text><text-box id="export-apk-apkVersionName"></text-box>
+				<text>应用版本号</text><text-box id="export-apk-apkVersionCode"></text-box>
 			</grid-box>
 			<box id="export-apk-PS">
-				<text class="project-summary export-apk-major"
-					>PS（温馨提示）</text
-				>
+				<text class="project-summary export-apk-major">PS（温馨提示）</text>
 				<text class="export-apk-major"
 					>构建前请确保您安装了Java，apktool（内置）、apksigner（内置）、zipalign（内置）工具</text
 				>
@@ -1481,35 +1162,23 @@
 			<text id="about-credits">Credits</text
 			><text>
 				<text class="href">刀里个刀</text><br />
-				<text
-					class="href"
-					href="https://store.steampowered.com/app/2346410/Border_Pioneer"
+				<text class="href" href="https://store.steampowered.com/app/2346410/Border_Pioneer"
 					>Yahzj</text
 				><br />
-				<text class="href" href="https://github.com/chunqian"
-					>Chunqian</text
-				><br />
-				<text class="href" href="https://github.com/xiaoxustudio"
-					>徐然先生</text
-				><br />
+				<text class="href" href="https://github.com/chunqian">Chunqian</text><br />
+				<text class="href" href="https://github.com/xiaoxustudio">徐然先生</text><br />
 				<text class="href">Alias</text><br />
-				<text
-					class="href"
-					href="https://www.youtube.com/watch?v=3VcWWYIzKNY"
+				<text class="href" href="https://www.youtube.com/watch?v=3VcWWYIzKNY"
 					>Mr. Von Grimmsy</text
 				><br />
-				<text class="href" href="https://vk.com/sxdmedia">ZerosmO</text
-				><br />
+				<text class="href" href="https://vk.com/sxdmedia">ZerosmO</text><br />
 				<text class="href">SmoLife</text><br />
-				<text class="href" href="https://twitter.com/DavisCorsac"
-					>Davis Corsac</text
-				><br />
+				<text class="href" href="https://twitter.com/DavisCorsac">Davis Corsac</text><br />
 			</text>
-			<text>Editor</text><text id="editor-version"></text>
-			<text>Electron</text><text id="electron-version"></text>
-			<text>Chromium</text><text id="chrome-version"></text>
-			<text>Node.js</text><text id="node-version"></text> <text>V8</text
-			><text id="v8-version"></text> <text>OS</text
+			<text>Editor</text><text id="editor-version"></text> <text>Electron</text
+			><text id="electron-version"></text> <text>Chromium</text
+			><text id="chrome-version"></text> <text>Node.js</text><text id="node-version"></text>
+			<text>V8</text><text id="v8-version"></text> <text>OS</text
 			><text id="os-version"></text>
 		</grid-box>
 	</content-frame>
@@ -1593,12 +1262,9 @@
 		</box>
 		<grid-box id="color-rgba-grid">
 			<text>#</text><text-box id="color-hex"></text-box> <text>R</text
-			><number-box id="color-r" min="0" max="255"></number-box>
-			<text>G</text
-			><number-box id="color-g" min="0" max="255"></number-box>
-			<text>B</text
-			><number-box id="color-b" min="0" max="255"></number-box>
-			<text>A</text
+			><number-box id="color-r" min="0" max="255"></number-box> <text>G</text
+			><number-box id="color-g" min="0" max="255"></number-box> <text>B</text
+			><number-box id="color-b" min="0" max="255"></number-box> <text>A</text
 			><number-box id="color-a" min="0" max="255"></number-box>
 		</grid-box>
 		<button id="color-confirm" name="confirm">Confirm</button>
@@ -1610,9 +1276,7 @@
 <window-frame id="font">
 	<title-bar>Set Font<close></close></title-bar>
 	<content-frame>
-		<grid-box>
-			<text>Font Family</text><text-box id="font-font"></text-box>
-		</grid-box>
+		<grid-box> <text>Font Family</text><text-box id="font-font"></text-box> </grid-box>
 		<button id="font-confirm" name="confirm">Confirm</button>
 		<button id="font-cancel" name="cancel">Cancel</button>
 	</content-frame>
@@ -1624,12 +1288,7 @@
 	<content-frame>
 		<grid-box>
 			<text>Size</text
-			><number-box
-				id="fontSize-size"
-				min="10"
-				max="400"
-				unit="px"
-			></number-box>
+			><number-box id="fontSize-size" min="10" max="400" unit="px"></number-box>
 		</grid-box>
 		<button id="fontSize-confirm" name="confirm">Confirm</button>
 		<button id="fontSize-cancel" name="cancel">Cancel</button>
@@ -1641,16 +1300,9 @@
 	<title-bar>Set Text Position<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Axis</text><select-box id="textPosition-axis"></select-box>
-			<text>Operation</text
-			><select-box id="textPosition-operation"></select-box>
-			<text>Value</text
-			><number-box
-				id="textPosition-value"
-				min="-1000"
-				max="1000"
-				unit="px"
-			></number-box>
+			<text>Axis</text><select-box id="textPosition-axis"></select-box> <text>Operation</text
+			><select-box id="textPosition-operation"></select-box> <text>Value</text
+			><number-box id="textPosition-value" min="-1000" max="1000" unit="px"></number-box>
 		</grid-box>
 		<button id="textPosition-confirm" name="confirm">Confirm</button>
 		<button id="textPosition-cancel" name="cancel">Cancel</button>
@@ -1662,30 +1314,13 @@
 	<title-bar>Set Text Effect<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Effect</text><select-box id="textEffect-type"></select-box>
-			<text>Shadow X</text
-			><number-box
-				id="textEffect-shadowOffsetX"
-				min="-9"
-				max="9"
-				unit="px"
-			></number-box>
+			<text>Effect</text><select-box id="textEffect-type"></select-box> <text>Shadow X</text
+			><number-box id="textEffect-shadowOffsetX" min="-9" max="9" unit="px"></number-box>
 			<text>Shadow Y</text
-			><number-box
-				id="textEffect-shadowOffsetY"
-				min="-9"
-				max="9"
-				unit="px"
-			></number-box>
+			><number-box id="textEffect-shadowOffsetY" min="-9" max="9" unit="px"></number-box>
 			<text>Stroke Width</text
-			><number-box
-				id="textEffect-strokeWidth"
-				min="1"
-				max="20"
-				unit="px"
-			></number-box>
-			<text>Effect Color</text
-			><color-box id="textEffect-color"></color-box>
+			><number-box id="textEffect-strokeWidth" min="1" max="20" unit="px"></number-box>
+			<text>Effect Color</text><color-box id="textEffect-color"></color-box>
 		</grid-box>
 		<button id="textEffect-confirm" name="confirm">Confirm</button>
 		<button id="textEffect-cancel" name="cancel">Cancel</button>
@@ -1697,31 +1332,12 @@
 	<title-bar>Insert Image<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Mode</text><select-box id="insertImage-mode"></select-box>
-			<text>Image</text
-			><custom-box
-				id="insertImage-image"
-				type="file"
-				filter="image"
-			></custom-box>
+			<text>Mode</text><select-box id="insertImage-mode"></select-box> <text>Image</text
+			><custom-box id="insertImage-image" type="file" filter="image"></custom-box>
 			<text>Clip</text
-			><custom-box
-				id="insertImage-clip"
-				type="clip"
-				image="insertImage-image"
-			></custom-box>
-			<text>Width</text
-			><number-box
-				id="insertImage-width"
-				min="0"
-				max="10000"
-			></number-box>
-			<text>Height</text
-			><number-box
-				id="insertImage-height"
-				min="0"
-				max="10000"
-			></number-box>
+			><custom-box id="insertImage-clip" type="clip" image="insertImage-image"></custom-box>
+			<text>Width</text><number-box id="insertImage-width" min="0" max="10000"></number-box>
+			<text>Height</text><number-box id="insertImage-height" min="0" max="10000"></number-box>
 		</grid-box>
 		<button id="insertImage-confirm" name="confirm">Confirm</button>
 		<button id="insertImage-cancel" name="cancel">Cancel</button>
@@ -1733,8 +1349,7 @@
 	<title-bar>Set Local Variable<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Local Variable</text
-			><text-box id="localVariable-key"></text-box>
+			<text>Local Variable</text><text-box id="localVariable-key"></text-box>
 		</grid-box>
 		<button id="localVariable-confirm" name="confirm">Confirm</button>
 		<button id="localVariable-cancel" name="cancel">Cancel</button>
@@ -1747,12 +1362,7 @@
 	<content-frame>
 		<grid-box>
 			<text>Zoom Factor</text
-			><number-box
-				id="zoom-factor"
-				min="0.6666"
-				max="2"
-				decimals="4"
-			></number-box>
+			><number-box id="zoom-factor" min="0.6666" max="2" decimals="4"></number-box>
 		</grid-box>
 		<button id="zoom-confirm" name="confirm">Confirm</button>
 		<button id="zoom-cancel" name="cancel">Cancel</button>
@@ -1763,9 +1373,7 @@
 <window-frame id="rename">
 	<title-bar>Rename<close></close></title-bar>
 	<content-frame>
-		<grid-box>
-			<text>Name</text><text-box id="rename-name"></text-box>
-		</grid-box>
+		<grid-box> <text>Name</text><text-box id="rename-name"></text-box> </grid-box>
 		<button id="rename-confirm" name="confirm">Confirm</button>
 		<button id="rename-cancel" name="cancel">Cancel</button>
 	</content-frame>
@@ -1776,20 +1384,10 @@
 	<title-bar>Language<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Name</text><select-box id="language-name"></select-box>
-			<text>Font</text
-			><custom-box
-				id="language-font"
-				type="file"
-				filter="font"
-			></custom-box>
+			<text>Name</text><select-box id="language-name"></select-box> <text>Font</text
+			><custom-box id="language-font" type="file" filter="font"></custom-box>
 			<text>Font Size Scaling</text
-			><number-box
-				id="language-scale"
-				min="0.5"
-				max="2"
-				decimals="10"
-			></number-box>
+			><number-box id="language-scale" min="0.5" max="2" decimals="10"></number-box>
 		</grid-box>
 		<button id="language-confirm" name="confirm">Confirm</button>
 		<button id="language-cancel" name="cancel">Cancel</button>
@@ -1801,10 +1399,8 @@
 	<title-bar>Export Language Pack<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>First Lang</text
-			><select-box id="exportLanguage-first"></select-box>
-			<text>Second Lang</text
-			><select-box id="exportLanguage-second"></select-box>
+			<text>First Lang</text><select-box id="exportLanguage-first"></select-box>
+			<text>Second Lang</text><select-box id="exportLanguage-second"></select-box>
 		</grid-box>
 		<button id="exportLanguage-confirm" name="confirm">Confirm</button>
 		<button id="exportLanguage-cancel" name="cancel">Cancel</button>
@@ -1816,8 +1412,7 @@
 	<title-bar>Import Language Pack<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Import to</text
-			><select-box id="importLanguage-language"></select-box>
+			<text>Import to</text><select-box id="importLanguage-language"></select-box>
 		</grid-box>
 		<button id="importLanguage-confirm" name="confirm">Confirm</button>
 		<button id="importLanguage-cancel" name="cancel">Cancel</button>
@@ -1844,9 +1439,7 @@
 <window-frame id="setKey">
 	<title-bar>Set Key<close></close></title-bar>
 	<content-frame>
-		<grid-box>
-			<text>Key</text><text-box id="setKey-key"></text-box>
-		</grid-box>
+		<grid-box> <text>Key</text><text-box id="setKey-key"></text-box> </grid-box>
 		<button id="setKey-confirm" name="confirm">Confirm</button>
 		<button id="setKey-cancel" name="cancel">Cancel</button>
 	</content-frame>
@@ -1857,8 +1450,7 @@
 	<title-bar>Set Quantity<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Quantity</text
-			><number-box id="setQuantity-quantity" min="1"></number-box>
+			<text>Quantity</text><number-box id="setQuantity-quantity" min="1"></number-box>
 		</grid-box>
 		<button id="setQuantity-confirm" name="confirm">Confirm</button>
 		<button id="setQuantity-cancel" name="cancel">Cancel</button>
@@ -1869,8 +1461,7 @@
 	<title-bar>Set Tile Tag<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Tag</text
-			><number-box id="setTileTag-tag" min="0" max="99999"></number-box>
+			<text>Tag</text><number-box id="setTileTag-tag" min="0" max="99999"></number-box>
 		</grid-box>
 		<button id="setTileTag-confirm" name="confirm">Confirm</button>
 		<button id="setTileTag-cancel" name="cancel">Cancel</button>
@@ -1882,27 +1473,14 @@
 	<title-bar>Search String<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text></text><text-box id="event-search-string-search"></text-box>
+			<text></text><text-box id="event-search-string-search"></text-box> <text></text
+			><check-box id="event-search-string-case-insensitive" class="standard"></check-box>
+			<text></text><check-box id="event-search-string-regex" class="standard"></check-box>
 			<text></text
-			><check-box
-				id="event-search-string-case-insensitive"
-				class="standard"
-			></check-box>
-			<text></text
-			><check-box
-				id="event-search-string-regex"
-				class="standard"
-			></check-box>
-			<text></text
-			><check-box
-				id="event-search-string-match-line"
-				class="standard"
-			></check-box>
+			><check-box id="event-search-string-match-line" class="standard"></check-box>
 			<text id="event-search-string-log"></text>
 		</grid-box>
-		<button id="event-search-string-previous" name="previous">
-			上一个
-		</button>
+		<button id="event-search-string-previous" name="previous">上一个</button>
 		<button id="event-search-string-next" name="next">下一个</button>
 	</content-frame>
 </window-frame>
@@ -1949,33 +1527,16 @@
 	<title-bar>Variable<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="variableGetter-type"></select-box>
-			<text>Actor</text
-			><custom-box id="variableGetter-actor" type="actor"></custom-box>
-			<text>Skill</text
-			><custom-box id="variableGetter-skill" type="skill"></custom-box>
-			<text>State</text
-			><custom-box id="variableGetter-state" type="state"></custom-box>
-			<text>Equipment</text
-			><custom-box
-				id="variableGetter-equipment"
-				type="equipment"
-			></custom-box>
-			<text>Item</text
-			><custom-box id="variableGetter-item" type="item"></custom-box>
-			<text>Element</text
-			><custom-box
-				id="variableGetter-element"
-				type="element"
-			></custom-box>
-			<text>Key</text><text-box id="variableGetter-common-key"></text-box>
-			<text>Key</text
-			><select-var id="variableGetter-preset-key"></select-var>
-			<text>Key</text
-			><custom-box
-				id="variableGetter-global-key"
-				type="global-variable"
-			></custom-box>
+			<text>Type</text><select-box id="variableGetter-type"></select-box> <text>Actor</text
+			><custom-box id="variableGetter-actor" type="actor"></custom-box> <text>Skill</text
+			><custom-box id="variableGetter-skill" type="skill"></custom-box> <text>State</text
+			><custom-box id="variableGetter-state" type="state"></custom-box> <text>Equipment</text
+			><custom-box id="variableGetter-equipment" type="equipment"></custom-box>
+			<text>Item</text><custom-box id="variableGetter-item" type="item"></custom-box>
+			<text>Element</text><custom-box id="variableGetter-element" type="element"></custom-box>
+			<text>Key</text><text-box id="variableGetter-common-key"></text-box> <text>Key</text
+			><select-var id="variableGetter-preset-key"></select-var> <text>Key</text
+			><custom-box id="variableGetter-global-key" type="global-variable"></custom-box>
 		</grid-box>
 		<button id="variableGetter-confirm" name="confirm">Confirm</button>
 		<button id="variableGetter-cancel" name="cancel">Cancel</button>
@@ -1987,21 +1548,11 @@
 	<title-bar>Variable<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="variableGetter2-type"></select-box>
-			<text>Element</text
-			><custom-box
-				id="variableGetter2-element"
-				type="element"
-			></custom-box>
-			<text>Key</text
-			><text-box id="variableGetter2-common-key"></text-box>
-			<text>Key</text
-			><select-box id="variableGetter2-preset-key"></select-box>
-			<text>Key</text
-			><custom-box
-				id="variableGetter2-global-key"
-				type="global-variable"
-			></custom-box>
+			<text>Type</text><select-box id="variableGetter2-type"></select-box> <text>Element</text
+			><custom-box id="variableGetter2-element" type="element"></custom-box> <text>Key</text
+			><text-box id="variableGetter2-common-key"></text-box> <text>Key</text
+			><select-box id="variableGetter2-preset-key"></select-box> <text>Key</text
+			><custom-box id="variableGetter2-global-key" type="global-variable"></custom-box>
 		</grid-box>
 		<button id="variableGetter2-confirm" name="confirm">Confirm</button>
 		<button id="variableGetter2-cancel" name="cancel">Cancel</button>
@@ -2013,31 +1564,14 @@
 	<title-bar>Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="actorGetter-type"></select-box>
-			<text>Member ID</text
-			><number-var
-				id="actorGetter-memberId"
-				min="0"
-				max="10000"
-			></number-var>
+			<text>Type</text><select-box id="actorGetter-type"></select-box> <text>Member ID</text
+			><number-var id="actorGetter-memberId" min="0" max="10000"></number-var>
 			<text>Actor</text
-			><custom-box
-				id="actorGetter-actorId"
-				type="file"
-				filter="actor"
-			></custom-box>
+			><custom-box id="actorGetter-actorId" type="file" filter="actor"></custom-box>
 			<text>Data ID</text
-			><custom-box
-				id="actorGetter-presetId"
-				type="preset-object"
-				filter="actor"
-			></custom-box>
+			><custom-box id="actorGetter-presetId" type="preset-object" filter="actor"></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="actorGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="actorGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="actorGetter-confirm" name="confirm">Confirm</button>
 		<button id="actorGetter-cancel" name="cancel">Cancel</button>
@@ -2049,22 +1583,12 @@
 	<title-bar>Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="skillGetter-type"></select-box>
-			<text>Actor</text
-			><custom-box id="skillGetter-actor" type="actor"></custom-box>
-			<text>Shortcut Key</text
+			<text>Type</text><select-box id="skillGetter-type"></select-box> <text>Actor</text
+			><custom-box id="skillGetter-actor" type="actor"></custom-box> <text>Shortcut Key</text
 			><select-var id="skillGetter-key"></select-var> <text>Skill</text
-			><custom-box
-				id="skillGetter-skillId"
-				type="file"
-				filter="skill"
-			></custom-box>
+			><custom-box id="skillGetter-skillId" type="file" filter="skill"></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="skillGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="skillGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="skillGetter-confirm" name="confirm">Confirm</button>
 		<button id="skillGetter-cancel" name="cancel">Cancel</button>
@@ -2076,21 +1600,11 @@
 	<title-bar>Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="stateGetter-type"></select-box>
-			<text>Actor</text
-			><custom-box id="stateGetter-actor" type="actor"></custom-box>
-			<text>State</text
-			><custom-box
-				id="stateGetter-stateId"
-				type="file"
-				filter="state"
-			></custom-box>
+			<text>Type</text><select-box id="stateGetter-type"></select-box> <text>Actor</text
+			><custom-box id="stateGetter-actor" type="actor"></custom-box> <text>State</text
+			><custom-box id="stateGetter-stateId" type="file" filter="state"></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="stateGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="stateGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="stateGetter-confirm" name="confirm">Confirm</button>
 		<button id="stateGetter-cancel" name="cancel">Cancel</button>
@@ -2102,22 +1616,16 @@
 	<title-bar>Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="equipmentGetter-type"></select-box>
-			<text>Actor</text
-			><custom-box id="equipmentGetter-actor" type="actor"></custom-box>
-			<text>Slot</text><select-var id="equipmentGetter-slot"></select-var>
-			<text>Equipment</text
+			<text>Type</text><select-box id="equipmentGetter-type"></select-box> <text>Actor</text
+			><custom-box id="equipmentGetter-actor" type="actor"></custom-box> <text>Slot</text
+			><select-var id="equipmentGetter-slot"></select-var> <text>Equipment</text
 			><custom-box
 				id="equipmentGetter-equipmentId"
 				type="file"
 				filter="equipment"
 			></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="equipmentGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="equipmentGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="equipmentGetter-confirm" name="confirm">Confirm</button>
 		<button id="equipmentGetter-cancel" name="cancel">Cancel</button>
@@ -2129,22 +1637,12 @@
 	<title-bar>Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="itemGetter-type"></select-box>
-			<text>Actor</text
-			><custom-box id="itemGetter-actor" type="actor"></custom-box>
-			<text>Shortcut Key</text
+			<text>Type</text><select-box id="itemGetter-type"></select-box> <text>Actor</text
+			><custom-box id="itemGetter-actor" type="actor"></custom-box> <text>Shortcut Key</text
 			><select-var id="itemGetter-key"></select-var> <text>Item</text
-			><custom-box
-				id="itemGetter-itemId"
-				type="file"
-				filter="item"
-			></custom-box>
+			><custom-box id="itemGetter-itemId" type="file" filter="item"></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="itemGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="itemGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="itemGetter-confirm" name="confirm">Confirm</button>
 		<button id="itemGetter-cancel" name="cancel">Cancel</button>
@@ -2156,8 +1654,7 @@
 	<title-bar>Position<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="positionGetter-type"></select-box>
-			<text>X</text
+			<text>Type</text><select-box id="positionGetter-type"></select-box> <text>X</text
 			><number-var
 				id="positionGetter-common-x"
 				min="-512"
@@ -2173,19 +1670,11 @@
 				decimals="4"
 				unit="tile"
 			></number-var>
-			<text>Actor</text
-			><custom-box id="positionGetter-actor" type="actor"></custom-box>
-			<text>Trigger</text
-			><custom-box
-				id="positionGetter-trigger"
-				type="trigger"
-			></custom-box>
-			<text>Light</text
-			><custom-box id="positionGetter-light" type="light"></custom-box>
-			<text>Region</text
-			><custom-box id="positionGetter-region" type="region"></custom-box>
-			<text>Mode</text
-			><select-box id="positionGetter-region-mode"></select-box>
+			<text>Actor</text><custom-box id="positionGetter-actor" type="actor"></custom-box>
+			<text>Trigger</text><custom-box id="positionGetter-trigger" type="trigger"></custom-box>
+			<text>Light</text><custom-box id="positionGetter-light" type="light"></custom-box>
+			<text>Region</text><custom-box id="positionGetter-region" type="region"></custom-box>
+			<text>Mode</text><select-box id="positionGetter-region-mode"></select-box>
 			<text>Object</text
 			><custom-box
 				id="positionGetter-objectId"
@@ -2203,12 +1692,8 @@
 	<title-bar>Angle<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="angleGetter-type"></select-box>
-			<text>Position</text
-			><custom-box
-				id="angleGetter-position-position"
-				type="position"
-			></custom-box>
+			<text>Type</text><select-box id="angleGetter-type"></select-box> <text>Position</text
+			><custom-box id="angleGetter-position-position" type="position"></custom-box>
 			<text>Degrees</text
 			><number-var
 				id="angleGetter-common-degrees"
@@ -2228,13 +1713,8 @@
 	<title-bar>Trigger<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="triggerGetter-type"></select-box>
-			<text>Variable</text
-			><custom-box
-				id="triggerGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			<text>Type</text><select-box id="triggerGetter-type"></select-box> <text>Variable</text
+			><custom-box id="triggerGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="triggerGetter-confirm" name="confirm">Confirm</button>
 		<button id="triggerGetter-cancel" name="cancel">Cancel</button>
@@ -2246,19 +1726,10 @@
 	<title-bar>Light<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="lightGetter-type"></select-box>
-			<text>Light</text
-			><custom-box
-				id="lightGetter-presetId"
-				type="preset-object"
-				filter="light"
-			></custom-box>
+			<text>Type</text><select-box id="lightGetter-type"></select-box> <text>Light</text
+			><custom-box id="lightGetter-presetId" type="preset-object" filter="light"></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="lightGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="lightGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="lightGetter-confirm" name="confirm">Confirm</button>
 		<button id="lightGetter-cancel" name="cancel">Cancel</button>
@@ -2270,8 +1741,7 @@
 	<title-bar>Region<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="regionGetter-type"></select-box>
-			<text>Region</text
+			<text>Type</text><select-box id="regionGetter-type"></select-box> <text>Region</text
 			><custom-box
 				id="regionGetter-presetId"
 				type="preset-object"
@@ -2288,19 +1758,14 @@
 	<title-bar>Tilemap<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="tilemapGetter-type"></select-box>
-			<text>Tilemap</text
+			<text>Type</text><select-box id="tilemapGetter-type"></select-box> <text>Tilemap</text
 			><custom-box
 				id="tilemapGetter-presetId"
 				type="preset-object"
 				filter="tilemap"
 			></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="tilemapGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="tilemapGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="tilemapGetter-confirm" name="confirm">Confirm</button>
 		<button id="tilemapGetter-cancel" name="cancel">Cancel</button>
@@ -2312,19 +1777,10 @@
 	<title-bar>Scene Object<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="objectGetter-type"></select-box>
-			<text>Object</text
-			><custom-box
-				id="objectGetter-presetId"
-				type="preset-object"
-				filter="any"
-			></custom-box>
+			<text>Type</text><select-box id="objectGetter-type"></select-box> <text>Object</text
+			><custom-box id="objectGetter-presetId" type="preset-object" filter="any"></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="objectGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="objectGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="objectGetter-confirm" name="confirm">Confirm</button>
 		<button id="objectGetter-cancel" name="cancel">Cancel</button>
@@ -2336,29 +1792,13 @@
 	<title-bar>Element<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="elementGetter-type"></select-box>
-			<text>Ancestor</text
-			><custom-box
-				id="elementGetter-ancestor"
-				type="ancestor-element"
-			></custom-box>
+			<text>Type</text><select-box id="elementGetter-type"></select-box> <text>Ancestor</text
+			><custom-box id="elementGetter-ancestor" type="ancestor-element"></custom-box>
 			<text>Data ID</text
-			><custom-box
-				id="elementGetter-presetId"
-				type="preset-element"
-			></custom-box>
-			<text>Index</text
-			><number-var
-				id="elementGetter-index"
-				min="0"
-				max="10000"
-			></number-var>
+			><custom-box id="elementGetter-presetId" type="preset-element"></custom-box>
+			<text>Index</text><number-var id="elementGetter-index" min="0" max="10000"></number-var>
 			<text>Variable</text
-			><custom-box
-				id="elementGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="elementGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="elementGetter-confirm" name="confirm">Confirm</button>
 		<button id="elementGetter-cancel" name="cancel">Cancel</button>
@@ -2370,18 +1810,10 @@
 	<title-bar>Element<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Type</text><select-box id="ancestorGetter-type"></select-box>
-			<text>Data ID</text
-			><custom-box
-				id="ancestorGetter-presetId"
-				type="preset-element"
-			></custom-box>
+			<text>Type</text><select-box id="ancestorGetter-type"></select-box> <text>Data ID</text
+			><custom-box id="ancestorGetter-presetId" type="preset-element"></custom-box>
 			<text>Variable</text
-			><custom-box
-				id="ancestorGetter-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
+			><custom-box id="ancestorGetter-variable" type="variable" filter="object"></custom-box>
 		</grid-box>
 		<button id="ancestorGetter-confirm" name="confirm">Confirm</button>
 		<button id="ancestorGetter-cancel" name="cancel">Cancel</button>
@@ -2438,31 +1870,21 @@
 	<title-bar>Number Operand<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Operation</text
-			><select-box id="setNumber-operation"></select-box
-			><select-box id="setNumber-operand-operation"></select-box>
-			<text>Type</text
-			><select-box id="setNumber-operand-type"></select-box>
-			<text>Constant</text
+			<text>Operation</text><select-box id="setNumber-operation"></select-box
+			><select-box id="setNumber-operand-operation"></select-box> <text>Type</text
+			><select-box id="setNumber-operand-type"></select-box> <text>Constant</text
 			><number-box
 				id="setNumber-operand-constant-value"
 				min="-1000000000"
 				max="1000000000"
 				decimals="10"
 			></number-box>
-			<text>Math Method</text
-			><select-box id="setNumber-operand-math-method"></select-box>
-			<text>String Method</text
-			><select-box id="setNumber-operand-string-method"></select-box>
-			<text>Property</text
-			><select-box id="setNumber-operand-object-property"></select-box>
-			<text>Property</text
-			><select-box id="setNumber-operand-element-property"></select-box>
+			<text>Math Method</text><select-box id="setNumber-operand-math-method"></select-box>
+			<text>String Method</text><select-box id="setNumber-operand-string-method"></select-box>
+			<text>Property</text><select-box id="setNumber-operand-object-property"></select-box>
+			<text>Property</text><select-box id="setNumber-operand-element-property"></select-box>
 			<text>Element</text
-			><custom-box
-				id="setNumber-operand-element-element"
-				type="element"
-			></custom-box>
+			><custom-box id="setNumber-operand-element-element" type="element"></custom-box>
 			<text>Variable</text
 			><custom-box
 				id="setNumber-operand-common-variable"
@@ -2470,65 +1892,32 @@
 				filter="all"
 			></custom-box>
 			<text>Actor</text
-			><custom-box
-				id="setNumber-operand-common-actor"
-				type="actor"
-			></custom-box>
+			><custom-box id="setNumber-operand-common-actor" type="actor"></custom-box>
 			<text>Skill</text
-			><custom-box
-				id="setNumber-operand-common-skill"
-				type="skill"
-			></custom-box>
+			><custom-box id="setNumber-operand-common-skill" type="skill"></custom-box>
 			<text>State</text
-			><custom-box
-				id="setNumber-operand-common-state"
-				type="state"
-			></custom-box>
+			><custom-box id="setNumber-operand-common-state" type="state"></custom-box>
 			<text>Equipment</text
-			><custom-box
-				id="setNumber-operand-common-equipment"
-				type="equipment"
-			></custom-box>
+			><custom-box id="setNumber-operand-common-equipment" type="equipment"></custom-box>
 			<text>Item</text
-			><custom-box
-				id="setNumber-operand-common-item"
-				type="item"
-			></custom-box>
+			><custom-box id="setNumber-operand-common-item" type="item"></custom-box>
 			<text>Trigger</text
-			><custom-box
-				id="setNumber-operand-common-trigger"
-				type="trigger"
-			></custom-box>
+			><custom-box id="setNumber-operand-common-trigger" type="trigger"></custom-box>
 			<text>Tilemap</text
-			><custom-box
-				id="setNumber-operand-common-tilemap"
-				type="tilemap"
-			></custom-box>
+			><custom-box id="setNumber-operand-common-tilemap" type="tilemap"></custom-box>
 			<text>Tilemap Position</text
-			><custom-box
-				id="setNumber-operand-tilemapPosition"
-				type="position"
-			></custom-box>
+			><custom-box id="setNumber-operand-tilemapPosition" type="position"></custom-box>
 			<text>Item</text
-			><file-var
-				id="setNumber-operand-object-itemId"
-				type="file"
-				filter="item"
-			></file-var>
+			><file-var id="setNumber-operand-object-itemId" type="file" filter="item"></file-var>
 			<text>Equipment</text
 			><file-var
 				id="setNumber-operand-object-equipmentId"
 				type="file"
 				filter="equipment"
 			></file-var>
-			<text>Search String</text
-			><string-var id="setNumber-operand-string-search"></string-var>
+			<text>Search String</text><string-var id="setNumber-operand-string-search"></string-var>
 			<text>Decimal Places</text
-			><number-box
-				id="setNumber-operand-math-decimals"
-				min="0"
-				max="10"
-			></number-box>
+			><number-box id="setNumber-operand-math-decimals" min="0" max="10"></number-box>
 			<text>Min</text
 			><number-var
 				id="setNumber-operand-math-min"
@@ -2542,37 +1931,17 @@
 				max="1000000000"
 			></number-var>
 			<text>Start Position</text
-			><custom-box
-				id="setNumber-operand-math-startPosition"
-				type="position"
-			></custom-box>
+			><custom-box id="setNumber-operand-math-startPosition" type="position"></custom-box>
 			<text>End Position</text
-			><custom-box
-				id="setNumber-operand-math-endPosition"
-				type="position"
-			></custom-box>
-			<text>Cooldown Key</text
-			><select-var id="setNumber-operand-cooldown-key"></select-var>
+			><custom-box id="setNumber-operand-math-endPosition" type="position"></custom-box>
+			<text>Cooldown Key</text><select-var id="setNumber-operand-cooldown-key"></select-var>
 			<text>Index</text
-			><number-var
-				id="setNumber-operand-list-index"
-				min="0"
-				max="1000000000"
-			></number-var>
-			<text>Param Name</text
-			><string-var id="setNumber-operand-parameter-key"></string-var>
-			<text>Script</text
-			><text-box id="setNumber-operand-script"></text-box>
-			<text>Data</text
-			><select-box id="setNumber-operand-other-data"></select-box>
-			<text>Touch Id</text
-			><number-var
-				id="setNumber-operand-other-touchId"
-				min="0"
-				max="10"
-			></number-var>
-			<text>Team</text
-			><select-box id="setNumber-operand-other-teamId"></select-box>
+			><number-var id="setNumber-operand-list-index" min="0" max="1000000000"></number-var>
+			<text>Param Name</text><string-var id="setNumber-operand-parameter-key"></string-var>
+			<text>Script</text><text-box id="setNumber-operand-script"></text-box> <text>Data</text
+			><select-box id="setNumber-operand-other-data"></select-box> <text>Touch Id</text
+			><number-var id="setNumber-operand-other-touchId" min="0" max="10"></number-var>
+			<text>Team</text><select-box id="setNumber-operand-other-teamId"></select-box>
 		</grid-box>
 		<button id="setNumber-operand-confirm" name="confirm">Confirm</button>
 		<button id="setNumber-operand-cancel" name="cancel">Cancel</button>
@@ -2596,12 +1965,9 @@
 	<title-bar>ObjectProperty-index<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>IndexName</text
-			><text-box id="ObjectProperty-index-name"></text-box>
+			<text>IndexName</text><text-box id="ObjectProperty-index-name"></text-box>
 		</grid-box>
-		<button id="ObjectProperty-index-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="ObjectProperty-index-confirm" name="confirm">Confirm</button>
 		<button id="ObjectProperty-index-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -2613,8 +1979,7 @@
 	<title-bar>Branch<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Mode</text><select-box id="if-branch-mode"></select-box>
-			<text>Conditions</text
+			<text>Mode</text><select-box id="if-branch-mode"></select-box> <text>Conditions</text
 			><param-list id="if-branch-conditions"></param-list>
 		</grid-box>
 		<button id="if-branch-confirm" name="confirm">Confirm</button>
@@ -2627,24 +1992,19 @@
 	<title-bar>Condition<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Condition Type</text
-			><select-box id="if-condition-type"></select-box>
+			<text>Condition Type</text><select-box id="if-condition-type"></select-box>
 			<text>Variable</text
 			><custom-box
 				id="if-condition-common-variable"
 				type="variable"
 				filter="all"
 			></custom-box>
-			<text>Operation</text
-			><select-box id="if-condition-boolean-operation"></select-box>
+			<text>Operation</text><select-box id="if-condition-boolean-operation"></select-box>
 			<text>Operand Type</text
-			><select-box id="if-condition-boolean-operand-type"></select-box>
-			<text>Constant</text
+			><select-box id="if-condition-boolean-operand-type"></select-box> <text>Constant</text
 			><select-box id="if-condition-boolean-constant-value"></select-box>
-			<text>Operation</text
-			><select-box id="if-condition-number-operation"></select-box>
-			<text>Operand Type</text
-			><select-box id="if-condition-number-operand-type"></select-box>
+			<text>Operation</text><select-box id="if-condition-number-operation"></select-box>
+			<text>Operand Type</text><select-box id="if-condition-number-operand-type"></select-box>
 			<text>Constant</text
 			><number-box
 				id="if-condition-number-constant-value"
@@ -2652,86 +2012,38 @@
 				max="1000000000"
 				decimals="10"
 			></number-box>
-			<text>Operation</text
-			><select-box id="if-condition-string-operation"></select-box>
-			<text>Operand Type</text
-			><select-box id="if-condition-string-operand-type"></select-box>
-			<text>Constant</text
-			><text-area id="if-condition-string-constant-value"></text-area>
+			<text>Operation</text><select-box id="if-condition-string-operation"></select-box>
+			<text>Operand Type</text><select-box id="if-condition-string-operand-type"></select-box>
+			<text>Constant</text><text-area id="if-condition-string-constant-value"></text-area>
 			<text>Enum String</text
-			><custom-box
-				id="if-condition-string-enum-stringId"
-				type="enum-string"
-			></custom-box>
-			<text>Operation</text
-			><select-box id="if-condition-object-operation"></select-box>
-			<text>Operand Type</text
-			><select-box id="if-condition-object-operand-type"></select-box>
-			<text>Operation</text
-			><select-box id="if-condition-list-operation"></select-box>
+			><custom-box id="if-condition-string-enum-stringId" type="enum-string"></custom-box>
+			<text>Operation</text><select-box id="if-condition-object-operation"></select-box>
+			<text>Operand Type</text><select-box id="if-condition-object-operand-type"></select-box>
+			<text>Operation</text><select-box id="if-condition-list-operation"></select-box>
 			<text>Variable</text
 			><custom-box
 				id="if-condition-operand-variable"
 				type="variable"
 				filter="all"
 			></custom-box>
-			<text>Operation</text
-			><select-box id="if-condition-actor-operation"></select-box>
-			<text>Actor</text
-			><custom-box
-				id="if-condition-common-actor"
-				type="actor"
-			></custom-box>
-			<text>Skill</text
-			><custom-box
-				id="if-condition-common-skill"
-				type="skill"
-			></custom-box>
-			<text>State</text
-			><custom-box
-				id="if-condition-common-state"
-				type="state"
-			></custom-box>
+			<text>Operation</text><select-box id="if-condition-actor-operation"></select-box>
+			<text>Actor</text><custom-box id="if-condition-common-actor" type="actor"></custom-box>
+			<text>Skill</text><custom-box id="if-condition-common-skill" type="skill"></custom-box>
+			<text>State</text><custom-box id="if-condition-common-state" type="state"></custom-box>
 			<text>Equipment</text
-			><custom-box
-				id="if-condition-common-equipment"
-				type="equipment"
-			></custom-box>
-			<text>Item</text
-			><custom-box id="if-condition-common-item" type="item"></custom-box>
+			><custom-box id="if-condition-common-equipment" type="equipment"></custom-box>
+			<text>Item</text><custom-box id="if-condition-common-item" type="item"></custom-box>
 			<text>Trigger</text
-			><custom-box
-				id="if-condition-common-trigger"
-				type="trigger"
-			></custom-box>
-			<text>Light</text
-			><custom-box
-				id="if-condition-common-light"
-				type="light"
-			></custom-box>
+			><custom-box id="if-condition-common-trigger" type="trigger"></custom-box>
+			<text>Light</text><custom-box id="if-condition-common-light" type="light"></custom-box>
 			<text>Element</text
-			><custom-box
-				id="if-condition-common-element"
-				type="element"
-			></custom-box>
+			><custom-box id="if-condition-common-element" type="element"></custom-box>
 			<text>Skill</text
-			><custom-box
-				id="if-condition-actor-skillId"
-				type="file"
-				filter="skill"
-			></custom-box>
+			><custom-box id="if-condition-actor-skillId" type="file" filter="skill"></custom-box>
 			<text>State</text
-			><custom-box
-				id="if-condition-actor-stateId"
-				type="file"
-				filter="state"
-			></custom-box>
+			><custom-box id="if-condition-actor-stateId" type="file" filter="state"></custom-box>
 			<text>Item</text
-			><custom-box
-				id="if-condition-actor-itemId"
-				type="file"
-				filter="item"
-			></custom-box>
+			><custom-box id="if-condition-actor-itemId" type="file" filter="item"></custom-box>
 			<text>Equipment</text
 			><custom-box
 				id="if-condition-actor-equipmentId"
@@ -2739,36 +2051,18 @@
 				filter="equipment"
 			></custom-box>
 			<text>Quantity</text
-			><number-box
-				id="if-condition-actor-quantity"
-				min="1"
-				max="10000"
-			></number-box>
-			<text>Shortcut Key</text
-			><select-var id="if-condition-actor-shortcutKey"></select-var>
-			<text>Target</text
-			><custom-box
-				id="if-condition-actor-target"
-				type="actor"
-			></custom-box>
-			<text>Team</text
-			><select-box id="if-condition-actor-teamId"></select-box>
-			<text>Operation</text
-			><select-box id="if-condition-element-operation"></select-box>
-			<text>Key Code</text
-			><keyboard-box id="if-condition-keyboard-keycode"></keyboard-box>
-			<text>State</text
-			><select-box id="if-condition-keyboard-state"></select-box>
-			<text>Button</text
-			><gamepad-box id="if-condition-gamepad-button"></gamepad-box>
-			<text>State</text
-			><select-box id="if-condition-gamepad-state"></select-box>
-			<text>Button</text
-			><select-box id="if-condition-mouse-button"></select-box>
-			<text>State</text
-			><select-box id="if-condition-mouse-state"></select-box>
-			<text>Other</text
-			><select-box id="if-condition-other-key"></select-box>
+			><number-box id="if-condition-actor-quantity" min="1" max="10000"></number-box>
+			<text>Shortcut Key</text><select-var id="if-condition-actor-shortcutKey"></select-var>
+			<text>Target</text><custom-box id="if-condition-actor-target" type="actor"></custom-box>
+			<text>Team</text><select-box id="if-condition-actor-teamId"></select-box>
+			<text>Operation</text><select-box id="if-condition-element-operation"></select-box>
+			<text>Key Code</text><keyboard-box id="if-condition-keyboard-keycode"></keyboard-box>
+			<text>State</text><select-box id="if-condition-keyboard-state"></select-box>
+			<text>Button</text><gamepad-box id="if-condition-gamepad-button"></gamepad-box>
+			<text>State</text><select-box id="if-condition-gamepad-state"></select-box>
+			<text>Button</text><select-box id="if-condition-mouse-button"></select-box>
+			<text>State</text><select-box id="if-condition-mouse-state"></select-box>
+			<text>Other</text><select-box id="if-condition-other-key"></select-box>
 		</grid-box>
 		<button id="if-condition-confirm" name="confirm">Confirm</button>
 		<button id="if-condition-cancel" name="cancel">Cancel</button>
@@ -2782,8 +2076,7 @@
 	<title-bar>Branch<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Cases</text
-			><param-list id="switch-branch-conditions"></param-list>
+			<text>Cases</text><param-list id="switch-branch-conditions"></param-list>
 		</grid-box>
 		<button id="switch-branch-confirm" name="confirm">Confirm</button>
 		<button id="switch-branch-cancel" name="cancel">Cancel</button>
@@ -2795,10 +2088,8 @@
 	<title-bar>Condition<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Condition Type</text
-			><select-box id="switch-condition-type"></select-box>
-			<text>Boolean</text
-			><select-box id="switch-condition-boolean-value"></select-box>
+			<text>Condition Type</text><select-box id="switch-condition-type"></select-box>
+			<text>Boolean</text><select-box id="switch-condition-boolean-value"></select-box>
 			<text>Number</text
 			><number-box
 				id="switch-condition-number-value"
@@ -2806,26 +2097,14 @@
 				max="1000000000"
 				decimals="10"
 			></number-box>
-			<text>String</text
-			><text-area id="switch-condition-string-value"></text-area>
+			<text>String</text><text-area id="switch-condition-string-value"></text-area>
 			<text>Attribute Key</text
-			><custom-box
-				id="switch-condition-attribute-attributeId"
-				type="attribute"
-			></custom-box>
+			><custom-box id="switch-condition-attribute-attributeId" type="attribute"></custom-box>
 			<text>Enum String</text
-			><custom-box
-				id="switch-condition-enum-stringId"
-				type="enum-string"
-			></custom-box>
-			<text>Key</text
-			><keyboard-box
-				id="switch-condition-keyboard-keycode"
-			></keyboard-box>
-			<text>Button</text
-			><gamepad-box id="switch-condition-gamepad-button"></gamepad-box>
-			<text>Button</text
-			><select-box id="switch-condition-mouse-button"></select-box>
+			><custom-box id="switch-condition-enum-stringId" type="enum-string"></custom-box>
+			<text>Key</text><keyboard-box id="switch-condition-keyboard-keycode"></keyboard-box>
+			<text>Button</text><gamepad-box id="switch-condition-gamepad-button"></gamepad-box>
+			<text>Button</text><select-box id="switch-condition-mouse-button"></select-box>
 			<text>Variable</text
 			><custom-box
 				id="switch-condition-variable-variable"
@@ -2871,21 +2150,12 @@
 	<title-bar>Image Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setImage-property-key"></select-box>
+			<text>Property</text><select-box id="setImage-property-key"></select-box>
 			<text>Image</text
-			><custom-box
-				id="setImage-property-image"
-				type="file"
-				filter="image"
-			></custom-box>
-			<text>Display</text
-			><select-box id="setImage-property-display"></select-box>
-			<text>Flip</text
-			><select-box id="setImage-property-flip"></select-box>
-			<text>Blend</text
-			><select-box id="setImage-property-blend"></select-box>
-			<text>Shift X</text
+			><custom-box id="setImage-property-image" type="file" filter="image"></custom-box>
+			<text>Display</text><select-box id="setImage-property-display"></select-box>
+			<text>Flip</text><select-box id="setImage-property-flip"></select-box> <text>Blend</text
+			><select-box id="setImage-property-blend"></select-box> <text>Shift X</text
 			><number-var
 				id="setImage-property-shiftX"
 				min="-10000"
@@ -2900,33 +2170,13 @@
 				unit="px"
 			></number-var>
 			<text>Clip - X</text
-			><number-var
-				id="setImage-property-clip-0"
-				min="0"
-				max="10000"
-				unit="px"
-			></number-var>
+			><number-var id="setImage-property-clip-0" min="0" max="10000" unit="px"></number-var>
 			<text>Clip - Y</text
-			><number-var
-				id="setImage-property-clip-1"
-				min="0"
-				max="10000"
-				unit="px"
-			></number-var>
+			><number-var id="setImage-property-clip-1" min="0" max="10000" unit="px"></number-var>
 			<text>Clip - Width</text
-			><number-var
-				id="setImage-property-clip-2"
-				min="0"
-				max="10000"
-				unit="px"
-			></number-var>
+			><number-var id="setImage-property-clip-2" min="0" max="10000" unit="px"></number-var>
 			<text>Clip - Height</text
-			><number-var
-				id="setImage-property-clip-3"
-				min="0"
-				max="10000"
-				unit="px"
-			></number-var>
+			><number-var id="setImage-property-clip-3" min="0" max="10000" unit="px"></number-var>
 		</grid-box>
 		<button id="setImage-property-confirm" name="confirm">Confirm</button>
 		<button id="setImage-property-cancel" name="cancel">Cancel</button>
@@ -2944,20 +2194,14 @@
 	<title-bar>Text Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setText-property-key"></select-box>
+			<text>Property</text><select-box id="setText-property-key"></select-box>
 			<text>Content</text
 			><text-area-var
 				id="setText-property-content"
 				menu="tag-local-var tag-global-var tag-dynamic-global-var tag-localization"
 			></text-area-var>
 			<text>Size</text
-			><number-box
-				id="setText-property-size"
-				min="10"
-				max="400"
-				unit="px"
-			></number-box>
+			><number-box id="setText-property-size" min="10" max="400" unit="px"></number-box>
 			<text>Line Spacing</text
 			><number-box
 				id="setText-property-lineSpacing"
@@ -2972,12 +2216,9 @@
 				max="100"
 				unit="px"
 			></number-box>
-			<text>Color</text
-			><color-box id="setText-property-color"></color-box>
-			<text>Font</text><text-box id="setText-property-font"></text-box>
-			<text>Effect</text
-			><select-box id="setText-property-effect-type"></select-box>
-			<text>Shadow X</text
+			<text>Color</text><color-box id="setText-property-color"></color-box> <text>Font</text
+			><text-box id="setText-property-font"></text-box> <text>Effect</text
+			><select-box id="setText-property-effect-type"></select-box> <text>Shadow X</text
 			><number-box
 				id="setText-property-effect-shadowOffsetX"
 				min="-9"
@@ -2998,10 +2239,8 @@
 				max="20"
 				unit="px"
 			></number-box>
-			<text>Effect Color</text
-			><color-box id="setText-property-effect-color"></color-box>
-			<text>Blend</text
-			><select-box id="setText-property-blend"></select-box>
+			<text>Effect Color</text><color-box id="setText-property-effect-color"></color-box>
+			<text>Blend</text><select-box id="setText-property-blend"></select-box>
 		</grid-box>
 		<button id="setText-property-confirm" name="confirm">Confirm</button>
 		<button id="setText-property-cancel" name="cancel">Cancel</button>
@@ -3015,12 +2254,9 @@
 	<title-bar>Text Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setTextBox-property-key"></select-box>
-			<text>Type</text
-			><select-box id="setTextBox-property-type"></select-box>
-			<text>Text</text
-			><string-var id="setTextBox-property-text"></string-var>
+			<text>Property</text><select-box id="setTextBox-property-key"></select-box>
+			<text>Type</text><select-box id="setTextBox-property-type"></select-box>
+			<text>Text</text><string-var id="setTextBox-property-text"></string-var>
 			<text>Number</text
 			><number-var
 				id="setTextBox-property-number"
@@ -3043,13 +2279,8 @@
 				decimals="10"
 			></number-var>
 			<text>Decimal Places</text
-			><number-box
-				id="setTextBox-property-decimals"
-				min="0"
-				max="10"
-			></number-box>
-			<text>Color</text
-			><color-box id="setTextBox-property-color"></color-box>
+			><number-box id="setTextBox-property-decimals" min="0" max="10"></number-box>
+			<text>Color</text><color-box id="setTextBox-property-color"></color-box>
 		</grid-box>
 		<button id="setTextBox-property-confirm" name="confirm">Confirm</button>
 		<button id="setTextBox-property-cancel" name="cancel">Cancel</button>
@@ -3063,8 +2294,7 @@
 	<title-bar>Dialog Box Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setDialogBox-property-key"></select-box>
+			<text>Property</text><select-box id="setDialogBox-property-key"></select-box>
 			<text>Content</text
 			><text-area-var
 				id="setDialogBox-property-content"
@@ -3078,12 +2308,7 @@
 				unit="ms"
 			></number-box>
 			<text>Size</text
-			><number-box
-				id="setDialogBox-property-size"
-				min="10"
-				max="400"
-				unit="px"
-			></number-box>
+			><number-box id="setDialogBox-property-size" min="10" max="400" unit="px"></number-box>
 			<text>Line Spacing</text
 			><number-box
 				id="setDialogBox-property-lineSpacing"
@@ -3098,12 +2323,9 @@
 				max="100"
 				unit="px"
 			></number-box>
-			<text>Color</text
-			><color-box id="setDialogBox-property-color"></color-box>
-			<text>Font</text
-			><text-box id="setDialogBox-property-font"></text-box>
-			<text>Effect</text
-			><select-box id="setDialogBox-property-effect-type"></select-box>
+			<text>Color</text><color-box id="setDialogBox-property-color"></color-box>
+			<text>Font</text><text-box id="setDialogBox-property-font"></text-box>
+			<text>Effect</text><select-box id="setDialogBox-property-effect-type"></select-box>
 			<text>Shadow X</text
 			><number-box
 				id="setDialogBox-property-effect-shadowOffsetX"
@@ -3125,14 +2347,10 @@
 				max="20"
 				unit="px"
 			></number-box>
-			<text>Effect Color</text
-			><color-box id="setDialogBox-property-effect-color"></color-box>
-			<text>Blend</text
-			><select-box id="setDialogBox-property-blend"></select-box>
+			<text>Effect Color</text><color-box id="setDialogBox-property-effect-color"></color-box>
+			<text>Blend</text><select-box id="setDialogBox-property-blend"></select-box>
 		</grid-box>
-		<button id="setDialogBox-property-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="setDialogBox-property-confirm" name="confirm">Confirm</button>
 		<button id="setDialogBox-property-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -3146,18 +2364,11 @@
 	<title-bar>Image Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setProgressBar-property-key"></select-box>
+			<text>Property</text><select-box id="setProgressBar-property-key"></select-box>
 			<text>Image</text
-			><custom-box
-				id="setProgressBar-property-image"
-				type="file"
-				filter="image"
-			></custom-box>
-			<text>Display</text
-			><select-box id="setProgressBar-property-display"></select-box>
-			<text>Blend</text
-			><select-box id="setProgressBar-property-blend"></select-box>
+			><custom-box id="setProgressBar-property-image" type="file" filter="image"></custom-box>
+			<text>Display</text><select-box id="setProgressBar-property-display"></select-box>
+			<text>Blend</text><select-box id="setProgressBar-property-blend"></select-box>
 			<text>Progress</text
 			><number-var
 				id="setProgressBar-property-progress"
@@ -3195,36 +2406,16 @@
 				unit="px"
 			></number-var>
 			<text>Color - Red</text
-			><number-var
-				id="setProgressBar-property-color-0"
-				min="0"
-				max="255"
-			></number-var>
+			><number-var id="setProgressBar-property-color-0" min="0" max="255"></number-var>
 			<text>Color - Green</text
-			><number-var
-				id="setProgressBar-property-color-1"
-				min="0"
-				max="255"
-			></number-var>
+			><number-var id="setProgressBar-property-color-1" min="0" max="255"></number-var>
 			<text>Color - Blue</text
-			><number-var
-				id="setProgressBar-property-color-2"
-				min="0"
-				max="255"
-			></number-var>
+			><number-var id="setProgressBar-property-color-2" min="0" max="255"></number-var>
 			<text>Color - Alpha</text
-			><number-var
-				id="setProgressBar-property-color-3"
-				min="0"
-				max="255"
-			></number-var>
+			><number-var id="setProgressBar-property-color-3" min="0" max="255"></number-var>
 		</grid-box>
-		<button id="setProgressBar-property-confirm" name="confirm">
-			Confirm
-		</button>
-		<button id="setProgressBar-property-cancel" name="cancel">
-			Cancel
-		</button>
+		<button id="setProgressBar-property-confirm" name="confirm">Confirm</button>
+		<button id="setProgressBar-property-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
 
@@ -3235,45 +2426,18 @@
 	<title-bar>Set Button<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setButton-property-key"></select-box>
+			<text>Property</text><select-box id="setButton-property-key"></select-box>
 			<text>Image</text
-			><custom-box
-				id="setButton-property-image"
-				type="file"
-				filter="image"
-			></custom-box>
+			><custom-box id="setButton-property-image" type="file" filter="image"></custom-box>
 			<text>Clip</text>
-			<box
-				id="setButton-property-clip-box"
-				class="uiElement-grid-box with-4-columns"
-			>
-				<number-box
-					id="setButton-property-clip-0"
-					min="0"
-					max="10000"
-				></number-box>
-				<number-box
-					id="setButton-property-clip-1"
-					min="0"
-					max="10000"
-				></number-box>
-				<number-box
-					id="setButton-property-clip-2"
-					min="0"
-					max="4000"
-				></number-box>
-				<number-box
-					id="setButton-property-clip-3"
-					min="0"
-					max="4000"
-				></number-box>
+			<box id="setButton-property-clip-box" class="uiElement-grid-box with-4-columns">
+				<number-box id="setButton-property-clip-0" min="0" max="10000"></number-box>
+				<number-box id="setButton-property-clip-1" min="0" max="10000"></number-box>
+				<number-box id="setButton-property-clip-2" min="0" max="4000"></number-box>
+				<number-box id="setButton-property-clip-3" min="0" max="4000"></number-box>
 			</box>
 			<text>Tint</text>
-			<box
-				id="setButton-property-tint-box"
-				class="uiElement-grid-box with-4-columns"
-			>
+			<box id="setButton-property-tint-box" class="uiElement-grid-box with-4-columns">
 				<number-box
 					id="setButton-property-tint-0"
 					min="-255"
@@ -3292,12 +2456,7 @@
 					max="255"
 					step="5"
 				></number-box>
-				<number-box
-					id="setButton-property-tint-3"
-					min="0"
-					max="255"
-					step="5"
-				></number-box>
+				<number-box id="setButton-property-tint-3" min="0" max="255" step="5"></number-box>
 			</box>
 			<text>Opacity</text
 			><number-box
@@ -3313,12 +2472,7 @@
 				menu="tag-local-var tag-global-var tag-dynamic-global-var tag-localization"
 			></text-area-var>
 			<text>Size</text
-			><number-box
-				id="setButton-property-size"
-				min="10"
-				max="400"
-				unit="px"
-			></number-box>
+			><number-box id="setButton-property-size" min="10" max="400" unit="px"></number-box>
 			<text>Letter Spacing</text
 			><number-box
 				id="setButton-property-letterSpacing"
@@ -3341,8 +2495,7 @@
 	<title-bar>Set Animation<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setAnimation-property-key"></select-box>
+			<text>Property</text><select-box id="setAnimation-property-key"></select-box>
 			<text>Animation</text
 			><custom-box
 				id="setAnimation-property-animation"
@@ -3350,32 +2503,15 @@
 				filter="animation"
 			></custom-box>
 			<text>Actor</text
-			><custom-box
-				id="setAnimation-property-actor"
-				type="actor"
-			></custom-box>
+			><custom-box id="setAnimation-property-actor" type="actor"></custom-box>
 			<text>Motion</text
-			><custom-box
-				id="setAnimation-property-motion"
-				type="enum-string"
-			></custom-box>
+			><custom-box id="setAnimation-property-motion" type="enum-string"></custom-box>
 			<text>Angle</text
-			><number-var
-				id="setAnimation-property-angle"
-				min="0"
-				max="360"
-				unit="deg"
-			></number-var>
+			><number-var id="setAnimation-property-angle" min="0" max="360" unit="deg"></number-var>
 			<text>Frame</text
-			><number-var
-				id="setAnimation-property-frame"
-				min="0"
-				max="10000"
-			></number-var>
+			><number-var id="setAnimation-property-frame" min="0" max="10000"></number-var>
 		</grid-box>
-		<button id="setAnimation-property-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="setAnimation-property-confirm" name="confirm">Confirm</button>
 		<button id="setAnimation-property-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -3387,14 +2523,9 @@
 	<title-bar>Image Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setVideo-property-key"></select-box>
+			<text>Property</text><select-box id="setVideo-property-key"></select-box>
 			<text>Video</text
-			><custom-box
-				id="setVideo-property-video"
-				type="file"
-				filter="video"
-			></custom-box>
+			><custom-box id="setVideo-property-video" type="file" filter="video"></custom-box>
 			<text>Playback Rate</text
 			><number-var
 				id="setVideo-property-playbackRate"
@@ -3402,11 +2533,8 @@
 				max="4"
 				decimals="4"
 			></number-var>
-			<text>Loop</text
-			><select-box id="setVideo-property-loop"></select-box>
-			<text>Flip</text
-			><select-box id="setVideo-property-flip"></select-box>
-			<text>Blend</text
+			<text>Loop</text><select-box id="setVideo-property-loop"></select-box> <text>Flip</text
+			><select-box id="setVideo-property-flip"></select-box> <text>Blend</text
 			><select-box id="setVideo-property-blend"></select-box>
 		</grid-box>
 		<button id="setVideo-property-confirm" name="confirm">Confirm</button>
@@ -3445,11 +2573,7 @@
 				</div>
 				<div
 					id="resource-node-ping"
-					style="
-						font-size: 13px;
-						line-height: 1.8;
-						color: var(--text-color-weak);
-					"
+					style="font-size: 13px; line-height: 1.8; color: var(--text-color-weak)"
 				>
 					Ping: --
 				</div>
@@ -3470,22 +2594,11 @@
 	<title-bar>Window Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="setWindow-property-key"></select-box>
+			<text>Property</text><select-box id="setWindow-property-key"></select-box>
 			<text>Scroll X</text
-			><number-var
-				id="setWindow-property-scrollX"
-				min="0"
-				max="10000"
-				unit="px"
-			></number-var>
+			><number-var id="setWindow-property-scrollX" min="0" max="10000" unit="px"></number-var>
 			<text>Scroll Y</text
-			><number-var
-				id="setWindow-property-scrollY"
-				min="0"
-				max="10000"
-				unit="px"
-			></number-var>
+			><number-var id="setWindow-property-scrollY" min="0" max="10000" unit="px"></number-var>
 			<text>Grid Width</text
 			><number-var
 				id="setWindow-property-gridWidth"
@@ -3501,33 +2614,13 @@
 				unit="px"
 			></number-var>
 			<text>Grid Gap X</text
-			><number-var
-				id="setWindow-property-gridGapX"
-				min="0"
-				max="1000"
-				unit="px"
-			></number-var>
+			><number-var id="setWindow-property-gridGapX" min="0" max="1000" unit="px"></number-var>
 			<text>Grid Gap Y</text
-			><number-var
-				id="setWindow-property-gridGapY"
-				min="0"
-				max="1000"
-				unit="px"
-			></number-var>
+			><number-var id="setWindow-property-gridGapY" min="0" max="1000" unit="px"></number-var>
 			<text>Padding X</text
-			><number-var
-				id="setWindow-property-paddingX"
-				min="0"
-				max="1000"
-				unit="px"
-			></number-var>
+			><number-var id="setWindow-property-paddingX" min="0" max="1000" unit="px"></number-var>
 			<text>Padding Y</text
-			><number-var
-				id="setWindow-property-paddingY"
-				min="0"
-				max="1000"
-				unit="px"
-			></number-var>
+			><number-var id="setWindow-property-paddingY" min="0" max="1000" unit="px"></number-var>
 		</grid-box>
 		<button id="setWindow-property-confirm" name="confirm">Confirm</button>
 		<button id="setWindow-property-cancel" name="cancel">Cancel</button>
@@ -3547,8 +2640,7 @@
 	<title-bar>Transform Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="moveElement-property-key"></select-box>
+			<text>Property</text><select-box id="moveElement-property-key"></select-box>
 			<text>Anchor X</text
 			><number-var
 				id="moveElement-property-anchorX"
@@ -3682,9 +2774,7 @@
 				decimals="4"
 			></number-var>
 		</grid-box>
-		<button id="moveElement-property-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="moveElement-property-confirm" name="confirm">Confirm</button>
 		<button id="moveElement-property-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -3704,8 +2794,7 @@
 	<title-bar>Point Light Property<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Property</text
-			><select-box id="moveLight-property-key"></select-box> <text>X</text
+			<text>Property</text><select-box id="moveLight-property-key"></select-box> <text>X</text
 			><number-var
 				id="moveLight-property-x"
 				min="0"
@@ -3779,26 +2868,11 @@
 				unit="deg"
 			></number-var>
 			<text>Red</text
-			><number-var
-				id="moveLight-property-red"
-				min="0"
-				max="255"
-				step="5"
-			></number-var>
+			><number-var id="moveLight-property-red" min="0" max="255" step="5"></number-var>
 			<text>Green</text
-			><number-var
-				id="moveLight-property-green"
-				min="0"
-				max="255"
-				step="5"
-			></number-var>
+			><number-var id="moveLight-property-green" min="0" max="255" step="5"></number-var>
 			<text>Blue</text
-			><number-var
-				id="moveLight-property-blue"
-				min="0"
-				max="255"
-				step="5"
-			></number-var>
+			><number-var id="moveLight-property-blue" min="0" max="255" step="5"></number-var>
 		</grid-box>
 		<button id="moveLight-property-confirm" name="confirm">Confirm</button>
 		<button id="moveLight-property-cancel" name="cancel">Cancel</button>
@@ -3966,8 +3040,7 @@
 	<title-bar>Header<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>key</text><string-var id="request-keyValue-key"></string-var>
-			<text>value</text
+			<text>key</text><string-var id="request-keyValue-key"></string-var> <text>value</text
 			><string-var id="request-keyValue-value"></string-var>
 		</grid-box>
 		<button id="request-keyValue-confirm" name="confirm">Confirm</button>

@@ -3,11 +3,7 @@
 
 export class ToastManager extends HTMLElement {
 	// 显示一条提示
-	show(
-		message: string,
-		type: string = 'info',
-		duration: number = 4000
-	): HTMLDivElement {
+	show(message: string, type: string = 'info', duration: number = 4000): HTMLDivElement {
 		const el = document.createElement('div');
 		el.className = `toast toast-${type}`;
 		const text = document.createElement('span');
@@ -23,9 +19,10 @@ export class ToastManager extends HTMLElement {
 		// 进场动画
 		requestAnimationFrame(() => el.classList.add('toast-show'));
 		if (duration > 0) {
-			(
-				el as HTMLDivElement & { _timer: ReturnType<typeof setTimeout> }
-			)._timer = setTimeout(() => this.dismiss(el), duration);
+			(el as HTMLDivElement & { _timer: ReturnType<typeof setTimeout> })._timer = setTimeout(
+				() => this.dismiss(el),
+				duration
+			);
 		}
 		return el;
 	}
@@ -33,20 +30,14 @@ export class ToastManager extends HTMLElement {
 	// 关闭一条提示
 	dismiss(el: HTMLElement | null): void {
 		if (!el || el.parentNode !== this) return;
-		clearTimeout(
-			(el as HTMLElement & { _timer: ReturnType<typeof setTimeout> })
-				._timer
-		);
+		clearTimeout((el as HTMLElement & { _timer: ReturnType<typeof setTimeout> })._timer);
 		el.classList.remove('toast-show');
 		el.classList.add('toast-hide');
 		setTimeout(() => el.remove(), 200);
 	}
 }
 
-customElements.define(
-	'toast-manager',
-	ToastManager as CustomElementConstructor
-);
+customElements.define('toast-manager', ToastManager as CustomElementConstructor);
 
 // 全局便捷接口
 export const Toast = {
@@ -59,11 +50,7 @@ export const Toast = {
 		return m as ToastManager;
 	},
 	show(message: string, type?: string, duration?: number): HTMLDivElement {
-		return (this._manager() as ToastManager).show(
-			message,
-			type ?? 'info',
-			duration ?? 4000
-		);
+		return (this._manager() as ToastManager).show(message, type ?? 'info', duration ?? 4000);
 	},
 	error(message: string): HTMLDivElement {
 		return this.show(message, 'error');

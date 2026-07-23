@@ -71,9 +71,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		]);
 
 		// 绑定条件列表
-		$('#sceneTilemap-conditions').bind(
-			new ConditionListInterface(this, Scene)
-		);
+		$('#sceneTilemap-conditions').bind(new ConditionListInterface(this, Scene));
 
 		// 绑定事件列表
 		$('#sceneTilemap-events').bind(new EventListInterface(this, Scene));
@@ -85,8 +83,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#sceneTilemap-parameter-pane').bind($('#sceneTilemap-scripts'));
 
 		// 侦听事件
-		const elements =
-			$(`#sceneTilemap-name, #sceneTilemap-layer, #sceneTilemap-order,
+		const elements = $(`#sceneTilemap-name, #sceneTilemap-layer, #sceneTilemap-order,
     #sceneTilemap-light, #sceneTilemap-blend, #sceneTilemap-x, #sceneTilemap-y,
     #sceneTilemap-anchorX, #sceneTilemap-anchorY, #sceneTilemap-offsetX, #sceneTilemap-offsetY,
     #sceneTilemap-parallaxFactorX, #sceneTilemap-parallaxFactorY, #sceneTilemap-opacity`);
@@ -95,13 +92,11 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		elements.on('blur', Inspector.inputBlur(this, Scene));
 		$('#sceneTilemap-layer').on('write', this.layerWrite);
 		$('#sceneTilemap-layer').on('input', this.layerInput);
-		$('#sceneTilemap-width, #sceneTilemap-height').on(
+		$('#sceneTilemap-width, #sceneTilemap-height').on('change', this.paramInput);
+		$('#sceneTilemap-conditions, #sceneTilemap-events, #sceneTilemap-scripts').on(
 			'change',
-			this.paramInput
+			Scene.listChange
 		);
-		$(
-			'#sceneTilemap-conditions, #sceneTilemap-events, #sceneTilemap-scripts'
-		).on('change', Scene.listChange);
 	};
 
 	// 创建瓦片地图
@@ -276,11 +271,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 参数 - 输入事件
 	SceneTilemap.paramInput = function (event) {
-		SceneTilemap.update(
-			SceneTilemap.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		SceneTilemap.update(SceneTilemap.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.sceneTilemap = SceneTilemap;

@@ -134,9 +134,7 @@ Scene.updateAnimations = function (deltaTime) {
 				player.update(deltaTime);
 				const { x, y } = this.getConvertedCoords(object);
 				if (x >= sl && x < sr && y >= st && y < sb) {
-					const priority =
-						(object.priority ?? object.data?.priority ?? 0) *
-						pFactor;
+					const priority = (object.priority ?? object.data?.priority ?? 0) * pFactor;
 					player.setPosition(x, y);
 					player.updateFrameParameters(player.contexts, player.index);
 					player.anchorX = (x - ll) / lw;
@@ -184,10 +182,7 @@ Scene.updateParticles = function (deltaTime) {
 			if (emitter === undefined) continue;
 			const { x, y } = this.getConvertedCoords(particle);
 			// 如果粒子发射器在屏幕中可见，或始终发射
-			if (
-				(x >= al && x < ar && y >= at && y < ab) ||
-				emitter.alwaysEmit
-			) {
+			if ((x >= al && x < ar && y >= at && y < ab) || emitter.alwaysEmit) {
 				const priority = particle.priority * pFactor;
 				emitter.anchorY = (y - lt) / lh + priority;
 				emitter.startX = x;
@@ -258,16 +253,7 @@ Scene.drawTilePreview = function () {
 };
 
 // 绘制图块层
-Scene.drawTileLayer = function (
-	layer,
-	light,
-	blend,
-	opacity,
-	tilesetMap,
-	tiles,
-	ox,
-	oy
-) {
+Scene.drawTileLayer = function (layer, light, blend, opacity, tilesetMap, tiles, ox, oy) {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
 	const push = gl.batchRenderer.push;
@@ -313,12 +299,8 @@ Scene.drawTileLayer = function (
 								const sh = tileset.tileHeight;
 								const sx = ((tile >> 8) & 0xff) * sw;
 								const sy = ((tile >> 16) & 0xff) * sh;
-								const dl =
-									x * tw +
-									(tw - sw) / 2 +
-									tileset.globalOffsetX;
-								const dt =
-									y * th + (th - sh) + tileset.globalOffsetY;
+								const dl = x * tw + (tw - sw) / 2 + tileset.globalOffsetX;
+								const dt = y * th + (th - sh) + tileset.globalOffsetY;
 								const dr = dl + sw;
 								const db = dt + sh;
 								let sl = (sx + 0.002) / texture.width;
@@ -384,19 +366,14 @@ Scene.drawTileLayer = function (
 							const texture = textures[autoTile.image];
 							if (texture instanceof ImageTexture) {
 								push(texture.base.index);
-								const index =
-									this.animationFrame % node.frames.length;
+								const index = this.animationFrame % node.frames.length;
 								const frame = node.frames[index];
 								const sw = tileset.tileWidth;
 								const sh = tileset.tileHeight;
 								const sx = (autoTile.x + (frame & 0xff)) * sw;
 								const sy = (autoTile.y + (frame >> 8)) * sh;
-								const dl =
-									x * tw +
-									(tw - sw) / 2 +
-									tileset.globalOffsetX;
-								const dt =
-									y * th + (th - sh) + tileset.globalOffsetY;
+								const dl = x * tw + (tw - sw) / 2 + tileset.globalOffsetX;
+								const dt = y * th + (th - sh) + tileset.globalOffsetY;
 								const dr = dl + sw;
 								const db = dt + sh;
 								const sl = (sx + 0.002) / texture.width;
@@ -449,9 +426,7 @@ Scene.drawTileLayer = function (
 		const modeMap = this.tilemapLightSamplingModes;
 		const lightMode = this.showLight ? light : 'raw';
 		const lightModeIndex = modeMap[lightMode];
-		const matrix = gl.matrix
-			.project(gl.flip, sr - sl, sb - st)
-			.translate(-sl, -st);
+		const matrix = gl.matrix.project(gl.flip, sr - sl, sb - st).translate(-sl, -st);
 		switch (layer) {
 			case 'upper':
 				gl.uniform1i(program.u_TintMode, 0);
@@ -464,13 +439,7 @@ Scene.drawTileLayer = function (
 		gl.bindVertexArray(program.vao);
 		gl.uniformMatrix3fv(program.u_Matrix, false, matrix);
 		gl.uniform1i(program.u_LightMode, lightModeIndex);
-		gl.bufferData(
-			gl.ARRAY_BUFFER,
-			vertices,
-			gl.STREAM_DRAW,
-			0,
-			endIndex * 5
-		);
+		gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STREAM_DRAW, 0, endIndex * 5);
 		gl.batchRenderer.draw();
 	}
 };
@@ -568,8 +537,7 @@ Scene.drawRegionLayer = function () {
 			const r = parseInt(hex.slice(0, 2), 16);
 			const g = parseInt(hex.slice(2, 4), 16);
 			const b = parseInt(hex.slice(4, 6), 16);
-			const a =
-				parseInt(hex.slice(6, 8), 16) * (region.enabled ? 1 : 0.5);
+			const a = parseInt(hex.slice(6, 8), 16) * (region.enabled ? 1 : 0.5);
 			const rgba = r | (g << 8) | (b << 16) | (a << 24);
 			list[li++] = region;
 			vertices[vi] = rl;
@@ -779,53 +747,36 @@ Scene.drawObjectLayer = function () {
 									const tx = (tile >> 8) & 0xff;
 									const ty = (tile >> 16) & 0xff;
 									const id = tx + ty * tileset.width;
-									const tp =
-										tileset.priorities[id] +
-										tileset.globalPriority;
+									const tp = tileset.priorities[id] + tileset.globalPriority;
 									const sw = tileset.tileWidth;
 									const sh = tileset.tileHeight;
 									const sx = tx * sw;
 									const sy = ty * sh;
 									const ax = (x + 0.5) * tw + ox;
 									const ay = (y + 1) * th + oy;
-									const dl =
-										ax - sw / 2 + tileset.globalOffsetX;
+									const dl = ax - sw / 2 + tileset.globalOffsetX;
 									const dt = ay - sh + tileset.globalOffsetY;
 									const dr = dl + sw;
 									const db = dt + sh;
 									const px = (ax - ll) / lw;
 									const py = (ay - lt + tp * th) / lh;
-									const key = max(
-										0,
-										min(
-											0x3ffff,
-											round(py * 0x20000 + 0x10000)
-										)
-									);
+									const key = max(0, min(0x3ffff, round(py * 0x20000 + 0x10000)));
 									const anchor =
 										round(max(min(px, 1), 0) * 0xffff) |
-										(round(
-											max(min(py - ly, 1), 0) * 0xffff
-										) <<
-											16);
+										(round(max(min(py - ly, 1), 0) * 0xffff) << 16);
 									data[di] = texture.base.index;
 									data[di + 1] = dl;
 									data[di + 2] = dt;
 									data[di + 3] = dr;
 									data[di + 4] = db;
 									data[di + 5] = (sx + 0.002) / texture.width;
-									data[di + 6] =
-										(sy + 0.002) / texture.height;
-									data[di + 7] =
-										(sx + sw - 0.002) / texture.width;
-									data[di + 8] =
-										(sy + sh - 0.002) / texture.height;
+									data[di + 6] = (sy + 0.002) / texture.height;
+									data[di + 7] = (sx + sw - 0.002) / texture.width;
+									data[di + 8] = (sy + sh - 0.002) / texture.height;
 									datau[di + 9] = anchor;
 									datau[di + 10] = opacity;
-									datau[di + 11] =
-										lightModeMap[tilemap.light];
-									datau[di + 12] =
-										blendModeMap[tilemap.blend];
+									datau[di + 11] = lightModeMap[tilemap.light];
+									datau[di + 12] = blendModeMap[tilemap.blend];
 									if (tile & 0b1) {
 										data[di + 9] = data[di + 5];
 										data[di + 5] = data[di + 7];
@@ -845,9 +796,7 @@ Scene.drawObjectLayer = function () {
 									const guid = tileset.image;
 									const image = Palette.images[guid];
 									if (image instanceof Image) {
-										textures.append(
-											new ImageTexture(image)
-										);
+										textures.append(new ImageTexture(image));
 										x--;
 									} else {
 										textures.load(guid);
@@ -874,58 +823,38 @@ Scene.drawObjectLayer = function () {
 								}
 								const texture = textures[autoTile.image];
 								if (texture instanceof ImageTexture) {
-									const index =
-										this.animationFrame %
-										node.frames.length;
+									const index = this.animationFrame % node.frames.length;
 									const frame = node.frames[index];
-									const tp =
-										tileset.priorities[id] +
-										tileset.globalPriority;
+									const tp = tileset.priorities[id] + tileset.globalPriority;
 									const sw = tileset.tileWidth;
 									const sh = tileset.tileHeight;
-									const sx =
-										(autoTile.x + (frame & 0xff)) * sw;
+									const sx = (autoTile.x + (frame & 0xff)) * sw;
 									const sy = (autoTile.y + (frame >> 8)) * sh;
 									const ax = (x + 0.5) * tw + ox;
 									const ay = (y + 1) * th + oy;
-									const dl =
-										ax - sw / 2 + tileset.globalOffsetX;
+									const dl = ax - sw / 2 + tileset.globalOffsetX;
 									const dt = ay - sh + tileset.globalOffsetY;
 									const dr = dl + sw;
 									const db = dt + sh;
 									const px = (ax - ll) / lw;
 									const py = (ay - lt + tp * th) / lh;
-									const key = max(
-										0,
-										min(
-											0x3ffff,
-											round(py * 0x20000 + 0x10000)
-										)
-									);
+									const key = max(0, min(0x3ffff, round(py * 0x20000 + 0x10000)));
 									const anchor =
 										round(max(min(px, 1), 0) * 0xffff) |
-										(round(
-											max(min(py - ly, 1), 0) * 0xffff
-										) <<
-											16);
+										(round(max(min(py - ly, 1), 0) * 0xffff) << 16);
 									data[di] = texture.base.index;
 									data[di + 1] = dl;
 									data[di + 2] = dt;
 									data[di + 3] = dr;
 									data[di + 4] = db;
 									data[di + 5] = (sx + 0.002) / texture.width;
-									data[di + 6] =
-										(sy + 0.002) / texture.height;
-									data[di + 7] =
-										(sx + sw - 0.002) / texture.width;
-									data[di + 8] =
-										(sy + sh - 0.002) / texture.height;
+									data[di + 6] = (sy + 0.002) / texture.height;
+									data[di + 7] = (sx + sw - 0.002) / texture.width;
+									data[di + 8] = (sy + sh - 0.002) / texture.height;
 									datau[di + 9] = anchor;
 									datau[di + 10] = opacity;
-									datau[di + 11] =
-										lightModeMap[tilemap.light];
-									datau[di + 12] =
-										blendModeMap[tilemap.blend];
+									datau[di + 11] = lightModeMap[tilemap.light];
+									datau[di + 12] = blendModeMap[tilemap.blend];
 									if (starts[key] === 0) {
 										starts[key] = si;
 										layers[li++] = key;
@@ -940,9 +869,7 @@ Scene.drawObjectLayer = function () {
 									const guid = autoTile.image;
 									const image = Palette.images[guid];
 									if (image instanceof Image) {
-										textures.append(
-											new ImageTexture(image)
-										);
+										textures.append(new ImageTexture(image));
 										x--;
 									} else {
 										textures.load(guid);
@@ -972,10 +899,7 @@ Scene.drawObjectLayer = function () {
 				const player = object.player;
 				if (player.visible) {
 					const py = player.anchorY;
-					const key = max(
-						0,
-						min(0x3ffff, round(py * 0x20000 + 0x10000))
-					);
+					const key = max(0, min(0x3ffff, round(py * 0x20000 + 0x10000)));
 					data[di] = i | kind;
 					if (starts[key] === 0) {
 						starts[key] = si;
@@ -997,10 +921,7 @@ Scene.drawObjectLayer = function () {
 				const emitter = object.emitter;
 				if (emitter?.visible) {
 					const py = emitter.anchorY;
-					const key = max(
-						0,
-						min(0x3ffff, round(py * 0x20000 + 0x10000))
-					);
+					const key = max(0, min(0x3ffff, round(py * 0x20000 + 0x10000)));
 					data[di] = i | kind;
 					if (starts[key] === 0) {
 						starts[key] = si;
@@ -1025,9 +946,7 @@ Scene.drawObjectLayer = function () {
 		const push = gl.batchRenderer.push;
 		const response = gl.batchRenderer.response;
 		const program = gl.spriteProgram.use();
-		const matrix = gl.matrix
-			.project(gl.flip, sr - sl, sb - st)
-			.translate(-sl, -st);
+		const matrix = gl.matrix.project(gl.flip, sr - sl, sb - st).translate(-sl, -st);
 		if (activeId < 0x20000) {
 			gl.uniform4f(program.u_Tint, 0, 0, 0, 0);
 		} else {
@@ -1098,15 +1017,11 @@ Scene.drawObjectLayer = function () {
 					actor.player.draw(animAlpha * (actor.enabled ? 1 : 0.3));
 				} else if (code < 0x30000) {
 					const animation = animations[code & 0x0ffff];
-					animation.player.draw(
-						animAlpha * (animation.enabled ? 1 : 0.3)
-					);
+					animation.player.draw(animAlpha * (animation.enabled ? 1 : 0.3));
 				} else {
 					gl.batchRenderer.draw();
 					const particle = particles[code & 0x0ffff];
-					particle.emitter.draw(
-						animAlpha * (particle.enabled ? 1 : 0.3)
-					);
+					particle.emitter.draw(animAlpha * (particle.enabled ? 1 : 0.3));
 				}
 			} while ((si = set[si + 1]) !== 0);
 		}
@@ -1372,12 +1287,7 @@ Scene.drawTerrainLayer = function () {
 		gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STREAM_DRAW, 0, vi);
 		if (mi1 !== mi2) {
 			gl.vertexAttrib4f(program.a_Color, 0, 0, 1, 0.25);
-			gl.drawElements(
-				gl.TRIANGLES,
-				(mi2 - mi1) * 0.75,
-				gl.UNSIGNED_INT,
-				mi1 * 3
-			);
+			gl.drawElements(gl.TRIANGLES, (mi2 - mi1) * 0.75, gl.UNSIGNED_INT, mi1 * 3);
 		}
 		if (mi1 !== 0) {
 			gl.vertexAttrib4f(program.a_Color, 1, 0, 0, 0.25);
@@ -1677,21 +1587,11 @@ Scene.drawTileMarquee = function () {
 		gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STREAM_DRAW, 0, vi);
 		if (valid !== null) {
 			gl.vertexAttrib4fv(program.a_Color, marquee.backgroundColor);
-			gl.drawElements(
-				gl.TRIANGLES,
-				valid.count,
-				gl.UNSIGNED_INT,
-				valid.start * 4
-			);
+			gl.drawElements(gl.TRIANGLES, valid.count, gl.UNSIGNED_INT, valid.start * 4);
 		}
 		if (invalid !== null) {
 			gl.vertexAttrib4fv(program.a_Color, marquee.backgroundColorInvalid);
-			gl.drawElements(
-				gl.TRIANGLES,
-				invalid.count,
-				gl.UNSIGNED_INT,
-				invalid.start * 4
-			);
+			gl.drawElements(gl.TRIANGLES, invalid.count, gl.UNSIGNED_INT, invalid.start * 4);
 		}
 		gl.vertexAttrib4fv(program.a_Color, marquee.borderColor);
 		gl.drawArrays(gl.LINE_LOOP, 0, 4);
@@ -1801,25 +1701,14 @@ Scene.drawAnimationWireframe = function () {
 			const th = this.tileHeight;
 			const ax = target.x;
 			const ay = target.y;
-			const as =
-				target.class === 'actor'
-					? Math.max(data.size * target.player.scale, 1)
-					: 1;
+			const as = target.class === 'actor' ? Math.max(data.size * target.player.scale, 1) : 1;
 			const ar = as / 2;
 			const ml = (ax - ar) * tw;
 			const mt = (ay - ar) * th;
 			const mr = (ax + ar) * tw;
 			const mb = (ay + ar) * th;
 			if (mr > sl && ml < sr && mb > st && mt < sb) {
-				this.drawRectWireframeOnTilemap(
-					ax - ar,
-					ay - ar,
-					as,
-					as,
-					ax,
-					ay,
-					0
-				);
+				this.drawRectWireframeOnTilemap(ax - ar, ay - ar, as, as, ax, ay, 0);
 			}
 			break;
 		}
@@ -1882,15 +1771,7 @@ Scene.drawLightWireframe = function () {
 					const rw = light.width;
 					const rh = light.height;
 					const angle = instance.angle;
-					this.drawRectWireframeOnTilemap(
-						rl,
-						rt,
-						rw,
-						rh,
-						ax,
-						ay,
-						angle
-					);
+					this.drawRectWireframeOnTilemap(rl, rt, rw, rh, ax, ay, angle);
 					this.drawTargetAnchor(light, angle);
 				}
 				break;

@@ -121,19 +121,13 @@ export class NumberHistory implements IEditableHistory {
 				case 'insertText':
 				case 'deleteContentForward':
 				case 'deleteContentBackward':
-					if (
-						HistoryTimer.complete ||
-						HistoryTimer.type !== event.inputType
-					) {
+					if (HistoryTimer.complete || HistoryTimer.type !== event.inputType) {
 						this.history.save();
 					}
 					HistoryTimer.start(event.inputType);
 					break;
 				case undefined:
-					if (
-						HistoryTimer.complete ||
-						HistoryTimer.type !== 'quickInput'
-					) {
+					if (HistoryTimer.complete || HistoryTimer.type !== 'quickInput') {
 						this.history.save();
 					}
 					HistoryTimer.start('quickInput');

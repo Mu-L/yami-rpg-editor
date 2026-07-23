@@ -84,10 +84,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 				{ case: 'circle', targets: [$('#fileTrigger-shape-radius')] },
 				{
 					case: 'sector',
-					targets: [
-						$('#fileTrigger-shape-radius'),
-						$('#fileTrigger-shape-centralAngle')
-					]
+					targets: [$('#fileTrigger-shape-radius'), $('#fileTrigger-shape-centralAngle')]
 				}
 			]);
 
@@ -101,9 +98,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		// 设置触发模式关联元素
 		$('#fileTrigger-hitMode')
 			.enableHiddenMode()
-			.relate([
-				{ case: 'repeat', targets: [$('#fileTrigger-hitInterval')] }
-			]);
+			.relate([{ case: 'repeat', targets: [$('#fileTrigger-hitInterval')] }]);
 
 		// 创建动画旋转选项
 		$('#fileTrigger-rotatable').loadItems([
@@ -130,10 +125,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
     #fileTrigger-inherit, #fileTrigger-animationId, #fileTrigger-motion,
     #fileTrigger-priority, #fileTrigger-offsetY, #fileTrigger-rotatable
   `).on('input', this.paramInput);
-		$('#fileTrigger-events, #fileTrigger-scripts').on(
-			'change',
-			this.listChange
-		);
+		$('#fileTrigger-events, #fileTrigger-scripts').on('change', this.listChange);
 	};
 
 	// 创建技能
@@ -298,11 +290,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 参数 - 输入事件
 	FileTrigger.paramInput = function (event) {
-		FileTrigger.update(
-			FileTrigger.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		FileTrigger.update(FileTrigger.target, Inspector.getKey(this), this.read());
 	};
 
 	// 列表 - 改变事件

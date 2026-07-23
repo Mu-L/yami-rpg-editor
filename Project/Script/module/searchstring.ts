@@ -20,12 +20,8 @@ export const SearchString = new (class {
 		$('#event-search-string-case-insensitive').on('change', (e) =>
 			this.change('caseInsensitive', e)
 		);
-		$('#event-search-string-regex').on('change', (e) =>
-			this.change('regex', e)
-		);
-		$('#event-search-string-match-line').on('change', (e) =>
-			this.change('matchLine', e)
-		);
+		$('#event-search-string-regex').on('change', (e) => this.change('regex', e));
+		$('#event-search-string-match-line').on('change', (e) => this.change('matchLine', e));
 	}
 	change(mode: any, e: any) {
 		this.searchMode[mode] = e.target.read();
@@ -68,9 +64,7 @@ export const SearchString = new (class {
 	}
 	clear() {
 		this.lastArr.forEach((element) => {
-			element.node.classList.remove(
-				'event-search-string-location-active'
-			);
+			element.node.classList.remove('event-search-string-location-active');
 			element.node.classList.remove('event-search-string-active');
 		});
 	}
@@ -105,9 +99,7 @@ export const SearchString = new (class {
 		const arr = this.lastArr;
 		const index = this.index;
 		const currentNode = arr[index];
-		currentNode.node.classList.remove(
-			'event-search-string-location-active'
-		);
+		currentNode.node.classList.remove('event-search-string-location-active');
 	}
 	previous() {
 		if (this.lastArr.length == 0) return;

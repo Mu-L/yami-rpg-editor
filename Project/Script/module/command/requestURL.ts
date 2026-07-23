@@ -1,9 +1,4 @@
-import {
-	$,
-	getElementReader,
-	getElementWriter,
-	request
-} from '../../util/dom.ts';
+import { $, getElementReader, getElementWriter, request } from '../../util/dom.ts';
 import { Command } from '../../command/command-object.ts';
 import { VariableGetter } from '../../command/variable-accessor-window.ts';
 import { CommandSchema } from './schema.ts';
@@ -72,23 +67,14 @@ Command.cases.requestURL = new CommandSchema({
 		$('#requestURL-data').bind(RequestkeyValueBind);
 		$('#requestURL-confirm').on('click', () => this.save());
 	},
-	customParse({
-		url = '',
-		method = 'GET',
-		headers = [],
-		data = [],
-		callback = ''
-	}) {
+	customParse({ url = '', method = 'GET', headers = [], data = [], callback = '' }) {
 		const head = [
 			{ color: 'network' },
 			{ text: Local.get('command.requestURL') },
 			{ text: ' , ' },
 			{ color: 'normal' },
 			{
-				text:
-					typeof url === 'string'
-						? url
-						: Command.parseVariable(url, 'any')
+				text: typeof url === 'string' ? url : Command.parseVariable(url, 'any')
 			},
 			{ text: ' , ' },
 			{ text: method },
@@ -122,13 +108,7 @@ Command.cases.requestURL = new CommandSchema({
 			datas.slice(1)
 		);
 	},
-	customLoad({
-		url = '',
-		method = 'GET',
-		headers = [],
-		data = [],
-		callback = ''
-	}) {
+	customLoad({ url = '', method = 'GET', headers = [], data = [], callback = '' }) {
 		$('#requestURL-method').write(method);
 		$('#requestURL-callback').write(callback);
 		$('#requestURL-url').write(url);

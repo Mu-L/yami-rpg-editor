@@ -108,17 +108,13 @@ export class AttributeListInterface implements IListInterface {
 			}
 		}
 		const key = item.key;
-		const type =
-			Attribute.getGroupAttribute(this.group, key)?.type ??
-			typeof item.value;
+		const type = Attribute.getGroupAttribute(this.group, key)?.type ?? typeof item.value;
 		const booleanValue = type === 'boolean' ? item.value : false;
 		const numberValue = type === 'number' ? item.value : 0;
 		const stringValue = type === 'string' ? item.value : '';
 		const enumValue = type === 'enum' ? item.value : '';
 		const keyBox = $('#object-attribute-key');
-		keyBox.loadItems(
-			Attribute.getAttributeItems(this.group, 'boolean number string')
-		);
+		keyBox.loadItems(Attribute.getAttributeItems(this.group, 'boolean number string'));
 		const invalid = !Attribute.getGroupAttribute(this.group, key);
 		if (invalid) AttributeListInterface.typeBox.write(type);
 		const write = getElementWriter('object-attribute');

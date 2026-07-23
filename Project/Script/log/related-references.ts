@@ -54,8 +54,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 	// 外部对象的GUID
 	const outerMap = {};
 	const guidInText = /<(?:ref|image|global|global:):([0-9a-f]{16})>/g;
-	const guidInJSON =
-		/"([0-9a-f]{16})\\?"|<(?:ref|image|global|global:):([0-9a-f]{16})>/g;
+	const guidInJSON = /"([0-9a-f]{16})\\?"|<(?:ref|image|global|global:):([0-9a-f]{16})>/g;
 	const guidInScript = /"[0-9a-f]{16}"|'[0-9a-f]{16}'/g;
 	const guidMap = Data.manifest.guidMap;
 	const { scenePresets, uiPresets } = Data;
@@ -563,11 +562,7 @@ Reference.findAllGuids = function (targetGuid = '') {
 		pushComment(get('config'));
 		const path = 'Data/config.json';
 		const copy = Object.clone(Data.config);
-		pushToUsedMap2(
-			path,
-			'startPosition.sceneId',
-			copy.startPosition.sceneId
-		);
+		pushToUsedMap2(path, 'startPosition.sceneId', copy.startPosition.sceneId);
 		delete copy.gameId;
 		delete copy.save;
 		delete copy.startPosition;
@@ -812,17 +807,10 @@ Reference.getKeydownListener = function (list, winId = '') {
 			if (event.altKey) {
 				switch (event.code) {
 					case 'AltLeft':
-						if (
-							winId
-								? Window.getTopWindow()?.id === winId
-								: !Window.getTopWindow()
-						) {
+						if (winId ? Window.getTopWindow()?.id === winId : !Window.getTopWindow()) {
 							list.addClass('alt');
 							window.on('keyup', this.getKeyupListener(list));
-							window.on(
-								'pointermove',
-								this.getPointermoveListener(list)
-							);
+							window.on('pointermove', this.getPointermoveListener(list));
 						}
 						break;
 				}
@@ -842,10 +830,7 @@ Reference.getKeyupListener = function (list) {
 					case 'AltLeft':
 						list.removeClass('alt');
 						window.off('keyup', listener);
-						window.off(
-							'pointermove',
-							this.getPointermoveListener(list)
-						);
+						window.off('pointermove', this.getPointermoveListener(list));
 						break;
 				}
 			}

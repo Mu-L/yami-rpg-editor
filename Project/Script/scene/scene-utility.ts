@@ -41,9 +41,7 @@ Scene.saveToConfig = function (config) {
 
 // 从配置文件中加载状态
 Scene.loadFromConfig = function (config) {
-	this.background = new StageColor(config.colors.sceneBackground, () =>
-		this.requestRendering()
-	);
+	this.background = new StageColor(config.colors.sceneBackground, () => this.requestRendering());
 };
 
 // 保存状态到项目文件

@@ -31,10 +31,7 @@ Scene.Textures = class Textures {
 			}
 			this[guid] = new Promise((resolve) => {
 				texture.on('load', () => {
-					if (
-						this.state === 'open' &&
-						this[guid] instanceof Promise
-					) {
+					if (this.state === 'open' && this[guid] instanceof Promise) {
 						this[guid] = texture;
 						Scene.requestRendering();
 						return resolve(texture);

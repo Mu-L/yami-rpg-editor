@@ -158,9 +158,7 @@ export class FileNavPane extends HTMLElement {
 		let element = context.element;
 		if (element === undefined) {
 			// 创建文件夹
-			element = document.createElement(
-				'file-nav-item'
-			) as unknown as HTMLElement & {
+			element = document.createElement('file-nav-item') as unknown as HTMLElement & {
 				file: any;
 				context: any;
 				indent: number;
@@ -193,12 +191,8 @@ export class FileNavPane extends HTMLElement {
 				(element as HTMLElement).addClass('selected');
 			}
 		}
-		(
-			element as HTMLElement & { indent: number; changed?: boolean }
-		).indent = indent;
-		(
-			element as HTMLElement & { indent: number; changed?: boolean }
-		).changed = true;
+		(element as HTMLElement & { indent: number; changed?: boolean }).indent = indent;
+		(element as HTMLElement & { indent: number; changed?: boolean }).changed = true;
 		return element;
 	}
 
@@ -233,9 +227,7 @@ export class FileNavPane extends HTMLElement {
 		const markVisible = file.subfolders.length !== 0;
 		if (element.markVisible !== markVisible) {
 			element.markVisible = markVisible;
-			element.folderMark.style.visibility = markVisible
-				? 'inherit'
-				: 'hidden';
+			element.folderMark.style.visibility = markVisible ? 'inherit' : 'hidden';
 		}
 
 		// 设置折叠标记
@@ -349,10 +341,7 @@ export class FileNavPane extends HTMLElement {
 							);
 							break;
 						case 'middle':
-							scrollTop =
-								Math.round(
-									(i * 20 + 10 - this.innerHeight / 2) / 20
-								) * 20;
+							scrollTop = Math.round((i * 20 + 10 - this.innerHeight / 2) / 20) * 20;
 							break;
 						default:
 							return;
@@ -527,9 +516,7 @@ export class FileNavPane extends HTMLElement {
 					// 阻止拖拽开始事件
 					event.preventDefault();
 					if (event.button === 0) {
-						const file = (
-							element.parentNode as HTMLElement & { file: any }
-						).file;
+						const file = (element.parentNode as HTMLElement & { file: any }).file;
 						const context = file.getContext(this);
 						context.expanded = !context.expanded;
 						this.update();
@@ -544,37 +531,24 @@ export class FileNavPane extends HTMLElement {
 						if (event.cmdOrCtrlKey && length !== 0) {
 							const files = Array.from(selections);
 							if (
-								!selections.includes(
-									(element as HTMLElement & { file: any })
-										.file
-								)
+								!selections.includes((element as HTMLElement & { file: any }).file)
 							) {
 								(
 									files as unknown as any[] & {
 										append(...args: any[]): void;
 									}
-								).append(
-									(element as HTMLElement & { file: any })
-										.file
-								);
+								).append((element as HTMLElement & { file: any }).file);
 								this.select(...files);
 							} else if (length > 1) {
 								(
 									files as unknown as any[] & {
 										remove(...args: any[]): void;
 									}
-								).remove(
-									(element as HTMLElement & { file: any })
-										.file
-								);
+								).remove((element as HTMLElement & { file: any }).file);
 								const pointerup = (event: PointerEvent) => {
 									if (this.pressing === pointerup) {
 										this.pressing = null;
-										if (
-											element.contains(
-												event.target as Node
-											)
-										) {
+										if (element.contains(event.target as Node)) {
 											this.select(...files);
 										}
 									}
@@ -600,26 +574,18 @@ export class FileNavPane extends HTMLElement {
 							}
 							if (start !== -1) {
 								const slice = elements.slice(start, end + 1);
-								this.select(
-									...slice.map((element: any) => element.file)
-								);
+								this.select(...slice.map((element: any) => element.file));
 								return;
 							}
 						}
 						if (!element.hasClass('selected')) {
-							this.select(
-								(element as HTMLElement & { file: any }).file
-							);
+							this.select((element as HTMLElement & { file: any }).file);
 						} else if (event.button === 0) {
 							if (length > 1) {
 								const pointerup = (event: PointerEvent) => {
 									if (this.pressing === pointerup) {
 										this.pressing = null;
-										if (
-											element.contains(
-												event.target as Node
-											)
-										) {
+										if (element.contains(event.target as Node)) {
 											this.select(
 												(
 													element as HTMLElement & {
@@ -668,10 +634,7 @@ export class FileNavPane extends HTMLElement {
 	pointerup(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
-				if (
-					document.activeElement === this &&
-					this.timer.target === event.target
-				) {
+				if (document.activeElement === this && this.timer.target === event.target) {
 					this.timer.running = true;
 					this.timer.elapsed = 0;
 					this.timer.add();
@@ -711,12 +674,8 @@ export class FileNavPane extends HTMLElement {
 		for (const folder of this.getSelections()) {
 			const { ino } = folder.stats;
 			const { path } = inoMap[ino] || folder;
-			(
-				folders as unknown as any[] & { append(...args: any[]): void }
-			).append(
-				(
-					Directory as unknown as { getFolder(path: string): any }
-				).getFolder(path)
+			(folders as unknown as any[] & { append(...args: any[]): void }).append(
+				(Directory as unknown as { getFolder(path: string): any }).getFolder(path)
 			);
 		}
 		const { browser } = this.links;
@@ -739,30 +698,24 @@ export class FileNavPane extends HTMLElement {
 		(textBox as any).input.addClass('file-nav-text-box-input');
 
 		// 键盘按下事件
-		textBox.on(
-			'keydown',
-			function (this: HTMLElement, event: KeyboardEvent) {
-				event.stopPropagation();
-				switch (event.code) {
-					case 'Enter':
-					case 'NumpadEnter':
-					case 'Escape': {
-						const item = this.parentNode as any;
-						const nav = item.parentNode as HTMLElement;
-						(textBox as any).input.blur();
-						nav.focus();
-						break;
-					}
+		textBox.on('keydown', function (this: HTMLElement, event: KeyboardEvent) {
+			event.stopPropagation();
+			switch (event.code) {
+				case 'Enter':
+				case 'NumpadEnter':
+				case 'Escape': {
+					const item = this.parentNode as any;
+					const nav = item.parentNode as HTMLElement;
+					(textBox as any).input.blur();
+					nav.focus();
+					break;
 				}
 			}
-		);
+		});
 
 		// 输入前事件
 		textBox.on('beforeinput', function (event: any) {
-			if (
-				event.inputType === 'insertText' &&
-				typeof event.data === 'string'
-			) {
+			if (event.inputType === 'insertText' && typeof event.data === 'string') {
 				const regexp = /[\\/:*?"<>|]/;
 				if (regexp.test(event.data)) {
 					event.preventDefault();

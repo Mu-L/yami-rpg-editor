@@ -222,10 +222,7 @@ import { Window } from '../tools/window-object.ts';
 			]);
 		},
 		parse: function ({ type, key, note }) {
-			return [
-				{ content: key },
-				{ content: Local.get('eventParameterTypes.' + type) }
-			];
+			return [{ content: key }, { content: Local.get('eventParameterTypes.' + type) }];
 		},
 		open: function ({ type = 'number', key = '', note = '' } = {}) {
 			Window.open('fileEvent-parameter');

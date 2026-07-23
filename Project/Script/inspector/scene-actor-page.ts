@@ -37,9 +37,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		]);
 
 		// 绑定条件列表
-		$('#sceneActor-conditions').bind(
-			new ConditionListInterface(this, Scene)
-		);
+		$('#sceneActor-conditions').bind(new ConditionListInterface(this, Scene));
 
 		// 绑定事件列表
 		$('#sceneActor-events').bind(new EventListInterface(this, Scene));
@@ -209,11 +207,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 参数 - 输入事件
 	SceneActor.paramInput = function (event) {
-		SceneActor.update(
-			SceneActor.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		SceneActor.update(SceneActor.target, Inspector.getKey(this), this.read());
 	};
 
 	// 类型 - 写入事件

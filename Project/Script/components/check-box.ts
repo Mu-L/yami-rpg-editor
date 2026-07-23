@@ -42,9 +42,7 @@ export class CheckBox extends HTMLElement {
 	// 写入数据
 	write(value: boolean): void {
 		this.dataValue = !!value;
-		this.dataValue
-			? this.addClass('selected')
-			: this.removeClass('selected');
+		this.dataValue ? this.addClass('selected') : this.removeClass('selected');
 		if (!this.hasClass('disabled')) {
 			this.toggleRelatedElements();
 		}

@@ -192,11 +192,7 @@ export class SliderBox extends HTMLElement {
 			const input = this;
 			const last = input.value;
 			input.value = String(
-				Math.roundTo(
-					parseFloat(input.value) +
-						input.step * (event.deltaY > 0 ? -1 : 1),
-					2
-				)
+				Math.roundTo(parseFloat(input.value) + input.step * (event.deltaY > 0 ? -1 : 1), 2)
 			);
 			if (input.value !== last) {
 				input.dispatchEvent(

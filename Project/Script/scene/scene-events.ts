@@ -155,10 +155,7 @@ Scene.layerPointerdown = function (event) {
 		case 0:
 			if (!Scene.dragging) {
 				const element = event.target;
-				if (
-					element.tagName === 'ITEM' &&
-					!element.hasClass('selected')
-				) {
+				if (element.tagName === 'ITEM' && !element.hasClass('selected')) {
 					const value = element.getAttribute('value');
 					switch (value) {
 						case 'object':
@@ -181,10 +178,7 @@ Scene.brushPointerdown = function (event) {
 		case 0:
 			if (!Scene.dragging) {
 				const element = event.target;
-				if (
-					element.tagName === 'ITEM' &&
-					!element.hasClass('selected')
-				) {
+				if (element.tagName === 'ITEM' && !element.hasClass('selected')) {
 					Scene.switchBrush(element.getAttribute('value'));
 				}
 			}
@@ -204,10 +198,7 @@ Scene.zoomInput = function (event) {
 
 // 屏幕 - 键盘按下事件
 Scene.screenKeydown = function (event) {
-	if (
-		this.state === 'open' &&
-		(this.dragging === null || event.code === 'ShiftLeft')
-	) {
+	if (this.state === 'open' && (this.dragging === null || event.code === 'ShiftLeft')) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
 				case 'KeyX':
@@ -229,8 +220,7 @@ Scene.screenKeydown = function (event) {
 				case 'ArrowDown':
 					if (
 						this.layer === 'object' &&
-						(this.target?.class === 'actor' ||
-							this.target?.class === 'animation')
+						(this.target?.class === 'actor' || this.target?.class === 'animation')
 					) {
 						let angle;
 						switch (event.code) {
@@ -265,12 +255,7 @@ Scene.screenKeydown = function (event) {
 								case 'rect':
 								case 'oval': {
 									const marquee = this.marquee;
-									this.edit(
-										marquee.x,
-										marquee.y,
-										marquee.width,
-										marquee.height
-									);
+									this.edit(marquee.x, marquee.y, marquee.width, marquee.height);
 									break;
 								}
 								case 'object-move':
@@ -358,40 +343,18 @@ Scene.screenKeydown = function (event) {
 								const actor = this.target;
 								const size = actor.data?.size ?? 1;
 								const radius = Math.max(size, 1) / 2;
-								const x = Math.clamp(
-									actor.x + offsetX,
-									radius,
-									width - radius
-								);
-								const y = Math.clamp(
-									actor.y + offsetY,
-									radius,
-									height - radius
-								);
-								this.shiftTarget(
-									Math.roundTo(x, 4),
-									Math.roundTo(y, 4)
-								);
+								const x = Math.clamp(actor.x + offsetX, radius, width - radius);
+								const y = Math.clamp(actor.y + offsetY, radius, height - radius);
+								this.shiftTarget(Math.roundTo(x, 4), Math.roundTo(y, 4));
 								break;
 							}
 							case 'region': {
 								const region = this.target;
 								const rwh = region.width / 2;
 								const rhh = region.height / 2;
-								const x = Math.clamp(
-									region.x + offsetX,
-									rwh,
-									width - rwh
-								);
-								const y = Math.clamp(
-									region.y + offsetY,
-									rhh,
-									height - rhh
-								);
-								this.shiftTarget(
-									Math.roundTo(x, 4),
-									Math.roundTo(y, 4)
-								);
+								const x = Math.clamp(region.x + offsetX, rwh, width - rwh);
+								const y = Math.clamp(region.y + offsetY, rhh, height - rhh);
+								this.shiftTarget(Math.roundTo(x, 4), Math.roundTo(y, 4));
 								break;
 							}
 							case 'tilemap':
@@ -400,20 +363,9 @@ Scene.screenKeydown = function (event) {
 							case 'particle':
 							case 'parallax': {
 								const target = this.target;
-								const x = Math.clamp(
-									target.x + offsetX,
-									0,
-									width
-								);
-								const y = Math.clamp(
-									target.y + offsetY,
-									0,
-									height
-								);
-								this.shiftTarget(
-									Math.roundTo(x, 4),
-									Math.roundTo(y, 4)
-								);
+								const x = Math.clamp(target.x + offsetX, 0, width);
+								const y = Math.clamp(target.y + offsetY, 0, height);
+								this.shiftTarget(Math.roundTo(x, 4), Math.roundTo(y, 4));
 								break;
 							}
 						}
@@ -452,12 +404,7 @@ Scene.shiftKeyup = function (event) {
 						case 'rect':
 						case 'oval': {
 							const marquee = this.marquee;
-							this.edit(
-								marquee.x,
-								marquee.y,
-								marquee.width,
-								marquee.height
-							);
+							this.edit(marquee.x, marquee.y, marquee.width, marquee.height);
 							break;
 						}
 						case 'object-move':
@@ -620,12 +567,7 @@ Scene.marqueePointerdown = function (event) {
 					switch (this.brush) {
 						case 'eraser':
 						case 'pencil':
-							if (
-								mx + mw > 0 &&
-								mx < sw &&
-								my + mh > 0 &&
-								my < sh
-							) {
+							if (mx + mw > 0 && mx < sw && my + mh > 0 && my < sh) {
 								this.dragging = event;
 								event.mode = this.brush;
 								event.pointerdownX = x;
@@ -633,22 +575,12 @@ Scene.marqueePointerdown = function (event) {
 								window.on('pointerup', this.pointerup);
 								window.on('pointermove', this.pointermove);
 								marquee.selectInPencilMode(mx, my);
-								this.edit(
-									marquee.x,
-									marquee.y,
-									marquee.width,
-									marquee.height
-								);
+								this.edit(marquee.x, marquee.y, marquee.width, marquee.height);
 							}
 							break;
 						case 'rect':
 						case 'oval':
-							if (
-								mx + mw > 0 &&
-								mx < sw &&
-								my + mh > 0 &&
-								my < sh
-							) {
+							if (mx + mw > 0 && mx < sw && my + mh > 0 && my < sh) {
 								const width = 1;
 								const height = 1;
 								this.dragging = event;
@@ -659,12 +591,7 @@ Scene.marqueePointerdown = function (event) {
 								window.on('pointermove', this.pointermove);
 								marquee.save();
 								marquee.selectInRectMode(x, y, width, height);
-								this.edit(
-									marquee.x,
-									marquee.y,
-									marquee.width,
-									marquee.height
-								);
+								this.edit(marquee.x, marquee.y, marquee.width, marquee.height);
 							}
 							break;
 						case 'fill':
@@ -707,22 +634,15 @@ Scene.marqueePointerdown = function (event) {
 						event.pointerdownY = y;
 						window.on('pointerup', this.pointerup);
 						window.on('pointermove', this.pointermove);
-						this.screen.addScrollListener(
-							'both',
-							this.scale / 2,
-							false,
-							() => {
-								this.screen.beginScrolling();
-								this.screen.rawScrollLeft =
-									this.screen.scrollLeft;
-								this.screen.rawScrollTop =
-									this.screen.scrollTop;
-								this.updateTransform();
-								this.requestRendering();
-								this.screen.updateScrollbars();
-								this.pointermove(event.latest);
-							}
-						);
+						this.screen.addScrollListener('both', this.scale / 2, false, () => {
+							this.screen.beginScrolling();
+							this.screen.rawScrollLeft = this.screen.scrollLeft;
+							this.screen.rawScrollTop = this.screen.scrollTop;
+							this.updateTransform();
+							this.requestRendering();
+							this.screen.updateScrollbars();
+							this.pointermove(event.latest);
+						});
 					}
 					this.setTarget(object);
 					break;
@@ -804,11 +724,7 @@ Scene.marqueePointermove = function (event) {
 				const sw = context.width;
 				const sh = context.height;
 				if (mx + mw > 0 && mx < sw && my + mh > 0 && my < sh) {
-					if (
-						mx !== marquee.x ||
-						my !== marquee.y ||
-						!marquee.visible
-					) {
+					if (mx !== marquee.x || my !== marquee.y || !marquee.visible) {
 						marquee.selectInPencilMode(mx, my);
 					}
 				} else {
@@ -822,11 +738,7 @@ Scene.marqueePointermove = function (event) {
 					const sw = this.width;
 					const sh = this.height;
 					if (x >= 0 && x < sw && y >= 0 && y < sh) {
-						if (
-							x !== marquee.x ||
-							y !== marquee.y ||
-							!marquee.visible
-						) {
+						if (x !== marquee.x || y !== marquee.y || !marquee.visible) {
 							marquee.selectInObjectMode(x, y);
 						}
 					} else {
@@ -842,10 +754,7 @@ Scene.marqueePointermove = function (event) {
 Scene.marqueePointerleave = function (event) {
 	if (this.marquee.pointerevent !== null) {
 		this.marquee.pointerevent = null;
-		if (
-			!this.dragging &&
-			!(this.layer === 'object' && this.target !== null)
-		) {
+		if (!this.dragging && !(this.layer === 'object' && this.target !== null)) {
 			this.marquee.clear();
 		}
 	}
@@ -928,12 +837,7 @@ Scene.pointerup = function (event) {
 				} else {
 					marquee.clear();
 				}
-				Palette.copyTilesFromScene(
-					marquee.x,
-					marquee.y,
-					marquee.width,
-					marquee.height
-				);
+				Palette.copyTilesFromScene(marquee.x, marquee.y, marquee.width, marquee.height);
 				break;
 			}
 			case 'object-move':
@@ -972,16 +876,8 @@ Scene.pointermove = function (event) {
 				const oy = marquee.offsetY;
 				const coords = this.getTileCoords(event, true);
 				const context = this.tilemap ?? this;
-				const x = Math.clamp(
-					coords.x,
-					1 - ox - mw,
-					context.width - 1 - ox
-				);
-				const y = Math.clamp(
-					coords.y,
-					1 - oy - mh,
-					context.height - 1 - oy
-				);
+				const x = Math.clamp(coords.x, 1 - ox - mw, context.width - 1 - ox);
+				const y = Math.clamp(coords.y, 1 - oy - mh, context.height - 1 - oy);
 				const mx = x + ox;
 				const my = y + oy;
 				if (mx !== marquee.x || my !== marquee.y) {
@@ -1067,32 +963,18 @@ Scene.pointermove = function (event) {
 						const size = actor.data?.size ?? 1;
 						const radius = Math.max(size, 1) / 2;
 						if (this.shiftKey) {
-							x =
-								dragging.startX -
-								dragging.pointerdownX +
-								coords.x;
-							y =
-								dragging.startY -
-								dragging.pointerdownY +
-								coords.y;
-							x = Math.roundTo(
-								Math.clamp(x, radius, width - radius),
-								4
-							);
-							y = Math.roundTo(
-								Math.clamp(y, radius, height - radius),
-								4
-							);
+							x = dragging.startX - dragging.pointerdownX + coords.x;
+							y = dragging.startY - dragging.pointerdownY + coords.y;
+							x = Math.roundTo(Math.clamp(x, radius, width - radius), 4);
+							y = Math.roundTo(Math.clamp(y, radius, height - radius), 4);
 						} else {
 							x =
 								dragging.startX -
-								Math.floor(dragging.pointerdownX * divider) /
-									divider +
+								Math.floor(dragging.pointerdownX * divider) / divider +
 								Math.floor(coords.x * divider) / divider;
 							y =
 								dragging.startY -
-								Math.floor(dragging.pointerdownY * divider) /
-									divider +
+								Math.floor(dragging.pointerdownY * divider) / divider +
 								Math.floor(coords.y * divider) / divider;
 							x = Math.clamp(x, radius, width - radius);
 							y = Math.clamp(y, radius, height - radius);
@@ -1105,32 +987,18 @@ Scene.pointermove = function (event) {
 						const rwh = region.width / 2;
 						const rhh = region.height / 2;
 						if (this.shiftKey) {
-							x =
-								dragging.startX -
-								dragging.pointerdownX +
-								coords.x;
-							y =
-								dragging.startY -
-								dragging.pointerdownY +
-								coords.y;
-							x = Math.roundTo(
-								Math.clamp(x, rwh, width - rwh),
-								4
-							);
-							y = Math.roundTo(
-								Math.clamp(y, rhh, height - rhh),
-								4
-							);
+							x = dragging.startX - dragging.pointerdownX + coords.x;
+							y = dragging.startY - dragging.pointerdownY + coords.y;
+							x = Math.roundTo(Math.clamp(x, rwh, width - rwh), 4);
+							y = Math.roundTo(Math.clamp(y, rhh, height - rhh), 4);
 						} else {
 							x =
 								dragging.startX -
-								Math.floor(dragging.pointerdownX * divider) /
-									divider +
+								Math.floor(dragging.pointerdownX * divider) / divider +
 								Math.floor(coords.x * divider) / divider;
 							y =
 								dragging.startY -
-								Math.floor(dragging.pointerdownY * divider) /
-									divider +
+								Math.floor(dragging.pointerdownY * divider) / divider +
 								Math.floor(coords.y * divider) / divider;
 							x = Math.clamp(x, rwh, width - rwh);
 							y = Math.clamp(y, rhh, height - rhh);
@@ -1144,26 +1012,18 @@ Scene.pointermove = function (event) {
 					case 'particle':
 					case 'parallax':
 						if (this.shiftKey) {
-							x =
-								dragging.startX -
-								dragging.pointerdownX +
-								coords.x;
-							y =
-								dragging.startY -
-								dragging.pointerdownY +
-								coords.y;
+							x = dragging.startX - dragging.pointerdownX + coords.x;
+							y = dragging.startY - dragging.pointerdownY + coords.y;
 							x = Math.roundTo(Math.clamp(x, 0, width), 4);
 							y = Math.roundTo(Math.clamp(y, 0, height), 4);
 						} else {
 							x =
 								dragging.startX -
-								Math.floor(dragging.pointerdownX * divider) /
-									divider +
+								Math.floor(dragging.pointerdownX * divider) / divider +
 								Math.floor(coords.x * divider) / divider;
 							y =
 								dragging.startY -
-								Math.floor(dragging.pointerdownY * divider) /
-									divider +
+								Math.floor(dragging.pointerdownY * divider) / divider +
 								Math.floor(coords.y * divider) / divider;
 							x = Math.clamp(x, 0, width);
 							y = Math.clamp(y, 0, height);
@@ -1176,10 +1036,7 @@ Scene.pointermove = function (event) {
 			case 'ready-to-scroll': {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
-				this.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				this.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				if (Math.sqrt(distX ** 2 + distY ** 2) > 4) {
 					dragging.mode = 'scroll';
 					Cursor.open('cursor-grab');
@@ -1190,10 +1047,7 @@ Scene.pointermove = function (event) {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
 				this.screen.beginScrolling();
-				this.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				this.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				break;
 			}
 		}
@@ -1481,11 +1335,7 @@ Scene.listPointerdown = function (event) {
 						return;
 					}
 					const { hidden } = item;
-					const backups = this.setRecursiveStates(
-						item,
-						'hidden',
-						!hidden
-					);
+					const backups = this.setRecursiveStates(item, 'hidden', !hidden);
 					this.updateFolderState(item.parent, 'hidden');
 					this.update();
 					this.dispatchChangeEvent();
@@ -1504,11 +1354,7 @@ Scene.listPointerdown = function (event) {
 						return;
 					}
 					const { locked } = item;
-					const backups = this.setRecursiveStates(
-						item,
-						'locked',
-						!locked
-					);
+					const backups = this.setRecursiveStates(item, 'locked', !locked);
 					this.updateFolderState(item.parent, 'locked');
 					this.update();
 					this.dispatchChangeEvent();
@@ -1732,10 +1578,7 @@ Scene.listPopup = function (event) {
 						// 关闭图块组检查器
 						Inspector.fileTileset.close();
 						this.addNodeTo(
-							Inspector.sceneTilemap.create(
-								Scene.width,
-								Scene.height
-							),
+							Inspector.sceneTilemap.create(Scene.width, Scene.height),
 							item
 						);
 					}

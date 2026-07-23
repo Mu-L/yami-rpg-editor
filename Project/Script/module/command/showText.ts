@@ -30,11 +30,7 @@ Command.cases.showText = new CommandSchema({
 		this.appendTextLines(contents, alias, content);
 		return contents;
 	},
-	customLoad({
-		target = { type: 'trigger' },
-		parameters = '',
-		content = ''
-	}) {
+	customLoad({ target = { type: 'trigger' }, parameters = '', content = '' }) {
 		$('#showText-target').write(target);
 		$('#showText-parameters').write(parameters);
 		$('#showText-content').write(content);
@@ -130,15 +126,13 @@ Command.cases.showText = new CommandSchema({
 					const colorMatch = slice.match(colorTag);
 					if (colorMatch) {
 						for (const char of colorMatch[1]) {
-							lineWidth +=
-								char < '\xff' ? latinCharWidth : otherCharWidth;
+							lineWidth += char < '\xff' ? latinCharWidth : otherCharWidth;
 						}
 						i += colorMatch[0].length - 1;
 						continue;
 					}
 				}
-				const charWidth =
-					char < '\xff' ? latinCharWidth : otherCharWidth;
+				const charWidth = char < '\xff' ? latinCharWidth : otherCharWidth;
 				lineWidth += charWidth;
 				if (lineWidth > MAX_LINE_WIDTH) {
 					const line = text.slice(startIndex, i);

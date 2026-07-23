@@ -651,11 +651,7 @@ Animation.initialize = function () {
 			layer.frames = frames;
 		}
 		const { layer, x, length } = operation === 'undo' ? sMarquee : dMarquee;
-		Animation.outerTimelineList.restoreMotionAndLayer(
-			motion,
-			direction,
-			layer
-		);
+		Animation.outerTimelineList.restoreMotionAndLayer(motion, direction, layer);
 		Animation.player.index = x;
 		// 取消选择选框来避免获取错误的窗口宽高
 		Animation.unselectMarquee();
@@ -790,10 +786,7 @@ Animation.initialize = function () {
 	this.outerTimelineList.on('blur', this.outerTimelineListBlur);
 	this.outerTimelineList.on('pointerdown', this.outerTimelineListPointerdown);
 	this.innerTimelineList.on('pointermove', this.innerTimelineListPointermove);
-	this.innerTimelineList.on(
-		'pointerleave',
-		this.innerTimelineListPointerleave
-	);
+	this.innerTimelineList.on('pointerleave', this.innerTimelineListPointerleave);
 	this.innerTimelineList.on('dblclick', this.innerTimelineListDblclick);
 
 	// 初始化子对象
@@ -889,11 +882,7 @@ Animation.load = function (context) {
 
 	// 设置目标对象
 	if (editor.target) {
-		this.selectFrame(
-			editor.target,
-			editor.selectionX,
-			editor.selectionLength
-		);
+		this.selectFrame(editor.target, editor.selectionX, editor.selectionLength);
 	}
 
 	UndoManager.setActive(Animation);
@@ -1009,11 +998,7 @@ Animation.paste = function () {
 
 // 删除对象
 Animation.delete = function () {
-	if (
-		this.state === 'open' &&
-		this.motion !== null &&
-		this.dragging === null
-	) {
+	if (this.state === 'open' && this.motion !== null && this.dragging === null) {
 		this.list.delete(this.motion);
 	}
 };
@@ -1415,19 +1400,14 @@ Animation.revealTarget = (function IIFE() {
 	return function () {
 		const target = this.target;
 		if (target && !timer.target) {
-			const matrix = GL.matrix
-				.reset()
-				.multiply(this.targetContext.matrix);
+			const matrix = GL.matrix.reset().multiply(this.targetContext.matrix);
 			const x = matrix[6];
 			const y = matrix[7];
 			const toleranceX = 0.5 / this.scaleX;
 			const toleranceY = 0.5 / this.scaleY;
 			const { centerX, centerY } = this;
 			// 目标和摄像机的位置不一定相等
-			if (
-				Math.abs(x - centerX) > toleranceX ||
-				Math.abs(y - centerY) > toleranceY
-			) {
+			if (Math.abs(x - centerX) > toleranceX || Math.abs(y - centerY) > toleranceY) {
 				timer.target = target;
 				timer.startX = centerX;
 				timer.startY = centerY;
@@ -1593,10 +1573,7 @@ Animation.setControlPoint = function (point) {
 			case points.rectResize.TR:
 			case points.rectResize.BL:
 			case points.rectResize.BR: {
-				const angle = Math.modDegrees(
-					point.angle + this.controlPointRotation,
-					180
-				);
+				const angle = Math.modDegrees(point.angle + this.controlPointRotation, 180);
 				if (angle < 22.5 || angle >= 157.5) {
 					cursor = 'ew-resize';
 				} else if (angle < 67.5) {
@@ -1999,8 +1976,7 @@ Animation.getMotionListItems = function (animationId) {
 		const enumId = motion.id;
 		if (enumId in flags) continue;
 		flags[enumId] = true;
-		const name =
-			Enum.getString(enumId)?.name ?? Command.parseUnlinkedId(enumId);
+		const name = Enum.getString(enumId)?.name ?? Command.parseUnlinkedId(enumId);
 		items.push({
 			name: GameLocal.replace(name),
 			value: enumId
@@ -2054,17 +2030,9 @@ Animation.updateCamera = function (x = this.centerX, y = this.centerY) {
 	const scrollY = y * this.scaleY + this.outerHeight / 2;
 	const toleranceForDPR = 0.0001;
 	screen.rawScrollLeft =
-		Math.clamp(
-			scrollX - this.centerOffsetX,
-			0,
-			this.outerWidth - GL.width
-		) / dpr;
+		Math.clamp(scrollX - this.centerOffsetX, 0, this.outerWidth - GL.width) / dpr;
 	screen.rawScrollTop =
-		Math.clamp(
-			scrollY - this.centerOffsetY,
-			0,
-			this.outerHeight - GL.height
-		) / dpr;
+		Math.clamp(scrollY - this.centerOffsetY, 0, this.outerHeight - GL.height) / dpr;
 	screen.scrollLeft = (scrollX - (GL.width >> 1) + toleranceForDPR) / dpr;
 	screen.scrollTop = (scrollY - (GL.height >> 1) + toleranceForDPR) / dpr;
 };
@@ -2073,14 +2041,8 @@ Animation.updateCamera = function (x = this.centerX, y = this.centerY) {
 Animation.updateTransform = function () {
 	const screen = this.screen;
 	const dpr = window.devicePixelRatio;
-	const left = Math.roundTo(
-		screen.scrollLeft * dpr - (this.outerWidth >> 1),
-		4
-	);
-	const top = Math.roundTo(
-		screen.scrollTop * dpr - (this.outerHeight >> 1),
-		4
-	);
+	const left = Math.roundTo(screen.scrollLeft * dpr - (this.outerWidth >> 1), 4);
+	const top = Math.roundTo(screen.scrollTop * dpr - (this.outerHeight >> 1), 4);
 	const right = left + GL.width;
 	const bottom = top + GL.height;
 	this.scrollLeft = left / this.scaleX;
@@ -2090,14 +2052,8 @@ Animation.updateTransform = function () {
 	this.updateMatrix();
 	const scrollX = screen.rawScrollLeft * dpr + this.centerOffsetX;
 	const scrollY = screen.rawScrollTop * dpr + this.centerOffsetY;
-	this.centerX = Math.roundTo(
-		(scrollX - this.outerWidth / 2) / this.scaleX,
-		4
-	);
-	this.centerY = Math.roundTo(
-		(scrollY - this.outerHeight / 2) / this.scaleY,
-		4
-	);
+	this.centerX = Math.roundTo((scrollX - this.outerWidth / 2) / this.scaleX, 4);
+	this.centerY = Math.roundTo((scrollY - this.outerHeight / 2) / this.scaleY, 4);
 };
 
 // 更新矩阵
@@ -2165,8 +2121,7 @@ Animation.updateTimelineLength = function () {
 	const max = Math.floor(end / 100 + 1) * 100;
 	if (this.frameMax !== max) {
 		this.frameMax = max;
-		this.innerTimelineList.style.width =
-			this.innerPointerArea.style.width = `${max * 16}px`;
+		this.innerTimelineList.style.width = this.innerPointerArea.style.width = `${max * 16}px`;
 	}
 };
 
@@ -2258,11 +2213,7 @@ Animation.selectMarquee = function (x, y, length, origin) {
 		// 更新选框
 		const { layer } = timelines[y];
 		const marquee = this.timelineMarquee;
-		if (
-			marquee.layer !== layer ||
-			marquee.x !== x ||
-			marquee.length !== length
-		) {
+		if (marquee.layer !== layer || marquee.x !== x || marquee.length !== length) {
 			marquee.layer = layer;
 			marquee.x = x;
 			marquee.length = length;
@@ -2330,11 +2281,7 @@ Animation.scrollToMarquee = function (shiftKey) {
 			shiftKey && x === origin && length > 1
 				? Math.max(Math.min(left, max), min)
 				: Math.min(Math.max(left, min), max);
-		const scrollTop = Math.clamp(
-			list.scrollTop,
-			y * 20 + 20 - list.clientHeight,
-			y * 20
-		);
+		const scrollTop = Math.clamp(list.scrollTop, y * 20 + 20 - list.clientHeight, y * 20);
 		if (list.scrollLeft !== scrollLeft) {
 			list.scrollLeft = scrollLeft;
 		}
@@ -3279,9 +3226,7 @@ Animation.drawSpriteControlPoints = function () {
 		}
 		gl.blend = 'normal';
 		const program = gl.imageProgram.use();
-		const matrix = gl.matrix
-			.project(gl.flip, gl.width, gl.height)
-			.multiply(Animation.matrix);
+		const matrix = gl.matrix.project(gl.flip, gl.width, gl.height).multiply(Animation.matrix);
 		gl.bindVertexArray(program.vao);
 		gl.uniformMatrix3fv(program.u_Matrix, false, matrix);
 		gl.uniform1i(program.u_LightMode, 0);
@@ -3642,23 +3587,14 @@ Animation.copyFrame = function (returnData = false) {
 
 // 粘贴帧
 Animation.pasteFrame = function (data, destination) {
-	const {
-		layer,
-		x,
-		y,
-		length: sLength
-	} = destination ?? this.timelineMarquee;
+	const { layer, x, y, length: sLength } = destination ?? this.timelineMarquee;
 	if (!data) data = (Clipboard as any).read(`yami.animFrame.${layer.class}`);
 	if (!data || y === -1) {
 		return;
 	}
 	const { copies, length: dLength } = data;
 	this.selectMarquee(x, y, dLength, x);
-	this.saveFrames(
-		[layer],
-		{ layer, x, length: sLength },
-		{ layer, x, length: dLength }
-	);
+	this.saveFrames([layer], { layer, x, length: sLength }, { layer, x, length: dLength });
 	for (const frame of copies) {
 		frame.start += x;
 		frame.end += x;
@@ -3948,19 +3884,13 @@ Animation.selectObject = function (x, y) {
 			const context = contexts[i];
 			const frame = context.frame;
 			const layer = context.layer;
-			if (
-				frame !== null &&
-				layer.class === 'joint' &&
-				!layer.hidden &&
-				!layer.locked
-			) {
+			if (frame !== null && layer.class === 'joint' && !layer.hidden && !layer.locked) {
 				const ox = context.matrix[6];
 				const oy = context.matrix[7];
 				const dist = Math.dist(ox, oy, x, y);
 				if (dist <= jointRadius) {
 					// 选中时提高优先级来激活控制点
-					const w =
-						active === context ? Infinity : jointRadius - dist;
+					const w = active === context ? Infinity : jointRadius - dist;
 					if (target === null || weight < w) {
 						target = frame;
 						weight = w;
@@ -3978,12 +3908,7 @@ Animation.selectObject = function (x, y) {
 			const context = contexts[i];
 			const frame = context.frame;
 			const layer = context.layer;
-			if (
-				frame !== null &&
-				layer.class === 'particle' &&
-				!layer.hidden &&
-				!layer.locked
-			) {
+			if (frame !== null && layer.class === 'particle' && !layer.hidden && !layer.locked) {
 				const ox = context.matrix[6];
 				const oy = context.matrix[7];
 				const dist = Math.dist(ox, oy, x, y);
@@ -4109,10 +4034,7 @@ Animation.isPointInFrame = function (context, x, y) {
 		return false;
 	}
 	return (
-		cross1 * cross2 >= 0 &&
-		cross2 * cross3 >= 0 &&
-		cross3 * cross4 >= 0 &&
-		cross4 * cross1 >= 0
+		cross1 * cross2 >= 0 && cross2 * cross3 >= 0 && cross3 * cross4 >= 0 && cross4 * cross1 >= 0
 	);
 };
 
@@ -4477,11 +4399,7 @@ Animation.zoomInput = function (event) {
 
 // 屏幕 - 键盘按下事件
 Animation.screenKeydown = function (event) {
-	if (
-		this.state === 'open' &&
-		this.motion !== null &&
-		this.dragging === null
-	) {
+	if (this.state === 'open' && this.motion !== null && this.dragging === null) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
 				case 'ArrowLeft':
@@ -4666,9 +4584,7 @@ Animation.marqueePointerdown = function (event) {
 					case points.rectRotate.BL:
 					case points.rectRotate.BR: {
 						const rotation = target.rotation;
-						const matrix = GL.matrix
-							.set(Animation.matrix)
-							.multiply(context.matrix);
+						const matrix = GL.matrix.set(Animation.matrix).multiply(context.matrix);
 						const aax = matrix[6];
 						const aay = matrix[7];
 						const { x, y } = event.getRelativeCoords(GL.canvas);
@@ -4676,10 +4592,7 @@ Animation.marqueePointerdown = function (event) {
 						event.mode = 'object-rotate';
 						event.absoluteAnchorX = aax;
 						event.absoluteAnchorY = aay;
-						event.lastAngle = Math.atan2(
-							y * dpr - aay,
-							x * dpr - aax
-						);
+						event.lastAngle = Math.atan2(y * dpr - aay, x * dpr - aax);
 						event.rotationRadians = 0;
 						event.startRotation = rotation;
 						break;
@@ -4827,17 +4740,11 @@ Animation.pointermove = function (event) {
 					const distX = x * dpr - dragging.absoluteAnchorX;
 					const distY = y * dpr - dragging.absoluteAnchorY;
 					const currentAngle = Math.atan2(distY, distX);
-					const angle = Math.modRadians(
-						currentAngle - dragging.lastAngle
-					);
-					const increment =
-						angle < Math.PI ? angle : angle - Math.PI * 2;
-					dragging.rotationRadians += Animation.mirror
-						? -increment
-						: increment;
+					const angle = Math.modRadians(currentAngle - dragging.lastAngle);
+					const increment = angle < Math.PI ? angle : angle - Math.PI * 2;
+					dragging.rotationRadians += Animation.mirror ? -increment : increment;
 					let rotation = Math.round(
-						dragging.startRotation +
-							Math.degrees(dragging.rotationRadians)
+						dragging.startRotation + Math.degrees(dragging.rotationRadians)
 					);
 					if (event.shiftKey) {
 						rotation = Math.round(rotation / 15) * 15;
@@ -4852,20 +4759,11 @@ Animation.pointermove = function (event) {
 				if (Animation.target) {
 					const points = Animation.controlPoints;
 					const point = Animation.controlPointActive;
-					const angle = Math.radians(
-						point.angle + Animation.controlPointRotation
-					);
-					const distX =
-						((event.clientX - dragging.clientX) * dpr) /
-						Animation.scaleX;
-					const distY =
-						((event.clientY - dragging.clientY) * dpr) /
-						Animation.scaleY;
+					const angle = Math.radians(point.angle + Animation.controlPointRotation);
+					const distX = ((event.clientX - dragging.clientX) * dpr) / Animation.scaleX;
+					const distY = ((event.clientY - dragging.clientY) * dpr) / Animation.scaleY;
 					const dist = Math.sqrt(distX ** 2 + distY ** 2);
-					const distAngle = Math.atan2(
-						distY,
-						Animation.mirror ? -distX : distX
-					);
+					const distAngle = Math.atan2(distY, Animation.mirror ? -distX : distX);
 					let width = undefined;
 					let height = undefined;
 					switch (point) {
@@ -4892,25 +4790,18 @@ Animation.pointermove = function (event) {
 						case points.rectResize.BL:
 						case points.rectResize.BR:
 							if (event.shiftKey) {
-								const rectWidth =
-									dragging.startWidth * dragging.startScaleX;
-								const rectHeight =
-									dragging.startHeight * dragging.startScaleY;
-								const aspectAngle = Math.atan2(
-									rectHeight,
-									rectWidth
-								);
+								const rectWidth = dragging.startWidth * dragging.startScaleX;
+								const rectHeight = dragging.startHeight * dragging.startScaleY;
+								const aspectAngle = Math.atan2(rectHeight, rectWidth);
 								let startAngle;
 								switch (point) {
 									case points.rectResize.TL:
 									case points.rectResize.BR:
-										startAngle =
-											angle - Math.PI / 4 + aspectAngle;
+										startAngle = angle - Math.PI / 4 + aspectAngle;
 										break;
 									case points.rectResize.TR:
 									case points.rectResize.BL:
-										startAngle =
-											angle + Math.PI / 4 - aspectAngle;
+										startAngle = angle + Math.PI / 4 - aspectAngle;
 										break;
 								}
 								const includedAngle = distAngle - startAngle;
@@ -4950,10 +4841,8 @@ Animation.pointermove = function (event) {
 						scaleY = Math.roundTo(dragging.startScaleY + scaleY, 4);
 					}
 					if (
-						(scaleX !== undefined &&
-							Animation.target.scaleX !== scaleX) ||
-						(scaleY !== undefined &&
-							Animation.target.scaleY !== scaleY)
+						(scaleX !== undefined && Animation.target.scaleX !== scaleX) ||
+						(scaleY !== undefined && Animation.target.scaleY !== scaleY)
 					) {
 						Animation.resizeTarget(scaleX, scaleY);
 					}
@@ -4976,21 +4865,15 @@ Animation.pointermove = function (event) {
 					const target = Animation.target;
 					const mirrorX = Animation.mirror ? -1 : 1;
 					const distX =
-						(((event.clientX - dragging.clientX) * dpr) /
-							Animation.scaleX) *
-						mirrorX;
-					const distY =
-						((event.clientY - dragging.clientY) * dpr) /
-						Animation.scaleY;
+						(((event.clientX - dragging.clientX) * dpr) / Animation.scaleX) * mirrorX;
+					const distY = ((event.clientY - dragging.clientY) * dpr) / Animation.scaleY;
 					let x;
 					let y;
 					if (event.shiftKey) {
 						const angle = Math.atan2(distY, distX);
 						const directions = 4;
-						const proportion =
-							Math.modRadians(angle) / (Math.PI * 2);
-						const section =
-							(proportion * directions + 0.5) % directions;
+						const proportion = Math.modRadians(angle) / (Math.PI * 2);
+						const section = (proportion * directions + 0.5) % directions;
 						switch (Math.floor(section)) {
 							case 0:
 							case 2:
@@ -5015,10 +4898,7 @@ Animation.pointermove = function (event) {
 			case 'ready-to-scroll': {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
-				Animation.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				Animation.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				if (Math.sqrt(distX ** 2 + distY ** 2) > 4) {
 					dragging.mode = 'scroll';
 					Cursor.open('cursor-grab');
@@ -5028,10 +4908,7 @@ Animation.pointermove = function (event) {
 			case 'scroll': {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
-				Animation.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				Animation.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				break;
 			}
 		}
@@ -5087,10 +4964,7 @@ Animation.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
 			const element = event.target;
-			if (
-				element.tagName === 'NODE-ITEM' &&
-				element.hasClass('selected')
-			) {
+			if (element.tagName === 'NODE-ITEM' && element.hasClass('selected')) {
 				Inspector.open('animMotion', element.item);
 			}
 			break;
@@ -5331,11 +5205,7 @@ Animation.layerListPointerdown = function (event) {
 				case 'VISIBILITY-ICON': {
 					const { item } = element.parentNode;
 					const { hidden } = item;
-					const backups = this.setRecursiveStates(
-						item,
-						'hidden',
-						!hidden
-					);
+					const backups = this.setRecursiveStates(item, 'hidden', !hidden);
 					this.update();
 					this.dispatchChangeEvent();
 					Animation.requestRendering();
@@ -5352,11 +5222,7 @@ Animation.layerListPointerdown = function (event) {
 				case 'LOCK-ICON': {
 					const { item } = element.parentNode;
 					const { locked } = item;
-					const backups = this.setRecursiveStates(
-						item,
-						'locked',
-						!locked
-					);
+					const backups = this.setRecursiveStates(item, 'locked', !locked);
 					this.update();
 					this.dispatchChangeEvent();
 					Animation.history.save({
@@ -5547,9 +5413,7 @@ Animation.outerTimelineListKeydown = function (event) {
 			case 'ArrowDown':
 			case 'ArrowLeft':
 			case 'ArrowRight':
-				Animation.shiftSelectedFrames(
-					event.code.slice(5).toLowerCase()
-				);
+				Animation.shiftSelectedFrames(event.code.slice(5).toLowerCase());
 				break;
 		}
 	} else if (event.shiftKey) {
@@ -5563,9 +5427,7 @@ Animation.outerTimelineListKeydown = function (event) {
 				break;
 			case 'ArrowLeft':
 			case 'ArrowRight':
-				Animation.multiSelectFramesRelative(
-					event.code.slice(5).toLowerCase()
-				);
+				Animation.multiSelectFramesRelative(event.code.slice(5).toLowerCase());
 				break;
 			case 'Home':
 			case 'End':
@@ -5595,9 +5457,7 @@ Animation.outerTimelineListKeydown = function (event) {
 			case 'ArrowRight':
 			case 'ArrowDown':
 				event.preventDefault();
-				Animation.selectFrameRelative(
-					event.code.slice(5).toLowerCase()
-				);
+				Animation.selectFrameRelative(event.code.slice(5).toLowerCase());
 				break;
 			case 'Home':
 			case 'End':
@@ -5674,10 +5534,7 @@ Animation.outerTimelineListPointerdown = function (event) {
 				event.scrollTop = this.scrollTop;
 				Cursor.open('cursor-grab');
 				window.on('pointerup', Animation.outerTimelineListPointerup);
-				window.on(
-					'pointermove',
-					Animation.outerTimelineListPointermove
-				);
+				window.on('pointermove', Animation.outerTimelineListPointermove);
 				return;
 			}
 			if (event.target === Animation.innerTimelineList) {
@@ -5706,18 +5563,10 @@ Animation.outerTimelineListPointerdown = function (event) {
 						event.pointerdownX = x;
 						event.pointerdownY = y;
 						event.enableDblclickEvent = true;
-						window.on(
-							'pointerup',
-							Animation.outerTimelineListPointerup
-						);
-						window.on(
-							'pointermove',
-							Animation.outerTimelineListPointermove
-						);
+						window.on('pointerup', Animation.outerTimelineListPointerup);
+						window.on('pointermove', Animation.outerTimelineListPointermove);
 						this.addScrollListener('both', 1, true, () => {
-							Animation.outerTimelineListPointermove(
-								event.latest
-							);
+							Animation.outerTimelineListPointermove(event.latest);
 						});
 						return;
 					}
@@ -5731,10 +5580,7 @@ Animation.outerTimelineListPointerdown = function (event) {
 				event.pointerdownY = y;
 				event.enableDblclickEvent = true;
 				window.on('pointerup', Animation.outerTimelineListPointerup);
-				window.on(
-					'pointermove',
-					Animation.outerTimelineListPointermove
-				);
+				window.on('pointermove', Animation.outerTimelineListPointermove);
 				this.addScrollListener('horizontal', 1, true, () => {
 					Animation.outerTimelineListPointermove(event.latest);
 				});
@@ -5789,9 +5635,7 @@ Animation.outerTimelineListPointerup = function (event) {
 					if (marquee.isPointIn(x, y)) {
 						const key = marquee.layer.class;
 						const selected = marquee.isSelected();
-						const pastable = (Clipboard as any).has(
-							`yami.animFrame.${key}`
-						);
+						const pastable = (Clipboard as any).has(`yami.animFrame.${key}`);
 						const extendable = selected || marquee.isExtendable();
 						const shrinkable = selected || marquee.isShrinkable();
 						const get = Local.createGetter('menuAnimationTimeline');
@@ -5915,8 +5759,7 @@ Animation.outerTimelineListPointermove = function (event) {
 				const coords = Animation.getFrameCoords(event, true);
 				const marquee = Animation.timelineMarqueeShift;
 				const right = Animation.frameMax - marquee.length;
-				const bottom =
-					Animation.innerTimelineList.childNodes.length - 1;
+				const bottom = Animation.innerTimelineList.childNodes.length - 1;
 				const x = Math.clamp(coords.x, 0, right);
 				const y = Math.clamp(coords.y, 0, bottom);
 				Animation.updateMarqueeShift(x, y);
@@ -6227,11 +6070,7 @@ Animation.timeline.updateHead = function () {
 };
 
 // 时间轴列表 - 恢复动作和图层对象
-Animation.outerTimelineList.restoreMotionAndLayer = function (
-	motion,
-	direction,
-	layer
-) {
+Animation.outerTimelineList.restoreMotionAndLayer = function (motion, direction, layer) {
 	const { updateTimeline } = Animation;
 	Animation.updateTimeline = Function.empty;
 	Animation.setMotion(motion);

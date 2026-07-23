@@ -193,10 +193,7 @@ Scene.switchSettings = function () {
 
 // 切换地形
 Scene.switchTerrain = function () {
-	const context =
-		this.marquee.key === 'terrain'
-			? this.marquee
-			: this.marquee.saveData.terrain;
+	const context = this.marquee.key === 'terrain' ? this.marquee : this.marquee.saveData.terrain;
 	context.terrain = (context.terrain + 2) % 3;
 	if (this.brush === 'eraser') {
 		this.switchBrush('pencil');

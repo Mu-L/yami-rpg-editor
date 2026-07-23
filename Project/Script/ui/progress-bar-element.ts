@@ -79,15 +79,12 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 					texture.clip(0, 0, base.width, base.height);
 					break;
 				case 'clip':
-					texture.clip(
-						...(this.clip as [number, number, number, number])
-					);
+					texture.clip(...(this.clip as [number, number, number, number]));
 					break;
 			}
 			const scaleX = this.width / texture.width;
 			const scaleY = this.height / texture.height;
-			const { vertices, vertexLength, drawingLength } =
-				this.calculateProgressVertices();
+			const { vertices, vertexLength, drawingLength } = this.calculateProgressVertices();
 
 			// 绘制图像
 			GL.alpha = this.opacity;
@@ -118,13 +115,7 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 					break;
 				}
 			}
-			GL.bufferData(
-				GL.ARRAY_BUFFER,
-				vertices,
-				GL.STREAM_DRAW,
-				0,
-				vertexLength
-			);
+			GL.bufferData(GL.ARRAY_BUFFER, vertices, GL.STREAM_DRAW, 0, vertexLength);
 			GL.bindTexture(GL.TEXTURE_2D, base.glTexture);
 			GL.drawArrays(GL.TRIANGLE_FAN, 0, drawingLength);
 		}
@@ -251,18 +242,10 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 				const st = y / th;
 				const sr = (x + w) / tw;
 				const sb = (y + h) / th;
-				angles[0] = Math.modRadians(
-					Math.atan2(dt - doy, dr - dox) - startAngle
-				);
-				angles[1] = Math.modRadians(
-					Math.atan2(db - doy, dr - dox) - startAngle
-				);
-				angles[2] = Math.modRadians(
-					Math.atan2(db - doy, dl - dox) - startAngle
-				);
-				angles[3] = Math.modRadians(
-					Math.atan2(dt - doy, dl - dox) - startAngle
-				);
+				angles[0] = Math.modRadians(Math.atan2(dt - doy, dr - dox) - startAngle);
+				angles[1] = Math.modRadians(Math.atan2(db - doy, dr - dox) - startAngle);
+				angles[2] = Math.modRadians(Math.atan2(db - doy, dl - dox) - startAngle);
+				angles[3] = Math.modRadians(Math.atan2(dt - doy, dl - dox) - startAngle);
 				vertices[0] = dox;
 				vertices[1] = doy;
 				vertices[2] = sox;
@@ -344,8 +327,7 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 							break;
 						}
 						case 2: {
-							const x =
-								Math.tan(angle - Math.PI * 0.5) * (h - doy);
+							const x = Math.tan(angle - Math.PI * 0.5) * (h - doy);
 							const dx = dox - x;
 							const sx = (tox - x) / tw;
 							vertices[vi] = dx;

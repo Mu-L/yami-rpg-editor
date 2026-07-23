@@ -190,19 +190,11 @@ Scene.editInOvalMode = function (x, y, width, height) {
 					edgeFlags[i] = 1;
 					edgeFlags[i + ovalWidth] = 1;
 				}
-				if (
-					x < dx &&
-					y < dy &&
-					ovalFlags[i] !== ovalFlags[i + 1 + ovalWidth]
-				) {
+				if (x < dx && y < dy && ovalFlags[i] !== ovalFlags[i + 1 + ovalWidth]) {
 					edgeFlags[i] = 1;
 					edgeFlags[i + 1 + ovalWidth] = 1;
 				}
-				if (
-					x > 0 &&
-					y < dy &&
-					ovalFlags[i] !== ovalFlags[i - 1 + ovalWidth]
-				) {
+				if (x > 0 && y < dy && ovalFlags[i] !== ovalFlags[i - 1 + ovalWidth]) {
 					edgeFlags[i] = 1;
 					edgeFlags[i - 1 + ovalWidth] = 1;
 				}
@@ -346,8 +338,7 @@ Scene.editInFillMode = function (x, y) {
 							const fi = tx + y * mapWidth;
 							if (
 								flags[fi] === 1 &&
-								(getFlag(x, y - 1) === 3 ||
-									getFlag(x, y + 1) === 3)
+								(getFlag(x, y - 1) === 3 || getFlag(x, y + 1) === 3)
 							) {
 								flags[fi] = 2;
 								this.setTileFrame(tx, y);
@@ -358,8 +349,7 @@ Scene.editInFillMode = function (x, y) {
 							const fi = tx + y * mapWidth;
 							if (
 								flags[fi] === 1 &&
-								(getFlag(x, y - 1) === 3 ||
-									getFlag(x, y + 1) === 3)
+								(getFlag(x, y - 1) === 3 || getFlag(x, y + 1) === 3)
 							) {
 								flags[fi] = 2;
 								this.setTileFrame(tx, y);
@@ -387,11 +377,7 @@ Scene.editInFillMode = function (x, y) {
 							const tx = x + 1;
 							const ty = y + 1;
 							const fi = tx + ty * mapWidth;
-							if (
-								flags[fi] === 0 &&
-								tx < mapWidth &&
-								ty < mapHeight
-							) {
+							if (flags[fi] === 0 && tx < mapWidth && ty < mapHeight) {
 								flags[fi] = 3;
 								this.setTileFrame(tx, ty);
 							}

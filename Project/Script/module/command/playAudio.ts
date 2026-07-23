@@ -17,9 +17,7 @@ Command.cases.playAudio = new CommandSchema({
 		]);
 		$('#playAudio-type')
 			.enableHiddenMode()
-			.relate([
-				{ case: 'se-attenuated', targets: [$('#playAudio-location')] }
-			]);
+			.relate([{ case: 'se-attenuated', targets: [$('#playAudio-location')] }]);
 	},
 	customParse({ type, audio, volume, location }) {
 		const words = Command.words

@@ -1,12 +1,5 @@
 import { defineConfig } from 'vite';
-import {
-	copyFileSync,
-	existsSync,
-	mkdirSync,
-	readdirSync,
-	readFileSync,
-	statSync
-} from 'fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -32,14 +25,7 @@ const copyStaticAssets = (outDir) => {
 	const root = resolve(__dirname, 'Project');
 	// monaco-editor 改由 pnpm 包载入（module-init.js import 'monaco-editor'），删 'vs' 目录复制
 	// 'Script'：global.js 载 packmeta.json + 各模块运行时读 Script/ 下源（deploy 打包后游戏本体亦需）
-	const staticDirs = [
-		'Script',
-		'Locales',
-		'Fonts',
-		'Images',
-		'Templates',
-		'Apk'
-	];
+	const staticDirs = ['Script', 'Locales', 'Fonts', 'Images', 'Templates', 'Apk'];
 	const staticFiles = ['default.json', 'commands.json'];
 	for (const dir of staticDirs) {
 		copyDirRecursive(join(root, dir), join(outDir, dir));
@@ -128,15 +114,9 @@ export default defineConfig({
 		{
 			name: 'electron-renderer-resolve',
 			transform(code, id) {
-				if (
-					!id.endsWith('.ts') &&
-					!id.endsWith('.js') &&
-					!id.endsWith('.mjs')
-				)
-					return;
+				if (!id.endsWith('.ts') && !id.endsWith('.js') && !id.endsWith('.mjs')) return;
 				const b64 = (src) =>
-					'data:text/javascript;base64,' +
-					Buffer.from(src).toString('base64');
+					'data:text/javascript;base64,' + Buffer.from(src).toString('base64');
 				// 所有裸说明符（node_modules 包）走 window.__nodeRequire 桥接，避免 Vite 预构建破坏 CJS 内部 require
 				// monaco-editor 桥接：源码用 `import * as monaco from 'monaco-editor'`
 				// 注：monaco 不桥接——其 main 入口为 AMD（define），module 入口为 ESM；
@@ -158,8 +138,7 @@ export default defineConfig({
 					'node:child_process': `const c = window.__nodeRequire?.('child_process') ?? {}; export default c; export const { exec, execSync, spawn, spawnSync, fork } = c`
 				};
 				let out = code;
-				const escapeRe = (s) =>
-					s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+				const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 				for (const [mod, src] of Object.entries({
 					...bareModules,
 					...nodeModules
@@ -171,10 +150,7 @@ export default defineConfig({
 							`from '${dataUrl}'`
 						)
 						.replace(
-							new RegExp(
-								`import\\s+['"]${escapeRe(mod)}['"]`,
-								'g'
-							),
+							new RegExp(`import\\s+['"]${escapeRe(mod)}['"]`, 'g'),
 							`import '${dataUrl}'`
 						);
 				}
@@ -220,10 +196,7 @@ export default defineConfig({
 					).replace(/[\\/]{2,}/g, '/');
 					try {
 						const buf = readFileSync(diskPath);
-						res.setHeader(
-							'Content-Type',
-							'application/octet-stream'
-						);
+						res.setHeader('Content-Type', 'application/octet-stream');
 						res.setHeader('Access-Control-Allow-Origin', '*');
 						res.end(buf);
 					} catch (error) {
@@ -244,9 +217,7 @@ export default defineConfig({
 
 	// Electron 渲染进程 nodeIntegration:true，需兼容 CommonJS require
 	define: {
-		'process.env.NODE_ENV': JSON.stringify(
-			process.env.NODE_ENV || 'production'
-		)
+		'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
 	},
 
 	// 旧 Electron 20 + Chromium 90，不踩 esbuild target 语法下限

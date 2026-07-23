@@ -77,10 +77,7 @@ Window.open = function (id) {
 		Title.target.focus();
 		setTimeout(() => {
 			const active = document.activeElement;
-			if (
-				active === activeElement &&
-				frames[frames.length - 1] === element
-			) {
+			if (active === activeElement && frames[frames.length - 1] === element) {
 				Title.target.focus();
 			}
 		});
@@ -274,10 +271,7 @@ Window.keydown = function (event) {
 			case 'Enter':
 			case 'NumpadEnter': {
 				const active = document.activeElement;
-				if (
-					active instanceof HTMLButtonElement &&
-					!event.cmdOrCtrlKey
-				) {
+				if (active instanceof HTMLButtonElement && !event.cmdOrCtrlKey) {
 					return;
 				}
 				const frames = Window.frames;

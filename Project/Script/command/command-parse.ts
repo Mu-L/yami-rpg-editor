@@ -17,9 +17,7 @@ Command.parseBlend = function (blend: string): string {
 };
 
 // 获取变量列表
-Command.fetchVariables = function (
-	commands: any[] & { eventId?: string }
-): void {
+Command.fetchVariables = function (commands: any[] & { eventId?: string }): void {
 	const eventId = commands.eventId;
 	const calledEvents: any[] = [eventId];
 	let eventIndex = 0;
@@ -47,9 +45,7 @@ Command.fetchVariables = function (
 			Command.variables.push({
 				name: key,
 				type: varType,
-				comment:
-					this.eventName ||
-					'⭐️' + Local.get(`eventParameterTypes.${type}`),
+				comment: this.eventName || '⭐️' + Local.get(`eventParameterTypes.${type}`),
 				evIndex: eventIndex,
 				isLeftValue: true,
 				refCount: 0
@@ -62,10 +58,7 @@ Command.fetchVariables = function (
 			if (id == null || id[0] === '!') continue;
 			Command.currentCommand = command;
 			if (id === 'callEvent') {
-				if (
-					params?.type === 'global' &&
-					calledEvents.append(params.eventId)
-				) {
+				if (params?.type === 'global' && calledEvents.append(params.eventId)) {
 					const file = Data.manifest.guidMap[params.eventId]?.file;
 					if (file instanceof FileItem && !file.data.namespace) {
 						let lastEventName = this.eventName;
@@ -130,9 +123,7 @@ Command.parseVariable = function (
 					});
 				}
 			}
-			let varName = Command.setVariableColor(
-				key || Local.get('common.none')
-			);
+			let varName = Command.setVariableColor(key || Local.get('common.none'));
 			if (valueType) {
 				const textId = Command.setTextId(`local-${valueType}-${key}`);
 				varName = textId + varName;
@@ -144,9 +135,7 @@ Command.parseVariable = function (
 			if (valueType) {
 				const gVar = getVariable(variable.key);
 				const type = gVar ? typeof gVar.value : valueType;
-				const textId = Command.setTextId(
-					`global-${type}-${variable.key}`
-				);
+				const textId = Command.setTextId(`global-${type}-${variable.key}`);
 				varName = textId + Command.setGlobalVariableColor(varName);
 			}
 			return varName;
@@ -223,42 +212,24 @@ Command.parseAttributeGroup = function (groupKey: string): string {
 // 解析属性键
 Command.parseAttributeKey = (function () {
 	const i = / +/g;
-	return function (
-		groupKey: string,
-		attrId: string,
-		valueType?: string
-	): string {
+	return function (groupKey: string, attrId: string, valueType?: string): string {
 		const attr = groupKey
 			? Attribute.getGroupAttribute(groupKey, attrId)
 			: Attribute.getAttribute(attrId);
 		if (attr) {
-			const type =
-				valueType ?? (attr.type === 'enum' ? 'string' : attr.type);
-			const textId = Command.setTextId(
-				`attribute-${type}-${attr.key ?? attrId}-${attrId}`
-			);
-			return (
-				textId +
-				Command.setVariableColor(
-					GameLocal.replace(attr.name.replace(i, ''))
-				)
-			);
+			const type = valueType ?? (attr.type === 'enum' ? 'string' : attr.type);
+			const textId = Command.setTextId(`attribute-${type}-${attr.key ?? attrId}-${attrId}`);
+			return textId + Command.setVariableColor(GameLocal.replace(attr.name.replace(i, '')));
 		}
 		this.invalid = true;
-		const textId = Command.setTextId(
-			`attribute-${valueType ?? 'any'}-${attrId}-${attrId}`
-		);
-		return (
-			textId + Command.setVariableColor(Command.parseUnlinkedId(attrId))
-		);
+		const textId = Command.setTextId(`attribute-${valueType ?? 'any'}-${attrId}-${attrId}`);
+		return textId + Command.setVariableColor(Command.parseUnlinkedId(attrId));
 	};
 })();
 
 // 解析属性标签
 Command.parseAttributeTag = function (id: string, valueType?: string): string {
-	return (
-		Token('<') + Command.parseAttributeKey('', id, valueType) + Token('>')
-	);
+	return Token('<') + Command.parseAttributeKey('', id, valueType) + Token('>');
 };
 
 // 解析变量标签
@@ -271,11 +242,7 @@ Command.parseVariableTag = (function IIFE() {
 		localVar.key = varKey;
 		return Command.parseVariable!(localVar, 'any');
 	};
-	const globalReplacer = (
-		match: string,
-		delimiter: string,
-		varKey: string
-	): string => {
+	const globalReplacer = (match: string, delimiter: string, varKey: string): string => {
 		globalVar.key = varKey;
 		const varSign = delimiter === '::' ? '@' : '';
 		return varSign + Command.parseVariable!(globalVar, 'any');
@@ -304,19 +271,14 @@ Command.parseVariableNumber = function (number: any, unit?: string): string {
 Command.parseVariableString = function (string: any): string {
 	switch (typeof string) {
 		case 'string':
-			return Command.setStringColor(
-				`"${Command.parseMultiLineString(string)}"`
-			);
+			return Command.setStringColor(`"${Command.parseMultiLineString(string)}"`);
 		case 'object':
 			return Command.parseVariable(string, 'string');
 	}
 };
 
 // 解析可变模板字符串
-Command.parseVariableTemplate = function (
-	content: any,
-	maxLength: number = 0
-): string {
+Command.parseVariableTemplate = function (content: any, maxLength: number = 0): string {
 	switch (typeof content) {
 		case 'string': {
 			const tag = Command.parseVariableTag(GameLocal.replace(content));
@@ -380,10 +342,7 @@ Command.parseMultiLineString = (function IIFE() {
 })();
 
 // 解析精灵图名称
-Command.parseSpriteName = function (
-	animationId: string,
-	spriteId: string
-): string {
+Command.parseSpriteName = function (animationId: string, spriteId: string): string {
 	if (spriteId === '') return Token('none');
 	const animation = Data.animations[animationId];
 	const sprite = animation?.sprites.find((a) => a.id === spriteId);
@@ -393,13 +352,9 @@ Command.parseSpriteName = function (
 };
 
 // 解析事件类型
-Command.parseEventType = function (
-	groupKey: string,
-	eventType: string
-): string {
+Command.parseEventType = function (groupKey: string, eventType: string): string {
 	return (
-		Local.get('eventTypes.' + eventType) ||
-		Command.parseGroupEnumString(groupKey, eventType)
+		Local.get('eventTypes.' + eventType) || Command.parseGroupEnumString(groupKey, eventType)
 	);
 };
 
@@ -417,9 +372,7 @@ Command.parseEnumString = function (stringId: string): string {
 	if (stringId === '') return Token('none');
 	const string = Enum.getString(stringId);
 	if (string) {
-		const textId = Command.setTextId(
-			`enum-string-${string.value ?? stringId}-${stringId}`
-		);
+		const textId = Command.setTextId(`enum-string-${string.value ?? stringId}-${stringId}`);
 		return textId + Command.setStringColor(GameLocal.replace(string.name));
 	}
 	this.invalid = true;
@@ -433,15 +386,11 @@ Command.parseEnumStringTag = function (stringId: string): string {
 };
 
 // 解析群组枚举字符串
-Command.parseGroupEnumString = function (
-	groupKey: string,
-	stringId: string
-): string {
+Command.parseGroupEnumString = function (groupKey: string, stringId: string): string {
 	if (stringId === '') return Token('none');
 	const string = Enum.getGroupString(groupKey, stringId);
 	const textId = Command.setTextId(`enum-string-${stringId}-${stringId}`);
-	if (string)
-		return textId + Command.setStringColor(GameLocal.replace(string.name));
+	if (string) return textId + Command.setStringColor(GameLocal.replace(string.name));
 	this.invalid = true;
 	return textId + Command.setStringColor(Command.parseUnlinkedId(stringId));
 };
@@ -465,30 +414,15 @@ Command.parseParameter = function (key: any): string {
 Command.parseActor = function (actor: any): string {
 	switch (actor.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('actor-object-trigger') +
-				Local.get('actor.trigger')
-			);
+			return Command.setTextId('actor-object-trigger') + Local.get('actor.trigger');
 		case 'caster':
-			return (
-				Command.setTextId('actor-object-caster') +
-				Local.get('actor.caster')
-			);
+			return Command.setTextId('actor-object-caster') + Local.get('actor.caster');
 		case 'latest':
-			return (
-				Command.setTextId('actor-object-latest') +
-				Local.get('actor.latest')
-			);
+			return Command.setTextId('actor-object-latest') + Local.get('actor.latest');
 		case 'target':
-			return (
-				Command.setTextId('actor-object-target') +
-				Local.get('actor.target')
-			);
+			return Command.setTextId('actor-object-target') + Local.get('actor.target');
 		case 'player':
-			return (
-				Command.setTextId('actor-object-player') +
-				Local.get('actor.player')
-			);
+			return Command.setTextId('actor-object-player') + Local.get('actor.player');
 		case 'member':
 			return (
 				Command.setTextId('actor-object-member') +
@@ -517,29 +451,15 @@ Command.parseActor = function (actor: any): string {
 Command.parseSkill = function (skill: any): string {
 	switch (skill.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('skill-object-trigger') +
-				Local.get('skill.trigger')
-			);
+			return Command.setTextId('skill-object-trigger') + Local.get('skill.trigger');
 		case 'latest':
-			return (
-				Command.setTextId('skill-object-latest') +
-				Local.get('skill.latest')
-			);
+			return Command.setTextId('skill-object-latest') + Local.get('skill.latest');
 		case 'by-key': {
 			const actor = Command.parseActor(skill.actor);
 			const label = Local.get('skill.common');
 			const textId = Command.setTextId('skill-object-by-key');
 			const key = Command.parseVariableEnum('shortcut-key', skill.key);
-			return (
-				actor +
-				Token(' -> ') +
-				textId +
-				label +
-				Token('<') +
-				key +
-				Token('>')
-			);
+			return actor + Token(' -> ') + textId + label + Token('<') + key + Token('>');
 		}
 		case 'by-id': {
 			const actor = Command.parseActor(skill.actor);
@@ -559,15 +479,9 @@ Command.parseSkill = function (skill: any): string {
 Command.parseState = function (state: any): string {
 	switch (state.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('state-object-trigger') +
-				Local.get('state.trigger')
-			);
+			return Command.setTextId('state-object-trigger') + Local.get('state.trigger');
 		case 'latest':
-			return (
-				Command.setTextId('state-object-latest') +
-				Local.get('state.latest')
-			);
+			return Command.setTextId('state-object-latest') + Local.get('state.latest');
 		case 'by-id': {
 			const actor = Command.parseActor(state.actor);
 			const file = Command.parseFileName(state.stateId);
@@ -586,57 +500,27 @@ Command.parseState = function (state: any): string {
 Command.parseEquipment = function (equipment: any): string {
 	switch (equipment.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('equipment-object-trigger') +
-				Local.get('equipment.trigger')
-			);
+			return Command.setTextId('equipment-object-trigger') + Local.get('equipment.trigger');
 		case 'latest':
-			return (
-				Command.setTextId('equipment-object-latest') +
-				Local.get('equipment.latest')
-			);
+			return Command.setTextId('equipment-object-latest') + Local.get('equipment.latest');
 		case 'by-slot': {
 			const actor = Command.parseActor(equipment.actor);
 			const label = Local.get('equipment.common');
 			const textId = Command.setTextId('equipment-object-by-slot');
-			const slot = Command.parseVariableEnum(
-				'equipment-slot',
-				equipment.slot
-			);
-			return (
-				actor +
-				Token(' -> ') +
-				textId +
-				label +
-				Token('<') +
-				slot +
-				Token('>')
-			);
+			const slot = Command.parseVariableEnum('equipment-slot', equipment.slot);
+			return actor + Token(' -> ') + textId + label + Token('<') + slot + Token('>');
 		}
 		case 'by-id-equipped':
 		case 'by-id-inventory': {
 			const actor = Command.parseActor(equipment.actor);
 			const file = Command.parseFileName(equipment.equipmentId);
-			const source = Command.setWeakColor(
-				Local.get('equipment.' + equipment.type)
-			);
-			return (
-				actor +
-				Token(' -> ') +
-				file +
-				' ' +
-				Token('(') +
-				source +
-				Token(')')
-			);
+			const source = Command.setWeakColor(Local.get('equipment.' + equipment.type));
+			return actor + Token(' -> ') + file + ' ' + Token('(') + source + Token(')');
 		}
 		case 'variable': {
 			const label = Local.get('equipment.common');
 			const textId = Command.setTextId('equipment-object-variable');
-			const variable = Command.parseVariable(
-				equipment.variable,
-				'object'
-			);
+			const variable = Command.parseVariable(equipment.variable, 'object');
 			return textId + label + Token('(') + variable + Token(')');
 		}
 	}
@@ -646,29 +530,15 @@ Command.parseEquipment = function (equipment: any): string {
 Command.parseItem = function (item: any): string {
 	switch (item.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('item-object-trigger') +
-				Local.get('item.trigger')
-			);
+			return Command.setTextId('item-object-trigger') + Local.get('item.trigger');
 		case 'latest':
-			return (
-				Command.setTextId('item-object-latest') +
-				Local.get('item.latest')
-			);
+			return Command.setTextId('item-object-latest') + Local.get('item.latest');
 		case 'by-key': {
 			const actor = Command.parseActor(item.actor);
 			const label = Local.get('item.common');
 			const textId = Command.setTextId('item-object-by-key');
 			const key = Command.parseVariableEnum('shortcut-key', item.key);
-			return (
-				actor +
-				Token(' -> ') +
-				textId +
-				label +
-				Token('<') +
-				key +
-				Token('>')
-			);
+			return actor + Token(' -> ') + textId + label + Token('<') + key + Token('>');
 		}
 		case 'by-id': {
 			const actor = Command.parseActor(item.actor);
@@ -690,26 +560,12 @@ Command.parsePosition = function (position: any): string {
 		case 'absolute': {
 			const x = Command.parseVariableNumber(position.x);
 			const y = Command.parseVariableNumber(position.y);
-			return (
-				Local.get('position.common') +
-				Token('(') +
-				x +
-				Token(', ') +
-				y +
-				Token(')')
-			);
+			return Local.get('position.common') + Token('(') + x + Token(', ') + y + Token(')');
 		}
 		case 'relative': {
 			const x = Command.parseVariableNumber(position.x);
 			const y = Command.parseVariableNumber(position.y);
-			return (
-				Local.get('position.relative') +
-				Token('(') +
-				x +
-				Token(', ') +
-				y +
-				Token(')')
-			);
+			return Local.get('position.relative') + Token('(') + x + Token(', ') + y + Token(')');
 		}
 		case 'actor':
 			return (
@@ -736,12 +592,7 @@ Command.parsePosition = function (position: any): string {
 			const region = Command.parseRegion(position.region);
 			const mode = Local.get('position.region.mode.' + position.mode);
 			return (
-				Local.get('position.common') +
-				Token('(') +
-				region +
-				Token(', ') +
-				mode +
-				Token(')')
+				Local.get('position.common') + Token('(') + region + Token(', ') + mode + Token(')')
 			);
 		}
 		case 'object':
@@ -753,10 +604,7 @@ Command.parsePosition = function (position: any): string {
 			);
 		case 'mouse':
 			return (
-				Local.get('position.common') +
-				Token('(') +
-				Local.get('position.mouse') +
-				Token(')')
+				Local.get('position.common') + Token('(') + Local.get('position.mouse') + Token(')')
 			);
 	}
 };
@@ -781,15 +629,9 @@ Command.parseAngle = function (angle: any): string {
 Command.parseTrigger = function (trigger: any): string {
 	switch (trigger.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('trigger-object-trigger') +
-				Local.get('trigger.trigger')
-			);
+			return Command.setTextId('trigger-object-trigger') + Local.get('trigger.trigger');
 		case 'latest':
-			return (
-				Command.setTextId('trigger-object-latest') +
-				Local.get('trigger.latest')
-			);
+			return Command.setTextId('trigger-object-latest') + Local.get('trigger.latest');
 		case 'variable': {
 			const label = Local.get('trigger.common');
 			const textId = Command.setTextId('trigger-object-variable');
@@ -803,15 +645,9 @@ Command.parseTrigger = function (trigger: any): string {
 Command.parseLight = function (light: any): string {
 	switch (light.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('light-object-trigger') +
-				Local.get('light.trigger')
-			);
+			return Command.setTextId('light-object-trigger') + Local.get('light.trigger');
 		case 'latest':
-			return (
-				Command.setTextId('light-object-latest') +
-				Local.get('light.latest')
-			);
+			return Command.setTextId('light-object-latest') + Local.get('light.latest');
 		case 'by-id':
 			return Command.parsePresetObject(light.presetId);
 		case 'variable': {
@@ -827,10 +663,7 @@ Command.parseLight = function (light: any): string {
 Command.parseRegion = function (region: any): string {
 	switch (region.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('region-object-trigger') +
-				Local.get('region.trigger')
-			);
+			return Command.setTextId('region-object-trigger') + Local.get('region.trigger');
 		case 'by-id':
 			return Command.parsePresetObject(region.presetId);
 	}
@@ -840,10 +673,7 @@ Command.parseRegion = function (region: any): string {
 Command.parseTilemap = function (tilemap: any): string {
 	switch (tilemap.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('tilemap-object-trigger') +
-				Local.get('tilemap.trigger')
-			);
+			return Command.setTextId('tilemap-object-trigger') + Local.get('tilemap.trigger');
 		case 'by-id':
 			return Command.parsePresetObject(tilemap.presetId);
 		case 'variable':
@@ -855,15 +685,9 @@ Command.parseTilemap = function (tilemap: any): string {
 Command.parseObject = function (object: any): string {
 	switch (object.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('preset-object-trigger') +
-				Local.get('object.trigger')
-			);
+			return Command.setTextId('preset-object-trigger') + Local.get('object.trigger');
 		case 'latest':
-			return (
-				Command.setTextId('preset-object-latest') +
-				Local.get('object.latest')
-			);
+			return Command.setTextId('preset-object-latest') + Local.get('object.latest');
 		case 'by-id':
 			return Command.parsePresetObject(object.presetId);
 		case 'variable': {
@@ -879,23 +703,14 @@ Command.parseObject = function (object: any): string {
 Command.parseElement = function (element: any): string {
 	switch (element.type) {
 		case 'trigger':
-			return (
-				Command.setTextId('element-object-trigger') +
-				Local.get('element.trigger')
-			);
+			return Command.setTextId('element-object-trigger') + Local.get('element.trigger');
 		case 'latest':
-			return (
-				Command.setTextId('element-object-latest') +
-				Local.get('element.latest')
-			);
+			return Command.setTextId('element-object-latest') + Local.get('element.latest');
 		case 'by-id':
 			return Command.parsePresetElement(element.presetId, false);
 		case 'by-ancestor-and-id': {
 			const ancestor = Command.parseElement(element.ancestor);
-			const descendant = Command.parsePresetElement(
-				element.presetId,
-				false
-			);
+			const descendant = Command.parsePresetElement(element.presetId, false);
 			return ancestor + Token(' -> ') + descendant;
 		}
 		case 'by-index': {
@@ -921,10 +736,7 @@ Command.parseElement = function (element: any): string {
 			return focus + Token(' -> ') + textId + button;
 		}
 		case 'focus':
-			return (
-				Command.setTextId('element-object-focus') +
-				Local.get('element.focus')
-			);
+			return Command.setTextId('element-object-focus') + Local.get('element.focus');
 		case 'parent': {
 			const label = Local.get('element.parent');
 			const textId = Command.setTextId('element-object-parent');
@@ -951,10 +763,7 @@ Command.parsePresetObject = function (presetId: string): string {
 };
 
 // 解析预设元素
-Command.parsePresetElement = function (
-	presetId: string,
-	detailed: boolean = true
-): string {
+Command.parsePresetElement = function (presetId: string, detailed: boolean = true): string {
 	if (presetId === '') return Token('none');
 	const uiId = Data.uiPresets[presetId]?.uiId ?? '';
 	const preset = Data.uiPresets[presetId]?.data;
@@ -1007,8 +816,7 @@ Command.parseFileName = function (id: string): string {
 	if (id === '') return Token('none');
 	const meta = Data.manifest.guidMap[id];
 	const textId = Command.setTextId(`file-string-${id}`);
-	if (meta)
-		return textId + Command.setFileColor((File as any).parseMetaName(meta));
+	if (meta) return textId + Command.setFileColor((File as any).parseMetaName(meta));
 	this.invalid = true;
 	return textId + Command.setFileColor(Command.parseUnlinkedId(id));
 };
@@ -1041,11 +849,7 @@ Command.parseWait = function (wait: boolean): string {
 };
 
 // 解析过渡方式
-Command.parseEasing = function (
-	easingId: string,
-	duration: number,
-	wait: boolean
-): string {
+Command.parseEasing = function (easingId: string, duration: number, wait: boolean): string {
 	if (duration === 0) return '';
 	const easing = Data.easings.map[easingId];
 	const time = Command.parseVariableNumber(duration, 'ms');
@@ -1084,11 +888,7 @@ Command.parseTextTags = (function IIFE() {
 					} else if (match[2] === '$_none_$') {
 						inserts.push({ color: match[1] });
 					} else {
-						inserts.push(
-							{ color: match[1] },
-							{ text: match[2] },
-							{ color: 'restore' }
-						);
+						inserts.push({ color: match[1] }, { text: match[2] }, { color: 'restore' });
 					}
 					end = start + match[0].length;
 				}

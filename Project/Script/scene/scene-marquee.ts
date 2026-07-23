@@ -76,21 +76,13 @@ Scene.marquee.clear = function () {
 		this.visible = false;
 		Scene.requestRendering();
 	}
-	if (
-		Scene.info.textContent &&
-		!(Scene.layer === 'object' && Scene.target !== null)
-	) {
+	if (Scene.info.textContent && !(Scene.layer === 'object' && Scene.target !== null)) {
 		Scene.info.textContent = '';
 	}
 };
 
 // 选框 - 选取矩形
-Scene.marquee.select = function (
-	x = this.x,
-	y = this.y,
-	width = this.width,
-	height = this.height
-) {
+Scene.marquee.select = function (x = this.x, y = this.y, width = this.width, height = this.height) {
 	this.x = x;
 	this.y = y;
 	this.width = width;

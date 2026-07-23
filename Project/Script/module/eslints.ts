@@ -10,10 +10,7 @@ interface CommandItemElement extends HTMLElement {
 	dataIndent: number;
 	eventBinding?: boolean;
 }
-export function updateCommandElement(
-	this: any,
-	element: CommandItemElement
-): any {
+export function updateCommandElement(this: any, element: CommandItemElement): any {
 	// _origUpdateCommandElement 在 EventBus.once('editor_loaded') 回调里、
 	// prototype 被覆盖之前已捕获，此处直接调用即可
 	const ret = _origUpdateCommandElement.call(this, element);
@@ -56,8 +53,7 @@ export function updateCommandElement(
 					indent = element.dataIndent;
 				}
 				const needNode = element.lines?.[indent];
-				if (needNode && needNode.mark !== 'header')
-					needNode.classList.add('hover');
+				if (needNode && needNode.mark !== 'header') needNode.classList.add('hover');
 			}
 		});
 		element.on('mouseleave', function () {
@@ -72,8 +68,7 @@ export function updateCommandElement(
 					indent = element.dataIndent;
 				}
 				const needNode = element.lines?.[indent];
-				if (needNode && needNode.mark !== 'header')
-					needNode.classList.remove('hover');
+				if (needNode && needNode.mark !== 'header') needNode.classList.remove('hover');
 			}
 		});
 		element.eventBinding = true;

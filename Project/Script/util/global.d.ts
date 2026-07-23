@@ -394,11 +394,7 @@ interface NodeListOf<TNode extends Node> {
 
 // ============== NodeList 扩展 (util/node-list.ts) ==============
 interface NodeList {
-	on(
-		type: string,
-		listener: (event: EditorEvent) => void,
-		options?: any
-	): NodeList;
+	on(type: string, listener: (event: EditorEvent) => void, options?: any): NodeList;
 	enable(): void;
 	disable(): void;
 	// tab-bar.ts 中局使用（this.childNodes 解构 { item }）
@@ -475,8 +471,6 @@ interface TimerStatic {
 	start: ((timestamp: number) => void) | null;
 	update: ((timestamp: number) => void) | null;
 	play: ((this: TimerStatic) => void) | null;
-	appendUpdater:
-		((key: string, updater: (deltaTime: number) => void) => void) | null;
-	removeUpdater:
-		((key: string, updater: (deltaTime: number) => void) => void) | null;
+	appendUpdater: ((key: string, updater: (deltaTime: number) => void) => void) | null;
+	removeUpdater: ((key: string, updater: (deltaTime: number) => void) => void) | null;
 }

@@ -144,9 +144,7 @@ TypeRegistry.register('attribute', {
 			return wrap;
 		} else {
 			const wrap = pane.createSelectBox();
-			wrap.input.loadItems(
-				Attribute.getAttributeItems(param.filter, '', true)
-			);
+			wrap.input.loadItems(Attribute.getAttributeItems(param.filter, '', true));
 			return wrap;
 		}
 	}
@@ -161,9 +159,7 @@ TypeRegistry.register('attribute-key', {
 			return wrap;
 		} else {
 			const wrap = pane.createSelectBox();
-			wrap.input.loadItems(
-				Attribute.getAttributeItems(param.filter, '', true)
-			);
+			wrap.input.loadItems(Attribute.getAttributeItems(param.filter, '', true));
 			return wrap;
 		}
 	}

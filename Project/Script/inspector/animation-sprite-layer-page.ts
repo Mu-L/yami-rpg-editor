@@ -110,11 +110,7 @@ import { Sprite } from '../sprite/sprite.ts';
 
 	// 参数 - 输入事件
 	AnimSpriteLayer.paramInput = function (event) {
-		AnimSpriteLayer.update(
-			AnimSpriteLayer.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		AnimSpriteLayer.update(AnimSpriteLayer.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.animSpriteLayer = AnimSpriteLayer;

@@ -90,8 +90,8 @@
 	--font-family-accelerator: Segoe UI;
 	--font-family-symbol: Awesome;
 	--stage-info-text-shadow:
-		-1px 0 rgba(0, 0, 0, 0.75), 0 -1px rgba(0, 0, 0, 0.75),
-		1px 0 rgba(0, 0, 0, 0.75), 0 1px rgba(0, 0, 0, 0.75);
+		-1px 0 rgba(0, 0, 0, 0.75), 0 -1px rgba(0, 0, 0, 0.75), 1px 0 rgba(0, 0, 0, 0.75),
+		0 1px rgba(0, 0, 0, 0.75);
 	--marquee-background: rgba(0, 192, 255, 0.4);
 	--marquee-border: 1px solid #ffffff;
 	--text-color: #000000;

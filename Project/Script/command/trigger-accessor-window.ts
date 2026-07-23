@@ -26,9 +26,7 @@ TriggerGetter.initialize = function () {
 	// 设置关联元素
 	$('#triggerGetter-type')
 		.enableHiddenMode()
-		.relate([
-			{ case: 'variable', targets: [$('#triggerGetter-variable')] }
-		]);
+		.relate([{ case: 'variable', targets: [$('#triggerGetter-variable')] }]);
 
 	// 侦听事件
 	$('#triggerGetter-confirm').on('click', this.confirm);

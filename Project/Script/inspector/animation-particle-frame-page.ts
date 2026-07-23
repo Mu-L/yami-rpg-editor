@@ -24,8 +24,7 @@ import { Inspector } from './inspector.ts';
 	// 初始化
 	AnimParticleFrame.initialize = function () {
 		// 侦听事件
-		const elements =
-			$(`#animParticleFrame-x, #animParticleFrame-y, #animParticleFrame-rotation,
+		const elements = $(`#animParticleFrame-x, #animParticleFrame-y, #animParticleFrame-rotation,
     #animParticleFrame-scaleX, #animParticleFrame-scaleY, #animParticleFrame-opacity,
     #animParticleFrame-scale, #animParticleFrame-speed`);
 		elements.on('input', this.paramInput);
@@ -133,11 +132,7 @@ import { Inspector } from './inspector.ts';
 
 	// 参数 - 输入事件
 	AnimParticleFrame.paramInput = function (event) {
-		AnimParticleFrame.update(
-			AnimParticleFrame.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		AnimParticleFrame.update(AnimParticleFrame.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.animParticleFrame = AnimParticleFrame;

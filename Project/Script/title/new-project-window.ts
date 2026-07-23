@@ -114,17 +114,13 @@ NewProject.check = function () {
 	if (!folder) {
 		if (this.state !== 'unnamed') {
 			this.state = 'unnamed';
-			$('#newProject-warning').textContent = Local.get(
-				'confirmation.enterFolderName'
-			);
+			$('#newProject-warning').textContent = Local.get('confirmation.enterFolderName');
 		}
 		$('#newProject-confirm').disable();
 	} else if (FS.existsSync(Path.resolve(location, folder))) {
 		if (this.state !== 'existing') {
 			this.state = 'existing';
-			$('#newProject-warning').textContent = Local.get(
-				'confirmation.folderAlreadyExists'
-			);
+			$('#newProject-warning').textContent = Local.get('confirmation.folderAlreadyExists');
 		}
 		$('#newProject-confirm').disable();
 	} else {
@@ -146,38 +142,36 @@ NewProject.check = function () {
 NewProject.readFileList = (function IIFE() {
 	const options = { withFileTypes: true };
 	const read = (dirname, idFilter, path, list) => {
-		return (FSP.readdir as any)(`${dirname}/${path}`, options).then(
-			async (files: any[]) => {
-				if (path) {
-					path += '/';
-				}
-				const promises = [];
-				for (const file of files) {
-					const newPath = `${path}${file.name}`;
-					if (file.isDirectory()) {
-						list.push({
-							folder: true,
-							path: newPath
-						});
-						promises.push(read(dirname, idFilter, newPath, list));
-					} else {
-						// 如果存在ID过滤器，文件名中包括了ID
-						// 但是未在ID过滤器中找到，则判定为多余文件，跳过
-						if (idFilter) {
-							const guid = File.parseGUID(file.name);
-							if (guid && !idFilter[guid]) continue;
-						}
-						list.push({
-							path: newPath
-						});
-					}
-				}
-				if (promises.length !== 0) {
-					await Promise.all(promises);
-				}
-				return list;
+		return (FSP.readdir as any)(`${dirname}/${path}`, options).then(async (files: any[]) => {
+			if (path) {
+				path += '/';
 			}
-		);
+			const promises = [];
+			for (const file of files) {
+				const newPath = `${path}${file.name}`;
+				if (file.isDirectory()) {
+					list.push({
+						folder: true,
+						path: newPath
+					});
+					promises.push(read(dirname, idFilter, newPath, list));
+				} else {
+					// 如果存在ID过滤器，文件名中包括了ID
+					// 但是未在ID过滤器中找到，则判定为多余文件，跳过
+					if (idFilter) {
+						const guid = File.parseGUID(file.name);
+						if (guid && !idFilter[guid]) continue;
+					}
+					list.push({
+						path: newPath
+					});
+				}
+			}
+			if (promises.length !== 0) {
+				await Promise.all(promises);
+			}
+			return list;
+		});
 	};
 	return function (dirname, idFilter) {
 		return read(dirname, idFilter, '', []);
@@ -208,10 +202,7 @@ NewProject.copyFilesTo = function (sPath, dPath, idFilter) {
 				default:
 					// 复制文件
 					promises.push(
-						FSP.copyFile(
-							sPath + '/' + path,
-							dPath + '/' + path
-						).then(() => {
+						FSP.copyFile(sPath + '/' + path, dPath + '/' + path).then(() => {
 							count++;
 							info = path;
 						})
@@ -313,9 +304,7 @@ NewProject.confirm = function (event) {
 	Window.close('newProject');
 	FSP.mkdir(dPath, { recursive: true })
 		.then((done) => {
-			return template === 'minimized-project'
-				? Data.createReferencedFileIDMap()
-				: undefined;
+			return template === 'minimized-project' ? Data.createReferencedFileIDMap() : undefined;
 		})
 		.then((idFilter) => {
 			return NewProject.copyFilesTo(sPath, dPath, idFilter);

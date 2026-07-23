@@ -41,9 +41,7 @@ export class NumberVar extends HTMLElement {
 				this.numBox.write(value);
 				// 暂时这么写，不是很理想
 				this.varBox.write(
-					this.varBox.isPluginInput
-						? NumberVar.defVarForPlugin
-						: NumberVar.defVar
+					this.varBox.isPluginInput ? NumberVar.defVarForPlugin : NumberVar.defVar
 				);
 				break;
 			case 'object':

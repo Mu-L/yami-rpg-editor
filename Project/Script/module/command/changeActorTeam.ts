@@ -21,9 +21,7 @@ Command.cases.changeActorTeam = new CommandSchema({
 		});
 	},
 	customParse({ actor, teamId }) {
-		const words = Command.words
-			.push(Command.parseActor(actor))
-			.push(Command.parseTeam(teamId));
+		const words = Command.words.push(Command.parseActor(actor)).push(Command.parseTeam(teamId));
 		return [
 			{ color: 'actor' },
 			{ text: Local.get('command.changeActorTeam') + Token(': ') },

@@ -359,9 +359,7 @@ import { Window } from '../tools/window-object.ts';
 			const skillName = Command.parseFileName(id);
 			const skillClass = Command.invalid ? 'invalid' : '';
 			Command.invalid = false;
-			const shortcutKey = key
-				? Command.parseGroupEnumString('shortcut-key', key)
-				: '';
+			const shortcutKey = key ? Command.parseGroupEnumString('shortcut-key', key) : '';
 			const shortcutClass = Command.invalid ? 'invalid' : 'weak';
 			return [
 				{
@@ -407,9 +405,7 @@ import { Window } from '../tools/window-object.ts';
 			const equipmentName = Command.parseFileName(id);
 			const equipmentClass = Command.invalid ? 'invalid' : '';
 			Command.invalid = false;
-			const shortcutKey = slot
-				? Command.parseGroupEnumString('equipment-slot', slot)
-				: '';
+			const shortcutKey = slot ? Command.parseGroupEnumString('equipment-slot', slot) : '';
 			const shortcutClass = Command.invalid ? 'invalid' : 'weak';
 			return [
 				{
@@ -422,10 +418,7 @@ import { Window } from '../tools/window-object.ts';
 				}
 			];
 		},
-		open: function ({
-			id = '',
-			slot = Enum.getDefStringId('equipment-slot')
-		} = {}) {
+		open: function ({ id = '', slot = Enum.getDefStringId('equipment-slot') } = {}) {
 			Window.open('fileActor-equipment');
 			const elEquipmentId = $('#fileActor-equipment-id');
 			const elEquipmentKey = $('#fileActor-equipment-slot');
@@ -517,12 +510,7 @@ import { Window } from '../tools/window-object.ts';
 					];
 			}
 		},
-		open: function ({
-			type = 'item',
-			id = '',
-			quantity = 1,
-			money = 1
-		} = {}) {
+		open: function ({ type = 'item', id = '', quantity = 1, money = 1 } = {}) {
 			Window.open('fileActor-inventory-goods');
 			const write = getElementWriter('fileActor-inventory');
 			const itemId = type === 'item' ? id : '';
@@ -545,15 +533,11 @@ import { Window } from '../tools/window-object.ts';
 						id: read('item-id'),
 						quantity: read('item-quantity')
 					};
-					if (!goods.id)
-						return $('#fileActor-inventory-item-id').getFocus();
+					if (!goods.id) return $('#fileActor-inventory-item-id').getFocus();
 					break;
 				case 'equipment':
 					goods = { type: 'equipment', id: read('equipment-id') };
-					if (!goods.id)
-						return $(
-							'#fileActor-inventory-equipment-id'
-						).getFocus();
+					if (!goods.id) return $('#fileActor-inventory-equipment-id').getFocus();
 					break;
 				case 'money':
 					goods = { type: 'money', money: read('money') };

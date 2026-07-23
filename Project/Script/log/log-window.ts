@@ -137,16 +137,13 @@ Log.tscLog = function (event, tscMessage) {
 	} else if (message.includes('Found 0 errors')) {
 		duration = 6;
 	} else if (message.includes('error TS')) {
-		message = message.replace(
-			/^([^\s]+\.ts)\((\d+),(\d+)\)/gm,
-			(match, path, line, column) => {
-				const index = path.lastIndexOf('/');
-				if (index !== -1) {
-					path = `${path.slice(0, index + 1)}<log-strong>${path.slice(index + 1)}</log-strong>`;
-				}
-				return `<log-path>${path}</log-path>(<log-num>${line}</log-num>,<log-num>${column}</log-num>)`;
+		message = message.replace(/^([^\s]+\.ts)\((\d+),(\d+)\)/gm, (match, path, line, column) => {
+			const index = path.lastIndexOf('/');
+			if (index !== -1) {
+				path = `${path.slice(0, index + 1)}<log-strong>${path.slice(index + 1)}</log-strong>`;
 			}
-		);
+			return `<log-path>${path}</log-path>(<log-num>${line}</log-num>,<log-num>${column}</log-num>)`;
+		});
 		message = message.replace(/(error TS\d+)/g, '<log-weak>$1</log-weak>');
 		duration = Infinity;
 	} else if (message.includes('Watching for file changes')) {

@@ -18,9 +18,7 @@ export const TextBoxProperty = createPropertyWindow({
 		{ name: 'Color', value: 'color', default: 'ffffffff' }
 	],
 	init() {
-		$('#setTextBox-property-type').loadItems(
-			$('#uiTextBox-type').dataItems
-		);
+		$('#setTextBox-property-type').loadItems($('#uiTextBox-type').dataItems);
 	},
 	parsers: {
 		type: (value, get) => get('type.' + value),

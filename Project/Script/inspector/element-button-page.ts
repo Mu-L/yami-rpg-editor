@@ -83,10 +83,7 @@ import { UI } from '../ui/ui-window.ts';
 				},
 				{
 					case: 'tint-2',
-					targets: [
-						$('#uiButton-normalTint-box'),
-						$('#uiButton-hoverTint-box')
-					]
+					targets: [$('#uiButton-normalTint-box'), $('#uiButton-hoverTint-box')]
 				},
 				{
 					case: 'tint-3',
@@ -146,19 +143,11 @@ import { UI } from '../ui/ui-window.ts';
 			]);
 
 		// 同步滑动框和数字框的数值
-		$('#uiButton-imagePadding-slider').synchronize(
-			$('#uiButton-imagePadding')
-		);
-		$('#uiButton-imageOpacity-slider').synchronize(
-			$('#uiButton-imageOpacity')
-		);
+		$('#uiButton-imagePadding-slider').synchronize($('#uiButton-imagePadding'));
+		$('#uiButton-imageOpacity-slider').synchronize($('#uiButton-imageOpacity'));
 		$('#uiButton-size-slider').synchronize($('#uiButton-size'));
-		$('#uiButton-letterSpacing-slider').synchronize(
-			$('#uiButton-letterSpacing')
-		);
-		$('#uiButton-textPadding-slider').synchronize(
-			$('#uiButton-textPadding')
-		);
+		$('#uiButton-letterSpacing-slider').synchronize($('#uiButton-letterSpacing'));
+		$('#uiButton-textPadding-slider').synchronize($('#uiButton-textPadding'));
 
 		// 侦听事件
 		const elements = $(`#uiButton-display,
@@ -175,8 +164,7 @@ import { UI } from '../ui/ui-window.ts';
     #uiButton-textEffect-shadowOffsetY, #uiButton-textEffect-strokeWidth, #uiButton-textEffect-color,
     #uiButton-normalColor, #uiButton-hoverColor, #uiButton-activeColor,
     #uiButton-hoverSound, #uiButton-clickSound`);
-		const sliders =
-			$(`#uiButton-imagePadding-slider, #uiButton-imageOpacity-slider,
+		const sliders = $(`#uiButton-imagePadding-slider, #uiButton-imageOpacity-slider,
     #uiButton-size-slider, #uiButton-letterSpacing-slider, #uiButton-textPadding-slider`);
 		elements.on('input', this.paramInput);
 		elements.on('focus', Inspector.inputFocus);
@@ -278,14 +266,8 @@ import { UI } from '../ui/ui-window.ts';
 			write('font');
 			write('typeface');
 			write('textEffect-type');
-			write(
-				'textEffect-shadowOffsetX',
-				node.textEffect.shadowOffsetX || 1
-			);
-			write(
-				'textEffect-shadowOffsetY',
-				node.textEffect.shadowOffsetY || 1
-			);
+			write('textEffect-shadowOffsetX', node.textEffect.shadowOffsetX || 1);
+			write('textEffect-shadowOffsetY', node.textEffect.shadowOffsetY || 1);
 			write('textEffect-strokeWidth', node.textEffect.strokeWidth || 1);
 			write('textEffect-color', node.textEffect.color || '000000ff');
 			write('normalColor');
@@ -315,11 +297,7 @@ import { UI } from '../ui/ui-window.ts';
 			case 'horizontalAlign':
 				if (node.horizontalAlign !== value) {
 					const event = window.event;
-					if (
-						event &&
-						event.type === 'input' &&
-						event.value !== undefined
-					) {
+					if (event && event.type === 'input' && event.value !== undefined) {
 						UI.history.save({
 							type: 'inspector-change',
 							editor: this,
@@ -341,11 +319,7 @@ import { UI } from '../ui/ui-window.ts';
 			case 'verticalAlign':
 				if (node.verticalAlign !== value) {
 					const event = window.event;
-					if (
-						event &&
-						event.type === 'input' &&
-						event.value !== undefined
-					) {
+					if (event && event.type === 'input' && event.value !== undefined) {
 						UI.history.save({
 							type: 'inspector-change',
 							editor: this,

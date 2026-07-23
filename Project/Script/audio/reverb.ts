@@ -86,12 +86,8 @@ export class Reverb {
 			const filter = context.createBiquadFilter();
 			const buffer = context.createBuffer(2, sampleCount, sampleRate);
 			const bufferLength = buffer.length;
-			const delayLength = Math.round(
-				(bufferLength * PREDELAY) / duration
-			);
-			const decayLength = Math.round(
-				(bufferLength * DECAYTIME) / duration
-			);
+			const delayLength = Math.round((bufferLength * PREDELAY) / duration);
+			const decayLength = Math.round((bufferLength * DECAYTIME) / duration);
 			const random = Math.random;
 			for (let i = 0; i < buffer.numberOfChannels; i++) {
 				const samples = buffer.getChannelData(i);

@@ -146,9 +146,7 @@ UI.Text = class TextElement extends UI.Element {
 	set content(value: any) {
 		// 需要刷新语言包中的内容，不做差异判断
 		this._rawContent = value;
-		this._content = TextElement.replaceGlobalVariable(
-			GameLocal.replace(value)
-		);
+		this._content = TextElement.replaceGlobalVariable(GameLocal.replace(value));
 	}
 
 	// 读取字体大小

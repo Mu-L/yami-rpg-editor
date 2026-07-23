@@ -3,15 +3,9 @@
 	<content-frame>
 		<grid-box>
 			<text>Actor</text
-			><custom-box
-				id="createActor-actorId"
-				type="file"
-				filter="actor"
-			></custom-box>
-			<text>Team</text><select-box id="createActor-teamId"></select-box>
-			<text>Position</text
-			><custom-box id="createActor-position" type="position"></custom-box>
-			<text>Angle</text
+			><custom-box id="createActor-actorId" type="file" filter="actor"></custom-box>
+			<text>Team</text><select-box id="createActor-teamId"></select-box> <text>Position</text
+			><custom-box id="createActor-position" type="position"></custom-box> <text>Angle</text
 			><number-var
 				id="createActor-angle"
 				min="-360"
@@ -28,10 +22,8 @@
 	<title-bar>Move Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="moveActor-actor" type="actor"></custom-box>
-			<text>Mode</text><select-box id="moveActor-mode"></select-box>
-			<text>Angle</text
+			<text>Actor</text><custom-box id="moveActor-actor" type="actor"></custom-box>
+			<text>Mode</text><select-box id="moveActor-mode"></select-box> <text>Angle</text
 			><number-var
 				id="moveActor-angle"
 				min="-360"
@@ -40,11 +32,7 @@
 				unit="deg"
 			></number-var>
 			<text>Destination</text
-			><custom-box
-				id="moveActor-destination"
-				type="position"
-			></custom-box>
-			<text>Wait</text
+			><custom-box id="moveActor-destination" type="position"></custom-box> <text>Wait</text
 			><select-box id="moveActor-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="moveActor-confirm" name="confirm">Confirm</button>
@@ -55,10 +43,8 @@
 	<title-bar>Follow Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="followActor-actor" type="actor"></custom-box>
-			<text>Target</text
-			><custom-box id="followActor-target" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="followActor-actor" type="actor"></custom-box>
+			<text>Target</text><custom-box id="followActor-target" type="actor"></custom-box>
 			<text>Mode</text><select-box id="followActor-mode"></select-box>
 			<text>Min Distance</text
 			><number-var
@@ -100,11 +86,9 @@
 				decimals="4"
 				unit="tile"
 			></number-box>
-			<text>Navigate</text
-			><select-box id="followActor-navigate"></select-box>
-			<text>Bypass Actors</text
-			><select-box id="followActor-bypass"></select-box> <text>Once</text
-			><select-box id="followActor-once"></select-box> <text>Wait</text
+			<text>Navigate</text><select-box id="followActor-navigate"></select-box>
+			<text>Bypass Actors</text><select-box id="followActor-bypass"></select-box>
+			<text>Once</text><select-box id="followActor-once"></select-box> <text>Wait</text
 			><select-box id="followActor-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="followActor-confirm" name="confirm">Confirm</button>
@@ -115,10 +99,8 @@
 	<title-bar>Translate Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="translateActor-actor" type="actor"></custom-box>
-			<text>Angle</text
-			><custom-box id="translateActor-angle" type="angle"></custom-box>
+			<text>Actor</text><custom-box id="translateActor-actor" type="actor"></custom-box>
+			<text>Angle</text><custom-box id="translateActor-angle" type="angle"></custom-box>
 			<text>Distance</text
 			><number-var
 				id="translateActor-distance"
@@ -127,11 +109,7 @@
 				decimals="4"
 				unit="tile"
 			></number-var>
-			<text>Easing</text
-			><select-box
-				id="translateActor-easingId"
-				name="easing"
-			></select-box>
+			<text>Easing</text><select-box id="translateActor-easingId" name="easing"></select-box>
 			<text>Duration</text
 			><number-var
 				id="translateActor-duration"
@@ -140,8 +118,7 @@
 				max="3600000"
 				unit="ms"
 			></number-var>
-			<text>Wait</text
-			><select-box id="translateActor-wait" name="wait"></select-box>
+			<text>Wait</text><select-box id="translateActor-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="translateActor-confirm" name="confirm">Confirm</button>
 		<button id="translateActor-cancel" name="cancel">Cancel</button>
@@ -151,12 +128,9 @@
 	<title-bar>Change Threat<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="changeThreat-actor" type="actor"></custom-box>
-			<text>Target</text
-			><custom-box id="changeThreat-target" type="actor"></custom-box>
-			<text>Operation</text
-			><select-box id="changeThreat-operation"></select-box>
+			<text>Actor</text><custom-box id="changeThreat-actor" type="actor"></custom-box>
+			<text>Target</text><custom-box id="changeThreat-target" type="actor"></custom-box>
+			<text>Operation</text><select-box id="changeThreat-operation"></select-box>
 			<text>Threat</text
 			><number-var
 				id="changeThreat-threat"
@@ -173,16 +147,9 @@
 	<title-bar>Set Weight<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="setWeight-actor" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="setWeight-actor" type="actor"></custom-box>
 			<text>Weight</text
-			><number-var
-				id="setWeight-weight"
-				min="0"
-				max="8"
-				step="0.1"
-				decimals="4"
-			></number-var>
+			><number-var id="setWeight-weight" min="0" max="8" step="0.1" decimals="4"></number-var>
 		</grid-box>
 		<button id="setWeight-confirm" name="confirm">Confirm</button>
 		<button id="setWeight-cancel" name="cancel">Cancel</button>
@@ -192,10 +159,8 @@
 	<title-bar>Set Movement Speed<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="setMovementSpeed-actor" type="actor"></custom-box>
-			<text>Property</text
-			><select-box id="setMovementSpeed-property"></select-box>
+			<text>Actor</text><custom-box id="setMovementSpeed-actor" type="actor"></custom-box>
+			<text>Property</text><select-box id="setMovementSpeed-property"></select-box>
 			<text>Base Speed</text
 			><number-var
 				id="setMovementSpeed-base"
@@ -205,12 +170,7 @@
 				unit="t/s"
 			></number-var>
 			<text>Speed Factor</text
-			><number-var
-				id="setMovementSpeed-factor"
-				min="0"
-				max="4"
-				decimals="4"
-			></number-var>
+			><number-var id="setMovementSpeed-factor" min="0" max="4" decimals="4"></number-var>
 		</grid-box>
 		<button id="setMovementSpeed-confirm" name="confirm">Confirm</button>
 		<button id="setMovementSpeed-cancel" name="cancel">Cancel</button>
@@ -220,12 +180,9 @@
 	<title-bar>Set Angle<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="setAngle-actor" type="actor"></custom-box>
-			<text>Angle</text
-			><custom-box id="setAngle-angle" type="angle"></custom-box>
-			<text>Easing</text
-			><select-box id="setAngle-easingId" name="easing"></select-box>
+			<text>Actor</text><custom-box id="setAngle-actor" type="actor"></custom-box>
+			<text>Angle</text><custom-box id="setAngle-angle" type="angle"></custom-box>
+			<text>Easing</text><select-box id="setAngle-easingId" name="easing"></select-box>
 			<text>Duration</text
 			><number-var
 				id="setAngle-duration"
@@ -234,8 +191,7 @@
 				max="3600000"
 				unit="ms"
 			></number-var>
-			<text>Wait</text
-			><select-box id="setAngle-wait" name="wait"></select-box>
+			<text>Wait</text><select-box id="setAngle-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="setAngle-confirm" name="confirm">Confirm</button>
 		<button id="setAngle-cancel" name="cancel">Cancel</button>
@@ -245,8 +201,7 @@
 	<title-bar>Fix Angle<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="fixAngle-actor" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="fixAngle-actor" type="actor"></custom-box>
 			<text>State</text><select-box id="fixAngle-fixed"></select-box>
 		</grid-box>
 		<button id="fixAngle-confirm" name="confirm">Confirm</button>
@@ -257,8 +212,7 @@
 	<title-bar>Set Active<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="setActive-actor" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="setActive-actor" type="actor"></custom-box>
 			<text>State</text><select-box id="setActive-active"></select-box>
 		</grid-box>
 		<button id="setActive-confirm" name="confirm">Confirm</button>
@@ -270,22 +224,10 @@
 	<content-frame>
 		<grid-box>
 			<text>Write to Variable</text
-			><custom-box
-				id="getActor-variable"
-				type="variable"
-				filter="object"
-			></custom-box>
-			<text>Position</text
-			><custom-box id="getActor-position" type="position"></custom-box>
-			<text>Area</text><select-box id="getActor-area"></select-box>
-			<text>Size</text
-			><number-var
-				id="getActor-size"
-				min="0"
-				max="512"
-				decimals="4"
-				unit="tile"
-			></number-var>
+			><custom-box id="getActor-variable" type="variable" filter="object"></custom-box>
+			<text>Position</text><custom-box id="getActor-position" type="position"></custom-box>
+			<text>Area</text><select-box id="getActor-area"></select-box> <text>Size</text
+			><number-var id="getActor-size" min="0" max="512" decimals="4" unit="tile"></number-var>
 			<text>Radius</text
 			><number-var
 				id="getActor-radius"
@@ -294,23 +236,15 @@
 				decimals="4"
 				unit="tile"
 			></number-var>
-			<text>Selector</text
-			><select-box id="getActor-selector"></select-box> <text>Team</text
-			><select-var id="getActor-teamId"></select-var>
-			<text>Condition</text
-			><select-box id="getActor-condition"></select-box>
-			<text>Attribute</text
-			><select-box id="getActor-attribute"></select-box>
-			<text>Attribute 2</text
-			><select-box id="getActor-divisor"></select-box>
-			<text>Activation</text
-			><select-box id="getActor-activation"></select-box>
-			<text>Exclusion</text
-			><select-box id="getActor-exclusion"></select-box>
-			<text>Exclusion Actor</text
+			<text>Selector</text><select-box id="getActor-selector"></select-box> <text>Team</text
+			><select-var id="getActor-teamId"></select-var> <text>Condition</text
+			><select-box id="getActor-condition"></select-box> <text>Attribute</text
+			><select-box id="getActor-attribute"></select-box> <text>Attribute 2</text
+			><select-box id="getActor-divisor"></select-box> <text>Activation</text
+			><select-box id="getActor-activation"></select-box> <text>Exclusion</text
+			><select-box id="getActor-exclusion"></select-box> <text>Exclusion Actor</text
 			><custom-box id="getActor-exclusionActor" type="actor"></custom-box>
-			<text>Exclusion Team</text
-			><select-var id="getActor-exclusionTeamId"></select-var>
+			<text>Exclusion Team</text><select-var id="getActor-exclusionTeamId"></select-var>
 		</grid-box>
 		<button id="getActor-confirm" name="confirm">Confirm</button>
 		<button id="getActor-cancel" name="cancel">Cancel</button>
@@ -327,13 +261,8 @@
 				filter="object"
 			></custom-box>
 			<text>Position</text
-			><custom-box
-				id="getMultipleActors-position"
-				type="position"
-			></custom-box>
-			<text>Area</text
-			><select-box id="getMultipleActors-area"></select-box>
-			<text>Width</text
+			><custom-box id="getMultipleActors-position" type="position"></custom-box>
+			<text>Area</text><select-box id="getMultipleActors-area"></select-box> <text>Width</text
 			><number-var
 				id="getMultipleActors-width"
 				min="0"
@@ -357,12 +286,9 @@
 				decimals="4"
 				unit="tile"
 			></number-var>
-			<text>Selector</text
-			><select-box id="getMultipleActors-selector"></select-box>
-			<text>Team</text
-			><select-var id="getMultipleActors-teamId"></select-var>
-			<text>Activation</text
-			><select-box id="getMultipleActors-activation"></select-box>
+			<text>Selector</text><select-box id="getMultipleActors-selector"></select-box>
+			<text>Team</text><select-var id="getMultipleActors-teamId"></select-var>
+			<text>Activation</text><select-box id="getMultipleActors-activation"></select-box>
 		</grid-box>
 		<button id="getMultipleActors-confirm" name="confirm">Confirm</button>
 		<button id="getMultipleActors-cancel" name="cancel">Cancel</button>
@@ -372,8 +298,7 @@
 	<title-bar>Delete Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="deleteActor-actor" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="deleteActor-actor" type="actor"></custom-box>
 		</grid-box>
 		<button id="deleteActor-confirm" name="confirm">Confirm</button>
 		<button id="deleteActor-cancel" name="cancel">Cancel</button>
@@ -394,8 +319,7 @@
 	<title-bar>Set Party Member<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Operation</text
-			><select-box id="setPartyMember-operation"></select-box>
+			<text>Operation</text><select-box id="setPartyMember-operation"></select-box>
 			<text>Global Actor</text
 			><custom-box id="setPartyMember-actor" type="actor"></custom-box>
 		</grid-box>
@@ -408,16 +332,11 @@
 	<content-frame>
 		<grid-box>
 			<text>Actor</text
-			><custom-box
-				id="changePassableTerrain-actor"
-				type="actor"
-			></custom-box>
+			><custom-box id="changePassableTerrain-actor" type="actor"></custom-box>
 			<text>Passable Terrain</text
 			><select-box id="changePassableTerrain-passage"></select-box>
 		</grid-box>
-		<button id="changePassableTerrain-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="changePassableTerrain-confirm" name="confirm">Confirm</button>
 		<button id="changePassableTerrain-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -425,10 +344,8 @@
 	<title-bar>Change Actor Team<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="changeActorTeam-actor" type="actor"></custom-box>
-			<text>Team</text
-			><select-box id="changeActorTeam-teamId"></select-box>
+			<text>Actor</text><custom-box id="changeActorTeam-actor" type="actor"></custom-box>
+			<text>Team</text><select-box id="changeActorTeam-teamId"></select-box>
 		</grid-box>
 		<button id="changeActorTeam-confirm" name="confirm">Confirm</button>
 		<button id="changeActorTeam-cancel" name="cancel">Cancel</button>
@@ -438,18 +355,11 @@
 	<title-bar>Change Actor State<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="changeActorState-actor" type="actor"></custom-box>
-			<text>Operation</text
-			><select-box id="changeActorState-operation"></select-box>
+			<text>Actor</text><custom-box id="changeActorState-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="changeActorState-operation"></select-box>
 			<text>State</text
-			><custom-box
-				id="changeActorState-stateId"
-				type="file"
-				filter="state"
-			></custom-box>
-			<text>State</text
-			><custom-box id="changeActorState-state" type="state"></custom-box>
+			><custom-box id="changeActorState-stateId" type="file" filter="state"></custom-box>
+			<text>State</text><custom-box id="changeActorState-state" type="state"></custom-box>
 		</grid-box>
 		<button id="changeActorState-confirm" name="confirm">Confirm</button>
 		<button id="changeActorState-cancel" name="cancel">Cancel</button>
@@ -459,15 +369,9 @@
 	<title-bar>Change Actor Equipment<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box
-				id="changeActorEquipment-actor"
-				type="actor"
-			></custom-box>
-			<text>Operation</text
-			><select-box id="changeActorEquipment-operation"></select-box>
-			<text>Shortcut Key</text
-			><select-var id="changeActorEquipment-slot"></select-var>
+			<text>Actor</text><custom-box id="changeActorEquipment-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="changeActorEquipment-operation"></select-box>
+			<text>Shortcut Key</text><select-var id="changeActorEquipment-slot"></select-var>
 			<text>Equipment</text
 			><custom-box
 				id="changeActorEquipment-equipmentId"
@@ -475,14 +379,9 @@
 				filter="equipment"
 			></custom-box>
 			<text>Equipment</text
-			><custom-box
-				id="changeActorEquipment-equipment"
-				type="equipment"
-			></custom-box>
+			><custom-box id="changeActorEquipment-equipment" type="equipment"></custom-box>
 		</grid-box>
-		<button id="changeActorEquipment-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="changeActorEquipment-confirm" name="confirm">Confirm</button>
 		<button id="changeActorEquipment-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -490,18 +389,11 @@
 	<title-bar>Change Actor Skill<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="changeActorSkill-actor" type="actor"></custom-box>
-			<text>Operation</text
-			><select-box id="changeActorSkill-operation"></select-box>
+			<text>Actor</text><custom-box id="changeActorSkill-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="changeActorSkill-operation"></select-box>
 			<text>Skill</text
-			><file-var
-				id="changeActorSkill-skillId"
-				type="file"
-				filter="skill"
-			></file-var>
-			<text>Skill</text
-			><custom-box id="changeActorSkill-skill" type="skill"></custom-box>
+			><file-var id="changeActorSkill-skillId" type="file" filter="skill"></file-var>
+			<text>Skill</text><custom-box id="changeActorSkill-skill" type="skill"></custom-box>
 		</grid-box>
 		<button id="changeActorSkill-confirm" name="confirm">Confirm</button>
 		<button id="changeActorSkill-cancel" name="cancel">Cancel</button>
@@ -511,19 +403,10 @@
 	<title-bar>Change Actor Portrait<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box
-				id="changeActorPortrait-actor"
-				type="actor"
-			></custom-box>
-			<text>Mode</text
-			><select-box id="changeActorPortrait-mode"></select-box>
+			<text>Actor</text><custom-box id="changeActorPortrait-actor" type="actor"></custom-box>
+			<text>Mode</text><select-box id="changeActorPortrait-mode"></select-box>
 			<text>Portrait</text
-			><custom-box
-				id="changeActorPortrait-portrait"
-				type="file"
-				filter="image"
-			></custom-box>
+			><custom-box id="changeActorPortrait-portrait" type="file" filter="image"></custom-box>
 			<text>Clip</text
 			><custom-box
 				id="changeActorPortrait-clip"
@@ -539,11 +422,7 @@
 	<title-bar>Change Actor Animation<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box
-				id="changeActorAnimation-actor"
-				type="actor"
-			></custom-box>
+			<text>Actor</text><custom-box id="changeActorAnimation-actor" type="actor"></custom-box>
 			<text>Animation</text
 			><custom-box
 				id="changeActorAnimation-animationId"
@@ -551,9 +430,7 @@
 				filter="animation"
 			></custom-box>
 		</grid-box>
-		<button id="changeActorAnimation-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="changeActorAnimation-confirm" name="confirm">Confirm</button>
 		<button id="changeActorAnimation-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -561,22 +438,16 @@
 	<title-bar>Change Actor Sprite<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="changeActorSprite-actor" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="changeActorSprite-actor" type="actor"></custom-box>
 			<text>Animation</text
 			><custom-box
 				id="changeActorSprite-animationId"
 				type="file"
 				filter="animation"
 			></custom-box>
-			<text>Sprite Name</text
-			><select-box id="changeActorSprite-spriteId"></select-box>
+			<text>Sprite Name</text><select-box id="changeActorSprite-spriteId"></select-box>
 			<text>Sprite</text
-			><custom-box
-				id="changeActorSprite-image"
-				type="file"
-				filter="image"
-			></custom-box>
+			><custom-box id="changeActorSprite-image" type="file" filter="image"></custom-box>
 		</grid-box>
 		<button id="changeActorSprite-confirm" name="confirm">Confirm</button>
 		<button id="changeActorSprite-cancel" name="cancel">Cancel</button>
@@ -586,15 +457,10 @@
 	<title-bar>Change Actor Motion<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="changeActorMotion-actor" type="actor"></custom-box>
-			<text>Type</text
-			><select-box id="changeActorMotion-type"></select-box>
+			<text>Actor</text><custom-box id="changeActorMotion-actor" type="actor"></custom-box>
+			<text>Type</text><select-box id="changeActorMotion-type"></select-box>
 			<text>Motion</text
-			><custom-box
-				id="changeActorMotion-motion"
-				type="enum-string"
-			></custom-box>
+			><custom-box id="changeActorMotion-motion" type="enum-string"></custom-box>
 		</grid-box>
 		<button id="changeActorMotion-confirm" name="confirm">Confirm</button>
 		<button id="changeActorMotion-cancel" name="cancel">Cancel</button>
@@ -604,16 +470,9 @@
 	<title-bar>Play Actor Animation<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box
-				id="playActorAnimation-actor"
-				type="actor"
-			></custom-box>
+			<text>Actor</text><custom-box id="playActorAnimation-actor" type="actor"></custom-box>
 			<text>Motion</text
-			><custom-box
-				id="playActorAnimation-motion"
-				type="enum-string"
-			></custom-box>
+			><custom-box id="playActorAnimation-motion" type="enum-string"></custom-box>
 			<text>Speed</text
 			><number-var
 				id="playActorAnimation-speed"
@@ -622,8 +481,7 @@
 				step="0.1"
 				decimals="4"
 			></number-var>
-			<text>Wait</text
-			><select-box id="playActorAnimation-wait" name="wait"></select-box>
+			<text>Wait</text><select-box id="playActorAnimation-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="playActorAnimation-confirm" name="confirm">Confirm</button>
 		<button id="playActorAnimation-cancel" name="cancel">Cancel</button>
@@ -633,11 +491,7 @@
 	<title-bar>Stop Actor Animation<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box
-				id="stopActorAnimation-actor"
-				type="actor"
-			></custom-box>
+			<text>Actor</text><custom-box id="stopActorAnimation-actor" type="actor"></custom-box>
 		</grid-box>
 		<button id="stopActorAnimation-confirm" name="confirm">Confirm</button>
 		<button id="stopActorAnimation-cancel" name="cancel">Cancel</button>
@@ -648,28 +502,18 @@
 	<content-frame>
 		<grid-box>
 			<text>Actor</text
-			><custom-box
-				id="addAnimationComponent-actor"
-				type="actor"
-			></custom-box>
+			><custom-box id="addAnimationComponent-actor" type="actor"></custom-box>
 			<text>Animation</text
 			><custom-box
 				id="addAnimationComponent-animationId"
 				type="file"
 				filter="animation"
 			></custom-box>
-			<text>Motion</text
-			><select-box id="addAnimationComponent-motion"></select-box>
-			<text>Rotatable</text
-			><select-box id="addAnimationComponent-rotatable"></select-box>
-			<text>Sync Angle</text
-			><select-box id="addAnimationComponent-syncAngle"></select-box>
+			<text>Motion</text><select-box id="addAnimationComponent-motion"></select-box>
+			<text>Rotatable</text><select-box id="addAnimationComponent-rotatable"></select-box>
+			<text>Sync Angle</text><select-box id="addAnimationComponent-syncAngle"></select-box>
 			<text>Priority</text
-			><number-box
-				id="addAnimationComponent-priority"
-				min="-100"
-				max="100"
-			></number-box>
+			><number-box id="addAnimationComponent-priority" min="-100" max="100"></number-box>
 			<text>Offset Y</text
 			><number-box
 				id="addAnimationComponent-offsetY"
@@ -678,9 +522,7 @@
 				unit="px"
 			></number-box>
 		</grid-box>
-		<button id="addAnimationComponent-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="addAnimationComponent-confirm" name="confirm">Confirm</button>
 		<button id="addAnimationComponent-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -689,25 +531,17 @@
 	<content-frame>
 		<grid-box>
 			<text>Actor</text
-			><custom-box
-				id="setAnimationComponent-actor"
-				type="actor"
-			></custom-box>
+			><custom-box id="setAnimationComponent-actor" type="actor"></custom-box>
 			<text>Animation</text
 			><custom-box
 				id="setAnimationComponent-animationId"
 				type="file"
 				filter="animation"
 			></custom-box>
-			<text>Motion</text
-			><select-box id="setAnimationComponent-motion"></select-box>
-			<text>Operation</text
-			><select-box id="setAnimationComponent-operation"></select-box>
+			<text>Motion</text><select-box id="setAnimationComponent-motion"></select-box>
+			<text>Operation</text><select-box id="setAnimationComponent-operation"></select-box>
 			<text>Angle</text
-			><custom-box
-				id="setAnimationComponent-angle"
-				type="angle"
-			></custom-box>
+			><custom-box id="setAnimationComponent-angle" type="angle"></custom-box>
 			<text>Scale</text
 			><number-var
 				id="setAnimationComponent-scale"
@@ -733,11 +567,7 @@
 				decimals="4"
 			></number-var>
 			<text>Priority</text
-			><number-box
-				id="setAnimationComponent-priority"
-				min="-100"
-				max="100"
-			></number-box>
+			><number-box id="setAnimationComponent-priority" min="-100" max="100"></number-box>
 			<text>Offset Y</text
 			><number-box
 				id="setAnimationComponent-offsetY"
@@ -745,25 +575,13 @@
 				max="100"
 				unit="px"
 			></number-box>
-			<text>Sprite Name</text
-			><select-box id="setAnimationComponent-spriteId"></select-box>
+			<text>Sprite Name</text><select-box id="setAnimationComponent-spriteId"></select-box>
 			<text>Image</text
-			><custom-box
-				id="setAnimationComponent-image"
-				type="file"
-				filter="image"
-			></custom-box>
-			<text>Play Motion</text
-			><select-box id="setAnimationComponent-playMotion"></select-box>
-			<text>Wait</text
-			><select-box
-				id="setAnimationComponent-wait"
-				name="wait"
-			></select-box>
+			><custom-box id="setAnimationComponent-image" type="file" filter="image"></custom-box>
+			<text>Play Motion</text><select-box id="setAnimationComponent-playMotion"></select-box>
+			<text>Wait</text><select-box id="setAnimationComponent-wait" name="wait"></select-box>
 		</grid-box>
-		<button id="setAnimationComponent-confirm" name="confirm">
-			Confirm
-		</button>
+		<button id="setAnimationComponent-confirm" name="confirm">Confirm</button>
 		<button id="setAnimationComponent-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
@@ -772,25 +590,17 @@
 	<content-frame>
 		<grid-box>
 			<text>Actor</text
-			><custom-box
-				id="removeAnimationComponent-actor"
-				type="actor"
-			></custom-box>
+			><custom-box id="removeAnimationComponent-actor" type="actor"></custom-box>
 			<text>Animation</text
 			><custom-box
 				id="removeAnimationComponent-animationId"
 				type="file"
 				filter="animation"
 			></custom-box>
-			<text>Motion</text
-			><select-box id="removeAnimationComponent-motion"></select-box>
+			<text>Motion</text><select-box id="removeAnimationComponent-motion"></select-box>
 		</grid-box>
-		<button id="removeAnimationComponent-confirm" name="confirm">
-			Confirm
-		</button>
-		<button id="removeAnimationComponent-cancel" name="cancel">
-			Cancel
-		</button>
+		<button id="removeAnimationComponent-confirm" name="confirm">Confirm</button>
+		<button id="removeAnimationComponent-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
 <window-frame id="createGlobalActor">
@@ -798,13 +608,8 @@
 	<content-frame>
 		<grid-box>
 			<text>Actor</text
-			><custom-box
-				id="createGlobalActor-actorId"
-				type="file"
-				filter="actor"
-			></custom-box>
-			<text>Team</text
-			><select-box id="createGlobalActor-teamId"></select-box>
+			><custom-box id="createGlobalActor-actorId" type="file" filter="actor"></custom-box>
+			<text>Team</text><select-box id="createGlobalActor-teamId"></select-box>
 		</grid-box>
 		<button id="createGlobalActor-confirm" name="confirm">Confirm</button>
 		<button id="createGlobalActor-cancel" name="cancel">Cancel</button>
@@ -814,16 +619,9 @@
 	<title-bar>Transfer Global Actor<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box
-				id="transferGlobalActor-actor"
-				type="actor"
-			></custom-box>
+			<text>Actor</text><custom-box id="transferGlobalActor-actor" type="actor"></custom-box>
 			<text>Position</text
-			><custom-box
-				id="transferGlobalActor-position"
-				type="position"
-			></custom-box>
+			><custom-box id="transferGlobalActor-position" type="position"></custom-box>
 		</grid-box>
 		<button id="transferGlobalActor-confirm" name="confirm">Confirm</button>
 		<button id="transferGlobalActor-cancel" name="cancel">Cancel</button>
@@ -834,11 +632,7 @@
 	<content-frame>
 		<grid-box>
 			<text>Actor</text
-			><custom-box
-				id="deleteGlobalActor-actorId"
-				type="file"
-				filter="actor"
-			></custom-box>
+			><custom-box id="deleteGlobalActor-actorId" type="file" filter="actor"></custom-box>
 		</grid-box>
 		<button id="deleteGlobalActor-confirm" name="confirm">Confirm</button>
 		<button id="deleteGlobalActor-cancel" name="cancel">Cancel</button>
@@ -848,8 +642,7 @@
 	<title-bar>Set Target<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="setTarget-actor" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="setTarget-actor" type="actor"></custom-box>
 		</grid-box>
 		<button id="setTarget-confirm" name="confirm">Confirm</button>
 		<button id="setTarget-cancel" name="cancel">Cancel</button>
@@ -859,16 +652,11 @@
 	<title-bar>Get Target<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="getTarget-actor" type="actor"></custom-box>
-			<text>Selector</text
-			><select-box id="getTarget-selector"></select-box>
-			<text>Condition</text
-			><select-box id="getTarget-condition"></select-box>
-			<text>Attribute</text
-			><select-box id="getTarget-attribute"></select-box>
-			<text>Attribute 2</text
-			><select-box id="getTarget-divisor"></select-box>
+			<text>Actor</text><custom-box id="getTarget-actor" type="actor"></custom-box>
+			<text>Selector</text><select-box id="getTarget-selector"></select-box>
+			<text>Condition</text><select-box id="getTarget-condition"></select-box>
+			<text>Attribute</text><select-box id="getTarget-attribute"></select-box>
+			<text>Attribute 2</text><select-box id="getTarget-divisor"></select-box>
 		</grid-box>
 		<button id="getTarget-confirm" name="confirm">Confirm</button>
 		<button id="getTarget-cancel" name="cancel">Cancel</button>
@@ -878,10 +666,8 @@
 	<title-bar>Append Target<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="appendTarget-actor" type="actor"></custom-box>
-			<text>Target</text
-			><custom-box id="appendTarget-target" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="appendTarget-actor" type="actor"></custom-box>
+			<text>Target</text><custom-box id="appendTarget-target" type="actor"></custom-box>
 		</grid-box>
 		<button id="appendTarget-confirm" name="confirm">Confirm</button>
 		<button id="appendTarget-cancel" name="cancel">Cancel</button>
@@ -891,10 +677,8 @@
 	<title-bar>Remove Target<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="removeTarget-actor" type="actor"></custom-box>
-			<text>Target</text
-			><custom-box id="removeTarget-target" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="removeTarget-actor" type="actor"></custom-box>
+			<text>Target</text><custom-box id="removeTarget-target" type="actor"></custom-box>
 		</grid-box>
 		<button id="removeTarget-confirm" name="confirm">Confirm</button>
 		<button id="removeTarget-cancel" name="cancel">Cancel</button>
@@ -904,8 +688,7 @@
 	<title-bar>Detect Targets<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="detectTargets-actor" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="detectTargets-actor" type="actor"></custom-box>
 			<text>Distance</text
 			><number-var
 				id="detectTargets-distance"
@@ -914,10 +697,8 @@
 				decimals="4"
 				unit="tile"
 			></number-var>
-			<text>Selector</text
-			><select-box id="detectTargets-selector"></select-box>
-			<text>In Sight</text
-			><select-box id="detectTargets-inSight"></select-box>
+			<text>Selector</text><select-box id="detectTargets-selector"></select-box>
+			<text>In Sight</text><select-box id="detectTargets-inSight"></select-box>
 		</grid-box>
 		<button id="detectTargets-confirm" name="confirm">Confirm</button>
 		<button id="detectTargets-cancel" name="cancel">Cancel</button>
@@ -927,10 +708,8 @@
 	<title-bar>Discard Targets<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="discardTargets-actor" type="actor"></custom-box>
-			<text>Selector</text
-			><select-box id="discardTargets-selector"></select-box>
+			<text>Actor</text><custom-box id="discardTargets-actor" type="actor"></custom-box>
+			<text>Selector</text><select-box id="discardTargets-selector"></select-box>
 			<text>Distance</text
 			><number-var
 				id="discardTargets-distance"
@@ -948,8 +727,7 @@
 	<title-bar>Reset Targets<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Actor</text
-			><custom-box id="resetTargets-actor" type="actor"></custom-box>
+			<text>Actor</text><custom-box id="resetTargets-actor" type="actor"></custom-box>
 		</grid-box>
 		<button id="resetTargets-confirm" name="confirm">Confirm</button>
 		<button id="resetTargets-cancel" name="cancel">Cancel</button>
@@ -959,10 +737,8 @@
 	<title-bar>Render Outline<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Operation</text
-			><select-box id="renderOutline-operation"></select-box>
-			<text>Actor</text
-			><custom-box id="renderOutline-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="renderOutline-operation"></select-box>
+			<text>Actor</text><custom-box id="renderOutline-actor" type="actor"></custom-box>
 			<text>Color</text><color-box id="renderOutline-color"></color-box>
 		</grid-box>
 		<button id="renderOutline-confirm" name="confirm">Confirm</button>

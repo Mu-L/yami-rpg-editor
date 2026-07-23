@@ -11,11 +11,7 @@ const _moduleURL = new URL(import.meta.url);
 const _modulePath =
 	_moduleURL.protocol === 'file:'
 		? fileURLToPath(_moduleURL)
-		: Path.resolve(
-				process.cwd(),
-				'Project',
-				_moduleURL.pathname.split('/').pop()
-			);
+		: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 const __dirname =
 	_moduleURL.protocol === 'file:'
 		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
@@ -32,14 +28,8 @@ Updater.updateToLatest = function (version) {
 	// 1.0.122以下版本直接覆盖全部文件
 	const dstProjectDir = Path.dirname(Editor.config.project);
 	const srcProjectDir = Path.resolve(__dirname, 'Templates/arpg-ts-update');
-	const srcScriptDir = Path.resolve(
-		__dirname,
-		'Templates/arpg-ts-update/script'
-	);
-	const srcPluginDir = Path.resolve(
-		__dirname,
-		'Templates/arpg-ts-update/plugins'
-	);
+	const srcScriptDir = Path.resolve(__dirname, 'Templates/arpg-ts-update/script');
+	const srcPluginDir = Path.resolve(__dirname, 'Templates/arpg-ts-update/plugins');
 	const dstScriptDir = Path.resolve(dstProjectDir, 'Script');
 
 	// 删除JS文件

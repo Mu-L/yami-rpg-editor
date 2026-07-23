@@ -118,11 +118,7 @@ import { Particle } from '../particle/particle-window.ts';
 
 	// 参数 - 输入事件
 	AnimParticleLayer.paramInput = function (event) {
-		AnimParticleLayer.update(
-			AnimParticleLayer.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		AnimParticleLayer.update(AnimParticleLayer.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.animParticleLayer = AnimParticleLayer;

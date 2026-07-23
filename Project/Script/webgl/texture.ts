@@ -117,15 +117,7 @@ export class Texture {
 				(base as any).glTexture,
 				0
 			);
-			gl.readPixels(
-				x,
-				y,
-				width,
-				height,
-				gl.RGBA,
-				gl.UNSIGNED_BYTE,
-				uint8
-			);
+			gl.readPixels(x, y, width, height, gl.RGBA, gl.UNSIGNED_BYTE, uint8);
 			gl.binding ? gl.bindFBO(gl.binding) : gl.unbindFBO();
 			return imageData;
 		}

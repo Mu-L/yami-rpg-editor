@@ -151,10 +151,7 @@ Scene.loadTextures = async function () {
 		this.resize();
 		this.requestAnimation();
 		this.requestRendering();
-		if (
-			Window.frames.length === 0 &&
-			document.activeElement === document.body
-		) {
+		if (Window.frames.length === 0 && document.activeElement === document.body) {
 			this.screen.focus();
 		}
 	}

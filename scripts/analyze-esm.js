@@ -6,9 +6,7 @@ const scriptDir = path.join(projectDir, 'Script');
 
 const target = process.argv[2];
 if (!target) {
-	console.error(
-		'用法: node scripts/analyze-esm.js <相对Script的路径, 如 util/safe.js>'
-	);
+	console.error('用法: node scripts/analyze-esm.js <相对Script的路径, 如 util/safe.js>');
 	process.exit(1);
 }
 
@@ -25,9 +23,7 @@ let m;
 while ((m = symRe.exec(content)) !== null) syms.push(m[1]);
 
 if (syms.length === 0) {
-	console.log(
-		`[analyze-esm] ${target} 无顶层 export 符号，可能是纯副作用模块`
-	);
+	console.log(`[analyze-esm] ${target} 无顶层 export 符号，可能是纯副作用模块`);
 	process.exit(0);
 }
 

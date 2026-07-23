@@ -141,10 +141,7 @@ Editor.initialize = async function () {
 		for (const name of initNames) {
 			if (!initializedSet.has(name)) {
 				if (typeof Log !== 'undefined' && Log.warn) {
-					Log.warn(
-						`初始化循环依赖：${name} 未被初始化`,
-						singletonMap[name].dependsOn
-					);
+					Log.warn(`初始化循环依赖：${name} 未被初始化`, singletonMap[name].dependsOn);
 				}
 				singletonMap[name].initialize.call(singletonMap[name]);
 				initializedSet.add(name);

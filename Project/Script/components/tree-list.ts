@@ -225,11 +225,7 @@ export class TreeList extends HTMLElement {
 				keyword = keyword.replace(/[(){}\\^$*+?.|[\]]/g, '\\$&');
 				keyword = new RegExp(keyword, 'i');
 			}
-			this.searchNodesAlgorithm(
-				data,
-				(this.keyword = keyword),
-				(this.searchResults = [])
-			);
+			this.searchNodesAlgorithm(data, (this.keyword = keyword), (this.searchResults = []));
 		} else {
 			if (this.display === 'search') {
 				this.display = 'normal';
@@ -243,10 +239,7 @@ export class TreeList extends HTMLElement {
 	// 搜索节点(防抖入口): 供搜索框输入事件调用，避免每次按键都全量过滤大列表
 	// 注意: 数据变更后需要"即时"重过滤的内部调用仍应直接使用 searchNodes
 	searchNodesDebounced(keyword: any) {
-		(this._searchNodesDebounced ??= debounce(
-			(kw) => this.searchNodes(kw),
-			150
-		))(keyword);
+		(this._searchNodesDebounced ??= debounce((kw) => this.searchNodes(kw), 150))(keyword);
 	}
 
 	// 搜索节点算法
@@ -258,10 +251,7 @@ export class TreeList extends HTMLElement {
 				list.push(item);
 			} else if (typeof item.id === 'string' && keyword.test(item.id)) {
 				list.push(item);
-			} else if (
-				typeof item.presetId === 'string' &&
-				keyword.test(item.presetId)
-			) {
+			} else if (typeof item.presetId === 'string' && keyword.test(item.presetId)) {
 				list.push(item);
 			}
 			const children = item.children;
@@ -337,9 +327,7 @@ export class TreeList extends HTMLElement {
 			const markVisible = item.children.length !== 0;
 			if (element.markVisible !== markVisible) {
 				element.markVisible = markVisible;
-				element.folderMark.style.visibility = markVisible
-					? 'inherit'
-					: 'hidden';
+				element.folderMark.style.visibility = markVisible ? 'inherit' : 'hidden';
 			}
 
 			// 设置折叠标记
@@ -676,10 +664,7 @@ export class TreeList extends HTMLElement {
 
 	// 迁移项目插入到目标前
 	removeItemToInsert(sItem: any, dItem: any) {
-		if (
-			sItem === dItem ||
-			(this.lockDirectory && dItem.parent === this.root)
-		) {
+		if (sItem === dItem || (this.lockDirectory && dItem.parent === this.root)) {
 			return;
 		}
 		const sParent = sItem.parent;
@@ -941,11 +926,7 @@ export class TreeList extends HTMLElement {
 	// 展开选中项
 	expandSelection() {
 		const item = this.read();
-		if (
-			item !== null &&
-			item.expanded !== undefined &&
-			item.element !== undefined
-		) {
+		if (item !== null && item.expanded !== undefined && item.element !== undefined) {
 			item.expanded = !item.expanded;
 			this.update();
 			this.dispatchChangeEvent();
@@ -997,10 +978,7 @@ export class TreeList extends HTMLElement {
 							);
 							break;
 						case 'middle':
-							scrollTop =
-								Math.round(
-									(i * 20 + 10 - this.innerHeight / 2) / 20
-								) * 20;
+							scrollTop = Math.round((i * 20 + 10 - this.innerHeight / 2) / 20) * 20;
 							break;
 						default:
 							return;
@@ -1073,11 +1051,7 @@ export class TreeList extends HTMLElement {
 		if (this.renamable) {
 			const { element } = item;
 			const { textBox } = TreeList;
-			if (
-				document.activeElement === this &&
-				!textBox.parentNode &&
-				element.parentNode
-			) {
+			if (document.activeElement === this && !textBox.parentNode && element.parentNode) {
 				const nodes = [];
 				const { folderMark, nodeIcon } = element;
 				for (const node of element.childNodes) {
@@ -1272,8 +1246,7 @@ export class TreeList extends HTMLElement {
 							this.renamable &&
 							Menu.state === 'closed' &&
 							document.activeElement === this &&
-							event.clientX >
-								(element.nodeIcon?.rect().right ?? 0)
+							event.clientX > (element.nodeIcon?.rect().right ?? 0)
 						) {
 							this.timer.target = event.target;
 						}
@@ -1283,10 +1256,7 @@ export class TreeList extends HTMLElement {
 			}
 			case 2: {
 				const element = event.target.seek('node-item');
-				if (
-					element.tagName === 'NODE-ITEM' &&
-					!element.hasClass('selected')
-				) {
+				if (element.tagName === 'NODE-ITEM' && !element.hasClass('selected')) {
 					this.select(element.item);
 				}
 				break;
@@ -1301,10 +1271,7 @@ export class TreeList extends HTMLElement {
 		}
 		switch (event.button) {
 			case 0:
-				if (
-					document.activeElement === this &&
-					this.timer.target === event.target
-				) {
+				if (document.activeElement === this && this.timer.target === event.target) {
 					this.timer.running = true;
 					this.timer.elapsed = 0;
 					this.timer.add();
@@ -1313,10 +1280,7 @@ export class TreeList extends HTMLElement {
 			case 2:
 				if (this.popupEventEnabled && document.activeElement === this) {
 					const element = event.target.seek('node-item');
-					if (
-						element.tagName === 'NODE-ITEM' &&
-						element.hasClass('selected')
-					) {
+					if (element.tagName === 'NODE-ITEM' && element.hasClass('selected')) {
 						const popup = new Event('popup');
 						popup.value = element.item;
 						popup.clientX = event.clientX;
@@ -1436,10 +1400,7 @@ export class TreeList extends HTMLElement {
 						: 'after';
 				switch (position) {
 					case 'into':
-						if (
-							hint.target !== element ||
-							hint.position !== position
-						) {
+						if (hint.target !== element || hint.position !== position) {
 							const rect = hint.measure(element);
 							hint.target?.removeClass('hint');
 							hint.target = element;
@@ -1449,10 +1410,7 @@ export class TreeList extends HTMLElement {
 						}
 						break;
 					case 'before':
-						if (
-							hint.target !== element ||
-							hint.position !== position
-						) {
+						if (hint.target !== element || hint.position !== position) {
 							const rect = hint.measure(element);
 							rect.top -= 1;
 							rect.height = 2;
@@ -1463,10 +1421,7 @@ export class TreeList extends HTMLElement {
 						}
 						break;
 					case 'after':
-						if (
-							hint.target !== element ||
-							hint.position !== position
-						) {
+						if (hint.target !== element || hint.position !== position) {
 							const rect = hint.measure(element);
 							rect.top += rect.height - 1;
 							rect.height = 2;

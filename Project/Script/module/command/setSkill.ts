@@ -31,11 +31,7 @@ Command.cases.setSkill = new CommandSchema({
 			{ text: words.join() }
 		];
 	},
-	customLoad({
-		skill = { type: 'trigger' },
-		operation = 'set-cooldown',
-		cooldown = 0
-	}) {
+	customLoad({ skill = { type: 'trigger' }, operation = 'set-cooldown', cooldown = 0 }) {
 		const write = getElementWriter('setSkill');
 		write('skill', skill);
 		write('operation', operation);

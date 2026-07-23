@@ -58,20 +58,12 @@ interface VariableGetterShape {
 	_state: Record<string, VarGetterState | null>;
 	initialize: (() => void) | null;
 	open: ((target: VariableGetterTarget) => void) | null;
-	_openCore:
-		| ((
-				target: VariableGetterTarget,
-				filter: string,
-				prefix: string
-		  ) => void)
-		| null;
+	_openCore: ((target: VariableGetterTarget, filter: string, prefix: string) => void) | null;
 	isNone: ((variable: { key: string }) => boolean) | null;
 	loadPresetKeys: ((group: string) => void) | null;
 	checkDataForPlugin: ((data: any) => boolean) | null;
-	createDefaultForPlugin:
-		(() => { getter: string; type: string; key: string }) | null;
-	createVarListGenerator:
-		((filterObject: VariableGetterShape) => () => any[]) | null;
+	createDefaultForPlugin: (() => { getter: string; type: string; key: string }) | null;
+	createVarListGenerator: ((filterObject: VariableGetterShape) => () => any[]) | null;
 	typeWrite: ((event: Event & { value: string }) => void) | null;
 	typeInput: ((event: Event & { value: string }) => void) | null;
 	confirm: ((event: Event) => void) | null;
@@ -171,10 +163,7 @@ VariableGetter.initialize = function (this: VariableGetterShape): void {
 			{ case: 'global', targets: [$('#variableGetter2-global-key')] },
 			{
 				case: 'element',
-				targets: [
-					$('#variableGetter2-element'),
-					$('#variableGetter2-preset-key')
-				]
+				targets: [$('#variableGetter2-element'), $('#variableGetter2-preset-key')]
 			}
 		]);
 	$('#variableGetter2-confirm').on('click', this.confirm2);
@@ -197,10 +186,7 @@ VariableGetter.initialize = function (this: VariableGetterShape): void {
 };
 
 // 打开窗口
-VariableGetter.open = function (
-	this: VariableGetterShape,
-	target: VariableGetterTarget
-): void {
+VariableGetter.open = function (this: VariableGetterShape, target: VariableGetterTarget): void {
 	const filter = target.filter;
 	// 若主窗口已打开，则叠加打开窗口2（避免递归冲突）
 	if (Window.isWindowOpen('variableGetter')) {
@@ -231,9 +217,7 @@ VariableGetter._openCore = function (
 			break;
 		case 'object':
 			// 打开元素访问器时则过滤掉元素属性选项
-			items = !Window.isWindowOpen('elementGetter')
-				? types.object
-				: types.object2;
+			items = !Window.isWindowOpen('elementGetter') ? types.object : types.object2;
 			break;
 		case 'writable-boolean':
 		case 'writable-number':
@@ -245,9 +229,7 @@ VariableGetter._openCore = function (
 			break;
 	}
 	$(`#${prefix}-type`).loadItems(items);
-	$(`#${prefix}-global-key`).filter = filter.startsWith('writable-')
-		? filter.slice(9)
-		: filter;
+	$(`#${prefix}-global-key`).filter = filter.startsWith('writable-') ? filter.slice(9) : filter;
 
 	// 填充当前变量值
 	const variable = target.dataValue;
@@ -272,9 +254,7 @@ VariableGetter._openCore = function (
 				presetKey = key;
 				break;
 		}
-		$(`#${prefix}-preset-key`).loadItems(
-			Attribute.getAttributeItems('element', filter)
-		);
+		$(`#${prefix}-preset-key`).loadItems(Attribute.getAttributeItems('element', filter));
 		write('type', type);
 		write('element', element);
 		write('common-key', commonKey);
@@ -353,10 +333,7 @@ VariableGetter.isNone = function (variable: { key: string }): boolean {
 };
 
 // 加载预设属性键
-VariableGetter.loadPresetKeys = function (
-	this: VariableGetterShape,
-	group: string
-): void {
+VariableGetter.loadPresetKeys = function (this: VariableGetterShape, group: string): void {
 	let type = undefined;
 	switch (this.filter) {
 		case 'boolean':
@@ -392,9 +369,7 @@ VariableGetter.createDefaultForPlugin = function (): {
 };
 
 // 创建本地变量列表生成器
-VariableGetter.createVarListGenerator = function (
-	filterObject: VariableGetterShape
-): () => any[] {
+VariableGetter.createVarListGenerator = function (filterObject: VariableGetterShape): () => any[] {
 	return function (): any[] {
 		if (!EventEditor.commandList.read()) return [];
 
@@ -422,14 +397,10 @@ VariableGetter.createVarListGenerator = function (
 			const element = elements[i];
 			if (element.dataKey === true && element.dataItem) {
 				const indent = element.dataIndent ?? 0;
-				while (
-					stack.length > 0 &&
-					stack[stack.length - 1].indent >= indent
-				) {
+				while (stack.length > 0 && stack[stack.length - 1].indent >= indent) {
 					stack.pop();
 				}
-				const parent =
-					stack.length > 0 ? stack[stack.length - 1].command : null;
+				const parent = stack.length > 0 ? stack[stack.length - 1].command : null;
 				if (!parentMap.has(element.dataItem)) {
 					parentMap.set(element.dataItem, parent);
 				}
@@ -452,29 +423,18 @@ VariableGetter.createVarListGenerator = function (
 		};
 		const activeIndex = list.active;
 		const activeElement =
-			activeIndex !== null && activeIndex !== undefined
-				? elements[activeIndex]
-				: null;
-		const activeCommand =
-			activeElement?.dataItem ?? activeElement?.dataParent ?? null;
-		const activeNamespace = activeCommand
-			? getNamespaceRoot(activeCommand)
-			: null;
+			activeIndex !== null && activeIndex !== undefined ? elements[activeIndex] : null;
+		const activeCommand = activeElement?.dataItem ?? activeElement?.dataParent ?? null;
+		const activeNamespace = activeCommand ? getNamespaceRoot(activeCommand) : null;
 
 		return (list.varList ?? []).filter((item) => {
 			// 过滤类型不匹配的变量
-			if (
-				filter !== 'any' &&
-				item.type !== 'any' &&
-				filter !== item.type
-			) {
+			if (filter !== 'any' && item.type !== 'any' && filter !== item.type) {
 				return false;
 			}
 			// 过滤作用域不匹配的变量
 			const itemCommand = item.command;
-			const itemNamespace = itemCommand
-				? getNamespaceRoot(itemCommand)
-				: null;
+			const itemNamespace = itemCommand ? getNamespaceRoot(itemCommand) : null;
 			return itemNamespace === activeNamespace;
 		});
 	};
@@ -529,26 +489,17 @@ VariableGetter.typeInput = function (event: Event & { value: string }): void {
 };
 
 // 确定按钮 - 鼠标点击事件（主窗口）
-VariableGetter.confirm = function (
-	this: VariableGetterShape,
-	event: Event
-): void {
+VariableGetter.confirm = function (this: VariableGetterShape, event: Event): void {
 	this._confirmCore!('variableGetter');
 }.bind(VariableGetter);
 
 // 确定按钮 - 鼠标点击事件（递归窗口2）
-VariableGetter.confirm2 = function (
-	this: VariableGetterShape,
-	event: Event
-): void {
+VariableGetter.confirm2 = function (this: VariableGetterShape, event: Event): void {
 	this._confirmCore!('variableGetter2');
 }.bind(VariableGetter);
 
 // 内部：按窗口前缀执行确认（统一校验逻辑，消除双实现行为漂移）
-VariableGetter._confirmCore = function (
-	this: VariableGetterShape,
-	prefix: string
-): void {
+VariableGetter._confirmCore = function (this: VariableGetterShape, prefix: string): void {
 	const state = this._state[prefix];
 	const target = state.target;
 	const filter = state.filter;
@@ -569,15 +520,8 @@ VariableGetter._confirmCore = function (
 			const variable = getVariable(key);
 			// 仅对基础类型做类型校验（all/object/writable 不校验，避免错误拒绝）
 			const baseType =
-				filter === 'boolean' ||
-				filter === 'number' ||
-				filter === 'string'
-					? filter
-					: null;
-			if (
-				key === '' ||
-				(baseType && typeof variable?.value !== baseType)
-			) {
+				filter === 'boolean' || filter === 'number' || filter === 'string' ? filter : null;
+			if (key === '' || (baseType && typeof variable?.value !== baseType)) {
 				return $(`#${prefix}-global-key`).getFocus();
 			}
 			getter = { type, key };

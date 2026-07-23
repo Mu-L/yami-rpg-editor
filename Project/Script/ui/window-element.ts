@@ -185,12 +185,7 @@ UI.Window = class WindowElement extends UI.Element {
 						GL.scissor(nx, ny, nw, nh);
 						this.drawChildren();
 						if (wasEnabled && prevBox) {
-							GL.scissor(
-								prevBox[0],
-								prevBox[1],
-								prevBox[2],
-								prevBox[3]
-							);
+							GL.scissor(prevBox[0], prevBox[1], prevBox[2], prevBox[3]);
 						} else if (!wasEnabled) {
 							GL.disable(GL.SCISSOR_TEST);
 						}
@@ -250,18 +245,9 @@ UI.Window = class WindowElement extends UI.Element {
 			const x = transform.x + transform.x2 * parentWidth;
 			const y = transform.y + transform.y2 * parentHeight;
 			const w = max(transform.width + transform.width2 * parentWidth, 0);
-			const h = max(
-				transform.height + transform.height2 * parentHeight,
-				0
-			);
-			scrollWidth = max(
-				scrollWidth,
-				x + (1 - transform.anchorX) * w * sx
-			);
-			scrollHeight = max(
-				scrollHeight,
-				y + (1 - transform.anchorY) * h * sy
-			);
+			const h = max(transform.height + transform.height2 * parentHeight, 0);
+			scrollWidth = max(scrollWidth, x + (1 - transform.anchorX) * w * sx);
+			scrollHeight = max(scrollHeight, y + (1 - transform.anchorY) * h * sy);
 		}
 		this.scrollWidth = scrollWidth;
 		this.scrollHeight = scrollHeight;
@@ -287,25 +273,13 @@ UI.Window = class WindowElement extends UI.Element {
 		}
 		const { floor, ceil, max } = Math;
 		const { proxy } = this;
-		const {
-			gridWidth,
-			gridHeight,
-			gridGapX,
-			gridGapY,
-			paddingX,
-			paddingY
-		} = this;
+		const { gridWidth, gridHeight, gridGapX, gridGapY, paddingX, paddingY } = this;
 		const unitWidth = gridWidth + gridGapX;
 		const unitHeight = gridHeight + gridGapY;
 		const columns =
 			unitWidth === 0
 				? length
-				: max(
-						floor(
-							(this.width + gridGapX - paddingX * 2) / unitWidth
-						),
-						1
-					);
+				: max(floor((this.width + gridGapX - paddingX * 2) / unitWidth), 1);
 		const rows = ceil(length / columns);
 		const scrollHeight = rows * unitHeight - gridGapY + paddingY * 2;
 		this.scrollWidth = max(this.width, gridWidth);
@@ -340,25 +314,13 @@ UI.Window = class WindowElement extends UI.Element {
 		}
 		const { floor, ceil, max } = Math;
 		const { proxy } = this;
-		const {
-			gridWidth,
-			gridHeight,
-			gridGapX,
-			gridGapY,
-			paddingX,
-			paddingY
-		} = this;
+		const { gridWidth, gridHeight, gridGapX, gridGapY, paddingX, paddingY } = this;
 		const unitWidth = gridWidth + gridGapX;
 		const unitHeight = gridHeight + gridGapY;
 		const rows =
 			unitHeight === 0
 				? length
-				: max(
-						floor(
-							(this.height + gridGapY - paddingY * 2) / unitHeight
-						),
-						1
-					);
+				: max(floor((this.height + gridGapY - paddingY * 2) / unitHeight), 1);
 		const columns = ceil(length / rows);
 		const scrollWidth = columns * unitWidth - gridGapX + paddingX * 2;
 		this.scrollWidth = max(this.width, scrollWidth);

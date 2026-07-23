@@ -37,17 +37,7 @@ Command.cases.loadImage = new CommandSchema({
 				{ case: 'base64', targets: [$('#loadImage-variable')] }
 			]);
 	},
-	customParse({
-		element,
-		type,
-		actor,
-		skill,
-		state,
-		equipment,
-		item,
-		key,
-		variable
-	}) {
+	customParse({ element, type, actor, skill, state, equipment, item, key, variable }) {
 		const words = Command.words.push(Command.parseElement(element));
 		const label = Local.get('command.loadImage.' + type);
 		let content;
@@ -69,10 +59,7 @@ Command.cases.loadImage = new CommandSchema({
 				break;
 			case 'shortcut-icon': {
 				const actorInfo = Command.parseActor(actor);
-				const shortcutKey = Command.parseVariableEnum(
-					'shortcut-key',
-					key
-				);
+				const shortcutKey = Command.parseVariableEnum('shortcut-key', key);
 				content = actorInfo + Token(' -> ') + shortcutKey;
 				break;
 			}

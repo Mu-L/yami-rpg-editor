@@ -18,9 +18,7 @@ Command.cases.jumpTo = new CommandSchema({
 		]);
 		$('#jumpTo-operation')
 			.enableHiddenMode()
-			.relate([
-				{ case: ['jump', 'save-jump'], targets: [$('#jumpTo-label')] }
-			]);
+			.relate([{ case: ['jump', 'save-jump'], targets: [$('#jumpTo-label')] }]);
 	},
 	loadLabels() {
 		const items = [];

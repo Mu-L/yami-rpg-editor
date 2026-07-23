@@ -93,11 +93,7 @@ import { Inspector } from './inspector.ts';
 
 	// 参数 - 输入事件
 	AnimSoundFrame.paramInput = function (event) {
-		AnimSoundFrame.update(
-			AnimSoundFrame.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		AnimSoundFrame.update(AnimSoundFrame.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.animSoundFrame = AnimSoundFrame;

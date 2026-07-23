@@ -119,45 +119,27 @@ IfCondition.initialize = function () {
 			},
 			{
 				case: 'object',
-				targets: [
-					$('#if-condition-common-variable'),
-					$('#if-condition-object-operation')
-				]
+				targets: [$('#if-condition-common-variable'), $('#if-condition-object-operation')]
 			},
 			{
 				case: 'actor',
-				targets: [
-					$('#if-condition-common-actor'),
-					$('#if-condition-actor-operation')
-				]
+				targets: [$('#if-condition-common-actor'), $('#if-condition-actor-operation')]
 			},
 			{
 				case: 'element',
-				targets: [
-					$('#if-condition-common-element'),
-					$('#if-condition-element-operation')
-				]
+				targets: [$('#if-condition-common-element'), $('#if-condition-element-operation')]
 			},
 			{
 				case: 'keyboard',
-				targets: [
-					$('#if-condition-keyboard-keycode'),
-					$('#if-condition-keyboard-state')
-				]
+				targets: [$('#if-condition-keyboard-keycode'), $('#if-condition-keyboard-state')]
 			},
 			{
 				case: 'gamepad',
-				targets: [
-					$('#if-condition-gamepad-button'),
-					$('#if-condition-gamepad-state')
-				]
+				targets: [$('#if-condition-gamepad-button'), $('#if-condition-gamepad-state')]
 			},
 			{
 				case: 'mouse',
-				targets: [
-					$('#if-condition-mouse-button'),
-					$('#if-condition-mouse-state')
-				]
+				targets: [$('#if-condition-mouse-button'), $('#if-condition-mouse-state')]
 			},
 			{
 				case: 'list',
@@ -376,17 +358,11 @@ IfCondition.initialize = function () {
 			{ case: 'has-state', targets: [$('#if-condition-actor-stateId')] },
 			{
 				case: 'has-items',
-				targets: [
-					$('#if-condition-actor-itemId'),
-					$('#if-condition-actor-quantity')
-				]
+				targets: [$('#if-condition-actor-itemId'), $('#if-condition-actor-quantity')]
 			},
 			{
 				case: 'has-equipments',
-				targets: [
-					$('#if-condition-actor-equipmentId'),
-					$('#if-condition-actor-quantity')
-				]
+				targets: [$('#if-condition-actor-equipmentId'), $('#if-condition-actor-quantity')]
 			},
 			{
 				case: ['has-skill-shortcut', 'has-item-shortcut'],
@@ -563,9 +539,7 @@ IfCondition.parseStringOperand = function ({ operand }) {
 		case 'none':
 			return Token('null');
 		case 'constant':
-			return Command.setStringColor(
-				`"${Command.parseMultiLineString(operand.value)}"`
-			);
+			return Command.setStringColor(`"${Command.parseMultiLineString(operand.value)}"`);
 		case 'variable':
 			return Command.parseVariable(operand.variable, 'string');
 		case 'enum':
@@ -641,10 +615,7 @@ IfCondition.parseActorOperation = function ({
 		}
 		case 'has-skill-shortcut':
 		case 'has-item-shortcut':
-			return `${op} <${Command.parseVariableEnum(
-				'shortcut-key',
-				shortcutKey
-			)}>`;
+			return `${op} <${Command.parseVariableEnum('shortcut-key', shortcutKey)}>`;
 		case 'equipped':
 			return `${op} ${Command.parseFileName(equipmentId)}`;
 		case 'is-teammate':
@@ -700,40 +671,28 @@ IfCondition.parse = function (condition, listData) {
 	let string;
 	switch (condition.type) {
 		case 'boolean': {
-			const variable = Command.parseVariable(
-				condition.variable,
-				'boolean'
-			);
+			const variable = Command.parseVariable(condition.variable, 'boolean');
 			const operator = this.parseBooleanOperation(condition);
 			const value = this.parseBooleanOperand(condition);
 			string = `${variable} ${operator} ${value}`;
 			break;
 		}
 		case 'number': {
-			const variable = Command.parseVariable(
-				condition.variable,
-				'number'
-			);
+			const variable = Command.parseVariable(condition.variable, 'number');
 			const operator = this.parseNumberOperation(condition);
 			const value = this.parseNumberOperand(condition);
 			string = `${variable} ${operator} ${value}`;
 			break;
 		}
 		case 'string': {
-			const variable = Command.parseVariable(
-				condition.variable,
-				'string'
-			);
+			const variable = Command.parseVariable(condition.variable, 'string');
 			const operator = this.parseStringOperation(condition);
 			const value = this.parseStringOperand(condition);
 			string = `${variable} ${operator} ${value}`;
 			break;
 		}
 		case 'object': {
-			const variable = Command.parseVariable(
-				condition.variable,
-				'object'
-			);
+			const variable = Command.parseVariable(condition.variable, 'object');
 			const operator = this.parseObjectOperation(condition);
 			const value = this.parseObjectOperand(condition);
 			// 如果value为空字符串，删除尾部空格
@@ -756,13 +715,7 @@ IfCondition.parse = function (condition, listData) {
 			const key = condition.keycode;
 			const keyboard = Local.get('command.if.keyboard');
 			const state = this.parseKeyboardState(condition.state);
-			string =
-				keyboard +
-				Token('[') +
-				Command.setStringColor(key) +
-				Token(']') +
-				' ' +
-				state;
+			string = keyboard + Token('[') + Command.setStringColor(key) + Token(']') + ' ' + state;
 			break;
 		}
 		case 'gamepad': {
@@ -770,25 +723,14 @@ IfCondition.parse = function (condition, listData) {
 			const gamepad = Local.get('command.if.gamepad');
 			const state = this.parseGamepadState(condition.state);
 			string =
-				gamepad +
-				Token('[') +
-				Command.setStringColor(button) +
-				Token(']') +
-				' ' +
-				state;
+				gamepad + Token('[') + Command.setStringColor(button) + Token(']') + ' ' + state;
 			break;
 		}
 		case 'mouse': {
 			const button = this.parseMouseButton(condition.button);
 			const mouse = Local.get('command.if.mouse');
 			const state = this.parseMouseState(condition.state);
-			string =
-				mouse +
-				Token('[') +
-				Command.setStringColor(button) +
-				Token(']') +
-				' ' +
-				state;
+			string = mouse + Token('[') + Command.setStringColor(button) + Token(']') + ' ' + state;
 			break;
 		}
 		case 'list': {
@@ -818,9 +760,7 @@ IfCondition.open = function (
 	} as any
 ) {
 	// 加载快捷键选项
-	$('#if-condition-actor-shortcutKey').loadItems(
-		Enum.getStringItems('shortcut-key')
-	);
+	$('#if-condition-actor-shortcutKey').loadItems(Enum.getStringItems('shortcut-key'));
 	Window.open('if-condition');
 	const write = getElementWriter('if-condition');
 	const defaultVariable = { type: 'local', key: '' };
@@ -869,26 +809,22 @@ IfCondition.open = function (
 			commonVariable = condition.variable;
 			booleanOperation = condition.operation;
 			booleanOperandType = condition.operand.type;
-			booleanConstantValue =
-				condition.operand.value ?? booleanConstantValue;
+			booleanConstantValue = condition.operand.value ?? booleanConstantValue;
 			operandVariable = condition.operand.variable ?? operandVariable;
 			break;
 		case 'number':
 			commonVariable = condition.variable;
 			numberOperation = condition.operation;
 			numberOperandType = condition.operand.type;
-			numberConstantValue =
-				condition.operand.value ?? numberConstantValue;
+			numberConstantValue = condition.operand.value ?? numberConstantValue;
 			operandVariable = condition.operand.variable ?? operandVariable;
 			break;
 		case 'string':
 			commonVariable = condition.variable;
 			stringOperation = condition.operation;
 			stringOperandType = condition.operand.type;
-			stringConstantValue =
-				condition.operand.value ?? stringConstantValue;
-			stringEnumStringId =
-				condition.operand.stringId ?? stringEnumStringId;
+			stringConstantValue = condition.operand.value ?? stringConstantValue;
+			stringEnumStringId = condition.operand.stringId ?? stringEnumStringId;
 			operandVariable = condition.operand.variable ?? operandVariable;
 			break;
 		case 'object':
@@ -1090,9 +1026,7 @@ IfCondition.save = function () {
 						stringId: read('string-enum-stringId')
 					};
 					if (operand.stringId === '') {
-						return $(
-							'#if-condition-string-enum-stringId'
-						).getFocus();
+						return $('#if-condition-string-enum-stringId').getFocus();
 					}
 					break;
 			}
@@ -1169,9 +1103,7 @@ IfCondition.save = function () {
 								variable: read('operand-variable')
 							};
 							if (VariableGetter.isNone(operand.variable)) {
-								return $(
-									'#if-condition-operand-variable'
-								).getFocus();
+								return $('#if-condition-operand-variable').getFocus();
 							}
 							break;
 					}

@@ -84,18 +84,10 @@ import { Texture } from '../webgl/texture.ts';
 			]);
 
 		// 同步滑动框和数字框的数值
-		$('#uiProgressBar-color-0-slider').synchronize(
-			$('#uiProgressBar-color-0')
-		);
-		$('#uiProgressBar-color-1-slider').synchronize(
-			$('#uiProgressBar-color-1')
-		);
-		$('#uiProgressBar-color-2-slider').synchronize(
-			$('#uiProgressBar-color-2')
-		);
-		$('#uiProgressBar-color-3-slider').synchronize(
-			$('#uiProgressBar-color-3')
-		);
+		$('#uiProgressBar-color-0-slider').synchronize($('#uiProgressBar-color-0'));
+		$('#uiProgressBar-color-1-slider').synchronize($('#uiProgressBar-color-1'));
+		$('#uiProgressBar-color-2-slider').synchronize($('#uiProgressBar-color-2'));
+		$('#uiProgressBar-color-3-slider').synchronize($('#uiProgressBar-color-3'));
 
 		// 侦听事件
 		const elements = $(`#uiProgressBar-image,
@@ -228,11 +220,7 @@ import { Texture } from '../webgl/texture.ts';
 
 	// 参数 - 输入事件
 	UIProgressBar.paramInput = function (event) {
-		UIProgressBar.update(
-			UIProgressBar.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		UIProgressBar.update(UIProgressBar.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.uiProgressBar = UIProgressBar;

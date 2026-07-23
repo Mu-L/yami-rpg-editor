@@ -274,9 +274,7 @@ Layout.updateGroups = (function IIFE() {
 			const dpr = window.devicePixelRatio;
 			if (
 				active &&
-				(active.dpr !== dpr ||
-					active.width !== width ||
-					active.height !== height)
+				(active.dpr !== dpr || active.width !== width || active.height !== height)
 			) {
 				active.dpr = dpr;
 				active.width = width;
@@ -299,10 +297,7 @@ Layout.updateGroups = (function IIFE() {
 		const dpr = window.devicePixelRatio;
 		if (
 			width * height !== 0 &&
-			(force ||
-				root.dpr !== dpr ||
-				root.width !== width ||
-				root.height !== height)
+			(force || root.dpr !== dpr || root.width !== width || root.height !== height)
 		) {
 			root.dpr = dpr;
 			root.width = width;
@@ -855,10 +850,7 @@ Layout.navPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
 			const element = event.target;
-			if (
-				element.tagName === 'NAV-ITEM' &&
-				element.hasClass('selected')
-			) {
+			if (element.tagName === 'NAV-ITEM' && element.hasClass('selected')) {
 				switch (element.dataValue) {
 					case 'inspector':
 						Layout.readyToFocus(Inspector.manager);
@@ -868,10 +860,7 @@ Layout.navPointerdown = function (event) {
 						const nodes = page.querySelectorAll('[tabindex]');
 						for (let i = nodes.length - 1; i >= 0; i--) {
 							const node = nodes[i];
-							if (
-								node.clientWidth !== 0 &&
-								node.clientHeight !== 0
-							) {
+							if (node.clientWidth !== 0 && node.clientHeight !== 0) {
 								Layout.readyToFocus(node);
 								break;
 							}
@@ -979,11 +968,7 @@ Layout.navDragenter = function (event) {
 // 导航栏 - 拖拽离开事件
 Layout.navDragleave = function (event) {
 	const { dragging } = Layout;
-	if (
-		dragging &&
-		dragging.location &&
-		dragging.location.trigger === event.target
-	) {
+	if (dragging && dragging.location && dragging.location.trigger === event.target) {
 		Layout.updateHint(null);
 	}
 };
@@ -1025,10 +1010,7 @@ Layout.navDrop = function (event) {
 
 		// 创建群组容器
 		if (split !== undefined && parent.split !== split) {
-			parent.replaceChild(
-				(parent = document.createElement('group')),
-				target
-			);
+			parent.replaceChild((parent = document.createElement('group')), target);
 			parent.end = target.end;
 			parent.split = split;
 			parent.addClass(split);
@@ -1156,10 +1138,7 @@ Layout.regionDragleave = function (event) {
 // 区域 - 拖拽悬停事件
 Layout.regionDragover = function (event) {
 	const { dragging } = Layout;
-	if (
-		(dragging && dragging.clientX !== event.clientX) ||
-		dragging.clientY !== event.clientY
-	) {
+	if ((dragging && dragging.clientX !== event.clientX) || dragging.clientY !== event.clientY) {
 		dragging.clientX = event.clientX;
 		dragging.clientY = event.clientY;
 		const root = Layout.manager.active.childNodes[0];
@@ -1249,10 +1228,7 @@ Layout.regionDragover = function (event) {
 					if (parent.split === 'horizontal') {
 						target = parent;
 					}
-					if (
-						parent.split === 'vertical' &&
-						target === siblings[siblings.length - 2]
-					) {
+					if (parent.split === 'vertical' && target === siblings[siblings.length - 2]) {
 						const outer = parent.parentNode;
 						if (outer.tagName === 'GROUP') {
 							target = outer;
@@ -1278,10 +1254,7 @@ Layout.regionDragover = function (event) {
 		if (!direction && x >= r) {
 			direction = 'right';
 			if (x >= w - padding) {
-				if (
-					parent.split === 'horizontal' &&
-					target === siblings[siblings.length - 2]
-				) {
+				if (parent.split === 'horizontal' && target === siblings[siblings.length - 2]) {
 					const outer = parent.parentNode;
 					if (outer.tagName === 'GROUP') {
 						target = outer;
@@ -1305,14 +1278,11 @@ Layout.regionDragover = function (event) {
 				if (
 					sItems.length > 1 ||
 					(target !== sGroup &&
-						((direction === 'left' &&
-							!(split === 'horizontal' && prev === sGroup)) ||
-							(direction === 'top' &&
-								!(split === 'vertical' && prev === sGroup)) ||
+						((direction === 'left' && !(split === 'horizontal' && prev === sGroup)) ||
+							(direction === 'top' && !(split === 'vertical' && prev === sGroup)) ||
 							(direction === 'right' &&
 								!(split === 'horizontal' && next === sGroup)) ||
-							(direction === 'bottom' &&
-								!(split === 'vertical' && next === sGroup))))
+							(direction === 'bottom' && !(split === 'vertical' && next === sGroup))))
 				) {
 					if (
 						!dragging.location ||
@@ -1351,16 +1321,12 @@ Layout.borderPointerdown = function (event) {
 				switch (outer.split) {
 					case 'horizontal':
 						event.mode = 'col-resize';
-						event.startX = Math.round(
-							outer.clientWidth * group.end
-						);
+						event.startX = Math.round(outer.clientWidth * group.end);
 						Cursor.open('cursor-col-resize');
 						break;
 					case 'vertical':
 						event.mode = 'row-resize';
-						event.startY = Math.round(
-							outer.clientHeight * group.end
-						);
+						event.startY = Math.round(outer.clientHeight * group.end);
 						Cursor.open('cursor-row-resize');
 						break;
 				}
@@ -1417,13 +1383,11 @@ Layout.pointermove = function (event) {
 	switch (resizing.mode) {
 		case 'col-resize':
 			end =
-				+(event.clientX + resizing.startX - resizing.clientX) /
-				resizing.outer.clientWidth;
+				+(event.clientX + resizing.startX - resizing.clientX) / resizing.outer.clientWidth;
 			break;
 		case 'row-resize':
 			end =
-				+(event.clientY + resizing.startY - resizing.clientY) /
-				resizing.outer.clientHeight;
+				+(event.clientY + resizing.startY - resizing.clientY) / resizing.outer.clientHeight;
 			break;
 	}
 	end = Math.clamp(end, 0, 1);

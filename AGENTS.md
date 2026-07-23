@@ -84,7 +84,6 @@
 
 ## 5. 工作流约定
 
-
 - **提交规范**：不允许自动提交，需要手动提交。
 - **文件操作**：禁止用 `bash sed -i` / `bash echo >>` 改文件——必须用 `edit_file` / `write_file`。
 - **目录操作**：禁止用 `bash ls` / `bash find`——必须用 `list_directory` / `glob`。
@@ -108,7 +107,7 @@
 | `scripts/build-html.js`              | 拼装 index.html + 注入 importmap 桥                  |
 | `scripts/verify-imports.js`          | 校验 import 闭合（迁移后兼容 .ts）                   |
 | `scripts/check-syntax.js`            | git status 改动文件语法检查（迁移后用 tsc）          |
-| `vite.config.js`                     | Vite 8 配置（root: Project, target: chrome90）         |
+| `vite.config.js`                     | Vite 8 配置（root: Project, target: chrome90）       |
 | `tsconfig.json`                      | TS 7 类型检查配置（迁移后新增）                      |
 
 ## 8. 已知陷阱

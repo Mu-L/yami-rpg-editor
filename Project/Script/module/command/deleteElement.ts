@@ -44,10 +44,7 @@ Command.cases.deleteElement = new CommandSchema({
 			{ text: info }
 		];
 	},
-	customLoad({
-		operation = 'delete-element',
-		element = { type: 'trigger' }
-	}) {
+	customLoad({ operation = 'delete-element', element = { type: 'trigger' } }) {
 		$('#deleteElement-operation').write(operation);
 		$('#deleteElement-element').write(element);
 		$('#deleteElement-operation').getFocus();

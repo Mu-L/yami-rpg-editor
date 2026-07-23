@@ -88,11 +88,7 @@ import { Window } from '../tools/window-object.ts';
 			this.list = list;
 
 			// 创建参数历史操作
-			this.history = new Inspector.ParamHistory(
-				FileAnimation,
-				FileAnimation.owner,
-				list
-			);
+			this.history = new Inspector.ParamHistory(FileAnimation, FileAnimation.owner, list);
 
 			// 重载动画纹理 - 改变事件
 			list.on('change', (event) => {
@@ -105,9 +101,7 @@ import { Window } from '../tools/window-object.ts';
 			});
 		},
 		parse: function ({ name, image, hframes, vframes }) {
-			const fileName = Command.removeTextTags(
-				Command.parseFileName(image)
-			);
+			const fileName = Command.removeTextTags(Command.parseFileName(image));
 			return [name, `${fileName} [${hframes}x${vframes}]`];
 		},
 		createExclusionMap: function () {

@@ -52,10 +52,7 @@ Command.cases.httpRequest = new CommandSchema({
 			{ text: ' , ' },
 			{ color: 'normal' },
 			{
-				text:
-					typeof url === 'string'
-						? url
-						: Command.parseVariable(url, 'any')
+				text: typeof url === 'string' ? url : Command.parseVariable(url, 'any')
 			},
 			{ text: ' , ' },
 			{ text: method },

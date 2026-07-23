@@ -39,12 +39,14 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#fileEquipment-parameter-pane').bind($('#fileEquipment-scripts'));
 
 		// 侦听事件
-		$(
-			'#fileEquipment-icon, #fileEquipment-clip, #fileEquipment-inherit'
-		).on('input', this.paramInput);
-		$(
-			'#fileEquipment-attributes, #fileEquipment-events, #fileEquipment-scripts'
-		).on('change', this.listChange);
+		$('#fileEquipment-icon, #fileEquipment-clip, #fileEquipment-inherit').on(
+			'input',
+			this.paramInput
+		);
+		$('#fileEquipment-attributes, #fileEquipment-events, #fileEquipment-scripts').on(
+			'change',
+			this.listChange
+		);
 	};
 
 	// 创建装备
@@ -110,11 +112,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 参数 - 输入事件
 	FileEquipment.paramInput = function (event) {
-		FileEquipment.update(
-			FileEquipment.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		FileEquipment.update(FileEquipment.target, Inspector.getKey(this), this.read());
 	};
 
 	// 列表 - 改变事件

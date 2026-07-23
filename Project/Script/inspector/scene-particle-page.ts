@@ -28,9 +28,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 	// 初始化
 	SceneParticle.initialize = function () {
 		// 绑定条件列表
-		$('#sceneParticle-conditions').bind(
-			new ConditionListInterface(this, Scene)
-		);
+		$('#sceneParticle-conditions').bind(new ConditionListInterface(this, Scene));
 
 		// 绑定事件列表
 		$('#sceneParticle-events').bind(new EventListInterface(this, Scene));
@@ -45,12 +43,8 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#sceneParticle-angle-slider').synchronize($('#sceneParticle-angle'));
 		$('#sceneParticle-scale-slider').synchronize($('#sceneParticle-scale'));
 		$('#sceneParticle-speed-slider').synchronize($('#sceneParticle-speed'));
-		$('#sceneParticle-opacity-slider').synchronize(
-			$('#sceneParticle-opacity')
-		);
-		$('#sceneParticle-priority-slider').synchronize(
-			$('#sceneParticle-priority')
-		);
+		$('#sceneParticle-opacity-slider').synchronize($('#sceneParticle-opacity'));
+		$('#sceneParticle-priority-slider').synchronize($('#sceneParticle-priority'));
 
 		// 侦听事件
 		const elements = $(`#sceneParticle-name, #sceneParticle-particleId,
@@ -64,9 +58,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		elements.on('blur', Inspector.inputBlur(this, Scene));
 		sliders.on('focus', Inspector.sliderFocus);
 		sliders.on('blur', Inspector.sliderBlur);
-		$(
-			'#sceneParticle-conditions, #sceneParticle-events, #sceneParticle-scripts'
-		).on('change', Scene.listChange);
+		$('#sceneParticle-conditions, #sceneParticle-events, #sceneParticle-scripts').on(
+			'change',
+			Scene.listChange
+		);
 	};
 
 	// 创建粒子
@@ -205,11 +200,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 参数 - 输入事件
 	SceneParticle.paramInput = function (event) {
-		SceneParticle.update(
-			SceneParticle.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		SceneParticle.update(SceneParticle.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.sceneParticle = SceneParticle;

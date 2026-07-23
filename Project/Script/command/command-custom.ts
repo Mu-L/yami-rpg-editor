@@ -195,26 +195,15 @@ Command.custom = {
 					continue;
 				}
 				case 'easing':
-					words.push(
-						(Data.easings.map as Record<string, { name: string }>)[
-							value
-						].name
-					);
+					words.push((Data.easings.map as Record<string, { name: string }>)[value].name);
 					continue;
 				case 'team':
-					words.push(
-						(Data.teams.map as Record<string, { name: string }>)[
-							value
-						].name
-					);
+					words.push((Data.teams.map as Record<string, { name: string }>)[value].name);
 					continue;
 				case 'variable':
 					words.push(
 						value
-							? Command.parseVariable!(
-									{ type: 'global', key: value },
-									'any'
-								)
+							? Command.parseVariable!({ type: 'global', key: value }, 'any')
 							: Token('none')
 					);
 					continue;
@@ -265,9 +254,7 @@ Command.custom = {
 					words.push(Command.parsePosition!(value));
 					continue;
 				case 'number[]': {
-					const numbers: (number | string)[] = (
-						value as number[]
-					).slice(0, 5);
+					const numbers: (number | string)[] = (value as number[]).slice(0, 5);
 					for (let i = 0; i < numbers.length; i++) {
 						numbers[i] = Command.setNumberColor!(
 							numbers[i] as number
@@ -276,9 +263,7 @@ Command.custom = {
 					if ((value as number[]).length > 5) {
 						numbers.push(Token('...'));
 					}
-					words.push(
-						Token('[') + numbers.join(Token(', ')) + Token(']')
-					);
+					words.push(Token('[') + numbers.join(Token(', ')) + Token(']'));
 					continue;
 				}
 				case 'string[]': {
@@ -291,26 +276,18 @@ Command.custom = {
 					if ((value as string[]).length > 5) {
 						strings.push(Token('...'));
 					}
-					words.push(
-						Token('[') + strings.join(Token(', ')) + Token(']')
-					);
+					words.push(Token('[') + strings.join(Token(', ')) + Token(']'));
 					continue;
 				}
 				case 'keycode':
-					words.push(
-						value ? Command.setStringColor!(value) : Token('null')
-					);
+					words.push(value ? Command.setStringColor!(value) : Token('null'));
 					continue;
 				case 'color':
 					words.push(Command.parseHexColor!(value));
 					continue;
 			}
 		}
-		return [
-			{ color: 'custom' },
-			{ text: name + Token(': ') },
-			{ text: words.join() }
-		];
+		return [{ color: 'custom' }, { text: name + Token(': ') }, { text: words.join() }];
 	},
 
 	// 加载自定义指令
@@ -360,9 +337,7 @@ Command.custom = {
 			}
 			const map = meta.langMap.update();
 			const name =
-				command.alias ||
-				map.get(meta.overview.plugin) ||
-				Command.parseFileName!(id);
+				command.alias || map.get(meta.overview.plugin) || Command.parseFileName!(id);
 			commandNameMap[id] = name;
 			commands.push({
 				class: 'custom',

@@ -35,17 +35,11 @@ EquipmentGetter.initialize = function () {
 		.relate([
 			{
 				case: 'by-slot',
-				targets: [
-					$('#equipmentGetter-actor'),
-					$('#equipmentGetter-slot')
-				]
+				targets: [$('#equipmentGetter-actor'), $('#equipmentGetter-slot')]
 			},
 			{
 				case: ['by-id-equipped', 'by-id-inventory'],
-				targets: [
-					$('#equipmentGetter-actor'),
-					$('#equipmentGetter-equipmentId')
-				]
+				targets: [$('#equipmentGetter-actor'), $('#equipmentGetter-equipmentId')]
 			},
 			{ case: 'variable', targets: [$('#equipmentGetter-variable')] }
 		]);

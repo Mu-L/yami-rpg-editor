@@ -32,16 +32,7 @@ Command.cases.setAmbientLight = new CommandSchema({
 		const r = Command.parseVariableNumber(red);
 		const g = Command.parseVariableNumber(green);
 		const b = Command.parseVariableNumber(blue);
-		return (
-			'RGB' +
-			Token('(') +
-			r +
-			Token(', ') +
-			g +
-			Token(', ') +
-			b +
-			Token(')')
-		);
+		return 'RGB' + Token('(') + r + Token(', ') + g + Token(', ') + b + Token(')');
 	},
 	customParse({ red, green, blue, easingId, duration, wait }) {
 		const words = Command.words

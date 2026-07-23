@@ -79,17 +79,11 @@ export const Resources = new (class {
 
 	async initialize() {
 		// 更新本地化
-		$('#resource-check-version').textContent = Local.get(
-			'confirmation.resource-check-version'
-		);
-		$('#resource-open-dir').textContent = Local.get(
-			'confirmation.resource-open-dir'
-		);
+		$('#resource-check-version').textContent = Local.get('confirmation.resource-check-version');
+		$('#resource-open-dir').textContent = Local.get('confirmation.resource-open-dir');
 
 		$('#resource-check-version').on('click', () => this.checkVersion());
-		$('#resource-open-dir').on('click', () =>
-			ipcRenderer.send('open-path', GlobalPath)
-		);
+		$('#resource-open-dir').on('click', () => ipcRenderer.send('open-path', GlobalPath));
 
 		// 更新节点信息
 		this.updateNodeInfo();
@@ -118,11 +112,8 @@ export const Resources = new (class {
 					const index = parseInt(match[1]) - 1;
 					if (index >= 0 && index < this._fastGithubArray.length) {
 						nodeUrl = this._fastGithubArray[index];
-						const domain = nodeUrl
-							.replace(/^https?:\/\//, '')
-							.replace(/\/$/, '');
-						const nodeLabel =
-							get('github-acceleration-node') || '节点';
+						const domain = nodeUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+						const nodeLabel = get('github-acceleration-node') || '节点';
 						nodeName = `${nodeLabel} ${index + 1} (${domain})`;
 					}
 				}
@@ -246,7 +237,7 @@ export const Resources = new (class {
 		}
 	}
 
-	/** 
+	/**
     @description 0 版本一致 | 1 v1版本大 | -1 v2版本大
 	*/
 	compareVersions(v1, v2) {
@@ -294,9 +285,7 @@ export const Resources = new (class {
 		setNoResourceObj(isNoResource());
 		return (
 			NoResourceObj &&
-			Object.values<any>(NoResourceObj).every((v) =>
-				typeof v === 'boolean' ? v : v.check
-			)
+			Object.values<any>(NoResourceObj).every((v) => (typeof v === 'boolean' ? v : v.check))
 		);
 	}
 
@@ -373,9 +362,7 @@ export const Resources = new (class {
 			isUpdate = true;
 		}
 		if (isUpdate) {
-			const updateText = this.getFirstAnnouncementContent(
-				await this.getRemoteAnnouncement()
-			);
+			const updateText = this.getFirstAnnouncementContent(await this.getRemoteAnnouncement());
 			const updateMessage = `${text} \n${'——'.repeat(20)}\n\n${updateText}`;
 			Window.confirm(
 				{
@@ -403,10 +390,7 @@ export const Resources = new (class {
 		for (let i of list) {
 			const elem = jsonParse.find((v) => v.path === i);
 			const elemVersion = elem?.version ?? '1.0.0';
-			if (
-				this.compareVersions(elemVersion, PackMeta?.[i] ?? '1.0.0') ===
-				0
-			) {
+			if (this.compareVersions(elemVersion, PackMeta?.[i] ?? '1.0.0') === 0) {
 				continue;
 			}
 			isReOpen = true;
@@ -482,18 +466,10 @@ export const Resources = new (class {
 		(textbox as any).input.readOnly = true;
 
 		const button = boxDom.querySelector(`#resource-item-${value}-download`);
-		const pauseButton = boxDom.querySelector(
-			`#resource-item-${value}-pause`
-		);
-		const progressContainer = boxDom.querySelector(
-			`#resource-item-${value}-progress`
-		);
-		const progressBar = boxDom.querySelector(
-			`#resource-item-${value}-progress-bar`
-		);
-		const progressText = boxDom.querySelector(
-			`#resource-item-${value}-progress-text`
-		);
+		const pauseButton = boxDom.querySelector(`#resource-item-${value}-pause`);
+		const progressContainer = boxDom.querySelector(`#resource-item-${value}-progress`);
+		const progressBar = boxDom.querySelector(`#resource-item-${value}-progress-bar`);
+		const progressText = boxDom.querySelector(`#resource-item-${value}-progress-text`);
 		const speedText = boxDom.querySelector(`#resource-item-${value}-speed`);
 		const sizeText = boxDom.querySelector(`#resource-item-${value}-size`);
 
@@ -533,15 +509,13 @@ export const Resources = new (class {
 			isDownloading = true;
 			button.disable();
 			pauseButton.style.display = 'inline-block';
-			pauseButton.textContent =
-				Local.get('confirmation.resource-pause') || '暂停';
+			pauseButton.textContent = Local.get('confirmation.resource-pause') || '暂停';
 			progressContainer.style.display = 'flex';
 
 			// 重置进度
 			progressBar.style.width = '0%';
 			progressText.textContent = '0%';
-			speedText.textContent =
-				Local.get('confirmation.resource-speed') || '速度: 0 KB/s';
+			speedText.textContent = Local.get('confirmation.resource-speed') || '速度: 0 KB/s';
 			lastLoaded = 0;
 			lastTime = Date.now();
 
@@ -554,9 +528,7 @@ export const Resources = new (class {
 				onProgress: (progressEvent) => {
 					if (!isDownloading) return;
 
-					const percent = Math.round(
-						(progressEvent.loaded / progressEvent.total) * 100
-					);
+					const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
 
 					// 更新进度条和百分比
 					progressBar.style.width = `${percent}%`;
@@ -580,9 +552,7 @@ export const Resources = new (class {
 							speedText_str = `${(speed / 1024 / 1024).toFixed(2)} MB/s`;
 						}
 
-						const speedLabel =
-							Local.get('confirmation.resource-speed-label') ||
-							'速度';
+						const speedLabel = Local.get('confirmation.resource-speed-label') || '速度';
 						speedText.textContent = `${speedLabel}: ${speedText_str}`;
 
 						lastLoaded = progressEvent.loaded;
@@ -597,13 +567,10 @@ export const Resources = new (class {
 					pauseButton.style.display = 'none';
 
 					// 开始解压
-					button.textContent = Local.get(
-						'confirmation.resource-decompression'
-					);
+					button.textContent = Local.get('confirmation.resource-decompression');
 					button.disable();
 					progressContainer.style.display = 'flex';
-					progressBar.style.background =
-						'linear-gradient(90deg, #2196f3, #42a5f5)';
+					progressBar.style.background = 'linear-gradient(90deg, #2196f3, #42a5f5)';
 
 					unzipWithProgress({
 						zipPath: targetPath,
@@ -615,20 +582,15 @@ export const Resources = new (class {
 					})
 						.then(async () => {
 							// 更新template.json本地版本号
-							const remoteData = (await this.downloadNetMeta())
-								.data;
+							const remoteData = (await this.downloadNetMeta()).data;
 							const j = this.readTemplate();
-							j[val] =
-								remoteData.find((v) => val === v.path)
-									?.version ?? '1.0.0';
+							j[val] = remoteData.find((v) => val === v.path)?.version ?? '1.0.0';
 							this.writeTemplate(j);
 							// 下载完成，也解压完成
 							setPackMeta(this.readTemplate()); // 重新读取本地模板信息
 							isDecompressing = false;
 							_check();
-							button.textContent = Local.get(
-								'confirmation.resource-download'
-							);
+							button.textContent = Local.get('confirmation.resource-download');
 							progressContainer.style.display = 'none';
 							progressBar.style.background =
 								'linear-gradient(90deg, #4caf50, #66bb6a)';
@@ -682,14 +644,11 @@ export const Resources = new (class {
 			progressContainer.style.display = 'none';
 		});
 
-		const buttonDelete = boxDom.querySelector(
-			`#resource-item-${value}-delete`
-		);
+		const buttonDelete = boxDom.querySelector(`#resource-item-${value}-delete`);
 		buttonDelete.textContent = Local.get('common.delete');
 		const tempPath = Path.resolve(TemplatesPath, val);
 		buttonDelete.on('click', () => {
-			if (fs.existsSync(tempPath))
-				fs.rmSync(tempPath, { recursive: true, force: true });
+			if (fs.existsSync(tempPath)) fs.rmSync(tempPath, { recursive: true, force: true });
 			_check();
 		});
 		_check();

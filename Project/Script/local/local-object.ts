@@ -43,19 +43,14 @@ GameLocal.setLanguage = async function (language) {
 			active = this.getLanguage();
 		}
 		let settings = languages.find((lang) => lang.name === active);
-		if (!settings)
-			settings = languages[0] ?? { name: active, font: '', scale: 1 };
+		if (!settings) settings = languages[0] ?? { name: active, font: '', scale: 1 };
 		try {
 			this.active = settings.name;
 			this.language = language;
 			window.dispatchEvent(new Event('localizationchange'));
 			Printer.setLanguageFont(settings.font);
 			Printer.setSizeScale(settings.scale);
-			Printer.setWordWrap(
-				['zh-CN', 'zh-TW', 'ja', 'ko'].includes(active)
-					? 'break'
-					: 'keep'
-			);
+			Printer.setWordWrap(['zh-CN', 'zh-TW', 'ja', 'ko'].includes(active) ? 'break' : 'keep');
 		} catch (error: any) {
 			Log.throw(error);
 		}
@@ -64,9 +59,7 @@ GameLocal.setLanguage = async function (language) {
 
 // 获取语言
 GameLocal.getLanguage = function () {
-	const languages = Data.config.localization.languages.map(
-		(lang) => lang.name
-	);
+	const languages = Data.config.localization.languages.map((lang) => lang.name);
 	let nLanguage = navigator.language;
 	// 重映射本地语言
 	if (this.langRemap[nLanguage]) {
@@ -109,9 +102,7 @@ GameLocal.replace = function (text) {
 
 // 重新加载语言
 GameLocal.reloadLanguages = function () {
-	const languages = Data.config.localization.languages.map(
-		(lang) => lang.name
-	);
+	const languages = Data.config.localization.languages.map((lang) => lang.name);
 	const reload = (items) => {
 		for (const item of items) {
 			if (item.class === 'folder') {
@@ -153,10 +144,7 @@ GameLocal.datachange = function (event) {
 		const selector = (lang) => lang.name === GameLocal.active;
 		const lastSettings = last.languages.find(selector);
 		const nowSettings = now.languages.find(selector);
-		if (
-			JSON.stringify(lastSettings ?? '') !==
-			JSON.stringify(nowSettings ?? '')
-		) {
+		if (JSON.stringify(lastSettings ?? '') !== JSON.stringify(nowSettings ?? '')) {
 			Printer.setLanguageFont(nowSettings?.font ?? Printer.languageFont);
 			Printer.setSizeScale(nowSettings?.scale ?? Printer.sizeScale);
 		}

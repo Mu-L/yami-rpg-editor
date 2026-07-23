@@ -62,9 +62,7 @@ import { UI } from '../ui/ui-window.ts';
 		// 同步滑动框和数字框的数值
 		$('#uiText-size-slider').synchronize($('#uiText-size'));
 		$('#uiText-lineSpacing-slider').synchronize($('#uiText-lineSpacing'));
-		$('#uiText-letterSpacing-slider').synchronize(
-			$('#uiText-letterSpacing')
-		);
+		$('#uiText-letterSpacing-slider').synchronize($('#uiText-letterSpacing'));
 
 		// 设置文字效果类型关联元素
 		$('#uiText-effect-type')
@@ -80,17 +78,13 @@ import { UI } from '../ui/ui-window.ts';
 				},
 				{
 					case: 'stroke',
-					targets: [
-						$('#uiText-effect-strokeWidth'),
-						$('#uiText-effect-color')
-					]
+					targets: [$('#uiText-effect-strokeWidth'), $('#uiText-effect-color')]
 				},
 				{ case: 'outline', targets: [$('#uiText-effect-color')] }
 			]);
 
 		// 侦听事件
-		const elements =
-			$(`#uiText-direction, #uiText-horizontalAlign, #uiText-verticalAlign,
+		const elements = $(`#uiText-direction, #uiText-horizontalAlign, #uiText-verticalAlign,
     #uiText-content, #uiText-size, #uiText-lineSpacing, #uiText-letterSpacing, #uiText-color, #uiText-font,
     #uiText-typeface, #uiText-effect-type, #uiText-effect-shadowOffsetX, #uiText-effect-shadowOffsetY,
     #uiText-effect-strokeWidth, #uiText-effect-color, #uiText-overflow, #uiText-blend`);
@@ -184,11 +178,7 @@ import { UI } from '../ui/ui-window.ts';
 			case 'horizontalAlign':
 				if (node.horizontalAlign !== value) {
 					const event = window.event;
-					if (
-						event &&
-						event.type === 'input' &&
-						event.value !== undefined
-					) {
+					if (event && event.type === 'input' && event.value !== undefined) {
 						UI.history.save({
 							type: 'inspector-change',
 							editor: this,
@@ -210,11 +200,7 @@ import { UI } from '../ui/ui-window.ts';
 			case 'verticalAlign':
 				if (node.verticalAlign !== value) {
 					const event = window.event;
-					if (
-						event &&
-						event.type === 'input' &&
-						event.value !== undefined
-					) {
+					if (event && event.type === 'input' && event.value !== undefined) {
 						UI.history.save({
 							type: 'inspector-change',
 							editor: this,

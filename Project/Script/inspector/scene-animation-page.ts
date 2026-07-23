@@ -36,9 +36,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		]);
 
 		// 绑定条件列表
-		$('#sceneAnimation-conditions').bind(
-			new ConditionListInterface(this, Scene)
-		);
+		$('#sceneAnimation-conditions').bind(new ConditionListInterface(this, Scene));
 
 		// 绑定事件列表
 		$('#sceneAnimation-events').bind(new EventListInterface(this, Scene));
@@ -50,21 +48,11 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#sceneAnimation-parameter-pane').bind($('#sceneAnimation-scripts'));
 
 		// 同步滑动框和数字框的数值
-		$('#sceneAnimation-angle-slider').synchronize(
-			$('#sceneAnimation-angle')
-		);
-		$('#sceneAnimation-scale-slider').synchronize(
-			$('#sceneAnimation-scale')
-		);
-		$('#sceneAnimation-speed-slider').synchronize(
-			$('#sceneAnimation-speed')
-		);
-		$('#sceneAnimation-opacity-slider').synchronize(
-			$('#sceneAnimation-opacity')
-		);
-		$('#sceneAnimation-priority-slider').synchronize(
-			$('#sceneAnimation-priority')
-		);
+		$('#sceneAnimation-angle-slider').synchronize($('#sceneAnimation-angle'));
+		$('#sceneAnimation-scale-slider').synchronize($('#sceneAnimation-scale'));
+		$('#sceneAnimation-speed-slider').synchronize($('#sceneAnimation-speed'));
+		$('#sceneAnimation-opacity-slider').synchronize($('#sceneAnimation-opacity'));
+		$('#sceneAnimation-priority-slider').synchronize($('#sceneAnimation-priority'));
 
 		// 侦听事件
 		$('#sceneAnimation-animationId').on('write', this.animationIdWrite);
@@ -80,9 +68,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		elements.on('blur', Inspector.inputBlur(this, Scene));
 		sliders.on('focus', Inspector.sliderFocus);
 		sliders.on('blur', Inspector.sliderBlur);
-		$(
-			'#sceneAnimation-conditions, #sceneAnimation-events, #sceneAnimation-scripts'
-		).on('change', Scene.listChange);
+		$('#sceneAnimation-conditions, #sceneAnimation-events, #sceneAnimation-scripts').on(
+			'change',
+			Scene.listChange
+		);
 	};
 
 	// 创建动画
@@ -241,11 +230,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 参数 - 输入事件
 	SceneAnimation.paramInput = function (event) {
-		SceneAnimation.update(
-			SceneAnimation.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		SceneAnimation.update(SceneAnimation.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.sceneAnimation = SceneAnimation;

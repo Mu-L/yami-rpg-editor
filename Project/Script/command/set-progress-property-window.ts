@@ -22,12 +22,8 @@ export const ProgressBarProperty = createPropertyWindow({
 		{ name: 'Color Alpha', value: 'color-3', default: 0 }
 	],
 	init() {
-		$('#setProgressBar-property-display').loadItems(
-			$('#uiProgressBar-display').dataItems
-		);
-		$('#setProgressBar-property-blend').loadItems(
-			$('#uiProgressBar-blend').dataItems
-		);
+		$('#setProgressBar-property-display').loadItems($('#uiProgressBar-display').dataItems);
+		$('#setProgressBar-property-blend').loadItems($('#uiProgressBar-blend').dataItems);
 	},
 	parsers: {
 		image: (value) => Command.parseFileName(value),

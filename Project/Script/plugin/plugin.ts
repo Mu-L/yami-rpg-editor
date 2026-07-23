@@ -232,18 +232,14 @@ PluginManager.createOverview = function (meta, detailed) {
 			const p = guidMap[id]?.overview?.plugin;
 			if (p) loaded.add(p);
 		}
-		const missing = meta.overview.requires.filter(
-			(req) => !loaded.has(req.plugin)
-		);
+		const missing = meta.overview.requires.filter((req) => !loaded.has(req.plugin));
 		if (missing.length) {
 			if (elements.length) {
 				elements.push(document.createTextNode('\n\n'));
 			}
 			const warn = document.createElement('text');
 			warn.addClass('plugin-require-warn');
-			warn.textContent =
-				get('requireMissing') +
-				missing.map((req) => req.plugin).join(', ');
+			warn.textContent = get('requireMissing') + missing.map((req) => req.plugin).join(', ');
 			elements.push(warn);
 		}
 	}
@@ -327,8 +323,7 @@ PluginManager.createOverview = function (meta, detailed) {
 						const types = parameter.filter.split(' ');
 						for (let i = 0; i < types.length; i++) {
 							if (i !== 0) {
-								const elSeparator =
-									document.createElement('text');
+								const elSeparator = document.createElement('text');
 								elSeparator.textContent = '|';
 								elSeparator.addClass('plugin-label');
 								elWrap.appendChild(elSeparator);
@@ -507,10 +502,7 @@ PluginManager.parseMeta = (function IIFE() {
 			const values = [];
 			const slices = set.split(separator);
 			for (const slice of slices) {
-				const value =
-					parseString(slice) ??
-					parseNumber(slice) ??
-					parseBoolean(slice);
+				const value = parseString(slice) ?? parseNumber(slice) ?? parseBoolean(slice);
 				if (value !== null) {
 					values.append(value);
 				}
@@ -543,10 +535,7 @@ PluginManager.parseMeta = (function IIFE() {
 			case 'string':
 				return parseString(content);
 			case 'option': {
-				const value =
-					parseString(content) ??
-					parseNumber(content) ??
-					parseBoolean(content);
+				const value = parseString(content) ?? parseNumber(content) ?? parseBoolean(content);
 				return parameter.options.includes(value) ? value : null;
 			}
 			case 'number[]':
@@ -905,10 +894,7 @@ PluginManager.parseMeta = (function IIFE() {
 					try {
 						if (val[0] === '/' && val.lastIndexOf('/') > 0) {
 							const lst = val.lastIndexOf('/');
-							validate.pattern = new RegExp(
-								val.slice(1, lst),
-								val.slice(lst + 1)
-							);
+							validate.pattern = new RegExp(val.slice(1, lst), val.slice(lst + 1));
 						} else {
 							validate.pattern = new RegExp(val);
 						}
@@ -1062,9 +1048,7 @@ PluginManager.parseMeta = (function IIFE() {
 			const { options } = owner;
 			for (const value of values) {
 				if (options.includes(value)) {
-					map[value] === undefined
-						? (map[value] = [key])
-						: map[value].append(key);
+					map[value] === undefined ? (map[value] = [key]) : map[value].append(key);
 				}
 			}
 		}
@@ -1331,18 +1315,12 @@ PluginManager.reconstruct = (function IIFE() {
 			case 'number':
 				if (typeof value === type) {
 					const { min, max, decimals } = parameter;
-					return (
-						Math.clamp(Math.roundTo(value, decimals), min, max) ===
-						value
-					);
+					return Math.clamp(Math.roundTo(value, decimals), min, max) === value;
 				}
 			case 'variable-number':
 				if (typeof value === 'number') {
 					const { min, max, decimals } = parameter;
-					return (
-						Math.clamp(Math.roundTo(value, decimals), min, max) ===
-						value
-					);
+					return Math.clamp(Math.roundTo(value, decimals), min, max) === value;
 				}
 				return VariableGetter.checkDataForPlugin(value);
 			case 'option':
@@ -1356,8 +1334,7 @@ PluginManager.reconstruct = (function IIFE() {
 			case 'attribute':
 			case 'attribute-key':
 				if (value === '') return true;
-				if (parameter.filter === 'any')
-					return !!Attribute.getAttribute(value);
+				if (parameter.filter === 'any') return !!Attribute.getAttribute(value);
 				return !!Attribute.getGroupAttribute(parameter.filter, value);
 			case 'attribute-group':
 				return value === '' || !!Attribute.getGroup(value);
@@ -1457,8 +1434,7 @@ PluginManager.reconstruct = (function IIFE() {
 				if (parameter.filter === 'any') {
 					if (Attribute.getAttribute(value)) return value;
 				} else {
-					if (Attribute.getGroupAttribute(parameter.filter, value))
-						return value;
+					if (Attribute.getGroupAttribute(parameter.filter, value)) return value;
 				}
 				return '';
 			case 'attribute-group':
@@ -1469,8 +1445,7 @@ PluginManager.reconstruct = (function IIFE() {
 				if (parameter.filter === 'any') {
 					if (Enum.getString(value)) return value;
 				} else {
-					if (Enum.getGroupString(parameter.filter, value))
-						return value;
+					if (Enum.getGroupString(parameter.filter, value)) return value;
 				}
 				return '';
 			case 'enum-group':
@@ -1588,20 +1563,11 @@ PluginManager.checkValidate = function (parameter, value) {
 	if (!parameter.validate) return true;
 	const v = parameter.validate;
 	if (v.notEmpty && (value === '' || value == null)) return false;
-	if (
-		v.minLength != null &&
-		typeof value === 'string' &&
-		value.length < v.minLength
-	)
+	if (v.minLength != null && typeof value === 'string' && value.length < v.minLength)
 		return false;
-	if (
-		v.maxLength != null &&
-		typeof value === 'string' &&
-		value.length > v.maxLength
-	)
+	if (v.maxLength != null && typeof value === 'string' && value.length > v.maxLength)
 		return false;
-	if (v.pattern && typeof value === 'string' && !v.pattern.test(value))
-		return false;
+	if (v.pattern && typeof value === 'string' && !v.pattern.test(value)) return false;
 	return true;
 };
 
@@ -1983,9 +1949,7 @@ PluginManager.list.updateTextNode = function (item) {
 
 // 列表 - 更新开关样式
 PluginManager.list.updateToggleStyle = function (item) {
-	return item.enabled
-		? item.element.removeClass('weak')
-		: item.element.addClass('weak');
+	return item.enabled ? item.element.removeClass('weak') : item.element.addClass('weak');
 };
 
 // 列表 - 创建编辑图标

@@ -790,11 +790,7 @@ UI.createShortcut = function (item) {
 
 // 删除对象
 UI.delete = function () {
-	if (
-		this.state === 'open' &&
-		this.target !== null &&
-		this.dragging === null
-	) {
+	if (this.state === 'open' && this.target !== null && this.dragging === null) {
 		this.list.delete(this.target);
 	}
 };
@@ -957,10 +953,7 @@ UI.revealTarget = (function IIFE() {
 			const toleranceY = 0.5 / this.scaleY;
 			const { centerX, centerY } = this;
 			// 目标和摄像机的位置不一定相等
-			if (
-				Math.abs(x - centerX) > toleranceX ||
-				Math.abs(y - centerY) > toleranceY
-			) {
+			if (Math.abs(x - centerX) > toleranceX || Math.abs(y - centerY) > toleranceY) {
 				timer.target = target;
 				timer.startX = centerX;
 				timer.startY = centerY;
@@ -1168,10 +1161,7 @@ UI.setControlPoint = function (point) {
 			case points.resize.TR:
 			case points.resize.BL:
 			case points.resize.BR: {
-				const angle = Math.modDegrees(
-					point.angle + this.controlPointRotation,
-					180
-				);
+				const angle = Math.modDegrees(point.angle + this.controlPointRotation, 180);
 				if (angle < 22.5 || angle >= 157.5) {
 					cursor = 'ew-resize';
 				} else if (angle < 67.5) {
@@ -1294,10 +1284,7 @@ UI.updateIndexedColor = function (index) {
 		const TextElement = UI.Text;
 		const regexp = new RegExp(`<color:${index}>`, 'i');
 		const update = (element) => {
-			if (
-				element instanceof TextElement &&
-				regexp.test(element.content)
-			) {
+			if (element instanceof TextElement && regexp.test(element.content)) {
 				element.printer.reset();
 				this.requestRendering();
 			}
@@ -1507,22 +1494,10 @@ UI.resize = function () {
 		const screenBox = CSS.getDevicePixelContentBoxSize(this.screen);
 		const screenWidth = screenBox.width;
 		const screenHeight = screenBox.height;
-		const paddingLeft = Math.max(
-			(screenWidth - innerWidth) >> 1,
-			scaledPadding
-		);
-		const paddingTop = Math.max(
-			(screenHeight - innerHeight) >> 1,
-			scaledPadding
-		);
-		const paddingRight = Math.max(
-			screenWidth - innerWidth - paddingLeft,
-			scaledPadding
-		);
-		const paddingBottom = Math.max(
-			screenHeight - innerHeight - paddingTop,
-			scaledPadding
-		);
+		const paddingLeft = Math.max((screenWidth - innerWidth) >> 1, scaledPadding);
+		const paddingTop = Math.max((screenHeight - innerHeight) >> 1, scaledPadding);
+		const paddingRight = Math.max(screenWidth - innerWidth - paddingLeft, scaledPadding);
+		const paddingBottom = Math.max(screenHeight - innerHeight - paddingTop, scaledPadding);
 		const outerWidth = innerWidth + paddingLeft + paddingRight;
 		const outerHeight = innerHeight + paddingTop + paddingBottom;
 		const dpr = window.devicePixelRatio;
@@ -1531,13 +1506,9 @@ UI.resize = function () {
 		this.outerWidth = outerWidth;
 		this.outerHeight = outerHeight;
 		this.centerOffsetX =
-			outerWidth > screenWidth
-				? screenWidth / 2
-				: paddingLeft + innerWidth / 2;
+			outerWidth > screenWidth ? screenWidth / 2 : paddingLeft + innerWidth / 2;
 		this.centerOffsetY =
-			outerHeight > screenHeight
-				? screenHeight / 2
-				: paddingTop + innerHeight / 2;
+			outerHeight > screenHeight ? screenHeight / 2 : paddingTop + innerHeight / 2;
 		this.paddingLeft = paddingLeft;
 		this.paddingTop = paddingTop;
 		this.marquee.style.width = `${outerWidth / dpr}px`;
@@ -1571,17 +1542,9 @@ UI.updateCamera = function (x = this.centerX, y = this.centerY) {
 	const scrollY = y * this.scaleY + this.paddingTop;
 	const toleranceForDPR = 0.0001;
 	screen.rawScrollLeft =
-		Math.clamp(
-			scrollX - this.centerOffsetX,
-			0,
-			this.outerWidth - GL.width
-		) / dpr;
+		Math.clamp(scrollX - this.centerOffsetX, 0, this.outerWidth - GL.width) / dpr;
 	screen.rawScrollTop =
-		Math.clamp(
-			scrollY - this.centerOffsetY,
-			0,
-			this.outerHeight - GL.height
-		) / dpr;
+		Math.clamp(scrollY - this.centerOffsetY, 0, this.outerHeight - GL.height) / dpr;
 	screen.scrollLeft = (scrollX - (GL.width >> 1) + toleranceForDPR) / dpr;
 	screen.scrollTop = (scrollY - (GL.height >> 1) + toleranceForDPR) / dpr;
 };
@@ -1948,9 +1911,7 @@ UI.drawControlPoints = function () {
 		}
 		gl.blend = 'normal';
 		const program = gl.imageProgram.use();
-		const matrix = gl.matrix
-			.project(gl.flip, gl.width, gl.height)
-			.multiply(UI.matrix);
+		const matrix = gl.matrix.project(gl.flip, gl.width, gl.height).multiply(UI.matrix);
 		gl.bindVertexArray(program.vao);
 		gl.uniformMatrix3fv(program.u_Matrix, false, matrix);
 		gl.uniform1i(program.u_LightMode, 0);
@@ -1964,10 +1925,7 @@ UI.drawControlPoints = function () {
 
 // 选择控制点
 UI.selectControlPoint = function (x, y) {
-	if (
-		this.target !== null &&
-		!(this.target.class === 'reference' && this.target.synchronous)
-	) {
+	if (this.target !== null && !(this.target.class === 'reference' && this.target.synchronous)) {
 		const radius = 6 / this.scale;
 		const { list } = this.controlPoints;
 		for (let i = list.length - 1; i >= 0; i--) {
@@ -2056,9 +2014,7 @@ UI.saveToConfig = function (config) {
 
 // 从配置文件中加载状态
 UI.loadFromConfig = function (config) {
-	this.background = new StageColor(config.colors.uiBackground, () =>
-		this.requestRendering()
-	);
+	this.background = new StageColor(config.colors.uiBackground, () => this.requestRendering());
 	this.foreground = new StageColor(config.colors.uiForeground, () => {
 		if (this.state === 'open') {
 			this.root.resize();
@@ -2275,14 +2231,8 @@ UI.screenKeydown = function (event) {
 							break;
 					}
 					if (event.cmdOrCtrlKey) {
-						const ax = Math.roundTo(
-							transform.anchorX - offsetX * 0.5,
-							4
-						);
-						const ay = Math.roundTo(
-							transform.anchorY - offsetY * 0.5,
-							4
-						);
+						const ax = Math.roundTo(transform.anchorX - offsetX * 0.5, 4);
+						const ay = Math.roundTo(transform.anchorY - offsetY * 0.5, 4);
 						return this.shiftAnchor(ax, ay);
 					}
 					if (event.shiftKey) {
@@ -2397,13 +2347,9 @@ UI.marqueePointerdown = function (event) {
 					case points.rotate.BL:
 					case points.rotate.BR: {
 						const { instance } = this.target;
-						const matrix = Matrix.instance
-							.set(UI.matrix)
-							.multiply(instance.matrix);
-						const X =
-							instance.x + instance.width * transform.anchorX;
-						const Y =
-							instance.y + instance.height * transform.anchorY;
+						const matrix = Matrix.instance.set(UI.matrix).multiply(instance.matrix);
+						const X = instance.x + instance.width * transform.anchorX;
+						const Y = instance.y + instance.height * transform.anchorY;
 						const a = matrix[0];
 						const b = matrix[1];
 						const c = matrix[3];
@@ -2417,10 +2363,7 @@ UI.marqueePointerdown = function (event) {
 						event.mode = 'object-rotate';
 						event.absoluteAnchorX = ax;
 						event.absoluteAnchorY = ay;
-						event.lastAngle = Math.atan2(
-							y * dpr - ay,
-							x * dpr - ax
-						);
+						event.lastAngle = Math.atan2(y * dpr - ay, x * dpr - ax);
 						event.rotationRadians = 0;
 						event.startRotation = transform.rotation;
 						break;
@@ -2562,14 +2505,10 @@ UI.pointermove = function (event) {
 					const distX = x * dpr - dragging.absoluteAnchorX;
 					const distY = y * dpr - dragging.absoluteAnchorY;
 					const currentAngle = Math.atan2(distY, distX);
-					const angle = Math.modRadians(
-						currentAngle - dragging.lastAngle
-					);
-					dragging.rotationRadians +=
-						angle < Math.PI ? angle : angle - Math.PI * 2;
+					const angle = Math.modRadians(currentAngle - dragging.lastAngle);
+					dragging.rotationRadians += angle < Math.PI ? angle : angle - Math.PI * 2;
 					let rotation = Math.round(
-						dragging.startRotation +
-							Math.degrees(dragging.rotationRadians)
+						dragging.startRotation + Math.degrees(dragging.rotationRadians)
 					);
 					if (event.shiftKey) {
 						rotation = Math.round(rotation / 15) * 15;
@@ -2587,15 +2526,9 @@ UI.pointermove = function (event) {
 					const { parent, transform } = instance;
 					const points = this.controlPoints;
 					const point = this.controlPointActive;
-					const angle = Math.radians(
-						point.angle + this.controlPointRotation
-					);
-					const distX =
-						((event.clientX - dragging.clientX) * dpr) /
-						this.scaleX;
-					const distY =
-						((event.clientY - dragging.clientY) * dpr) /
-						this.scaleY;
+					const angle = Math.radians(point.angle + this.controlPointRotation);
+					const distX = ((event.clientX - dragging.clientX) * dpr) / this.scaleX;
+					const distY = ((event.clientY - dragging.clientY) * dpr) / this.scaleY;
 					const dist = Math.sqrt(distX ** 2 + distY ** 2);
 					const distAngle = Math.atan2(distY, distX);
 					const scaleX = Math.abs(transform.scaleX) || 1;
@@ -2626,26 +2559,19 @@ UI.pointermove = function (event) {
 						case points.resize.BR:
 							if (event.shiftKey) {
 								const rectWidth =
-									dragging.startWidth +
-									parent.width * transform.width2;
+									dragging.startWidth + parent.width * transform.width2;
 								const rectHeight =
-									dragging.startHeight +
-									parent.height * transform.height2;
-								const aspectAngle = Math.atan2(
-									rectHeight,
-									rectWidth
-								);
+									dragging.startHeight + parent.height * transform.height2;
+								const aspectAngle = Math.atan2(rectHeight, rectWidth);
 								let startAngle;
 								switch (point) {
 									case points.resize.TL:
 									case points.resize.BR:
-										startAngle =
-											angle - Math.PI / 4 + aspectAngle;
+										startAngle = angle - Math.PI / 4 + aspectAngle;
 										break;
 									case points.resize.TR:
 									case points.resize.BL:
-										startAngle =
-											angle + Math.PI / 4 - aspectAngle;
+										startAngle = angle + Math.PI / 4 - aspectAngle;
 										break;
 								}
 								const includedAngle = distAngle - startAngle;
@@ -2675,22 +2601,12 @@ UI.pointermove = function (event) {
 							break;
 					}
 					if (width !== undefined) {
-						const minWidth = -Math.ceil(
-							parent.width * transform.width2
-						);
-						width = Math.max(
-							Math.round(dragging.startWidth + width),
-							minWidth
-						);
+						const minWidth = -Math.ceil(parent.width * transform.width2);
+						width = Math.max(Math.round(dragging.startWidth + width), minWidth);
 					}
 					if (height !== undefined) {
-						const minHeight = -Math.ceil(
-							parent.height * transform.height2
-						);
-						height = Math.max(
-							Math.round(dragging.startHeight + height),
-							minHeight
-						);
+						const minHeight = -Math.ceil(parent.height * transform.height2);
+						height = Math.max(Math.round(dragging.startHeight + height), minHeight);
 					}
 					if (
 						(width !== undefined && transform.width !== width) ||
@@ -2715,21 +2631,15 @@ UI.pointermove = function (event) {
 				}
 				if (this.target) {
 					const transform = this.target.transform;
-					const distX =
-						((event.clientX - dragging.clientX) * dpr) /
-						this.scaleX;
-					const distY =
-						((event.clientY - dragging.clientY) * dpr) /
-						this.scaleY;
+					const distX = ((event.clientX - dragging.clientX) * dpr) / this.scaleX;
+					const distY = ((event.clientY - dragging.clientY) * dpr) / this.scaleY;
 					let x;
 					let y;
 					if (event.shiftKey) {
 						const angle = Math.atan2(distY, distX);
 						const directions = 4;
-						const proportion =
-							Math.modRadians(angle) / (Math.PI * 2);
-						const section =
-							(proportion * directions + 0.5) % directions;
+						const proportion = Math.modRadians(angle) / (Math.PI * 2);
+						const section = (proportion * directions + 0.5) % directions;
 						switch (Math.floor(section)) {
 							case 0:
 							case 2:
@@ -2754,10 +2664,7 @@ UI.pointermove = function (event) {
 			case 'ready-to-scroll': {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
-				this.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				this.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				if (Math.sqrt(distX ** 2 + distY ** 2) > 4) {
 					dragging.mode = 'scroll';
 					Cursor.open('cursor-grab');
@@ -2768,10 +2675,7 @@ UI.pointermove = function (event) {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
 				this.screen.beginScrolling();
-				this.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				this.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				break;
 			}
 		}
@@ -3021,16 +2925,8 @@ UI.listPointerdown = function (event) {
 				case 'VISIBILITY-ICON': {
 					const { item } = element.parentNode;
 					const { instance, hidden } = item;
-					const backups1 = this.setRecursiveStates(
-						item,
-						'hidden',
-						!hidden
-					);
-					const backups2 = this.setRecursiveStates(
-						instance,
-						'visible',
-						hidden
-					);
+					const backups1 = this.setRecursiveStates(item, 'hidden', !hidden);
+					const backups2 = this.setRecursiveStates(instance, 'visible', hidden);
 					const length = Math.max(backups1.length, backups2.length);
 					for (let i = 0; i < length; i++) {
 						if (backups1[i] === backups2[i]) {
@@ -3052,11 +2948,7 @@ UI.listPointerdown = function (event) {
 				case 'LOCK-ICON': {
 					const { item } = element.parentNode;
 					const { locked } = item;
-					const backups = this.setRecursiveStates(
-						item,
-						'locked',
-						!locked
-					);
+					const backups = this.setRecursiveStates(item, 'locked', !locked);
 					this.update();
 					this.dispatchChangeEvent();
 					UI.history.save({

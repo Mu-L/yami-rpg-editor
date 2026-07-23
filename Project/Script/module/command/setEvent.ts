@@ -37,9 +37,7 @@ Command.cases.setEvent = new CommandSchema({
 			]);
 	},
 	customParse({ operation, variable, eventId, choiceIndex }) {
-		const words = Command.words.push(
-			Local.get('command.setEvent.' + operation)
-		);
+		const words = Command.words.push(Local.get('command.setEvent.' + operation));
 		switch (operation) {
 			case 'pause':
 				words.push(Command.parseVariable(variable, 'object', true));

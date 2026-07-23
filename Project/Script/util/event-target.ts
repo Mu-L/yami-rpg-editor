@@ -28,11 +28,7 @@
 						Math.abs(event.clientY - last.clientY) < 4 &&
 						this.isInContent(event)
 					) {
-						if (
-							!event.target.dispatchEvent(
-								new PointerEvent('doubleclick', event)
-							)
-						) {
+						if (!event.target.dispatchEvent(new PointerEvent('doubleclick', event))) {
 							event.preventDefault();
 						}
 						last = null;

@@ -2,21 +2,12 @@
 	<title-bar>Create Element<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Operation</text
-			><select-box id="createElement-operation"></select-box>
-			<text>Parent</text
-			><custom-box id="createElement-parent" type="element"></custom-box>
+			<text>Operation</text><select-box id="createElement-operation"></select-box>
+			<text>Parent</text><custom-box id="createElement-parent" type="element"></custom-box>
 			<text>UI Elements</text
-			><custom-box
-				id="createElement-uiId"
-				type="file"
-				filter="ui"
-			></custom-box>
+			><custom-box id="createElement-uiId" type="file" filter="ui"></custom-box>
 			<text>UI Element</text
-			><custom-box
-				id="createElement-presetId"
-				type="preset-element"
-			></custom-box>
+			><custom-box id="createElement-presetId" type="preset-element"></custom-box>
 		</grid-box>
 		<button id="createElement-confirm" name="confirm">Confirm</button>
 		<button id="createElement-cancel" name="cancel">Cancel</button>
@@ -26,10 +17,8 @@
 	<title-bar>Set Image<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setImage-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="setImage-properties"></param-list>
+			<text>Element</text><custom-box id="setImage-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setImage-properties"></param-list>
 		</grid-box>
 		<button id="setImage-confirm" name="confirm">Confirm</button>
 		<button id="setImage-cancel" name="cancel">Cancel</button>
@@ -39,27 +28,15 @@
 	<title-bar>Load Image<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="loadImage-element" type="element"></custom-box>
-			<text>Type</text><select-box id="loadImage-type"></select-box>
-			<text>Actor</text
-			><custom-box id="loadImage-actor" type="actor"></custom-box>
-			<text>Skill</text
-			><custom-box id="loadImage-skill" type="skill"></custom-box>
-			<text>State</text
-			><custom-box id="loadImage-state" type="state"></custom-box>
-			<text>Equipment</text
-			><custom-box id="loadImage-equipment" type="equipment"></custom-box>
-			<text>Item</text
-			><custom-box id="loadImage-item" type="item"></custom-box>
-			<text>Shortcut Key</text
-			><select-var id="loadImage-key"></select-var>
-			<text>Base64 Coding</text
-			><custom-box
-				id="loadImage-variable"
-				type="variable"
-				filter="string"
-			></custom-box>
+			<text>Element</text><custom-box id="loadImage-element" type="element"></custom-box>
+			<text>Type</text><select-box id="loadImage-type"></select-box> <text>Actor</text
+			><custom-box id="loadImage-actor" type="actor"></custom-box> <text>Skill</text
+			><custom-box id="loadImage-skill" type="skill"></custom-box> <text>State</text
+			><custom-box id="loadImage-state" type="state"></custom-box> <text>Equipment</text
+			><custom-box id="loadImage-equipment" type="equipment"></custom-box> <text>Item</text
+			><custom-box id="loadImage-item" type="item"></custom-box> <text>Shortcut Key</text
+			><select-var id="loadImage-key"></select-var> <text>Base64 Coding</text
+			><custom-box id="loadImage-variable" type="variable" filter="string"></custom-box>
 		</grid-box>
 		<button id="loadImage-confirm" name="confirm">Confirm</button>
 		<button id="loadImage-cancel" name="cancel">Cancel</button>
@@ -69,39 +46,16 @@
 	<title-bar>Tint Image<close></close></title-bar>
 	<content-frame>
 		<grid-box id="tintImage-grid-box">
-			<text>Element</text
-			><custom-box id="tintImage-element" type="element"></custom-box>
-			<text>Mode</text><select-box id="tintImage-mode"></select-box>
-			<text>Tint - Red</text
-			><number-box
-				id="tintImage-tint-0"
-				min="-255"
-				max="255"
-				step="5"
-			></number-box>
+			<text>Element</text><custom-box id="tintImage-element" type="element"></custom-box>
+			<text>Mode</text><select-box id="tintImage-mode"></select-box> <text>Tint - Red</text
+			><number-box id="tintImage-tint-0" min="-255" max="255" step="5"></number-box>
 			<text>Tint - Green</text
-			><number-box
-				id="tintImage-tint-1"
-				min="-255"
-				max="255"
-				step="5"
-			></number-box>
+			><number-box id="tintImage-tint-1" min="-255" max="255" step="5"></number-box>
 			<text>Tint - Blue</text
-			><number-box
-				id="tintImage-tint-2"
-				min="-255"
-				max="255"
-				step="5"
-			></number-box>
+			><number-box id="tintImage-tint-2" min="-255" max="255" step="5"></number-box>
 			<text>Tint - Grayscale</text
-			><number-box
-				id="tintImage-tint-3"
-				min="0"
-				max="255"
-				step="5"
-			></number-box>
-			<text>Easing</text
-			><select-box id="tintImage-easingId" name="easing"></select-box>
+			><number-box id="tintImage-tint-3" min="0" max="255" step="5"></number-box>
+			<text>Easing</text><select-box id="tintImage-easingId" name="easing"></select-box>
 			<text>Duration</text
 			><number-box
 				id="tintImage-duration"
@@ -110,8 +64,7 @@
 				max="3600000"
 				unit="ms"
 			></number-box>
-			<text>Wait</text
-			><select-box id="tintImage-wait" name="wait"></select-box>
+			<text>Wait</text><select-box id="tintImage-wait" name="wait"></select-box>
 		</grid-box>
 		<filter-box id="tintImage-filter" width="96" height="208"></filter-box>
 		<button id="tintImage-confirm" name="confirm">Confirm</button>
@@ -122,10 +75,8 @@
 	<title-bar>Set Text<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setText-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="setText-properties"></param-list>
+			<text>Element</text><custom-box id="setText-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setText-properties"></param-list>
 		</grid-box>
 		<button id="setText-confirm" name="confirm">Confirm</button>
 		<button id="setText-cancel" name="cancel">Cancel</button>
@@ -135,10 +86,8 @@
 	<title-bar>Set Text Box<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setTextBox-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="setTextBox-properties"></param-list>
+			<text>Element</text><custom-box id="setTextBox-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setTextBox-properties"></param-list>
 		</grid-box>
 		<button id="setTextBox-confirm" name="confirm">Confirm</button>
 		<button id="setTextBox-cancel" name="cancel">Cancel</button>
@@ -148,10 +97,8 @@
 	<title-bar>Set Dialog Box<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setDialogBox-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="setDialogBox-properties"></param-list>
+			<text>Element</text><custom-box id="setDialogBox-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setDialogBox-properties"></param-list>
 		</grid-box>
 		<button id="setDialogBox-confirm" name="confirm">Confirm</button>
 		<button id="setDialogBox-cancel" name="cancel">Cancel</button>
@@ -161,10 +108,8 @@
 	<title-bar>Control Dialog<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="controlDialog-element" type="element"></custom-box>
-			<text>Operation</text
-			><select-box id="controlDialog-operation"></select-box>
+			<text>Element</text><custom-box id="controlDialog-element" type="element"></custom-box>
+			<text>Operation</text><select-box id="controlDialog-operation"></select-box>
 		</grid-box>
 		<button id="controlDialog-confirm" name="confirm">Confirm</button>
 		<button id="controlDialog-cancel" name="cancel">Cancel</button>
@@ -174,13 +119,8 @@
 	<title-bar>Set Progress Bar<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box
-				id="setProgressBar-element"
-				type="element"
-			></custom-box>
-			<text>Properties</text
-			><param-list id="setProgressBar-properties"></param-list>
+			<text>Element</text><custom-box id="setProgressBar-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setProgressBar-properties"></param-list>
 		</grid-box>
 		<button id="setProgressBar-confirm" name="confirm">Confirm</button>
 		<button id="setProgressBar-cancel" name="cancel">Cancel</button>
@@ -190,10 +130,8 @@
 	<title-bar>Set Button<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setButton-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="setButton-properties"></param-list>
+			<text>Element</text><custom-box id="setButton-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setButton-properties"></param-list>
 		</grid-box>
 		<button id="setButton-confirm" name="confirm">Confirm</button>
 		<button id="setButton-cancel" name="cancel">Cancel</button>
@@ -203,10 +141,8 @@
 	<title-bar>Control Button<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Operation</text
-			><select-box id="controlButton-operation"></select-box>
-			<text>Element</text
-			><custom-box id="controlButton-element" type="element"></custom-box>
+			<text>Operation</text><select-box id="controlButton-operation"></select-box>
+			<text>Element</text><custom-box id="controlButton-element" type="element"></custom-box>
 		</grid-box>
 		<button id="controlButton-confirm" name="confirm">Confirm</button>
 		<button id="controlButton-cancel" name="cancel">Cancel</button>
@@ -216,10 +152,8 @@
 	<title-bar>Set Animation<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setAnimation-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="setAnimation-properties"></param-list>
+			<text>Element</text><custom-box id="setAnimation-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setAnimation-properties"></param-list>
 		</grid-box>
 		<button id="setAnimation-confirm" name="confirm">Confirm</button>
 		<button id="setAnimation-cancel" name="cancel">Cancel</button>
@@ -229,10 +163,8 @@
 	<title-bar>Set Video<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setVideo-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="setVideo-properties"></param-list>
+			<text>Element</text><custom-box id="setVideo-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setVideo-properties"></param-list>
 		</grid-box>
 		<button id="setVideo-confirm" name="confirm">Confirm</button>
 		<button id="setVideo-cancel" name="cancel">Cancel</button>
@@ -242,10 +174,8 @@
 	<title-bar>Set Window<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setWindow-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="setWindow-properties"></param-list>
+			<text>Element</text><custom-box id="setWindow-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="setWindow-properties"></param-list>
 		</grid-box>
 		<button id="setWindow-confirm" name="confirm">Confirm</button>
 		<button id="setWindow-cancel" name="cancel">Cancel</button>
@@ -255,8 +185,7 @@
 	<title-bar>Wait For Video<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="waitForVideo-element" type="element"></custom-box>
+			<text>Element</text><custom-box id="waitForVideo-element" type="element"></custom-box>
 		</grid-box>
 		<button id="waitForVideo-confirm" name="confirm">Confirm</button>
 		<button id="waitForVideo-cancel" name="cancel">Cancel</button>
@@ -266,10 +195,8 @@
 	<title-bar>Set Element<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="setElement-element" type="element"></custom-box>
-			<text>Operation</text
-			><select-box id="setElement-operation"></select-box>
+			<text>Element</text><custom-box id="setElement-element" type="element"></custom-box>
+			<text>Operation</text><select-box id="setElement-operation"></select-box>
 		</grid-box>
 		<button id="setElement-confirm" name="confirm">Confirm</button>
 		<button id="setElement-cancel" name="cancel">Cancel</button>
@@ -292,12 +219,9 @@
 	<title-bar>Move Element<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Element</text
-			><custom-box id="moveElement-element" type="element"></custom-box>
-			<text>Properties</text
-			><param-list id="moveElement-properties"></param-list>
-			<text>Easing</text
-			><select-box id="moveElement-easingId" name="easing"></select-box>
+			<text>Element</text><custom-box id="moveElement-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="moveElement-properties"></param-list>
+			<text>Easing</text><select-box id="moveElement-easingId" name="easing"></select-box>
 			<text>Duration</text
 			><number-box
 				id="moveElement-duration"
@@ -306,8 +230,7 @@
 				max="3600000"
 				unit="ms"
 			></number-box>
-			<text>Wait</text
-			><select-box id="moveElement-wait" name="wait"></select-box>
+			<text>Wait</text><select-box id="moveElement-wait" name="wait"></select-box>
 		</grid-box>
 		<button id="moveElement-confirm" name="confirm">Confirm</button>
 		<button id="moveElement-cancel" name="cancel">Cancel</button>
@@ -317,10 +240,8 @@
 	<title-bar>Delete Element<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Operation</text
-			><select-box id="deleteElement-operation"></select-box>
-			<text>Element</text
-			><custom-box id="deleteElement-element" type="element"></custom-box>
+			<text>Operation</text><select-box id="deleteElement-operation"></select-box>
+			<text>Element</text><custom-box id="deleteElement-element" type="element"></custom-box>
 		</grid-box>
 		<button id="deleteElement-confirm" name="confirm">Confirm</button>
 		<button id="deleteElement-cancel" name="cancel">Cancel</button>
@@ -330,13 +251,9 @@
 	<title-bar>Set Pointer Event Root<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Operation</text
-			><select-box id="setPointerEventRoot-operation"></select-box>
+			<text>Operation</text><select-box id="setPointerEventRoot-operation"></select-box>
 			<text>Element</text
-			><custom-box
-				id="setPointerEventRoot-element"
-				type="element"
-			></custom-box>
+			><custom-box id="setPointerEventRoot-element" type="element"></custom-box>
 		</grid-box>
 		<button id="setPointerEventRoot-confirm" name="confirm">Confirm</button>
 		<button id="setPointerEventRoot-cancel" name="cancel">Cancel</button>
@@ -346,16 +263,10 @@
 	<title-bar>Set Focus<close></close></title-bar>
 	<content-frame>
 		<grid-box>
-			<text>Operation</text
-			><select-box id="setFocus-operation"></select-box>
-			<text>Element</text
-			><custom-box id="setFocus-element" type="element"></custom-box>
-			<text>Mode</text><select-box id="setFocus-mode"></select-box>
-			<text>Cancelable</text
-			><check-box
-				id="setFocus-cancelable"
-				class="standard large"
-			></check-box>
+			<text>Operation</text><select-box id="setFocus-operation"></select-box>
+			<text>Element</text><custom-box id="setFocus-element" type="element"></custom-box>
+			<text>Mode</text><select-box id="setFocus-mode"></select-box> <text>Cancelable</text
+			><check-box id="setFocus-cancelable" class="standard large"></check-box>
 		</grid-box>
 		<button id="setFocus-confirm" name="confirm">Confirm</button>
 		<button id="setFocus-cancel" name="cancel">Cancel</button>

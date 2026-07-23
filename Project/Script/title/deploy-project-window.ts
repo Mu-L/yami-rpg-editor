@@ -18,11 +18,7 @@ const _moduleURL = new URL(import.meta.url);
 const _modulePath =
 	_moduleURL.protocol === 'file:'
 		? fileURLToPath(_moduleURL)
-		: Path.resolve(
-				process.cwd(),
-				'Project',
-				_moduleURL.pathname.split('/').pop()
-			);
+		: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 const __dirname =
 	_moduleURL.protocol === 'file:'
 		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
@@ -131,17 +127,13 @@ Deployment.check = function () {
 	if (!folder) {
 		if (this.state !== 'unnamed') {
 			this.state = 'unnamed';
-			$('#deployment-warning').textContent = Local.get(
-				'confirmation.enterFolderName'
-			);
+			$('#deployment-warning').textContent = Local.get('confirmation.enterFolderName');
 			$('#deployment-confirm').disable();
 		}
 	} else if (FS.existsSync(Path.resolve(location, folder))) {
 		if (this.state !== 'existing') {
 			this.state = 'existing';
-			$('#deployment-warning').textContent = Local.get(
-				'confirmation.folderAlreadyExists'
-			);
+			$('#deployment-warning').textContent = Local.get('confirmation.folderAlreadyExists');
 			$('#deployment-confirm').disable();
 		}
 	} else {
@@ -158,37 +150,35 @@ Deployment.readShellList = (function IIFE() {
 	let root;
 	const options = { withFileTypes: true };
 	const read = (path, list) => {
-		return (FSP.readdir as any)(`${root}${path}`, options).then(
-			async (files: any[]) => {
-				if (path) {
-					path += '/';
-				}
-				const promises = [];
-				for (const file of files) {
-					const newPath = `${path}${file.name}`;
-					const srcPath = `${root}${newPath}`;
-					if (file.isDirectory()) {
-						list.push({
-							folder: true,
-							shell: true,
-							srcPath: srcPath,
-							newPath: newPath
-						});
-						promises.push(read(newPath, list));
-					} else {
-						list.push({
-							shell: true,
-							srcPath: srcPath,
-							newPath: newPath
-						});
-					}
-				}
-				if (promises.length !== 0) {
-					await Promise.all(promises);
-				}
-				return list;
+		return (FSP.readdir as any)(`${root}${path}`, options).then(async (files: any[]) => {
+			if (path) {
+				path += '/';
 			}
-		);
+			const promises = [];
+			for (const file of files) {
+				const newPath = `${path}${file.name}`;
+				const srcPath = `${root}${newPath}`;
+				if (file.isDirectory()) {
+					list.push({
+						folder: true,
+						shell: true,
+						srcPath: srcPath,
+						newPath: newPath
+					});
+					promises.push(read(newPath, list));
+				} else {
+					list.push({
+						shell: true,
+						srcPath: srcPath,
+						newPath: newPath
+					});
+				}
+			}
+			if (promises.length !== 0) {
+				await Promise.all(promises);
+			}
+			return list;
+		});
 	};
 	return function (rootDir) {
 		root = Path.resolve(__dirname, rootDir) + '/';
@@ -209,9 +199,7 @@ Deployment.readFileList = async function (platform) {
 	// 读取外壳文件列表
 	switch (platform) {
 		case 'windows-x64':
-			fileList = await this.readShellList(
-				Path.resolve(TemplatesPath, 'electron-win-x64')
-			);
+			fileList = await this.readShellList(Path.resolve(TemplatesPath, 'electron-win-x64'));
 			this.gamedir = 'resources/app/';
 			break;
 		case 'mac-universal':
@@ -500,11 +488,7 @@ Deployment.copyFilesTo = function (dirPath) {
 							})
 						);
 					} else {
-						switch (
-							extnameToTypeMap[
-								Path.extname(srcPath).toLowerCase()
-							]
-						) {
+						switch (extnameToTypeMap[Path.extname(srcPath).toLowerCase()]) {
 							case 'image':
 								// 避免加密应用图标文件
 								if (item.encrypt === false) {
@@ -512,39 +496,27 @@ Deployment.copyFilesTo = function (dirPath) {
 								}
 								promises.push(
 									(async () => {
-										const buffer =
-											await FSP.readFile(srcPath);
-										await FSP.writeFile(
-											dstPath,
-											Codec.encodeFile(buffer)
-										);
+										const buffer = await FSP.readFile(srcPath);
+										await FSP.writeFile(dstPath, Codec.encodeFile(buffer));
 										count++;
 										info = newPath;
 									})()
 								);
 								continue;
 							case 'script':
-								if (
-									this.compress &&
-									!srcPath.includes('.min.')
-								) {
+								if (this.compress && !srcPath.includes('.min.')) {
 									promises.push(
-										this.compressJavaScript(
-											srcPath,
-											dstPath
-										).then(() => {
+										this.compressJavaScript(srcPath, dstPath).then(() => {
 											count++;
 											info = newPath;
 										})
 									);
 								} else {
 									promises.push(
-										FSP.copyFile(srcPath, dstPath).then(
-											() => {
-												count++;
-												info = newPath;
-											}
-										)
+										FSP.copyFile(srcPath, dstPath).then(() => {
+											count++;
+											info = newPath;
+										})
 									);
 								}
 								continue;

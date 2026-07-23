@@ -20,9 +20,7 @@ export const ImageProperty = createPropertyWindow({
 		{ name: 'Clip Height', value: 'clip-3', default: 0 }
 	],
 	init() {
-		$('#setImage-property-display').loadItems(
-			$('#uiImage-display').dataItems
-		);
+		$('#setImage-property-display').loadItems($('#uiImage-display').dataItems);
 		$('#setImage-property-flip').loadItems($('#uiImage-flip').dataItems);
 		$('#setImage-property-blend').loadItems($('#uiImage-blend').dataItems);
 	},

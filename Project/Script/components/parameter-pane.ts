@@ -79,9 +79,7 @@ export class ParameterPane extends HTMLElement {
 		}
 		if (scriptList instanceof TreeList) {
 			this.getData = () => {
-				const item = (
-					scriptList as HTMLElement & { read(): any }
-				).read();
+				const item = (scriptList as HTMLElement & { read(): any }).read();
 				return item ? [item] : [];
 			};
 		}
@@ -97,9 +95,7 @@ export class ParameterPane extends HTMLElement {
 				if (input.key === key) {
 					input.write(parameters[key]);
 					(
-						this.scriptList as
-							| (HTMLElement & { dispatchChangeEvent(): void })
-							| null
+						this.scriptList as (HTMLElement & { dispatchChangeEvent(): void }) | null
 					)?.dispatchChangeEvent();
 					// 更新参数可见性
 					if (input.branched) {
@@ -243,17 +239,12 @@ export class ParameterPane extends HTMLElement {
 								parameters?: Record<string, any>;
 								key: string;
 							}
-						).parameters?.[
-							(input as HTMLElement & { key: string }).key
-						];
+						).parameters?.[(input as HTMLElement & { key: string }).key];
 						const ok =
 							val !== undefined &&
 							(
 								PluginManager as unknown as {
-									checkValidate(
-										param: any,
-										val: any
-									): boolean;
+									checkValidate(param: any, val: any): boolean;
 								}
 							).checkValidate(parameter, val);
 						if (ok) {
@@ -271,8 +262,7 @@ export class ParameterPane extends HTMLElement {
 						}
 					};
 					const nativeInput =
-						(input as HTMLElement & { input?: HTMLElement })
-							.input || input;
+						(input as HTMLElement & { input?: HTMLElement }).input || input;
 					nativeInput.addEventListener('input', validateInput);
 				}
 				children.push(inputWrap);
@@ -596,22 +586,15 @@ export class ParameterPane extends HTMLElement {
 				removeBtn.onclick = function (e: MouseEvent) {
 					e.stopPropagation();
 					row.remove();
-					container.dispatchEvent(
-						new Event('change', { bubbles: true })
-					);
+					container.dispatchEvent(new Event('change', { bubbles: true }));
 				};
 				row.appendChild(removeBtn);
 				const grid = document.createElement('detail-grid');
 				row.appendChild(grid);
 				(row as any).wraps = template.map((subParam: any) => {
-					const wrap = TypeRegistry.get(subParam.type).create(
-						pane,
-						subParam
-					);
+					const wrap = TypeRegistry.get(subParam.type).create(pane, subParam);
 					const val =
-						item[subParam.key] !== undefined
-							? item[subParam.key]
-							: subParam.value;
+						item[subParam.key] !== undefined ? item[subParam.key] : subParam.value;
 					(wrap as any).label.textContent = '';
 					(wrap as any).input.parameters = item;
 					(wrap as any).input.key = subParam.key;

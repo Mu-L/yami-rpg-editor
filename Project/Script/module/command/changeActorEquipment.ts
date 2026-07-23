@@ -32,10 +32,7 @@ Command.cases.changeActorEquipment = new CommandSchema({
 				},
 				{
 					case: 'add-instance',
-					targets: [
-						$('#changeActorEquipment-slot'),
-						$('#changeActorEquipment-equipment')
-					]
+					targets: [$('#changeActorEquipment-slot'), $('#changeActorEquipment-equipment')]
 				},
 				{
 					case: 'remove-instance',
@@ -53,10 +50,7 @@ Command.cases.changeActorEquipment = new CommandSchema({
 			.push(Local.get('command.changeActorEquipment.' + operation));
 		switch (operation) {
 			case 'add': {
-				const equipSlot = Command.parseVariableEnum(
-					'equipment-slot',
-					slot
-				);
+				const equipSlot = Command.parseVariableEnum('equipment-slot', slot);
 				const equipName = Command.parseFileName(equipmentId);
 				words.push(equipSlot + Token(' = ') + equipName);
 				break;
@@ -65,10 +59,7 @@ Command.cases.changeActorEquipment = new CommandSchema({
 				words.push(Command.parseFileName(equipmentId));
 				break;
 			case 'add-instance': {
-				const equipSlot = Command.parseVariableEnum(
-					'equipment-slot',
-					slot
-				);
+				const equipSlot = Command.parseVariableEnum('equipment-slot', slot);
 				const equipName = Command.parseEquipment(equipment);
 				words.push(equipSlot + Token(' = ') + equipName);
 				break;
@@ -93,9 +84,7 @@ Command.cases.changeActorEquipment = new CommandSchema({
 		equipmentId = '',
 		equipment = { type: 'trigger' }
 	}) {
-		$('#changeActorEquipment-slot').loadItems(
-			Enum.getStringItems('equipment-slot')
-		);
+		$('#changeActorEquipment-slot').loadItems(Enum.getStringItems('equipment-slot'));
 		const write = getElementWriter('changeActorEquipment');
 		write('actor', actor);
 		write('operation', operation);

@@ -48,10 +48,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 			.relate([
 				{
 					case: 'point',
-					targets: [
-						$('#sceneLight-range-box'),
-						$('#sceneLight-intensity-box')
-					]
+					targets: [$('#sceneLight-range-box'), $('#sceneLight-intensity-box')]
 				},
 				{
 					case: 'area',
@@ -67,9 +64,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 			]);
 
 		// 绑定条件列表
-		$('#sceneLight-conditions').bind(
-			new ConditionListInterface(this, Scene)
-		);
+		$('#sceneLight-conditions').bind(new ConditionListInterface(this, Scene));
 
 		// 绑定事件列表
 		$('#sceneLight-events').bind(new EventListInterface(this, Scene));
@@ -82,9 +77,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 		// 同步滑动框和数字框的数值
 		$('#sceneLight-range-slider').synchronize($('#sceneLight-range'));
-		$('#sceneLight-intensity-slider').synchronize(
-			$('#sceneLight-intensity')
-		);
+		$('#sceneLight-intensity-slider').synchronize($('#sceneLight-intensity'));
 		$('#sceneLight-anchorX-slider').synchronize($('#sceneLight-anchorX'));
 		$('#sceneLight-anchorY-slider').synchronize($('#sceneLight-anchorY'));
 		$('#sceneLight-width-slider').synchronize($('#sceneLight-width'));
@@ -259,11 +252,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 基本参数 - 输入事件
 	SceneLight.paramInput = function (event) {
-		SceneLight.update(
-			SceneLight.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		SceneLight.update(SceneLight.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.sceneLight = SceneLight;

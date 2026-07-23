@@ -19,11 +19,7 @@ const _moduleURL = new URL(import.meta.url);
 const _modulePath =
 	_moduleURL.protocol === 'file:'
 		? fileURLToPath(_moduleURL)
-		: Path.resolve(
-				process.cwd(),
-				'Project',
-				_moduleURL.pathname.split('/').pop()
-			);
+		: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 const __dirname =
 	_moduleURL.protocol === 'file:'
 		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
@@ -34,14 +30,8 @@ Updater.updateIncrementalChanges = function (version) {
 	const verNum = Updater.getVersionNumber(version);
 	const dstProjectDir = Path.dirname(Editor.config.project);
 	const srcProjectDir = Path.resolve(__dirname, 'Templates/arpg-ts-update');
-	const srcScriptDir = Path.resolve(
-		__dirname,
-		'Templates/arpg-ts-update/script'
-	);
-	const srcPluginDir = Path.resolve(
-		__dirname,
-		'Templates/arpg-ts-update/plugins'
-	);
+	const srcScriptDir = Path.resolve(__dirname, 'Templates/arpg-ts-update/script');
+	const srcPluginDir = Path.resolve(__dirname, 'Templates/arpg-ts-update/plugins');
 	const dstScriptDir = Path.resolve(dstProjectDir, 'Script');
 	const bakFolderDir = Path.resolve(dstProjectDir, `${version}.bak`);
 	const messages = [];
@@ -149,9 +139,7 @@ Updater.updateIncrementalChanges = function (version) {
 		}
 
 		'1.0.123'(update) {
-			this.logMessage(
-				'Fix the bug where the scene terrain was not applied.'
-			);
+			this.logMessage('Fix the bug where the scene terrain was not applied.');
 			if (!update) return;
 			this.copyScripts('scene.ts', 'actor.ts');
 		}
@@ -163,9 +151,7 @@ Updater.updateIncrementalChanges = function (version) {
 		}
 
 		'1.0.125'(update) {
-			this.logMessage(
-				'Fix a bug where a "touch event" was not mapped to a "mouse event".'
-			);
+			this.logMessage('Fix a bug where a "touch event" was not mapped to a "mouse event".');
 			if (!update) return;
 			this.copyScripts('util.ts', 'input.ts');
 		}
@@ -207,22 +193,13 @@ Updater.updateIncrementalChanges = function (version) {
 				'yami/yami.script.d.ts',
 				'yami/yami.webgl.d.ts'
 			);
-			this.copyPlugins(
-				'78ad4052c278d184',
-				'ad08a4def6200207',
-				'bc72195fc998f0af'
-			);
+			this.copyPlugins('78ad4052c278d184', 'ad08a4def6200207', 'bc72195fc998f0af');
 		}
 
 		'1.0.128'(update) {
 			this.logMessage('Secret!');
 			if (!update) return;
-			this.copyScripts(
-				'audio.ts',
-				'loader.ts',
-				'data.ts',
-				'yami/yami.data.d.ts'
-			);
+			this.copyScripts('audio.ts', 'loader.ts', 'data.ts', 'yami/yami.data.d.ts');
 		}
 
 		'1.0.129'(update) {
@@ -280,13 +257,7 @@ Updater.updateIncrementalChanges = function (version) {
 				'Updated the Russian language pack.'
 			);
 			if (!update) return;
-			this.copyScripts(
-				'scene.ts',
-				'event.ts',
-				'flow.ts',
-				'time.ts',
-				'util.ts'
-			);
+			this.copyScripts('scene.ts', 'event.ts', 'flow.ts', 'time.ts', 'util.ts');
 		}
 
 		'1.0.135'(update) {
@@ -362,12 +333,7 @@ Updater.updateIncrementalChanges = function (version) {
 				'Improved the implementation of "For Each" command to make it more reliable during jumps and exits.'
 			);
 			if (!update) return;
-			this.copyScripts(
-				'ui.ts',
-				'event.ts',
-				'command.ts',
-				'yami/yami.command.d.ts'
-			);
+			this.copyScripts('ui.ts', 'event.ts', 'command.ts', 'yami/yami.command.d.ts');
 		}
 
 		'1.0.146'(update) {
@@ -403,12 +369,7 @@ Updater.updateIncrementalChanges = function (version) {
 				'Improved the tilemap\'s "setTile" method so that setting a tile now updates surrounding autotiles.'
 			);
 			if (!update) return;
-			this.copyScripts(
-				'scene.ts',
-				'time.ts',
-				'ui.ts',
-				'yami/yami.scene.d.ts'
-			);
+			this.copyScripts('scene.ts', 'time.ts', 'ui.ts', 'yami/yami.scene.d.ts');
 		}
 	})();
 
@@ -416,11 +377,7 @@ Updater.updateIncrementalChanges = function (version) {
 	const currentMinorVer = verNum % 10000;
 	const latestMinorVer = verLatest % 10000;
 	const initialMinorVer = 122;
-	for (
-		let minorVer = latestMinorVer;
-		minorVer >= initialMinorVer;
-		minorVer--
-	) {
+	for (let minorVer = latestMinorVer; minorVer >= initialMinorVer; minorVer--) {
 		const version = `1.0.${minorVer}`;
 		const handler = updater[version];
 		if (handler) {

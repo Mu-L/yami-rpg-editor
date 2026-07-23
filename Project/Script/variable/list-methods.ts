@@ -31,10 +31,7 @@ Variable.list.delete = function (item) {
 		const get = Local.createGetter('confirmation');
 		Window.confirm(
 			{
-				message: get('deleteSingleFile').replace(
-					'<filename>',
-					item.name
-				)
+				message: get('deleteSingleFile').replace('<filename>', item.name)
 			},
 			[
 				{

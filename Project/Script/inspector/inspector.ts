@@ -97,8 +97,7 @@ Inspector.initialize = function () {
 		const { editor, target, changes } = data;
 		for (const change of changes) {
 			const input = change.input;
-			const value =
-				operation === 'undo' ? change.oldValue : change.newValue;
+			const value = operation === 'undo' ? change.oldValue : change.newValue;
 			if (editor.target === target) {
 				input.write(value);
 				input.dispatchEvent(new Event('input'));
@@ -351,9 +350,7 @@ Inspector.inputFocus = function (event) {
 		if (manager.focusing !== null) {
 			const id1 = manager.focusing.id;
 			const id2 = this.id;
-			return Log.throw(
-				new Error(`Inspector focus error: ${id1} -> ${id2}`)
-			);
+			return Log.throw(new Error(`Inspector focus error: ${id1} -> ${id2}`));
 		}
 		manager.focusing = this;
 		manager.oldValue = this.read();

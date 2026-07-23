@@ -44,17 +44,10 @@ Command.cases.switch = new CommandSchema({
 				{ children: defaultCommands }
 			);
 		}
-		contents.push(
-			{ color: 'flow' },
-			{ text: Local.get('command.switch.end') }
-		);
+		contents.push({ color: 'flow' }, { text: Local.get('command.switch.end') });
 		return contents;
 	},
-	customLoad({
-		variable = { type: 'local', key: '' },
-		branches = [],
-		defaultCommands = null
-	}) {
+	customLoad({ variable = { type: 'local', key: '' }, branches = [], defaultCommands = null }) {
 		const write = getElementWriter('switch');
 		write('variable', variable);
 		write('branches', branches.slice());

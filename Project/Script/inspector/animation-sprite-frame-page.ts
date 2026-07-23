@@ -25,18 +25,10 @@ import { Sprite } from '../sprite/sprite.ts';
 	// 初始化
 	AnimSpriteFrame.initialize = function () {
 		// 同步滑动框和数字框的数值
-		$('#animSpriteFrame-tint-0-slider').synchronize(
-			$('#animSpriteFrame-tint-0')
-		);
-		$('#animSpriteFrame-tint-1-slider').synchronize(
-			$('#animSpriteFrame-tint-1')
-		);
-		$('#animSpriteFrame-tint-2-slider').synchronize(
-			$('#animSpriteFrame-tint-2')
-		);
-		$('#animSpriteFrame-tint-3-slider').synchronize(
-			$('#animSpriteFrame-tint-3')
-		);
+		$('#animSpriteFrame-tint-0-slider').synchronize($('#animSpriteFrame-tint-0'));
+		$('#animSpriteFrame-tint-1-slider').synchronize($('#animSpriteFrame-tint-1'));
+		$('#animSpriteFrame-tint-2-slider').synchronize($('#animSpriteFrame-tint-2'));
+		$('#animSpriteFrame-tint-3-slider').synchronize($('#animSpriteFrame-tint-3'));
 
 		// 侦听事件
 		const elements = $(`
@@ -192,11 +184,7 @@ import { Sprite } from '../sprite/sprite.ts';
 
 	// 参数 - 输入事件
 	AnimSpriteFrame.paramInput = function (event) {
-		AnimSpriteFrame.update(
-			AnimSpriteFrame.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		AnimSpriteFrame.update(AnimSpriteFrame.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.animSpriteFrame = AnimSpriteFrame;

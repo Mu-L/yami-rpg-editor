@@ -6,12 +6,8 @@ const archiver = require('archiver');
 function showProgress(current, total, label = '进度') {
 	const percentage = Math.min((current / total) * 100, 100).toFixed(1);
 	const barLength = 50;
-	const filled = Math.min(
-		Math.floor((current / total) * barLength),
-		barLength
-	);
-	const bar =
-		'█'.repeat(filled) + '░'.repeat(Math.max(0, barLength - filled));
+	const filled = Math.min(Math.floor((current / total) * barLength), barLength);
+	const bar = '█'.repeat(filled) + '░'.repeat(Math.max(0, barLength - filled));
 	process.stdout.write(`\r${label}: [${bar}] ${percentage}%`);
 }
 

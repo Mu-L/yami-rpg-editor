@@ -188,70 +188,39 @@ Particle.Element = class ParticleElement {
 		this.fadeout = fadeout;
 		this.fadeoutTime = this.lifetime - fadeout;
 		this.globalAngle = emitter.angle;
-		this.scaleFactor =
-			ParticleElement.getRandomParameter(scale.factor) * emitter.scale;
-		this.scaleSpeed =
-			(ParticleElement.getRandomParameter(scale.speed) / 1e3) *
-			emitter.scale;
-		this.scaleAccel =
-			(ParticleElement.getRandomParameter(scale.accel) / 1e6) *
-			emitter.scale;
+		this.scaleFactor = ParticleElement.getRandomParameter(scale.factor) * emitter.scale;
+		this.scaleSpeed = (ParticleElement.getRandomParameter(scale.speed) / 1e3) * emitter.scale;
+		this.scaleAccel = (ParticleElement.getRandomParameter(scale.accel) / 1e6) * emitter.scale;
 		this.anchorX = ParticleElement.getRandomParameter(anchor.x);
 		this.anchorY = ParticleElement.getRandomParameter(anchor.y);
-		this.anchorSpeedX =
-			ParticleElement.getRandomParameter(anchor.speedX) / 1e3;
-		this.anchorSpeedY =
-			ParticleElement.getRandomParameter(anchor.speedY) / 1e3;
+		this.anchorSpeedX = ParticleElement.getRandomParameter(anchor.speedX) / 1e3;
+		this.anchorSpeedY = ParticleElement.getRandomParameter(anchor.speedY) / 1e3;
 		this.rotationAngle =
-			Math.radians(ParticleElement.getRandomParameter(rotation.angle)) +
-			emitter.angle;
-		this.rotationSpeed =
-			Math.radians(ParticleElement.getRandomParameter(rotation.speed)) /
-			1e3;
-		this.rotationAccel =
-			Math.radians(ParticleElement.getRandomParameter(rotation.accel)) /
-			1e6;
+			Math.radians(ParticleElement.getRandomParameter(rotation.angle)) + emitter.angle;
+		this.rotationSpeed = Math.radians(ParticleElement.getRandomParameter(rotation.speed)) / 1e3;
+		this.rotationAccel = Math.radians(ParticleElement.getRandomParameter(rotation.accel)) / 1e6;
 		this.hRotationOffsetX = 0;
 		this.hRotationOffsetY = 0;
-		this.hRotationRadius =
-			ParticleElement.getRandomParameter(hRotation.radius) *
-			emitter.scale;
+		this.hRotationRadius = ParticleElement.getRandomParameter(hRotation.radius) * emitter.scale;
 		this.hRotationExpansionSpeed =
-			(ParticleElement.getRandomParameter(hRotation.expansionSpeed) *
-				emitter.scale) /
-			1e3;
+			(ParticleElement.getRandomParameter(hRotation.expansionSpeed) * emitter.scale) / 1e3;
 		this.hRotationExpansionAccel =
-			(ParticleElement.getRandomParameter(hRotation.expansionAccel) *
-				emitter.scale) /
-			1e6;
-		this.hRotationAngle = Math.radians(
-			ParticleElement.getRandomParameter(hRotation.angle)
-		);
+			(ParticleElement.getRandomParameter(hRotation.expansionAccel) * emitter.scale) / 1e6;
+		this.hRotationAngle = Math.radians(ParticleElement.getRandomParameter(hRotation.angle));
 		this.hRotationAngularSpeed =
-			Math.radians(
-				ParticleElement.getRandomParameter(hRotation.angularSpeed)
-			) / 1e3;
+			Math.radians(ParticleElement.getRandomParameter(hRotation.angularSpeed)) / 1e3;
 		this.hRotationAngularAccel =
-			Math.radians(
-				ParticleElement.getRandomParameter(hRotation.angularAccel)
-			) / 1e6;
+			Math.radians(ParticleElement.getRandomParameter(hRotation.angularAccel)) / 1e6;
 		const movementAngle =
-			Math.radians(ParticleElement.getRandomParameter(movement.angle)) +
-			emitter.angle;
+			Math.radians(ParticleElement.getRandomParameter(movement.angle)) + emitter.angle;
 		const movementSpeed =
-			(ParticleElement.getRandomParameter(movement.speed) *
-				emitter.scale) /
-			1e3;
+			(ParticleElement.getRandomParameter(movement.speed) * emitter.scale) / 1e3;
 		this.movementSpeedX = movementSpeed * Math.cos(movementAngle);
 		this.movementSpeedY = movementSpeed * Math.sin(movementAngle);
 		const movementAccelAngle =
-			Math.radians(
-				ParticleElement.getRandomParameter(movement.accelAngle)
-			) + emitter.angle;
+			Math.radians(ParticleElement.getRandomParameter(movement.accelAngle)) + emitter.angle;
 		const movementAccel =
-			(ParticleElement.getRandomParameter(movement.accel) *
-				emitter.scale) /
-			1e6;
+			(ParticleElement.getRandomParameter(movement.accel) * emitter.scale) / 1e6;
 		this.movementAccelX = movementAccel * Math.cos(movementAccelAngle);
 		this.movementAccelY = movementAccel * Math.sin(movementAccelAngle);
 		this.opacity = 1;
@@ -299,13 +268,11 @@ Particle.Element = class ParticleElement {
 		this.y += this.movementSpeedY * deltaTime;
 
 		// 计算水平旋转
-		this.hRotationExpansionSpeed +=
-			this.hRotationExpansionAccel * deltaTime;
+		this.hRotationExpansionSpeed += this.hRotationExpansionAccel * deltaTime;
 		this.hRotationRadius += this.hRotationExpansionSpeed * deltaTime;
 		this.hRotationAngularSpeed += this.hRotationAngularAccel * deltaTime;
 		this.hRotationAngle += this.hRotationAngularSpeed * deltaTime;
-		const hRotationOffset =
-			this.hRotationRadius * Math.cos(this.hRotationAngle);
+		const hRotationOffset = this.hRotationRadius * Math.cos(this.hRotationAngle);
 		const hRotationOffsetX = hRotationOffset * Math.cos(this.globalAngle);
 		const hRotationOffsetY = hRotationOffset * Math.sin(this.globalAngle);
 		this.x += hRotationOffsetX - this.hRotationOffsetX;
@@ -330,8 +297,7 @@ Particle.Element = class ParticleElement {
 			case 'animation-loop':
 				if ((this.spriteElapsed += deltaTime) >= this.spriteInterval) {
 					this.spriteElapsed -= this.spriteInterval;
-					this.spriteFrame =
-						(this.spriteFrame + 1) % this.spriteCount;
+					this.spriteFrame = (this.spriteFrame + 1) % this.spriteCount;
 					this.updateSpriteFrame();
 				}
 				break;
@@ -543,9 +509,7 @@ Particle.Element = class ParticleElement {
 		const width = scrollRight - scrollLeft;
 		const height = scrollBottom - scrollTop;
 		const weightX = Math.abs(Math.sin(movementAngle) * width);
-		const weightY = Math.abs(
-			Math.sin(movementAngle - Math.PI / 2) * height
-		);
+		const weightY = Math.abs(Math.sin(movementAngle - Math.PI / 2) * height);
 		const threshold = weightX / (weightX + weightY);
 		const random = Math.random();
 		if (random < threshold) {
@@ -557,8 +521,7 @@ Particle.Element = class ParticleElement {
 			this.y -= forward ? vertices[3] - this.y : vertices[1] - this.y;
 		} else {
 			const forward = this.movementSpeedX >= 0;
-			this.y =
-				scrollTop + ((random - threshold) / (1 - threshold)) * height;
+			this.y = scrollTop + ((random - threshold) / (1 - threshold)) * height;
 			this.x = forward ? scrollLeft : scrollRight;
 			const vertices = this.computeBoundingRectangle();
 			this.y -= (vertices[1] + vertices[3]) / 2 - this.y;
@@ -607,11 +570,7 @@ Particle.Element = class ParticleElement {
 		}
 
 		// 处于屏幕外
-		if (
-			this.appeared ||
-			this.elapsed > 500 ||
-			this.elapsed >= this.lifetime
-		) {
+		if (this.appeared || this.elapsed > 500 || this.elapsed >= this.lifetime) {
 			this.appeared = false;
 			return false;
 		}

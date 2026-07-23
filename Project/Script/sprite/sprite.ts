@@ -278,13 +278,9 @@ Sprite.resize = function () {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.centerOffsetX =
-			outerWidth > screenWidth
-				? screenWidth / 2
-				: paddingLeft + innerWidth / 2;
+			outerWidth > screenWidth ? screenWidth / 2 : paddingLeft + innerWidth / 2;
 		this.centerOffsetY =
-			outerHeight > screenHeight
-				? screenHeight / 2
-				: paddingTop + innerHeight / 2;
+			outerHeight > screenHeight ? screenHeight / 2 : paddingTop + innerHeight / 2;
 		this.paddingLeft = paddingLeft;
 		this.paddingTop = paddingTop;
 
@@ -340,16 +336,8 @@ Sprite.getUnitCoords = (function IIFE() {
 		const suw = this.scaledUnitWidth;
 		const suh = this.scaledUnitHeight;
 		const dpr = window.devicePixelRatio;
-		point.x = Math.clamp(
-			Math.floor((coords.x * dpr) / suw),
-			0,
-			this.hframes - 1
-		);
-		point.y = Math.clamp(
-			Math.floor((coords.y * dpr) / suh),
-			0,
-			this.vframes - 1
-		);
+		point.x = Math.clamp(Math.floor((coords.x * dpr) / suw), 0, this.hframes - 1);
+		point.y = Math.clamp(Math.floor((coords.y * dpr) / suh), 0, this.vframes - 1);
 		return point;
 	};
 })();
@@ -363,17 +351,9 @@ Sprite.updateCamera = function (x = this.centerX, y = this.centerY) {
 	const toleranceX = this.scaledUnitWidth * 0.0001;
 	const toleranceY = this.scaledUnitHeight * 0.0001;
 	screen.rawScrollLeft =
-		Math.clamp(
-			scrollX - this.centerOffsetX,
-			0,
-			this.outerWidth - this.screenWidth
-		) / dpr;
+		Math.clamp(scrollX - this.centerOffsetX, 0, this.outerWidth - this.screenWidth) / dpr;
 	screen.rawScrollTop =
-		Math.clamp(
-			scrollY - this.centerOffsetY,
-			0,
-			this.outerHeight - this.screenHeight
-		) / dpr;
+		Math.clamp(scrollY - this.centerOffsetY, 0, this.outerHeight - this.screenHeight) / dpr;
 	screen.scrollLeft = (scrollX - (this.screenWidth >> 1) + toleranceX) / dpr;
 	screen.scrollTop = (scrollY - (this.screenHeight >> 1) + toleranceY) / dpr;
 };
@@ -394,14 +374,8 @@ Sprite.updateTransform = function () {
 	this.context.setTransform(1, 0, 0, 1, -left, -top);
 	const scrollX = screen.rawScrollLeft * dpr + this.centerOffsetX;
 	const scrollY = screen.rawScrollTop * dpr + this.centerOffsetY;
-	this.centerX = Math.roundTo(
-		(scrollX - this.paddingLeft) / this.scaledUnitWidth,
-		4
-	);
-	this.centerY = Math.roundTo(
-		(scrollY - this.paddingTop) / this.scaledUnitHeight,
-		4
-	);
+	this.centerX = Math.roundTo((scrollX - this.paddingLeft) / this.scaledUnitWidth, 4);
+	this.centerY = Math.roundTo((scrollY - this.paddingTop) / this.scaledUnitHeight, 4);
 };
 
 // 更新背景图像
@@ -409,11 +383,7 @@ Sprite.updateBackground = Palette.updateBackground;
 
 // 绘制精灵
 Sprite.drawSprite = function () {
-	if (
-		this.body.clientWidth > 0 &&
-		this.canvas.width !== 0 &&
-		this.canvas.height !== 0
-	) {
+	if (this.body.clientWidth > 0 && this.canvas.width !== 0 && this.canvas.height !== 0) {
 		// 擦除画布
 		const context = this.context;
 		const sl = this.scrollLeft;
@@ -635,16 +605,8 @@ Sprite.screenKeydown = function (event) {
 						break;
 				}
 				const marquee = Sprite.marquee;
-				const x = Math.clamp(
-					marquee.x + offsetX,
-					0,
-					Sprite.hframes - 1
-				);
-				const y = Math.clamp(
-					marquee.y + offsetY,
-					0,
-					Sprite.vframes - 1
-				);
+				const x = Math.clamp(marquee.x + offsetX, 0, Sprite.hframes - 1);
+				const y = Math.clamp(marquee.y + offsetY, 0, Sprite.vframes - 1);
 				if (marquee.x !== x || marquee.y !== y) {
 					Sprite.selectSprite(x, y);
 					Sprite.scrollToSelection();
@@ -752,10 +714,7 @@ Sprite.pointermove = function (event) {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
 				this.screen.beginScrolling();
-				this.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				this.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				break;
 			}
 		}

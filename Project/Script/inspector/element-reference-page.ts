@@ -103,11 +103,7 @@ import { UI } from '../ui/ui-window.ts';
 
 	// 参数 - 输入事件
 	UIReference.paramInput = function (event) {
-		UIReference.update(
-			UIReference.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		UIReference.update(UIReference.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.uiReference = UIReference;

@@ -143,9 +143,7 @@ Title.initialize = function () {
 	});
 
 	// 创建用来刷新拖动区域的辅助元素
-	this.target.element = this.target.appendChild(
-		document.createElement('div')
-	);
+	this.target.element = this.target.appendChild(document.createElement('div'));
 
 	// 设置标题栏为可拖动状态
 	this.pointerenter();

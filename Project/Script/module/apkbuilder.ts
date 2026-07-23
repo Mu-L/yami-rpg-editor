@@ -44,19 +44,13 @@ export const ApkBuilder = new (class {
 		return ipcRenderer.sendSync('isBuilding-apk');
 	}
 	processPathOnly(line: any) {
-		const pathPrefix = Path.resolve(
-			Path.dirname(Editor.config.project),
-			'apk'
-		);
+		const pathPrefix = Path.resolve(Path.dirname(Editor.config.project), 'apk');
 		if (typeof line === 'string' && line?.startsWith('@')) {
 			return Path.resolve(TemplatesPath, 'Apk', line.replace('@', '.'));
 		} else if (typeof line === 'string' && line?.startsWith('$')) {
 			return Path.resolve(pathPrefix, line.replace('$', '.'));
 		} else if (typeof line === 'string' && line?.startsWith('~')) {
-			return Path.resolve(
-				Path.dirname(Editor.config.project),
-				line.replace('~', '.')
-			);
+			return Path.resolve(Path.dirname(Editor.config.project), line.replace('~', '.'));
 		}
 		return line;
 	}

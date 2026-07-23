@@ -104,17 +104,10 @@ UI.Image = class ImageElement extends UI.Element {
 						);
 						break;
 					case 'tile':
-						texture.clip(
-							this.shiftX,
-							this.shiftY,
-							this.width,
-							this.height
-						);
+						texture.clip(this.shiftX, this.shiftY, this.width, this.height);
 						break;
 					case 'clip':
-						texture.clip(
-							...(this.clip as [number, number, number, number])
-						);
+						texture.clip(...(this.clip as [number, number, number, number]));
 						break;
 					case 'slice':
 						GL.drawSliceImage(

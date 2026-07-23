@@ -96,16 +96,8 @@ TileNode.open = function (nodes, image, offsetX, offsetY) {
 	}
 
 	// 计算窗口属性
-	contentWidth = Math.clamp(
-		contentWidth,
-		MIN_CONTENT_WIDTH,
-		MAX_CONTENT_WIDTH
-	);
-	contentHeight = Math.clamp(
-		contentHeight,
-		MIN_CONTENT_HEIGHT,
-		MAX_CONTENT_HEIGHT
-	);
+	contentWidth = Math.clamp(contentWidth, MIN_CONTENT_WIDTH, MAX_CONTENT_WIDTH);
+	contentHeight = Math.clamp(contentHeight, MIN_CONTENT_HEIGHT, MAX_CONTENT_HEIGHT);
 	windowFrame.style.width = `${contentWidth}px`;
 	windowFrame.style.height = `${contentHeight + 28}px`;
 	window.on('keydown', this.keydown);
@@ -445,10 +437,8 @@ TileNode.pointermove = function (event) {
 	if (dragging.relate(event)) {
 		switch (dragging.mode) {
 			case 'scroll':
-				dragging.screen.scrollLeft =
-					dragging.scrollLeft + dragging.clientX - event.clientX;
-				dragging.screen.scrollTop =
-					dragging.scrollTop + dragging.clientY - event.clientY;
+				dragging.screen.scrollLeft = dragging.scrollLeft + dragging.clientX - event.clientX;
+				dragging.screen.scrollTop = dragging.scrollTop + dragging.clientY - event.clientY;
 				break;
 		}
 	}

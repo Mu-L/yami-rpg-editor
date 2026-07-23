@@ -50,23 +50,13 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		]);
 
 		// 同步滑动框和数字框的数值
-		$('#sceneParallax-tint-0-slider').synchronize(
-			$('#sceneParallax-tint-0')
-		);
-		$('#sceneParallax-tint-1-slider').synchronize(
-			$('#sceneParallax-tint-1')
-		);
-		$('#sceneParallax-tint-2-slider').synchronize(
-			$('#sceneParallax-tint-2')
-		);
-		$('#sceneParallax-tint-3-slider').synchronize(
-			$('#sceneParallax-tint-3')
-		);
+		$('#sceneParallax-tint-0-slider').synchronize($('#sceneParallax-tint-0'));
+		$('#sceneParallax-tint-1-slider').synchronize($('#sceneParallax-tint-1'));
+		$('#sceneParallax-tint-2-slider').synchronize($('#sceneParallax-tint-2'));
+		$('#sceneParallax-tint-3-slider').synchronize($('#sceneParallax-tint-3'));
 
 		// 绑定条件列表
-		$('#sceneParallax-conditions').bind(
-			new ConditionListInterface(this, Scene)
-		);
+		$('#sceneParallax-conditions').bind(new ConditionListInterface(this, Scene));
 
 		// 绑定事件列表
 		$('#sceneParallax-events').bind(new EventListInterface(this, Scene));
@@ -98,9 +88,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		elements.on('blur', Inspector.inputBlur(this, Scene));
 		sliders.on('focus', Inspector.sliderFocus);
 		sliders.on('blur', Inspector.sliderBlur);
-		$(
-			'#sceneParallax-conditions, #sceneParallax-events, #sceneParallax-scripts'
-		).on('change', Scene.listChange);
+		$('#sceneParallax-conditions, #sceneParallax-events, #sceneParallax-scripts').on(
+			'change',
+			Scene.listChange
+		);
 	};
 
 	// 创建视差图
@@ -278,11 +269,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 参数 - 输入事件
 	SceneParallax.paramInput = function (event) {
-		SceneParallax.update(
-			SceneParallax.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		SceneParallax.update(SceneParallax.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.sceneParallax = SceneParallax;

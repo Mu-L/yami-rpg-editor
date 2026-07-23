@@ -24,8 +24,7 @@ import { Inspector } from './inspector.ts';
 	// 初始化
 	AnimJointFrame.initialize = function () {
 		// 侦听事件
-		const elements =
-			$(`#animJointFrame-x, #animJointFrame-y, #animJointFrame-rotation,
+		const elements = $(`#animJointFrame-x, #animJointFrame-y, #animJointFrame-rotation,
     #animJointFrame-scaleX, #animJointFrame-scaleY, #animJointFrame-opacity`);
 		elements.on('input', this.paramInput);
 		elements.on('focus', Inspector.inputFocus);
@@ -122,11 +121,7 @@ import { Inspector } from './inspector.ts';
 
 	// 参数 - 输入事件
 	AnimJointFrame.paramInput = function (event) {
-		AnimJointFrame.update(
-			AnimJointFrame.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		AnimJointFrame.update(AnimJointFrame.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.animJointFrame = AnimJointFrame;

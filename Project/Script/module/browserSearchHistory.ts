@@ -30,9 +30,7 @@ BrowserSearchHistory.bind = function (searcher) {
 BrowserSearchHistory.getInput = function (searcher) {
 	if (!searcher) return null;
 	return (
-		searcher.querySelector?.('.text-box-input') ??
-		searcher.querySelector?.('input') ??
-		searcher
+		searcher.querySelector?.('.text-box-input') ?? searcher.querySelector?.('input') ?? searcher
 	);
 };
 
@@ -95,9 +93,7 @@ BrowserSearchHistory.initThemeObserver = function () {
 		if (!this.dropdown) return;
 		const styles = this.getThemeStyles();
 		Object.assign(this.dropdown.style, styles.dropdown);
-		for (const item of this.dropdown.querySelectorAll(
-			'.browser-search-item'
-		)) {
+		for (const item of this.dropdown.querySelectorAll('.browser-search-item')) {
 			item.style.color = styles.item.color;
 			item.style.background = '';
 		}

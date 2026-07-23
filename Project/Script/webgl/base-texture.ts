@@ -26,17 +26,7 @@ export class BaseTexture {
 		GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, this.minFilter);
 		GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
 		GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
-		GL.texImage2D(
-			GL.TEXTURE_2D,
-			0,
-			format,
-			width,
-			height,
-			0,
-			format,
-			GL.UNSIGNED_BYTE,
-			null
-		);
+		GL.texImage2D(GL.TEXTURE_2D, 0, format, width, height, 0, format, GL.UNSIGNED_BYTE, null);
 	}
 
 	// 恢复图像纹理

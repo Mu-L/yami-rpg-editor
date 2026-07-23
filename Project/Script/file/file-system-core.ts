@@ -128,8 +128,7 @@ File.get = function (descriptor) {
 					const absPath = /^[A-Za-z]:[\\/]|^[/\\]/.test(cleanPath)
 						? cleanPath // 已是绝对路径（含盘符或 Unix 根）
 						: Path.resolve(
-								this.root ||
-									Path.resolve(process.cwd(), 'Project'),
+								this.root || Path.resolve(process.cwd(), 'Project'),
 								cleanPath
 							);
 					const content = fs.readFileSync(absPath, 'utf-8');
@@ -420,15 +419,13 @@ File.path = function (relativePath) {
 // vite proxy bypass 段用正则剥 #ver= 段后读磁盘；ver 仅做浏览器缓存 bust 不用读）
 File.route = function (relativePath) {
 	const isAbsolute = /^[A-Za-z]:[\\/]/.test(relativePath);
-	const base = (this.root || Path.resolve(process.cwd(), 'Project')).replace(
-		/[\\/]+$/,
-		''
-	);
+	const base = (this.root || Path.resolve(process.cwd(), 'Project')).replace(/[\\/]+$/, '');
 	// 绝对路径原样透传但剥连续斜杠（this.root 含尾 / + relativePath 含前 / 时拼出双斜杠，
 	// vite proxy readFileSync 找炸 ENOENT）；相对路径拼 base+'/'+relativePath
-	const route = (
-		isAbsolute ? relativePath : base + '/' + relativePath
-	).replace(/[\\/]{2,}/g, '/');
+	const route = (isAbsolute ? relativePath : base + '/' + relativePath).replace(
+		/[\\/]{2,}/g,
+		'/'
+	);
 	if ((import.meta as any).env?.DEV) {
 		// ?ver= 改 #ver= fragment 避被 URL 当 query 分隔；裸字符串让浏览器 src 自己编码
 		return `/local-file/?path=${route.replace(/\?ver=(\d+)$/, '#ver=$1')}`;

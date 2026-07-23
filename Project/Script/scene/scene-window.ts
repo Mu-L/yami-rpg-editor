@@ -1212,8 +1212,7 @@ Scene.paste = function (x, y) {
 				case 'particle':
 				case 'parallax':
 					data.x = Math.clamp(Math.floor(x), 0, this.width - 1) + 0.5;
-					data.y =
-						Math.clamp(Math.floor(y), 0, this.height - 1) + 0.5;
+					data.y = Math.clamp(Math.floor(y), 0, this.height - 1) + 0.5;
 					break;
 			}
 		});
@@ -1241,11 +1240,7 @@ Scene.create = function (kind, x, y) {
 
 // 删除对象
 Scene.delete = function () {
-	if (
-		this.state === 'open' &&
-		this.target !== null &&
-		this.dragging === null
-	) {
+	if (this.state === 'open' && this.target !== null && this.dragging === null) {
 		this.list.delete(this.target);
 	}
 };

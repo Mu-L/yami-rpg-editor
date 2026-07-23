@@ -1,11 +1,13 @@
 {
 	"name": "yami-rpg-editor",
 	"version": "1.0.0",
-	"main": "dist-electron/main.js",
-	"packageManager": "pnpm@10.13.1",
-	"productName": "Yami RPG Editor",
-	"author": "Yami",
 	"description": "2D Game Editor",
+	"author": "Yami",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yami-pro/yami-rpg-editor.git"
+	},
+	"main": "dist-electron/main.js",
 	"scripts": {
 		"buildcss": "node scripts/build-css.js",
 		"buildmodule": "node scripts/build-module.js",
@@ -18,7 +20,8 @@
 		"prestart": "pnpm run buildcss && pnpm run buildmodule && pnpm run buildhtml",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",
-		"format": "prettier --write . --config .prettierrc.json",
+		"format": "oxfmt -c ./.oxfmtrc.json .",
+		"format:check": "oxfmt -c ./.oxfmtrc.json --check .",
 		"commitlint": "commitlint --config commitlint.config.js --edit ",
 		"build:win": "electron-builder --dir --win --x64",
 		"build:winexe": "electron-builder --win --x64",
@@ -40,24 +43,6 @@
 		"lint": "oxlint -c ./.oxlintrc.json .",
 		"lint:fix": "oxlint -c ./.oxlintrc.json --fix ."
 	},
-	"devDependencies": {
-		"@commitlint/cli": "^21.0.1",
-		"@commitlint/config-conventional": "^21.0.1",
-		"@types/node": "^22.19.19",
-		"@vitejs/plugin-legacy": "^8.2.1",
-		"archiver": "^7.0.1",
-		"concurrently": "^10.0.3",
-		"cross-env": "^10.1.0",
-		"electron": "^28.3.3",
-		"electron-builder": "^25.1.8",
-		"husky": "^9.1.7",
-		"lint-staged": "^16.4.0",
-		"oxlint": "^1.75.0",
-		"oxlint-tsgolint": "^7.0.2001",
-		"prettier": "^3.8.3",
-		"vite": "^8.1.5",
-		"wait-on": "^9.0.10"
-	},
 	"dependencies": {
 		"@typescript/typescript-win32-x64": "7.1.0-dev.20260723.1",
 		"axios": "^1.16.1",
@@ -75,10 +60,25 @@
 		"xml2js": "^0.6.2",
 		"yauzl": "^3.3.1"
 	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/yami-pro/yami-rpg-editor.git"
+	"devDependencies": {
+		"@commitlint/cli": "^21.0.1",
+		"@commitlint/config-conventional": "^21.0.1",
+		"@types/node": "^22.19.19",
+		"@vitejs/plugin-legacy": "^8.2.1",
+		"archiver": "^7.0.1",
+		"concurrently": "^10.0.3",
+		"cross-env": "^10.1.0",
+		"electron": "^28.3.3",
+		"electron-builder": "^25.1.8",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.4.0",
+		"oxfmt": "^0.60.0",
+		"oxlint": "^1.75.0",
+		"oxlint-tsgolint": "^7.0.2001",
+		"vite": "^8.1.5",
+		"wait-on": "^9.0.10"
 	},
+	"packageManager": "pnpm@10.13.1",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"electron",
@@ -165,5 +165,6 @@
 				"deb"
 			]
 		}
-	}
+	},
+	"productName": "Yami RPG Editor"
 }

@@ -13,12 +13,7 @@ interface TabDraggingEvent {
 			width: number;
 			height: number;
 		};
-		set(rect: {
-			left: number;
-			top: number;
-			width: number;
-			height: number;
-		}): void;
+		set(rect: { left: number; top: number; width: number; height: number }): void;
 	};
 	target: HTMLElement;
 	offsetX: number;
@@ -117,8 +112,7 @@ export class TabBar extends HTMLElement {
 		for (const item of this.data!) {
 			let tab = (item as TabItem).tab;
 			if (tab === undefined) {
-				tab = (item as TabItem).tab =
-					document.createElement('tab-item');
+				tab = (item as TabItem).tab = document.createElement('tab-item');
 				const text = document.createElement('tab-text');
 				text.textContent = this.parseTabName(item);
 				(
@@ -337,10 +331,7 @@ export class TabBar extends HTMLElement {
 					window.on('pointerup', this.windowPointerup);
 					return;
 				}
-				if (
-					element.tagName === 'TAB-ITEM' &&
-					!element.hasClass('selected')
-				) {
+				if (element.tagName === 'TAB-ITEM' && !element.hasClass('selected')) {
 					this.select((element as TabElement).item);
 				}
 				break;
@@ -384,9 +375,7 @@ export class TabBar extends HTMLElement {
 	// 拖拽开始事件
 	dragstart(event: DragEvent): void {
 		if (!this.dragging) {
-			const hint = document.createElement(
-				'drag-and-drop-hint'
-			) as HTMLElement & {
+			const hint = document.createElement('drag-and-drop-hint') as HTMLElement & {
 				target: HTMLElement;
 				position: 'before' | 'after';
 				measure(item: HTMLElement): {
@@ -395,12 +384,7 @@ export class TabBar extends HTMLElement {
 					width: number;
 					height: number;
 				};
-				set(rect: {
-					left: number;
-					top: number;
-					width: number;
-					height: number;
-				}): void;
+				set(rect: { left: number; top: number; width: number; height: number }): void;
 				hide(): HTMLElement;
 				addClass(name: string): boolean;
 				hasClass(name: string): boolean;
@@ -413,9 +397,7 @@ export class TabBar extends HTMLElement {
 			this.dragging = dragging;
 			Object.defineProperty(event, 'offsetX', { writable: true });
 			event.preventDefault = Function.empty as unknown as () => void;
-			(
-				event.dataTransfer as unknown as { hideDragImage(): void }
-			).hideDragImage();
+			(event.dataTransfer as unknown as { hideDragImage(): void }).hideDragImage();
 			hint.addClass('for-tab');
 			this.parentNode!.insertBefore(hint.hide(), this);
 			this.addClass('dragging');
@@ -444,9 +426,7 @@ export class TabBar extends HTMLElement {
 	dragenter(event: DragEvent): void {
 		if (this.dragging) {
 			event.preventDefault();
-			(
-				event.dataTransfer as unknown as { dropEffect: string }
-			).dropEffect = 'move';
+			(event.dataTransfer as unknown as { dropEffect: string }).dropEffect = 'move';
 		}
 	}
 
@@ -463,9 +443,7 @@ export class TabBar extends HTMLElement {
 		const { dragging } = this;
 		if (dragging) {
 			event.preventDefault();
-			(
-				event.dataTransfer as unknown as { dropEffect: string }
-			).dropEffect = 'move';
+			(event.dataTransfer as unknown as { dropEffect: string }).dropEffect = 'move';
 			if (dragging.offsetX === event.offsetX) {
 				return;
 			}
@@ -486,10 +464,7 @@ export class TabBar extends HTMLElement {
 				const position = offsetX < middle ? 'before' : 'after';
 				switch (position) {
 					case 'before':
-						if (
-							hint.target !== element ||
-							hint.position !== position
-						) {
+						if (hint.target !== element || hint.position !== position) {
 							if (element.previousSibling === dragging.target) {
 								return hint.hide();
 							}
@@ -502,10 +477,7 @@ export class TabBar extends HTMLElement {
 						}
 						break;
 					case 'after':
-						if (
-							hint.target !== element ||
-							hint.position !== position
-						) {
+						if (hint.target !== element || hint.position !== position) {
 							if (element.nextSibling === dragging.target) {
 								return hint.hide();
 							}
@@ -574,12 +546,7 @@ export class TabBar extends HTMLElement {
 			switch (dragging.mode) {
 				case 'close':
 					if (dragging.target === event.target) {
-						this.close(
-							(
-								(event.target as TabElement)
-									.parentNode as TabDragTarget
-							).item
-						);
+						this.close(((event.target as TabElement).parentNode as TabDragTarget).item);
 					}
 					break;
 				case 'popup':

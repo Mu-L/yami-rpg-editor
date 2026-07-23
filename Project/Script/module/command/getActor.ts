@@ -115,10 +115,7 @@ Command.cases.getActor = new CommandSchema({
 			case 'min-attribute-value':
 			case 'max-attribute-value':
 				return (
-					label +
-					Token('(') +
-					Command.parseAttributeKey('actor', attribute) +
-					Token(')')
+					label + Token('(') + Command.parseAttributeKey('actor', attribute) + Token(')')
 				);
 			case 'min-attribute-ratio':
 			case 'max-attribute-ratio':
@@ -164,10 +161,7 @@ Command.cases.getActor = new CommandSchema({
 			case 'friend':
 			case 'team':
 				words.push(
-					selectorLabel +
-						Token('(') +
-						Command.parseVariableTeam(teamId) +
-						Token(')')
+					selectorLabel + Token('(') + Command.parseVariableTeam(teamId) + Token(')')
 				);
 				break;
 			case 'any':
@@ -179,21 +173,13 @@ Command.cases.getActor = new CommandSchema({
 		switch (exclusion) {
 			case 'actor': {
 				const label = Local.get('command.getActor.exclude');
-				words.push(
-					label +
-						Token('(') +
-						Command.parseActor(exclusionActor) +
-						Token(')')
-				);
+				words.push(label + Token('(') + Command.parseActor(exclusionActor) + Token(')'));
 				break;
 			}
 			case 'team': {
 				const label = Local.get('command.getActor.exclude');
 				words.push(
-					label +
-						Token('(') +
-						Command.parseVariableTeam(exclusionTeamId) +
-						Token(')')
+					label + Token('(') + Command.parseVariableTeam(exclusionTeamId) + Token(')')
 				);
 				break;
 			}

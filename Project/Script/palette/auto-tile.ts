@@ -152,9 +152,7 @@ AutoTile.open = function ({ template, image, x, y }) {
 	this.offsetY = y;
 	this.updateCanvas();
 	this.templateList.update();
-	this.templateList.select(
-		this.getTemplateById(template) ?? this.templates[0]
-	);
+	this.templateList.select(this.getTemplateById(template) ?? this.templates[0]);
 	this.templateList.scrollToSelection();
 	$('#autoTile-image').getFocus();
 };
@@ -198,10 +196,7 @@ AutoTile.deleteTemplate = function (item) {
 		const get = Local.createGetter('confirmation');
 		Window.confirm(
 			{
-				message: get('deleteSingleFile').replace(
-					'<filename>',
-					item.name
-				)
+				message: get('deleteSingleFile').replace('<filename>', item.name)
 			},
 			[
 				{
@@ -889,8 +884,7 @@ AutoTile.framesPopup = function (event) {
 	const editable = selected && this.image instanceof Image;
 	const insertable = frames.length < this.frameMaximum;
 	const copyable = selected;
-	const pastable =
-		insertable && (Clipboard as any).has('yami.ruletile.frame');
+	const pastable = insertable && (Clipboard as any).has('yami.ruletile.frame');
 	const deletable = selected && frames.length > 1;
 	const get = Local.createGetter('menuAutoTileFrameList');
 	Menu.popup(

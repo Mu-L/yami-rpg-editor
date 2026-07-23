@@ -572,13 +572,9 @@ Palette.resize = function () {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.centerOffsetX =
-			outerWidth > screenWidth
-				? screenWidth / 2
-				: paddingLeft + innerWidth / 2;
+			outerWidth > screenWidth ? screenWidth / 2 : paddingLeft + innerWidth / 2;
 		this.centerOffsetY =
-			outerHeight > screenHeight
-				? screenHeight / 2
-				: paddingTop + innerHeight / 2;
+			outerHeight > screenHeight ? screenHeight / 2 : paddingTop + innerHeight / 2;
 		this.paddingLeft = paddingLeft;
 		this.paddingTop = paddingTop;
 
@@ -610,10 +606,7 @@ Palette.resize = function () {
 			this.context.textAlign = 'center';
 			this.context.textBaseline = 'middle';
 		}
-		this.context.font = `${Math.min(
-			scaledTileWidth >> 1,
-			scaledTileHeight >> 1
-		)}px sans-serif`;
+		this.context.font = `${Math.min(scaledTileWidth >> 1, scaledTileHeight >> 1)}px sans-serif`;
 		this.updateCamera();
 		this.updateTransform();
 		this.skipScrollEvent();
@@ -651,17 +644,9 @@ Palette.updateCamera = function (x = this.meta.x, y = this.meta.y) {
 	const toleranceX = this.scaledTileWidth * 0.0001;
 	const toleranceY = this.scaledTileHeight * 0.0001;
 	screen.rawScrollLeft =
-		Math.clamp(
-			scrollX - this.centerOffsetX,
-			0,
-			this.outerWidth - this.screenWidth
-		) / dpr;
+		Math.clamp(scrollX - this.centerOffsetX, 0, this.outerWidth - this.screenWidth) / dpr;
 	screen.rawScrollTop =
-		Math.clamp(
-			scrollY - this.centerOffsetY,
-			0,
-			this.outerHeight - this.screenHeight
-		) / dpr;
+		Math.clamp(scrollY - this.centerOffsetY, 0, this.outerHeight - this.screenHeight) / dpr;
 	screen.scrollLeft = (scrollX - (this.screenWidth >> 1) + toleranceX) / dpr;
 	screen.scrollTop = (scrollY - (this.screenHeight >> 1) + toleranceY) / dpr;
 };
@@ -682,14 +667,8 @@ Palette.updateTransform = function () {
 	this.context.setTransform(1, 0, 0, 1, -left, -top);
 	const scrollX = screen.rawScrollLeft * dpr + this.centerOffsetX;
 	const scrollY = screen.rawScrollTop * dpr + this.centerOffsetY;
-	this.meta.x = Math.roundTo(
-		(scrollX - this.paddingLeft) / this.scaledTileWidth,
-		4
-	);
-	this.meta.y = Math.roundTo(
-		(scrollY - this.paddingTop) / this.scaledTileHeight,
-		4
-	);
+	this.meta.x = Math.roundTo((scrollX - this.paddingLeft) / this.scaledTileWidth, 4);
+	this.meta.y = Math.roundTo((scrollY - this.paddingTop) / this.scaledTileHeight, 4);
 	Data.manifest.changed = true;
 };
 
@@ -737,10 +716,7 @@ Palette.createMarkCanvas = function () {
 		canvas.fontSize = size;
 		canvas.entries = [];
 		canvas.totalWidth = 0;
-		const positions: Record<string, any> = (canvas.positions = {} as Record<
-			string,
-			any
-		>);
+		const positions: Record<string, any> = (canvas.positions = {} as Record<string, any>);
 		const context = canvas.getContext('2d');
 		const font = `${size}px sans-serif`;
 		canvas.font = font;
@@ -822,11 +798,7 @@ Palette.ensureMarkPosition = function (canvas, text, key = text) {
 
 // 绘制图块组
 Palette.drawTileset = function () {
-	if (
-		this.body.clientWidth > 0 &&
-		this.canvas.width !== 0 &&
-		this.canvas.height !== 0
-	) {
+	if (this.body.clientWidth > 0 && this.canvas.width !== 0 && this.canvas.height !== 0) {
 		// 擦除画布
 		const context = this.context;
 		const sl = this.scrollLeft;
@@ -911,17 +883,7 @@ Palette.drawTiles = function () {
 							const sy = (tile.y + (frame >> 8)) * th;
 							const dx = x * stw;
 							const dy = y * sth;
-							context.drawImage(
-								image,
-								sx,
-								sy,
-								tw,
-								th,
-								dx,
-								dy,
-								stw,
-								sth
-							);
+							context.drawImage(image, sx, sy, tw, th, dx, dy, stw, sth);
 						} else if (image === undefined) {
 							const guid = tile.image;
 							const symbol = (images[guid] = Symbol());
@@ -1026,17 +988,7 @@ Palette.drawPriorities = function () {
 						const dx = (x + 0.5) * tw - dw / 2;
 						const dy = (y + 0.5) * th - oy;
 						const sy = i === activeIndex ? activeOffset : 0;
-						context.drawImage(
-							mark,
-							start,
-							sy,
-							width,
-							height,
-							dx,
-							dy,
-							dw,
-							fs
-						);
+						context.drawImage(mark, start, sy, width, height, dx, dy, dw, fs);
 					}
 				}
 				break;
@@ -1054,17 +1006,7 @@ Palette.drawPriorities = function () {
 						const dx = (x + 0.5) * tw - dw / 2;
 						const dy = (y + 0.5) * th - oy;
 						const sy = i === activeIndex ? activeOffset : 0;
-						context.drawImage(
-							mark,
-							start,
-							sy,
-							width,
-							height,
-							dx,
-							dy,
-							dw,
-							fs
-						);
+						context.drawImage(mark, start, sy, width, height, dx, dy, dw, fs);
 					}
 				}
 				break;
@@ -1122,24 +1064,13 @@ Palette.drawTags = function () {
 						const tag = (tags[i] ??= 0);
 						if (tag === 0) continue;
 						const position =
-							positions[tag] ??
-							this.ensureMarkPosition(mark, tag.toString(), tag);
+							positions[tag] ?? this.ensureMarkPosition(mark, tag.toString(), tag);
 						const { start, width, aspectRatio } = position;
 						const dw = fs * aspectRatio;
 						const dx = (x + 0.5) * tw - dw / 2;
 						const dy = (y + 0.5) * th - oy;
 						const sy = i === activeIndex ? activeOffset : 0;
-						context.drawImage(
-							mark,
-							start,
-							sy,
-							width,
-							height,
-							dx,
-							dy,
-							dw,
-							fs
-						);
+						context.drawImage(mark, start, sy, width, height, dx, dy, dw, fs);
 					}
 				}
 				break;
@@ -1152,24 +1083,13 @@ Palette.drawTags = function () {
 						const tag = tags[i];
 						if (tile === 0 || tag === 0) continue;
 						const position =
-							positions[tag] ??
-							this.ensureMarkPosition(mark, tag.toString(), tag);
+							positions[tag] ?? this.ensureMarkPosition(mark, tag.toString(), tag);
 						const { start, width, aspectRatio } = position;
 						const dw = fs * aspectRatio;
 						const dx = (x + 0.5) * tw - dw / 2;
 						const dy = (y + 0.5) * th - oy;
 						const sy = i === activeIndex ? activeOffset : 0;
-						context.drawImage(
-							mark,
-							start,
-							sy,
-							width,
-							height,
-							dx,
-							dy,
-							dw,
-							fs
-						);
+						context.drawImage(mark, start, sy, width, height, dx, dy, dw, fs);
 					}
 				}
 				break;
@@ -1330,10 +1250,7 @@ Palette.selectTiles = function (x, y, width, height) {
 	Scene.marquee.tilesetMap[1] = this.meta.guid;
 
 	// 更新场景选框
-	const marquee =
-		Scene.marquee.key === 'tile'
-			? Scene.marquee
-			: Scene.marquee.saveData.tile;
+	const marquee = Scene.marquee.key === 'tile' ? Scene.marquee : Scene.marquee.saveData.tile;
 	marquee.tiles = dTiles;
 	marquee.width = width;
 	marquee.height = height;
@@ -1365,10 +1282,7 @@ Palette.copyTilesFromScene = function (x, y, width, height) {
 	Scene.marquee.tilesetMap = Scene.tilemap.tilesetMap;
 
 	// 更新选框图块
-	const marquee =
-		Scene.marquee.key === 'tile'
-			? Scene.marquee
-			: Scene.marquee.saveData.tile;
+	const marquee = Scene.marquee.key === 'tile' ? Scene.marquee : Scene.marquee.saveData.tile;
 	marquee.tiles = dTiles;
 
 	// 设置图块属性
@@ -1386,11 +1300,7 @@ Palette.copyTilesFromScene = function (x, y, width, height) {
 // 翻转选框图块
 Palette.flipTiles = function () {
 	const marquee = Scene.marquee;
-	if (
-		Scene.state !== 'open' ||
-		Scene.dragging !== null ||
-		marquee.key !== 'tile'
-	) {
+	if (Scene.state !== 'open' || Scene.dragging !== null || marquee.key !== 'tile') {
 		return;
 	}
 	if (marquee.visible) {
@@ -1439,12 +1349,7 @@ Palette.openSelection = function () {
 		if (tile !== 0) {
 			const template = Data.autotiles.map[tile.template];
 			const image = this.images[tile.image];
-			if (
-				width === 1 &&
-				height === 1 &&
-				template !== undefined &&
-				image instanceof Image
-			) {
+			if (width === 1 && height === 1 && template !== undefined && image instanceof Image) {
 				TileNode.open(template.nodes, image, tile.x, tile.y);
 			}
 		}
@@ -1857,12 +1762,7 @@ Palette.screenKeydown = function (event) {
 							}
 							break;
 					}
-					if (
-						mx >= 0 &&
-						mx + mw <= hframes &&
-						my >= 0 &&
-						my + mh <= vframes
-					) {
+					if (mx >= 0 && mx + mw <= hframes && my >= 0 && my + mh <= vframes) {
 						marquee.select(mx, my, mw, mh);
 						Palette.selectTiles(mx, my, mw, mh);
 						Palette.scrollToSelection(true);
@@ -2023,18 +1923,13 @@ Palette.marqueePointerdown = function (event) {
 					event.mode = 'select';
 					window.on('pointerup', this.pointerup);
 					window.on('pointermove', this.pointermove);
-					this.screen.addScrollListener(
-						'both',
-						this.scaleX / 4,
-						false,
-						() => {
-							this.screen.beginScrolling();
-							this.updateTransform();
-							this.requestRendering();
-							this.screen.updateScrollbars();
-							this.pointermove(event.latest);
-						}
-					);
+					this.screen.addScrollListener('both', this.scaleX / 4, false, () => {
+						this.screen.beginScrolling();
+						this.updateTransform();
+						this.requestRendering();
+						this.screen.updateScrollbars();
+						this.pointermove(event.latest);
+					});
 					Scene.marquee.style.pointerEvents = 'none';
 					break;
 				case 'priority': {
@@ -2362,10 +2257,7 @@ Palette.pointermove = function (event) {
 			case 'ready-to-increase-terrain': {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
-				this.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				this.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				if (Math.sqrt(distX ** 2 + distY ** 2) > 4) {
 					dragging.mode = 'scroll';
 					Cursor.open('cursor-grab');
@@ -2376,10 +2268,7 @@ Palette.pointermove = function (event) {
 				const distX = event.clientX - dragging.clientX;
 				const distY = event.clientY - dragging.clientY;
 				this.screen.beginScrolling();
-				this.screen.setScroll(
-					dragging.scrollLeft - distX,
-					dragging.scrollTop - distY
-				);
+				this.screen.setScroll(dragging.scrollLeft - distX, dragging.scrollTop - distY);
 				break;
 			}
 			case 'edit': {
@@ -2416,18 +2305,13 @@ Palette.pointermove = function (event) {
 					const y = dragging.startY;
 					this.requestRendering();
 					this.marquee.customSelect('destination', x, y);
-					this.screen.addScrollListener(
-						'both',
-						this.scaleX / 4,
-						false,
-						() => {
-							this.screen.beginScrolling();
-							this.updateTransform();
-							this.requestRendering();
-							this.screen.updateScrollbars();
-							this.pointermove(dragging.latest);
-						}
-					);
+					this.screen.addScrollListener('both', this.scaleX / 4, false, () => {
+						this.screen.beginScrolling();
+						this.updateTransform();
+						this.requestRendering();
+						this.screen.updateScrollbars();
+						this.pointermove(dragging.latest);
+					});
 					Scene.marquee.style.pointerEvents = 'none';
 				}
 				break;

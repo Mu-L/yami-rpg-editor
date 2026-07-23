@@ -153,44 +153,15 @@ Command.cases.return = new CommandSchema({
 		write('boolean', type === 'boolean' && value !== null ? value : false);
 		write('number', type === 'number' && value !== null ? value : 0);
 		write('string', type === 'string' && value !== null ? value : '');
-		write(
-			'object',
-			type === 'object' && value !== null
-				? value
-				: { type: 'local', key: '' }
-		);
-		write(
-			'actor',
-			type === 'actor' && value !== null ? value : { type: 'trigger' }
-		);
-		write(
-			'skill',
-			type === 'skill' && value !== null ? value : { type: 'trigger' }
-		);
-		write(
-			'state',
-			type === 'state' && value !== null ? value : { type: 'trigger' }
-		);
-		write(
-			'equipment',
-			type === 'equipment' && value !== null ? value : { type: 'trigger' }
-		);
-		write(
-			'item',
-			type === 'item' && value !== null ? value : { type: 'trigger' }
-		);
-		write(
-			'trigger',
-			type === 'trigger' && value !== null ? value : { type: 'trigger' }
-		);
-		write(
-			'light',
-			type === 'light' && value !== null ? value : { type: 'trigger' }
-		);
-		write(
-			'element',
-			type === 'element' && value !== null ? value : { type: 'trigger' }
-		);
+		write('object', type === 'object' && value !== null ? value : { type: 'local', key: '' });
+		write('actor', type === 'actor' && value !== null ? value : { type: 'trigger' });
+		write('skill', type === 'skill' && value !== null ? value : { type: 'trigger' });
+		write('state', type === 'state' && value !== null ? value : { type: 'trigger' });
+		write('equipment', type === 'equipment' && value !== null ? value : { type: 'trigger' });
+		write('item', type === 'item' && value !== null ? value : { type: 'trigger' });
+		write('trigger', type === 'trigger' && value !== null ? value : { type: 'trigger' });
+		write('light', type === 'light' && value !== null ? value : { type: 'trigger' });
+		write('element', type === 'element' && value !== null ? value : { type: 'trigger' });
 		$('#return-type').getFocus();
 	},
 	customSave() {

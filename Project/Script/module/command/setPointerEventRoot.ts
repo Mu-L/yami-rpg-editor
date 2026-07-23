@@ -27,9 +27,7 @@ Command.cases.setPointerEventRoot = new CommandSchema({
 		if (operation === 'set') {
 			operation = 'add';
 		}
-		const words = Command.words.push(
-			Local.get('command.setPointerEventRoot.' + operation)
-		);
+		const words = Command.words.push(Local.get('command.setPointerEventRoot.' + operation));
 		switch (operation) {
 			case 'add':
 			case 'remove':

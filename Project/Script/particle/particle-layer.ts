@@ -178,10 +178,7 @@ Particle.Layer = class ParticleLayer {
 				let si = 2;
 				for (let i = 0; i < count; i++) {
 					const element = elements[i];
-					const key = min(
-						0x3ffff,
-						round(abs(element.scaleFactor) * times)
-					);
+					const key = min(0x3ffff, round(abs(element.scaleFactor) * times));
 					if (starts[key] === 0) {
 						starts[key] = si;
 						layers[li++] = key;
@@ -232,12 +229,8 @@ Particle.Layer = class ParticleLayer {
 					break;
 				}
 			}
-			const lightMode =
-				Scene.state === 'open' && Scene.showLight ? data.light : 'raw';
-			gl.uniform1i(
-				program.u_LightMode,
-				ParticleLayer.lightSamplingModes[lightMode]
-			);
+			const lightMode = Scene.state === 'open' && Scene.showLight ? data.light : 'raw';
+			gl.uniform1i(program.u_LightMode, ParticleLayer.lightSamplingModes[lightMode]);
 			gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STREAM_DRAW, 0, vi);
 			gl.bindTexture(gl.TEXTURE_2D, texture.base.glTexture);
 			gl.drawElements(gl.TRIANGLES, (vi / 20) * 6, gl.UNSIGNED_INT, 0);

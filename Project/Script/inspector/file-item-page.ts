@@ -40,10 +40,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#fileItem-parameter-pane').bind($('#fileItem-scripts'));
 
 		// 侦听事件
-		$('#fileItem-icon, #fileItem-clip, #fileItem-inherit').on(
-			'input',
-			this.paramInput
-		);
+		$('#fileItem-icon, #fileItem-clip, #fileItem-inherit').on('input', this.paramInput);
 		$('#fileItem-attributes, #fileItem-events, #fileItem-scripts').on(
 			'change',
 			this.listChange

@@ -37,10 +37,7 @@ Command.cases.getTarget = new CommandSchema({
 				},
 				{
 					case: ['min-attribute-ratio', 'max-attribute-ratio'],
-					targets: [
-						$('#getTarget-attribute'),
-						$('#getTarget-divisor')
-					]
+					targets: [$('#getTarget-attribute'), $('#getTarget-divisor')]
 				}
 			]);
 	},
@@ -55,10 +52,7 @@ Command.cases.getTarget = new CommandSchema({
 			case 'min-attribute-value':
 			case 'max-attribute-value':
 				return (
-					label +
-					Token('(') +
-					Command.parseAttributeKey('actor', attribute) +
-					Token(')')
+					label + Token('(') + Command.parseAttributeKey('actor', attribute) + Token(')')
 				);
 			case 'min-attribute-ratio':
 			case 'max-attribute-ratio':

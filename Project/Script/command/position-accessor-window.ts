@@ -13,15 +13,7 @@ interface PositionGetterTarget {
 
 // 位置数据对象（switch 各 type 含不同字段）
 interface PositionData {
-	type:
-		| 'absolute'
-		| 'relative'
-		| 'actor'
-		| 'trigger'
-		| 'light'
-		| 'region'
-		| 'object'
-		| 'mouse';
+	type: 'absolute' | 'relative' | 'actor' | 'trigger' | 'light' | 'region' | 'object' | 'mouse';
 	x?: number;
 	y?: number;
 	actor?: any;
@@ -37,8 +29,7 @@ interface PositionGetterShape {
 	initialize: (() => void) | null;
 	open: ((target: PositionGetterTarget) => void) | null;
 	checkDataForPlugin: ((data: any) => boolean) | null;
-	createDefaultForPlugin:
-		(() => { getter: string; type: string; x: number; y: number }) | null;
+	createDefaultForPlugin: (() => { getter: string; type: string; x: number; y: number }) | null;
 	confirm: ((event: Event) => void) | null;
 }
 
@@ -72,27 +63,18 @@ PositionGetter.initialize = function (): void {
 	($('#positionGetter-type') as any).enableHiddenMode().relate([
 		{
 			case: 'absolute',
-			targets: [
-				$('#positionGetter-common-x'),
-				$('#positionGetter-common-y')
-			]
+			targets: [$('#positionGetter-common-x'), $('#positionGetter-common-y')]
 		},
 		{
 			case: 'relative',
-			targets: [
-				$('#positionGetter-common-x'),
-				$('#positionGetter-common-y')
-			]
+			targets: [$('#positionGetter-common-x'), $('#positionGetter-common-y')]
 		},
 		{ case: 'actor', targets: [$('#positionGetter-actor')] },
 		{ case: 'trigger', targets: [$('#positionGetter-trigger')] },
 		{ case: 'light', targets: [$('#positionGetter-light')] },
 		{
 			case: 'region',
-			targets: [
-				$('#positionGetter-region'),
-				$('#positionGetter-region-mode')
-			]
+			targets: [$('#positionGetter-region'), $('#positionGetter-region-mode')]
 		},
 		{ case: 'object', targets: [$('#positionGetter-objectId')] }
 	]);
@@ -111,10 +93,7 @@ PositionGetter.initialize = function (): void {
 };
 
 // 打开窗口
-PositionGetter.open = function (
-	this: PositionGetterShape,
-	target: PositionGetterTarget
-): void {
+PositionGetter.open = function (this: PositionGetterShape, target: PositionGetterTarget): void {
 	this.target = target;
 	Window.open('positionGetter');
 
@@ -153,38 +132,20 @@ PositionGetter.open = function (
 			objectId = position.objectId!;
 			break;
 	}
-	($('#positionGetter-type') as HTMLElement & { write(v: any): void }).write(
-		position.type
-	);
-	(
-		$('#positionGetter-common-x') as HTMLElement & { write(v: any): void }
-	).write(commonX);
-	(
-		$('#positionGetter-common-y') as HTMLElement & { write(v: any): void }
-	).write(commonY);
-	($('#positionGetter-actor') as HTMLElement & { write(v: any): void }).write(
-		actor
-	);
-	(
-		$('#positionGetter-trigger') as HTMLElement & { write(v: any): void }
-	).write(trigger);
-	($('#positionGetter-light') as HTMLElement & { write(v: any): void }).write(
-		light
-	);
-	(
-		$('#positionGetter-region') as HTMLElement & { write(v: any): void }
-	).write(region);
+	($('#positionGetter-type') as HTMLElement & { write(v: any): void }).write(position.type);
+	($('#positionGetter-common-x') as HTMLElement & { write(v: any): void }).write(commonX);
+	($('#positionGetter-common-y') as HTMLElement & { write(v: any): void }).write(commonY);
+	($('#positionGetter-actor') as HTMLElement & { write(v: any): void }).write(actor);
+	($('#positionGetter-trigger') as HTMLElement & { write(v: any): void }).write(trigger);
+	($('#positionGetter-light') as HTMLElement & { write(v: any): void }).write(light);
+	($('#positionGetter-region') as HTMLElement & { write(v: any): void }).write(region);
 	(
 		$('#positionGetter-region-mode') as HTMLElement & {
 			write(v: any): void;
 		}
 	).write(regionMode);
-	(
-		$('#positionGetter-objectId') as HTMLElement & { write(v: any): void }
-	).write(objectId);
-	(
-		$('#positionGetter-type') as HTMLElement & { getFocus(): void }
-	).getFocus();
+	($('#positionGetter-objectId') as HTMLElement & { write(v: any): void }).write(objectId);
+	($('#positionGetter-type') as HTMLElement & { getFocus(): void }).getFocus();
 };
 
 // 检查插件版本的位置访问器数据有效性
@@ -206,10 +167,7 @@ PositionGetter.createDefaultForPlugin = function (): {
 };
 
 // 确定按钮 - 鼠标点击事件
-PositionGetter.confirm = function (
-	this: PositionGetterShape,
-	event: Event
-): void {
+PositionGetter.confirm = function (this: PositionGetterShape, event: Event): void {
 	const read = getElementReader('positionGetter');
 	const type = read('type');
 	let getter: any;

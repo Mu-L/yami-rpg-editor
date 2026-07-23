@@ -132,22 +132,10 @@ Scene.resize = function () {
 		const screenBox = CSS.getDevicePixelContentBoxSize(this.screen);
 		const screenWidth = screenBox.width;
 		const screenHeight = screenBox.height;
-		const paddingLeft = Math.max(
-			(screenWidth - innerWidth) >> 1,
-			scaledPadding
-		);
-		const paddingTop = Math.max(
-			(screenHeight - innerHeight) >> 1,
-			scaledPadding
-		);
-		const paddingRight = Math.max(
-			screenWidth - innerWidth - paddingLeft,
-			scaledPadding
-		);
-		const paddingBottom = Math.max(
-			screenHeight - innerHeight - paddingTop,
-			scaledPadding
-		);
+		const paddingLeft = Math.max((screenWidth - innerWidth) >> 1, scaledPadding);
+		const paddingTop = Math.max((screenHeight - innerHeight) >> 1, scaledPadding);
+		const paddingRight = Math.max(screenWidth - innerWidth - paddingLeft, scaledPadding);
+		const paddingBottom = Math.max(screenHeight - innerHeight - paddingTop, scaledPadding);
 		const outerWidth = innerWidth + paddingLeft + paddingRight;
 		const outerHeight = innerHeight + paddingTop + paddingBottom;
 		const dpr = window.devicePixelRatio;
@@ -159,13 +147,9 @@ Scene.resize = function () {
 		this.outerWidth = outerWidth;
 		this.outerHeight = outerHeight;
 		this.centerOffsetX =
-			outerWidth > screenWidth
-				? screenWidth / 2
-				: paddingLeft + innerWidth / 2;
+			outerWidth > screenWidth ? screenWidth / 2 : paddingLeft + innerWidth / 2;
 		this.centerOffsetY =
-			outerHeight > screenHeight
-				? screenHeight / 2
-				: paddingTop + innerHeight / 2;
+			outerHeight > screenHeight ? screenHeight / 2 : paddingTop + innerHeight / 2;
 		this.paddingLeft = paddingLeft;
 		this.paddingTop = paddingTop;
 		this.marquee.style.width = `${outerWidth / dpr}px`;
@@ -333,17 +317,9 @@ Scene.updateCamera = function (x = this.meta.x, y = this.meta.y) {
 	const toleranceX = this.scaledTileWidth * 0.0001;
 	const toleranceY = this.scaledTileHeight * 0.0001;
 	screen.rawScrollLeft =
-		Math.clamp(
-			scrollX - this.centerOffsetX,
-			0,
-			this.outerWidth - GL.width
-		) / dpr;
+		Math.clamp(scrollX - this.centerOffsetX, 0, this.outerWidth - GL.width) / dpr;
 	screen.rawScrollTop =
-		Math.clamp(
-			scrollY - this.centerOffsetY,
-			0,
-			this.outerHeight - GL.height
-		) / dpr;
+		Math.clamp(scrollY - this.centerOffsetY, 0, this.outerHeight - GL.height) / dpr;
 	screen.scrollLeft = (scrollX - (GL.width >> 1) + toleranceX) / dpr;
 	screen.scrollTop = (scrollY - (GL.height >> 1) + toleranceY) / dpr;
 };
@@ -369,19 +345,10 @@ Scene.updateTransform = function () {
 	this.lightTop = this.scrollTop - lightmap.expansionTop;
 	this.lightRight = this.scrollRight + lightmap.expansionRight;
 	this.lightBottom = this.scrollBottom + lightmap.expansionBottom;
-	this.matrix
-		.reset()
-		.scale(scaleX, scaleY)
-		.translate(-this.scrollLeft, -this.scrollTop);
+	this.matrix.reset().scale(scaleX, scaleY).translate(-this.scrollLeft, -this.scrollTop);
 	const scrollX = screen.rawScrollLeft * dpr + this.centerOffsetX;
 	const scrollY = screen.rawScrollTop * dpr + this.centerOffsetY;
-	this.meta.x = Math.roundTo(
-		(scrollX - this.paddingLeft) / this.scaledTileWidth,
-		4
-	);
-	this.meta.y = Math.roundTo(
-		(scrollY - this.paddingTop) / this.scaledTileHeight,
-		4
-	);
+	this.meta.x = Math.roundTo((scrollX - this.paddingLeft) / this.scaledTileWidth, 4);
+	this.meta.y = Math.roundTo((scrollY - this.paddingTop) / this.scaledTileHeight, 4);
 	Data.manifest.changed = true;
 };

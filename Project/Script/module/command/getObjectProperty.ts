@@ -112,9 +112,7 @@ Command.cases.setObjectProperty = new CommandSchema({
 			{ text: Command.parseVariable(variable, 'any') + '.' }
 		]
 			.concat(contents.slice(1))
-			.concat([
-				{ text: '=' + Command.parseVariable(valueVariable, 'any') }
-			]);
+			.concat([{ text: '=' + Command.parseVariable(valueVariable, 'any') }]);
 	},
 	customLoad({
 		variable = { type: 'local', key: '' },

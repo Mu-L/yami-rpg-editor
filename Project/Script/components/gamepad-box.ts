@@ -91,10 +91,7 @@ export class GamepadBox extends HTMLElement {
 					const buttons = pad.buttons;
 					const length = buttons.length;
 					for (let code = 0; code < length; code++) {
-						if (
-							buttons[code].pressed &&
-							!lastButtons[code].pressed
-						) {
+						if (buttons[code].pressed && !lastButtons[code].pressed) {
 							(this.parentNode as any).write(code);
 							(this.parentNode as any).dispatchChangeEvent();
 							break;

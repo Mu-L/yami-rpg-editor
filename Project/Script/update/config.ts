@@ -132,8 +132,7 @@ Updater.updateConfig = function (verNum) {
 			subdir: config.gameId
 		};
 		if (config.event) {
-			const { startup, loadGame, initScene, showText, showChoices } =
-				config.event;
+			const { startup, loadGame, initScene, showText, showChoices } = config.event;
 			if (events[startup]) {
 				events[startup].type = 'startup';
 			}

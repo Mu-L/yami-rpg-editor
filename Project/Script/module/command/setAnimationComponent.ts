@@ -83,11 +83,7 @@ Command.cases.setAnimationComponent = new CommandSchema({
 	},
 	parsePriority(priority: any) {
 		const abs = Command.setNumberColor(Math.abs(priority));
-		return priority === 0
-			? abs
-			: priority > 0
-				? Token('+') + abs
-				: Token('-') + abs;
+		return priority === 0 ? abs : priority > 0 ? Token('+') + abs : Token('-') + abs;
 	},
 	parseOffsetY(offsetY: any) {
 		const abs = Command.setNumberColor(Math.abs(offsetY)) + 'px';

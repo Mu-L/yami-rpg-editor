@@ -20,10 +20,7 @@ Command.cases.getMultipleActors = new CommandSchema({
 			.relate([
 				{
 					case: 'rectangle',
-					targets: [
-						$('#getMultipleActors-width'),
-						$('#getMultipleActors-height')
-					]
+					targets: [$('#getMultipleActors-width'), $('#getMultipleActors-height')]
 				},
 				{ case: 'circle', targets: [$('#getMultipleActors-radius')] }
 			]);
@@ -54,17 +51,7 @@ Command.cases.getMultipleActors = new CommandSchema({
 			$('#getMultipleActors-teamId').clear();
 		});
 	},
-	customParse({
-		variable,
-		position,
-		area,
-		width,
-		height,
-		radius,
-		selector,
-		teamId,
-		activation
-	}) {
+	customParse({ variable, position, area, width, height, radius, selector, teamId, activation }) {
 		const actors = Command.parseVariable(variable, 'object', true);
 		const words = Command.words
 			.push(Command.parsePosition(position))
@@ -84,10 +71,7 @@ Command.cases.getMultipleActors = new CommandSchema({
 			case 'friend':
 			case 'team':
 				words.push(
-					selectorLabel +
-						Token('(') +
-						Command.parseVariableTeam(teamId) +
-						Token(')')
+					selectorLabel + Token('(') + Command.parseVariableTeam(teamId) + Token(')')
 				);
 				break;
 			case 'any':

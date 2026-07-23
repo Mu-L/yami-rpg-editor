@@ -125,9 +125,7 @@ PresetElement.searcherKeydown = function (event) {
 		case 'ArrowUp':
 		case 'ArrowDown':
 			event.preventDefault();
-			PresetElement.list.selectRelative(
-				event.code.slice(5).toLowerCase()
-			);
+			PresetElement.list.selectRelative(event.code.slice(5).toLowerCase());
 			break;
 		case 'PageUp':
 			PresetElement.list.pageUp(true);

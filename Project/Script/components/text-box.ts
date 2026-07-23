@@ -217,10 +217,7 @@ export class TextBox extends HTMLElement {
 			event.stopPropagation();
 		};
 		// 关闭按钮 - 鼠标点击事件
-		const closeButtonClick = function (
-			this: HTMLElement,
-			event: Event
-		): void {
+		const closeButtonClick = function (this: HTMLElement, event: Event): void {
 			(this.parentNode as TextBox).deleteInputContent();
 		};
 		return (textBox: TextBox): void => {
@@ -230,10 +227,7 @@ export class TextBox extends HTMLElement {
 			textBox.closeButton = document.createElement('box');
 			(textBox.closeButton as HTMLElement).addClass('close-button');
 			(textBox.closeButton as HTMLElement).textContent = '\u2716';
-			(textBox.closeButton as HTMLElement).on(
-				'pointerdown',
-				closeButtonPointerdown
-			);
+			(textBox.closeButton as HTMLElement).on('pointerdown', closeButtonPointerdown);
 			(textBox.closeButton as HTMLElement).on('click', closeButtonClick);
 			textBox.appendChild((textBox.closeButton as HTMLElement).hide());
 		};

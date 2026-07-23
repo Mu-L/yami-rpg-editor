@@ -24,13 +24,7 @@ export class FileItem {
 	promise: Promise<any> | null;
 	contexts: any | null;
 
-	constructor(
-		name: string,
-		extname: string,
-		path: string,
-		type: string,
-		stats: any
-	) {
+	constructor(name: string, extname: string, path: string, type: string, stats: any) {
 		let basename = Path.basename(name, extname);
 		const match = basename.match(FileItem.guidRegExp);
 		if (match) basename = basename.slice(0, match.index - 1);
@@ -92,10 +86,7 @@ export class FileItem {
 				}
 				Data.manifest.deleteMeta(meta);
 			} else if (meta) {
-				FileItem.addGuidConflictPaths(
-					meta.path,
-					this.path + '(已隐藏)'
-				);
+				FileItem.addGuidConflictPaths(meta.path, this.path + '(已隐藏)');
 				throw new Error(`GUID already exists: ${guid}`);
 			}
 		}
@@ -213,12 +204,7 @@ export class FileItem {
 
 	// 静态方法 - 警告过大图像
 	static warnOversizeImages() {
-		const warnings = [
-			Local.get('confirmation.oversizeImage').replace(
-				'<size>',
-				GL.maxTexSize
-			)
-		];
+		const warnings = [Local.get('confirmation.oversizeImage').replace('<size>', GL.maxTexSize)];
 		Window.confirm(
 			{
 				message: warnings.concat(FileItem.oversizeImagePaths).join('\n')

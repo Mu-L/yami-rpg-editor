@@ -2,8 +2,7 @@ import { ipcRenderer } from 'electron';
 import nodePath from 'node:path';
 import os from 'node:os';
 import nodeFs from 'node:fs';
-export const Path: typeof nodePath & { slash: (path: string) => string } =
-	nodePath as any;
+export const Path: typeof nodePath & { slash: (path: string) => string } = nodePath as any;
 
 // const GlobalPathForDir = ipcRenderer.sendSync(
 // 	'get-dir-path-sync',
@@ -50,9 +49,7 @@ export const GlobalPath = Path.resolve(GlobalPathForDir, ConfigDir);
 						.catch((error) => 'C:')
 						.then((docPath) => {
 							for (const key of Object.keys(config.dialogs)) {
-								config.dialogs[key] = (Path as any).slash(
-									docPath
-								);
+								config.dialogs[key] = (Path as any).slash(docPath);
 							}
 							return config;
 						});

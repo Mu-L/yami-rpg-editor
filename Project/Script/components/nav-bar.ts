@@ -34,9 +34,7 @@ export class NavBar extends HTMLElement {
 	// 读取数据
 	read(): any {
 		const item = this.querySelector('.selected');
-		return item
-			? (item as HTMLElement & { dataValue: any }).dataValue
-			: undefined;
+		return item ? (item as HTMLElement & { dataValue: any }).dataValue : undefined;
 	}
 
 	// 写入数据
@@ -47,10 +45,7 @@ export class NavBar extends HTMLElement {
 			this.unselect();
 			let target: HTMLElement | undefined;
 			for (let i = 0; i < length; i++) {
-				if (
-					(items[i] as HTMLElement & { dataValue: any }).dataValue ===
-					value
-				) {
+				if ((items[i] as HTMLElement & { dataValue: any }).dataValue === value) {
 					target = items[i] as HTMLElement;
 					break;
 				}
@@ -107,18 +102,11 @@ export class NavBar extends HTMLElement {
 		switch (event.button) {
 			case 0: {
 				const element = event.target as HTMLElement;
-				if (
-					element.tagName === 'NAV-ITEM' &&
-					!element.hasClass('selected')
-				) {
-					this.write(
-						(element as HTMLElement & { dataValue: any }).dataValue
-					);
+				if (element.tagName === 'NAV-ITEM' && !element.hasClass('selected')) {
+					this.write((element as HTMLElement & { dataValue: any }).dataValue);
 					if (this.selectEventEnabled) {
 						const select = new Event('select');
-						select.value = (
-							element as HTMLElement & { dataValue: any }
-						).dataValue;
+						select.value = (element as HTMLElement & { dataValue: any }).dataValue;
 						this.dispatchEvent(select);
 					}
 				}

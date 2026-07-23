@@ -62,14 +62,10 @@ export let GL;
 
 		// 获取顶点数组对象扩展
 		const vertex_array_object = GL.getExtension('OES_vertex_array_object');
-		GL.createVertexArray =
-			vertex_array_object.createVertexArrayOES.bind(vertex_array_object);
-		GL.deleteVertexArray =
-			vertex_array_object.deleteVertexArrayOES.bind(vertex_array_object);
-		GL.isVertexArray =
-			vertex_array_object.isVertexArrayOES.bind(vertex_array_object);
-		GL.bindVertexArray =
-			vertex_array_object.bindVertexArrayOES.bind(vertex_array_object);
+		GL.createVertexArray = vertex_array_object.createVertexArrayOES.bind(vertex_array_object);
+		GL.deleteVertexArray = vertex_array_object.deleteVertexArrayOES.bind(vertex_array_object);
+		GL.isVertexArray = vertex_array_object.isVertexArrayOES.bind(vertex_array_object);
+		GL.bindVertexArray = vertex_array_object.bindVertexArrayOES.bind(vertex_array_object);
 
 		// 获取最小和最大混合模式扩展
 		const blend_minmax = GL.getExtension('EXT_blend_minmax');
@@ -79,13 +75,7 @@ export let GL;
 		// 重写更新缓冲数据方法
 		const prototype = WebGLRenderingContext.prototype;
 		(prototype as any)._bufferData = prototype.bufferData;
-		(prototype as any).bufferData = function (
-			target,
-			data,
-			usage,
-			offset,
-			length
-		) {
+		(prototype as any).bufferData = function (target, data, usage, offset, length) {
 			if (length !== undefined) {
 				length *= data.BYTES_PER_ELEMENT;
 				data = new Uint8Array(data.buffer, offset, length);

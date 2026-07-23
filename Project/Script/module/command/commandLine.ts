@@ -36,12 +36,7 @@ Command.cases.commandLine = new CommandSchema({
 		$('#commandLine-type').write('get');
 		$('#commandLine-confirm').on('click', () => this.save());
 	},
-	customParse({
-		type = 'get',
-		key = '',
-		value = '',
-		variable = { type: 'local', key: '' }
-	}) {
+	customParse({ type = 'get', key = '', value = '', variable = { type: 'local', key: '' } }) {
 		const head = [
 			{ color: 'system' },
 			{ text: Local.get('command.commandLine') },
@@ -51,9 +46,7 @@ Command.cases.commandLine = new CommandSchema({
 		switch (type) {
 			case 'set':
 				const raw_value =
-					typeof value == 'string'
-						? value
-						: Command.parseVariable(value, 'string');
+					typeof value == 'string' ? value : Command.parseVariable(value, 'string');
 				return head.concat(
 					{ color: 'flow' },
 					{ text: Local.get('command.commandLine.set') },
@@ -61,10 +54,7 @@ Command.cases.commandLine = new CommandSchema({
 					{ color: 'text' },
 					{ color: 'save' },
 					{
-						text:
-							typeof key == 'string'
-								? key
-								: Command.parseVariable(key, 'string')
+						text: typeof key == 'string' ? key : Command.parseVariable(key, 'string')
 					},
 					{ text: ' ' },
 					...(raw_value.length
@@ -99,10 +89,7 @@ Command.cases.commandLine = new CommandSchema({
 					{ color: 'text' },
 					{ color: 'save' },
 					{
-						text:
-							typeof key == 'string'
-								? key
-								: Command.parseVariable(key, 'string')
+						text: typeof key == 'string' ? key : Command.parseVariable(key, 'string')
 					},
 					{ text: ' ' },
 					{ color: 'gray' },
@@ -120,12 +107,7 @@ Command.cases.commandLine = new CommandSchema({
 
 		return head;
 	},
-	customLoad({
-		type = 'get',
-		key = '',
-		value = '',
-		variable = { type: 'local', key: '' }
-	}) {
+	customLoad({ type = 'get', key = '', value = '', variable = { type: 'local', key: '' } }) {
 		const write = getElementWriter('commandLine');
 		write('type', type);
 		write('key', key);

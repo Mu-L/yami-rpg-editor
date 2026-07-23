@@ -36,10 +36,7 @@ import { Variable } from '../../variable/variable.ts';
 				},
 				{
 					case: 'list',
-					targets: [
-						$('#setBoolean-common-variable'),
-						$('#setBoolean-list-index')
-					]
+					targets: [$('#setBoolean-common-variable'), $('#setBoolean-list-index')]
 				},
 				{
 					case: 'parameter',
@@ -93,14 +90,8 @@ import { Variable } from '../../variable/variable.ts';
 		}
 	},
 	customParse({ variable, operation, operand }) {
-		const varDesc = Command.parseVariable(
-			variable,
-			'boolean',
-			operation === 'set'
-		);
-		const operator = Command.setOperatorColor(
-			this.parseOperation(operation)
-		);
+		const varDesc = Command.parseVariable(variable, 'boolean', operation === 'set');
+		const operator = Command.setOperatorColor(this.parseOperation(operation));
 		const value = this.parseOperand(operand);
 		return [
 			{ color: 'variable' },

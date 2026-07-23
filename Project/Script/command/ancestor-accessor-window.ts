@@ -21,9 +21,7 @@ AncestorGetter.initialize = function () {
 	// 创建访问器类型选项
 	const inclusions = new Set(['trigger', 'latest', 'by-id', 'variable']);
 	$('#ancestorGetter-type').loadItems(
-		$('#elementGetter-type').dataItems.filter((a) =>
-			inclusions.has(a.value)
-		)
+		$('#elementGetter-type').dataItems.filter((a) => inclusions.has(a.value))
 	);
 
 	// 设置关联元素

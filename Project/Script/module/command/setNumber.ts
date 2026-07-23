@@ -70,14 +70,8 @@ Command.cases.setNumber = new CommandSchema({
 		return expression;
 	},
 	customParse({ variable, operation, operands }) {
-		const varDesc = Command.parseVariable(
-			variable,
-			'number',
-			operation === 'set'
-		);
-		const operator = Command.setOperatorColor(
-			this.parseOperation(operation)
-		);
+		const varDesc = Command.parseVariable(variable, 'number', operation === 'set');
+		const operator = Command.setOperatorColor(this.parseOperation(operation));
 		const expression = this.parseOperands(operands);
 		return [
 			{ color: 'variable' },

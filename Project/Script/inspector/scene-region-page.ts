@@ -27,9 +27,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 	// 初始化
 	SceneRegion.initialize = function () {
 		// 绑定条件列表
-		$('#sceneRegion-conditions').bind(
-			new ConditionListInterface(this, Scene)
-		);
+		$('#sceneRegion-conditions').bind(new ConditionListInterface(this, Scene));
 
 		// 绑定事件列表
 		$('#sceneRegion-events').bind(new EventListInterface(this, Scene));
@@ -46,9 +44,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		elements.on('input', this.paramInput);
 		elements.on('focus', Inspector.inputFocus);
 		elements.on('blur', Inspector.inputBlur(this, Scene));
-		$(
-			'#sceneRegion-conditions, #sceneRegion-events, #sceneRegion-scripts'
-		).on('change', Scene.listChange);
+		$('#sceneRegion-conditions, #sceneRegion-events, #sceneRegion-scripts').on(
+			'change',
+			Scene.listChange
+		);
 	};
 
 	// 创建区域
@@ -144,11 +143,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 
 	// 参数 - 输入事件
 	SceneRegion.paramInput = function (event) {
-		SceneRegion.update(
-			SceneRegion.target,
-			Inspector.getKey(this),
-			this.read()
-		);
+		SceneRegion.update(SceneRegion.target, Inspector.getKey(this), this.read());
 	};
 
 	Inspector.sceneRegion = SceneRegion;

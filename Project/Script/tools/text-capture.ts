@@ -119,8 +119,7 @@ Selection.addEventListeners = function (element) {
 
 // 匹配标签
 Selection.match = function () {
-	const target = document.activeElement as
-		HTMLInputElement | HTMLTextAreaElement;
+	const target = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
 	if (typeof target.selectionStart !== 'number') {
 		return;
 	}
@@ -141,13 +140,7 @@ Selection.match = function () {
 	const end = text.indexOf('>', selectionStart) + 1;
 	let tag;
 	let params;
-	if (
-		start >= 0 &&
-		end > 0 &&
-		start < end &&
-		start <= selectionStart &&
-		end >= selectionEnd
-	) {
+	if (start >= 0 && end > 0 && start < end && start <= selectionStart && end >= selectionEnd) {
 		const string = text.slice(start, end);
 		let match;
 		if ((match = string.match(regexps.colorIndex))) {
@@ -285,8 +278,7 @@ Selection.match = function () {
 
 // 插入标签
 Selection.insert = function (tag) {
-	const target = document.activeElement as
-		HTMLInputElement | HTMLTextAreaElement;
+	const target = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
 	if (typeof target.selectionStart === 'number') {
 		this.target = target;
 		this.inserting = true;
@@ -698,10 +690,7 @@ Selection.textEffect = {
 				},
 				{
 					case: 'stroke',
-					targets: [
-						$('#textEffect-strokeWidth'),
-						$('#textEffect-color')
-					]
+					targets: [$('#textEffect-strokeWidth'), $('#textEffect-color')]
 				},
 				{ case: 'outline', targets: [$('#textEffect-color')] }
 			]);
@@ -840,10 +829,7 @@ Selection.image = {
 Selection.localVariable = {
 	filter: 'all',
 	initialize: function () {
-		TextSuggestion.listen(
-			$('#localVariable-key'),
-			VariableGetter.createVarListGenerator(this)
-		);
+		TextSuggestion.listen($('#localVariable-key'), VariableGetter.createVarListGenerator(this));
 	},
 	open: function ({ key = '' } = {}) {
 		Window.open('localVariable');

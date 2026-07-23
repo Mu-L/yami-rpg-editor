@@ -87,9 +87,7 @@ export class CommandSchema {
 
 	// 取字段默认值（支持函数延迟求值）
 	_getDefault(field: any) {
-		return typeof field.default === 'function'
-			? field.default()
-			: field.default;
+		return typeof field.default === 'function' ? field.default() : field.default;
 	}
 
 	// 默认数据工厂
@@ -304,10 +302,7 @@ export class CommandSchema {
 		}
 		if (handler) return;
 		const meta = Data.scripts[id];
-		if (
-			meta?.parameters.length > 0 &&
-			Command.custom.commandNameMap?.[id]
-		) {
+		if (meta?.parameters.length > 0 && Command.custom.commandNameMap?.[id]) {
 			Command.target = target;
 			Command.id = id;
 			target.scrollAndResize();
@@ -351,9 +346,7 @@ export class CommandSchema {
 		const params = command.params ?? {};
 		const handler = CommandSchema._resolve(id);
 		try {
-			const contents = handler
-				? handler.parse(params)
-				: Command.custom.parse(id, params);
+			const contents = handler ? handler.parse(params) : Command.custom.parse(id, params);
 			return Command.parseTextTags(contents);
 		} catch (err) {
 			Command.invalid = true;

@@ -95,16 +95,11 @@ interface CommandSuggestionShape {
 	pointerdown: ((event: PointerEvent) => void) | null;
 	searcherKeydown: ((event: KeyboardEvent) => void) | null;
 	searcherInput: ((event: InputEvent) => void) | null;
-	listKeydown:
-		((this: CommandSuggestionList, event: KeyboardEvent) => void) | null;
-	listPointerdown:
-		((this: CommandSuggestionList, event: PointerEvent) => void) | null;
+	listKeydown: ((this: CommandSuggestionList, event: KeyboardEvent) => void) | null;
+	listPointerdown: ((this: CommandSuggestionList, event: PointerEvent) => void) | null;
 	listUpdate: ((this: CommandSuggestionList, event: Event) => void) | null;
 	listOpen:
-		| ((
-				this: CommandSuggestionList,
-				event: Event & { value: CommandSuggestionItem }
-		  ) => void)
+		| ((this: CommandSuggestionList, event: Event & { value: CommandSuggestionItem }) => void)
 		| null;
 }
 
@@ -243,10 +238,7 @@ CommandSuggestion.windowClose = function (event: Event): void {
 // 指针按下事件
 CommandSuggestion.pointerdown = function (event: PointerEvent): void {
 	const { widget, list } = CommandSuggestion;
-	if (
-		!widget.contains(event.target as Node) &&
-		!list.contains(event.target as Node)
-	) {
+	if (!widget.contains(event.target as Node) && !list.contains(event.target as Node)) {
 		event.preventDefault();
 		Window.close('command-widget');
 	}
@@ -258,9 +250,7 @@ CommandSuggestion.searcherKeydown = function (event: KeyboardEvent): void {
 		case 'ArrowUp':
 		case 'ArrowDown':
 			event.preventDefault();
-			CommandSuggestion.list.selectRelative(
-				event.code.slice(5).toLowerCase()
-			);
+			CommandSuggestion.list.selectRelative(event.code.slice(5).toLowerCase());
 			break;
 		case 'PageUp':
 			CommandSuggestion.list.pageUp(true);
@@ -357,9 +347,7 @@ CommandSuggestion.listUpdate = function (event: Event): void {
 };
 
 // 列表 - 打开事件
-CommandSuggestion.listOpen = function (
-	event: Event & { value: CommandSuggestionItem }
-): void {
+CommandSuggestion.listOpen = function (event: Event & { value: CommandSuggestionItem }): void {
 	const item = event.value;
 	// 指令选项在列表中的时候打开
 	if (item.class !== 'folder' && item.element!.parentNode) {
@@ -385,21 +373,15 @@ CommandSuggestion.list.createIcon = (function IIFE() {
 })();
 
 // 列表 - 创建注释
-CommandSuggestion.list.createComment = function (
-	item: CommandSuggestionItem
-): void {
+CommandSuggestion.list.createComment = function (item: CommandSuggestionItem): void {
 	// 非英文语言包
 	if (item.class !== 'folder' && !Local.language.startsWith('en')) {
 		// 获取自定义指令的关键字或内置指令的方法名
-		const string =
-			item.class === 'custom'
-				? (item.keywords ?? item.value)
-				: item.value;
+		const string = item.class === 'custom' ? (item.keywords ?? item.value) : item.value;
 		if (string) {
 			const comment = document.createElement('text');
 			comment.addClass('command-suggestion-comment');
-			comment.textContent =
-				string.charAt(0).toUpperCase() + string.slice(1);
+			comment.textContent = string.charAt(0).toUpperCase() + string.slice(1);
 			item.element!.appendChild(comment);
 		}
 	}
@@ -446,10 +428,7 @@ CommandSuggestion.list.searchNodesAlgorithm = function (
 
 // 列表扩展方法 - 更新指令名称
 CommandSuggestion.list.updateCommandNames = (function IIFE() {
-	const update = (
-		data: CommandSuggestionItem[],
-		get: (key: string) => string
-	): void => {
+	const update = (data: CommandSuggestionItem[], get: (key: string) => string): void => {
 		const length = data.length;
 		for (let i = 0; i < length; i++) {
 			const item = data[i];
@@ -466,10 +445,7 @@ CommandSuggestion.list.updateCommandNames = (function IIFE() {
 		}
 	};
 	return function (this: CommandSuggestionList): void {
-		update(
-			this.data as CommandSuggestionItem[],
-			Local.createGetter('command')
-		);
+		update(this.data as CommandSuggestionItem[], Local.createGetter('command'));
 	};
 })();
 
@@ -491,10 +467,7 @@ CommandSuggestion.list.createCommandTip = (function IIFE() {
 				words.push(keyword);
 			}
 		}
-		const tip1 =
-			item.class === 'folder'
-				? ''
-				: `$${item.name}\n${item.desc ?? ''}\n`;
+		const tip1 = item.class === 'folder' ? '' : `$${item.name}\n${item.desc ?? ''}\n`;
 		const tip2 = `$${Local.get('command.keywords')}\n${words.join(', ')}`;
 		element.addClass('command-suggestion-item');
 		element.setTooltip(Local.parseTip(tip1 + tip2));
@@ -502,9 +475,7 @@ CommandSuggestion.list.createCommandTip = (function IIFE() {
 })();
 
 // 列表扩展方法 - 选择默认指令选项
-CommandSuggestion.list.selectDefaultCommand = function (
-	this: CommandSuggestionList
-): void {
+CommandSuggestion.list.selectDefaultCommand = function (this: CommandSuggestionList): void {
 	// 如果有选中的指令存在于结果列表中则返回
 	const { selection, elements } = this;
 	const { count } = elements;

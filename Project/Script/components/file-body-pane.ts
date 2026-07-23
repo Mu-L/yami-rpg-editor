@@ -148,9 +148,7 @@ export class FileBodyPane extends HTMLElement {
 				break;
 		}
 		if (this.viewMode !== viewMode) {
-			viewMode === 'list'
-				? this.addClass('horizontal')
-				: this.removeClass('horizontal');
+			viewMode === 'list' ? this.addClass('horizontal') : this.removeClass('horizontal');
 			this.content.removeClass(this.viewMode!);
 			this.content.addClass(viewMode!);
 			this.resetContentStyle();
@@ -292,10 +290,7 @@ export class FileBodyPane extends HTMLElement {
 		const ih = HEIGHT;
 		const visibleLines = Math.ceil((cw + GAP) / iw) + 1;
 		const normalCountPerLine = Math.max(Math.floor(oh / ih), 1);
-		const scrollCountPerLine = Math.max(
-			Math.floor((oh - SCROLLBAR_HEIGHT) / ih),
-			1
-		);
+		const scrollCountPerLine = Math.max(Math.floor((oh - SCROLLBAR_HEIGHT) / ih), 1);
 		const scrollCount = Math.floor(ow / iw) * normalCountPerLine + 1;
 		content.itemSize = iw;
 		content.visibleLines = visibleLines;
@@ -319,10 +314,7 @@ export class FileBodyPane extends HTMLElement {
 		const ih = height + GAP;
 		const visibleLines = Math.ceil((ch + GAP) / ih) + 1;
 		const normalCountPerLine = Math.max(Math.floor(ow / iw), 1);
-		const scrollCountPerLine = Math.max(
-			Math.floor((ow - SCROLLBAR_WIDTH) / iw),
-			1
-		);
+		const scrollCountPerLine = Math.max(Math.floor((ow - SCROLLBAR_WIDTH) / iw), 1);
 		const scrollCount = Math.floor(oh / ih) * normalCountPerLine + 1;
 		content.itemSize = ih;
 		content.visibleLines = visibleLines;
@@ -438,16 +430,13 @@ export class FileBodyPane extends HTMLElement {
 		let element = context.element;
 		if (element === undefined) {
 			// 创建文件夹
-			element = document.createElement(
-				'file-body-item'
-			) as unknown as HTMLElement & {
+			element = document.createElement('file-body-item') as unknown as HTMLElement & {
 				file: any;
 				context: any;
 				changed?: boolean;
 			};
 			(element as HTMLElement & { file: any; context: any }).file = file;
-			(element as HTMLElement & { file: any; context: any }).context =
-				context;
+			(element as HTMLElement & { file: any; context: any }).context = context;
 			context.element = element;
 
 			// 激活选中状态
@@ -486,17 +475,14 @@ export class FileBodyPane extends HTMLElement {
 		let element = context.element;
 		if (element === undefined) {
 			// 创建文件
-			element = document.createElement(
-				'file-body-item'
-			) as unknown as HTMLElement & {
+			element = document.createElement('file-body-item') as unknown as HTMLElement & {
 				file: any;
 				context: any;
 				changed?: boolean;
 			};
 			(element as HTMLElement).addClass('file-item');
 			(element as HTMLElement & { file: any; context: any }).file = file;
-			(element as HTMLElement & { file: any; context: any }).context =
-				context;
+			(element as HTMLElement & { file: any; context: any }).context = context;
 			context.element = element;
 		}
 		(element as HTMLElement & { changed?: boolean }).changed = true;
@@ -598,30 +584,17 @@ export class FileBodyPane extends HTMLElement {
 			case 'image': {
 				const version = file.stats.mtimeMs;
 				const path = `${file.path}?ver=${version}`;
-				(icon as HTMLElement).style.backgroundImage = CSS.encodeURL(
-					File.route(path)
-				);
+				(icon as HTMLElement).style.backgroundImage = CSS.encodeURL(File.route(path));
 				(File as any)
 					.getImageResolution(path)
-					.then(
-						({
-							width,
-							height
-						}: {
-							width: number;
-							height: number;
-						}) => {
-							if (width <= 128 && height <= 128) {
-								(icon as HTMLElement).style.imageRendering =
-									'pixelated';
-							}
-							if (Math.max(width, height) > GL.maxTexSize) {
-								(FileItem as any).addOversizeImagePaths(
-									file.path
-								);
-							}
+					.then(({ width, height }: { width: number; height: number }) => {
+						if (width <= 128 && height <= 128) {
+							(icon as HTMLElement).style.imageRendering = 'pixelated';
 						}
-					);
+						if (Math.max(width, height) > GL.maxTexSize) {
+							(FileItem as any).addOversizeImagePaths(file.path);
+						}
+					});
 				break;
 			}
 			case 'audio':
@@ -709,13 +682,9 @@ export class FileBodyPane extends HTMLElement {
 				const sy = height / size;
 				const px = sx !== 1 ? cx / size / (sx - 1) : 0;
 				const py = sy !== 1 ? cy / size / (sy - 1) : 0;
-				(icon as HTMLElement).style.backgroundImage = CSS.encodeURL(
-					File.route(path)
-				);
-				(icon as HTMLElement).style.backgroundPosition =
-					`${px * 100}% ${py * 100}%`;
-				(icon as HTMLElement).style.backgroundSize =
-					`${sx * 100}% ${sy * 100}%`;
+				(icon as HTMLElement).style.backgroundImage = CSS.encodeURL(File.route(path));
+				(icon as HTMLElement).style.backgroundPosition = `${px * 100}% ${py * 100}%`;
+				(icon as HTMLElement).style.backgroundSize = `${sx * 100}% ${sy * 100}%`;
 				if (size <= 128) {
 					(icon as HTMLElement).style.imageRendering = 'pixelated';
 				}
@@ -852,9 +821,7 @@ export class FileBodyPane extends HTMLElement {
 	}
 
 	// 在网格列表中选择相对位置的项目
-	selectRelativeInGridMode(
-		direction: 'prev' | 'next' | 'prev-line' | 'next-line'
-	): void {
+	selectRelativeInGridMode(direction: 'prev' | 'next' | 'prev-line' | 'next-line'): void {
 		const { elements } = this;
 		const { count } = elements;
 		if (count > 0) {
@@ -1133,11 +1100,9 @@ export class FileBodyPane extends HTMLElement {
 						{
 							label: get('yes'),
 							click: () => {
-								(Directory as any)
-									.deleteFiles(files)
-									.then(() => {
-										return Directory.update();
-									});
+								(Directory as any).deleteFiles(files).then(() => {
+									return Directory.update();
+								});
 							}
 						},
 						{
@@ -1295,9 +1260,7 @@ export class FileBodyPane extends HTMLElement {
 						const dirPath = filePaths[0];
 						dialogs.export = Path.slash(dirPath);
 						return (Directory as any)
-							.readdir(
-								files.map((file: any) => File.path(file.path))
-							)
+							.readdir(files.map((file: any) => File.path(file.path)))
 							.then((dir: any[]) => {
 								return Directory.copyFiles(dirPath, dir, '');
 							});
@@ -1485,13 +1448,8 @@ export class FileBodyPane extends HTMLElement {
 						element = element.parentNode as HTMLElement;
 					}
 					if (element.tagName === 'FILE-BODY-ITEM') {
-						if (
-							event.altKey &&
-							(element as any).file instanceof FileItem
-						) {
-							Reference.openRelated(
-								(element as any).file.meta.guid
-							);
+						if (event.altKey && (element as any).file instanceof FileItem) {
+							Reference.openRelated((element as any).file.meta.guid);
 							// 阻止focus后快捷键不被禁用的情况
 							event.preventDefault();
 							event.stopImmediatePropagation();
@@ -1503,9 +1461,7 @@ export class FileBodyPane extends HTMLElement {
 							const elements = this.elements;
 							const files = Array.from(selections);
 							for (let i = length - 1; i >= 0; i--) {
-								const { element } = (
-									files[i] as any
-								).getContext(this);
+								const { element } = (files[i] as any).getContext(this);
 								if (!elements.includes(element)) {
 									files.splice(i, 1);
 								}
@@ -1518,11 +1474,7 @@ export class FileBodyPane extends HTMLElement {
 								const pointerup = (event: PointerEvent) => {
 									if (this.pressing === pointerup) {
 										this.pressing = null;
-										if (
-											element.contains(
-												event.target as Node
-											)
-										) {
+										if (element.contains(event.target as Node)) {
 											this.select(...files);
 										}
 									}
@@ -1539,8 +1491,7 @@ export class FileBodyPane extends HTMLElement {
 							let start = elements.indexOf(element);
 							let end = start;
 							for (let i = 0; i < length; i++) {
-								const { element } =
-									selections[i].getContext(this);
+								const { element } = selections[i].getContext(this);
 								const index = elements.indexOf(element);
 								if (index !== -1) {
 									start = Math.min(start, index);
@@ -1549,9 +1500,7 @@ export class FileBodyPane extends HTMLElement {
 							}
 							if (start !== -1) {
 								const slice = elements.slice(start, end + 1);
-								this.select(
-									...slice.map((element: any) => element.file)
-								);
+								this.select(...slice.map((element: any) => element.file));
 								return;
 							}
 						}
@@ -1569,11 +1518,7 @@ export class FileBodyPane extends HTMLElement {
 								const pointerup = (event: PointerEvent) => {
 									if (this.pressing === pointerup) {
 										this.pressing = null;
-										if (
-											element.contains(
-												event.target as Node
-											)
-										) {
+										if (element.contains(event.target as Node)) {
 											this.select((element as any).file);
 										}
 									}
@@ -1587,8 +1532,7 @@ export class FileBodyPane extends HTMLElement {
 								if (
 									(Menu as any).state === 'closed' &&
 									document.activeElement === this.content &&
-									(event.target as HTMLElement).tagName ===
-										'FILE-BODY-NAME'
+									(event.target as HTMLElement).tagName === 'FILE-BODY-NAME'
 								) {
 									this.timer.target = event.target;
 								}
@@ -1614,20 +1558,14 @@ export class FileBodyPane extends HTMLElement {
 	pointerup(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
-				if (
-					document.activeElement === this.content &&
-					this.timer.target === event.target
-				) {
+				if (document.activeElement === this.content && this.timer.target === event.target) {
 					this.timer.running = true;
 					this.timer.elapsed = 0;
 					this.timer.add();
 				}
 				break;
 			case 2:
-				if (
-					document.activeElement === this.content &&
-					this.popupEventEnabled
-				) {
+				if (document.activeElement === this.content && this.popupEventEnabled) {
 					const popup: any = new Event('popup');
 					popup.raw = event;
 					popup.clientX = event.clientX;
@@ -1641,10 +1579,7 @@ export class FileBodyPane extends HTMLElement {
 	// 鼠标双击事件
 	doubleclick(event: Event): void {
 		let element = event.target as HTMLElement;
-		if (
-			element.tagName === 'FILE-BODY-ICON' ||
-			element.tagName === 'FILE-BODY-NAME'
-		) {
+		if (element.tagName === 'FILE-BODY-ICON' || element.tagName === 'FILE-BODY-NAME') {
 			element = element.parentNode as HTMLElement;
 		}
 		if (element.tagName === 'FILE-BODY-ITEM') {
@@ -1665,10 +1600,7 @@ export class FileBodyPane extends HTMLElement {
 				const delta = Math.sign(-deltaY);
 				return this.setViewIndex(index + delta);
 			}
-			if (
-				this.viewMode === 'list' &&
-				this.clientWidth < this.scrollWidth
-			) {
+			if (this.viewMode === 'list' && this.clientWidth < this.scrollWidth) {
 				this.scrollLeft += deltaY < 0 ? -60 : 60;
 			}
 		}
@@ -1739,10 +1671,7 @@ export class FileBodyPane extends HTMLElement {
 
 		// 输入前事件
 		textBox.on('beforeinput', function (event: any) {
-			if (
-				event.inputType === 'insertText' &&
-				typeof event.data === 'string'
-			) {
+			if (event.inputType === 'insertText' && typeof event.data === 'string') {
 				const regexp = /[\\/:*?"<>|]/;
 				if (regexp.test(event.data)) {
 					event.preventDefault();
@@ -1790,12 +1719,10 @@ export class FileBodyPane extends HTMLElement {
 						}
 					})
 					.catch((error: any) => {
-						return FSP.rename(File.path(file.path), path).then(
-							() => {
-								item.nameBox.textContent = name;
-								return Directory.update();
-							}
-						);
+						return FSP.rename(File.path(file.path), path).then(() => {
+							item.nameBox.textContent = name;
+							return Directory.update();
+						});
 					});
 			}
 		});

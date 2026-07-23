@@ -191,18 +191,10 @@ NumberOperand.initialize = function () {
 			},
 			{
 				case: 'random-int',
-				targets: [
-					$('#setNumber-operand-math-min'),
-					$('#setNumber-operand-math-max')
-				]
+				targets: [$('#setNumber-operand-math-min'), $('#setNumber-operand-math-max')]
 			},
 			{
-				case: [
-					'distance',
-					'distance-x',
-					'distance-y',
-					'relative-angle'
-				],
+				case: ['distance', 'distance-x', 'distance-y', 'relative-angle'],
 				targets: [
 					$('#setNumber-operand-math-startPosition'),
 					$('#setNumber-operand-math-endPosition')
@@ -338,30 +330,18 @@ NumberOperand.initialize = function () {
 				]
 			},
 			{
-				case: [
-					'actor-cooldown-time',
-					'actor-cooldown-duration',
-					'actor-cooldown-progress'
-				],
+				case: ['actor-cooldown-time', 'actor-cooldown-duration', 'actor-cooldown-progress'],
 				targets: [
 					$('#setNumber-operand-common-actor'),
 					$('#setNumber-operand-cooldown-key')
 				]
 			},
 			{
-				case: [
-					'skill-cooldown-time',
-					'skill-cooldown-duration',
-					'skill-cooldown-progress'
-				],
+				case: ['skill-cooldown-time', 'skill-cooldown-duration', 'skill-cooldown-progress'],
 				targets: [$('#setNumber-operand-common-skill')]
 			},
 			{
-				case: [
-					'state-current-time',
-					'state-duration',
-					'state-progress'
-				],
+				case: ['state-current-time', 'state-duration', 'state-progress'],
 				targets: [$('#setNumber-operand-common-state')]
 			},
 			{
@@ -538,9 +518,7 @@ NumberOperand.parseMathMethod = function (operand) {
 			const varName = Command.parseVariable(operand.variable, 'number');
 			const decimals = operand.decimals;
 			return `${label}${Token('(')}${varName}${
-				decimals
-					? `${Token(', ')}${Command.setNumberColor(decimals)}`
-					: ''
+				decimals ? `${Token(', ')}${Command.setNumberColor(decimals)}` : ''
 			}${Token(')')}`;
 		}
 		case 'floor':
@@ -589,14 +567,7 @@ NumberOperand.parseStringMethod = function (operand) {
 			const { variable, search } = operand;
 			const varName = Command.parseVariable(variable, 'string');
 			const searchName = Command.parseVariableString(search);
-			return (
-				methodName +
-				Token('(') +
-				varName +
-				Token(', ') +
-				searchName +
-				Token(')')
-			);
+			return methodName + Token('(') + varName + Token(', ') + searchName + Token(')');
 		}
 	}
 };
@@ -670,24 +641,16 @@ NumberOperand.parseObjectProperty = function (operand) {
 		case 'state-progress':
 			return Command.parseState(operand.state) + Token(' -> ') + property;
 		case 'equipment-order':
-			return (
-				Command.parseEquipment(operand.equipment) +
-				Token(' -> ') +
-				property
-			);
+			return Command.parseEquipment(operand.equipment) + Token(' -> ') + property;
 		case 'item-order':
 		case 'item-quantity':
 			return Command.parseItem(operand.item) + Token(' -> ') + property;
 		case 'trigger-speed':
 		case 'trigger-angle':
-			return (
-				Command.parseTrigger(operand.trigger) + Token(' -> ') + property
-			);
+			return Command.parseTrigger(operand.trigger) + Token(' -> ') + property;
 		case 'tilemap-width':
 		case 'tilemap-height':
-			return (
-				Command.parseTilemap(operand.tilemap) + Token(' -> ') + property
-			);
+			return Command.parseTilemap(operand.tilemap) + Token(' -> ') + property;
 		case 'tilemap-tag': {
 			return (
 				Command.parseTilemap(operand.tilemap) +
@@ -699,11 +662,7 @@ NumberOperand.parseObjectProperty = function (operand) {
 			);
 		}
 		case 'list-length':
-			return (
-				Command.parseVariable(operand.variable, 'object') +
-				Token(' -> ') +
-				property
-			);
+			return Command.parseVariable(operand.variable, 'object') + Token(' -> ') + property;
 	}
 };
 
@@ -737,12 +696,7 @@ NumberOperand.parseOther = function (operand) {
 			);
 		}
 		case 'actor-count':
-			return (
-				label +
-				Token('(') +
-				Command.parseTeam(operand.teamId) +
-				Token(')')
-			);
+			return label + Token('(') + Command.parseTeam(operand.teamId) + Token(')');
 		default:
 			return label.replace('.', Token('.'));
 	}
@@ -855,9 +809,7 @@ NumberOperand.open = function (
 	}
 
 	// 加载冷却键选项
-	$('#setNumber-operand-cooldown-key').loadItems(
-		Enum.getStringItems('cooldown-key')
-	);
+	$('#setNumber-operand-cooldown-key').loadItems(Enum.getStringItems('cooldown-key'));
 
 	// 写入数据
 	const write = getElementWriter('setNumber-operand');
@@ -1007,9 +959,7 @@ NumberOperand.save = function () {
 				case 'round': {
 					const variable = read('common-variable');
 					if (VariableGetter.isNone(variable)) {
-						return $(
-							'#setNumber-operand-common-variable'
-						).getFocus();
+						return $('#setNumber-operand-common-variable').getFocus();
 					}
 					const decimals = read('math-decimals');
 					operand = { operation, type, method, variable, decimals };
@@ -1024,9 +974,7 @@ NumberOperand.save = function () {
 				case 'tan': {
 					const variable = read('common-variable');
 					if (VariableGetter.isNone(variable)) {
-						return $(
-							'#setNumber-operand-common-variable'
-						).getFocus();
+						return $('#setNumber-operand-common-variable').getFocus();
 					}
 					operand = { operation, type, method, variable };
 					break;
@@ -1116,9 +1064,7 @@ NumberOperand.save = function () {
 					const actor = read('common-actor');
 					const equipmentId = read('object-equipmentId');
 					if (equipmentId === '') {
-						return $(
-							'#setNumber-operand-object-equipmentId'
-						).getFocus();
+						return $('#setNumber-operand-object-equipmentId').getFocus();
 					}
 					operand = { operation, type, property, actor, equipmentId };
 					break;
@@ -1186,9 +1132,7 @@ NumberOperand.save = function () {
 				case 'list-length': {
 					const variable = read('common-variable');
 					if (VariableGetter.isNone(variable)) {
-						return $(
-							'#setNumber-operand-common-variable'
-						).getFocus();
+						return $('#setNumber-operand-common-variable').getFocus();
 					}
 					operand = { operation, type, property, variable };
 					break;

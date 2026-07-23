@@ -28,8 +28,7 @@ Command.cases.removeAnimationComponent = new CommandSchema({
 		return [
 			{ color: 'actor' },
 			{
-				text:
-					Local.get('command.removeAnimationComponent') + Token(': ')
+				text: Local.get('command.removeAnimationComponent') + Token(': ')
 			},
 			{ text: words.join() }
 		];

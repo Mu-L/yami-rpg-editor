@@ -157,8 +157,7 @@ Color.drawPillar = function ([r, g, b]) {
 
 // 绘制查看器
 Color.drawViewer = function ([r, g, b, a]) {
-	$('#color-viewer').style.backgroundColor =
-		`rgba(${r}, ${g}, ${b}, ${a / 255})`;
+	$('#color-viewer').style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
 };
 
 // 设置调色板指针

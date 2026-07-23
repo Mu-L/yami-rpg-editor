@@ -155,16 +155,14 @@ Menubar.popupFileMenu = function (target) {
 				},
 				{
 					label: get('exportLanguage'),
-					enabled:
-						open && Data.config.localization.languages.length !== 0,
+					enabled: open && Data.config.localization.languages.length !== 0,
 					click: () => {
 						ExportLanguage.open();
 					}
 				},
 				{
 					label: get('importLanguage'),
-					enabled:
-						open && Data.config.localization.languages.length !== 0,
+					enabled: open && Data.config.localization.languages.length !== 0,
 					click: () => {
 						ImportLanguage.open();
 					}
@@ -255,9 +253,7 @@ Menubar.popupEditMenu = function (target) {
 			case 'scene':
 				if (Scene.state === 'open') {
 					const selected = Scene.target instanceof Object;
-					const pastable = (Clipboard as any).has(
-						'yami.scene.object'
-					);
+					const pastable = (Clipboard as any).has('yami.scene.object');
 					items.cut.enabled = selected;
 					items.copy.enabled = selected;
 					items.paste.enabled = pastable;
@@ -303,9 +299,7 @@ Menubar.popupEditMenu = function (target) {
 			case 'animation':
 				if (Animation.state === 'open') {
 					const selected = Animation.motion instanceof Object;
-					const pastable = (Clipboard as any).has(
-						'yami.animation.object'
-					);
+					const pastable = (Clipboard as any).has('yami.animation.object');
 					items.cut.enabled = selected;
 					items.copy.enabled = selected;
 					items.paste.enabled = pastable;
@@ -340,14 +334,7 @@ Menubar.popupEditMenu = function (target) {
 					target.removeClass('selected');
 				}
 			},
-			[
-				items.cut,
-				items.copy,
-				items.paste,
-				items.delete,
-				items.undo,
-				items.redo
-			]
+			[items.cut, items.copy, items.paste, items.delete, items.undo, items.redo]
 		);
 	}
 };
@@ -442,9 +429,7 @@ Menubar.popupViewMenu = function (target) {
 					submenu: [
 						{
 							label: get('animation.background'),
-							icon: this.createColorIcon(
-								Animation.background.hex
-							),
+							icon: this.createColorIcon(Animation.background.hex),
 							click: () => {
 								Color.open(Animation.background);
 							}
@@ -639,21 +624,16 @@ Menubar.popupHelpMenu = function (target) {
 					click: () => {
 						let osversion = '';
 						const macos = navigator.userAgent.match(/Macintosh/);
-						const winos =
-							navigator.userAgent.match(/Windows NT [0-9.]+/);
-						const bits =
-							navigator.userAgent.match(/(?<!\w)x64|x86(?!\w)/);
+						const winos = navigator.userAgent.match(/Windows NT [0-9.]+/);
+						const bits = navigator.userAgent.match(/(?<!\w)x64|x86(?!\w)/);
 						if (macos) osversion += 'Macintosh';
 						if (winos) osversion += winos;
 						if (winos && bits) osversion += ' ' + bits;
 						if (!osversion) osversion = 'unknown';
 						Window.open('about');
-						$('#editor-version').textContent =
-							Editor.config.version;
-						$('#electron-version').textContent =
-							process.versions.electron;
-						$('#chrome-version').textContent =
-							process.versions.chrome;
+						$('#editor-version').textContent = Editor.config.version;
+						$('#electron-version').textContent = process.versions.electron;
+						$('#chrome-version').textContent = process.versions.chrome;
 						$('#node-version').textContent = process.versions.node;
 						$('#v8-version').textContent = process.versions.v8;
 						$('#os-version').textContent = osversion;
@@ -671,17 +651,13 @@ Menubar.popupHelpMenu = function (target) {
 						{
 							label: 'Yami RPG Editor',
 							click: () => {
-								File.openURL(
-									'https://github.com/yami-pro/yami-rpg-editor'
-								);
+								File.openURL('https://github.com/yami-pro/yami-rpg-editor');
 							}
 						},
 						{
 							label: 'Open Yami Community',
 							click: () => {
-								File.openURL(
-									'https://github.com/Open-Yami-Community'
-								);
+								File.openURL('https://github.com/Open-Yami-Community');
 							}
 						}
 					]
@@ -768,52 +744,35 @@ Menubar.popupOpenYamiMenu = function (target) {
 						await new Promise(async (resolve, reject) => {
 							if (FS.existsSync(pConfig)) {
 								resolve(
-									(config = JSON.parse(
-										(await FSP.readFile(pConfig)).toString()
-									))
+									(config = JSON.parse((await FSP.readFile(pConfig)).toString()))
 								);
 							} else {
 								// 配置不存在
 								if (!FS.existsSync(Path.dirname(pConfig))) {
 									FS.mkdirSync(Path.dirname(pConfig));
 								}
-								resolve(
-									FSP.writeFile(
-										pConfig,
-										JSON.stringify(config)
-									)
-								);
+								resolve(FSP.writeFile(pConfig, JSON.stringify(config)));
 							}
 						}).then(() => {
 							// 初始化
 							$('#export-apk-apkName').write(config.appName);
-							$('#export-apk-apkName').on('input', (e) =>
-								InputEvent(e, 'appName')
-							);
+							$('#export-apk-apkName').on('input', (e) => InputEvent(e, 'appName'));
 							$('#export-apk-apkIcon').write(config.iconPath);
-							$('#export-apk-apkIcon').on('input', (e) =>
-								InputEvent(e, 'iconPath')
-							);
+							$('#export-apk-apkIcon').on('input', (e) => InputEvent(e, 'iconPath'));
 							$('#export-apk-apkIcon').on('mouseenter', (e) =>
 								$('#export-apk-apkIcon').setTooltip(
 									ApkBuilder.processPathOnly(config.iconPath)
 								)
 							);
-							$('#export-apk-apkPackageName').write(
-								config.packageName
-							);
+							$('#export-apk-apkPackageName').write(config.packageName);
 							$('#export-apk-apkPackageName').on('input', (e) =>
 								InputEvent(e, 'packageName')
 							);
-							$('#export-apk-apkVersionName').write(
-								config.versionName
-							);
+							$('#export-apk-apkVersionName').write(config.versionName);
 							$('#export-apk-apkVersionName').on('input', (e) =>
 								InputEvent(e, 'versionName')
 							);
-							$('#export-apk-apkVersionCode').write(
-								config.versionCode
-							);
+							$('#export-apk-apkVersionCode').write(config.versionCode);
 							$('#export-apk-apkVersionCode').on('input', (e) =>
 								InputEvent(e, 'versionCode')
 							);

@@ -83,9 +83,7 @@ Command.cases.setObjectAnimation = new CommandSchema({
 			{ name: 'No', value: false }
 		]);
 		$('#setObjectAnimation').on('open', function (event) {
-			$('#setObjectAnimation-easingId').loadItems(
-				Data.createEasingItems()
-			);
+			$('#setObjectAnimation-easingId').loadItems(Data.createEasingItems());
 		});
 		$('#setObjectAnimation').on('closed', function (event) {
 			$('#setObjectAnimation-easingId').clear();
@@ -128,12 +126,7 @@ Command.cases.setObjectAnimation = new CommandSchema({
 	},
 	parseProperty(operation: any, property: any) {
 		const label = Local.get('command.setObjectAnimation.' + operation);
-		return (
-			label +
-			Token('(') +
-			Command.parseVariableNumber(property) +
-			Token(')')
-		);
+		return label + Token('(') + Command.parseVariableNumber(property) + Token(')');
 	},
 	customParse({
 		sort,

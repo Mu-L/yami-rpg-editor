@@ -34,18 +34,12 @@ HTMLElement.prototype.disable = function (this: HTMLElement): void {
 };
 
 // 元素方法 - 检查类名
-HTMLElement.prototype.hasClass = function (
-	this: HTMLElement,
-	className: string
-): boolean {
+HTMLElement.prototype.hasClass = function (this: HTMLElement, className: string): boolean {
 	return this.classList.contains(className);
 };
 
 // 元素方法 - 添加类名
-HTMLElement.prototype.addClass = function (
-	this: HTMLElement,
-	className: string
-): boolean {
+HTMLElement.prototype.addClass = function (this: HTMLElement, className: string): boolean {
 	if (!this.classList.contains(className)) {
 		this.classList.add(className);
 		return true;
@@ -54,10 +48,7 @@ HTMLElement.prototype.addClass = function (
 };
 
 // 元素方法 - 删除 Class
-HTMLElement.prototype.removeClass = function (
-	this: HTMLElement,
-	className: string
-): boolean {
+HTMLElement.prototype.removeClass = function (this: HTMLElement, className: string): boolean {
 	if (this.classList.contains(className)) {
 		this.classList.remove(className);
 		return true;
@@ -86,9 +77,7 @@ HTMLElement.prototype.seek = function (
 };
 
 // 元素方法 - 返回计算后的 CSS 对象
-(HTMLElement.prototype as any).css = function (
-	this: HTMLElement
-): CSSStyleDeclaration {
+(HTMLElement.prototype as any).css = function (this: HTMLElement): CSSStyleDeclaration {
 	return getComputedStyle(this);
 };
 
@@ -125,10 +114,7 @@ HTMLElement.prototype.showChildNodes = function (this: HTMLElement): void {
 
 // 元素方法 - 获得焦点
 // 异步执行可以避免与指针按下行为起冲突
-HTMLElement.prototype.getFocus = function (
-	this: any,
-	mode: string | null = null
-): void {
+HTMLElement.prototype.getFocus = function (this: any, mode: string | null = null): void {
 	setTimeout(() => {
 		this.focus();
 		switch (mode) {
@@ -210,10 +196,7 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 	};
 
 	// 指针移动事件
-	const pointermove = function (
-		this: HTMLElement,
-		event: PointerEvent
-	): void {
+	const pointermove = function (this: HTMLElement, event: PointerEvent): void {
 		// 两个重叠元素时执行最上层的那个
 		if (timeStamp === event.timeStamp) {
 			return;
@@ -251,14 +234,10 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 	};
 
 	// 指针离开事件
-	const pointerleave = function (
-		this: HTMLElement,
-		event: PointerEvent
-	): void {
-		if (!(
-			event.relatedTarget instanceof HTMLElement &&
-			tooltip.contains(event.relatedTarget)
-		)) {
+	const pointerleave = function (this: HTMLElement, event: PointerEvent): void {
+		if (
+			!(event.relatedTarget instanceof HTMLElement && tooltip.contains(event.relatedTarget))
+		) {
 			target = null;
 			close();
 		}
@@ -365,10 +344,7 @@ HTMLElement.prototype.addScrollbars = function () {
 	// 添加方法 - 更新滚动条
 	let withCorner = false;
 	this.updateScrollbars = function () {
-		if (
-			this.clientWidth < this.scrollWidth &&
-			this.clientHeight < this.scrollHeight
-		) {
+		if (this.clientWidth < this.scrollWidth && this.clientHeight < this.scrollHeight) {
 			if (!withCorner) {
 				withCorner = true;
 				hBar.addClass('with-corner');
@@ -408,10 +384,7 @@ HTMLElement.prototype.addSetScrollMethod = function () {
 // 缩放率不是 100% 有可能出现
 // clientWidth > scrollWidth
 HTMLElement.prototype.hasScrollBar = function (): boolean {
-	return (
-		this.clientWidth < this.scrollWidth ||
-		this.clientHeight < this.scrollHeight
-	);
+	return this.clientWidth < this.scrollWidth || this.clientHeight < this.scrollHeight;
 };
 
 // 元素方法 - 判断事件坐标在内容区域上
@@ -494,10 +467,8 @@ HTMLElement.prototype.dispatchUpdateEvent = (function IIFE() {
 		if (dragging.relate(event)) {
 			switch (dragging.mode) {
 				case 'scroll':
-					this.scrollLeft =
-						dragging.scrollLeft + dragging.clientX - event.clientX;
-					this.scrollTop =
-						dragging.scrollTop + dragging.clientY - event.clientY;
+					this.scrollLeft = dragging.scrollLeft + dragging.clientX - event.clientX;
+					this.scrollTop = dragging.scrollTop + dragging.clientY - event.clientY;
 					break;
 			}
 		}

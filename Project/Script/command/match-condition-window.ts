@@ -39,8 +39,7 @@ interface SwitchConditionTarget {
 interface SwitchConditionShape {
 	target: SwitchConditionTarget | null;
 	initialize: (() => void) | null;
-	parse:
-		((condition: SwitchConditionData, listData?: boolean) => string) | null;
+	parse: ((condition: SwitchConditionData, listData?: boolean) => string) | null;
 	open: ((condition?: SwitchConditionData) => void) | null;
 	save: (() => SwitchConditionData) | null;
 	confirm: ((event: Event) => SwitchConditionData) | null;
@@ -122,10 +121,7 @@ SwitchCondition.initialize = function (): void {
 };
 
 // 解析条件
-SwitchCondition.parse = function (
-	condition: SwitchConditionData,
-	listData?: boolean
-): string {
+SwitchCondition.parse = function (condition: SwitchConditionData, listData?: boolean): string {
 	let string: string;
 	switch (condition.type) {
 		case 'none':
@@ -138,15 +134,10 @@ SwitchCondition.parse = function (
 			string = Command.setNumberColor!(condition.value!.toString());
 			break;
 		case 'string':
-			string = Command.setStringColor!(
-				`"${Command.parseMultiLineString!(condition.value)}"`
-			);
+			string = Command.setStringColor!(`"${Command.parseMultiLineString!(condition.value)}"`);
 			break;
 		case 'attribute':
-			string = Command.parseAttributeTag!(
-				condition.attributeId!,
-				'string'
-			);
+			string = Command.parseAttributeTag!(condition.attributeId!, 'string');
 			break;
 		case 'enum':
 			string = Command.parseEnumStringTag!(condition.stringId!);
@@ -154,31 +145,19 @@ SwitchCondition.parse = function (
 		case 'keyboard': {
 			const key = condition.keycode!;
 			const keyboard = Local.get('command.switch.keyboard');
-			string =
-				keyboard +
-				Token('[') +
-				Command.setStringColor!(key) +
-				Token(']');
+			string = keyboard + Token('[') + Command.setStringColor!(key) + Token(']');
 			break;
 		}
 		case 'gamepad': {
 			const button = GamepadBox.getButtonName(condition.button!);
 			const gamepad = Local.get('command.switch.gamepad');
-			string =
-				gamepad +
-				Token('[') +
-				Command.setStringColor!(button) +
-				Token(']');
+			string = gamepad + Token('[') + Command.setStringColor!(button) + Token(']');
 			break;
 		}
 		case 'mouse': {
 			const button = IfCondition.parseMouseButton(condition.button!);
 			const mouse = Local.get('command.switch.mouse');
-			string =
-				mouse +
-				Token('[') +
-				Command.setStringColor!(button) +
-				Token(']');
+			string = mouse + Token('[') + Command.setStringColor!(button) + Token(']');
 			break;
 		}
 		case 'variable':
@@ -247,9 +226,7 @@ SwitchCondition.open = function (
 	write('gamepad-button', gamepadButton);
 	write('mouse-button', mouseButton);
 	write('variable-variable', variableVariable);
-	(
-		$('#switch-condition-type') as HTMLElement & { getFocus(): void }
-	).getFocus();
+	($('#switch-condition-type') as HTMLElement & { getFocus(): void }).getFocus();
 };
 
 // 保存数据
@@ -280,9 +257,9 @@ SwitchCondition.save = function (): SwitchConditionData {
 			const attributeId = read('attribute-attributeId') as string;
 			if (attributeId === '') {
 				return (
-					$(
-						'#switch-condition-attribute-attributeId'
-					) as HTMLElement & { getFocus(): void }
+					$('#switch-condition-attribute-attributeId') as HTMLElement & {
+						getFocus(): void;
+					}
 				).getFocus() as unknown as SwitchConditionData;
 			}
 			condition = { type, attributeId };

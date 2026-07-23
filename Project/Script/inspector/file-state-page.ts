@@ -39,10 +39,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#fileState-parameter-pane').bind($('#fileState-scripts'));
 
 		// 侦听事件
-		$('#fileState-icon, #fileState-clip, #fileState-inherit').on(
-			'input',
-			this.paramInput
-		);
+		$('#fileState-icon, #fileState-clip, #fileState-inherit').on('input', this.paramInput);
 		$('#fileState-attributes, #fileState-events, #fileState-scripts').on(
 			'change',
 			this.listChange

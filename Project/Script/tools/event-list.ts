@@ -61,11 +61,7 @@ export class EventListInterface implements IListInterface {
 			Command.invalid = false;
 			const groupKey = this.filter + '-event';
 			const eventType = Command.parseGroupEnumString(groupKey, type);
-			const eventClass = Command.invalid
-				? 'invalid'
-				: event.enabled
-					? ''
-					: 'weak';
+			const eventClass = Command.invalid ? 'invalid' : event.enabled ? '' : 'weak';
 			return {
 				content: Command.removeTextTags(eventType),
 				class: eventClass

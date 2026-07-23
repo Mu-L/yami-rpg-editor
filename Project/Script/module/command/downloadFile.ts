@@ -14,9 +14,7 @@ Command.cases.downloadFile = new CommandSchema({
 			{ name: 'PUT', value: 'PUT' },
 			{ name: 'DELETE', value: 'DELETE' }
 		]);
-		$('#downloadFile-isBackground').relate([
-			$('#downloadFile-isBackground-path')
-		]);
+		$('#downloadFile-isBackground').relate([$('#downloadFile-isBackground-path')]);
 		$('#downloadFile-isBackground-path').disable();
 		$('#downloadFile-isBackground').on('input', (e) => {
 			if (e.value) $('#downloadFile-isBackground-path').enable();

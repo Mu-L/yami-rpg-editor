@@ -46,12 +46,8 @@ export class TitleBar extends HTMLElement {
 								right -= dpx * 2;
 								bottom -= dpx * 2;
 							}
-							const x = CSS.rasterize(
-								left - startX + event.clientX
-							);
-							const y = CSS.rasterize(
-								top - startY + event.clientY
-							);
+							const x = CSS.rasterize(left - startX + event.clientX);
+							const y = CSS.rasterize(top - startY + event.clientY);
 							windowFrame.style.left = `${Math.clamp(x, 0, right)}px`;
 							windowFrame.style.top = `${Math.clamp(y, 0, bottom)}px`;
 						}
@@ -68,9 +64,7 @@ export class TitleBar extends HTMLElement {
 						window.off('blur', cancel);
 					};
 					this.dragging = event;
-					(
-						event as PointerEvent & { cancel(event?: Event): void }
-					).cancel = cancel;
+					(event as PointerEvent & { cancel(event?: Event): void }).cancel = cancel;
 					window.on('pointermove', pointermove);
 					window.on('pointerup', pointerup);
 					window.on('blur', cancel);
@@ -111,9 +105,7 @@ export class TitleBar extends HTMLElement {
 	doubleclick(event: Event): void {
 		const target = event.target as HTMLElement;
 		if (target instanceof TitleBar && target.querySelector('maximize')) {
-			(
-				this.dragging as (PointerEvent & { cancel(): void }) | null
-			)?.cancel();
+			(this.dragging as (PointerEvent & { cancel(): void }) | null)?.cancel();
 			const windowFrame = this.parentNode as HTMLElement & {
 				hasClass(name: string): boolean;
 				maximize(): void;

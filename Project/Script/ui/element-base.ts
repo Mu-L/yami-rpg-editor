@@ -177,8 +177,7 @@ UI.Element = class UIElement {
 	// 加入子对象
 	appendChild(element: any) {
 		if (element && this.children.append(element)) {
-			element.parent instanceof UI.Element &&
-				element.parent.children.remove(element);
+			element.parent instanceof UI.Element && element.parent.children.remove(element);
 			element.parent = this;
 			if (this.connected) {
 				!element.connected && element.connect();
@@ -209,10 +208,7 @@ UI.Element = class UIElement {
 
 	// 从父对象中移除
 	remove() {
-		if (
-			this.parent instanceof UI.Element &&
-			this.parent.children.remove(this)
-		) {
+		if (this.parent instanceof UI.Element && this.parent.children.remove(this)) {
 			UI.root.tryUpdateReferenceElements(this.parent);
 			if (this.parent instanceof UI.Window) {
 				this.parent.requestResizing();
@@ -237,14 +233,8 @@ UI.Element = class UIElement {
 		const parentHeight = parent.height;
 		const x = parent.x + transform.x + transform.x2 * parentWidth;
 		const y = parent.y + transform.y + transform.y2 * parentHeight;
-		const width = Math.max(
-			transform.width + transform.width2 * parentWidth,
-			0
-		);
-		const height = Math.max(
-			transform.height + transform.height2 * parentHeight,
-			0
-		);
+		const width = Math.max(transform.width + transform.width2 * parentWidth, 0);
+		const height = Math.max(transform.height + transform.height2 * parentHeight, 0);
 		const anchorX = transform.anchorX * width;
 		const anchorY = transform.anchorY * height;
 		const rotation = transform.rotation;

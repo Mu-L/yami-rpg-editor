@@ -28,11 +28,9 @@ export class Timer {
 	static start: ((timestamp: number) => void) | null = null;
 	static update: ((timestamp: number) => void) | null = null;
 	static play: ((this: typeof Timer) => void) | null = null;
-	static appendUpdater:
-		((key: string, updater: (deltaTime: number) => void) => void) | null =
+	static appendUpdater: ((key: string, updater: (deltaTime: number) => void) => void) | null =
 		null;
-	static removeUpdater:
-		((key: string, updater: (deltaTime: number) => void) => void) | null =
+	static removeUpdater: ((key: string, updater: (deltaTime: number) => void) => void) | null =
 		null;
 
 	playbackRate: number;
@@ -76,10 +74,7 @@ export class Timer {
 	tick(deltaTime: number) {
 		this.elapsed = Math.max(
 			0,
-			Math.min(
-				this.duration,
-				this.elapsed + deltaTime * this.playbackRate
-			)
+			Math.min(this.duration, this.elapsed + deltaTime * this.playbackRate)
 		);
 		if (this.update(this) === false) {
 			this.remove();
@@ -205,11 +200,7 @@ Timer.update = function (timestamp: number) {
 	// 逐个获取更新器以便中途插入更新器
 	const updaters = Timer.updaters;
 	const { stageAnimation } = updaters;
-	if (
-		stageAnimation !== null &&
-		Timer.animationWaiting === 0 &&
-		document.hasFocus()
-	) {
+	if (stageAnimation !== null && Timer.animationWaiting === 0 && document.hasFocus()) {
 		stageAnimation(deltaTime);
 	}
 	const { stageRendering } = updaters;
@@ -218,11 +209,7 @@ Timer.update = function (timestamp: number) {
 		updaters.stageRendering = null;
 	}
 	const { sharedAnimation } = updaters;
-	if (
-		sharedAnimation !== null &&
-		Timer.animationWaiting === 0 &&
-		document.hasFocus()
-	) {
+	if (sharedAnimation !== null && Timer.animationWaiting === 0 && document.hasFocus()) {
 		sharedAnimation(deltaTime);
 	}
 	const { sharedRendering } = updaters;
@@ -237,11 +224,7 @@ Timer.update = function (timestamp: number) {
 	}
 
 	// 继续或结束动画
-	if (
-		Timer.timers.length > 0 ||
-		stageAnimation !== null ||
-		sharedAnimation !== null
-	) {
+	if (Timer.timers.length > 0 || stageAnimation !== null || sharedAnimation !== null) {
 		Timer.animationIndex = requestAnimationFrame(Timer.update);
 	} else {
 		Timer.animationIndex = -1;

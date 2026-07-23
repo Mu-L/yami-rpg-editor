@@ -60,9 +60,7 @@ Project.initialize = function () {
 	// 设置场景碰撞关联元素
 	$('#config-collision-scene-enabled')
 		.enableHiddenMode()
-		.relate([
-			{ case: true, targets: [$('#config-collision-scene-actorSize')] }
-		]);
+		.relate([{ case: true, targets: [$('#config-collision-scene-actorSize')] }]);
 
 	// 创建触发器碰撞模式选项
 	$('#config-collision-trigger-collideWithActorShape').loadItems([
@@ -422,9 +420,7 @@ Project.languages = {
 		const items = [];
 		const languages = Local.get('languages');
 		if (languages) {
-			const langList = new Set(
-				Project.data.localization.languages.map((lang) => lang.name)
-			);
+			const langList = new Set(Project.data.localization.languages.map((lang) => lang.name));
 			for (const [value, name] of Object.entries(languages)) {
 				if (value === 'auto' || langList.has(value)) {
 					items.push({ name, value });

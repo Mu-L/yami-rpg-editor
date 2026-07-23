@@ -27,8 +27,7 @@ Object.clone = (function IIFE() {
 			seen.set(object as object, copy);
 			for (let i = 0; i < arr.length; i++) {
 				const value = arr[i];
-				(copy as unknown[])[i] =
-					value instanceof Object ? clone(value, seen) : value;
+				(copy as unknown[])[i] = value instanceof Object ? clone(value, seen) : value;
 			}
 		} else if (isPlainObject(object)) {
 			copy = {} as Record<PropertyKey, unknown>;

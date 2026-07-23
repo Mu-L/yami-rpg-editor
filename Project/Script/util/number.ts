@@ -6,11 +6,7 @@ Number.computeIndexDigits = function (length: number): number {
 };
 
 // 数字静态方法 - 填充零
-Number.padZero = function (
-	number: number,
-	length: number,
-	padString = '0'
-): string {
+Number.padZero = function (number: number, length: number, padString = '0'): string {
 	const digits = Number.computeIndexDigits(length);
 	return number.toString().padStart(digits, padString);
 };

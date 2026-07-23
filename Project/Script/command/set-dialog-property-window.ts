@@ -9,11 +9,7 @@ import { Color } from '../tools/color-picker-window.ts';
 const dialogEffectRelate = [
 	{
 		case: 'shadow',
-		targets: [
-			'effect-shadowOffsetX',
-			'effect-shadowOffsetY',
-			'effect-color'
-		]
+		targets: ['effect-shadowOffsetX', 'effect-shadowOffsetY', 'effect-color']
 	},
 	{
 		case: 'stroke',
@@ -46,12 +42,8 @@ export const DialogBoxProperty = createPropertyWindow({
 	],
 	subRelates: [{ selector: 'effect-type', cases: dialogEffectRelate }],
 	init() {
-		$('#setDialogBox-property-effect-type').loadItems(
-			$('#uiDialogBox-effect-type').dataItems
-		);
-		$('#setDialogBox-property-blend').loadItems(
-			$('#uiDialogBox-blend').dataItems
-		);
+		$('#setDialogBox-property-effect-type').loadItems($('#uiDialogBox-effect-type').dataItems);
+		$('#setDialogBox-property-blend').loadItems($('#uiDialogBox-blend').dataItems);
 	},
 	openData(defaults: any, key: any, value: any) {
 		if (key === 'effect') {
@@ -98,8 +90,7 @@ export const DialogBoxProperty = createPropertyWindow({
 		lineSpacing: (value) => Command.setNumberColor(value),
 		letterSpacing: (value) => Command.setNumberColor(value),
 		color: (value) => Command.parseHexColor(Color.simplifyHexColor(value)),
-		font: (value, get) =>
-			value ? Command.setStringColor(value) : get('font.default'),
+		font: (value, get) => (value ? Command.setStringColor(value) : get('font.default')),
 		effect: (value, get, name) => {
 			switch (value.type) {
 				case 'none':
@@ -107,9 +98,7 @@ export const DialogBoxProperty = createPropertyWindow({
 				case 'shadow': {
 					const x = Command.setNumberColor(value.shadowOffsetX);
 					const y = Command.setNumberColor(value.shadowOffsetY);
-					const color = Command.parseHexColor(
-						Color.simplifyHexColor(value.color)
-					);
+					const color = Command.parseHexColor(Color.simplifyHexColor(value.color));
 					return (
 						name +
 						Token('(') +
@@ -125,9 +114,7 @@ export const DialogBoxProperty = createPropertyWindow({
 				}
 				case 'stroke': {
 					const width = Command.setNumberColor(value.strokeWidth);
-					const color = Command.parseHexColor(
-						Color.simplifyHexColor(value.color)
-					);
+					const color = Command.parseHexColor(Color.simplifyHexColor(value.color));
 					return (
 						name +
 						Token('(') +
@@ -140,16 +127,9 @@ export const DialogBoxProperty = createPropertyWindow({
 					);
 				}
 				case 'outline': {
-					const color = Command.parseHexColor(
-						Color.simplifyHexColor(value.color)
-					);
+					const color = Command.parseHexColor(Color.simplifyHexColor(value.color));
 					return (
-						name +
-						Token('(') +
-						get('effect.outline') +
-						Token(', ') +
-						color +
-						Token(')')
+						name + Token('(') + get('effect.outline') + Token(', ') + color + Token(')')
 					);
 				}
 			}

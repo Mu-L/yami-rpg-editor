@@ -215,9 +215,7 @@ Command.cases.setList = new CommandSchema({
 			case 'get-actor-targets': {
 				const label = Local.get('command.setList.' + operation);
 				const actorInfo = Command.parseActor(actor);
-				info = `${varName} ${equal} ${label}${Token('(')}${actorInfo}${Token(
-					')'
-				)}`;
+				info = `${varName} ${equal} ${label}${Token('(')}${actorInfo}${Token(')')}`;
 				break;
 			}
 		}

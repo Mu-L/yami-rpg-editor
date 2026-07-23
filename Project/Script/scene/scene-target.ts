@@ -5,11 +5,7 @@ import { Scene } from './scene-window.ts';
 import { TilemapShortcuts } from './tilemap-shortcut-list.ts';
 Scene.setTarget = function (target) {
 	if (this.target !== target) {
-		if (
-			target !== null &&
-			this.tilemap !== null &&
-			this.tilemap !== target
-		) {
+		if (target !== null && this.tilemap !== null && this.tilemap !== target) {
 			this.closeTilemap();
 		}
 		this.target = target;
@@ -33,9 +29,7 @@ Scene.openTilemap = function (tilemap) {
 		this.tilemap = tilemap;
 		this.tilemap.element?.addClass('highlight');
 		if (this.tilemap.shortcut !== 0) {
-			TilemapShortcuts.elements[this.tilemap.shortcut].addClass(
-				'selected'
-			);
+			TilemapShortcuts.elements[this.tilemap.shortcut].addClass('selected');
 		}
 		this.switchLayer('tilemap');
 		this.computeActiveTilemapId();
@@ -49,9 +43,7 @@ Scene.closeTilemap = function (back = true) {
 	if (this.tilemap !== null) {
 		this.tilemap.element?.removeClass('highlight');
 		if (this.tilemap.shortcut !== 0) {
-			TilemapShortcuts.elements[this.tilemap.shortcut].removeClass(
-				'selected'
-			);
+			TilemapShortcuts.elements[this.tilemap.shortcut].removeClass('selected');
 		}
 		this.tilemap = null;
 		if (back) {
@@ -118,8 +110,7 @@ Scene.revealTarget = (function IIFE() {
 		if (
 			target &&
 			!timer.target &&
-			(Math.abs(target.x - meta.x) > toleranceX ||
-				Math.abs(target.y - meta.y) > toleranceY)
+			(Math.abs(target.x - meta.x) > toleranceX || Math.abs(target.y - meta.y) > toleranceY)
 		) {
 			timer.target = target;
 			timer.startX = meta.x;
@@ -239,11 +230,7 @@ Scene.updateTargetInfo = function () {
 					const sw = this.width;
 					const sh = this.height;
 					if (x >= 0 && x < sw && y >= 0 && y < sh) {
-						if (
-							x !== marquee.x ||
-							y !== marquee.y ||
-							!marquee.visible
-						) {
+						if (x !== marquee.x || y !== marquee.y || !marquee.visible) {
 							marquee.selectInObjectMode(x, y);
 						}
 					} else {

@@ -41,8 +41,7 @@ Command.cases.script = new CommandSchema({
 			});
 		} else {
 			const boundingRect = content.getBoundingClientRect();
-			content.style.width =
-				parent.clientWidth - boundingRect.left * 2 + 'px';
+			content.style.width = parent.clientWidth - boundingRect.left * 2 + 'px';
 			content.style.height = parent.clientHeight - 60 + 'px';
 			this.editor.layout({
 				width: parseFloat(content.style.width),
@@ -117,11 +116,7 @@ Command.cases.script = new CommandSchema({
 			this.typesDispose.forEach((item) => item());
 		}
 		const projectDir = Path.dirname(Editor.config.project);
-		this.typesDispose = loadDtsFolder(
-			Path.join(projectDir, 'Script'),
-			monaco,
-			true
-		);
+		this.typesDispose = loadDtsFolder(Path.join(projectDir, 'Script'), monaco, true);
 	},
 	async customSave() {
 		let script = this.model.getValue();
@@ -219,17 +214,12 @@ Command.cases.script = new CommandSchema({
 
 		$('#script-change').on('click', () => {
 			const currentLanguage = this.editor.getModel().getLanguageId();
-			let languageId =
-				currentLanguage === 'javascript' ? 'typescript' : 'javascript';
+			let languageId = currentLanguage === 'javascript' ? 'typescript' : 'javascript';
 			const get = Local.createGetter('confirmation');
 			$('#script-change').name =
-				currentLanguage === 'javascript'
-					? 'script-change-ts'
-					: 'script-change-js';
+				currentLanguage === 'javascript' ? 'script-change-ts' : 'script-change-js';
 			$('#script-change').textContent = get(
-				currentLanguage === 'javascript'
-					? 'script-change-js'
-					: 'script-change-ts'
+				currentLanguage === 'javascript' ? 'script-change-js' : 'script-change-ts'
 			);
 			monaco.editor.setModelLanguage(this.model, languageId);
 		});

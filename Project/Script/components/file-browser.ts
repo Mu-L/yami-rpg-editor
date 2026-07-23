@@ -125,9 +125,7 @@ export class FileBrowser extends HTMLElement {
 					const path = folders[0].path;
 					const index = path.lastIndexOf('/');
 					if (index !== -1) {
-						(nav as any).load(
-							(Directory as any).getFolder(path.slice(0, index))
-						);
+						(nav as any).load((Directory as any).getFolder(path.slice(0, index)));
 						return true;
 					}
 				}
@@ -229,13 +227,8 @@ export class FileBrowser extends HTMLElement {
 				page.pressing = null;
 			}
 			const files = page.activeFile ? [page.activeFile] : page.selections;
-			if (
-				!files.includes((Directory as any).assets) &&
-				!page.textBox.parentNode
-			) {
-				const { relativePaths, absolutePaths } = this.getFilePaths(
-					files as FileItem[]
-				);
+			if (!files.includes((Directory as any).assets) && !page.textBox.parentNode) {
+				const { relativePaths, absolutePaths } = this.getFilePaths(files as FileItem[]);
 				this.dragging = event;
 				(event as any).mode = 'drag';
 				event.preventDefault = Function.empty as any;
@@ -248,9 +241,7 @@ export class FileBrowser extends HTMLElement {
 				(event as any).page = page;
 				(event as any).files = files;
 				(event as any).filePaths = relativePaths;
-				(event as any).promise = (Directory as any).readdir(
-					absolutePaths
-				);
+				(event as any).promise = (Directory as any).readdir(absolutePaths);
 				(event as any).promise.then((dir: any[]) => {
 					// 若文件已删除则结束拖拽
 					if (dir.length === 0) {
@@ -298,10 +289,7 @@ export class FileBrowser extends HTMLElement {
 	// 拖拽离开事件
 	dragleave(event: DragEvent): void {
 		const { dragging } = this;
-		if (
-			(dragging as any)?.dropTarget &&
-			!this.contains(event.relatedTarget as Node)
-		) {
+		if ((dragging as any)?.dropTarget && !this.contains(event.relatedTarget as Node)) {
 			(dragging as any).dropTarget.removeClass('drop-target');
 			(dragging as any).dropTarget = null;
 			// 排除drop时触发的dragleave事件
@@ -317,18 +305,17 @@ export class FileBrowser extends HTMLElement {
 		if (dragging) {
 			const { dropTarget } = dragging as any;
 			let element = event.target as HTMLElement;
-			if (
-				!(dragging as any).allowCopy &&
-				!(dragging as any).target.contains(element)
-			) {
+			if (!(dragging as any).allowCopy && !(dragging as any).target.contains(element)) {
 				(dragging as any).allowCopy = true;
 			}
-			while (!(
-				element instanceof FileBrowser ||
-				element instanceof FileNavPane ||
-				element instanceof FileBodyPane ||
-				(element as any).file instanceof FolderItem
-			)) {
+			while (
+				!(
+					element instanceof FileBrowser ||
+					element instanceof FileNavPane ||
+					element instanceof FileBodyPane ||
+					(element as any).file instanceof FolderItem
+				)
+			) {
 				element = element.parentNode as HTMLElement;
 			}
 			if (dropTarget !== element) {
@@ -347,8 +334,7 @@ export class FileBrowser extends HTMLElement {
 							for (const filePath of filePaths) {
 								if (
 									path === filePath ||
-									(path.indexOf(filePath) === 0 &&
-										path[filePath.length] === '/')
+									(path.indexOf(filePath) === 0 && path[filePath.length] === '/')
 								) {
 									return true;
 								}
@@ -356,10 +342,7 @@ export class FileBrowser extends HTMLElement {
 							return (Directory as any).existFiles(path, dir);
 						})
 						.then((existed: boolean) => {
-							if (
-								!existed &&
-								(dragging as any).dropTarget === element
-							) {
+							if (!existed && (dragging as any).dropTarget === element) {
 								(dragging as any).allowMove = true;
 							}
 						});
@@ -410,9 +393,7 @@ export class FileBrowser extends HTMLElement {
 						label: get('moveTo').replace('<dirName>', dropName),
 						click: () => {
 							(dragging as any).promise
-								.then((dir: any[]) =>
-									(Directory as any).moveFiles(dropPath, dir)
-								)
+								.then((dir: any[]) => (Directory as any).moveFiles(dropPath, dir))
 								.finally(() => {
 									(Directory as any).update();
 								});
@@ -427,12 +408,7 @@ export class FileBrowser extends HTMLElement {
 								.then((dir: any[]) =>
 									(Directory as any)
 										.saveFiles((dragging as any).files)
-										.then(() =>
-											(Directory as any).copyFiles(
-												dropPath,
-												dir
-											)
-										)
+										.then(() => (Directory as any).copyFiles(dropPath, dir))
 								)
 								.finally(() => {
 									(Directory as any).update();
@@ -496,12 +472,14 @@ export class FileBrowser extends HTMLElement {
 		if (dragging) {
 			const { dropTarget } = dragging as any;
 			let element = event.target as HTMLElement;
-			while (!(
-				element instanceof FileBrowser ||
-				element instanceof FileNavPane ||
-				element instanceof FileBodyPane ||
-				(element as any).file instanceof FolderItem
-			)) {
+			while (
+				!(
+					element instanceof FileBrowser ||
+					element instanceof FileNavPane ||
+					element instanceof FileBodyPane ||
+					(element as any).file instanceof FolderItem
+				)
+			) {
 				element = element.parentNode as HTMLElement;
 			}
 			if (dropTarget !== element) {
@@ -557,12 +535,8 @@ export class FileBrowser extends HTMLElement {
 		if (this._built) return;
 		this._built = true;
 		if (!this.nav) {
-			this.nav = document.createElement(
-				'file-nav-pane'
-			) as unknown as FileNavPane;
-			this.head = document.createElement(
-				'file-head-pane'
-			) as unknown as HTMLElement & {
+			this.nav = document.createElement('file-nav-pane') as unknown as FileNavPane;
+			this.head = document.createElement('file-head-pane') as unknown as HTMLElement & {
 				updateAddress(): void;
 				searcher: {
 					write(content: string): void;
@@ -570,9 +544,7 @@ export class FileBrowser extends HTMLElement {
 				};
 				address: { clear(): void };
 			};
-			this.body = document.createElement(
-				'file-body-pane'
-			) as unknown as FileBodyPane;
+			this.body = document.createElement('file-body-pane') as unknown as FileBodyPane;
 			this.appendChild(this.nav);
 			this.appendChild(this.head);
 			this.appendChild(this.body);

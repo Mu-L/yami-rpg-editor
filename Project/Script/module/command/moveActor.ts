@@ -39,9 +39,7 @@ Command.cases.moveActor = new CommandSchema({
 		return string;
 	},
 	customParse({ actor, mode, angle, destination, wait }) {
-		const words = Command.words
-			.push(Command.parseActor(actor))
-			.push(this.parseMode(mode));
+		const words = Command.words.push(Command.parseActor(actor)).push(this.parseMode(mode));
 		switch (mode) {
 			case 'stop':
 				break;

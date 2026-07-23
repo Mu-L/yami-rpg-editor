@@ -33,14 +33,10 @@ Command.cases.addAnimationComponent = new CommandSchema({
 		});
 	},
 	parseRotatable(rotatable: any) {
-		return rotatable
-			? Local.get('command.addAnimationComponent.rotatable')
-			: '';
+		return rotatable ? Local.get('command.addAnimationComponent.rotatable') : '';
 	},
 	parseSyncAngle(syncAngle: any) {
-		return syncAngle
-			? Local.get('command.addAnimationComponent.syncAngle')
-			: '';
+		return syncAngle ? Local.get('command.addAnimationComponent.syncAngle') : '';
 	},
 	parsePriority(priority: any) {
 		if (priority === 0) return '';
@@ -52,15 +48,7 @@ Command.cases.addAnimationComponent = new CommandSchema({
 		const abs = Command.setNumberColor(Math.abs(offsetY)) + 'px';
 		return offsetY > 0 ? abs : Token('-') + abs;
 	},
-	customParse({
-		actor,
-		animationId,
-		motion,
-		rotatable,
-		syncAngle,
-		priority,
-		offsetY
-	}) {
+	customParse({ actor, animationId, motion, rotatable, syncAngle, priority, offsetY }) {
 		syncAngle = syncAngle ?? false;
 		offsetY = offsetY ?? 0;
 		const words = Command.words

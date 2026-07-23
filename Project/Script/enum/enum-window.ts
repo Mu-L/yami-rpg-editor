@@ -345,11 +345,7 @@ Enum.getStringItems = function (groupKey, allowNone) {
 
 // 获取合并的选项列表
 Enum.getMergedItems = function (headItems, groupKey, mergedKey) {
-	return Data.enumeration.context.getMergedItems(
-		headItems,
-		groupKey,
-		mergedKey
-	);
+	return Data.enumeration.context.getMergedItems(headItems, groupKey, mergedKey);
 };
 
 // 打开字符串面板
@@ -587,9 +583,7 @@ Enum.listDoubleclick = function (event) {
 // 列表 - 选择事件
 Enum.listSelect = function (event) {
 	const item = event.value;
-	return item.class !== 'folder'
-		? Enum.openPropertyPanel(item)
-		: Enum.closePropertyPanel();
+	return item.class !== 'folder' ? Enum.openPropertyPanel(item) : Enum.closePropertyPanel();
 };
 
 // 列表 - 记录事件
@@ -879,10 +873,7 @@ Enum.list.delete = function (item) {
 		const get = Local.createGetter('confirmation');
 		Window.confirm(
 			{
-				message: get('deleteSingleFile').replace(
-					'<filename>',
-					item.name
-				)
+				message: get('deleteSingleFile').replace('<filename>', item.name)
 			},
 			[
 				{

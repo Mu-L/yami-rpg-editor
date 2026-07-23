@@ -723,9 +723,7 @@ export class ParamList extends HTMLElement {
 					break;
 				case 'ArrowDown':
 					event.preventDefault();
-					event.shiftKey
-						? this.selectMultipleDown()
-						: this.selectDown();
+					event.shiftKey ? this.selectMultipleDown() : this.selectDown();
 					break;
 				default:
 					return;

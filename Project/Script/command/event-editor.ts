@@ -26,13 +26,7 @@ interface EventEditorList {
 	restoreScroll: (() => void) | null;
 	defineProperties: ((item: any) => any) | null;
 	createLocalEventItem:
-		| ((
-				inserting: any,
-				filter: any,
-				name: any,
-				event: any,
-				callback: any
-		  ) => any)
+		| ((inserting: any, filter: any, name: any, event: any, callback: any) => any)
 		| null;
 	createGlobalEventItem: ((guid: string) => any) | null;
 	createIcon: ((item: any) => HTMLElement) | null;
@@ -504,26 +498,14 @@ EventEditor.initialize = function () {
 };
 
 // 打开本地事件
-EventEditor.openLocalEvent = function (
-	inserting,
-	filter,
-	name,
-	event,
-	callback
-) {
+EventEditor.openLocalEvent = function (inserting, filter, name, event, callback) {
 	this.unpackOpenEvents();
 	Window.open('event');
 	window.on('keydown', this.windowKeydown);
 
 	// 查询项目并更新列表
 	const list = this.list;
-	const item = list.createLocalEventItem(
-		inserting,
-		filter,
-		name,
-		event,
-		callback
-	);
+	const item = list.createLocalEventItem(inserting, filter, name, event, callback);
 	list.addNodeTo(item, null);
 	list.update();
 	list.select(item);
@@ -586,13 +568,7 @@ EventEditor.openRelatedEvents = function (contexts) {
 			const { filter, name, event } = context;
 			item = this.getItemByEvent(event);
 			if (!item) {
-				item = list.createLocalEventItem(
-					false,
-					filter,
-					name,
-					event,
-					null
-				);
+				item = list.createLocalEventItem(false, filter, name, event, null);
 				TreeList.createParents([item], null);
 				this.data.push(item);
 			}
@@ -621,10 +597,7 @@ EventEditor.findRelatedEvents = function (eventId) {
 			switch (command.id) {
 				case 'callEvent':
 				case '!callEvent':
-					if (
-						command.params.type === 'global' &&
-						command.params.eventId === eventId
-					) {
+					if (command.params.type === 'global' && command.params.eventId === eventId) {
 						return true;
 					}
 					break;
@@ -863,9 +836,7 @@ EventEditor.openCommandList = function (item) {
 	const { commands, filter } = item;
 
 	// 创建类型选项
-	$('#event-type').loadItems(
-		Enum.getMergedItems(this.types[filter], filter + '-event')
-	);
+	$('#event-type').loadItems(Enum.getMergedItems(this.types[filter], filter + '-event'));
 
 	// 创建类型工具提示
 	$('#event-type').createTooltip();
@@ -1512,13 +1483,7 @@ EventEditor.list.defineProperties = function (item) {
 };
 
 // 列表 - 创建本地事件项目
-EventEditor.list.createLocalEventItem = function (
-	inserting,
-	filter,
-	name,
-	event,
-	callback
-) {
+EventEditor.list.createLocalEventItem = function (inserting, filter, name, event, callback) {
 	const item = EventEditor.list.defineProperties({ id: '' });
 	item.name = name;
 	item.class = 'local';
@@ -1584,9 +1549,7 @@ EventEditor.list.updateInitText = function (item) {
 		if (item.type !== 'common') {
 			typeName =
 				' : ' +
-				Command.removeTextTags(
-					Command.parseEventType(item.filter + '-event', item.type)
-				);
+				Command.removeTextTags(Command.parseEventType(item.filter + '-event', item.type));
 		}
 		if (element.attrValue !== typeName) {
 			element.attrValue = typeName;

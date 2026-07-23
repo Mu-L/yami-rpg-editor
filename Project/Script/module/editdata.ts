@@ -89,8 +89,7 @@ export const EditDataInstance = new (class {
 		} else {
 			const boundingRect = content.getBoundingClientRect();
 			// 保持content左右间距相同
-			content.style.width =
-				parent.clientWidth - boundingRect.left * 2 + 'px';
+			content.style.width = parent.clientWidth - boundingRect.left * 2 + 'px';
 			content.style.height = parent.clientHeight - 60 + 'px';
 			this.editor.layout({
 				width: parseFloat(content.style.width),
@@ -140,8 +139,7 @@ export const EditDataInstance = new (class {
 				const { node, value } = this.currentContent[ind];
 				if (!(ind in parse)) continue; // 索引不存在
 				const changeContent = parse[ind];
-				if (JSON.stringify(value) === JSON.stringify(changeContent))
-					continue; // 内容没修改
+				if (JSON.stringify(value) === JSON.stringify(changeContent)) continue; // 内容没修改
 
 				// 直接修改 dataList 中的数据
 				const list = node.dataList;
@@ -156,9 +154,7 @@ export const EditDataInstance = new (class {
 				list[dataIndex] = changeContent;
 				hasChanges = true;
 			}
-		} else if (
-			JSON.stringify(this.currentContent.value) !== JSON.stringify(parse)
-		) {
+		} else if (JSON.stringify(this.currentContent.value) !== JSON.stringify(parse)) {
 			// 单个修改
 			const node = this.currentContent.node;
 
@@ -178,9 +174,7 @@ export const EditDataInstance = new (class {
 
 		// 如果有修改，触发 change 事件以标记数据需要保存
 		if (hasChanges) {
-			this.eventListDom.dispatchEvent(
-				new Event('change', { bubbles: true })
-			);
+			this.eventListDom.dispatchEvent(new Event('change', { bubbles: true }));
 		}
 
 		// 更新显示
@@ -313,20 +307,14 @@ export const EditDataInstance = new (class {
 				}
 			};
 			// 单个
-			this.model.setValue(
-				JSON.stringify(this.currentContent.value, null, 2)
-			);
+			this.model.setValue(JSON.stringify(this.currentContent.value, null, 2));
 		} else {
 			const value = [];
 			const includeArr = [];
 			for (let index = start; index <= end; index++) {
 				const elem = elements[index];
 				const eData = elem.dataItem;
-				if (
-					eData &&
-					!includeArr.includes(elem.dataParent) &&
-					elem.mark !== 'footer'
-				)
+				if (eData && !includeArr.includes(elem.dataParent) && elem.mark !== 'footer')
 					value.push({
 						node: elem,
 						value: {

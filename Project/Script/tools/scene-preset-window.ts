@@ -58,8 +58,7 @@ PresetObject.open = function (target) {
 	// 写入数据
 	const { scene, list } = this;
 	const presetId = target.read() || (Scene.target?.presetId ?? '');
-	const sceneId =
-		Data.scenePresets[presetId]?.sceneId ?? Scene.meta?.guid ?? '';
+	const sceneId = Data.scenePresets[presetId]?.sceneId ?? Scene.meta?.guid ?? '';
 	scene.write(sceneId);
 	scene.getFocus();
 	const item = list.getItemByProperties({ presetId });
@@ -107,10 +106,7 @@ PresetObject.buildNodes = (function IIFE() {
 
 // 获取默认的场景预设对象ID
 PresetObject.getDefaultPresetId = function (className = 'any') {
-	if (
-		Scene.target &&
-		(className === 'any' || Scene.target.class === className)
-	) {
+	if (Scene.target && (className === 'any' || Scene.target.class === className)) {
 		return Scene.target.presetId;
 	}
 	return '';
@@ -128,9 +124,7 @@ PresetObject.windowClosed = function (event) {
 PresetObject.sceneIdWrite = function (event) {
 	const scene = Data.scenes[event.value];
 	const filter = PresetObject.target.filter;
-	const nodes = scene
-		? PresetObject.buildNodes(scene.objects, filter)
-		: Array.empty;
+	const nodes = scene ? PresetObject.buildNodes(scene.objects, filter) : Array.empty;
 	PresetObject.nodes = nodes;
 	PresetObject.list.update();
 	if (nodes.length !== 0) {

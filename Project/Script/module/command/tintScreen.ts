@@ -20,16 +20,17 @@ Command.cases.tintScreen = new CommandSchema({
 			$('#tintScreen-easingId').clear();
 			$('#tintScreen-filter').clear();
 		});
-		$(
-			'#tintScreen-tint-0, #tintScreen-tint-1, #tintScreen-tint-2, #tintScreen-tint-3'
-		).on('input', function (event) {
-			$('#tintScreen-filter').write([
-				$('#tintScreen-tint-0').read(),
-				$('#tintScreen-tint-1').read(),
-				$('#tintScreen-tint-2').read(),
-				$('#tintScreen-tint-3').read()
-			]);
-		});
+		$('#tintScreen-tint-0, #tintScreen-tint-1, #tintScreen-tint-2, #tintScreen-tint-3').on(
+			'input',
+			function (event) {
+				$('#tintScreen-filter').write([
+					$('#tintScreen-tint-0').read(),
+					$('#tintScreen-tint-1').read(),
+					$('#tintScreen-tint-2').read(),
+					$('#tintScreen-tint-3').read()
+				]);
+			}
+		);
 	},
 	parseTint([red, green, blue, gray]) {
 		const _red = Command.setNumberColor(red);
@@ -58,12 +59,7 @@ Command.cases.tintScreen = new CommandSchema({
 			{ text: words.join() }
 		];
 	},
-	customLoad({
-		tint = [0, 0, 0, 0],
-		easingId = Data.easings[0].id,
-		duration = 0,
-		wait = false
-	}) {
+	customLoad({ tint = [0, 0, 0, 0], easingId = Data.easings[0].id, duration = 0, wait = false }) {
 		const write = getElementWriter('tintScreen');
 		write('tint-0', tint[0]);
 		write('tint-1', tint[1]);
@@ -77,12 +73,7 @@ Command.cases.tintScreen = new CommandSchema({
 	},
 	customSave() {
 		const read = getElementReader('tintScreen');
-		const tint = [
-			read('tint-0'),
-			read('tint-1'),
-			read('tint-2'),
-			read('tint-3')
-		];
+		const tint = [read('tint-0'), read('tint-1'), read('tint-2'), read('tint-3')];
 		Command.save({
 			tint,
 			easingId: read('easingId'),

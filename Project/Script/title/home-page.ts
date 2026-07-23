@@ -182,17 +182,8 @@ Home.parseRecentProjects = function () {
 					sizes[type] += size;
 				}
 				counts.total =
-					counts.data +
-					counts.script +
-					counts.image +
-					counts.media +
-					counts.other;
-				sizes.total =
-					sizes.data +
-					sizes.script +
-					sizes.image +
-					sizes.media +
-					sizes.other;
+					counts.data + counts.script + counts.image + counts.media + counts.other;
+				sizes.total = sizes.data + sizes.script + sizes.image + sizes.media + sizes.other;
 				const get = Local.createGetter('stats');
 				for (const { type, name } of [
 					{ type: 'data', name: get('data') },
@@ -249,9 +240,7 @@ Home.removeRecentProject = function (index) {
 			for (const node of array) {
 				dNode.appendChild(node);
 			}
-			sNode.hasClass('disabled')
-				? dNode.addClass('disabled')
-				: dNode.removeClass('disabled');
+			sNode.hasClass('disabled') ? dNode.addClass('disabled') : dNode.removeClass('disabled');
 		}
 		nodes[items.length].hide();
 	}
@@ -316,8 +305,7 @@ Home.countFileList = (function IIFE() {
 					promises.push(read(newPath, list));
 				} else {
 					const extname = Path.extname(name);
-					const type =
-						extnameToTypeMap[extname.toLowerCase()] ?? 'other';
+					const type = extnameToTypeMap[extname.toLowerCase()] ?? 'other';
 					list.push({
 						type: type,
 						size: 0
@@ -393,8 +381,7 @@ Home.readFileList = (function IIFE() {
 					promises.push(read(newPath, list));
 				} else {
 					const extname = Path.extname(name);
-					const type =
-						extnameToTypeMap[extname.toLowerCase()] ?? 'other';
+					const type = extnameToTypeMap[extname.toLowerCase()] ?? 'other';
 					const item = {
 						type: type,
 						size: 0

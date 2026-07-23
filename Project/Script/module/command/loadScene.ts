@@ -14,16 +14,12 @@ Command.cases.loadScene = new CommandSchema({
 		]);
 		$('#loadScene-transfer')
 			.enableHiddenMode()
-			.relate([
-				{ case: true, targets: [$('#loadScene-x'), $('#loadScene-y')] }
-			]);
+			.relate([{ case: true, targets: [$('#loadScene-x'), $('#loadScene-y')] }]);
 	},
 	customParse({ sceneId, transfer, x, y }) {
 		const words = Command.words.push(Command.parseVariableFile(sceneId));
 		if (transfer) {
-			words
-				.push(Command.parseVariableNumber(x))
-				.push(Command.parseVariableNumber(y));
+			words.push(Command.parseVariableNumber(x)).push(Command.parseVariableNumber(y));
 		}
 		return [
 			{ color: 'scene' },

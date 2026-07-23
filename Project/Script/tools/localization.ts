@@ -49,11 +49,7 @@ Local.initialize = function () {
 	const _modulePath =
 		_moduleURL.protocol === 'file:'
 			? fileURLToPath(_moduleURL)
-			: Path.resolve(
-					process.cwd(),
-					'Project',
-					_moduleURL.pathname.split('/').pop()
-				);
+			: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 	const _moduleDir =
 		_moduleURL.protocol === 'file:'
 			? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
@@ -230,11 +226,7 @@ Local.setElement = (function IIFE() {
 				symbol = 'element[unknown]';
 			}
 			setTimeout(() => {
-				Log.throw(
-					new Error(
-						`Localizing Error: ${message.replace('@element', symbol)}`
-					)
-				);
+				Log.throw(new Error(`Localizing Error: ${message.replace('@element', symbol)}`));
 			}, 100);
 		}
 	};
@@ -261,9 +253,7 @@ Local.setElement = (function IIFE() {
 			}
 		}
 		if (item.tip !== undefined) {
-			element.setTooltip(
-				Local.parseTip(item.tip, item.label ?? item.content)
-			);
+			element.setTooltip(Local.parseTip(item.tip, item.label ?? item.content));
 		}
 		if (item.placeholder !== undefined) {
 			if (element instanceof TextBox) {

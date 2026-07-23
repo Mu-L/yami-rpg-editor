@@ -43,12 +43,7 @@ Command.cases.setMovementSpeed = new CommandSchema({
 			{ text: words.join() }
 		];
 	},
-	customLoad({
-		actor = { type: 'trigger' },
-		property = 'base',
-		base = 0,
-		factor = 0
-	}) {
+	customLoad({ actor = { type: 'trigger' }, property = 'base', base = 0, factor = 0 }) {
 		const write = getElementWriter('setMovementSpeed');
 		write('actor', actor);
 		write('property', property);

@@ -345,10 +345,8 @@ ImageClip.pointermove = function (event) {
 	if (dragging.relate(event)) {
 		switch (dragging.mode) {
 			case 'scroll':
-				this.screen.scrollLeft =
-					dragging.scrollLeft + dragging.clientX - event.clientX;
-				this.screen.scrollTop =
-					dragging.scrollTop + dragging.clientY - event.clientY;
+				this.screen.scrollLeft = dragging.scrollLeft + dragging.clientX - event.clientX;
+				this.screen.scrollTop = dragging.scrollTop + dragging.clientY - event.clientY;
 				break;
 		}
 	}

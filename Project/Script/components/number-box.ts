@@ -126,9 +126,7 @@ export class NumberBox extends HTMLElement {
 
 	// 输入框 - 键盘按下事件
 	inputKeydown(event: any) {
-		!NumberBox.whiteList.includes(event.code) &&
-			!event.cmdOrCtrlKey &&
-			event.preventDefault();
+		!NumberBox.whiteList.includes(event.code) && !event.cmdOrCtrlKey && event.preventDefault();
 	}
 
 	// 输入框 - 内容改变事件

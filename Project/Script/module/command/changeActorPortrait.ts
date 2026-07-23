@@ -18,10 +18,7 @@ Command.cases.changeActorPortrait = new CommandSchema({
 			.relate([
 				{
 					case: 'full',
-					targets: [
-						$('#changeActorPortrait-portrait'),
-						$('#changeActorPortrait-clip')
-					]
+					targets: [$('#changeActorPortrait-portrait'), $('#changeActorPortrait-clip')]
 				},
 				{
 					case: 'portrait',
@@ -53,9 +50,7 @@ Command.cases.changeActorPortrait = new CommandSchema({
 		const words = Command.words.push(Command.parseActor(actor));
 		switch (mode) {
 			case 'full':
-				words
-					.push(Command.parseFileName(portrait))
-					.push(this.parsePortraitClip(clip));
+				words.push(Command.parseFileName(portrait)).push(this.parsePortraitClip(clip));
 				break;
 			case 'portrait':
 				words.push(Command.parseFileName(portrait));

@@ -155,10 +155,7 @@ export const Shortcuts = {
 		}
 
 		return function (event) {
-			if (
-				event.target.tagName === 'INPUT' ||
-				event.target.tagName === 'TEXTAREA'
-			) {
+			if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
 				return false;
 			}
 			const key = event.code;
