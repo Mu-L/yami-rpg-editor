@@ -1,11 +1,9 @@
 import { $, getElementReader, getElementWriter } from '../util/dom.ts';
 import { GamepadBox } from '../components/gamepad-box.ts';
-import { Attribute } from '../attribute/attribute-window.ts';
 import { Command } from './command-object.ts';
 import { IfCondition } from './conditional-condition-window.ts';
 import { Token } from './mark-string-manager.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
-import { Enum } from '../enum/enum-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 import { Variable } from '../variable/variable.ts';

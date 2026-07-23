@@ -1,5 +1,3 @@
-import { Menu } from './menu-list.ts';
-
 // ******************************** 手柄按键框 ********************************
 
 export class GamepadBox extends HTMLElement {

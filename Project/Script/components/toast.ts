@@ -1,5 +1,3 @@
-import { reportError } from '../util/safe.ts';
-
 // ******************************** Toast ********************************
 // 轻量用户可见提示，接入 reportError 派发的 'yami:error' 事件
 

@@ -2,7 +2,6 @@
 import { VariableGetter } from './variable-accessor-window.ts';
 import { Enum } from '../enum/enum-window.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 物品访问器窗口 ********************************
 

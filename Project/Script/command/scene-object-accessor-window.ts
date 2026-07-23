@@ -1,9 +1,7 @@
 ﻿import { $, getElementReader } from '../util/dom.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
-import { Scene } from '../scene/scene-window.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 场景对象访问器窗口 ********************************
 

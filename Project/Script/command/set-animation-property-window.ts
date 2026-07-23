@@ -1,5 +1,4 @@
 ﻿import { createPropertyWindow } from './property-window-factory.ts';
-import { Animation } from '../animation/animation-window.ts';
 import { Command } from './command-object.ts';
 
 // ******************************** 设置动画 - 属性窗口 ********************************

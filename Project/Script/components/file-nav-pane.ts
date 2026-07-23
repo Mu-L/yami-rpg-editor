@@ -7,6 +7,7 @@ import { TextBox } from './text-box.ts';
 import { Directory } from '../file/directory-object.ts';
 import { FS, FSP } from '../file/file-system.ts';
 import { Timer } from '../util/timer.ts';
+import { FileBrowserLinks } from '../types/file-browser-links.ts';
 
 // ******************************** 文件导航面板 ********************************
 
@@ -25,7 +26,7 @@ export class FileNavPane extends HTMLElement {
 	pressing: ((event: PointerEvent) => void) | null;
 	selectEventEnabled: boolean;
 	textBox: TextBox;
-	links: Record<string, any>;
+	links: FileBrowserLinks;
 
 	constructor() {
 		super();

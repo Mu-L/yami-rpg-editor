@@ -2,7 +2,6 @@
 import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 瓦片地图访问器窗口 ********************************
 

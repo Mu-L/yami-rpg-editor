@@ -1,5 +1,4 @@
 ﻿import { NumberHistory } from './number-history.ts';
-import { Home } from '../title/home-page.ts';
 import { measureText } from '../util/dom.ts';
 
 // ******************************** 数字框 ********************************

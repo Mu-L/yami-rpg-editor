@@ -4,13 +4,9 @@ import { Command } from './command-object.ts';
 import { Token } from './mark-string-manager.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
 import { Data } from '../data/data-object.ts';
-import { Team } from '../data/team-window.ts';
 import { Enum } from '../enum/enum-window.ts';
-import { Light } from '../scene/light.ts';
-import { Scene } from '../scene/scene-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 条件分支 - 条件窗口 ********************************
 
@@ -20,8 +16,6 @@ interface IfConditionTarget {
 	dataValue?: any;
 	isPluginInput?: boolean;
 }
-
-type IfConditionMethod = ((...args: any[]) => any) | null;
 
 interface IfConditionShape {
 	type: string;

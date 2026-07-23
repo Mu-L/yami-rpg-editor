@@ -1,5 +1,4 @@
 ﻿import { $, getElementReader } from '../util/dom.ts';
-import { ElementGetter } from './element-accessor-window.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetElement } from '../tools/preset-element-window.ts';
 import { Window } from '../tools/window-object.ts';

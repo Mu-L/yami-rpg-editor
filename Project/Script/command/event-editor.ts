@@ -2,18 +2,14 @@ import { $, getElementWriter } from '../util/dom.ts';
 import { ctrl } from '../util/event-accessors.ts';
 import { Command } from './command-object.ts';
 import { File } from '../file/file-system-core.ts';
-import { Inspector } from '../inspector/inspector.ts';
 import { Editor } from '../main/editor.ts';
-import { Choices } from './show-options-window.ts';
-import { Menu } from '../components/menu-list.ts';
-import { Select } from '../components/select-list.ts';
-import { TreeList } from '../components/tree-list.ts';
 import { Data } from '../data/data-object.ts';
 import { Enum } from '../enum/enum-window.ts';
-import { commandList } from '../module/eslints.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
+import { TreeList } from '../components/tree-list.ts';
+import { Local } from '../tools/localization.ts';
+import { Menu } from '../components/menu-list.ts';
+import { Inspector } from '../inspector/inspector.ts';
 
 // ******************************** 事件编辑器 ********************************
 

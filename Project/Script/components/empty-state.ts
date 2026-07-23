@@ -58,5 +58,3 @@ export class EmptyState extends HTMLElement {
 }
 
 customElements.define('empty-state', EmptyState);
-
-import path from 'node:path';

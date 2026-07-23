@@ -11,10 +11,9 @@ import { FSP } from '../file/file-system.ts';
 import { FolderItem } from '../file/folder-item.ts';
 import { Reference } from '../log/related-references.ts';
 import { Editor } from '../main/editor.ts';
-import { range } from '../module/eslints.ts';
-import { Resources } from '../module/resource.ts';
 import { Local } from '../tools/localization.ts';
 import { Path } from '../util/config.ts';
+import { FileBrowserLinks } from '../types/file-browser-links.ts';
 
 // ******************************** 文件身体面板 ********************************
 
@@ -49,7 +48,7 @@ export class FileBodyPane extends HTMLElement {
 	unselectEventEnabled: boolean;
 	popupEventEnabled: boolean;
 	textBox: TextBox;
-	declare links: Record<string, any>;
+	declare links: FileBrowserLinks;
 
 	constructor() {
 		super();

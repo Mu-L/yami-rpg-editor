@@ -2,7 +2,7 @@
 import { Timer } from '../util/timer.ts';
 import '../util/event-target.js';
 import '../util/node-list.js';
-import { Animation } from '../animation/animation-window.ts';
+
 import { Cursor } from '../tools/pointer-object.ts';
 
 // ******************************** 元素方法 ********************************

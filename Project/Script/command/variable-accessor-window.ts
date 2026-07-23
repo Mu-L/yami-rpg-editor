@@ -4,9 +4,7 @@ import { Attribute } from '../attribute/attribute-window.ts';
 import { EventEditor } from './event-editor.ts';
 import { TextSuggestion } from './text-tip.ts';
 import { SelectBox } from '../components/select-box.ts';
-import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 变量访问器窗口 ********************************
 
@@ -42,8 +40,6 @@ interface VarGetterState {
 	target: VariableGetterTarget;
 	filter: string;
 }
-
-type VarGetterMethod = ((...args: any[]) => any) | null;
 
 interface VariableGetterShape {
 	keyBox: HTMLElement & {

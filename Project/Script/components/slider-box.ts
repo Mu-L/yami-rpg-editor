@@ -1,4 +1,3 @@
-﻿import { range } from '../module/eslints.ts';
 import { NumberBox } from './number-box.ts';
 
 // ******************************** 滑动框 ********************************

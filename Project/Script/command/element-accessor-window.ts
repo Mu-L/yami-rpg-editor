@@ -2,7 +2,6 @@ import { $, getElementReader } from '../util/dom.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetElement } from '../tools/preset-element-window.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 元素访问器窗口 ********************************
 
@@ -33,8 +32,6 @@ interface ElementData {
 	index?: number;
 	variable?: { type: string; key: string };
 }
-
-type ElementGetterMethod = ((...args: any[]) => any) | null;
 
 interface ElementGetterShape {
 	target: ElementGetterTarget | null;

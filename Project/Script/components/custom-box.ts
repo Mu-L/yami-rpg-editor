@@ -526,5 +526,3 @@ export class CustomBox extends HTMLElement {
 }
 
 customElements.define('custom-box', CustomBox as any);
-
-import path from 'node:path';

@@ -1,5 +1,4 @@
 import { CommandSchema } from '../module/command/schema.ts';
-import { Inspector } from '../inspector/inspector.ts';
 
 // ******************************** 指令对象 ********************************
 
@@ -19,7 +18,7 @@ export const Command: {
 	eventName: string;
 	eventIndex: number;
 	variables: any[];
-	varMap: Record<string, any>;
+	varMap: Record<string, CommandSchema>;
 	dependsOn: string[];
 	currentCommand: any;
 	setClass: ((className: string) => string) | null;
@@ -97,7 +96,7 @@ export const Command: {
 	setInvalid: CommandMethod;
 	forEachCommand: CommandMethod;
 	WordList: any;
-	cases: Record<string, any>;
+	cases: Record<string, CommandSchema>;
 	custom: any;
 } = {
 	// properties
@@ -193,7 +192,7 @@ export const Command: {
 	// classes
 	WordList: null,
 	// objects
-	cases: {} as Record<string, any>,
+	cases: {} as Record<string, CommandSchema>,
 	custom: null
 };
 

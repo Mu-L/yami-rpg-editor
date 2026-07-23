@@ -1,4 +1,5 @@
 ﻿import './element-methods.js';
+import { MarqueeSaveMap } from '../types/marquee-area.ts';
 
 // ******************************** 选框区域 ********************************
 
@@ -11,7 +12,7 @@ export class MarqueeArea extends HTMLElement {
 	scaleX: number;
 	scaleY: number;
 	visible: boolean;
-	saveData: Record<string, any>;
+	saveData: MarqueeSaveMap;
 
 	constructor() {
 		super();

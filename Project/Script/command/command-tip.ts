@@ -1,7 +1,6 @@
 import { $ } from '../util/dom.ts';
 import { Command } from './command-object.ts';
 import { File } from '../file/file-system-core.ts';
-import { Home } from '../title/home-page.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 

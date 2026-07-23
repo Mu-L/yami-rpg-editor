@@ -7,6 +7,7 @@ import { File } from '../file/file-system-core.ts';
 import { FolderItem } from '../file/folder-item.ts';
 import { Local } from '../tools/localization.ts';
 import { Path } from '../util/config.ts';
+import { FileBrowserLinks } from '../types/file-browser-links.ts';
 
 // ******************************** 文件浏览框 ********************************
 
@@ -39,7 +40,7 @@ export class FileBrowser extends HTMLElement {
 		contains(node: Node): boolean;
 		clear(): void;
 	};
-	links: Record<string, any>;
+	links: FileBrowserLinks;
 	declare _built: boolean;
 
 	constructor() {
@@ -590,5 +591,3 @@ export class FileBrowser extends HTMLElement {
 }
 
 customElements.define('file-browser', FileBrowser);
-
-import path from 'node:path';

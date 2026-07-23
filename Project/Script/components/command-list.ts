@@ -1,4 +1,3 @@
-﻿import { clipboard } from 'electron';
 import { SettingConfig } from '../module/settingconfig.ts';
 import { getVariable } from '../util/safe.ts';
 import { CommandHistory } from './command-history.ts';
@@ -15,7 +14,7 @@ import { WindowFrame } from './window-frame.ts';
 import { Enum } from '../enum/enum-window.ts';
 import { GameLocal } from '../local/local-object.ts';
 import { SearchString } from '../module/searchstring.ts';
-import { Home } from '../title/home-page.ts';
+
 import { Local } from '../tools/localization.ts';
 
 // ******************************** 指令列表 ********************************

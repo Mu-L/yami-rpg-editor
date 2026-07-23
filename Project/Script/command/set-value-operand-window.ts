@@ -4,11 +4,8 @@ import { Token } from './mark-string-manager.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
 import { Data } from '../data/data-object.ts';
 import { Enum } from '../enum/enum-window.ts';
-import { Scene } from '../scene/scene-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
-import { Zoom } from '../tools/zoom-window.ts';
-import { UI } from '../ui/ui-window.ts';
 import { Variable } from '../variable/variable.ts';
 
 // ******************************** 设置数值 - 操作数窗口 ********************************
@@ -20,8 +17,6 @@ interface NumberOperandTarget {
 	dataValue?: any;
 	isPluginInput?: boolean;
 }
-
-type NumberOperandMethod = ((...args: any[]) => any) | null;
 
 interface NumberOperandShape {
 	target: NumberOperandTarget | null;

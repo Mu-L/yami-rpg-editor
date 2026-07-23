@@ -1,12 +1,18 @@
 import { Local } from '../tools/localization.ts';
+import {
+	TreeDataItem,
+	TreeDataGroup,
+	TreeDataCache,
+	TreeDataLists
+} from '../types/tree-data.ts';
 
 // ******************************** 树形数据上下文基类 ********************************
 
 export class TreeDataContext {
-	itemMap: Record<string, any>;
-	groupMap: Record<string, any>;
-	itemCache: Record<string, any>;
-	itemLists: Record<string, any[]>;
+	itemMap: Record<string, TreeDataItem>;
+	groupMap: Record<string, TreeDataGroup>;
+	itemCache: TreeDataCache;
+	itemLists: TreeDataLists;
 
 	constructor(data: any, keysField: any) {
 		const itemMap = {};

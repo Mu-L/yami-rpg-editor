@@ -7,6 +7,12 @@ import { Easing } from '../data/transition-window.ts';
 import { Particle } from '../particle/particle-window.ts';
 import { ImageTexture } from '../webgl/image-texture.ts';
 import { Matrix } from '../webgl/matrix2.ts';
+import {
+	AnimationMotion,
+	AnimationSprite,
+	AnimationImageMap,
+	AnimationTextureMap
+} from '../types/animation-player.ts';
 
 // ******************************** 动画播放器类 ********************************
 
@@ -37,10 +43,10 @@ Animation.Player = class AnimationPlayer {
 	dirCases: any[] | null;
 	layers: any[] | null;
 	motion: any | null;
-	motions: Record<string, any>;
-	sprites: Record<string, any>;
-	images: Record<string, any>;
-	textures: Record<string, any>;
+	motions: Record<string, AnimationMotion>;
+	sprites: Record<string, AnimationSprite>;
+	images: AnimationImageMap;
+	textures: AnimationTextureMap;
 	contexts: any[] & { count?: number };
 	emitters: any[] & { count?: number };
 	isUIComponent: boolean;

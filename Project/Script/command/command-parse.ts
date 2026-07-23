@@ -1,4 +1,3 @@
-import { $ } from '../util/dom.ts';
 import { getVariable, reportError } from '../util/safe.ts';
 import { Attribute } from '../attribute/attribute-window.ts';
 import { Command } from './command-object.ts';

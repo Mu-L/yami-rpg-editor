@@ -1,5 +1,4 @@
 import { $, getElementReader } from '../util/dom.ts';
-import { Light } from '../scene/light.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
 
@@ -32,8 +31,6 @@ interface PositionData {
 	mode?: string;
 	objectId?: string;
 }
-
-type PositionGetterMethod = ((...args: any[]) => any) | null;
 
 interface PositionGetterShape {
 	target: PositionGetterTarget | null;

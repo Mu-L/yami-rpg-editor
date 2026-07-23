@@ -1,7 +1,6 @@
 ﻿import { $, getElementReader } from '../util/dom.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
 import { Window } from '../tools/window-object.ts';
-import { Variable } from '../variable/variable.ts';
 
 // ******************************** 触发器访问器窗口 ********************************
 

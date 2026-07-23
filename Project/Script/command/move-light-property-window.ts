@@ -1,6 +1,5 @@
 ﻿import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
-import { range } from '../module/eslints.ts';
 
 // ******************************** 移动光源 - 属性窗口 ********************************
 
