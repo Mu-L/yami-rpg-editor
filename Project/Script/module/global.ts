@@ -45,7 +45,7 @@ const __dirname =
 export const fs = fsExtra;
 export const yauzl = nodeYauzl;
 
-export const CommunityVersion = '26071701'; // 社区编辑器版本
+export const CommunityVersion = '26072001'; // 社区编辑器版本
 
 EventBus.once('editor_loaded', () => {
 	// 更新项目数据
