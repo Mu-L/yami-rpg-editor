@@ -649,7 +649,7 @@ function scanTopDeclNames(lines) {
 				lineIdx: i,
 				name: varMatchNoEq[2],
 				pattern: new RegExp(
-					`^(${varMatchNoEq[1]})\\s+${escName}\\s*(;|\/\/.*)?$`
+					`^(${varMatchNoEq[1]})\\s+${escName}\\s*(;|/\/.*)?$`
 				),
 				replacement: `export ${varMatchNoEq[1]} ${varMatchNoEq[2]}`
 			});

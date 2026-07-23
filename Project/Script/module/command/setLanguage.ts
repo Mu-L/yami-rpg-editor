@@ -28,11 +28,11 @@ Command.cases.setLanguage = new CommandSchema({
 		const items = [];
 		const languages = Local.get('languages');
 		if (languages) {
-			const langList = Data.config.localization.languages.map(
-				(lang) => lang.name
+			const langList = new Set(
+				Data.config.localization.languages.map((lang) => lang.name)
 			);
 			for (const [value, name] of Object.entries(languages)) {
-				if (value === 'auto' || langList.includes(value)) {
+				if (value === 'auto' || langList.has(value)) {
 					items.push({ name, value });
 				}
 			}

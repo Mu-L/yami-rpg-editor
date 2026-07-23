@@ -401,7 +401,7 @@ PluginManager.parseMeta = (function IIFE() {
 	const separator = /\s*,\s*/;
 	const spacing = /\s+/;
 	const strExp = /(?:'[^']*'|"[^"]")(?=\s*,?)/g;
-	const langName = /^([a-zA-Z\-]+)(?:\s+extends\s+([a-zA-Z\-]+))?/;
+	const langName = /^([a-zA-Z-]+)(?:\s+extends\s+([a-zA-Z-]+))?/;
 	const langProp = /(#\S+)\s+([\s\S]+?)(?=\s+#|$)/g;
 	const parseInitialValue = () => {
 		switch (type) {

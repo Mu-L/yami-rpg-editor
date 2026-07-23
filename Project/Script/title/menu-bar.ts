@@ -971,7 +971,7 @@ Menubar.revealSaveDirectory = async function () {
 // 规范化文件夹名称
 Menubar.sanitizeFolderName = function (name) {
 	// 移除Windows/macOS/Linux不允许的字符
-	name = name.replace(/[\/:*?"<>|]/g, '');
+	name = name.replace(/[/:*?"<>|]/g, '');
 	// 去掉开头和结尾的空格
 	name = name.replace(/^\s+|\s+$/g, '');
 	// Windows不能以"."结尾

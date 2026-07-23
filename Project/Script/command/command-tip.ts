@@ -389,7 +389,7 @@ CommandSuggestion.list.createComment = function (
 	item: CommandSuggestionItem
 ): void {
 	// 非英文语言包
-	if (item.class !== 'folder' && !/^en/.test(Local.language)) {
+	if (item.class !== 'folder' && !Local.language.startsWith('en')) {
 		// 获取自定义指令的关键字或内置指令的方法名
 		const string =
 			item.class === 'custom'

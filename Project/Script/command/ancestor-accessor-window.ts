@@ -19,10 +19,10 @@ export const AncestorGetter = {
 // 初始化
 AncestorGetter.initialize = function () {
 	// 创建访问器类型选项
-	const inclusions = ['trigger', 'latest', 'by-id', 'variable'];
+	const inclusions = new Set(['trigger', 'latest', 'by-id', 'variable']);
 	$('#ancestorGetter-type').loadItems(
 		$('#elementGetter-type').dataItems.filter((a) =>
-			inclusions.includes(a.value)
+			inclusions.has(a.value)
 		)
 	);
 

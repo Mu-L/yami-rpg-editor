@@ -422,11 +422,11 @@ Project.languages = {
 		const items = [];
 		const languages = Local.get('languages');
 		if (languages) {
-			const langList = Project.data.localization.languages.map(
-				(lang) => lang.name
+			const langList = new Set(
+				Project.data.localization.languages.map((lang) => lang.name)
 			);
 			for (const [value, name] of Object.entries(languages)) {
-				if (value === 'auto' || langList.includes(value)) {
+				if (value === 'auto' || langList.has(value)) {
 					items.push({ name, value });
 				}
 			}

@@ -36,7 +36,9 @@
 		"build:electron": "vite build --config vite.electron.config.js",
 		"build:all": "pnpm run build:vite && pnpm run build:electron",
 		"start:prod": "pnpm run build:all && electron . --dirname=.",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit",
+		"lint": "oxlint -c ./.oxlintrc.json .",
+		"lint:fix": "oxlint -c ./.oxlintrc.json --fix ."
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^21.0.1",
@@ -50,6 +52,8 @@
 		"electron-builder": "^25.1.8",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
+		"oxlint": "^1.75.0",
+		"oxlint-tsgolint": "^7.0.2001",
 		"prettier": "^3.8.3",
 		"vite": "^8.1.5",
 		"wait-on": "^9.0.10"
