@@ -20,22 +20,22 @@ import { measureText } from '../util/dom.ts';
 // ******************************** 脚本参数面板 ********************************
 
 export class ParameterPane extends HTMLElement {
-	scriptList: HTMLElement | null; //:element
-	headPad: HTMLElement | null; //:element
-	metas: any[]; //:array
-	wraps: any[]; //:array
-	detailBoxes: any[]; //:array
-	checkBoxes: any[]; //:array
-	numberBoxes: any[]; //:array
-	numberVars: any[]; //:array
-	textBoxes: any[]; //:array
-	selectBoxes: any[]; //:array
-	keyboardBoxes: any[]; //:array
-	colorBoxes: any[]; //:array
-	customBoxes: any[]; //:array
-	updateEventEnabled: boolean; //:boolean
-	windowLocalize: (event: Event) => void; //:function
-	scriptChange: (event: any) => void; //:function
+	scriptList: HTMLElement | null;
+	headPad: HTMLElement | null;
+	metas: any[];
+	wraps: any[];
+	detailBoxes: any[];
+	checkBoxes: any[];
+	numberBoxes: any[];
+	numberVars: any[];
+	textBoxes: any[];
+	selectBoxes: any[];
+	keyboardBoxes: any[];
+	colorBoxes: any[];
+	customBoxes: any[];
+	updateEventEnabled: boolean;
+	windowLocalize: (event: Event) => void;
+	scriptChange: (event: any) => void;
 	getData: () => any[];
 	onResize?: () => void;
 
@@ -62,16 +62,16 @@ export class ParameterPane extends HTMLElement {
 
 		// 侦听事件
 		window.on('localize', this.windowLocalize);
-		(this as any).on('change', this.componentChange);
+		this.on('change', this.componentChange);
 	}
 
 	// 绑定数据
 	bind(scriptList: HTMLElement): void {
 		this.scriptList = scriptList;
 		if (scriptList instanceof ParamList) {
-			const { object } = scriptList as any;
+			const { object } = scriptList as unknown as { object: any };
 			const { update } = object;
-			this.getData = () => (scriptList as any).data;
+			this.getData = () => (scriptList as unknown as { data: any }).data;
 			object.update = (...args: any[]) => {
 				update.apply(object, args);
 				this.update();
@@ -79,7 +79,9 @@ export class ParameterPane extends HTMLElement {
 		}
 		if (scriptList instanceof TreeList) {
 			this.getData = () => {
-				const item = (scriptList as any).read();
+				const item = (
+					scriptList as HTMLElement & { read(): any }
+				).read();
 				return item ? [item] : [];
 			};
 		}
@@ -94,7 +96,11 @@ export class ParameterPane extends HTMLElement {
 			for (const { input } of wrap.children) {
 				if (input.key === key) {
 					input.write(parameters[key]);
-					(this.scriptList as any)?.dispatchChangeEvent();
+					(
+						this.scriptList as
+							| (HTMLElement & { dispatchChangeEvent(): void })
+							| null
+					)?.dispatchChangeEvent();
 					// 更新参数可见性
 					if (input.branched) {
 						(PluginManager as any).reconstruct(script);
@@ -163,36 +169,110 @@ export class ParameterPane extends HTMLElement {
 				const tip = desc ? `<b>${name}</b>\n${desc}` : '';
 				this.updateParamInput(inputWrap, parameters[key]);
 				label.textContent = name;
-				(input as any).setTooltip(tip);
-				(input as any).parameters = parameters;
-				(input as any).key = key;
+				(
+					input as HTMLElement & {
+						setTooltip(tip: (() => string) | string): void;
+						parameters: any;
+						key: string;
+						enable(): void;
+						disable(): void;
+						removeClass(cls: string): void;
+						addClass(cls: string): void;
+						input?: HTMLElement;
+					}
+				).setTooltip(tip);
+				(
+					input as HTMLElement & {
+						setTooltip(tip: (() => string) | string): void;
+						parameters: any;
+						key: string;
+						enable(): void;
+						disable(): void;
+						removeClass(cls: string): void;
+						addClass(cls: string): void;
+						input?: HTMLElement;
+					}
+				).parameters = parameters;
+				(
+					input as HTMLElement & {
+						setTooltip(tip: (() => string) | string): void;
+						parameters: any;
+						key: string;
+						enable(): void;
+						disable(): void;
+						removeClass(cls: string): void;
+						addClass(cls: string): void;
+						input?: HTMLElement;
+					}
+				).key = key;
 				grid.appendChild(label);
 				if (parameter.prefix || parameter.suffix) {
 					this.applyAffix(input, parameter);
 				}
 				grid.appendChild(input);
-				(input as any).enable();
+				(
+					input as HTMLElement & {
+						setTooltip(tip: (() => string) | string): void;
+						parameters: any;
+						key: string;
+						enable(): void;
+						disable(): void;
+						removeClass(cls: string): void;
+						addClass(cls: string): void;
+						input?: HTMLElement;
+					}
+				).enable();
 				if (parameter.readonly) {
-					(input as any).disable();
+					(
+						input as HTMLElement & {
+							setTooltip(tip: (() => string) | string): void;
+							parameters: any;
+							key: string;
+							enable(): void;
+							disable(): void;
+							removeClass(cls: string): void;
+							addClass(cls: string): void;
+							input?: HTMLElement;
+						}
+					).disable();
 				}
 				if (parameter.validate) {
 					const validateInput = () => {
-						const val = (input as any).parameters?.[
-							(input as any).key
+						const val = (
+							input as HTMLElement & {
+								parameters?: Record<string, any>;
+								key: string;
+							}
+						).parameters?.[
+							(input as HTMLElement & { key: string }).key
 						];
 						const ok =
 							val !== undefined &&
-							(PluginManager as any).checkValidate(
-								parameter,
-								val
-							);
+							(
+								PluginManager as unknown as {
+									checkValidate(
+										param: any,
+										val: any
+									): boolean;
+								}
+							).checkValidate(parameter, val);
 						if (ok) {
-							(input as any).removeClass('validate-error');
+							(
+								input as HTMLElement & {
+									removeClass(cls: string): void;
+								}
+							).removeClass('validate-error');
 						} else {
-							(input as any).addClass('validate-error');
+							(
+								input as HTMLElement & {
+									addClass(cls: string): void;
+								}
+							).addClass('validate-error');
 						}
 					};
-					const nativeInput = (input as any).input || input;
+					const nativeInput =
+						(input as HTMLElement & { input?: HTMLElement })
+							.input || input;
 					nativeInput.addEventListener('input', validateInput);
 				}
 				children.push(inputWrap);

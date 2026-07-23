@@ -11,21 +11,21 @@ import { PluginManager } from '../plugin/plugin.ts';
 // ******************************** 脚本列表接口 ********************************
 
 export class ScriptListInterface {
-	target; //:element
-	type; //:string
-	filter; //:string
-	script; //:object
-	editor; //:object
-	owner; //:object
-	history; //:object
+	target: (HTMLElement & { [k: string]: any }) | null;
+	type: string;
+	filter: string;
+	script: any | null;
+	editor: any | null;
+	owner: any | null;
+	history: any | null;
 
-	constructor(editor?, owner?) {
+	constructor(editor?: any, owner?: any) {
 		this.editor = editor ?? null;
 		this.owner = owner ?? null;
 	}
 
 	// 初始化
-	initialize(list) {
+	initialize(list: any): void {
 		list.togglable = true;
 		this.target = null;
 		this.script = null;
@@ -47,7 +47,7 @@ export class ScriptListInterface {
 	}
 
 	// 解析
-	parse(script) {
+	parse(script: any): any {
 		const box = document.createElement('box');
 		box.textContent = '\uf044';
 		box.addClass('script-edit-button');
@@ -65,7 +65,7 @@ export class ScriptListInterface {
 	}
 
 	// 更新
-	update(list) {
+	update(list: any) {
 		// 更新事件项目的有效性
 		const elements = list.elements;
 		const items = list.read();
@@ -110,7 +110,7 @@ export class ScriptListInterface {
 	}
 
 	// 模拟输入
-	input(scriptId) {
+	input(scriptId: any) {
 		this.script.id = scriptId;
 		this.target.save();
 	}
@@ -140,12 +140,12 @@ export class ScriptListInterface {
 	})();
 
 	// 列表 - 拖拽进入事件
-	static listDragenter(event) {
+	static listDragenter(event: any) {
 		return ScriptListInterface.listDragover.call(this, event);
 	}
 
 	// 列表 - 拖拽离开事件
-	static listDragleave(event) {
+	static listDragleave(event: any) {
 		const self: any = this;
 		if (!self.contains(event.relatedTarget)) {
 			self.removeClass('dragover');
@@ -153,7 +153,7 @@ export class ScriptListInterface {
 	}
 
 	// 列表 - 拖拽悬停事件
-	static listDragover(event) {
+	static listDragover(event: any) {
 		if (Browser.dragging) {
 			const file = Browser.body.activeFile;
 			if (file instanceof FileItem && file.type === 'script') {
@@ -165,7 +165,7 @@ export class ScriptListInterface {
 	}
 
 	// 列表 - 拖拽释放事件
-	static listDrop(event) {
+	static listDrop(event: any) {
 		const file = Browser.body.activeFile;
 		if (file instanceof FileItem) {
 			const script = PluginManager.createData();

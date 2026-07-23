@@ -163,7 +163,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					// element[key] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'tint-0':
@@ -175,7 +175,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node.tint[color] !== value) {
 					node.tint[color] = value;
 					// element.tint[color] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			}

@@ -32,7 +32,47 @@ import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 动画窗口 ********************************
 
-export const Animation = {
+// 动画窗口状态
+type AnimationState = 'closed' | 'open';
+
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type AnimationMethod = ((...args: any[]) => any) | null;
+
+interface AnimationShape {
+	// properties
+	state: AnimationState;
+	// DOM 元素字段：运行时挂载大量扩展方法（.hide()/.show()/.update()/.write()/.on() 等），
+	// 统一用 HTMLElement & {[ k: string ]: any} 兜底，避免穷举
+	page: HTMLElement & { [k: string]: any };
+	head: HTMLElement & { [k: string]: any };
+	body: HTMLElement & {
+		hide(): HTMLElement;
+		show(): HTMLElement;
+		[k: string]: any;
+	};
+	screen: HTMLElement & { [k: string]: any };
+	marquee: HTMLElement & { [k: string]: any };
+	dirList: HTMLElement & { [k: string]: any };
+	searcher: HTMLElement & { [k: string]: any };
+	list: HTMLElement & { [k: string]: any };
+	layerList: HTMLElement & { [k: string]: any };
+	timeline: HTMLElement & { [k: string]: any };
+	toolbar: HTMLElement & { [k: string]: any };
+	outerRuler: HTMLElement & { [k: string]: any };
+	innerRuler: HTMLElement & { [k: string]: any };
+	outerTimelineList: HTMLElement & { [k: string]: any };
+	innerTimelineList: HTMLElement & { [k: string]: any };
+	timelineCursor: HTMLElement & { [k: string]: any };
+	timelineMarquee: HTMLElement & { [k: string]: any };
+	timelineMarqueeShift: HTMLElement & { [k: string]: any };
+	outerPointerArea: HTMLElement & { [k: string]: any };
+	innerPointerArea: HTMLElement & { [k: string]: any };
+	pointer: HTMLElement & { [k: string]: any };
+	// editor + animation properties（运行时挂载具体值，统一 any | null）
+	[k: string]: any;
+}
+
+export const Animation: AnimationShape = {
 	// properties
 	state: 'closed',
 	page: $('#animation'),
@@ -1314,7 +1354,7 @@ Animation.editMotion = function (motion) {
 		read() {
 			return motion.id;
 		},
-		input(id) {
+		input(id: any) {
 			if (motion.id !== id) {
 				Animation.history.save({
 					type: 'animation-motion-id-change',
@@ -1336,7 +1376,7 @@ Animation.getNewMotionId = function (callback) {
 		read() {
 			return '';
 		},
-		input(id) {
+		input(id: any) {
 			callback(id);
 		}
 	};
@@ -1351,7 +1391,7 @@ Animation.revealTarget = (function IIFE() {
 			const { target } = timer;
 			if (target === Animation.target) {
 				const easing = Easing.EasingMap.easeInOut;
-				const time = easing.map(timer.elapsed / timer.duration);
+				const time = easing.ease(timer.elapsed / timer.duration);
 				const x = timer.startX * (1 - time) + timer.endX * time;
 				const y = timer.startY * (1 - time) + timer.endY * time;
 				const screen = Animation.screen;
@@ -5937,7 +5977,7 @@ Animation.innerTimelineListDblclick = function (event) {
 	if (this.pointerevent.enableDblclickEvent) {
 		const { x, y } = Animation.getFrameCoords(event);
 		const timelines = Animation.innerTimelineList.childNodes;
-		const layer = timelines[y]?.layer;
+		const layer = (timelines[y] as HTMLElement & { layer?: any })?.layer;
 		if (layer !== undefined) {
 			for (const frame of layer.frames) {
 				const start = frame.start;

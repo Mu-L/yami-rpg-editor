@@ -383,7 +383,7 @@ Enum.unpackEnumeration = (function IIFE() {
 		id: string;
 		name: string;
 		children: any[];
-		constructor(item) {
+		constructor(item: any) {
 			this.data = item;
 			this.class = item.class;
 			this.id = item.id;
@@ -397,7 +397,7 @@ Enum.unpackEnumeration = (function IIFE() {
 		}
 
 		// 写入展开状态
-		set expanded(value) {
+		set expanded(value: any) {
 			this.data.expanded = value;
 			File.planToSave(Data.manifest.project.enumeration);
 		}

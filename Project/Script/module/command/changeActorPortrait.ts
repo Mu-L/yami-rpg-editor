@@ -30,7 +30,7 @@ Command.cases.changeActorPortrait = new CommandSchema({
 				{ case: 'clip', targets: [$('#changeActorPortrait-clip')] }
 			]);
 	},
-	parsePortraitClip(clip) {
+	parsePortraitClip(clip: any) {
 		const label = Local.get('command.changeActorPortrait.clip');
 		const x = Command.setNumberColor(clip[0]);
 		const y = Command.setNumberColor(clip[1]);

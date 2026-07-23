@@ -11,12 +11,12 @@ export const ApkBuilder = new (class {
 			this.apkLog(log);
 		});
 	}
-	build(cfg) {
+	build(cfg: any) {
 		$('#export-apk-content').clear();
 		const config = this.process(cfg);
 		ipcRenderer.invoke('build-apk', config);
 	}
-	apkLog(log) {
+	apkLog(log: any) {
 		const text = document.createElement('text');
 		text.textContent = log.msg;
 		text.addClass('export-apk-major');
@@ -43,7 +43,7 @@ export const ApkBuilder = new (class {
 	isBuilding() {
 		return ipcRenderer.sendSync('isBuilding-apk');
 	}
-	processPathOnly(line) {
+	processPathOnly(line: any) {
 		const pathPrefix = Path.resolve(
 			Path.dirname(Editor.config.project),
 			'apk'
@@ -60,7 +60,7 @@ export const ApkBuilder = new (class {
 		}
 		return line;
 	}
-	process(cfg) {
+	process(cfg: any) {
 		const config = JSON.parse(JSON.stringify(cfg));
 		const list = Object.keys(config);
 		list.forEach((v) => {

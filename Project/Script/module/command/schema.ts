@@ -26,10 +26,10 @@ import { Window } from '../../tools/window-object.ts';
 // ******************************** 指令 schema 基类 ********************************
 
 export class CommandSchema {
-	name; //:string
-	fields; //:array
-	children; //:boolean
-	confirmId; //:string
+	name: string;
+	fields: any[];
+	children: boolean;
+	confirmId: string;
 	onParse;
 	onLoad;
 	onSave;
@@ -39,7 +39,7 @@ export class CommandSchema {
 	customSave;
 	noWindow;
 
-	constructor(config) {
+	constructor(config: any) {
 		this.name = config.name;
 		this.fields = config.fields ?? [];
 		this.children = config.children ?? false;
@@ -86,7 +86,7 @@ export class CommandSchema {
 	}
 
 	// 取字段默认值（支持函数延迟求值）
-	_getDefault(field) {
+	_getDefault(field: any) {
 		return typeof field.default === 'function'
 			? field.default()
 			: field.default;
@@ -113,7 +113,7 @@ export class CommandSchema {
 	}
 
 	// 解析 - 子类可重写或提供 parse 函数
-	parse(data) {
+	parse(data: any) {
 		if (this.customParse) {
 			return this.customParse(data);
 		}
@@ -132,7 +132,7 @@ export class CommandSchema {
 	}
 
 	// 加载
-	load(data) {
+	load(data: any) {
 		if (this.customLoad) {
 			return this.customLoad(data);
 		}
@@ -172,12 +172,12 @@ export class CommandSchema {
 	// --- 静态分发方法 ---
 
 	// 按 id 查找已注册的指令处理器
-	static _resolve(id) {
+	static _resolve(id: any) {
 		return Command.cases[id];
 	}
 
 	// 拓扑排序
-	static _topoSort(names, getDeps) {
+	static _topoSort(names: any, getDeps: any) {
 		const graph: Map<string, string[]> = new Map(names.map((n) => [n, []]));
 		const inDegree: Map<string, number> = new Map(names.map((n) => [n, 0]));
 		for (const name of names) {
@@ -236,7 +236,7 @@ export class CommandSchema {
 	}
 
 	// 插入指令
-	static insert(target, id) {
+	static insert(target: any, id: any) {
 		Command.target = target;
 		if (id) {
 			target.scrollAndResize();
@@ -246,7 +246,7 @@ export class CommandSchema {
 	}
 
 	// 打开指令窗口
-	static open(id) {
+	static open(id: any) {
 		const handler = CommandSchema._resolve(id);
 		if (handler !== undefined) {
 			Command.id = id;
@@ -285,7 +285,7 @@ export class CommandSchema {
 	}
 
 	// 编辑指令
-	static edit(target, command) {
+	static edit(target: any, command: any) {
 		const { id, params } = command;
 		const handler = CommandSchema._resolve(id);
 		if (handler?.load instanceof Function) {
@@ -324,7 +324,7 @@ export class CommandSchema {
 	}
 
 	// 保存指令
-	static save(params) {
+	static save(params: any) {
 		const { id, target } = Command;
 		target.save({ id, params });
 		const handler = CommandSchema._resolve(id);
@@ -336,7 +336,7 @@ export class CommandSchema {
 	}
 
 	// 解析指令
-	static parse(command, varMap) {
+	static parse(command: any, varMap: any) {
 		Command.varMap = varMap;
 		let id = command?.id;
 		if (id == null) {

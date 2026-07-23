@@ -15,7 +15,7 @@ Command.cases.setNumber = new CommandSchema({
 			$('#setNumber-operands').clear();
 		});
 	},
-	parseOperation(operation) {
+	parseOperation(operation: any) {
 		switch (operation) {
 			case 'set':
 				return ' = ';
@@ -31,7 +31,7 @@ Command.cases.setNumber = new CommandSchema({
 				return ' %= ';
 		}
 	},
-	parseOperands(operands) {
+	parseOperands(operands: any) {
 		let expression = '';
 		let currentPriority;
 		let nextPriority = false;

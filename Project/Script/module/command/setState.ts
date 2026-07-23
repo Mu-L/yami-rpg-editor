@@ -19,7 +19,7 @@ Command.cases.setState = new CommandSchema({
 			{ name: 'Decrease Time', value: 'decrease-time' }
 		]);
 	},
-	parseOperation(operation) {
+	parseOperation(operation: any) {
 		return Local.get('command.setState.' + operation);
 	},
 	customParse({ state, operation, time }) {

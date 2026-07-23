@@ -7,28 +7,32 @@ import { UI } from '../ui/ui-window.ts';
 // ******************************** 元数据清单类 ********************************
 
 export class Manifest {
-	actors = [];
-	skills = [];
-	triggers = [];
-	items = [];
-	equipments = [];
-	states = [];
-	events = [];
-	scenes = [];
-	tilesets = [];
-	ui = [];
-	animations = [];
-	particles = [];
-	images = [];
-	metaList = [];
-	guidMap = {};
-	pathMap = {};
-	changed = false;
-	audio = [];
-	videos = [];
-	fonts = [];
-	script = [];
-	others = [];
+	actors: any[] = [];
+	skills: any[] = [];
+	triggers: any[] = [];
+	items: any[] = [];
+	equipments: any[] = [];
+	states: any[] = [];
+	events: any[] = [];
+	scenes: any[] = [];
+	tilesets: any[] = [];
+	ui: any[] = [];
+	animations: any[] = [];
+	particles: any[] = [];
+	images: any[] = [];
+	metaList: any[] = [];
+	guidMap: Record<string, any> = {};
+	pathMap: Record<string, any> = {};
+	changed: boolean = false;
+	audio: any[] = [];
+	videos: any[] = [];
+	fonts: any[] = [];
+	script: any[] = [];
+	others: any[] = [];
+	// 以下字段由 constructor 内 Object.defineProperties 挂载（非枚举）
+	declare project: Record<string, any>;
+	declare changes: any[];
+	declare code: string;
 
 	constructor() {
 		Object.defineProperties(this, {
@@ -57,7 +61,7 @@ export class Manifest {
 	}
 
 	// 删除元数据
-	deleteMeta(meta) {
+	deleteMeta(meta: any) {
 		const { guidMap } = this;
 		const { pathMap } = this;
 		const { guid, path } = meta;

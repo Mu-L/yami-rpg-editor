@@ -44,7 +44,7 @@ Command.cases.getTarget = new CommandSchema({
 				}
 			]);
 	},
-	parseCondition(condition, attribute, divisor) {
+	parseCondition(condition: any, attribute: any, divisor: any) {
 		const label = Local.get('command.getTarget.condition.' + condition);
 		switch (condition) {
 			case 'max-threat':

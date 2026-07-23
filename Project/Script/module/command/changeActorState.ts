@@ -26,7 +26,7 @@ Command.cases.changeActorState = new CommandSchema({
 				}
 			]);
 	},
-	parseOperation(operation) {
+	parseOperation(operation: any) {
 		return Local.get('command.changeActorState.' + operation);
 	},
 	customParse({ actor, operation, stateId, state }) {

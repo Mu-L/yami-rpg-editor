@@ -5,27 +5,27 @@ import { UI } from './ui-window.ts';
 // ******************************** 按钮元素 ********************************
 
 UI.Button = class ButtonElement extends UI.Element {
-	state; //:string
-	shadowImage; //:element
-	shadowText; //:element
-	_imagePadding; //:number
-	_textPadding; //:number
-	normalImage; //:string
-	normalClip; //:array
-	hoverImage; //:string
-	hoverClip; //:array
-	activeImage; //:string
-	activeClip; //:array
-	normalColor; //:string
-	hoverColor; //:string
-	activeColor; //:string
-	_imageOpacity; //:number
-	imageEffect; //:string
-	normalTint; //:array
-	hoverTint; //:array
-	activeTint; //:array
+	state: string;
+	shadowImage: any;
+	shadowText: any;
+	_imagePadding: number;
+	_textPadding: number;
+	normalImage: string;
+	normalClip: number[];
+	hoverImage: string;
+	hoverClip: number[];
+	activeImage: string;
+	activeClip: number[];
+	normalColor: string;
+	hoverColor: string;
+	activeColor: string;
+	_imageOpacity: number;
+	imageEffect: string;
+	normalTint: number[];
+	hoverTint: number[];
+	activeTint: number[];
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.state = 'normal';
 		this.shadowImage = this.createShadowImage(data);
@@ -54,7 +54,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入图像内边距
-	set imagePadding(value) {
+	set imagePadding(value: any) {
 		if (this._imagePadding !== value) {
 			this._imagePadding = value;
 			this.shadowImage.transform.width = -value * 2;
@@ -71,7 +71,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入文本内边距
-	set textPadding(value) {
+	set textPadding(value: any) {
 		if (this._textPadding !== value) {
 			this._textPadding = value;
 			this.shadowText.transform.width = -value * 2;
@@ -88,7 +88,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入图像
-	set image(value) {
+	set image(value: any) {
 		this.shadowImage.image = value;
 	}
 
@@ -98,7 +98,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入显示模式
-	set display(value) {
+	set display(value: any) {
 		this.shadowImage.display = value;
 	}
 
@@ -108,7 +108,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入翻转模式
-	set flip(value) {
+	set flip(value: any) {
 		this.shadowImage.flip = value;
 	}
 
@@ -118,7 +118,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入裁剪区域
-	set clip(value) {
+	set clip(value: any) {
 		this.shadowImage.clip = value;
 	}
 
@@ -128,7 +128,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入图像切片边距
-	set border(value) {
+	set border(value: any) {
 		this.shadowImage.border = value;
 	}
 
@@ -138,7 +138,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入图像不透明度
-	set imageOpacity(value) {
+	set imageOpacity(value: any) {
 		this.shadowImage.transform.opacity = value;
 		if (this.connected) {
 			this.shadowImage.resize();
@@ -151,7 +151,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入文本内容
-	set content(value) {
+	set content(value: any) {
 		this.shadowText.content = value;
 	}
 
@@ -161,7 +161,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入字体大小
-	set size(value) {
+	set size(value: any) {
 		this.shadowText.size = value;
 	}
 
@@ -171,7 +171,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入字体
-	set font(value) {
+	set font(value: any) {
 		this.shadowText.font = value;
 	}
 
@@ -181,7 +181,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入方向
-	set direction(value) {
+	set direction(value: any) {
 		this.shadowText.direction = value;
 	}
 
@@ -191,7 +191,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入水平对齐
-	set horizontalAlign(value) {
+	set horizontalAlign(value: any) {
 		this.shadowText.horizontalAlign = value;
 	}
 
@@ -201,7 +201,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入垂直对齐
-	set verticalAlign(value) {
+	set verticalAlign(value: any) {
 		this.shadowText.verticalAlign = value;
 	}
 
@@ -211,7 +211,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入行间距
-	set lineSpacing(value) {
+	set lineSpacing(value: any) {
 		this.shadowText.lineSpacing = value;
 	}
 
@@ -221,7 +221,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入字间距
-	set letterSpacing(value) {
+	set letterSpacing(value: any) {
 		this.shadowText.letterSpacing = value;
 	}
 
@@ -231,7 +231,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入颜色
-	set color(value) {
+	set color(value: any) {
 		this.shadowText.color = value;
 	}
 
@@ -241,7 +241,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入字型
-	set typeface(value) {
+	set typeface(value: any) {
 		this.shadowText.typeface = value;
 	}
 
@@ -251,12 +251,12 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 写入文字效果
-	set textEffect(value) {
+	set textEffect(value: any) {
 		this.shadowText.effect = value;
 	}
 
 	// 创建影子图像元素
-	createShadowImage(data) {
+	createShadowImage(data: any) {
 		const image = data.normalImage;
 		const clip = data.normalClip;
 		const tint = [0, 0, 0, 0];
@@ -268,7 +268,7 @@ UI.Button = class ButtonElement extends UI.Element {
 	}
 
 	// 创建影子文本元素
-	createShadowText(data) {
+	createShadowText(data: any) {
 		const color = data.normalColor;
 		const effect = data.textEffect;
 		const transform = this.createShadowTransform();

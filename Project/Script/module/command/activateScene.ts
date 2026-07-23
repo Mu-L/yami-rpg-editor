@@ -14,7 +14,7 @@ Command.cases.activateScene = new CommandSchema({
 			{ name: 'Scene B', value: 1 }
 		]);
 	},
-	parsePointer(pointer) {
+	parsePointer(pointer: any) {
 		switch (pointer) {
 			case 0:
 				return 'A';

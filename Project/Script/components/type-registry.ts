@@ -12,15 +12,15 @@ export const TypeRegistry: {
 } = {
 	types: {},
 
-	register(type, config) {
+	register(type: any, config: any) {
 		this.types[type] = config;
 	},
 
-	get(type) {
+	get(type: any) {
 		return this.types[type];
 	},
 
-	has(type) {
+	has(type: any) {
 		return type in this.types;
 	}
 };
@@ -28,14 +28,14 @@ export const TypeRegistry: {
 // 基础类型
 TypeRegistry.register('boolean', {
 	component: 'check-box',
-	create(pane) {
+	create(pane: any) {
 		return pane.createCheckBox();
 	}
 });
 
 TypeRegistry.register('number', {
 	component: 'number-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		const wrap = pane.createNumberBox();
 		wrap.input.input.min = param.min.toString();
 		wrap.input.input.max = param.max.toString();
@@ -49,7 +49,7 @@ TypeRegistry.register('number', {
 
 TypeRegistry.register('variable-number', {
 	component: 'number-var',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		const wrap = pane.createNumberVar();
 		wrap.input.numBox.input.min = param.min.toString();
 		wrap.input.numBox.input.max = param.max.toString();
@@ -64,7 +64,7 @@ TypeRegistry.register('variable-number', {
 
 TypeRegistry.register('string', {
 	component: 'text-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		const wrap = pane.createTextBox();
 		if (param.placeholder) {
 			wrap.input.setPlaceholder(param.placeholder);
@@ -75,7 +75,7 @@ TypeRegistry.register('string', {
 
 TypeRegistry.register('option', {
 	component: 'select-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		const wrap = pane.createSelectBox();
 		wrap.input.loadItems(param.dataItems);
 		wrap.input.branched = !!param.wrap;
@@ -85,7 +85,7 @@ TypeRegistry.register('option', {
 
 TypeRegistry.register('easing', {
 	component: 'select-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createSelectBox();
 		wrap.input.loadItems(Data.createEasingItems());
 		return wrap;
@@ -94,7 +94,7 @@ TypeRegistry.register('easing', {
 
 TypeRegistry.register('team', {
 	component: 'select-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createSelectBox();
 		wrap.input.loadItems(Data.createTeamItems());
 		return wrap;
@@ -103,7 +103,7 @@ TypeRegistry.register('team', {
 
 TypeRegistry.register('variable', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'global-variable';
 		wrap.input.filter = '';
@@ -113,7 +113,7 @@ TypeRegistry.register('variable', {
 
 TypeRegistry.register('attribute', {
 	component: 'custom-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		if (param.filter === 'any') {
 			const wrap = pane.createCustomBox();
 			wrap.input.type = 'attribute';
@@ -130,7 +130,7 @@ TypeRegistry.register('attribute', {
 
 TypeRegistry.register('attribute-key', {
 	component: 'custom-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		if (param.filter === 'any') {
 			const wrap = pane.createCustomBox();
 			wrap.input.type = 'attribute';
@@ -147,7 +147,7 @@ TypeRegistry.register('attribute-key', {
 
 TypeRegistry.register('attribute-group', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'attribute-group';
 		return wrap;
@@ -156,7 +156,7 @@ TypeRegistry.register('attribute-group', {
 
 TypeRegistry.register('enum', {
 	component: 'custom-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		if (param.filter === 'any') {
 			const wrap = pane.createCustomBox();
 			wrap.input.type = 'enum-string';
@@ -171,7 +171,7 @@ TypeRegistry.register('enum', {
 
 TypeRegistry.register('enum-value', {
 	component: 'custom-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		if (param.filter === 'any') {
 			const wrap = pane.createCustomBox();
 			wrap.input.type = 'enum-string';
@@ -186,7 +186,7 @@ TypeRegistry.register('enum-value', {
 
 TypeRegistry.register('enum-group', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'enum-group';
 		return wrap;
@@ -195,7 +195,7 @@ TypeRegistry.register('enum-group', {
 
 TypeRegistry.register('actor', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-object';
 		wrap.input.filter = 'actor';
@@ -205,7 +205,7 @@ TypeRegistry.register('actor', {
 
 TypeRegistry.register('region', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-object';
 		wrap.input.filter = 'region';
@@ -215,7 +215,7 @@ TypeRegistry.register('region', {
 
 TypeRegistry.register('light', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-object';
 		wrap.input.filter = 'light';
@@ -225,7 +225,7 @@ TypeRegistry.register('light', {
 
 TypeRegistry.register('animation', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-object';
 		wrap.input.filter = 'animation';
@@ -235,7 +235,7 @@ TypeRegistry.register('animation', {
 
 TypeRegistry.register('particle', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-object';
 		wrap.input.filter = 'particle';
@@ -245,7 +245,7 @@ TypeRegistry.register('particle', {
 
 TypeRegistry.register('parallax', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-object';
 		wrap.input.filter = 'parallax';
@@ -255,7 +255,7 @@ TypeRegistry.register('parallax', {
 
 TypeRegistry.register('tilemap', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-object';
 		wrap.input.filter = 'tilemap';
@@ -265,7 +265,7 @@ TypeRegistry.register('tilemap', {
 
 TypeRegistry.register('element', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-element';
 		wrap.input.filter = '';
@@ -275,7 +275,7 @@ TypeRegistry.register('element', {
 
 TypeRegistry.register('element-id', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'preset-element';
 		wrap.input.filter = '';
@@ -285,7 +285,7 @@ TypeRegistry.register('element-id', {
 
 TypeRegistry.register('file', {
 	component: 'custom-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'file';
 		wrap.input.filter = param.filter;
@@ -295,7 +295,7 @@ TypeRegistry.register('file', {
 
 TypeRegistry.register('variable-getter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'variable';
 		wrap.input.filter = 'all';
@@ -306,7 +306,7 @@ TypeRegistry.register('variable-getter', {
 
 TypeRegistry.register('variable-setter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'variable';
 		wrap.input.filter = 'all';
@@ -317,7 +317,7 @@ TypeRegistry.register('variable-setter', {
 
 TypeRegistry.register('actor-getter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'actor';
 		wrap.input.isPluginInput = true;
@@ -327,7 +327,7 @@ TypeRegistry.register('actor-getter', {
 
 TypeRegistry.register('skill-getter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'skill';
 		wrap.input.isPluginInput = true;
@@ -337,7 +337,7 @@ TypeRegistry.register('skill-getter', {
 
 TypeRegistry.register('state-getter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'state';
 		wrap.input.isPluginInput = true;
@@ -347,7 +347,7 @@ TypeRegistry.register('state-getter', {
 
 TypeRegistry.register('equipment-getter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'equipment';
 		wrap.input.isPluginInput = true;
@@ -357,7 +357,7 @@ TypeRegistry.register('equipment-getter', {
 
 TypeRegistry.register('item-getter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'item';
 		wrap.input.isPluginInput = true;
@@ -367,7 +367,7 @@ TypeRegistry.register('item-getter', {
 
 TypeRegistry.register('element-getter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'element';
 		wrap.input.isPluginInput = true;
@@ -377,7 +377,7 @@ TypeRegistry.register('element-getter', {
 
 TypeRegistry.register('position-getter', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'position';
 		wrap.input.isPluginInput = true;
@@ -387,7 +387,7 @@ TypeRegistry.register('position-getter', {
 
 TypeRegistry.register('number[]', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'array';
 		wrap.input.filter = 'number';
@@ -397,7 +397,7 @@ TypeRegistry.register('number[]', {
 
 TypeRegistry.register('string[]', {
 	component: 'custom-box',
-	create(pane) {
+	create(pane: any) {
 		const wrap = pane.createCustomBox();
 		wrap.input.type = 'array';
 		wrap.input.filter = 'string';
@@ -407,21 +407,21 @@ TypeRegistry.register('string[]', {
 
 TypeRegistry.register('repeatable-group', {
 	component: 'custom-box',
-	create(pane, param) {
+	create(pane: any, param: any) {
 		return pane.createRepeatableGroup(param);
 	}
 });
 
 TypeRegistry.register('keycode', {
 	component: 'keyboard-box',
-	create(pane) {
+	create(pane: any) {
 		return pane.createKeyboardBox();
 	}
 });
 
 TypeRegistry.register('color', {
 	component: 'color-box',
-	create(pane) {
+	create(pane: any) {
 		return pane.createColorBox();
 	}
 });

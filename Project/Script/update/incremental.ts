@@ -56,7 +56,7 @@ Updater.updateIncrementalChanges = function (version) {
 			}
 		}
 
-		logVersion(version) {
+		logVersion(version: any) {
 			messages.push({ title: `Update ${version}` });
 		}
 
@@ -64,14 +64,14 @@ Updater.updateIncrementalChanges = function (version) {
 			messages.push({ major: contents.join('\n') });
 		}
 
-		logReplace(dstPath) {
+		logReplace(dstPath: any) {
 			const path = Path.relative(dstProjectDir, dstPath);
 			const message = `write: ${path}`;
 			messages.push({ minor: this.capitalize(message) });
 			console.log(message);
 		}
 
-		capitalize(message) {
+		capitalize(message: any) {
 			return message.charAt(0).toUpperCase() + message.slice(1);
 		}
 
@@ -87,7 +87,7 @@ Updater.updateIncrementalChanges = function (version) {
 		}
 
 		// 复制文件
-		copyFile(srcPath, dstPath) {
+		copyFile(srcPath: any, dstPath: any) {
 			if (copyedFiles[dstPath]) {
 				return;
 			}

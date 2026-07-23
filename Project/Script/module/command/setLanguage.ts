@@ -15,7 +15,7 @@ Command.cases.setLanguage = new CommandSchema({
 			{ text: Local.get('languages.' + language) }
 		];
 	},
-	onLoad(data) {
+	onLoad(data: any) {
 		const el = $('#setLanguage-language');
 		el.loadItems(this.createLanguageItems());
 		el.write(data.language ?? 'auto');

@@ -1,18 +1,25 @@
-﻿import { File } from '../file/file-system-core.ts';
+import { File } from '../file/file-system-core.ts';
 import { AudioManager } from './audio-manager.ts';
 
 // ******************************** 多源音频播放器类 ********************************
+
+// HTMLAudioElement 运行时挂载的扩展字段（getAudio 内赋值）
+interface MultipleAudioElement extends HTMLAudioElement {
+	onStop: () => void;
+	source: MediaElementAudioSourceNode;
+	guid: string;
+}
 
 export class MultipleAudioPlayer {
 	/**
 	 * 备用的音频元素池
 	 * @type {Array<HTMLAudioElement>}
-	 */ audioPool;
+	 */ audioPool: MultipleAudioElement[];
 
 	/**
 	 * 正在播放的音频元素列表
 	 * @type {Array<HTMLAudioElement>}
-	 */ audios;
+	 */ audios: MultipleAudioElement[];
 
 	/** 多源音频播放器 */
 	constructor() {
@@ -21,10 +28,10 @@ export class MultipleAudioPlayer {
 	}
 
 	/** 获取音频元素 */
-	getAudio() {
+	getAudio(): MultipleAudioElement {
 		let audio = this.audioPool.pop();
 		if (audio === undefined) {
-			audio = new Audio();
+			audio = new Audio() as unknown as MultipleAudioElement;
 			const source = AudioManager.context.createMediaElementSource(audio);
 			const onStop = () => {
 				if (this.audios.remove(audio)) {
@@ -48,7 +55,7 @@ export class MultipleAudioPlayer {
 	 * @param {string} guid 音频文件ID
 	 * @returns {audio|undefined}
 	 */
-	getRecentlyAudio(guid) {
+	getRecentlyAudio(guid: string): MultipleAudioElement | undefined {
 		for (const audio of this.audios) {
 			if (audio.guid === guid && audio.currentTime < 0.05) {
 				return audio;

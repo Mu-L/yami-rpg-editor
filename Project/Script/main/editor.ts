@@ -1,6 +1,34 @@
 // ******************************** 编辑器对象 ********************************
 
-export const Editor = {
+// 编辑器状态
+type EditorState = 'closed' | 'open';
+
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type EditorMethod = ((...args: any[]) => any) | null;
+
+interface EditorShape {
+	// properties
+	state: EditorState;
+	config: any | null;
+	project: any | null;
+	// methods
+	initialize: (() => void) | null;
+	open: EditorMethod;
+	close: EditorMethod;
+	quit: EditorMethod;
+	updatePath: EditorMethod;
+	switchHotkey: EditorMethod;
+	saveConfig: EditorMethod;
+	loadConfig: EditorMethod;
+	saveProject: EditorMethod;
+	loadProject: EditorMethod;
+	saveManifest: EditorMethod;
+	checkForEditorUpdates: EditorMethod;
+	checkForProjectUpdates: EditorMethod;
+	isProjectVersionSupported: EditorMethod;
+}
+
+export const Editor: EditorShape = {
 	// properties
 	state: 'closed',
 	config: null,

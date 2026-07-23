@@ -46,7 +46,7 @@ Command.cases.return = new CommandSchema({
 				{ case: 'element', targets: [$('#return-element')] }
 			]);
 	},
-	loadTypeItems(type) {
+	loadTypeItems(type: any) {
 		let items;
 		switch (type) {
 			case 'none':

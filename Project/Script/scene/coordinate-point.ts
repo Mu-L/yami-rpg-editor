@@ -3,8 +3,8 @@
 // ******************************** 坐标点类 ********************************
 
 Scene.Point = class Point {
-	x; //:number
-	y; //:number
+	x: number;
+	y: number;
 
 	constructor() {
 		this.x = 0;
@@ -12,7 +12,7 @@ Scene.Point = class Point {
 	}
 
 	// 设置
-	set(x, y) {
+	set(x: any, y: any) {
 		this.x = x;
 		this.y = y;
 		return this;

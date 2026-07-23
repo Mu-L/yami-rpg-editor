@@ -18,7 +18,7 @@ Command.cases.changeActorMotion = new CommandSchema({
 			{ name: 'Move', value: 'move' }
 		]);
 	},
-	parseMapping(type, motion) {
+	parseMapping(type: any, motion: any) {
 		const motionType = Local.get('command.changeActorMotion.type.' + type);
 		const motionName = Command.parseEnumString(motion);
 		return motionType + Token(' -> ') + motionName;

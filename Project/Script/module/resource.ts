@@ -149,7 +149,7 @@ export const Resources = new (class {
 	}
 
 	// 获取第一个公告
-	getFirstAnnouncementContent(text) {
+	getFirstAnnouncementContent(text: any) {
 		if (!text) return '';
 
 		// 按换行符分割文本
@@ -301,7 +301,7 @@ export const Resources = new (class {
 	}
 
 	// 格式化文件大小
-	formatFileSize(bytes) {
+	formatFileSize(bytes: any) {
 		if (bytes < 1024) {
 			return `${bytes} B`;
 		} else if (bytes < 1024 * 1024) {
@@ -346,7 +346,7 @@ export const Resources = new (class {
 	}
 
 	// 写入本地 tempalte.json
-	writeTemplate(val) {
+	writeTemplate(val: any) {
 		const tempPath = Path.resolve(TemplatesPath, 'template.json');
 		fs.writeFileSync(tempPath, JSON.stringify(val));
 	}
@@ -432,7 +432,7 @@ export const Resources = new (class {
 		this.checkEditorVersion();
 	}
 
-	temp(val) {
+	temp(val: any) {
 		const value = val.replace(/[.]/g, '_'); // dom id 不能特殊字符
 		const targetPath = Path.resolve(TemplatesPath, `${val}_pack.zip`);
 		const _check = () => {

@@ -12,19 +12,25 @@ import { GL } from '../webgl/webgl-init.ts';
 // ******************************** 文件项目 ********************************
 
 export class FileItem {
-	meta; //:object
-	name; //:string
-	alias; //:string
-	aliasPath; //:string
-	basename; //:string
-	extname; //:string
-	path; //:string
-	type; //:string
-	stats; //:object
-	promise; //:Promise
-	contexts; //:object
+	meta: any | null;
+	name: string;
+	alias: string;
+	aliasPath: string;
+	basename: string;
+	extname: string;
+	path: string;
+	type: string;
+	stats: any | null;
+	promise: Promise<any> | null;
+	contexts: any | null;
 
-	constructor(name, extname, path, type, stats) {
+	constructor(
+		name: string,
+		extname: string,
+		path: string,
+		type: string,
+		stats: any
+	) {
 		let basename = Path.basename(name, extname);
 		const match = basename.match(FileItem.guidRegExp);
 		if (match) basename = basename.slice(0, match.index - 1);
@@ -65,7 +71,7 @@ export class FileItem {
 	}
 
 	// 创建元数据
-	createMeta(guid) {
+	createMeta(guid: any) {
 		const stats = this.stats;
 		// 如果GUID不存在或冲突则新建GUID
 		// 如果GUID重复则不要修改避免丢失
@@ -98,7 +104,7 @@ export class FileItem {
 	}
 
 	// 更新文件名称
-	updateFileName(guid) {
+	updateFileName(guid: any) {
 		const basename = this.basename;
 		const extname = this.extname;
 		// 如果代码被修改可能导致批量的错误命名结果
@@ -130,7 +136,7 @@ export class FileItem {
 	}
 
 	// 获取上下文对象
-	getContext(key) {
+	getContext(key: any) {
 		let contexts = this.contexts;
 		if (contexts === null) {
 			contexts = this.contexts = new Map();
@@ -169,7 +175,7 @@ export class FileItem {
 	static oversizeImagePaths = [];
 
 	// 静态方法 - 判断是不是数据文件
-	static isDataFile(file) {
+	static isDataFile(file: any) {
 		return FileItem.dataMapNames[file.type] !== undefined;
 	}
 

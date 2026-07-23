@@ -145,7 +145,8 @@ NewProject.confirm = function () {
 			NoResourceObj['arpg-ts-english'].check) ||
 		(template == 'arpg-ts-chinese' &&
 			NoResourceObj['arpg-ts-chinese'].check) ||
-		template != (['arpg-ts-english', 'arpg-ts-chinese'] as any)
+		template !=
+			(['arpg-ts-english', 'arpg-ts-chinese'] as unknown as string)
 	) {
 		TitleConfirmOld.call(Title);
 	} else {
@@ -401,7 +402,7 @@ AutoTile.templateList.update = function () {
 		item.element.querySelector('.autoTile-count')?.remove();
 		const countElem = document.createElement('span');
 		countElem.className = 'autoTile-count';
-		countElem.style =
+		countElem.style.cssText =
 			'color: var(--team-relation-mark-color-friend);padding:4px 2px;margin-left: 4px;';
 		countElem.textContent = count;
 		item.element.append(countElem);

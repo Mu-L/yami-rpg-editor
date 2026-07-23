@@ -4,9 +4,9 @@ import { CustomBox } from './custom-box.ts';
 // ******************************** 选择变量框 ********************************
 
 export class SelectVar extends HTMLElement {
-	mode; //:string
-	selectBox; //:element
-	varBox; //:element
+	mode: string;
+	selectBox: HTMLElement & { [k: string]: any };
+	varBox: CustomBox;
 
 	constructor() {
 		super();
@@ -34,7 +34,7 @@ export class SelectVar extends HTMLElement {
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any) {
 		switch (typeof value) {
 			case 'string':
 				this.switch('constant');
@@ -103,12 +103,12 @@ export class SelectVar extends HTMLElement {
 	}
 
 	// 加载选项
-	loadItems(items) {
+	loadItems(items: any) {
 		this.selectBox.loadItems(items);
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: any) {
 		switch (this.mode) {
 			case 'constant':
 				return this.selectBox.getFocus(mode);
@@ -123,7 +123,7 @@ export class SelectVar extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: any) {
 		switch (event.code) {
 			case 'Slash':
 				// 切换输入框导致已侦听的事件失效
@@ -135,7 +135,7 @@ export class SelectVar extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
 				if (!this.hasClass('disabled') && event.target === this) {

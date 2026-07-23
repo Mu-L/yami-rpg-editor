@@ -24,7 +24,59 @@ import { Window } from '../tools/window-object.ts';
 
 // ******************************** 标题栏对象 ********************************
 
-export const Title = {
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type TitleMethod = ((...args: any[]) => any) | null;
+
+interface TitleShape {
+	// properties
+	target: HTMLElement & { [k: string]: any };
+	tabBar: HTMLElement & { [k: string]: any };
+	theme: any | null;
+	maximized: boolean;
+	fullscreen: boolean;
+	// methods
+	initialize: (() => void) | null;
+	newProject: TitleMethod;
+	openProject: TitleMethod;
+	closeProject: TitleMethod;
+	deployment: TitleMethod;
+	addRecentTab: TitleMethod;
+	getClosedTabMeta: TitleMethod;
+	openTab: TitleMethod;
+	reopenClosedTab: TitleMethod;
+	askWhetherToSave: TitleMethod;
+	updateTitleName: TitleMethod;
+	updateBodyClass: TitleMethod;
+	updateAppRegion: TitleMethod;
+	switchTheme: TitleMethod;
+	dispatchThemechangeEvent: TitleMethod;
+	playGame: TitleMethod;
+	saveToConfig: TitleMethod;
+	loadFromConfig: TitleMethod;
+	saveToProject: TitleMethod;
+	loadFromProject: TitleMethod;
+	// events
+	windowBeforeClose: TitleMethod;
+	windowMaximize: TitleMethod;
+	windowUnmaximize: TitleMethod;
+	windowEnterFullScreen: TitleMethod;
+	windowLeaveFullScreen: TitleMethod;
+	windowDrop: TitleMethod;
+	windowDirchange: TitleMethod;
+	windowLocalize: TitleMethod;
+	pointerenter: TitleMethod;
+	pointermove: TitleMethod;
+	tabBarPointerdown: TitleMethod;
+	tabBarSelect: TitleMethod;
+	tabBarClosed: TitleMethod;
+	tabBarPopup: TitleMethod;
+	playClick: TitleMethod;
+	minimizeClick: TitleMethod;
+	maximizeClick: TitleMethod;
+	closeClick: TitleMethod;
+}
+
+export const Title: TitleShape = {
 	// properties
 	target: $('#title'),
 	tabBar: $('#title-tabBar'),

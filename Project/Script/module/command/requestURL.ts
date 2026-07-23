@@ -18,10 +18,10 @@ export const RequestkeyValueBind = {
 		// 侦听事件
 		$('#request-keyValue-confirm').on('click', this.confirm);
 	},
-	parse(i) {
+	parse(i: any) {
 		return `${typeof i.key === 'string' ? i.key : i.key.key} = ${typeof i.value === 'string' ? i.value : i.value.key}`;
 	},
-	open(item) {
+	open(item: any) {
 		Window.open('request-keyValue');
 		if (!item) {
 			$('#request-keyValue-value').write('');

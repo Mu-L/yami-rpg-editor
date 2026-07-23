@@ -4,8 +4,8 @@ import { Menu } from './menu-list.ts';
 
 export class GamepadBox extends HTMLElement {
 	// 属性声明
-	input; //:element
-	dataValue; //:array
+	input: HTMLElement;
+	dataValue: number;
 	static intervalIndex;
 
 	// 构造函数
@@ -52,12 +52,12 @@ export class GamepadBox extends HTMLElement {
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: any) {
 		return this.input.getFocus(mode);
 	}
 
 	// 输入框 - 键盘按下事件
-	inputKeydown(event) {
+	inputKeydown(event: any) {
 		switch (event.code) {
 			case 'Tab':
 				break;
@@ -73,7 +73,7 @@ export class GamepadBox extends HTMLElement {
 	}
 
 	// 输入框 - 获得焦点事件
-	inputFocus(event) {
+	inputFocus(event: any) {
 		let lastPad = null;
 
 		// 输入键值
@@ -111,7 +111,7 @@ export class GamepadBox extends HTMLElement {
 	}
 
 	// 输入框 - 失去焦点事件
-	inputBlur(event) {
+	inputBlur(event: any) {
 		clearInterval(GamepadBox.intervalIndex);
 		GamepadBox.intervalIndex = null;
 	}

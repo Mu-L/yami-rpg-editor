@@ -10,18 +10,25 @@ export class CommonList extends HTMLElement {
 		end: number;
 		head: HTMLElement | null;
 		foot: HTMLElement | null;
-	}; //:array
-	selection: HTMLElement | null; //:element
-	writeEventEnabled: boolean; //:boolean
-	selectEventEnabled: boolean; //:boolean
-	popupEventEnabled: boolean; //:boolean
+	};
+	selection: HTMLElement | null;
+	writeEventEnabled: boolean;
+	selectEventEnabled: boolean;
+	popupEventEnabled: boolean;
 
 	constructor() {
 		super();
 
 		// 设置属性
 		this.tabIndex = 0;
-		this.elements = [] as any;
+		this.elements = [] as unknown as any[] & {
+			versionId: number;
+			count: number;
+			start: number;
+			end: number;
+			head: HTMLElement | null;
+			foot: HTMLElement | null;
+		};
 		this.elements.versionId = 0;
 		this.elements.count = 0;
 		this.elements.start = -1;
@@ -35,10 +42,10 @@ export class CommonList extends HTMLElement {
 		this.listenDraggingScrollbarEvent();
 
 		// 侦听事件
-		(this as any).on('scroll', this.onScroll);
-		(this as any).on('keydown', this.keydown);
-		(this as any).on('pointerdown', this.pointerdown);
-		(this as any).on('pointerup', this.pointerup);
+		this.on('scroll', this.onScroll);
+		this.on('keydown', this.keydown);
+		this.on('pointerdown', this.pointerdown);
+		this.on('pointerup', this.pointerup);
 	}
 
 	// 读取数据
@@ -110,10 +117,12 @@ export class CommonList extends HTMLElement {
 	// 选择项目
 	select(element: HTMLElement): void {
 		if (element instanceof HTMLElement && this.selection !== element) {
-			this.write((element as any).dataValue);
+			this.write((element as HTMLElement & { dataValue: any }).dataValue);
 			if (this.selectEventEnabled) {
 				const select: any = new Event('select');
-				select.value = (element as any).dataValue;
+				select.value = (
+					element as HTMLElement & { dataValue: any }
+				).dataValue;
 				this.dispatchEvent(select);
 			}
 		}
@@ -273,7 +282,9 @@ export class CommonList extends HTMLElement {
 						element.hasClass('selected')
 					) {
 						const popup: any = new Event('popup');
-						popup.value = (element as any).dataValue;
+						popup.value = (
+							element as HTMLElement & { dataValue: any }
+						).dataValue;
 						popup.clientX = event.clientX;
 						popup.clientY = event.clientY;
 						this.dispatchEvent(popup);
@@ -312,13 +323,16 @@ export class CommonList extends HTMLElement {
 			const versionId = elements.versionId++;
 			for (let i = start; i < end; i++) {
 				const element = elements[i];
-				(element as any).versionId = versionId;
+				(element as HTMLElement & { versionId?: number }).versionId =
+					versionId;
 				self.updateOnResize(element);
 			}
 			const nodes = self.childNodes;
 			const last = nodes.length - 1;
 			for (let i = last; i >= 0; i--) {
-				const element = nodes[i] as any;
+				const element = nodes[i] as HTMLElement & {
+					versionId?: number;
+				};
 				if (element.versionId !== versionId) {
 					element.remove();
 				}
@@ -351,7 +365,9 @@ export class CommonList extends HTMLElement {
 		// 设置头部和尾部元素的外边距
 		const { count, start, end } = elements;
 		if (count !== 0) {
-			const pad = (self as any).padded ? 1 : 0;
+			const pad = (self as HTMLElement & { padded?: boolean }).padded
+				? 1
+				: 0;
 			const mt = start * 20;
 			const mb = (count - end + pad) * 20;
 			elements.head = elements[start];

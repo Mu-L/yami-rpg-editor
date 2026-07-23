@@ -6,20 +6,20 @@ import { GL } from '../webgl/webgl-init.ts';
 // ******************************** 元素基类 ********************************
 
 UI.Element = class UIElement {
-	node; //:object
-	x; //:number
-	y; //:number
-	width; //:number
-	height; //:number
-	matrix; //:object
-	opacity; //:number
-	transform; //:object
-	parent; //:object
-	children; //:array
-	visible; //:boolean
-	connected; //:boolean
+	node: any;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	matrix: any;
+	opacity: number;
+	transform: any;
+	parent: any;
+	children: any[];
+	visible: boolean;
+	connected: boolean;
 
-	constructor(data) {
+	constructor(data: any = {}) {
 		this.x = 0;
 		this.y = 0;
 		this.width = 0;
@@ -34,7 +34,7 @@ UI.Element = class UIElement {
 	}
 
 	// 绘制线框
-	drawWireframe(color) {
+	drawWireframe(color: any) {
 		const gl = GL;
 		const vertices = gl.arrays[0].float32;
 		const colors = gl.arrays[0].uint32;
@@ -175,7 +175,7 @@ UI.Element = class UIElement {
 	}
 
 	// 加入子对象
-	appendChild(element) {
+	appendChild(element: any) {
 		if (element && this.children.append(element)) {
 			element.parent instanceof UI.Element &&
 				element.parent.children.remove(element);
@@ -188,7 +188,7 @@ UI.Element = class UIElement {
 	}
 
 	// 加入子对象到指定位置
-	appendChildTo(element, index) {
+	appendChildTo(element: any, index: any) {
 		if (element instanceof UI.Element) {
 			if (element.parent instanceof UI.Element) {
 				UI.root.tryUpdateReferenceElements(element.parent);
@@ -274,7 +274,7 @@ UI.Element = class UIElement {
 	}
 
 	// 判断是否包含指定元素
-	contains(element) {
+	contains(element: any) {
 		while (element) {
 			if (element === this) {
 				return true;
@@ -285,7 +285,7 @@ UI.Element = class UIElement {
 	}
 
 	// 判断点是否在矩形区域内
-	isPointIn(x, y) {
+	isPointIn(x: any, y: any) {
 		const W = this.width;
 		const H = this.height;
 		if (W * H === 0) {

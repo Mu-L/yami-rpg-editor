@@ -19,12 +19,12 @@ Command.cases.changeThreat = new CommandSchema({
 			{ name: 'Decrease', value: 'decrease' }
 		]);
 	},
-	parseActors(actor, target) {
+	parseActors(actor: any, target: any) {
 		const sActor = Command.parseActor(actor);
 		const dActor = Command.parseActor(target);
 		return sActor + Token(' -> ') + dActor;
 	},
-	parseOperation(operation) {
+	parseOperation(operation: any) {
 		return Local.get('command.changeThreat.' + operation);
 	},
 	customParse({ actor, target, operation, threat }) {

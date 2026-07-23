@@ -1,27 +1,28 @@
 ﻿import { Window } from '../tools/window-object.ts';
 import { UI } from './ui-window.ts';
 import { ImageTexture } from '../webgl/image-texture.ts';
+import { Texture } from '../webgl/texture.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 进度条元素 ********************************
 
 UI.ProgressBar = class ProgressBarElement extends UI.Element {
-	texture; //:object
-	_image; //:string
-	display; //:string
-	clip; //:array
-	type; //:string
-	step; //:number
-	centerX; //:number
-	centerY; //:number
-	startAngle; //:number
-	centralAngle; //:number
-	progress; //:number
-	colorMode; //:string
-	color; //:array
-	blend; //:string
+	texture: Texture | null;
+	_image: string;
+	display: string;
+	clip: number[];
+	type: string;
+	step: number;
+	centerX: number;
+	centerY: number;
+	startAngle: number;
+	centralAngle: number;
+	progress: number;
+	colorMode: string;
+	color: number[];
+	blend: string;
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.texture = null;
 		this.image = data.image;
@@ -45,7 +46,7 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 	}
 
 	// 设置文本
-	set image(value) {
+	set image(value: any) {
 		if (this._image !== value) {
 			this._image = value;
 			if (this.texture) {
@@ -78,7 +79,9 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 					texture.clip(0, 0, base.width, base.height);
 					break;
 				case 'clip':
-					texture.clip(...this.clip);
+					texture.clip(
+						...(this.clip as [number, number, number, number])
+					);
 					break;
 			}
 			const scaleX = this.width / texture.width;

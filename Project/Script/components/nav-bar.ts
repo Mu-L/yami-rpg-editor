@@ -12,13 +12,11 @@ export class NavBar extends HTMLElement {
 		if (elements.length > 0) {
 			let i = elements.length;
 			while (--i >= 0) {
-				const element = elements[i] as HTMLElement;
+				const element = elements[i] as HTMLElement & { dataValue: any };
 				if (element.tagName === 'NAV-ITEM') {
 					const string = element.getAttribute('value') ?? '';
 					const isNumber = RegExp.number.test(string);
-					(element as any).dataValue = isNumber
-						? parseFloat(string)
-						: string;
+					element.dataValue = isNumber ? parseFloat(string) : string;
 				} else {
 					this.removeChild(element);
 				}
@@ -36,7 +34,9 @@ export class NavBar extends HTMLElement {
 	// 读取数据
 	read(): any {
 		const item = this.querySelector('.selected');
-		return item ? (item as any).dataValue : undefined;
+		return item
+			? (item as HTMLElement & { dataValue: any }).dataValue
+			: undefined;
 	}
 
 	// 写入数据
@@ -47,7 +47,10 @@ export class NavBar extends HTMLElement {
 			this.unselect();
 			let target: HTMLElement | undefined;
 			for (let i = 0; i < length; i++) {
-				if ((items[i] as any).dataValue === value) {
+				if (
+					(items[i] as HTMLElement & { dataValue: any }).dataValue ===
+					value
+				) {
 					target = items[i] as HTMLElement;
 					break;
 				}
@@ -108,10 +111,14 @@ export class NavBar extends HTMLElement {
 					element.tagName === 'NAV-ITEM' &&
 					!element.hasClass('selected')
 				) {
-					this.write((element as any).dataValue);
+					this.write(
+						(element as HTMLElement & { dataValue: any }).dataValue
+					);
 					if (this.selectEventEnabled) {
 						const select = new Event('select');
-						select.value = (element as any).dataValue;
+						select.value = (
+							element as HTMLElement & { dataValue: any }
+						).dataValue;
 						this.dispatchEvent(select);
 					}
 				}

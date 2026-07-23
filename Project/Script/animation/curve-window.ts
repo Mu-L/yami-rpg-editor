@@ -1,4 +1,4 @@
-﻿import { $ } from '../util/dom.ts';
+import { $ } from '../util/dom.ts';
 import { Timer } from '../util/timer.ts';
 import { Animation } from './animation-window.ts';
 import { Data } from '../data/data-object.ts';
@@ -7,7 +7,51 @@ import { Layout } from '../layout/layout.ts';
 
 // ******************************** 曲线窗口 ********************************
 
-export const Curve = {
+// 曲线窗口状态
+type CurveState = 'closed' | 'open';
+
+type CurveMethod = ((...args: any[]) => any) | null;
+
+interface CurveShape {
+	state: CurveState;
+	page: HTMLElement & { hide(): HTMLElement; show(): HTMLElement };
+	head: HTMLElement;
+	list: HTMLElement & {
+		hide(): HTMLElement;
+		show(): HTMLElement;
+		defaultItem: { name: string; value: string };
+		setItemNames: ((options: Record<string, string>) => void) | null;
+		dataValue: string | null;
+		update(): void;
+		on(type: string, listener: (event: any) => void): void;
+	};
+	canvas: HTMLCanvasElement;
+	target: any | null;
+	index: number | null;
+	curveMap: any | null;
+	initialize: (() => void) | null;
+	open: (() => void) | null;
+	load: CurveMethod;
+	close: (() => void) | null;
+	suspend: (() => void) | null;
+	resume: (() => void) | null;
+	updateHead: (() => void) | null;
+	updateEasingOptions: (() => void) | null;
+	updateTimeline: ((target?: any) => void) | null;
+	resize: (() => void) | null;
+	drawCurve: (() => void) | null;
+	requestRendering: (() => void) | null;
+	renderingFunction: (() => void) | null;
+	stopRendering: (() => void) | null;
+	windowResize: (() => void) | null;
+	themechange: ((event: Event) => void) | null;
+	datachange: ((event: Event) => void) | null;
+	easingIdWrite: ((event: Event) => void) | null;
+	easingIdInput: ((event: Event) => void) | null;
+	settingsPointerdown: ((event: PointerEvent) => void) | null;
+}
+
+export const Curve: CurveShape = {
 	// properties
 	state: 'closed',
 	page: $('#animation-easing').hide(),

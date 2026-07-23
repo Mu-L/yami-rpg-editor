@@ -13,10 +13,10 @@ export const IndexBind = {
 		// 侦听事件
 		$('#ObjectProperty-index-confirm').on('click', this.confirm);
 	},
-	parse(item) {
+	parse(item: any) {
 		return `${item.text}`;
 	},
-	open(item) {
+	open(item: any) {
 		Window.open('ObjectProperty-index');
 		$('#ObjectProperty-index-name').getFocus();
 		if (item) {

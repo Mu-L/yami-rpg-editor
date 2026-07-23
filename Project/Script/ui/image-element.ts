@@ -1,23 +1,24 @@
 ﻿import { Window } from '../tools/window-object.ts';
 import { UI } from './ui-window.ts';
 import { ImageTexture } from '../webgl/image-texture.ts';
+import { Texture } from '../webgl/texture.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 图像元素 ********************************
 
 UI.Image = class ImageElement extends UI.Element {
-	texture; //:object
-	_display; //:string
-	_image; //:string
-	flip; //:string
-	shiftX; //:number
-	shiftY; //:number
-	border; //:number
-	clip; //:array
-	tint; //:array
-	blend; //:string
+	texture: Texture | null;
+	_display: string;
+	_image: string;
+	flip: string;
+	shiftX: number;
+	shiftY: number;
+	border: number;
+	clip: number[];
+	tint: number[];
+	blend: string;
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.texture = null;
 		this.display = data.display ?? 'stretch';
@@ -37,7 +38,7 @@ UI.Image = class ImageElement extends UI.Element {
 	}
 
 	// 写入图像
-	set image(value) {
+	set image(value: any) {
 		if (this._image !== value) {
 			this._image = value;
 			if (this.texture) {
@@ -59,7 +60,7 @@ UI.Image = class ImageElement extends UI.Element {
 	}
 
 	// 写入显示模式
-	set display(value) {
+	set display(value: any) {
 		this._display = value;
 	}
 
@@ -111,7 +112,9 @@ UI.Image = class ImageElement extends UI.Element {
 						);
 						break;
 					case 'clip':
-						texture.clip(...this.clip);
+						texture.clip(
+							...(this.clip as [number, number, number, number])
+						);
 						break;
 					case 'slice':
 						GL.drawSliceImage(

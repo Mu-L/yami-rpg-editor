@@ -12,7 +12,7 @@ import { Timer } from '../util/timer.ts';
 
 export class FileNavPane extends HTMLElement {
 	declare _connected: boolean;
-	timer: any; //:object
+	timer: any;
 	elements: any[] & {
 		versionId: number;
 		count: number;
@@ -20,12 +20,12 @@ export class FileNavPane extends HTMLElement {
 		end: number;
 		head: HTMLElement | null;
 		foot: HTMLElement | null;
-	}; //:array
-	selections: any[]; //:array
-	pressing: ((event: PointerEvent) => void) | null; //:function
-	selectEventEnabled: boolean; //:boolean
-	textBox: TextBox; //:element
-	links: Record<string, any>; //:object
+	};
+	selections: any[];
+	pressing: ((event: PointerEvent) => void) | null;
+	selectEventEnabled: boolean;
+	textBox: TextBox;
+	links: Record<string, any>;
 
 	constructor() {
 		super();
@@ -65,12 +65,12 @@ export class FileNavPane extends HTMLElement {
 		this.listenDraggingScrollbarEvent();
 
 		// 侦听事件
-		(this as any).on('scroll', this.resize);
-		(this as any).on('keydown', this.keydown);
-		(this as any).on('pointerdown', this.pointerdown);
-		(this as any).on('pointerup', this.pointerup);
-		(this as any).on('doubleclick', this.doubleclick);
-		(this as any).on('select', this.listSelect);
+		this.on('scroll', this.resize);
+		this.on('keydown', this.keydown);
+		this.on('pointerdown', this.pointerdown);
+		this.on('pointerup', this.pointerup);
+		this.on('doubleclick', this.doubleclick);
+		this.on('select', this.listSelect);
 		window.on('dirchange', this.dirchange.bind(this));
 	}
 
@@ -101,7 +101,9 @@ export class FileNavPane extends HTMLElement {
 		elements.count = 0;
 
 		// 创建列表项目
-		const { directory } = this.parentNode as any;
+		const { directory } = this.parentNode as HTMLElement & {
+			directory: string;
+		};
 		if (directory) {
 			this.createItems(directory, 0);
 		}
@@ -155,9 +157,33 @@ export class FileNavPane extends HTMLElement {
 		let element = context.element;
 		if (element === undefined) {
 			// 创建文件夹
-			element = document.createElement('file-nav-item') as any;
-			(element as any).file = file;
-			(element as any).context = context;
+			element = document.createElement(
+				'file-nav-item'
+			) as unknown as HTMLElement & {
+				file: any;
+				context: any;
+				indent: number;
+				changed?: boolean;
+				fileIcon?: HTMLElement;
+			};
+			(
+				element as HTMLElement & {
+					file: any;
+					context: any;
+					indent: number;
+					changed?: boolean;
+					fileIcon?: HTMLElement;
+				}
+			).file = file;
+			(
+				element as HTMLElement & {
+					file: any;
+					context: any;
+					indent: number;
+					changed?: boolean;
+					fileIcon?: HTMLElement;
+				}
+			).context = context;
 			context.element = element;
 
 			// 激活选中状态
@@ -166,8 +192,12 @@ export class FileNavPane extends HTMLElement {
 				(element as HTMLElement).addClass('selected');
 			}
 		}
-		(element as any).indent = indent;
-		(element as any).changed = true;
+		(
+			element as HTMLElement & { indent: number; changed?: boolean }
+		).indent = indent;
+		(
+			element as HTMLElement & { indent: number; changed?: boolean }
+		).changed = true;
 		return element;
 	}
 
@@ -496,7 +526,9 @@ export class FileNavPane extends HTMLElement {
 					// 阻止拖拽开始事件
 					event.preventDefault();
 					if (event.button === 0) {
-						const file = (element.parentNode as any).file;
+						const file = (
+							element.parentNode as HTMLElement & { file: any }
+						).file;
 						const context = file.getContext(this);
 						context.expanded = !context.expanded;
 						this.update();
@@ -510,11 +542,30 @@ export class FileNavPane extends HTMLElement {
 						const length = selections.length;
 						if (event.cmdOrCtrlKey && length !== 0) {
 							const files = Array.from(selections);
-							if (!selections.includes((element as any).file)) {
-								(files as any).append((element as any).file);
+							if (
+								!selections.includes(
+									(element as HTMLElement & { file: any })
+										.file
+								)
+							) {
+								(
+									files as unknown as any[] & {
+										append(...args: any[]): void;
+									}
+								).append(
+									(element as HTMLElement & { file: any })
+										.file
+								);
 								this.select(...files);
 							} else if (length > 1) {
-								(files as any).remove((element as any).file);
+								(
+									files as unknown as any[] & {
+										remove(...args: any[]): void;
+									}
+								).remove(
+									(element as HTMLElement & { file: any })
+										.file
+								);
 								const pointerup = (event: PointerEvent) => {
 									if (this.pressing === pointerup) {
 										this.pressing = null;
@@ -555,7 +606,9 @@ export class FileNavPane extends HTMLElement {
 							}
 						}
 						if (!element.hasClass('selected')) {
-							this.select((element as any).file);
+							this.select(
+								(element as HTMLElement & { file: any }).file
+							);
 						} else if (event.button === 0) {
 							if (length > 1) {
 								const pointerup = (event: PointerEvent) => {
@@ -566,7 +619,13 @@ export class FileNavPane extends HTMLElement {
 												event.target as Node
 											)
 										) {
-											this.select((element as any).file);
+											this.select(
+												(
+													element as HTMLElement & {
+														file: any;
+													}
+												).file
+											);
 										}
 									}
 								};
@@ -579,7 +638,11 @@ export class FileNavPane extends HTMLElement {
 								document.activeElement === this &&
 								event.clientX >
 									(
-										(element as any).fileIcon as HTMLElement
+										(
+											element as HTMLElement & {
+												fileIcon?: HTMLElement;
+											}
+										).fileIcon as HTMLElement
 									).rect().right
 							) {
 								this.timer.target = event.target;
@@ -624,7 +687,7 @@ export class FileNavPane extends HTMLElement {
 		}
 		if (element.tagName === 'FILE-NAV-ITEM') {
 			this.cancelRenaming();
-			const folder = (element as any).file;
+			const folder = (element as HTMLElement & { file: any }).file;
 			if (folder.subfolders.length !== 0) {
 				const context = folder.getContext(this);
 				context.expanded = !context.expanded;
@@ -647,7 +710,13 @@ export class FileNavPane extends HTMLElement {
 		for (const folder of this.getSelections()) {
 			const { ino } = folder.stats;
 			const { path } = inoMap[ino] || folder;
-			(folders as any).append((Directory as any).getFolder(path));
+			(
+				folders as unknown as any[] & { append(...args: any[]): void }
+			).append(
+				(
+					Directory as unknown as { getFolder(path: string): any }
+				).getFolder(path)
+			);
 		}
 		const { browser } = this.links;
 		switch (browser.display) {
@@ -669,7 +738,7 @@ export class FileNavPane extends HTMLElement {
 		(textBox as any).input.addClass('file-nav-text-box-input');
 
 		// 键盘按下事件
-		(textBox as any).on(
+		textBox.on(
 			'keydown',
 			function (this: HTMLElement, event: KeyboardEvent) {
 				event.stopPropagation();
@@ -688,7 +757,7 @@ export class FileNavPane extends HTMLElement {
 		);
 
 		// 输入前事件
-		(textBox as any).on('beforeinput', function (event: any) {
+		textBox.on('beforeinput', function (event: any) {
 			if (
 				event.inputType === 'insertText' &&
 				typeof event.data === 'string'
@@ -702,17 +771,17 @@ export class FileNavPane extends HTMLElement {
 		});
 
 		// 输入事件
-		(textBox as any).on('input', function (this: TextBox) {
+		textBox.on('input', function (this: TextBox) {
 			this.fitContent();
 		});
 
 		// 选择事件
-		(textBox as any).on('select', function (event: Event) {
+		textBox.on('select', function (event: Event) {
 			event.stopPropagation();
 		});
 
 		// 失去焦点事件
-		(textBox as any).on('blur', function (this: TextBox) {
+		textBox.on('blur', function (this: TextBox) {
 			const item = this.parentNode as any;
 			const file = item.file;
 			const name = this.read().trim();

@@ -4,14 +4,14 @@ import { NumberBox } from './number-box.ts';
 // ******************************** 滑动框 ********************************
 
 export class SliderBox extends HTMLElement {
-	filler; //:element
-	input; //:element
-	synchronizer; //:element
-	bar; //:element
-	step; //:number
-	activeWheel; //:boolean
-	focusEventEnabled; //:boolean
-	blurEventEnabled; //:boolean
+	filler: HTMLElement;
+	input: HTMLInputElement;
+	synchronizer: HTMLElement & { value: any; [k: string]: any };
+	bar: HTMLElement & { [k: string]: any };
+	step: number;
+	activeWheel: boolean;
+	focusEventEnabled: boolean;
+	blurEventEnabled: boolean;
 
 	constructor() {
 		super();
@@ -39,7 +39,7 @@ export class SliderBox extends HTMLElement {
 		this.blurEventEnabled = false;
 
 		// 侦听事件
-		(this as any).on('input', this.sliderInput);
+		this.on('input', this.sliderInput);
 	}
 
 	// 自定义元素升级后（已连入文档）才允许读取属性/操作子节点
@@ -63,7 +63,7 @@ export class SliderBox extends HTMLElement {
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any) {
 		this.input.value = value;
 		this.updateFiller();
 	}
@@ -99,7 +99,7 @@ export class SliderBox extends HTMLElement {
 	}
 
 	// 与数字框元素同步数值
-	synchronize(target) {
+	synchronize(target: any) {
 		const slider = this;
 		const number = target;
 		if (slider.synchronizer) {
@@ -153,7 +153,11 @@ export class SliderBox extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'focus':
@@ -176,22 +180,24 @@ export class SliderBox extends HTMLElement {
 	}
 
 	// 滑动框 - 输入事件
-	sliderInput(event) {
+	sliderInput(event: any) {
 		this.updateFiller();
 	}
 
 	// 输入框 - 鼠标滚轮事件
-	inputWheel(event) {
+	inputWheel(event: any) {
 		if (event.deltaY === 0) return;
 		if (this.parentNode.activeWheel) {
 			// 阻止滚动页面的默认行为
 			event.preventDefault();
 			const input = this;
 			const last = input.value;
-			input.value = Math.roundTo(
-				parseFloat(input.value) +
-					parseFloat(input.step) * (event.deltaY > 0 ? -1 : 1),
-				2
+			input.value = String(
+				Math.roundTo(
+					parseFloat(input.value) +
+						input.step * (event.deltaY > 0 ? -1 : 1),
+					2
+				)
 			);
 			if (input.value !== last) {
 				input.dispatchEvent(

@@ -3,16 +3,17 @@
 // ******************************** 批量渲染器 ********************************
 
 export class BatchRenderer {
-	response; //:array
-	setAttrSize; //:function
-	getEndIndex; //:function
-	setBlendMode; //:function
-	bindProgram; //:function
-	unbindProgram; //:function
-	push; //:function
-	draw; //:function
+	response: Uint32Array;
+	// 以下字段在 constructor 内由词法 const 挂载（箭头函数闭包），统一用函数类型契约
+	setAttrSize: (size: number) => void;
+	getEndIndex: () => number;
+	setBlendMode: (blend: string) => void;
+	bindProgram: (program: any) => void;
+	unbindProgram: () => void;
+	push: (...args: any[]) => void;
+	draw: () => void;
 
-	constructor(gl) {
+	constructor(gl: any) {
 		// 初始化上下文
 		const vertices = gl.arrays[0].float32;
 		const texMap = gl.textureManager.map;

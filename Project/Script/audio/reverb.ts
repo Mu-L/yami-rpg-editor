@@ -1,18 +1,19 @@
 import { AudioManager } from './audio-manager.ts';
+import { AudioPlayer } from './audio-player.ts';
 
 // ******************************** 混响类 ********************************
 
 export class Reverb {
-	player; //:object
-	input; //:object
-	output; //:object
-	dryGain; //:object
-	wetGain; //:object
-	convolver; //:object
-	dry; //:number
-	wet; //:number
+	player: AudioPlayer;
+	input: StereoPannerNode;
+	output: AudioNode;
+	dryGain: GainNode;
+	wetGain: GainNode;
+	convolver: ConvolverNode | null;
+	dry: number;
+	wet: number;
 
-	constructor(player) {
+	constructor(player: AudioPlayer) {
 		const { context } = AudioManager;
 		this.player = player;
 		this.input = player.panner;
@@ -28,27 +29,27 @@ export class Reverb {
 	}
 
 	// 连接节点
-	connect() {
+	connect(): void {
 		this.player.reverb = this;
 		this.input.disconnect(this.output);
 		this.input.connect(this.dryGain);
 		this.dryGain.connect(this.output);
 		this.input.connect(this.wetGain);
-		this.wetGain.connect(this.convolver);
+		this.wetGain.connect(this.convolver!);
 	}
 
 	// 断开节点
-	disconnect() {
+	disconnect(): void {
 		this.player.reverb = null;
 		this.input.disconnect(this.dryGain);
 		this.dryGain.disconnect(this.output);
 		this.input.disconnect(this.wetGain);
-		this.wetGain.disconnect(this.convolver);
+		this.wetGain.disconnect(this.convolver!);
 		this.input.connect(this.output);
 	}
 
 	// 设置参数
-	set(dry, wet) {
+	set(dry: number, wet: number): void {
 		this.setDry(dry);
 		this.setWet(wet);
 		if (dry === 1 && wet === 0) {
@@ -57,7 +58,7 @@ export class Reverb {
 	}
 
 	// 设置干声
-	setDry(dry) {
+	setDry(dry: number): void {
 		if (this.dry !== dry) {
 			this.dry = dry;
 			this.dryGain.gain.value = dry;
@@ -65,7 +66,7 @@ export class Reverb {
 	}
 
 	// 设置湿声
-	setWet(wet) {
+	setWet(wet: number): void {
 		if (this.wet !== wet) {
 			this.wet = wet;
 			this.wetGain.gain.value = wet * 2;
@@ -73,7 +74,7 @@ export class Reverb {
 	}
 
 	// 获取卷积器
-	getConvolver() {
+	getConvolver(): ConvolverNode {
 		if (!Reverb.convolver) {
 			const PREDELAY = 0.1;
 			const DECAYTIME = 2;

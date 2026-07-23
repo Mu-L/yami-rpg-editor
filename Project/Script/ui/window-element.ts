@@ -5,23 +5,23 @@ import { GL } from '../webgl/webgl-init.ts';
 // ******************************** 窗口元素 ********************************
 
 UI.Window = class WindowElement extends UI.Element {
-	_layout; //:string
-	scrollWidth; //:number
-	scrollHeight; //:number
-	_scrollX; //:number
-	_scrollY; //:number
-	gridWidth; //:number
-	gridHeight; //:number
-	gridGapX; //:number
-	gridGapY; //:number
-	paddingX; //:number
-	paddingY; //:number
-	overflow; //:string
-	columns; //:number
-	rows; //:number
-	proxy; //:object
+	_layout: string;
+	scrollWidth: number;
+	scrollHeight: number;
+	_scrollX: number;
+	_scrollY: number;
+	gridWidth: number;
+	gridHeight: number;
+	gridGapX: number;
+	gridGapY: number;
+	paddingX: number;
+	paddingY: number;
+	overflow: string;
+	columns: number;
+	rows: number;
+	proxy: any;
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.layout = data.layout;
 		this.scrollWidth = 0;
@@ -53,7 +53,7 @@ UI.Window = class WindowElement extends UI.Element {
 	}
 
 	// 写入布局
-	set layout(value) {
+	set layout(value: any) {
 		if (this._layout !== value) {
 			this._layout = value;
 			switch (value) {
@@ -79,7 +79,7 @@ UI.Window = class WindowElement extends UI.Element {
 	}
 
 	// 写入滚动X
-	set scrollX(value) {
+	set scrollX(value: any) {
 		const max = this.scrollWidth - this.width;
 		const scrollX = Math.clamp(value, 0, max);
 		if (this._scrollX !== scrollX) {
@@ -97,7 +97,7 @@ UI.Window = class WindowElement extends UI.Element {
 	}
 
 	// 写入滚动Y
-	set scrollY(value) {
+	set scrollY(value: any) {
 		const max = this.scrollHeight - this.height;
 		const scrollY = Math.clamp(value, 0, max);
 		if (this._scrollY !== value) {

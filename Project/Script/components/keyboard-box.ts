@@ -1,11 +1,11 @@
 ﻿// ******************************** 键盘按键框 ********************************
 
 export class KeyboardBox extends HTMLElement {
-	input: HTMLInputElement; //:element
-	dataValue: number; //:number
-	inputEventEnabled: boolean; //:boolean
-	focusEventEnabled: boolean; //:boolean
-	blurEventEnabled: boolean; //:boolean
+	input: HTMLInputElement;
+	dataValue: number;
+	inputEventEnabled: boolean;
+	focusEventEnabled: boolean;
+	blurEventEnabled: boolean;
 
 	constructor() {
 		super();

@@ -3,11 +3,11 @@
 export const ShortcutRegistry = {
 	shortcuts: {},
 
-	register(id, handler) {
+	register(id: any, handler: any) {
 		this.shortcuts[id] = handler;
 	},
 
-	get(id) {
+	get(id: any) {
 		return this.shortcuts[id];
 	}
 };
@@ -15,7 +15,7 @@ export const ShortcutRegistry = {
 // 通用快捷键处理器
 export const Shortcuts = {
 	// 创建剪贴板处理器
-	createClipboard(target) {
+	createClipboard(target: any) {
 		return function (event) {
 			if (event.cmdOrCtrlKey) {
 				switch (event.code) {
@@ -51,7 +51,7 @@ export const Shortcuts = {
 	},
 
 	// 创建撤销/重做处理器
-	createUndoRedo(target) {
+	createUndoRedo(target: any) {
 		return function (event) {
 			if (event.cmdOrCtrlKey) {
 				switch (event.code) {
@@ -72,7 +72,7 @@ export const Shortcuts = {
 	},
 
 	// 创建列表操作处理器
-	createListOps(target) {
+	createListOps(target: any) {
 		return function (event) {
 			if (event.cmdOrCtrlKey) {
 				switch (event.code) {
@@ -134,7 +134,7 @@ export const Shortcuts = {
 	},
 
 	// 创建 WASD 滚动处理器
-	createScroll(target) {
+	createScroll(target: any) {
 		let scrollKeys = 0;
 		let scrollTimer = null;
 

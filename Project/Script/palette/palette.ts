@@ -181,8 +181,8 @@ Palette.initialize = function () {
 		const realY = y * scaleY;
 		const realWidth = scaleX;
 		const realHeight = scaleY;
-		(selection as any).x = x;
-		(selection as any).y = y;
+		(selection as HTMLElement & { x: number; y: number }).x = x;
+		(selection as HTMLElement & { x: number; y: number }).y = y;
 		if (selection === destination && source.x === x && source.y === y) {
 			return selection.remove();
 		}
@@ -204,8 +204,14 @@ Palette.initialize = function () {
 	marquee.customShiftAutoTile = function () {
 		source.remove();
 		destination.remove();
-		const { x: sx, y: sy } = source as any;
-		const { x: dx, y: dy } = destination as any;
+		const { x: sx, y: sy } = source as HTMLElement & {
+			x: number;
+			y: number;
+		};
+		const { x: dx, y: dy } = destination as HTMLElement & {
+			x: number;
+			y: number;
+		};
 		if (sx !== dx || sy !== dy) {
 			const tileset = Palette.tileset;
 			const tiles = tileset.tiles;

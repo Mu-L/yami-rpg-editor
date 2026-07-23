@@ -10,20 +10,20 @@ import { Window } from './window-object.ts';
 // ******************************** 属性列表接口 ********************************
 
 export class AttributeListInterface {
-	target; //:element
-	type; //:string
-	group; //:string
-	history; //:object
-	editor; //:object
-	owner; //:object
+	target: HTMLElement | null;
+	type: string;
+	group: string;
+	history: any | null;
+	editor: any | null;
+	owner: any | null;
 
-	constructor(editor?, owner?) {
+	constructor(editor?: any, owner?: any) {
 		this.editor = editor ?? null;
 		this.owner = owner ?? null;
 	}
 
 	// 初始化
-	initialize(list) {
+	initialize(list: HTMLElement): void {
 		this.target = null;
 		this.type = 'object-attribute';
 		this.group = list.getAttribute('group');
@@ -36,7 +36,7 @@ export class AttributeListInterface {
 	}
 
 	// 解析项目
-	parse(item) {
+	parse(item: any): any {
 		if (item instanceof Object) {
 			let { key, value } = item;
 			if (typeof value === 'string') {
@@ -211,7 +211,7 @@ export class AttributeListInterface {
 	}
 
 	// 属性键写入事件
-	static keyWrite(event) {
+	static keyWrite(event: any) {
 		const group = AttributeListInterface.target.getAttribute('group');
 		const attr = Attribute.getGroupAttribute(group, event.value);
 		if (attr) {

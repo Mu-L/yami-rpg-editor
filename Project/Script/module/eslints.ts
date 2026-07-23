@@ -2,8 +2,18 @@ import { EventBus } from './eventbus.ts';
 
 /* 辅助线 */
 
-let _origUpdateCommandElement;
-export function updateCommandElement(element) {
+let _origUpdateCommandElement: any;
+// command-list 内 command-item 元素运行时挂载的扩展字段
+interface CommandItemElement extends HTMLElement {
+	pre: HTMLElement;
+	lines: HTMLElement[];
+	dataIndent: number;
+	eventBinding?: boolean;
+}
+export function updateCommandElement(
+	this: any,
+	element: CommandItemElement
+): any {
 	// _origUpdateCommandElement 在 EventBus.once('editor_loaded') 回调里、
 	// prototype 被覆盖之前已捕获，此处直接调用即可
 	const ret = _origUpdateCommandElement.call(this, element);
@@ -89,7 +99,11 @@ export const commandList = document.querySelector('#event-commands');
 };
 
 /* 获取区域 */
-export function range(elements, start, end = start) {
+export function range(
+	elements: any,
+	start: number,
+	end: number = start
+): { start: number; end: number; indent?: number } {
 	// 限制范围
 	const count = elements.count;
 	start = Math.clamp(start, 0, count - 1);

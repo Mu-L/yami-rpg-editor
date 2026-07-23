@@ -1,16 +1,32 @@
-﻿import { Scene } from './scene-window.ts';
+import { Scene } from './scene-window.ts';
 import { ImageTexture } from '../webgl/image-texture.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 视差图类 ********************************
 
-export class Parallax {
-	data; //:object
-	shiftX; //:number
-	shiftY; //:number
-	texture; //:object
+// 视差图数据对象（Data.parallaxes[i]）
+interface ParallaxData {
+	shiftSpeedX: number;
+	shiftSpeedY: number;
+	scaleX: number;
+	scaleY: number;
+	repeatX: number;
+	repeatY: number;
+	offsetX: number;
+	offsetY: number;
+	anchorX: number;
+	anchorY: number;
+	image: string;
+	[k: string]: any;
+}
 
-	constructor(data) {
+export class Parallax {
+	data: ParallaxData;
+	shiftX: number;
+	shiftY: number;
+	texture: ImageTexture | null;
+
+	constructor(data: ParallaxData) {
 		this.data = data;
 		this.shiftX = 0;
 		this.shiftY = 0;
@@ -19,7 +35,7 @@ export class Parallax {
 	}
 
 	// 更新数据
-	update(deltaTime) {
+	update(deltaTime: number): void {
 		const { shiftSpeedX, shiftSpeedY } = this.data;
 		if (shiftSpeedX !== 0 || shiftSpeedY !== 0) {
 			const texture = this.texture;
@@ -37,7 +53,7 @@ export class Parallax {
 	}
 
 	// 绘制图像
-	draw(id) {
+	draw(id: string): void {
 		const texture = this.texture;
 		if (texture instanceof ImageTexture) {
 			const gl = GL;

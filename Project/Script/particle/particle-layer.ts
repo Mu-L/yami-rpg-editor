@@ -1,4 +1,4 @@
-﻿import { Scene } from '../scene/scene-window.ts';
+import { Scene } from '../scene/scene-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
 import { Easing } from '../data/transition-window.ts';
 import { Particle } from './particle-window.ts';
@@ -6,23 +6,39 @@ import { ImageTexture } from '../webgl/image-texture.ts';
 
 // ******************************** 粒子图层类 ********************************
 
-Particle.Layer = class ParticleLayer {
-	emitter; //:object
-	data; //:object
-	texture; //:object
-	textureWidth; //:number
-	textureHeight; //:number
-	unitWidth; //:number
-	unitHeight; //:number
-	elapsed; //:number
-	easing; //:object
-	capacity; //:number
-	count; //:number
-	stocks; //:number
-	elements; //:array
-	reserves; //:array
+// 粒子层数据对象（emitter.data.layers[i]）
+interface ParticleLayerData {
+	interval: number;
+	delay: number;
+	area: {
+		type: 'edge' | 'point' | 'rectangle' | 'circle';
+		[k: string]: any;
+	};
+	[k: string]: any;
+}
 
-	constructor(emitter, data) {
+// 粒子元素（运行时挂载的 DOM/webgl 节点）
+interface ParticleElement {
+	[k: string]: any;
+}
+
+Particle.Layer = class ParticleLayer {
+	emitter: any;
+	data: ParticleLayerData;
+	texture: ImageTexture | null;
+	textureWidth: number;
+	textureHeight: number;
+	unitWidth: number;
+	unitHeight: number;
+	elapsed: number;
+	easing: any;
+	capacity: number;
+	count: number;
+	stocks: number;
+	elements: ParticleElement[] & { count: number };
+	reserves: ParticleElement[] & { count: number };
+
+	constructor(emitter: any, data: ParticleLayerData) {
 		this.emitter = emitter;
 		this.data = data;
 		this.texture = null;
@@ -34,9 +50,9 @@ Particle.Layer = class ParticleLayer {
 		this.capacity = 0;
 		this.count = 0;
 		this.stocks = 0;
-		this.elements = [];
+		this.elements = [] as unknown as ParticleElement[] & { count: number };
 		this.elements.count = 0;
-		this.reserves = [];
+		this.reserves = [] as unknown as ParticleElement[] & { count: number };
 		this.reserves.count = 0;
 
 		// 更新发射数量
@@ -50,7 +66,7 @@ Particle.Layer = class ParticleLayer {
 	}
 
 	// 发射粒子
-	emitParticles(deltaTime) {
+	emitParticles(deltaTime: any) {
 		let stocks = this.stocks;
 		if (stocks === 0) return;
 		this.elapsed += deltaTime * this.emitter.speed;
@@ -97,7 +113,7 @@ Particle.Layer = class ParticleLayer {
 	}
 
 	// 更新粒子
-	updateParticles(deltaTime) {
+	updateParticles(deltaTime: any) {
 		const elements = this.elements;
 		const eCount = elements.count;
 		if (eCount === 0) return 0;

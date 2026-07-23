@@ -155,7 +155,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					// element[key] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'text':
@@ -163,7 +163,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					// element.content = value.toString()
-					node.instances.set('content', value.toString());
+					node.instances.setProperty('content', value.toString());
 				}
 				break;
 			case 'min':
@@ -171,7 +171,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					// element[key] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 					$('#uiTextBox-number').input[key] = value;
 				}
 				break;
@@ -179,7 +179,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node.decimals !== value) {
 					node.decimals = value;
 					// element.decimals = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 					$('#uiTextBox-number').decimals = value;
 				}
 				break;

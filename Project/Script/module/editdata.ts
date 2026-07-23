@@ -98,7 +98,7 @@ export const EditDataInstance = new (class {
 			});
 		}
 	}
-	parseJSON(text) {
+	parseJSON(text: any) {
 		try {
 			const vaild = JSON.parse(text);
 			if (vaild.id && vaild.params) {
@@ -191,7 +191,7 @@ export const EditDataInstance = new (class {
 		this.setChangeState(false);
 		Window.close('edit-data');
 	}
-	colorizeCodeLines(items, code) {
+	colorizeCodeLines(items: any, code: any) {
 		const text = document.createElement('text');
 		const options = this.colorOptions;
 		text.textContent = code;
@@ -214,7 +214,7 @@ export const EditDataInstance = new (class {
 			}
 		});
 	}
-	open(current) {
+	open(current: any) {
 		if (!this.isCreated) {
 			this.isCreated = true;
 			const { theme } = Title;
@@ -348,7 +348,7 @@ export const EditDataInstance = new (class {
 			);
 		}
 	}
-	setChangeState(changed) {
+	setChangeState(changed: any) {
 		if (this.changed !== changed) {
 			this.changed = changed;
 			if (changed) {

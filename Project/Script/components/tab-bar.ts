@@ -23,6 +23,28 @@ interface TabDraggingEvent {
 	target: HTMLElement;
 	offsetX: number;
 	mode?: 'close' | 'popup';
+	// pointermove 路径用：判断是否同一拖拽序列（运行时挂载，初始化可不赋值）
+	relate?(event: PointerEvent): boolean;
+}
+
+// 标签项数据（this.data[i]）运行时挂 .item 字段
+interface TabItem {
+	item: string;
+	type?: 'directory' | 'file';
+	// tab 运行时挂载：item(string) + text(HTMLElement)
+	tab?: HTMLElement;
+	[k: string]: any;
+}
+
+// tab-item DOM 元素运行时挂载 .item(string) / .text(HTMLElement) 字段
+interface TabElement extends HTMLElement {
+	item: string;
+	text: HTMLElement;
+}
+
+// 拖拽事件运行时挂载 .target.item / .parentNode.item 扩展
+interface TabDragTarget extends HTMLElement {
+	item: string;
 }
 
 export class TabBar extends HTMLElement {
@@ -59,7 +81,7 @@ export class TabBar extends HTMLElement {
 	// 读取数据
 	read(): any {
 		const item = this.querySelector('.selected') as HTMLElement | null;
-		return item ? (item as any).item : undefined;
+		return item ? (item as TabElement).item : undefined;
 	}
 
 	// 写入数据
@@ -70,7 +92,7 @@ export class TabBar extends HTMLElement {
 			this.unselect();
 			let target: HTMLElement | undefined;
 			for (let i = 0; i < length; i++) {
-				if ((items[i] as any).item === value) {
+				if ((items[i] as TabElement).item === value) {
 					this.selectionIndex = i;
 					target = items[i] as HTMLElement;
 					break;
@@ -93,9 +115,10 @@ export class TabBar extends HTMLElement {
 	update(): void {
 		this.clear();
 		for (const item of this.data!) {
-			let tab = (item as any).tab;
+			let tab = (item as TabItem).tab;
 			if (tab === undefined) {
-				tab = (item as any).tab = document.createElement('tab-item');
+				tab = (item as TabItem).tab =
+					document.createElement('tab-item');
 				const text = document.createElement('tab-text');
 				text.textContent = this.parseTabName(item);
 				(
@@ -105,11 +128,11 @@ export class TabBar extends HTMLElement {
 						text: HTMLElement;
 					}
 				).draggable = true;
-				(tab as any).item = item;
-				(tab as any).text = text;
+				(tab as TabElement).item = item;
+				(tab as TabElement & { text: HTMLElement }).text = text;
 				tab.appendChild(text);
 				// 给目录以外的标签添加关闭按钮
-				if ((item as any).type !== 'directory') {
+				if ((item as TabItem).type !== 'directory') {
 					const mark = document.createElement('tab-close');
 					mark.textContent = '\u2716';
 					tab.appendChild(mark);
@@ -176,7 +199,7 @@ export class TabBar extends HTMLElement {
 	// 关闭属性匹配的项目
 	closeByProperty(key: string, value: any): void {
 		for (const context of this.data!) {
-			if ((context as any)[key] === value) {
+			if (context[key] === value) {
 				this.close(context);
 				return;
 			}
@@ -241,7 +264,9 @@ export class TabBar extends HTMLElement {
 
 	// 查找项目
 	find(meta: any): any {
-		for (const node of this.childNodes as any) {
+		for (const node of this.childNodes as unknown as NodeListOf<
+			HTMLElement & { item: HTMLElement }
+		>) {
 			if (node.item && node.item.meta === meta) {
 				return node.item;
 			}
@@ -288,7 +313,22 @@ export class TabBar extends HTMLElement {
 					// 阻止拖拽开始事件
 					event.preventDefault();
 					const dragging: TabDraggingEvent = {
-						hint: null as any,
+						hint: null as unknown as HTMLElement & {
+							target: HTMLElement;
+							position: 'before' | 'after';
+							measure(item: HTMLElement): {
+								left: number;
+								top: number;
+								width: number;
+								height: number;
+							};
+							set(rect: {
+								left: number;
+								top: number;
+								width: number;
+								height: number;
+							}): void;
+						},
 						target: element.parentNode as HTMLElement,
 						offsetX: event.offsetX,
 						mode: 'close'
@@ -301,7 +341,7 @@ export class TabBar extends HTMLElement {
 					element.tagName === 'TAB-ITEM' &&
 					!element.hasClass('selected')
 				) {
-					this.select((element as any).item);
+					this.select((element as TabElement).item);
 				}
 				break;
 			}
@@ -311,7 +351,22 @@ export class TabBar extends HTMLElement {
 						case 'TAB-ITEM':
 						case 'TAB-BAR': {
 							const dragging: TabDraggingEvent = {
-								hint: null as any,
+								hint: null as unknown as HTMLElement & {
+									target: HTMLElement;
+									position: 'before' | 'after';
+									measure(item: HTMLElement): {
+										left: number;
+										top: number;
+										width: number;
+										height: number;
+									};
+									set(rect: {
+										left: number;
+										top: number;
+										width: number;
+										height: number;
+									}): void;
+								},
 								target: event.target as HTMLElement,
 								offsetX: event.offsetX,
 								mode: 'popup'
@@ -357,8 +412,10 @@ export class TabBar extends HTMLElement {
 			};
 			this.dragging = dragging;
 			Object.defineProperty(event, 'offsetX', { writable: true });
-			event.preventDefault = Function.empty as any;
-			(event.dataTransfer as any).hideDragImage();
+			event.preventDefault = Function.empty as unknown as () => void;
+			(
+				event.dataTransfer as unknown as { hideDragImage(): void }
+			).hideDragImage();
 			hint.addClass('for-tab');
 			this.parentNode!.insertBefore(hint.hide(), this);
 			this.addClass('dragging');
@@ -387,7 +444,9 @@ export class TabBar extends HTMLElement {
 	dragenter(event: DragEvent): void {
 		if (this.dragging) {
 			event.preventDefault();
-			(event.dataTransfer as any).dropEffect = 'move';
+			(
+				event.dataTransfer as unknown as { dropEffect: string }
+			).dropEffect = 'move';
 		}
 	}
 
@@ -404,7 +463,9 @@ export class TabBar extends HTMLElement {
 		const { dragging } = this;
 		if (dragging) {
 			event.preventDefault();
-			(event.dataTransfer as any).dropEffect = 'move';
+			(
+				event.dataTransfer as unknown as { dropEffect: string }
+			).dropEffect = 'move';
 			if (dragging.offsetX === event.offsetX) {
 				return;
 			}
@@ -412,8 +473,8 @@ export class TabBar extends HTMLElement {
 			const element = (event.target as HTMLElement).seek('tab-item');
 			const hint = dragging.hint.show();
 			if (element.tagName === 'TAB-ITEM') {
-				const sItem = (dragging.target as any).item;
-				const dItem = (element as any).item;
+				const sItem = (dragging.target as TabDragTarget).item;
+				const dItem = (element as TabElement).item;
 				if (sItem === dItem) {
 					return hint.hide();
 				}
@@ -489,8 +550,8 @@ export class TabBar extends HTMLElement {
 		const hint = dragging.hint;
 		if (!hint.hasClass('hidden')) {
 			const items = this.data!;
-			const sItem = (dragging.target as any).item;
-			const dItem = (hint.target as any).item;
+			const sItem = (dragging.target as TabDragTarget).item;
+			const dItem = (hint.target as TabDragTarget).item;
 			if (items.remove(sItem)) {
 				let dIndex = items.indexOf(dItem);
 				if (hint.position === 'after') {
@@ -509,12 +570,15 @@ export class TabBar extends HTMLElement {
 	// 窗口 - 指针弹起事件
 	static windowPointerup(this: TabBar, event: PointerEvent): void {
 		const { dragging } = this;
-		if (dragging && (dragging as any).relate(event)) {
+		if (dragging && dragging.relate!(event)) {
 			switch (dragging.mode) {
 				case 'close':
 					if (dragging.target === event.target) {
 						this.close(
-							((event.target as any).parentNode as any).item
+							(
+								(event.target as TabElement)
+									.parentNode as TabDragTarget
+							).item
 						);
 					}
 					break;
@@ -525,7 +589,7 @@ export class TabBar extends HTMLElement {
 							clientX: number;
 							clientY: number;
 						};
-						const item = (event.target as any).item;
+						const item = (event.target as TabElement).item;
 						popup.value = item ?? null;
 						popup.clientX = event.clientX;
 						popup.clientY = event.clientY;

@@ -233,7 +233,7 @@ import { Variable } from '../../variable/variable.ts';
 				}
 			]);
 	},
-	parseOperation(operation) {
+	parseOperation(operation: any) {
 		switch (operation) {
 			case 'set':
 				return ' = ';
@@ -241,7 +241,7 @@ import { Variable } from '../../variable/variable.ts';
 				return ' += ';
 		}
 	},
-	parseStringMethod(operand) {
+	parseStringMethod(operand: any) {
 		const method = operand.method;
 		const variable = operand.variable;
 		const methodName = Local.get('command.setString.string.' + method);
@@ -305,7 +305,7 @@ import { Variable } from '../../variable/variable.ts';
 			}
 		}
 	},
-	parseObjectProperty(operand) {
+	parseObjectProperty(operand: any) {
 		const property = Local.get(
 			'command.setString.object.' + operand.property
 		);
@@ -351,14 +351,14 @@ import { Variable } from '../../variable/variable.ts';
 				);
 		}
 	},
-	parseElementProperty(operand) {
+	parseElementProperty(operand: any) {
 		const element = Command.parseElement(operand.element);
 		const property = Local.get(
 			'command.setString.element.' + operand.property
 		);
 		return element + Token(' -> ') + property.replace('.', Token('.'));
 	},
-	parseOther(operand) {
+	parseOther(operand: any) {
 		const label = Local.get(
 			'command.setString.other.' + operand.data
 		).replace('.', Token('.'));
@@ -418,7 +418,7 @@ import { Variable } from '../../variable/variable.ts';
 			}
 		}
 	},
-	parseOperand(operand) {
+	parseOperand(operand: any) {
 		switch (operand.type) {
 			case 'constant':
 				return Command.setStringColor(

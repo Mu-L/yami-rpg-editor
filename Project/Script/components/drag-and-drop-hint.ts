@@ -1,11 +1,11 @@
 ﻿// ******************************** 拖放提示 ********************************
 
 export class DragAndDropHint extends HTMLElement {
-	left: number; //:number
-	top: number; //:number
-	width: number; //:number
-	height: number; //:number
-	upper: boolean; //:boolean
+	left: number;
+	top: number;
+	width: number;
+	height: number;
+	upper: boolean;
 
 	constructor() {
 		super();

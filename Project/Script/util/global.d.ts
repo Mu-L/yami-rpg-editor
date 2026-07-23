@@ -7,6 +7,8 @@
 // 注：Clipboard 是构造函数对象，interface Clipboard 声明的是实例方法；
 // Object.assign 挂载点是构造函数对象本身（静态方法），与 instance interface 不同。
 // 调用方用 (Clipboard as any).write/read 绕过静态方法 vs 实例方法的类型冲突。
+// 注：lib.dom.d.ts 的 Clipboard interface 优先级高于 declare var 声明合并，
+// 无法通过 global.d.ts 根上消除协变冲突 —— 调用方必须用 `(Clipboard as any).xxx` 必要断言。
 interface Clipboard {
 	has(format: string): boolean;
 	read(format: string): any;
@@ -231,6 +233,10 @@ interface Event {
 }
 
 // ============== EventTarget 扩展 (util/event-target.ts) ==============
+// 注：listener 签名 `(event: any) => void` 对齐 event-target.ts 实现签名，
+// 兼容 EventListenerOrEventListenerObject（lib.dom.d.ts 的 addEventListener 重载要求）。
+// 协变冲突（子类 `(event: PointerEvent) => void` 比基类更具体）不在此根上消除 ——
+// 因 `addEventListener` 重载约束，改用调用点 `as unknown as` 绕。
 interface EventTarget {
 	on(
 		type: string,

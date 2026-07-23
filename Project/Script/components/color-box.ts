@@ -3,9 +3,9 @@ import { Color } from '../tools/color-picker-window.ts';
 // ******************************** 颜色框 ********************************
 
 export class ColorBox extends HTMLElement {
-	dataValue: string; //:string
-	foreground: HTMLElement; //:element
-	inputEventEnabled: boolean; //:boolean
+	dataValue: string;
+	foreground: HTMLElement;
+	inputEventEnabled: boolean;
 
 	constructor() {
 		super();

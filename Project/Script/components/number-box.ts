@@ -5,12 +5,12 @@ import { measureText } from '../util/dom.ts';
 // ******************************** 数字框 ********************************
 
 export class NumberBox extends HTMLElement {
-	input; //:element
-	decimals; //:number
-	focusEventEnabled; //:boolean
-	blurEventEnabled; //:boolean
+	input: HTMLInputElement;
+	decimals: number;
+	focusEventEnabled: boolean;
+	blurEventEnabled: boolean;
 
-	constructor(dom?) {
+	constructor(dom?: any) {
 		super();
 
 		// 获取参数
@@ -62,7 +62,7 @@ export class NumberBox extends HTMLElement {
 	}
 
 	// 读取数据
-	read() {
+	read(): number {
 		const min = parseFloat(this.input.min);
 		const max = parseFloat(this.input.max);
 		let value = parseFloat(this.input.value) || 0;
@@ -72,10 +72,10 @@ export class NumberBox extends HTMLElement {
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any): void {
 		const { input } = this;
-		input.value = value;
-		input.value = this.read();
+		input.value = String(value);
+		input.value = String(this.read());
 		input.history.reset();
 	}
 
@@ -94,12 +94,16 @@ export class NumberBox extends HTMLElement {
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: any) {
 		return this.input.getFocus(mode);
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'focus':
@@ -122,14 +126,14 @@ export class NumberBox extends HTMLElement {
 	}
 
 	// 输入框 - 键盘按下事件
-	inputKeydown(event) {
+	inputKeydown(event: any) {
 		!NumberBox.whiteList.includes(event.code) &&
 			!event.cmdOrCtrlKey &&
 			event.preventDefault();
 	}
 
 	// 输入框 - 内容改变事件
-	inputChange(event) {
+	inputChange(event: any) {
 		// 如果小数位数达到8位使用上下键调整
 		// 可能精度不足等效于先取近似值再操作
 		this.value = this.parentNode.read();

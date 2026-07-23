@@ -32,22 +32,22 @@ Command.cases.addAnimationComponent = new CommandSchema({
 			elMotion.write2(elMotion.read());
 		});
 	},
-	parseRotatable(rotatable) {
+	parseRotatable(rotatable: any) {
 		return rotatable
 			? Local.get('command.addAnimationComponent.rotatable')
 			: '';
 	},
-	parseSyncAngle(syncAngle) {
+	parseSyncAngle(syncAngle: any) {
 		return syncAngle
 			? Local.get('command.addAnimationComponent.syncAngle')
 			: '';
 	},
-	parsePriority(priority) {
+	parsePriority(priority: any) {
 		if (priority === 0) return '';
 		const abs = Command.setNumberColor(Math.abs(priority));
 		return priority > 0 ? Token('+') + abs : Token('-') + abs;
 	},
-	parseOffsetY(offsetY) {
+	parseOffsetY(offsetY: any) {
 		if (offsetY === 0) return '';
 		const abs = Command.setNumberColor(Math.abs(offsetY)) + 'px';
 		return offsetY > 0 ? abs : Token('-') + abs;

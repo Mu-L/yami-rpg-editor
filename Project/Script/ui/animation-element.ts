@@ -6,18 +6,18 @@ import { GL } from '../webgl/webgl-init.ts';
 // ******************************** 动画元素 ********************************
 
 UI.Animation = class AnimationElement extends UI.Element {
-	player; //:object
-	_animation; //:string
-	_motion; //:string
-	_rotatable; //:boolean
-	_angle; //:number
-	_frame; //:number
-	_offsetX; //:number
-	_offsetY; //:number
-	animationX; //:number
-	animationY; //:number
+	player: any;
+	_animation: string;
+	_motion: string;
+	_rotatable: boolean;
+	_angle: number;
+	_frame: number;
+	_offsetX: number;
+	_offsetY: number;
+	animationX: number;
+	animationY: number;
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.player = null;
 		this.motion = data.motion;
@@ -35,7 +35,7 @@ UI.Animation = class AnimationElement extends UI.Element {
 	}
 
 	// 写入动画ID
-	set animation(value) {
+	set animation(value: any) {
 		if (this._animation !== value) {
 			this._animation = value;
 			if (this.player !== null) {
@@ -60,7 +60,7 @@ UI.Animation = class AnimationElement extends UI.Element {
 	}
 
 	// 写入动作
-	set motion(value) {
+	set motion(value: any) {
 		if (this._motion !== value) {
 			this._motion = value;
 			this.player?.setMotion(value);
@@ -73,7 +73,7 @@ UI.Animation = class AnimationElement extends UI.Element {
 	}
 
 	// 写入可旋转开关
-	set rotatable(value) {
+	set rotatable(value: any) {
 		if (this._rotatable !== value) {
 			this._rotatable = value;
 			if (this.player) {
@@ -92,7 +92,7 @@ UI.Animation = class AnimationElement extends UI.Element {
 	}
 
 	// 写入角度
-	set angle(value) {
+	set angle(value: any) {
 		if (this._angle !== value) {
 			this._angle = value;
 			this.player?.setAngle(Math.radians(value));
@@ -105,7 +105,7 @@ UI.Animation = class AnimationElement extends UI.Element {
 	}
 
 	// 写入帧索引
-	set frame(value) {
+	set frame(value: any) {
 		if (this._frame !== value) {
 			this._frame = value;
 			this.player?.goto(value);
@@ -118,7 +118,7 @@ UI.Animation = class AnimationElement extends UI.Element {
 	}
 
 	// 写入偏移X
-	set offsetX(value) {
+	set offsetX(value: any) {
 		if (this._offsetX !== value) {
 			this._offsetX = value;
 			if (this.connected) {
@@ -133,7 +133,7 @@ UI.Animation = class AnimationElement extends UI.Element {
 	}
 
 	// 写入偏移Y
-	set offsetY(value) {
+	set offsetY(value: any) {
 		if (this._offsetY !== value) {
 			this._offsetY = value;
 			if (this.connected) {

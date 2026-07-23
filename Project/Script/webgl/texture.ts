@@ -3,17 +3,17 @@
 // ******************************** 纹理类 ********************************
 
 export class Texture {
-	complete; //:boolean
-	base; //:object
-	gl; //:object
-	x; //:number
-	y; //:number
-	width; //:number
-	height; //:number
+	complete: boolean;
+	base: any;
+	gl: any;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
 	declare on: (type: string, callback: (...args: any[]) => void) => void;
 	declare reply: (type: string, ...args: any[]) => void;
 
-	constructor(options = {}) {
+	constructor(options: any = {}) {
 		if (new.target !== Texture) {
 			return;
 		}
@@ -29,7 +29,7 @@ export class Texture {
 	}
 
 	// 裁剪
-	clip(x, y, width, height) {
+	clip(x: any, y: any, width: any, height: any) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -54,7 +54,7 @@ export class Texture {
 	}
 
 	// 调整大小
-	resize(width, height) {
+	resize(width: any, height: any) {
 		const { gl, base } = this;
 		const { format } = base;
 		base.width = Math.min(width, gl.maxTexSize);
@@ -75,7 +75,7 @@ export class Texture {
 	}
 
 	// 从图像中取样
-	fromImage(image) {
+	fromImage(image: any) {
 		// 上传空图像会被Chromium警告
 		if (image.width === 0 && image.height === 0) {
 			return this.resize(0, 0);
@@ -102,7 +102,7 @@ export class Texture {
 	}
 
 	// 获取图像数据
-	getImageData(x, y, width, height) {
+	getImageData(x: any, y: any, width: any, height: any) {
 		const gl = this.gl;
 		const base = this.base;
 		if (base instanceof WebGLTexture) {

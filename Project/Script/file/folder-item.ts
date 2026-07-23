@@ -7,26 +7,26 @@ import { FSP } from './file-system.ts';
 // ******************************** 文件夹项目 ********************************
 
 export class FolderItem {
-	name; //:string
-	path; //:string
-	stats; //:object
-	parent; //:object
-	children; //:array
-	subfolders; //:array
-	contexts; //:object
+	name: string;
+	path: string;
+	stats: any | null;
+	parent: FolderItem | null;
+	children: FileItem[];
+	subfolders: FolderItem[];
+	contexts: Map<string, any> | null;
 
-	constructor(name, path, parent) {
+	constructor(name: string, path: string, parent: FolderItem | null) {
 		this.name = name;
 		this.path = path;
 		this.stats = null;
 		this.parent = parent;
-		this.children = Array.empty;
-		this.subfolders = Array.empty;
+		this.children = Array.empty as unknown as FileItem[];
+		this.subfolders = Array.empty as unknown as FolderItem[];
 		this.contexts = null;
 	}
 
 	// 获取上下文对象
-	getContext(key) {
+	getContext(key: string): any {
 		let contexts = this.contexts;
 		if (contexts === null) {
 			contexts = this.contexts = new Map();

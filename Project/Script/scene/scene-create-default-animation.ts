@@ -41,7 +41,7 @@ Scene.createDefaultAnimation = (function IIFE() {
 			frames[1].end = 2;
 			frames[1].spriteY = 1;
 			DefaultPlayer = class DefaultPlayer extends Animation.Player {
-				constructor(target) {
+				constructor(target: any) {
 					super(data);
 					this.target = target;
 					this.setMotion(motion.id);

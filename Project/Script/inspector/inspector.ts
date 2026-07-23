@@ -8,6 +8,7 @@ import { Log } from '../log/log-window.ts';
 import { range } from '../module/eslints.ts';
 import { History } from '../tools/history.ts';
 import { Cursor } from '../tools/pointer-object.ts';
+import { ParamListHistory } from '../components/param-history.ts';
 
 // ******************************** 检查器 ********************************
 
@@ -125,48 +126,28 @@ Inspector.initialize = function () {
 	History.processors['inspector-param-insert'] = (operation, data) => {
 		const { history, target } = data;
 		const { owner, list } = history;
-		(Inspector as any).ParamHistory.restore(
-			list,
-			data,
-			'insert',
-			operation
-		);
+		ParamListHistory.restore(list, data, 'insert', operation);
 		owner.setTarget(target);
 		owner.planToSave();
 	};
 	History.processors['inspector-param-replace'] = (operation, data) => {
 		const { history, target } = data;
 		const { owner, list } = history;
-		(Inspector as any).ParamHistory.restore(
-			list,
-			data,
-			'replace',
-			operation
-		);
+		ParamListHistory.restore(list, data, 'replace', operation);
 		owner.setTarget(target);
 		owner.planToSave();
 	};
 	History.processors['inspector-param-delete'] = (operation, data) => {
 		const { history, target } = data;
 		const { owner, list } = history;
-		(Inspector as any).ParamHistory.restore(
-			list,
-			data,
-			'delete',
-			operation
-		);
+		ParamListHistory.restore(list, data, 'delete', operation);
 		owner.setTarget(target);
 		owner.planToSave();
 	};
 	History.processors['inspector-param-toggle'] = (operation, data) => {
 		const { history, target } = data;
 		const { owner, list } = history;
-		(Inspector as any).ParamHistory.restore(
-			list,
-			data,
-			'toggle',
-			operation
-		);
+		ParamListHistory.restore(list, data, 'toggle', operation);
 		owner.setTarget(target);
 		owner.planToSave();
 	};
@@ -442,11 +423,11 @@ Inspector.sliderBlur = (function IIFE() {
 
 // 参数操作历史
 Inspector.ParamHistory = class ParamHistory {
-	editor; //:object
-	owner; //:object
-	list; //:element
+	editor: any;
+	owner: any;
+	list: any;
 
-	constructor(editor, owner, list) {
+	constructor(editor: any, owner: any, list: any) {
 		this.editor = editor;
 		this.owner = owner;
 		this.list = list;
@@ -456,7 +437,7 @@ Inspector.ParamHistory = class ParamHistory {
 	reset() {}
 
 	// 保存数据
-	save(data) {
+	save(data: any) {
 		const { target } = this.editor;
 		if (target !== null) {
 			switch (data.type) {
@@ -480,7 +461,7 @@ Inspector.ParamHistory = class ParamHistory {
 	}
 
 	// 恢复数据
-	restore(operation) {
+	restore(operation: any) {
 		this.owner.history.restore(operation);
 	}
 

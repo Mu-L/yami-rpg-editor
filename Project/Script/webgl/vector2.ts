@@ -3,7 +3,7 @@
 export class Vector {
 	x: number;
 	y: number;
-	constructor(x = 0, y = 0) {
+	constructor(x: any = 0, y: any = 0) {
 		this.x = x;
 		this.y = y;
 	}
@@ -15,7 +15,7 @@ export class Vector {
 	}
 
 	// 写入长度
-	set length(value) {
+	set length(value: any) {
 		const { length } = this;
 		if (length !== 0) {
 			const ratio = value / length;
@@ -25,14 +25,14 @@ export class Vector {
 	}
 
 	// 设置向量
-	set(x, y) {
+	set(x: any, y: any) {
 		this.x = x;
 		this.y = y;
 		return this;
 	}
 
 	// 添加向量
-	add(vector) {
+	add(vector: any) {
 		this.x += vector.x;
 		this.y += vector.y;
 		return this;
@@ -44,7 +44,7 @@ export class Vector {
 	// }
 
 	// 求夹角余弦值
-	cos(vector) {
+	cos(vector: any) {
 		const a = this.x * vector.x + this.y * vector.y;
 		const b = Math.sqrt(this.x ** 2 + this.y ** 2);
 		const c = Math.sqrt(vector.x ** 2 + vector.y ** 2);
@@ -52,7 +52,7 @@ export class Vector {
 	}
 
 	// 求夹角正弦值
-	sin(vector) {
+	sin(vector: any) {
 		const cos = this.cos(vector);
 		return Math.sqrt(1 - cos ** 2);
 	}

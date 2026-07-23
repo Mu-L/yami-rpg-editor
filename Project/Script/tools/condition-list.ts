@@ -9,19 +9,19 @@ import { Window } from './window-object.ts';
 // ******************************** 条件列表接口类 ********************************
 
 export class ConditionListInterface {
-	target; //:element
-	type; //:string
-	history; //:object
-	editor; //:object
-	owner; //:object
+	target: HTMLElement | null;
+	type: string;
+	history: any | null;
+	editor: any | null;
+	owner: any | null;
 
-	constructor(editor, owner) {
+	constructor(editor?: any, owner?: any) {
 		this.editor = editor ?? null;
 		this.owner = owner ?? null;
 	}
 
 	// 初始化
-	initialize(list) {
+	initialize(list: HTMLElement): void {
 		this.target = null;
 		this.type = 'condition';
 
@@ -33,7 +33,7 @@ export class ConditionListInterface {
 	}
 
 	// 解析变量
-	parseVariable(condition) {
+	parseVariable(condition: any): any {
 		switch (condition.type) {
 			case 'global-boolean':
 			case 'global-number':
@@ -47,7 +47,7 @@ export class ConditionListInterface {
 	}
 
 	// 解析项目
-	parse(condition) {
+	parse(condition: any) {
 		const variable = this.parseVariable(condition);
 		switch (condition.type) {
 			case 'global-boolean':
@@ -78,7 +78,7 @@ export class ConditionListInterface {
 	}
 
 	// 更新
-	update(list) {
+	update(list: any) {
 		// 更新宿主项目的条件图标
 		const item = this.editor?.target;
 		if (item?.conditions === list.read()) {

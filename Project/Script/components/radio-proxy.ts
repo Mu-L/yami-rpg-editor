@@ -2,7 +2,14 @@
 
 interface RadioRelationEntry {
 	case: any;
-	targets: HTMLElement[];
+	targets: RadioProxy[];
+}
+
+// 单选项元素运行时挂载的扩展字段（与 RadioProxy 类同：dataValue/enable/disable）
+interface RadioProxyElement extends HTMLElement {
+	dataValue: any;
+	enable(): void;
+	disable(): void;
 }
 
 export class RadioProxy extends HTMLElement {
@@ -30,9 +37,11 @@ export class RadioProxy extends HTMLElement {
 
 	// 写入数据
 	write(value: any): void {
-		const elements = document.getElementsByName(this.id);
+		const elements = document.getElementsByName(
+			this.id
+		) as unknown as NodeListOf<RadioProxyElement>;
 		for (const element of elements) {
-			if ((element as any).dataValue === value) {
+			if (element.dataValue === value) {
 				(element as HTMLElement).addClass('selected');
 				this.dataValue = value;
 			} else {
@@ -72,9 +81,11 @@ export class RadioProxy extends HTMLElement {
 	// 重置数据
 	reset(): void {
 		if (this.dataValue !== null) {
-			const elements = document.getElementsByName(this.id);
+			const elements = document.getElementsByName(
+				this.id
+			) as unknown as NodeListOf<RadioProxyElement>;
 			for (const element of elements) {
-				if ((element as any).dataValue === this.dataValue) {
+				if (element.dataValue === this.dataValue) {
 					(element as HTMLElement).removeClass('selected');
 					break;
 				}
@@ -121,13 +132,13 @@ export class RadioProxy extends HTMLElement {
 				for (const entry of entries) {
 					if (entry.case === this.dataValue) {
 						for (const element of entry.targets) {
-							(element as any).enable();
+							element.enable();
 						}
 					} else {
 						for (const element of selection
 							? Array.subtract(entry.targets, selection.targets)
 							: entry.targets) {
-							(element as any).disable();
+							element.disable();
 						}
 					}
 				}
@@ -135,7 +146,7 @@ export class RadioProxy extends HTMLElement {
 				const entries = this.relations;
 				for (const entry of entries) {
 					for (const element of entry.targets) {
-						(element as any).disable();
+						element.disable();
 					}
 				}
 			}

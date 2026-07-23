@@ -7,9 +7,9 @@ import { TextBox } from './text-box.ts';
 // ******************************** 文本区域 ********************************
 
 export class TextArea extends HTMLElement {
-	input; //:element
-	focusEventEnabled; //:boolean
-	blurEventEnabled; //:boolean
+	input: HTMLElement;
+	focusEventEnabled: boolean;
+	blurEventEnabled: boolean;
 
 	constructor() {
 		super();
@@ -71,12 +71,12 @@ export class TextArea extends HTMLElement {
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: any) {
 		return this.input.getFocus(mode);
 	}
 
 	// 输入框 - 键盘按下事件
-	inputKeydown(event) {
+	inputKeydown(event: any) {
 		switch (event.code) {
 			case 'Enter':
 			case 'NumpadEnter':
@@ -96,7 +96,7 @@ export class TextArea extends HTMLElement {
 	}
 
 	// 输入框 - 输入事件
-	inputInput(event) {
+	inputInput(event: any) {
 		if (!TextArea.target) {
 			TextArea.target = this;
 			TextArea.timer.add();
@@ -105,7 +105,11 @@ export class TextArea extends HTMLElement {
 	}
 
 	// 添加事件
-	on(type, listener, options) {
+	on(
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'focus':

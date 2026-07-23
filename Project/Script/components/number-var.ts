@@ -4,9 +4,9 @@ import { NumberBox } from './number-box.ts';
 // ******************************** 数字变量框 ********************************
 
 export class NumberVar extends HTMLElement {
-	mode; //:string
-	numBox; //:element
-	varBox; //:element
+	mode: string;
+	numBox: HTMLElement & { [k: string]: any };
+	varBox: CustomBox & { [k: string]: any };
 
 	constructor() {
 		super();
@@ -34,7 +34,7 @@ export class NumberVar extends HTMLElement {
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any) {
 		switch (typeof value) {
 			case 'number':
 				this.switch('constant');
@@ -109,7 +109,7 @@ export class NumberVar extends HTMLElement {
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: any) {
 		switch (this.mode) {
 			case 'constant':
 				return this.numBox.getFocus(mode);
@@ -119,7 +119,7 @@ export class NumberVar extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: any) {
 		switch (event.code) {
 			case 'Slash':
 				// 切换输入框导致已侦听的事件失效
@@ -131,7 +131,7 @@ export class NumberVar extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
 				if (!this.hasClass('disabled') && event.target === this) {

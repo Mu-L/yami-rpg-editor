@@ -31,24 +31,26 @@ export const Meta = (function IIFE() {
 		versionId: { writable: true, value: -1 }
 	};
 	return class FileMeta {
-		path; //:string
-		size; //:number
+		path: string;
+		size: number;
 		// 以下字段用 `declare` 仅作类型声明，运行期完全由
 		// Object.defineProperties(this, descriptors) 定义为不可枚举属性。
 		// 切勿写成类字段（如 `file;` 或 `file = null`）——useDefineForClassFields:true
 		// 下 TS 会发射 `Object.defineProperty(this,'file',{enumerable:true,...})`，
 		// 使 JSON.stringify 看到 file -> FileItem.meta 循环引用。
-		declare file;
-		declare guid;
-		declare mtimeMs;
-		declare versionId;
-		declare group;
-		declare dataMap;
-		x = null;
-		y = null;
-		parameters = null;
+		declare file: FileItem;
+		declare guid: string;
+		declare mtimeMs: number | null;
+		declare versionId: number;
+		declare group: any[];
+		declare dataMap: Record<string, any> | null;
+		x: number | null = null;
+		y: number | null = null;
+		parameters: any[] | null = null;
+		// script 类型运行时由 Object.defineProperty 挂载（非枚举）
+		declare code: string;
 
-		constructor(file, guid) {
+		constructor(file: FileItem, guid: string) {
 			const { type, path } = file;
 			this.path = path;
 			this.size = Number(file.stats.size);
@@ -121,7 +123,7 @@ export const Meta = (function IIFE() {
 		}
 
 		// 重定向
-		redirect(file) {
+		redirect(file: any) {
 			if (this.file.type === file.type) {
 				this.file = file;
 				const sPath = this.path;
@@ -143,7 +145,7 @@ export const Meta = (function IIFE() {
 		}
 
 		// 尝试修复因项目更新而丢失的GUID
-		tryFixGuid(data) {
+		tryFixGuid(data: any) {
 			if (data.guid === undefined) {
 			}
 			guidDescriptor.value = this.guid;

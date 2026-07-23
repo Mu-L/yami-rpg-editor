@@ -3,6 +3,7 @@ import { Data } from '../data/data-object.ts';
 import { File } from '../file/file-system-core.ts';
 import { Inspector } from '../inspector/inspector.ts';
 import { GL } from '../webgl/webgl-init.ts';
+import { Texture } from '../webgl/texture.ts';
 import { UI } from '../ui/ui-window.ts';
 import { GUID } from '../file/guid.ts';
 import { Title } from '../title/title-bar.ts';
@@ -10,45 +11,54 @@ import { Title } from '../title/title-bar.ts';
 // ******************************** 打印机类 ********************************
 
 export class Printer {
-	texture; //:object
-	images; //:array
-	canvas; //:element
-	context; //:object
-	content; //:string
-	buffer; //:string
-	x; //:number
-	y; //:number
-	width; //:number
-	height; //:number
-	index; //:number
-	wrapEnd; //:number
-	commands; //:array
-	paddingLeft; //:number
-	paddingTop; //:number
-	paddingRight; //:number
-	paddingBottom; //:number
-	lineHeight; //:number
-	lineSpacing; //:number
-	letterSpacing; //:number
-	breakable; //:boolean
-	_direction; //:string
-	_horizontalAlign; //:string
-	_verticalAlign; //:string
-	horizontal; //:boolean
-	alignmentFactorX; //:number
-	alignmentFactorY; //:number
-	wordWrap; //:boolean
-	truncate; //:boolean
-	printWidth; //:number
-	printHeight; //:number
-	fonts; //:array
-	styles; //:array
-	weights; //:array
-	sizes; //:array
-	colors; //:array
-	effects; //:array
+	texture: any | null;
+	// images 运行时挂载 .changed 标志（L56/L200/L469 读写）
+	images: any[] & { changed?: boolean };
+	canvas: HTMLCanvasElement;
+	// CanvasRenderingContext2D 运行时挂载 .paddingItalic/.paddingVertical/.size 扩展（printer 内赋值）
+	context:
+		| (CanvasRenderingContext2D & {
+				paddingItalic?: number;
+				paddingVertical?: number;
+				size?: number;
+				[k: string]: any;
+		  })
+		| null;
+	content: string;
+	buffer: string;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	index: number;
+	wrapEnd: number;
+	commands: any[];
+	paddingLeft: number;
+	paddingTop: number;
+	paddingRight: number;
+	paddingBottom: number;
+	lineHeight: number;
+	lineSpacing: number;
+	letterSpacing: number;
+	breakable: boolean;
+	_direction: string;
+	_horizontalAlign: string;
+	_verticalAlign: string;
+	horizontal: boolean;
+	alignmentFactorX: number;
+	alignmentFactorY: number;
+	wordWrap: boolean;
+	truncate: boolean;
+	printWidth: number;
+	printHeight: number;
+	fonts: any[];
+	styles: any[];
+	weights: any[];
+	sizes: any[];
+	colors: any[];
+	effects: any[];
 
-	constructor(texture) {
+	constructor(texture: Texture) {
 		texture.base.printer = this;
 		texture.base.onRestore = Printer.restoreTexture;
 		this.texture = texture;
@@ -96,7 +106,7 @@ export class Printer {
 	}
 
 	// 写入方向
-	set direction(value) {
+	set direction(value: any) {
 		this._direction = value;
 		switch (value) {
 			case 'horizontal-tb':
@@ -115,7 +125,7 @@ export class Printer {
 	}
 
 	// 写入水平对齐
-	set horizontalAlign(value) {
+	set horizontalAlign(value: any) {
 		this._horizontalAlign = value;
 		switch (value) {
 			case 'left':
@@ -136,7 +146,7 @@ export class Printer {
 	}
 
 	// 写入垂直对齐
-	set verticalAlign(value) {
+	set verticalAlign(value: any) {
 		this._verticalAlign = value;
 		switch (value) {
 			case 'top':
@@ -237,13 +247,13 @@ export class Printer {
 	}
 
 	// 设置打印区域
-	setPrintArea(width, height) {
+	setPrintArea(width: any, height: any) {
 		this.printWidth = width;
 		this.printHeight = height;
 	}
 
 	// 设置边距
-	setPadding(pl, pt, pr, pb) {
+	setPadding(pl: any, pt: any, pr: any, pb: any) {
 		this.paddingLeft = pl;
 		this.paddingTop = pt;
 		this.paddingRight = pr;
@@ -359,7 +369,7 @@ export class Printer {
 	}
 
 	// 测量宽度
-	measureWidth(string) {
+	measureWidth(string: any) {
 		if (this.horizontal) {
 			return this.context.measureText(string).width;
 		} else {
@@ -368,7 +378,7 @@ export class Printer {
 	}
 
 	// 测量高度
-	measureHeight(string) {
+	measureHeight(string: any) {
 		if (this.horizontal) {
 			return this.getScaledSize();
 		} else {
@@ -431,7 +441,7 @@ export class Printer {
 	}
 
 	/** 加载图像 */
-	loadImage(guid, clip, width, height) {
+	loadImage(guid: any, clip: any, width: any, height: any) {
 		// 排除无效图像宽高
 		if (width * height === 0) return;
 
@@ -699,7 +709,7 @@ export class Printer {
 	}
 
 	// 绘制文本
-	draw(content) {
+	draw(content: any) {
 		// 设置内容和重置索引
 		this.content = content;
 		this.index = 0;
@@ -1167,12 +1177,13 @@ export class Printer {
 		this.updateScale();
 
 		// 导入字体
-		(this.imported as any).signature = text.importedFonts.join();
+		(this.imported as unknown as { signature: string }).signature =
+			text.importedFonts.join();
 		return this.importFonts(text.importedFonts);
 	}
 
 	// 导入字体
-	static importFonts(imports) {
+	static importFonts(imports: any) {
 		const imported = this.imported;
 		const importing = this.importing;
 		const regexp = /([^/]+)\.\S+\.\S+$/;
@@ -1195,9 +1206,27 @@ export class Printer {
 							(font) => {
 								if (importing.remove(name)) {
 									document.fonts.add(font);
-									(font as any).imported = true;
-									(font as any).guid = guid;
-									(font as any).name = name;
+									(
+										font as FontFace & {
+											imported: boolean;
+											guid: string;
+											name: string;
+										}
+									).imported = true;
+									(
+										font as FontFace & {
+											imported: boolean;
+											guid: string;
+											name: string;
+										}
+									).guid = guid;
+									(
+										font as FontFace & {
+											imported: boolean;
+											guid: string;
+											name: string;
+										}
+									).name = name;
 								}
 							},
 							(error) => {
@@ -1217,12 +1246,28 @@ export class Printer {
 	}
 
 	// 删除指定的字体
-	static deleteFont(guid) {
+	static deleteFont(guid: any) {
 		const fonts = document.fonts;
 		for (const font of fonts) {
-			if ((font as any).guid === guid) {
+			if (
+				(
+					font as FontFace & {
+						imported: boolean;
+						guid: string;
+						name: string;
+					}
+				).guid === guid
+			) {
 				fonts.delete(font);
-				this.imported.remove((font as any).name);
+				this.imported.remove(
+					(
+						font as FontFace & {
+							imported: boolean;
+							guid: string;
+							name: string;
+						}
+					).name
+				);
 				break;
 			}
 		}
@@ -1232,7 +1277,15 @@ export class Printer {
 	static clearFonts() {
 		const fonts = document.fonts;
 		for (const font of fonts) {
-			if ((font as any).imported) {
+			if (
+				(
+					font as FontFace & {
+						imported: boolean;
+						guid: string;
+						name: string;
+					}
+				).imported
+			) {
 				fonts.delete(font);
 			}
 		}
@@ -1241,7 +1294,7 @@ export class Printer {
 	}
 
 	// 解析文字效果
-	static parseEffect(effect) {
+	static parseEffect(effect: any) {
 		const copy = Object.clone(effect);
 		if (copy.color !== undefined) {
 			copy.color = CSSRGBA(copy.color);
@@ -1297,7 +1350,7 @@ export class Printer {
 	}
 
 	// 恢复打印机纹理
-	static restoreTexture(base) {
+	static restoreTexture(base: any) {
 		base.restoreNormalTexture();
 		Promise.resolve().then(() => {
 			const { content } = base.printer;
@@ -1307,7 +1360,7 @@ export class Printer {
 	}
 
 	// 绘制文字
-	static drawText(context, command, text) {
+	static drawText(context: any, command: any, text: any) {
 		const { font, size, color } = command;
 		const x = command.x;
 		const y = command.y + size * 0.85;
@@ -1318,7 +1371,7 @@ export class Printer {
 	}
 
 	// 绘制带阴影的文字
-	static drawTextWithShadow(context, command, text) {
+	static drawTextWithShadow(context: any, command: any, text: any) {
 		const { font, size, color, effect } = command;
 		const x = command.x;
 		const y = command.y + size * 0.85;
@@ -1334,7 +1387,7 @@ export class Printer {
 	}
 
 	// 绘制描边的文字
-	static drawTextWithStroke(context, command, text) {
+	static drawTextWithStroke(context: any, command: any, text: any) {
 		const { font, size, color, effect } = command;
 		const x = command.x;
 		const y = command.y + size * 0.85;
@@ -1350,7 +1403,7 @@ export class Printer {
 	}
 
 	// 绘制带轮廓线的文字
-	static drawTextWithOutline(context, command, text) {
+	static drawTextWithOutline(context: any, command: any, text: any) {
 		const { font, size, color, effect } = command;
 		const x = command.x;
 		const y = command.y + size * 0.85;
@@ -1366,7 +1419,7 @@ export class Printer {
 	}
 
 	// 设置语言字体
-	static setLanguageFont(guid) {
+	static setLanguageFont(guid: any) {
 		if (this.languageFont !== guid) {
 			this.deleteFont(this.languageFont);
 			this.languageFont = guid;
@@ -1393,7 +1446,7 @@ export class Printer {
 	}
 
 	// 设置文字缩放系数
-	static setSizeScale(scale) {
+	static setSizeScale(scale: any) {
 		if (this.sizeScale !== scale) {
 			this.sizeScale = scale;
 			UI.updateAllPrinters();
@@ -1407,7 +1460,7 @@ export class Printer {
 	}
 
 	// 设置自动换行
-	static setWordWrap(wordWrap) {
+	static setWordWrap(wordWrap: any) {
 		if (this.wordWrap !== wordWrap) {
 			this.wordWrap = wordWrap;
 			UI.updateAllPrinters();
@@ -1415,7 +1468,7 @@ export class Printer {
 	}
 
 	// 数据改变事件
-	static datachange(event) {
+	static datachange(event: any) {
 		if (event.key === 'config') {
 			// 设置默认上下文属性
 			const font = Data.config.text.fontFamily || 'sans-serif';
@@ -1432,8 +1485,13 @@ export class Printer {
 			// 加载字体
 			const { importedFonts } = Data.config.text;
 			const signature = importedFonts.join();
-			if ((Printer.imported as any).signature !== signature) {
-				(Printer.imported as any).signature = signature;
+			if (
+				(Printer.imported as unknown as { signature: string })
+					.signature !== signature
+			) {
+				(
+					Printer.imported as unknown as { signature: string }
+				).signature = signature;
 				Printer.clearFonts();
 				Printer.importFonts(importedFonts);
 			}

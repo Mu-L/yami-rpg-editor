@@ -1022,7 +1022,7 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 
 		// 更新数据
-		update(parameters) {
+		update(parameters: any) {
 			const { states } = this;
 			for (const wrap of this) {
 				wrap.switch(states, parameters);
@@ -1038,7 +1038,7 @@ PluginManager.parseMeta = (function IIFE() {
 		owner: any;
 		map: any;
 		priority: number;
-		constructor(owner) {
+		constructor(owner: any) {
 			this.owner = owner;
 			this.map = {};
 			this.priority = 0;
@@ -1046,7 +1046,7 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 
 		// 设置关联属性
-		relate(values) {
+		relate(values: any) {
 			const { owner } = this;
 			if (parameter.type === 'option') {
 				let node = owner;
@@ -1070,7 +1070,7 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 
 		// 切换选项
-		switch(states, parameters) {
+		switch(states: any, parameters: any) {
 			let active;
 			const { owner, map } = this;
 			const { key, options } = owner;
@@ -1135,7 +1135,7 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 
 		// 解析映射表
-		parse(pack) {
+		parse(pack: any) {
 			const code = pack.code;
 			if (code !== undefined) {
 				delete pack.code;
@@ -1159,7 +1159,7 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 
 		// 获取内容
-		get(key) {
+		get(key: any) {
 			if (key && key[0] === '#') {
 				return this.active[key] ?? key;
 			}
@@ -1167,7 +1167,7 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 
 		// 添加映射表
-		append(pack) {
+		append(pack: any) {
 			const { name } = pack;
 			const { packs } = this;
 			for (const pack of packs) {

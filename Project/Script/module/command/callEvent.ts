@@ -144,7 +144,7 @@ import { Selection } from '../../tools/text-capture.ts';
 			this.eventResult = null;
 		}
 	},
-	createParameterElements(parameter) {
+	createParameterElements(parameter: any) {
 		const { type, key, note } = parameter;
 		const label = document.createElement('text');
 		const name = key ? key.charAt(0).toUpperCase() + key.slice(1) : '';
@@ -221,7 +221,7 @@ import { Selection } from '../../tools/text-capture.ts';
 		this.gridBox.appendChild(input);
 		this.parameters.push({ key, type, label, input });
 	},
-	createEventResultElements(type) {
+	createEventResultElements(type: any) {
 		let input;
 		switch (type) {
 			case 'none':
@@ -271,7 +271,7 @@ import { Selection } from '../../tools/text-capture.ts';
 		this.gridBox.appendChild(input);
 		this.eventResult = { type, label, input };
 	},
-	parseEventArgs(event, args) {
+	parseEventArgs(event: any, args: any) {
 		const words = Command.words;
 		if (event) {
 			const flags = {};
@@ -305,7 +305,7 @@ import { Selection } from '../../tools/text-capture.ts';
 		if (info) info = `(${info})`;
 		return info;
 	},
-	parseEventArgInput(arg) {
+	parseEventArgInput(arg: any) {
 		switch (arg.type) {
 			case 'boolean':
 				return Command.setBooleanColor(arg.value.toString());
@@ -333,7 +333,7 @@ import { Selection } from '../../tools/text-capture.ts';
 				return Command.parseElement(arg.value);
 		}
 	},
-	getDefaultArgValue(type) {
+	getDefaultArgValue(type: any) {
 		switch (type) {
 			case 'boolean':
 				return false;
@@ -354,7 +354,7 @@ import { Selection } from '../../tools/text-capture.ts';
 				return { type: 'trigger' };
 		}
 	},
-	writeEventArgs(args) {
+	writeEventArgs(args: any) {
 		outer: for (const { type, key, input } of this.parameters) {
 			for (const arg of args) {
 				if (arg.key === key && arg.type === type) {
@@ -377,7 +377,7 @@ import { Selection } from '../../tools/text-capture.ts';
 		}
 		return args;
 	},
-	writeEventResult(eventResult) {
+	writeEventResult(eventResult: any) {
 		if (this.eventResult === null) return;
 		if (eventResult.type === 'none') return;
 		const baseTypes = 'boolean|number|string';

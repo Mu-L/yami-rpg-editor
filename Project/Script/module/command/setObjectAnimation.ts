@@ -126,7 +126,7 @@ Command.cases.setObjectAnimation = new CommandSchema({
 				return label + Token('(') + _gray + Token(')');
 		}
 	},
-	parseProperty(operation, property) {
+	parseProperty(operation: any, property: any) {
 		const label = Local.get('command.setObjectAnimation.' + operation);
 		return (
 			label +

@@ -1,8 +1,8 @@
 ﻿// ******************************** 滤镜框 ********************************
 
 export class FilterBox extends HTMLElement {
-	canvas: HTMLCanvasElement | null; //:element
-	dataValue: [number, number, number, number] | null; //:object
+	canvas: HTMLCanvasElement | null;
+	dataValue: [number, number, number, number] | null;
 
 	constructor() {
 		super();

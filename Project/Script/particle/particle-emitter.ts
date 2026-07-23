@@ -2,21 +2,51 @@ import { Particle } from './particle-window.ts';
 
 // ******************************** 粒子发射器类 ********************************
 
-Particle.Emitter = class ParticleEmitter {
-	alwaysEmit; //:boolean
-	visible; //:boolean
-	anchorY; //:number
-	data; //:object
-	startX; //:number
-	startY; //:number
-	angle; //:number
-	scale; //:number
-	speed; //:number
-	opacity; //:number
-	matrix; //:object
-	layers; //:array
+// 发射器数据对象（Data.scene.emitters[i]）
+interface ParticleEmitterData {
+	layers: ParticleLayerData[];
+	[k: string]: any;
+}
 
-	constructor(data) {
+// 粒子层数据对象（emitter.data.layers[i]）
+interface ParticleLayerData {
+	area: {
+		type: 'edge' | 'point' | 'rectangle' | 'circle';
+		x?: number;
+		y?: number;
+		width?: number;
+		height?: number;
+		radius?: number;
+	};
+	[k: string]: any;
+}
+
+// 外部矩形计算结果
+interface OuterRect {
+	left: number;
+	top: number;
+	right: number;
+	bottom: number;
+	width: number;
+	height: number;
+	hasArea: boolean;
+}
+
+Particle.Emitter = class ParticleEmitter {
+	alwaysEmit: boolean;
+	visible: boolean;
+	anchorY: number;
+	data: ParticleEmitterData;
+	startX: number;
+	startY: number;
+	angle: number;
+	scale: number;
+	speed: number;
+	opacity: number;
+	matrix: any | null;
+	layers: any[];
+
+	constructor(data: ParticleEmitterData) {
 		let alwaysEmit = false;
 		const sLayers = data.layers;
 		const sLength = sLayers.length;
@@ -44,7 +74,7 @@ Particle.Emitter = class ParticleEmitter {
 	}
 
 	// 计算发射器外部矩形
-	calculateOuterRect() {
+	calculateOuterRect(): OuterRect {
 		let L = Infinity;
 		let T = Infinity;
 		let R = -Infinity;
@@ -54,22 +84,22 @@ Particle.Emitter = class ParticleEmitter {
 				case 'edge':
 					continue;
 				case 'point':
-					L = Math.min(L, area.x);
-					T = Math.min(T, area.y);
-					R = Math.max(R, area.x);
-					B = Math.max(B, area.y);
+					L = Math.min(L, area.x!);
+					T = Math.min(T, area.y!);
+					R = Math.max(R, area.x!);
+					B = Math.max(B, area.y!);
 					break;
 				case 'rectangle':
-					L = Math.min(L, area.x - area.width * 0.5);
-					T = Math.min(T, area.y - area.height * 0.5);
-					R = Math.max(R, area.x + area.width * 0.5);
-					B = Math.max(B, area.y + area.height * 0.5);
+					L = Math.min(L, area.x! - area.width! * 0.5);
+					T = Math.min(T, area.y! - area.height! * 0.5);
+					R = Math.max(R, area.x! + area.width! * 0.5);
+					B = Math.max(B, area.y! + area.height! * 0.5);
 					continue;
 				case 'circle':
-					L = Math.min(L, area.x - area.radius);
-					T = Math.min(T, area.y - area.radius);
-					R = Math.max(R, area.x + area.radius);
-					B = Math.max(B, area.y + area.radius);
+					L = Math.min(L, area.x! - area.radius!);
+					T = Math.min(T, area.y! - area.radius!);
+					R = Math.max(R, area.x! + area.radius!);
+					B = Math.max(B, area.y! + area.radius!);
 					continue;
 			}
 		}
@@ -101,7 +131,7 @@ Particle.Emitter = class ParticleEmitter {
 	}
 
 	// 获取图层
-	getLayer(layerData) {
+	getLayer(layerData: ParticleLayerData): any | undefined {
 		for (const layer of this.layers) {
 			if (layer.data === layerData) {
 				return layer;
@@ -110,7 +140,7 @@ Particle.Emitter = class ParticleEmitter {
 	}
 
 	// 更新图层
-	updateLayers() {
+	updateLayers(): void {
 		const map = new Map();
 		for (const layer of this.layers) {
 			map.set(layer.data, layer);
@@ -133,20 +163,20 @@ Particle.Emitter = class ParticleEmitter {
 	}
 
 	// 更新数据
-	update(deltaTime) {
+	update(deltaTime: number): void {
 		this.emitParticles(deltaTime);
 		this.updateParticles(deltaTime);
 	}
 
 	// 发射粒子
-	emitParticles(deltaTime) {
+	emitParticles(deltaTime: number): void {
 		for (const layer of this.layers) {
 			layer.emitParticles(deltaTime);
 		}
 	}
 
 	// 更新粒子
-	updateParticles(deltaTime) {
+	updateParticles(deltaTime: number): number {
 		let count = 0;
 		for (const layer of this.layers) {
 			count += layer.updateParticles(deltaTime);
@@ -155,21 +185,21 @@ Particle.Emitter = class ParticleEmitter {
 	}
 
 	// 绘制粒子
-	draw(opacity) {
+	draw(opacity: number): void {
 		for (const layer of this.layers) {
 			layer.draw(opacity);
 		}
 	}
 
 	// 更新过渡映射表
-	updateEasing() {
+	updateEasing(): void {
 		for (const layer of this.layers) {
 			layer.updateEasing();
 		}
 	}
 
 	// 判断是否为空
-	isEmpty() {
+	isEmpty(): boolean {
 		for (const { elements } of this.layers) {
 			if (elements.count !== 0) {
 				return false;
@@ -179,14 +209,14 @@ Particle.Emitter = class ParticleEmitter {
 	}
 
 	// 清除粒子元素
-	clear() {
+	clear(): void {
 		for (const layer of this.layers) {
 			layer.clear();
 		}
 	}
 
 	// 销毁资源
-	destroy() {
+	destroy(): void {
 		for (const layer of this.layers) {
 			layer.destroy();
 		}

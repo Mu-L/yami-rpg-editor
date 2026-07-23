@@ -140,7 +140,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					// element[key] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'scrollX':
@@ -155,7 +155,7 @@ import { UI } from '../ui/ui-window.ts';
 					node[key] = value;
 					// element[key] = value
 					// element.resize()
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 					node.instances.resize();
 				}
 				break;

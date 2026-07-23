@@ -53,7 +53,7 @@ export const DialogBoxProperty = createPropertyWindow({
 			$('#uiDialogBox-blend').dataItems
 		);
 	},
-	openData(defaults, key, value) {
+	openData(defaults: any, key: any, value: any) {
 		if (key === 'effect') {
 			defaults['effect-type'] = value.type;
 			defaults['effect-shadowOffsetX'] = value.shadowOffsetX ?? 1;
@@ -64,7 +64,7 @@ export const DialogBoxProperty = createPropertyWindow({
 			defaults[key] = value;
 		}
 	},
-	saveData(key, read) {
+	saveData(key: any, read: any) {
 		if (key === 'effect') {
 			switch (read('effect-type')) {
 				case 'none':

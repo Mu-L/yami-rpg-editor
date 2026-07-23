@@ -1,4 +1,4 @@
-﻿import { Data } from '../data/data-object.ts';
+import { Data } from '../data/data-object.ts';
 import { Scene } from '../scene/scene-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
 import { UI } from '../ui/ui-window.ts';
@@ -10,37 +10,42 @@ import { Matrix } from '../webgl/matrix2.ts';
 
 // ******************************** 动画播放器类 ********************************
 
-Animation.Player = class AnimationPlayer {
-	visible; //:boolean
-	index; //:number
-	cycleIndex; //:number
-	length; //:number
-	end; //:number
-	loopStart; //:number
-	speed; //:number
-	anchorX; //:number
-	anchorY; //:number
-	rotatable; //:boolean
-	rotation; //:number
-	opacity; //:number
-	angle; //:number
-	scale; //:number
-	direction; //:number
-	mirror; //:string
-	data; //:object
-	dirMap; //:array
-	dirCases; //:array
-	layers; //:array
-	motion; //:object
-	motions; //:object
-	sprites; //:object
-	images; //:object
-	textures; //:object
-	contexts; //:array
-	emitters; //:array
-	isUIComponent; //:boolean
+// 动画数据对象（Data.animations[i]）
+interface AnimationData {
+	[k: string]: any;
+}
 
-	constructor(animation) {
+Animation.Player = class AnimationPlayer {
+	visible: boolean;
+	index: number;
+	cycleIndex: number;
+	length: number;
+	end: number;
+	loopStart: number;
+	speed: number;
+	anchorX: number;
+	anchorY: number;
+	rotatable: boolean;
+	rotation: number;
+	opacity: number;
+	angle: number;
+	scale: number;
+	direction: number;
+	mirror: string | boolean;
+	data: AnimationData;
+	dirMap: any[];
+	dirCases: any[] | null;
+	layers: any[] | null;
+	motion: any | null;
+	motions: Record<string, any>;
+	sprites: Record<string, any>;
+	images: Record<string, any>;
+	textures: Record<string, any>;
+	contexts: any[] & { count?: number };
+	emitters: any[] & { count?: number };
+	isUIComponent: boolean;
+
+	constructor(animation: AnimationData) {
 		this.index = 0;
 		this.length = 0;
 		this.loopStart = 0;
@@ -71,7 +76,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 设置动作
-	setMotion(key) {
+	setMotion(key: any) {
 		const motions = this.motions;
 		const motion = motions[key];
 		if (motion !== undefined && this.motion !== motion) {
@@ -106,22 +111,22 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 设置缩放系数
-	setScale(scale) {
+	setScale(scale: any) {
 		this.scale = scale;
 	}
 
 	// 设置播放速度
-	setSpeed(speed) {
+	setSpeed(speed: any) {
 		this.speed = speed;
 	}
 
 	// 设置不透明度
-	setOpacity(opacity) {
+	setOpacity(opacity: any) {
 		this.opacity = opacity;
 	}
 
 	// 设置动画角度
-	setAngle(angle) {
+	setAngle(angle: any) {
 		this.angle = angle;
 		const directions = this.dirMap.length;
 		// 将角度映射为0~方向数量的数值
@@ -134,7 +139,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 设置动画方向
-	setDirection(direction) {
+	setDirection(direction: any) {
 		if (this.direction !== direction) {
 			const params = this.dirMap[direction];
 			if (!params) return false;
@@ -163,7 +168,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 跳转到指定帧
-	goto(index) {
+	goto(index: any) {
 		index = Math.clamp(index, 0, this.length - 1);
 		// 跳转到前面的动画帧时增加循环计数
 		if (index < this.index) {
@@ -189,7 +194,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 设置动画位置
-	setPosition(x, y) {
+	setPosition(x: any, y: any) {
 		const matrix = AnimationPlayer.matrix.set6f(1, 0, 0, 1, x, y);
 
 		// 设置镜像
@@ -209,12 +214,12 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 设置精灵图像表
-	setSpriteImages(images) {
+	setSpriteImages(images: any) {
 		this.images = Object.setPrototypeOf(images, this.images);
 	}
 
 	// 计算帧列表参数
-	updateFrameParameters(contexts, index) {
+	updateFrameParameters(contexts: any, index: any) {
 		const { count } = contexts;
 		outer: for (let i = 0; i < count; i++) {
 			const context = contexts[i];
@@ -264,12 +269,12 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 加载图层上下文列表
-	loadContexts(contexts) {
+	loadContexts(contexts: any) {
 		AnimationPlayer.loadContexts(this, contexts);
 	}
 
 	// 更新动画
-	update(deltaTime) {
+	update(deltaTime: any) {
 		if (this.length !== 0) {
 			// 递增动画帧索引
 			this.index += (deltaTime * this.speed) / AnimationPlayer.step;
@@ -312,7 +317,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 发射粒子
-	emitParticles(deltaTime) {
+	emitParticles(deltaTime: any) {
 		deltaTime *= this.speed;
 		const { contexts } = this;
 		const { count } = contexts;
@@ -341,7 +346,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 更新粒子
-	updateParticles(deltaTime) {
+	updateParticles(deltaTime: any) {
 		deltaTime *= this.speed;
 		const { emitters } = this;
 		let i = emitters.length;
@@ -359,7 +364,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 绘制动画
-	draw(opacity, light) {
+	draw(opacity: any, light: any) {
 		const { emitters } = this;
 		const { length } = emitters;
 		// 绘制背景粒子
@@ -400,7 +405,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 绘制精灵
-	drawSprite(context, texture, light) {
+	drawSprite(context: any, texture: any, light: any) {
 		const gl = GL;
 		const vertices = gl.arrays[0].float32;
 		const attributes = gl.arrays[0].uint32;
@@ -490,7 +495,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 获取纹理
-	getTexture(spriteId) {
+	getTexture(spriteId: any) {
 		const textures = this.textures;
 		const texture = textures[spriteId];
 		if (texture === undefined) {
@@ -677,7 +682,7 @@ Animation.Player = class AnimationPlayer {
 	}
 
 	// 静态 - 加载动画图层上下文列表
-	static loadContexts(animation, contexts) {
+	static loadContexts(animation: any, contexts: any) {
 		contexts.count = 0;
 		if (animation.layers !== null) {
 			// 如果动画已设置动作，加载所有图层上下文

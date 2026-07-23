@@ -1,17 +1,27 @@
-﻿import { $ } from '../util/dom.ts';
+import { $ } from '../util/dom.ts';
 import { Scene } from './scene-window.ts';
 
 // ******************************** 瓦片地图快捷方式列表类 ********************************
 
+// 瓦片地图数据对象（Data.scene.tilemaps[i]）
+interface TilemapData {
+	shortcut: number;
+	name: string;
+	[k: string]: any;
+}
+
 export class TilemapShortcuts {
-	tilemaps;
-	constructor(tilemaps) {
+	tilemaps: TilemapData[];
+	// 索引 1-6 挂载对应快捷方式的 tilemap（reset 时初始化为 null）
+	[index: number]: TilemapData | null;
+
+	constructor(tilemaps: TilemapData[]) {
 		this.tilemaps = tilemaps;
 		this.reset();
 	}
 
 	// 重置
-	reset() {
+	reset(): void {
 		this[1] = null;
 		this[2] = null;
 		this[3] = null;
@@ -21,7 +31,7 @@ export class TilemapShortcuts {
 	}
 
 	// 更新
-	update() {
+	update(): void {
 		this.reset();
 		for (const tilemap of this.tilemaps) {
 			const { shortcut } = tilemap;
@@ -47,7 +57,7 @@ export class TilemapShortcuts {
 	}
 
 	// 获取空索引
-	getEmptyIndex() {
+	getEmptyIndex(): number {
 		for (let i = 1; i <= 6; i++) {
 			if (!this[i]) return i;
 		}
@@ -65,7 +75,7 @@ export class TilemapShortcuts {
 	};
 
 	// 静态 - 初始化
-	static initialize() {
+	static initialize(): void {
 		const { elements } = this;
 		for (let i = 1; i <= 6; i++) {
 			elements[i].setTooltip(() => {

@@ -7,38 +7,38 @@ import { GL } from '../webgl/webgl-init.ts';
 // ******************************** 文本框元素 ********************************
 
 UI.TextBox = class TextBoxElement extends UI.Element {
-	focusing; //:boolean
-	texture; //:object
-	_type; //:string
-	_align; //:string
-	content; //:string
-	text; //:string
-	maxLength; //:number
-	number; //:number
-	min; //:number
-	max; //:number
-	decimals; //:number
-	_padding; //:number
-	_size; //:number
-	_font; //:string
-	_color; //:string
-	_colorInt; //:number
-	textX; //:number
-	textY; //:number
-	textWidth; //:number
-	textShiftY; //:number
-	innerWidth; //:number
-	innerHeight; //:number
-	selectionY; //:number
-	selectionWidth; //:number
-	selectionHeight; //:number
-	_selectionColor; //:string
-	_selectionColorInt; //:number
-	_selectionBgColor; //:string
-	_selectionBgColorInt; //:number
-	printer; //:object
+	focusing: boolean;
+	texture: Texture | null;
+	_type: string;
+	_align: string;
+	content: string;
+	text: string;
+	maxLength: number;
+	number: number;
+	min: number;
+	max: number;
+	decimals: number;
+	_padding: number;
+	_size: number;
+	_font: string;
+	_color: string;
+	_colorInt: number;
+	textX: number;
+	textY: number;
+	textWidth: number;
+	textShiftY: number;
+	innerWidth: number;
+	innerHeight: number;
+	selectionY: number;
+	selectionWidth: number;
+	selectionHeight: number;
+	_selectionColor: string;
+	_selectionColorInt: number;
+	_selectionBgColor: string;
+	_selectionBgColorInt: number;
+	printer: Printer | null;
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.focusing = false;
 		this.texture = null;
@@ -74,7 +74,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 	}
 
 	// 写入类型
-	set type(value) {
+	set type(value: any) {
 		if (this._type !== value) {
 			this._type = value;
 			switch (value) {
@@ -94,7 +94,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 	}
 
 	// 写入对齐方式
-	set align(value) {
+	set align(value: any) {
 		this._align = value;
 		if (this.connected) {
 			this.calculateTextPosition();
@@ -107,7 +107,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 	}
 
 	// 写入内边距
-	set padding(value) {
+	set padding(value: any) {
 		if (this._padding !== value) {
 			this._padding = value;
 			if (this.connected) {
@@ -122,7 +122,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 	}
 
 	// 写入字体大小
-	set size(value) {
+	set size(value: any) {
 		if (this._size !== value) {
 			this._size = value;
 			if (this.printer) {
@@ -138,7 +138,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 	}
 
 	// 写入字体
-	set font(value) {
+	set font(value: any) {
 		if (this._font !== value) {
 			this._font = value;
 			if (this.printer) {
@@ -154,7 +154,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 	}
 
 	// 写入颜色
-	set color(value) {
+	set color(value: any) {
 		if (this._color !== value) {
 			this._color = value;
 			this._colorInt = INTRGBA(value);
@@ -167,7 +167,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 	}
 
 	// 写入选中颜色
-	set selectionColor(value) {
+	set selectionColor(value: any) {
 		if (this._selectionColor !== value) {
 			this._selectionColor = value;
 			this._selectionColorInt = INTRGBA(value);
@@ -180,7 +180,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 	}
 
 	// 写入选中背景颜色
-	set selectionBgColor(value) {
+	set selectionBgColor(value: any) {
 		if (this._selectionBgColor !== value) {
 			this._selectionBgColor = value;
 			this._selectionBgColorInt = INTRGBA(value);
@@ -194,7 +194,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		if (printer === null) {
 			const texture = new Texture();
 			printer = new Printer(texture);
-			printer.matchTag = Function.empty;
+			printer.matchTag = Function.empty as () => boolean;
 			printer.sizes[0] = this.size;
 			printer.fonts[0] = this.font || Printer.font;
 			printer.colors[0] = '#ffffff';

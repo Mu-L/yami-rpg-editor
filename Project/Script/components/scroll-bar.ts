@@ -1,13 +1,32 @@
-﻿import { Timer } from '../util/timer.ts';
+import { Timer } from '../util/timer.ts';
 
 // ******************************** 滚动条 ********************************
+
+// 滑块运行时挂载的缓存字段（避免每次读 DOM style）
+interface ScrollThumb extends HTMLElement {
+	left?: number;
+	width?: number;
+	top?: number;
+	height?: number;
+}
+
+// 拖动事件运行时挂载的字段（pointerdown 时赋值，pointermove 时读取）
+interface ScrollDragging extends PointerEvent {
+	mode: 'scroll' | 'repeat';
+	target: ScrollBar;
+	scrollLeft: number;
+	scrollTop: number;
+	clientX: number;
+	clientY: number;
+	relate(event: PointerEvent): boolean;
+}
 
 export class ScrollBar extends HTMLElement {
 	target: HTMLElement | null;
 	type: string | null;
-	thumb: HTMLElement | null;
+	thumb: ScrollThumb | null;
 	timer: Timer | null;
-	dragging: PointerEvent | null;
+	dragging: ScrollDragging | null;
 	visible: boolean;
 
 	constructor() {
@@ -78,7 +97,7 @@ export class ScrollBar extends HTMLElement {
 
 	// 更新水平滑块
 	updateHorizontalThumb(left: number, width: number): void {
-		const thumb = this.thumb! as any;
+		const thumb = this.thumb!;
 		if (thumb.left !== left) {
 			thumb.left = left;
 			thumb.style.left = `${left}%`;
@@ -91,7 +110,7 @@ export class ScrollBar extends HTMLElement {
 
 	// 更新垂直滑块
 	updateVerticalThumb(top: number, height: number): void {
-		const thumb = this.thumb! as any;
+		const thumb = this.thumb!;
 		if (thumb.top !== top) {
 			thumb.top = top;
 			thumb.style.top = `${top}%`;
@@ -131,7 +150,7 @@ export class ScrollBar extends HTMLElement {
 							if (!dragging) {
 								return false;
 							}
-							if ((dragging as any).target !== this) {
+							if (dragging!.target !== this) {
 								break;
 							}
 							const type = this.type;
@@ -248,10 +267,12 @@ export class ScrollBar extends HTMLElement {
 				event.preventDefault();
 				event.stopImmediatePropagation();
 				if (event.target === this.thumb) {
-					this.dragging = event;
-					(event as any).mode = 'scroll';
-					(event as any).scrollLeft = this.target!.scrollLeft;
-					(event as any).scrollTop = this.target!.scrollTop;
+					this.dragging = event as unknown as ScrollDragging;
+					(event as unknown as ScrollDragging).mode = 'scroll';
+					(event as unknown as ScrollDragging).scrollLeft =
+						this.target!.scrollLeft;
+					(event as unknown as ScrollDragging).scrollTop =
+						this.target!.scrollTop;
 					window.on('pointerup', this.windowPointerup);
 					window.on('pointermove', this.windowPointermove);
 				} else {
@@ -268,8 +289,8 @@ export class ScrollBar extends HTMLElement {
 							);
 							break;
 					}
-					this.dragging = event;
-					(event as any).mode = 'repeat';
+					this.dragging = event as unknown as ScrollDragging;
+					(event as unknown as ScrollDragging).mode = 'repeat';
 					window.on('pointerup', this.windowPointerup);
 					window.on('pointermove', this.windowPointermove);
 				}
@@ -280,8 +301,8 @@ export class ScrollBar extends HTMLElement {
 	// 窗口 - 指针弹起事件
 	windowPointerup(event: PointerEvent): void {
 		const { dragging } = this;
-		if ((dragging as any).relate(event)) {
-			switch ((dragging as any).mode) {
+		if (dragging!.relate(event)) {
+			switch (dragging!.mode) {
 				case 'scroll':
 					break;
 				case 'repeat':
@@ -296,17 +317,16 @@ export class ScrollBar extends HTMLElement {
 	// 窗口 - 指针移动事件
 	windowPointermove(event: PointerEvent): void {
 		const { dragging } = this;
-		if ((dragging as any).relate(event)) {
-			switch ((dragging as any).mode) {
+		if (dragging!.relate(event)) {
+			switch (dragging!.mode) {
 				case 'scroll': {
 					const target = this.target!;
 					switch (this.type) {
 						case 'horizontal':
 							if (this.clientWidth !== 0) {
 								target.setScrollLeft(
-									(dragging as any).scrollLeft +
-										((event.clientX -
-											(dragging as any).clientX) *
+									dragging!.scrollLeft +
+										((event.clientX - dragging!.clientX) *
 											target.scrollWidth) /
 											this.clientWidth
 								);
@@ -315,9 +335,8 @@ export class ScrollBar extends HTMLElement {
 						case 'vertical':
 							if (this.clientHeight !== 0) {
 								target.setScrollTop(
-									(dragging as any).scrollTop +
-										((event.clientY -
-											(dragging as any).clientY) *
+									dragging!.scrollTop +
+										((event.clientY - dragging!.clientY) *
 											target.scrollHeight) /
 											this.clientHeight
 								);
@@ -327,8 +346,8 @@ export class ScrollBar extends HTMLElement {
 					break;
 				}
 				case 'repeat':
-					this.dragging = event;
-					(event as any).mode = 'repeat';
+					this.dragging = event as unknown as ScrollDragging;
+					(event as unknown as ScrollDragging).mode = 'repeat';
 					break;
 			}
 		}

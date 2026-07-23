@@ -9,36 +9,36 @@ import { GL } from '../webgl/webgl-init.ts';
 // ******************************** 文本元素 ********************************
 
 UI.Text = class TextElement extends UI.Element {
-	texture; //:object
-	printer; //:object
-	_direction; //:string
-	_horizontalAlign; //:string
-	_verticalAlign; //:string
-	_content; //:string
-	_rawContent; //:string
-	_size; //:number
-	_lineSpacing; //:number
-	_letterSpacing; //:number
-	_color; //:string
-	_font; //:string
-	style; //:string
-	weight; //:string
-	_typeface; //:string
-	_effect; //:object
-	wordWrap; //:boolean
-	truncate; //:boolean
-	_overflow; //:string
-	textOuterX; //:number
-	textOuterY; //:number
-	textOuterWidth; //:number
-	textOuterHeight; //:number
-	blend; //:string
+	texture: Texture | null;
+	printer: Printer | null;
+	_direction: string;
+	_horizontalAlign: string;
+	_verticalAlign: string;
+	_content: string;
+	_rawContent: string;
+	_size: number;
+	_lineSpacing: number;
+	_letterSpacing: number;
+	_color: string;
+	_font: string;
+	style: string;
+	weight: string;
+	_typeface: string;
+	_effect: object;
+	wordWrap: boolean;
+	truncate: boolean;
+	_overflow: string;
+	textOuterX: number;
+	textOuterY: number;
+	textOuterWidth: number;
+	textOuterHeight: number;
+	blend: string;
 
 	// 全局变量正则表达式
 	static globalVarRegexp = /<global(::?)([0-9a-f]{16})>/g;
 
 	// 替换全局变量
-	static replaceGlobalVariable(text) {
+	static replaceGlobalVariable(text: any) {
 		return text.replace(this.globalVarRegexp, (match, delimiter, varId) => {
 			const name = getVariable(varId)?.name;
 			const sign = delimiter === '::' ? '@' : '';
@@ -46,7 +46,7 @@ UI.Text = class TextElement extends UI.Element {
 		});
 	}
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.texture = null;
 		this.printer = null;
@@ -79,7 +79,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入方向
-	set direction(value) {
+	set direction(value: any) {
 		if (this._direction !== value) {
 			this._direction = value;
 			if (this.printer) {
@@ -95,7 +95,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入水平对齐
-	set horizontalAlign(value) {
+	set horizontalAlign(value: any) {
 		if (this._horizontalAlign !== value) {
 			switch (value) {
 				case 'left':
@@ -119,7 +119,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入垂直对齐
-	set verticalAlign(value) {
+	set verticalAlign(value: any) {
 		if (this._verticalAlign !== value) {
 			switch (value) {
 				case 'top':
@@ -143,7 +143,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入文本内容
-	set content(value) {
+	set content(value: any) {
 		// 需要刷新语言包中的内容，不做差异判断
 		this._rawContent = value;
 		this._content = TextElement.replaceGlobalVariable(
@@ -157,7 +157,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入字体大小
-	set size(value) {
+	set size(value: any) {
 		if (this._size !== value) {
 			this._size = value;
 			if (this.printer) {
@@ -173,7 +173,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入行间距
-	set lineSpacing(value) {
+	set lineSpacing(value: any) {
 		if (this._lineSpacing !== value) {
 			this._lineSpacing = value;
 			if (this.printer) {
@@ -189,7 +189,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入字间距
-	set letterSpacing(value) {
+	set letterSpacing(value: any) {
 		if (this._letterSpacing !== value) {
 			this._letterSpacing = value;
 			if (this.printer) {
@@ -205,7 +205,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入颜色
-	set color(value) {
+	set color(value: any) {
 		if (this._color !== value) {
 			this._color = value;
 			if (this.printer) {
@@ -221,7 +221,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入字体
-	set font(value) {
+	set font(value: any) {
 		if (this._font !== value) {
 			this._font = value;
 			if (this.printer) {
@@ -237,7 +237,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入字型
-	set typeface(value) {
+	set typeface(value: any) {
 		if (this._typeface !== value) {
 			switch (value) {
 				case 'regular':
@@ -274,7 +274,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入文字效果
-	set effect(value) {
+	set effect(value: any) {
 		this._effect = value;
 		if (this.printer) {
 			this.printer.reset();
@@ -288,7 +288,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 写入溢出模式
-	set overflow(value) {
+	set overflow(value: any) {
 		if (this._overflow !== value) {
 			this._overflow = value;
 			switch (value) {
@@ -454,7 +454,7 @@ UI.Text = class TextElement extends UI.Element {
 	}
 
 	// 调整内嵌图像元素
-	resizeEmbeddedImages(offsetX, offsetY) {
+	resizeEmbeddedImages(offsetX: any, offsetY: any) {
 		const images = this.printer.images;
 		if (images.changed) {
 			images.changed = false;

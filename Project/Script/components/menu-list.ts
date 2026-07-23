@@ -4,23 +4,23 @@ import { Window } from '../tools/window-object.ts';
 // ******************************** 菜单列表 ********************************
 
 export class MenuList extends HTMLElement {
-	state: string; //:string
-	callback: (() => void) | null; //:function
-	dataItems: any[] | null; //:array
-	selection: HTMLElement | null; //:element
-	popupTimer: any; //:object
-	closeTimer: any; //:object
-	parent: HTMLElement | null; //:element
-	submenu: MenuList | null; //:element
-	buttonPressed: boolean; //:boolean
-	minWidth: number; //:number
-	parentMenuItem: HTMLElement | null; //:element
-	windowBlur: (event: any) => void; //:function
-	windowKeydown: (event: any) => void; //:function
-	windowPointerdown: (event: any) => void; //:function
-	windowPointerup: (event: any) => void; //:function
-	windowPointerover: (event: any) => void; //:function
-	windowPointerout: (event: any) => void; //:function
+	state: string;
+	callback: (() => void) | null;
+	dataItems: any[] | null;
+	selection: HTMLElement | null;
+	popupTimer: any;
+	closeTimer: any;
+	parent: HTMLElement | null;
+	submenu: MenuList | null;
+	buttonPressed: boolean;
+	minWidth: number;
+	parentMenuItem: HTMLElement | null;
+	windowBlur: (event: any) => void;
+	windowKeydown: (event: any) => void;
+	windowPointerdown: (event: any) => void;
+	windowPointerup: (event: any) => void;
+	windowPointerover: (event: any) => void;
+	windowPointerout: (event: any) => void;
 
 	static selection: HTMLElement | null;
 	static popupSubmenu: (menu: MenuList, x?: number, y?: number) => void;
@@ -52,7 +52,7 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 弹出菜单
-	popup(options, items) {
+	popup(options: any, items: any) {
 		this.close();
 		this.state = 'open';
 		this.dataItems = items;
@@ -143,7 +143,7 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 创建项目
-	createItem(item) {
+	createItem(item: any) {
 		switch (item.type) {
 			case 'separator':
 				return document.createElement('menu-separator');
@@ -203,7 +203,7 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 选择选项
-	select(element) {
+	select(element: any) {
 		if (this.selection !== element) {
 			this.unselect();
 			this.selection = element;
@@ -224,7 +224,7 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 重新选择
-	reselect(offset) {
+	reselect(offset: any) {
 		const elements = [];
 		for (const child of this.childNodes) {
 			const element = child as HTMLElement;
@@ -256,7 +256,7 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 弹出子菜单
-	popupSubmenu(delay) {
+	popupSubmenu(delay: any) {
 		const element = this.selection;
 		if (
 			element instanceof HTMLElement &&
@@ -303,7 +303,7 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 关闭子菜单
-	closeSubmenu(delay) {
+	closeSubmenu(delay: any) {
 		const { submenu, selection } = this;
 		if (submenu?.parentMenuItem === selection) {
 			if (!this.closeTimer) {
@@ -324,7 +324,7 @@ export class MenuList extends HTMLElement {
 	}
 
 	// 指针进入事件
-	pointerenter(event) {
+	pointerenter(event: any) {
 		(this.parent as unknown as MenuList)?.select(this.parentMenuItem);
 	}
 

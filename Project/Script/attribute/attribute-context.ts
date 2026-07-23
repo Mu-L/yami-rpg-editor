@@ -4,22 +4,22 @@ import { GameLocal } from '../local/local-object.ts';
 // ******************************** 属性上下文类 ********************************
 
 export class AttributeContext extends TreeDataContext {
-	constructor(attribute) {
+	constructor(attribute: any) {
 		super(attribute, 'keys');
 	}
 
 	// 获取属性
-	getAttribute(attrId) {
+	getAttribute(attrId: string): any {
 		return this.itemMap[attrId];
 	}
 
 	// 获取群组属性
-	getGroupAttribute(groupKey, attrId) {
+	getGroupAttribute(groupKey: string, attrId: string): any {
 		return this.groupMap[groupKey]?.itemMap[attrId];
 	}
 
 	// 获取默认属性ID
-	getDefAttributeId(groupKey, type) {
+	getDefAttributeId(groupKey: string, type?: string): string {
 		const group = this.groupMap[groupKey];
 		if (group) {
 			for (const attr of group.itemList) {
@@ -32,7 +32,11 @@ export class AttributeContext extends TreeDataContext {
 	}
 
 	// 获取属性选项列表
-	getAttributeItems(groupKey, attrType = '', allowNone = false) {
+	getAttributeItems(
+		groupKey: string,
+		attrType: string = '',
+		allowNone: boolean = false
+	): any[] {
 		let key = groupKey + attrType;
 		if (allowNone) {
 			key += '-allowNone';

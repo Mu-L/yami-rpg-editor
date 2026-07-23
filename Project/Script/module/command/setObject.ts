@@ -53,7 +53,7 @@ import { Variable } from '../../variable/variable.ts';
 				}
 			]);
 	},
-	parseOperand(operand) {
+	parseOperand(operand: any) {
 		switch (operand.type) {
 			case 'none':
 				return Token('null');

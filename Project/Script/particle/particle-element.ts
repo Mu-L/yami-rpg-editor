@@ -1,59 +1,125 @@
-﻿import { GL } from '../webgl/webgl-init.ts';
+import { GL } from '../webgl/webgl-init.ts';
 import { Particle } from './particle-window.ts';
 
 // ******************************** 粒子元素类 ********************************
 
-Particle.Element = class ParticleElement {
-	emitter; //:object
-	layer; //:object
-	data; //:object
-	elapsed; //:number
-	appeared = false;
-	lifetime; //:number
-	fadeout; //:number
-	fadeoutTime; //:number
-	globalAngle; //:number
-	x; //:number
-	y; //:number
-	anchorX; //:number
-	anchorY; //:number
-	anchorSpeedX; //:number
-	anchorSpeedY; //:number
-	movementSpeedX; //:number
-	movementSpeedY; //:number
-	movementAccelX; //:number
-	movementAccelY; //:number
-	rotationAngle; //:number
-	rotationSpeed; //:number
-	rotationAccel; //:number
-	hRotationOffsetX; //:number
-	hRotationOffsetY; //:number
-	hRotationRadius; //:number
-	hRotationExpansionSpeed; //:number
-	hRotationExpansionAccel; //:number
-	hRotationAngle; //:number
-	hRotationAngularSpeed; //:number
-	hRotationAngularAccel; //:number
-	scaleFactor; //:number
-	scaleSpeed; //:number
-	scaleAccel; //:number
-	spriteMode; //:string
-	spriteHframes; //:number
-	spriteVframes; //:number
-	spriteInterval; //:number
-	spriteElapsed; //:number
-	spriteFrame; //:number
-	spriteCount; //:number
-	spriteX; //:number
-	spriteY; //:number
-	opacity; //:number
-	color; //:array
-	setStartPosition; //:function
-	postProcessing; //:function
-	setStartColor; //:function
-	updateColor; //:function
+// 粒子元素层数据对象（layer.data，与 particle-layer.ts 的 ParticleLayerData 共享）
+// 注：随机参数字段运行时是 [standard, deviation] 元组；纯值字段是 number
+interface ParticleElementLayerData {
+	lifetime: number;
+	lifetimeDev: number;
+	fadeout: number;
+	anchor: {
+		x: [number, number];
+		y: [number, number];
+		speedX: [number, number];
+		speedY: [number, number];
+	};
+	rotation: {
+		angle: [number, number];
+		speed: [number, number];
+		accel: [number, number];
+	};
+	hRotation: {
+		offsetX: number;
+		offsetY: number;
+		radius: [number, number];
+		expansionSpeed: [number, number];
+		expansionAccel: [number, number];
+		angle: [number, number];
+		angularSpeed: [number, number];
+		angularAccel: [number, number];
+	};
+	movement: {
+		angle: [number, number];
+		speed: [number, number];
+		accelAngle: [number, number];
+		accel: [number, number];
+		// 兼容旧调用路径
+		speedX?: number;
+		speedY?: number;
+		accelX?: number;
+		accelY?: number;
+	};
+	scale: {
+		factor: [number, number];
+		speed: [number, number];
+		accel: [number, number];
+	};
+	sprite: {
+		mode: string;
+		hframes: number;
+		vframes: number;
+		interval: number;
+	};
+	[k: string]: any;
+}
 
-	constructor(layer) {
+// 粒子元素层引用（运行时持 emitter/data/layer）
+interface ParticleElementLayer {
+	emitter: any;
+	data: ParticleElementLayerData;
+	[k: string]: any;
+}
+
+Particle.Element = class ParticleElement {
+	emitter: any;
+	layer: ParticleElementLayer;
+	data: ParticleElementLayerData;
+	elapsed: number;
+	appeared: boolean;
+	lifetime: number;
+	fadeout: number;
+	fadeoutTime: number;
+	globalAngle: number;
+	x: number;
+	y: number;
+	anchorX: number;
+	anchorY: number;
+	anchorSpeedX: number;
+	anchorSpeedY: number;
+	movementSpeedX: number;
+	movementSpeedY: number;
+	movementAccelX: number;
+	movementAccelY: number;
+	rotationAngle: number;
+	rotationSpeed: number;
+	rotationAccel: number;
+	hRotationOffsetX: number;
+	hRotationOffsetY: number;
+	hRotationRadius: number;
+	hRotationExpansionSpeed: number;
+	hRotationExpansionAccel: number;
+	hRotationAngle: number;
+	hRotationAngularSpeed: number;
+	hRotationAngularAccel: number;
+	scaleFactor: number;
+	scaleSpeed: number;
+	scaleAccel: number;
+	spriteMode: string;
+	spriteHframes: number;
+	spriteVframes: number;
+	spriteInterval: number;
+	spriteElapsed: number;
+	spriteFrame: number;
+	spriteCount: number;
+	spriteX: number;
+	spriteY: number;
+	opacity: number;
+	// color 是 Uint32Array(5)，但运行时额外挂载 .start/.end/.changed 字段（setStartColor/updateColor 用）
+	// 注：.start/.end 运行时挂的是 Uint8Array(4)（非 number[]）
+	color: Uint32Array & {
+		start?: Uint8Array | number[];
+		end?: Uint8Array | number[];
+		changed?: boolean;
+	};
+	// 运行时挂载的方法（updateMethods 内赋值）
+	setStartPosition: ((...args: any[]) => any) | null;
+	postProcessing: (() => void) | null;
+	setStartColor: ((...args: any[]) => any) | null;
+	updateColor: (() => void) | null;
+
+	constructor(layer: ParticleElementLayer) {
 		this.emitter = layer.emitter;
 		this.layer = layer;
 		this.data = layer.data;
@@ -218,7 +284,7 @@ Particle.Element = class ParticleElement {
 	}
 
 	// 更新数据
-	update(deltaTime) {
+	update(deltaTime: any) {
 		// 计算当前帧新的位置
 		this.elapsed += deltaTime;
 		this.scaleSpeed += this.scaleAccel * deltaTime;
@@ -279,7 +345,7 @@ Particle.Element = class ParticleElement {
 	}
 
 	// 绘制图像
-	draw(vi) {
+	draw(vi: any) {
 		const layer = this.layer;
 		const sw = layer.unitWidth;
 		const sh = layer.unitHeight;
@@ -467,7 +533,7 @@ Particle.Element = class ParticleElement {
 	}
 
 	// 设置初始位置 - 屏幕边缘
-	setStartPositionEdge(movementAngle) {
+	setStartPositionEdge(movementAngle: any) {
 		// 计算屏幕边缘的位置
 		const stage = ParticleElement.stage;
 		const scrollLeft = stage.scrollLeft;
@@ -630,7 +696,7 @@ Particle.Element = class ParticleElement {
 		const { color } = this;
 		const { start, end } = color;
 		const clamp = ParticleElement.sharedClampedArray;
-		const time = Math.min(easing.map(this.elapsed / this.lifetime), 1);
+		const time = Math.min(easing.ease(this.elapsed / this.lifetime), 1);
 		color.changed = true;
 		clamp[0] = start[0] * (1 - time) + end[0] * time;
 		clamp[1] = start[1] * (1 - time) + end[1] * time;

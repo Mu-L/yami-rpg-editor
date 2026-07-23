@@ -30,7 +30,37 @@ const __dirname =
 
 // ******************************** 部署项目窗口 ********************************
 
-export const Deployment = {
+// 部署项目窗口状态
+type DeploymentState = 'passed' | 'open' | 'closed';
+
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type DeploymentMethod = ((...args: any[]) => any) | null;
+
+interface DeploymentShape {
+	// properties
+	state: DeploymentState;
+	gamedir: string;
+	timer: any | null;
+	compress: boolean;
+	// methods
+	initialize: (() => void) | null;
+	open: DeploymentMethod;
+	check: DeploymentMethod;
+	readShellList: DeploymentMethod;
+	readFileList: DeploymentMethod;
+	readTsOutDir: DeploymentMethod;
+	copyFilesTo: DeploymentMethod;
+	compressJavaScript: DeploymentMethod;
+	// events
+	platformInput: DeploymentMethod;
+	folderBeforeinput: DeploymentMethod;
+	folderInput: DeploymentMethod;
+	locationInput: DeploymentMethod;
+	chooseClick: DeploymentMethod;
+	confirm: DeploymentMethod;
+}
+
+export const Deployment: DeploymentShape = {
 	// properties
 	state: 'passed',
 	gamedir: '',

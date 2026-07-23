@@ -33,15 +33,15 @@ Command.cases.playAnimation = new CommandSchema({
 			elMotion.write2(elMotion.read());
 		});
 	},
-	parseRotatable(rotatable) {
+	parseRotatable(rotatable: any) {
 		return rotatable ? Local.get('command.playAnimation.rotatable') : '';
 	},
-	parsePriority(priority) {
+	parsePriority(priority: any) {
 		if (priority === 0) return '';
 		const abs = Command.setNumberColor(Math.abs(priority));
 		return priority > 0 ? Token('+') + abs : Token('-') + abs;
 	},
-	parseOffsetY(offsetY) {
+	parseOffsetY(offsetY: any) {
 		let num;
 		if (typeof offsetY === 'number')
 			num = Command.setNumberColor(Math.abs(offsetY)) + 'px';

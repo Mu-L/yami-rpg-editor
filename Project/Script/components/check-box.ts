@@ -1,10 +1,10 @@
 ﻿// ******************************** 复选框 ********************************
 
 export class CheckBox extends HTMLElement {
-	dataValue = false; //:boolean
+	dataValue = false;
 	relations: HTMLElement[] = [];
-	writeEventEnabled = false; //:boolean
-	inputEventEnabled = false; //:boolean
+	writeEventEnabled = false;
+	inputEventEnabled = false;
 
 	constructor(standard?: boolean) {
 		super();
@@ -16,7 +16,7 @@ export class CheckBox extends HTMLElement {
 		this.inputEventEnabled = false;
 
 		// 侦听事件
-		(this as any).on('keydown', this.keydown);
+		this.on('keydown', this.keydown);
 
 		// 差异化处理
 		switch (standard ?? this.hasClass('standard')) {
@@ -25,11 +25,11 @@ export class CheckBox extends HTMLElement {
 				const mark = document.createElement('check-mark');
 				this.tabIndex = 0;
 				this.insertBefore(mark, this.childNodes[0]);
-				(this as any).on('click', this.mouseclick);
+				this.on('click', this.mouseclick);
 				break;
 			}
 			case false: // 自定义复选框
-				(this as any).on('pointerdown', this.pointerdown);
+				this.on('pointerdown', this.pointerdown);
 				break;
 		}
 	}

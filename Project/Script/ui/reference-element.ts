@@ -12,7 +12,7 @@ UI.Reference = class ReferenceElement extends UI.Element {
 	prefab = null;
 	paths = {};
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.paths[data.presetId] = true;
 		this.prefabId = data.prefabId;
@@ -25,7 +25,7 @@ UI.Reference = class ReferenceElement extends UI.Element {
 	}
 
 	// 写入预制件ID
-	set prefabId(value) {
+	set prefabId(value: any) {
 		if (this._prefabId !== value) {
 			const firstTime = this._prefabId === undefined;
 			this._prefabId = value;
@@ -57,7 +57,7 @@ UI.Reference = class ReferenceElement extends UI.Element {
 	}
 
 	// 写入同步开关
-	set synchronous(value) {
+	set synchronous(value: any) {
 		if (this._synchronous !== value) {
 			this._synchronous = value;
 			if (value) {
@@ -109,7 +109,7 @@ UI.Reference = class ReferenceElement extends UI.Element {
 	}
 
 	// 加载元素
-	loadElement(node, parent) {
+	loadElement(node: any, parent: any) {
 		const { presetId } = node;
 		const { paths } = parent;
 		if (!(presetId in paths)) {
@@ -146,100 +146,100 @@ UI.Reference = class ReferenceElement extends UI.Element {
 				get anchorX() {
 					return 0;
 				}
-				set anchorX(value) {
+				set anchorX(value: any) {
 					transform.anchorX = value;
 					parent.resize();
 				}
 				get anchorY() {
 					return 0;
 				}
-				set anchorY(value) {
+				set anchorY(value: any) {
 					transform.anchorY = value;
 					parent.resize();
 				}
 				get x() {
 					return 0;
 				}
-				set x(value) {}
+				set x(value: any) {}
 				get x2() {
 					return 0;
 				}
-				set x2(value) {}
+				set x2(value: any) {}
 				get y() {
 					return 0;
 				}
-				set y(value) {}
+				set y(value: any) {}
 				get y2() {
 					return 0;
 				}
-				set y2(value) {}
+				set y2(value: any) {}
 				get width() {
 					return 0;
 				}
-				set width(value) {
+				set width(value: any) {
 					transform.width = value;
 					parent.resize();
 				}
 				get width2() {
 					return 1;
 				}
-				set width2(value) {
+				set width2(value: any) {
 					transform.width2 = value;
 					parent.resize();
 				}
 				get height() {
 					return 0;
 				}
-				set height(value) {
+				set height(value: any) {
 					transform.height = value;
 					parent.resize();
 				}
 				get height2() {
 					return 1;
 				}
-				set height2(value) {
+				set height2(value: any) {
 					transform.height2 = value;
 					parent.resize();
 				}
 				get rotation() {
 					return 0;
 				}
-				set rotation(value) {
+				set rotation(value: any) {
 					transform.rotation = value;
 					parent.resize();
 				}
 				get scaleX() {
 					return 1;
 				}
-				set scaleX(value) {
+				set scaleX(value: any) {
 					transform.scaleX = value;
 					parent.resize();
 				}
 				get scaleY() {
 					return 1;
 				}
-				set scaleY(value) {
+				set scaleY(value: any) {
 					transform.scaleY = value;
 					parent.resize();
 				}
 				get skewX() {
 					return 0;
 				}
-				set skewX(value) {
+				set skewX(value: any) {
 					transform.skewX = value;
 					parent.resize();
 				}
 				get skewY() {
 					return 0;
 				}
-				set skewY(value) {
+				set skewY(value: any) {
 					transform.skewY = value;
 					parent.resize();
 				}
 				get opacity() {
 					return 1;
 				}
-				set opacity(value) {
+				set opacity(value: any) {
 					transform.opacity = value;
 					parent.resize();
 				}
@@ -257,67 +257,67 @@ UI.Reference = class ReferenceElement extends UI.Element {
 				get anchorX() {
 					return 0;
 				}
-				set anchorX(value) {}
+				set anchorX(value: any) {}
 				get anchorY() {
 					return 0;
 				}
-				set anchorY(value) {}
+				set anchorY(value: any) {}
 				get x() {
 					return 0;
 				}
-				set x(value) {}
+				set x(value: any) {}
 				get x2() {
 					return 0;
 				}
-				set x2(value) {}
+				set x2(value: any) {}
 				get y() {
 					return 0;
 				}
-				set y(value) {}
+				set y(value: any) {}
 				get y2() {
 					return 0;
 				}
-				set y2(value) {}
+				set y2(value: any) {}
 				get width() {
 					return 0;
 				}
-				set width(value) {}
+				set width(value: any) {}
 				get width2() {
 					return 1;
 				}
-				set width2(value) {}
+				set width2(value: any) {}
 				get height() {
 					return 0;
 				}
-				set height(value) {}
+				set height(value: any) {}
 				get height2() {
 					return 1;
 				}
-				set height2(value) {}
+				set height2(value: any) {}
 				get rotation() {
 					return 0;
 				}
-				set rotation(value) {}
+				set rotation(value: any) {}
 				get scaleX() {
 					return 1;
 				}
-				set scaleX(value) {}
+				set scaleX(value: any) {}
 				get scaleY() {
 					return 1;
 				}
-				set scaleY(value) {}
+				set scaleY(value: any) {}
 				get skewX() {
 					return 0;
 				}
-				set skewX(value) {}
+				set skewX(value: any) {}
 				get skewY() {
 					return 0;
 				}
-				set skewY(value) {}
+				set skewY(value: any) {}
 				get opacity() {
 					return 1;
 				}
-				set opacity(value) {}
+				set opacity(value: any) {}
 			})();
 		}
 		if (Inspector.uiElement.target === this.node) {

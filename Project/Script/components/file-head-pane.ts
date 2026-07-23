@@ -6,9 +6,9 @@ import { FolderItem } from '../file/folder-item.ts';
 // ******************************** 文件头部面板 ********************************
 
 export class FileHeadPane extends HTMLElement {
-	address; //:element
-	searcher; //:element
-	view; //:element
+	address: HTMLElement & { [k: string]: any };
+	searcher: HTMLElement & { [k: string]: any };
+	view: HTMLElement & { [k: string]: any };
 	input: any;
 	read: (...args: any[]) => any;
 
@@ -125,7 +125,7 @@ export class FileHeadPane extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: any) {
 		if (!(event.target instanceof HTMLInputElement)) {
 			event.preventDefault();
 			const { content } = this.links.body;
@@ -136,7 +136,7 @@ export class FileHeadPane extends HTMLElement {
 	}
 
 	// 地址栏 - 指针按下事件
-	addressPointerdown(event) {
+	addressPointerdown(event: any) {
 		switch (event.button) {
 			case 0: {
 				const element = event.target;
@@ -215,14 +215,14 @@ export class FileHeadPane extends HTMLElement {
 	}
 
 	// 返回按钮 - 鼠标点击事件
-	backButtonClick(event) {
+	backButtonClick(event: any) {
 		const head = this.parentNode;
 		const { browser } = head.links;
 		browser.backToParentFolder();
 	}
 
 	// 搜索框 - 输入事件
-	searcherInput(event) {
+	searcherInput(event: any) {
 		if (event.inputType !== 'insertCompositionText') {
 			const head = this.parentNode;
 			const text = this.input.value;
@@ -231,13 +231,13 @@ export class FileHeadPane extends HTMLElement {
 	}
 
 	// 视图模式 - 获得焦点事件
-	viewFocus(event) {
+	viewFocus(event: any) {
 		const head = this.parentNode;
 		head.links.body.content.focus();
 	}
 
 	// 视图模式 - 输入事件
-	viewInput(event) {
+	viewInput(event: any) {
 		const head = this.parentNode;
 		head.links.body.setViewIndex(this.read());
 	}

@@ -4,14 +4,14 @@ import { GL } from '../webgl/webgl-init.ts';
 // ******************************** 舞台颜色类 ********************************
 
 export class StageColor {
-	hex; //:string
-	red; //:number
-	green; //:number
-	blue; //:number
-	alpha; //:number
-	onchange; //:function
+	hex: string;
+	red: number;
+	green: number;
+	blue: number;
+	alpha: number;
+	onchange: (...args: any[]) => void;
 
-	constructor(hex, onchange) {
+	constructor(hex: any, onchange: any) {
 		this.input(hex);
 		this.onchange = onchange;
 	}
@@ -22,7 +22,7 @@ export class StageColor {
 	}
 
 	// 输入颜色
-	input(hex) {
+	input(hex: any) {
 		if (this.hex !== hex) {
 			this.hex = hex;
 			this.red = parseInt(hex.slice(0, 2), 16) / 255;

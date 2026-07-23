@@ -81,7 +81,7 @@ Command.cases.setAnimationComponent = new CommandSchema({
 			elSpriteId.write2(elSpriteId.read());
 		});
 	},
-	parsePriority(priority) {
+	parsePriority(priority: any) {
 		const abs = Command.setNumberColor(Math.abs(priority));
 		return priority === 0
 			? abs
@@ -89,7 +89,7 @@ Command.cases.setAnimationComponent = new CommandSchema({
 				? Token('+') + abs
 				: Token('-') + abs;
 	},
-	parseOffsetY(offsetY) {
+	parseOffsetY(offsetY: any) {
 		const abs = Command.setNumberColor(Math.abs(offsetY)) + 'px';
 		return offsetY >= 0 ? abs : Token('-') + abs;
 	},

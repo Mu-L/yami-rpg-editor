@@ -6,6 +6,9 @@ import { Texture } from './texture.ts';
 
 export class ImageTexture extends Texture {
 	declare reply: (type: string) => void;
+	// 运行时从 this.base 挂载到自身（texture-manager.ts 直接 texture.image/texture.glTexture 访问）
+	declare image: any;
+	declare glTexture: WebGLTexture | null;
 	sliceClip: Uint32Array;
 	sliceVertices: Float32Array;
 	sliceThresholds: Float32Array;
@@ -16,7 +19,7 @@ export class ImageTexture extends Texture {
 	guid: string;
 	hframes: number;
 	vframes: number;
-	constructor(image, options = {}) {
+	constructor(image: any, options: any = {}) {
 		super(options);
 
 		// 设置属性
@@ -45,7 +48,7 @@ export class ImageTexture extends Texture {
 	}
 
 	// 更新切片数据
-	updateSliceData(width, height, clip, border) {
+	updateSliceData(width: any, height: any, clip: any, border: any) {
 		if (!this.complete) return;
 		const { min, max } = Math;
 		const [cx, cy, cw, ch] = clip;

@@ -8,23 +8,23 @@ import { Local } from './localization.ts';
 // ******************************** 事件列表接口类 ********************************
 
 export class EventListInterface {
-	target; //:element
-	type; //:string
-	filter; //:string
-	editor; //:object
-	owner; //:object
-	eventItem; //:object
-	editCallback;
-	insertCallback;
-	history;
+	target: HTMLElement | null;
+	type: string;
+	filter: string;
+	editor: any | null;
+	owner: any | null;
+	eventItem: any | null;
+	editCallback: (() => void) | null;
+	insertCallback: (() => void) | null;
+	history: any | null;
 
-	constructor(editor?, owner?) {
+	constructor(editor?: any, owner?: any) {
 		this.editor = editor ?? null;
 		this.owner = owner ?? null;
 	}
 
 	// 初始化
-	initialize(list) {
+	initialize(list: any): void {
 		list.togglable = true;
 		this.filter = list.getAttribute('filter');
 		this.type = `${this.filter}.event`;
@@ -54,7 +54,7 @@ export class EventListInterface {
 	}
 
 	// 解析
-	parse(event) {
+	parse(event: any) {
 		const { type } = event;
 		if (EventListInterface.guidRegExp.test(type)) {
 			Command.invalid = false;
@@ -77,7 +77,7 @@ export class EventListInterface {
 	}
 
 	// 更新
-	update(list) {
+	update(list: any) {
 		// 更新事件项目的有效性
 		const elements = list.elements;
 		const items = list.read();
@@ -106,7 +106,7 @@ export class EventListInterface {
 	}
 
 	// 打开
-	open(event) {
+	open(event: any) {
 		const filter = this.filter;
 		let callback = this.editCallback;
 		let inserting = false;
@@ -155,7 +155,7 @@ export class EventListInterface {
 	static guidRegExp = /^[0-9a-f]{16}$/;
 
 	// 重写历史操作保存数据方法
-	static historySave(data) {
+	static historySave(data: any) {
 		Inspector.ParamHistory.prototype.save.call(this, data);
 		if (data.type === 'inspector-param-replace') {
 			delete data.swap.commands.symbol;

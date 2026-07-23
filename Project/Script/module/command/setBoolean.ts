@@ -64,7 +64,7 @@ import { Variable } from '../../variable/variable.ts';
 			$('#setBoolean-common-variable').filter = filter;
 		});
 	},
-	parseOperation(operation) {
+	parseOperation(operation: any) {
 		switch (operation) {
 			case 'set':
 				return ' = ';
@@ -78,7 +78,7 @@ import { Variable } from '../../variable/variable.ts';
 				return ' ^= ';
 		}
 	},
-	parseOperand(operand) {
+	parseOperand(operand: any) {
 		switch (operand.type) {
 			case 'constant':
 				return Command.setBooleanColor(operand.value.toString());

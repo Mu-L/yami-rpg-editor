@@ -169,7 +169,7 @@ Command.cases.script = new CommandSchema({
 		this.setChangeState(false);
 		Command.save({ script });
 	},
-	setChangeState(changed) {
+	setChangeState(changed: any) {
 		if (this.changed !== changed) {
 			this.changed = changed;
 			if (changed) {
@@ -266,7 +266,7 @@ Command.cases.script = new CommandSchema({
 
 		this.createEditor = Function.empty;
 	},
-	colorizeCodeLines(items, code) {
+	colorizeCodeLines(items: any, code: any) {
 		const text = document.createElement('text');
 		const options = this.colorOptions;
 		text.textContent = code;

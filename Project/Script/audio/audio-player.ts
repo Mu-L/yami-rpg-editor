@@ -5,10 +5,11 @@ import { Reverb } from './reverb.ts';
 // ******************************** 音频播放器类 ********************************
 
 export class AudioPlayer {
-	audio; //:element
-	source; //:object
-	panner; //:object
-	reverb; //:object
+	// HTMLAudioElement 运行时挂载 .path 字段（play/stop 读写）
+	audio: HTMLAudioElement & { path: string };
+	source: MediaElementAudioSourceNode;
+	panner: StereoPannerNode;
+	reverb: any | null;
 
 	constructor() {
 		const { context } = AudioManager;
@@ -24,7 +25,7 @@ export class AudioPlayer {
 	}
 
 	// 播放
-	play(path) {
+	play(path: string): void {
 		if (path) {
 			const audio = this.audio;
 			if (
@@ -42,7 +43,7 @@ export class AudioPlayer {
 	}
 
 	// 停止
-	stop() {
+	stop(): void {
 		const audio = this.audio;
 		if (audio.path) {
 			audio.pause();
@@ -52,17 +53,17 @@ export class AudioPlayer {
 	}
 
 	// 设置音量
-	setVolume(volume) {
+	setVolume(volume: number): void {
 		this.audio.volume = Math.clamp(volume, 0, 1);
 	}
 
 	// 设置声像
-	setPan(pan) {
+	setPan(pan: number): void {
 		this.panner.pan.value = Math.clamp(pan, -1, 1);
 	}
 
 	// 设置混响
-	setReverb(dry, wet) {
+	setReverb(dry: any, wet: any) {
 		if (this.reverb === null && !(dry === 1 && wet === 0)) {
 			new Reverb(this);
 		}

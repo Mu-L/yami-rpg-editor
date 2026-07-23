@@ -12,7 +12,26 @@ import { Local } from '../tools/localization.ts';
 
 // ******************************** 主页面对象 ********************************
 
-export const Home = {
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type HomeMethod = ((...args: any[]) => any) | null;
+
+interface HomeShape {
+	// methods
+	initialize: (() => void) | null;
+	updateCenterPosition: HomeMethod;
+	parseRecentProjects: HomeMethod;
+	removeRecentProject: HomeMethod;
+	readFileList: HomeMethod;
+	countFileList: HomeMethod;
+	// events
+	windowResize: HomeMethod;
+	windowLocalize: HomeMethod;
+	startClick: HomeMethod;
+	recentClick: HomeMethod;
+	recentPointerup: HomeMethod;
+}
+
+export const Home: HomeShape = {
 	// methods
 	initialize: null,
 	updateCenterPosition: null,

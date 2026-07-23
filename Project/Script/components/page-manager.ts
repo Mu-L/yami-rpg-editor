@@ -1,9 +1,9 @@
 ﻿// ******************************** 页面管理器 ********************************
 
 export class PageManager extends HTMLElement {
-	index: any; //:string
-	active: HTMLElement | null; //:element
-	switchEventEnabled: boolean; //:boolean
+	index: any;
+	active: HTMLElement | null;
+	switchEventEnabled: boolean;
 
 	constructor() {
 		super();

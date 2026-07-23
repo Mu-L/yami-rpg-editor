@@ -27,7 +27,7 @@ export const SearchString = new (class {
 			this.change('matchLine', e)
 		);
 	}
-	change(mode, e) {
+	change(mode: any, e: any) {
 		this.searchMode[mode] = e.target.read();
 		switch (mode) {
 			case 'caseInsensitive':
@@ -77,7 +77,7 @@ export const SearchString = new (class {
 	clearHistory() {
 		$('#event-search-string-search').write('');
 	}
-	input(e) {
+	input(e: any) {
 		const val = e.target.value;
 		if (val.trim() == '') {
 			this.clear();
@@ -130,7 +130,7 @@ export const SearchString = new (class {
 		this.locationLine();
 	}
 
-	open(eventWindow) {
+	open(eventWindow: any) {
 		Window.open('event-search-string');
 		this.index = 0;
 		this.current = eventWindow;

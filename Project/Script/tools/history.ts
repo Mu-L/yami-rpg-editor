@@ -1,12 +1,12 @@
 ﻿// ******************************** 操作历史类 ********************************
 
 export class History extends Array {
-	index; //:number
-	capacity; //:number
-	onSave; //:function
-	onRestore; //:function
+	index: number;
+	capacity: number;
+	onSave: ((data: any) => void) | null;
+	onRestore: ((data: any) => void) | null;
 
-	constructor(capacity) {
+	constructor(capacity: number) {
 		super();
 		this.index = -1;
 		this.capacity = capacity;
@@ -15,7 +15,7 @@ export class History extends Array {
 	}
 
 	// 重置记录
-	reset() {
+	reset(): void {
 		if (this.length !== 0) {
 			this.length = 0;
 			this.index = -1;
@@ -23,7 +23,7 @@ export class History extends Array {
 	}
 
 	// 保存数据
-	save(data) {
+	save(data: any): void {
 		// 删除多余的栈
 		const length = this.index + 1;
 		if (length < this.length) {
@@ -44,7 +44,7 @@ export class History extends Array {
 	}
 
 	// 恢复数据
-	restore(operation) {
+	restore(operation: any) {
 		const index =
 			operation === 'undo'
 				? this.index

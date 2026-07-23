@@ -147,8 +147,24 @@ Layout.createGroups = function (item, parent) {
 	const group = document.createElement('group');
 	parent.appendChild(group);
 	if (item.children) {
-		(group as any).end = item.end;
-		(group as any).split = item.split;
+		(
+			group as HTMLElement & {
+				end: any;
+				split: any;
+				tabs: any[];
+				nav: HTMLElement;
+				manager: any;
+			}
+		).end = item.end;
+		(
+			group as HTMLElement & {
+				end: any;
+				split: any;
+				tabs: any[];
+				nav: HTMLElement;
+				manager: any;
+			}
+		).split = item.split;
 		group.addClass(item.split);
 
 		// 创建后代群组
@@ -158,13 +174,45 @@ Layout.createGroups = function (item, parent) {
 	} else {
 		// 创建群组内容
 		const { end, tabs } = item;
-		(group as any).end = end;
-		(group as any).tabs = tabs;
+		(
+			group as HTMLElement & {
+				end: any;
+				split: any;
+				tabs: any[];
+				nav: HTMLElement;
+				manager: any;
+			}
+		).end = end;
+		(
+			group as HTMLElement & {
+				end: any;
+				split: any;
+				tabs: any[];
+				nav: HTMLElement;
+				manager: any;
+			}
+		).tabs = tabs;
 		this.createGroupContent(group);
 
 		// 添加标签页面
-		const nav = (group as any).nav;
-		const manager = (group as any).manager;
+		const nav = (
+			group as HTMLElement & {
+				end: any;
+				split: any;
+				tabs: any[];
+				nav: HTMLElement;
+				manager: any;
+			}
+		).nav;
+		const manager = (
+			group as HTMLElement & {
+				end: any;
+				split: any;
+				tabs: any[];
+				nav: HTMLElement;
+				manager: any;
+			}
+		).manager;
 		for (const tab of tabs) {
 			const item = this.items[tab];
 			nav.appendChild(item);

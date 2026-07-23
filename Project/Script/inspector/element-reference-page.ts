@@ -84,7 +84,7 @@ import { UI } from '../ui/ui-window.ts';
 					node[key] = value;
 					// element[key] = value
 					node.instance.historyEnabled = true;
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 					node.instance.historyEnabled = false;
 					UI.list.updateIcon(node);
 				}
@@ -93,7 +93,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					node.instance.historyEnabled = true;
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 					node.instance.historyEnabled = false;
 				}
 				break;

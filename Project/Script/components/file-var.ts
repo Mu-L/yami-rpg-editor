@@ -3,9 +3,9 @@ import { CustomBox } from './custom-box.ts';
 // ******************************** 文件变量框 ********************************
 
 export class FileVar extends HTMLElement {
-	mode; //:string
-	strBox; //:element
-	varBox; //:element
+	mode: string;
+	strBox: HTMLElement & { [k: string]: any };
+	varBox: CustomBox;
 
 	constructor() {
 		super();
@@ -35,7 +35,7 @@ export class FileVar extends HTMLElement {
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any) {
 		switch (typeof value) {
 			case 'string':
 				this.switch('constant');
@@ -104,7 +104,7 @@ export class FileVar extends HTMLElement {
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: any) {
 		switch (this.mode) {
 			case 'constant':
 				return this.fileBox.getFocus(mode);
@@ -114,7 +114,7 @@ export class FileVar extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: any) {
 		switch (event.code) {
 			case 'Slash':
 				// 切换输入框导致已侦听的事件失效
@@ -126,7 +126,7 @@ export class FileVar extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
 				if (!this.hasClass('disabled') && event.target === this) {

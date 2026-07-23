@@ -4,16 +4,16 @@ import { Local } from '../tools/localization.ts';
 // ******************************** 选择框 ********************************
 
 export class SelectBox extends HTMLElement {
-	info; //:element
-	dataItems; //:array
-	dataValue; //:any
-	relations; //:array
-	invalid; //:boolean
-	hideUnrelated; //:boolean
-	savedValue; //:any
-	originalTip; //:string
-	writeEventEnabled; //:boolean
-	inputEventEnabled; //:boolean
+	info: HTMLElement & { [k: string]: any };
+	dataItems: any[];
+	dataValue: any;
+	relations: any[];
+	invalid: boolean;
+	hideUnrelated: boolean;
+	savedValue: any;
+	originalTip: string;
+	writeEventEnabled: boolean;
+	inputEventEnabled: boolean;
 
 	constructor() {
 		super();
@@ -35,8 +35,8 @@ export class SelectBox extends HTMLElement {
 		this.inputEventEnabled = false;
 
 		// 侦听事件
-		(this as any).on('keydown', this.keydown);
-		(this as any).on('pointerdown', this.pointerdown);
+		this.on('keydown', this.keydown);
+		this.on('pointerdown', this.pointerdown);
 	}
 
 	// 读取数据
@@ -45,7 +45,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any) {
 		this.dataValue = value;
 		this.update();
 		if (!this.hasClass('disabled')) {
@@ -59,7 +59,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 写入数据(无效时写入默认值)
-	write2(value) {
+	write2(value: any) {
 		for (const item of this.dataItems) {
 			if (item.value === value) {
 				this.write(value);
@@ -75,7 +75,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 输入数据
-	input(value) {
+	input(value: any) {
 		const last = this.dataValue;
 		if (last !== value) {
 			this.write(value);
@@ -115,7 +115,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 重新选择
-	reselect(offset) {
+	reselect(offset: any) {
 		const value = this.dataValue;
 		const items = this.dataItems;
 		const length = items.length;
@@ -164,12 +164,12 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 加载选项
-	loadItems(items) {
+	loadItems(items: any) {
 		this.dataItems = items;
 	}
 
 	// 设置选项名称
-	setItemNames(options) {
+	setItemNames(options: any) {
 		for (const item of this.dataItems) {
 			const key = item.value;
 			const option = options[key];
@@ -196,7 +196,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 重写方法 - 设置工具提示
-	setTooltip(tip) {
+	setTooltip(tip: any) {
 		this.originalTip = tip;
 		super.setTooltip(tip);
 	}
@@ -244,7 +244,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 添加相关元素
-	relate(entries) {
+	relate(entries: any) {
 		this.relations = entries;
 	}
 
@@ -293,7 +293,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 启用元素
-	enableElement(element) {
+	enableElement(element: any) {
 		element.enable();
 		if (this.hideUnrelated) {
 			let node = element.previousSibling;
@@ -308,7 +308,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 禁用元素
-	disableElement(element) {
+	disableElement(element: any) {
 		element.disable();
 		if (this.hideUnrelated) {
 			let node = element.previousSibling;
@@ -323,7 +323,11 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 添加事件
-	on = (type, listener, options) => {
+	on = (
+		type: string,
+		listener: (event: any) => void,
+		options?: boolean | AddEventListenerOptions
+	): void => {
 		super.on(type, listener, options);
 		switch (type) {
 			case 'write':
@@ -336,7 +340,7 @@ export class SelectBox extends HTMLElement {
 	};
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: any) {
 		switch (event.code) {
 			case 'Enter':
 			case 'NumpadEnter':
@@ -359,7 +363,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
 				Select.open(this);

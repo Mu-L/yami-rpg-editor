@@ -166,7 +166,7 @@ Localization.createInputs = function () {
 		const detailSummary = new DetailSummary();
 		detailSummary.textContent = Local.get('languages.' + language);
 		const textarea = new TextArea();
-		(textarea as any).language = language;
+		(textarea as TextArea & { language: string }).language = language;
 		textarea.setAttribute('menu', 'tag-global tag-dynamic-global-var');
 		textarea.addClass('localization-text-area');
 		detailBox.appendChild(detailSummary);
@@ -314,7 +314,7 @@ Localization.unpackLocalization = (function IIFE() {
 		class: string;
 		name: string;
 		children: any[];
-		constructor(item) {
+		constructor(item: any) {
 			this.data = item;
 			this.class = item.class;
 			this.name = item.name;
@@ -327,7 +327,7 @@ Localization.unpackLocalization = (function IIFE() {
 		}
 
 		// 写入展开状态
-		set expanded(value) {
+		set expanded(value: any) {
 			this.data.expanded = value;
 			File.planToSave(Data.manifest.project.localization);
 		}

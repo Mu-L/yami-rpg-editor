@@ -1,25 +1,47 @@
-﻿import { Scene } from './scene-window.ts';
+import { Scene } from './scene-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 光源类 ********************************
 
-export class Light {
-	data; //:object
-	angle; //:number
-	anchorOffsetX; //:number
-	anchorOffsetY; //:number
-	measureOffsetX; //:number
-	measureOffsetY; //:number
-	measureWidth; //:number
-	measureHeight; //:number
+// 光源数据对象（Data.lights[i]）
+interface LightData {
+	enabled: boolean;
+	type: 'point' | 'area';
+	x: number;
+	y: number;
+	range: number;
+	// area 光源额外字段
+	width?: number;
+	height?: number;
+	angle?: number;
+	anchorX?: number;
+	anchorY?: number;
+	anchorOffsetX?: number;
+	anchorOffsetY?: number;
+	measureOffsetX?: number;
+	measureOffsetY?: number;
+	measureWidth?: number;
+	measureHeight?: number;
+	[k: string]: any;
+}
 
-	constructor(data) {
+export class Light {
+	data: LightData;
+	angle: number;
+	anchorOffsetX: number;
+	anchorOffsetY: number;
+	measureOffsetX: number;
+	measureOffsetY: number;
+	measureWidth: number;
+	measureHeight: number;
+
+	constructor(data: LightData) {
 		this.data = data;
 		this.measure();
 	}
 
 	// 绘制图像
-	draw(projMatrix, opacity) {
+	draw(projMatrix: number[], opacity: number): void {
 		opacity *= this.data.enabled ? 1 : 0.3;
 		switch (this.data.type) {
 			case 'point':
@@ -30,7 +52,7 @@ export class Light {
 	}
 
 	// 绘制点光
-	drawPointLight(projMatrix, opacity) {
+	drawPointLight(projMatrix: any, opacity: any) {
 		const gl = GL;
 		const vertices = gl.arrays[0].float32;
 		const light = this.data;
@@ -72,7 +94,7 @@ export class Light {
 	}
 
 	// 绘制区域光
-	drawAreaLight(projMatrix, opacity) {
+	drawAreaLight(projMatrix: any, opacity: any) {
 		const light = this.data;
 		const textures = Scene.textures;
 		const texture = textures[light.mask];

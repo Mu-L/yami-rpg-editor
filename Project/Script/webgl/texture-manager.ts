@@ -1,15 +1,15 @@
-﻿import { File } from '../file/file-system-core.ts';
+import { File } from '../file/file-system-core.ts';
 import { ImageTexture } from './image-texture.ts';
 import { GL } from './webgl-init.ts';
 
 // ******************************** 纹理管理器类 ********************************
 
 export class TextureManager {
-	gl; //:object
-	map; //:object
-	images; //:object
-	pointer; //:number
-	count; //:number
+	gl: typeof GL;
+	map: Record<string, ImageTexture>;
+	images: Record<string, ImageTexture>;
+	pointer: number;
+	count: number;
 
 	constructor() {
 		this.gl = GL;
@@ -21,7 +21,7 @@ export class TextureManager {
 	}
 
 	// 更新图像纹理
-	updateImage(guid) {
+	updateImage(guid: string): void {
 		const texture = this.images[guid];
 		if (texture === undefined) return;
 		File.get({
@@ -50,7 +50,7 @@ export class TextureManager {
 	}
 
 	// 添加纹理
-	append(texture) {
+	append(texture: any) {
 		if (texture.index === undefined) {
 			// 给纹理分配一个未使用的索引
 			let i = this.pointer;
@@ -66,7 +66,7 @@ export class TextureManager {
 	}
 
 	// 删除纹理
-	delete(texture) {
+	delete(texture: any) {
 		const i = texture.index;
 		const { gl, map } = this;
 		gl.deleteTexture(texture.glTexture);
@@ -105,7 +105,7 @@ export class TextureManager {
 	}
 
 	// 替换纹理
-	replace(oldTex, newTex) {
+	replace(oldTex: any, newTex: any) {
 		newTex.index = oldTex.index;
 		if (this.map[oldTex.index]) {
 			this.map[oldTex.index] = newTex;

@@ -335,7 +335,7 @@ import { UI } from '../ui/ui-window.ts';
 					}
 					node.horizontalAlign = value;
 					// element.horizontalAlign = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'verticalAlign':
@@ -361,7 +361,7 @@ import { UI } from '../ui/ui-window.ts';
 					}
 					node.verticalAlign = value;
 					// element.verticalAlign = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'normalImage':
@@ -377,15 +377,15 @@ import { UI } from '../ui/ui-window.ts';
 					node[key] = value;
 					// element[key] = value
 					// element.state = 'changed'
-					node.instances.set(key, value);
-					node.instances.set('state', 'changed');
+					node.instances.setProperty(key, value);
+					node.instances.setProperty('state', 'changed');
 				}
 				break;
 			case 'content':
 				// 直接复制，更新语言包中的内容
 				node[key] = value;
 				// element[key] = value
-				node.instances.set(key, value);
+				node.instances.setProperty(key, value);
 				break;
 			case 'display':
 			case 'flip':
@@ -405,7 +405,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					// element[key] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'normalTint-0':
@@ -425,8 +425,8 @@ import { UI } from '../ui/ui-window.ts';
 					node[property][index] = value;
 					// element[property][index] = value
 					// element.state = 'changed'
-					node.instances.set(key, value);
-					node.instances.set('state', 'changed');
+					node.instances.setProperty(key, value);
+					node.instances.setProperty('state', 'changed');
 				}
 				break;
 			}
@@ -452,7 +452,7 @@ import { UI } from '../ui/ui-window.ts';
 					}
 					node.textEffect = textEffect;
 					// element.textEffect = textEffect
-					node.instances.set('textEffect', textEffect);
+					node.instances.setProperty('textEffect', textEffect);
 				}
 				break;
 			case 'textEffect-shadowOffsetX':
@@ -464,7 +464,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node.textEffect[property] !== value) {
 					node.textEffect[property] = value;
 					// element.textEffect = node.textEffect
-					node.instances.set('textEffect', node.textEffect);
+					node.instances.setProperty('textEffect', node.textEffect);
 				}
 				break;
 			}

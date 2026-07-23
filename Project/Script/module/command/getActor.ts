@@ -83,7 +83,7 @@ Command.cases.getActor = new CommandSchema({
 			$('#getActor-exclusionTeamId').clear();
 		});
 	},
-	remapSelectorPatch(selector) {
+	remapSelectorPatch(selector: any) {
 		switch (selector) {
 			case 'team-enemy':
 				return 'enemy';
@@ -95,7 +95,7 @@ Command.cases.getActor = new CommandSchema({
 				return selector;
 		}
 	},
-	remapActivationPatch(activation, active) {
+	remapActivationPatch(activation: any, active: any) {
 		switch (active) {
 			case true:
 				return 'active';
@@ -105,7 +105,7 @@ Command.cases.getActor = new CommandSchema({
 				return activation;
 		}
 	},
-	parseCondition(condition, attribute, divisor) {
+	parseCondition(condition: any, attribute: any, divisor: any) {
 		const label = Local.get('command.getActor.condition.' + condition);
 		switch (condition) {
 			case 'nearest':

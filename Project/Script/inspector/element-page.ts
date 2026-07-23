@@ -260,7 +260,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (transform[property] !== value) {
 					// transform[property] = value
 					// element.resize()
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 					node.instances.resize();
 				}
 				break;

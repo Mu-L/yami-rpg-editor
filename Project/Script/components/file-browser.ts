@@ -11,17 +11,17 @@ import { Path } from '../util/config.ts';
 // ******************************** 文件浏览框 ********************************
 
 export class FileBrowser extends HTMLElement {
-	display: 'normal' | 'search'; //:string
-	directory: string | null; //:array
-	keyword: RegExp | null; //:string
-	dragging: DragEvent | PointerEvent | null; //:event
-	filters: any[] | null; //:array
-	backupFolders: any[]; //:array
-	searchResults: any[]; //:array
-	nav: FileNavPane; //:element
-	head: HTMLElement; //:element
-	body: FileBodyPane; //:element
-	links: Record<string, any>; //:object
+	display: 'normal' | 'search';
+	directory: string | null;
+	keyword: RegExp | null;
+	dragging: DragEvent | PointerEvent | null;
+	filters: any[] | null;
+	backupFolders: any[];
+	searchResults: any[];
+	nav: FileNavPane;
+	head: HTMLElement;
+	body: FileBodyPane;
+	links: Record<string, any>;
 	declare _built: boolean;
 
 	constructor() {
@@ -37,9 +37,9 @@ export class FileBrowser extends HTMLElement {
 		this.searchResults = [];
 
 		// 侦听事件
-		(this as any).on('pointerdown', this.pointerdown);
-		(this as any).on('dragstart', this.dragstart);
-		(this as any).on('dragend', this.dragend);
+		this.on('pointerdown', this.pointerdown);
+		this.on('dragstart', this.dragstart);
+		this.on('dragend', this.dragend);
 		window.on('os-dragstart', this.osDragstart.bind(this));
 		window.on('os-dragend', this.osDragend.bind(this));
 		window.on('dirchange', this.dirchange.bind(this));
@@ -240,10 +240,10 @@ export class FileBrowser extends HTMLElement {
 				});
 				(event as any).dataTransfer.effectAllowed = 'copyMove';
 				(event as any).dataTransfer.hideDragImage();
-				(this as any).on('dragenter', this.dragover);
-				(this as any).on('dragleave', this.dragleave);
-				(this as any).on('dragover', this.dragover);
-				(this as any).on('drop', this.drop);
+				this.on('dragenter', this.dragover);
+				this.on('dragleave', this.dragleave);
+				this.on('dragover', this.dragover);
+				this.on('drop', this.drop);
 				if (files.length === 1 && files[0] instanceof FileItem) {
 					const name = files[0].basename + files[0].extname;
 					(event as any).dataTransfer.setData(
@@ -444,10 +444,10 @@ export class FileBrowser extends HTMLElement {
 			(event as any).mode = 'os-drag';
 			(event as any).dropTarget = null;
 			(event as any).dropPath = null;
-			(this as any).on('dragenter', this.osDragover);
-			(this as any).on('dragleave', this.osDragleave);
-			(this as any).on('dragover', this.osDragover);
-			(this as any).on('drop', this.osDrop);
+			this.on('dragenter', this.osDragover);
+			this.on('dragleave', this.osDragleave);
+			this.on('dragover', this.osDragover);
+			this.on('drop', this.osDrop);
 		}
 	}
 

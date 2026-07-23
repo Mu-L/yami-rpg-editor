@@ -31,10 +31,10 @@ import { Variable } from '../variable/variable.ts';
 // ******************************** 自定义框 ********************************
 
 export class CustomBox extends HTMLElement {
-	info: HTMLElement; //:element
-	dataValue: any; //:any
-	writeEventEnabled: boolean; //:boolean
-	inputEventEnabled: boolean; //:boolean
+	info: HTMLElement;
+	dataValue: any;
+	writeEventEnabled: boolean;
+	inputEventEnabled: boolean;
 
 	constructor() {
 		super();
@@ -52,12 +52,12 @@ export class CustomBox extends HTMLElement {
 		this.inputEventEnabled = false;
 
 		// 侦听事件
-		(this as any).on('keydown', this.keydown);
-		(this as any).on('click', this.click);
-		(this as any).on('dragenter', this.dragenter);
-		(this as any).on('dragleave', this.dragleave);
-		(this as any).on('dragover', this.dragover);
-		(this as any).on('drop', this.drop);
+		this.on('keydown', this.keydown);
+		this.on('click', this.click);
+		this.on('dragenter', this.dragenter);
+		this.on('dragleave', this.dragleave);
+		this.on('dragover', this.dragover);
+		this.on('drop', this.drop);
 	}
 
 	// 获取类型属性
@@ -431,8 +431,8 @@ export class CustomBox extends HTMLElement {
 	}
 
 	// 鼠标点击事件
-	// @ts-ignore
-	click(event: Event): void {
+	// 鼠标点击事件（event 可选，兼容基类 HTMLElement.click() 无参契约）
+	click(event?: Event): void {
 		switch (this.type) {
 			case 'file':
 				return (Selector as any).open(this);

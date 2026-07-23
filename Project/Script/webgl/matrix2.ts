@@ -11,7 +11,7 @@ export class Matrix extends Float32Array {
 	}
 
 	// 重置
-	reset() {
+	reset(): this {
 		this[0] = 1;
 		this[1] = 0;
 		this[3] = 0;
@@ -22,7 +22,7 @@ export class Matrix extends Float32Array {
 	}
 
 	// 设置矩阵
-	set(matrix) {
+	set(matrix: Matrix | number[] | Float32Array): this {
 		this[0] = matrix[0];
 		this[1] = matrix[1];
 		this[3] = matrix[3];
@@ -33,7 +33,14 @@ export class Matrix extends Float32Array {
 	}
 
 	// 设置参数
-	set6f(a, b, c, d, e, f) {
+	set6f(
+		a: number,
+		b: number,
+		c: number,
+		d: number,
+		e: number,
+		f: number
+	): this {
 		this[0] = a;
 		this[1] = b;
 		this[3] = c;
@@ -44,7 +51,7 @@ export class Matrix extends Float32Array {
 	}
 
 	// 乘以矩阵
-	multiply(matrix) {
+	multiply(matrix: Matrix | number[] | Float32Array): this {
 		const A = this[0];
 		const B = this[1];
 		const C = this[3];
@@ -67,7 +74,7 @@ export class Matrix extends Float32Array {
 	}
 
 	// 旋转
-	rotate(angle) {
+	rotate(angle: number): this {
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
 		const a = this[0];
@@ -82,7 +89,7 @@ export class Matrix extends Float32Array {
 	}
 
 	// 在指定点旋转
-	rotateAt(x, y, angle) {
+	rotateAt(x: number, y: number, angle: number): this {
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
 		const a = this[0];
@@ -99,7 +106,7 @@ export class Matrix extends Float32Array {
 	}
 
 	// 缩放
-	scale(h, v) {
+	scale(h: number, v: number): this {
 		this[0] *= h;
 		this[1] *= h;
 		this[3] *= v;
@@ -108,7 +115,7 @@ export class Matrix extends Float32Array {
 	}
 
 	// 在指定点缩放
-	scaleAt(x, y, h, v) {
+	scaleAt(x: number, y: number, h: number, v: number): this {
 		const a = this[0];
 		const b = this[1];
 		const c = this[3];
@@ -123,14 +130,14 @@ export class Matrix extends Float32Array {
 	}
 
 	// 平移
-	translate(x, y) {
+	translate(x: number, y: number): this {
 		this[6] += this[0] * x + this[3] * y;
 		this[7] += this[1] * x + this[4] * y;
 		return this;
 	}
 
 	// 在指定点倾斜
-	skewAt(x, y, h, v) {
+	skewAt(x: number, y: number, h: number, v: number): this {
 		const a = this[0];
 		const b = this[1];
 		const c = this[3];
@@ -145,21 +152,21 @@ export class Matrix extends Float32Array {
 	}
 
 	// 水平镜像
-	mirrorh() {
+	mirrorh(): this {
 		this[0] = -this[0];
 		this[3] = -this[3];
 		return this;
 	}
 
 	// 垂直镜像
-	mirrorv() {
+	mirrorv(): this {
 		this[1] = -this[1];
 		this[4] = -this[4];
 		return this;
 	}
 
 	// 投影
-	project(flip, width, height) {
+	project(flip: number, width: number, height: number): this {
 		this[0] = 2 / width;
 		this[1] = 0;
 		this[3] = 0;

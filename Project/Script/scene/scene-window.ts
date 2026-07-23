@@ -5,7 +5,7 @@ import { Window } from '../tools/window-object.ts';
 import { Reference } from '../log/related-references.ts';
 import { Editor } from '../main/editor.ts';
 import { GUID } from '../file/guid.ts';
-import '../components/element-methods.js';
+import '../components/element-methods.ts';
 import { Codec } from '../codec/codec.ts';
 import { Data } from '../data/data-object.ts';
 import { Inspector } from '../inspector/inspector.ts';
@@ -22,7 +22,65 @@ import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 场景窗口 ********************************
 
-export const Scene = {
+// 场景窗口状态
+type SceneState = 'closed' | 'open';
+
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type SceneMethod = ((...args: any[]) => any) | null;
+
+// 列表运行时挂载的扩展方法（Scene.list / UI.list 共享，ui-window.ts:218-238 调用）
+interface SceneListExtensions {
+	// 列表基础方法（Scene.list.* 运行时挂载）
+	create: ((...args: any[]) => any) | null;
+	copy: ((...args: any[]) => any) | null;
+	paste: ((...args: any[]) => any) | null;
+	delete: ((...args: any[]) => any) | null;
+	toggle: ((...args: any[]) => any) | null;
+	cancelSearch: ((...args: any[]) => any) | null;
+	createIcon: ((...args: any[]) => any) | null;
+	updateIcon: ((...args: any[]) => any) | null;
+	updateHead: ((...args: any[]) => any) | null;
+	createConditionIcon: ((...args: any[]) => any) | null;
+	updateConditionIcon: ((...args: any[]) => any) | null;
+	createEventIcon: ((...args: any[]) => any) | null;
+	updateEventIcon: ((...args: any[]) => any) | null;
+	createScriptIcon: ((...args: any[]) => any) | null;
+	updateScriptIcon: ((...args: any[]) => any) | null;
+	createVisibilityIcon: ((...args: any[]) => any) | null;
+	updateVisibilityIcon: ((...args: any[]) => any) | null;
+	createLockIcon: ((...args: any[]) => any) | null;
+	updateLockIcon: ((...args: any[]) => any) | null;
+	restoreRecursiveStates: ((...args: any[]) => any) | null;
+	setRecursiveStates: ((...args: any[]) => any) | null;
+	updateItemClass: ((...args: any[]) => any) | null;
+	onCreate: ((...args: any[]) => any) | null;
+	onRemove: ((...args: any[]) => any) | null;
+	onDelete: ((...args: any[]) => any) | null;
+	onResume: ((...args: any[]) => any) | null;
+	// creators/updaters 数组（运行时挂载，供 push 挂载方法）
+	creators: any[];
+	updaters: any[];
+}
+
+interface SceneShape {
+	// properties
+	state: SceneState;
+	page: HTMLElement;
+	head: HTMLElement & { width?: number };
+	body: HTMLElement & { hide(): HTMLElement; show(): HTMLElement };
+	info: HTMLElement;
+	screen: HTMLElement;
+	// marquee 运行时挂载 .resize()/.terrain/.previewTiles/.pointerevent/.save/.switch/.select/.getTiles 等大量扩展
+	// 用 [ k: string ]: any 索引签名兜底所有运行时挂载字段，避免穷举
+	marquee: HTMLElement & { resize(): void; [k: string]: any };
+	// searcher 运行时挂载 .deleteInputContent/.input 等扩展（scene-list.ts:97 调用）
+	searcher: HTMLElement & { [k: string]: any };
+	list: HTMLElement & SceneListExtensions & { [k: string]: any };
+	// editor properties（运行时挂载具体值，统一 any | null）
+	[k: string]: any;
+}
+
+export const Scene: SceneShape = {
 	// properties
 	state: 'closed',
 	page: $('#scene'),

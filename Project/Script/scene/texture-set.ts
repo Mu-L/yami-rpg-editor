@@ -4,7 +4,7 @@ import { ImageTexture } from '../webgl/image-texture.ts';
 // ******************************** 纹理集合类 ********************************
 
 Scene.Textures = class Textures {
-	state; //:string
+	state: string;
 
 	constructor() {
 		this.state = 'open';
@@ -12,14 +12,14 @@ Scene.Textures = class Textures {
 	}
 
 	// 添加纹理
-	append(texture) {
+	append(texture: any) {
 		if (this.state === 'open') {
 			this[texture.base.guid] = texture;
 		}
 	}
 
 	// 加载纹理
-	load(guid) {
+	load(guid: any) {
 		if (!this[guid]) {
 			const texture = new ImageTexture(guid);
 			if (texture.complete) {

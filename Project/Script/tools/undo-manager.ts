@@ -1,7 +1,7 @@
 export const UndoManager = {
 	active: null,
 
-	setActive(editor) {
+	setActive(editor: any) {
 		this.active = editor;
 	},
 

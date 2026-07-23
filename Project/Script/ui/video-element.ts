@@ -4,12 +4,12 @@ import { UI } from './ui-window.ts';
 // ******************************** 视频元素 ********************************
 
 UI.Video = class VideoElement extends UI.Element {
-	video; //:string
-	loop; //:boolean
-	flip; //:string
-	blend; //:string
+	video: string;
+	loop: boolean;
+	flip: string;
+	blend: string;
 
-	constructor(data) {
+	constructor(data: any) {
 		super(data);
 		this.video = data.video;
 		this.loop = data.loop;

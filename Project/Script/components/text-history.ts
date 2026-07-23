@@ -3,25 +3,25 @@
 // ******************************** 文本操作历史 ********************************
 
 export class TextHistory {
-	input; //:element
-	stack; //:array
-	index; //:number
-	inputType; //:string
-	deleted; //:string
-	inserted; //:string
-	lastInsert; //:string
-	lastStart; //:number
-	lastEnd; //:number
-	editingStart; //:number
-	selectionStart; //:number
-	selectionEnd; //:number
+	input: HTMLElement & { [k: string]: any };
+	stack: any[];
+	index: number;
+	inputType: string;
+	deleted: string;
+	inserted: string;
+	lastInsert: string;
+	lastStart: number;
+	lastEnd: number;
+	editingStart: number;
+	selectionStart: number;
+	selectionEnd: number;
 	history: any;
 
 	static restoring: boolean;
 	static eventStruct: { inputType: string; data: string | null };
-	static inputReplace: Function;
+	static inputReplace: (value: string | number) => void;
 
-	constructor(input) {
+	constructor(input: any) {
 		this.input = input;
 		this.stack = [];
 		this.index = -1;
@@ -94,7 +94,7 @@ export class TextHistory {
 	}
 
 	// 恢复数据
-	restore(operation) {
+	restore(operation: any) {
 		if (operation === 'undo') {
 			this.save();
 		}
@@ -165,7 +165,7 @@ export class TextHistory {
 	}
 
 	// 更新状态
-	updateStates(event) {
+	updateStates(event: any) {
 		const { input } = this;
 		const inputType = event.inputType;
 		if (this.inputType !== inputType) {
@@ -225,7 +225,7 @@ export class TextHistory {
 	}
 
 	// 更新选择区域
-	updateSelection(event) {
+	updateSelection(event: any) {
 		const { input } = this;
 		this.lastInsert = event.data;
 		this.selectionStart = input.selectionStart;
@@ -233,7 +233,7 @@ export class TextHistory {
 	}
 
 	// 输入框 - 键盘按下事件
-	inputKeydown(event) {
+	inputKeydown(event: any) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
 				case 'KeyZ':
@@ -249,7 +249,7 @@ export class TextHistory {
 	}
 
 	// 输入框 - 输入前事件
-	inputBeforeinput(event) {
+	inputBeforeinput(event: any) {
 		const { history } = this;
 		switch (event.inputType) {
 			case 'insertCompositionText':
@@ -308,7 +308,7 @@ export class TextHistory {
 	}
 
 	// 输入框 - 输入事件
-	inputInput(event) {
+	inputInput(event: any) {
 		switch (event.inputType) {
 			case 'insertCompositionText':
 				break;
@@ -323,12 +323,12 @@ export class TextHistory {
 	}
 
 	// 输入框 - 失去焦点事件
-	inputBlur(event) {
+	inputBlur(event: any) {
 		HistoryTimer.finish();
 	}
 
 	// 输入框 - 文本合成开始事件
-	inputCompositionstart(event) {
+	inputCompositionstart(event: any) {
 		const { history } = this;
 		const struct = TextHistory.eventStruct;
 		struct.data = null;
@@ -338,7 +338,7 @@ export class TextHistory {
 	}
 
 	// 输入框 - 文本合成结束事件
-	inputCompositionEnd(event) {
+	inputCompositionEnd(event: any) {
 		const { history } = this;
 		if (event.data || history.deleted) {
 			const struct = TextHistory.eventStruct;

@@ -206,7 +206,7 @@ import { Texture } from '../webgl/texture.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					// element[key] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'color-0':
@@ -218,7 +218,7 @@ import { Texture } from '../webgl/texture.ts';
 				if (node.color[color] !== value) {
 					node.color[color] = value;
 					// element.color[color] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			}

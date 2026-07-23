@@ -4,7 +4,7 @@ import { UI } from './ui-window.ts';
 // ******************************** 根元素 ********************************
 
 UI.Root = class RootElement extends UI.Element {
-	background; //:number
+	background: number;
 	references = {};
 
 	constructor() {
@@ -36,7 +36,7 @@ UI.Root = class RootElement extends UI.Element {
 	}
 
 	// 添加被引用的元素
-	addReference(prefabElement) {
+	addReference(prefabElement: any) {
 		const map = this.references;
 		const id = prefabElement.node.presetId;
 		if (map[id] === undefined) {
@@ -46,7 +46,7 @@ UI.Root = class RootElement extends UI.Element {
 	}
 
 	// 移除被引用的元素
-	removeReference(prefabElement) {
+	removeReference(prefabElement: any) {
 		const map = this.references;
 		const id = prefabElement.node.presetId;
 		if (map[id] !== undefined) {
@@ -55,7 +55,7 @@ UI.Root = class RootElement extends UI.Element {
 	}
 
 	// 更新引用元素(通过变动的元素位置判断)
-	tryUpdateReferenceElements(element) {
+	tryUpdateReferenceElements(element: any) {
 		const map = this.references;
 		while (element !== this) {
 			const id = element.node.presetId;

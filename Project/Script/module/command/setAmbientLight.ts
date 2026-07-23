@@ -28,7 +28,7 @@ Command.cases.setAmbientLight = new CommandSchema({
 			$('#setAmbientLight-easingId').clear();
 		});
 	},
-	parseColor(red, green, blue) {
+	parseColor(red: any, green: any, blue: any) {
 		const r = Command.parseVariableNumber(red);
 		const g = Command.parseVariableNumber(green);
 		const b = Command.parseVariableNumber(blue);

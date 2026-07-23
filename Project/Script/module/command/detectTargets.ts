@@ -28,7 +28,7 @@ Command.cases.detectTargets = new CommandSchema({
 			{ name: 'Disabled', value: false }
 		]);
 	},
-	parseInSight(inSight) {
+	parseInSight(inSight: any) {
 		switch (inSight) {
 			case true:
 				return Local.get('command.detectTargets.inSight');

@@ -40,7 +40,33 @@ import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 菜单栏对象 ********************************
 
-export const Menubar = {
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type MenubarMethod = ((...args: any[]) => any) | null;
+
+interface MenubarShape {
+	// methods
+	initialize: (() => void) | null;
+	toggleFullScreen: MenubarMethod;
+	popupFileMenu: MenubarMethod;
+	popupEditMenu: MenubarMethod;
+	popupViewMenu: MenubarMethod;
+	popupWindowMenu: MenubarMethod;
+	popupHelpMenu: MenubarMethod;
+	popupOpenYamiMenu: MenubarMethod;
+	createRecentItems: MenubarMethod;
+	createLanguageItems: MenubarMethod;
+	createColorIcon: MenubarMethod;
+	revealSaveDirectory: MenubarMethod;
+	sanitizeFolderName: MenubarMethod;
+	// events
+	keydown: MenubarMethod;
+	pointerdown: MenubarMethod;
+	pointerup: MenubarMethod;
+	pointerover: MenubarMethod;
+	hrefClick: MenubarMethod;
+}
+
+export const Menubar: MenubarShape = {
 	// methods
 	initialize: null,
 	toggleFullScreen: null,

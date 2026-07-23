@@ -21,24 +21,26 @@ import { Local } from '../tools/localization.ts';
 // ******************************** 指令列表 ********************************
 
 export class CommandList extends HTMLElement {
-	data: any; //:array
-	elements: any; //:array
-	selections: any; //:array
-	start: any; //:number
-	end: any; //:number
-	origin: any; //:number
-	active: any; //:number
-	anchor: any; //:number
-	inserting: boolean; //:boolean
-	focusing: boolean; //:boolean
-	dragging: any; //:event
-	windowPointerup: (event: any) => void; //:function
-	windowPointermove: (event: any) => void; //:function
+	data: any;
+	elements: any;
+	selections: any;
+	start: any;
+	end: any;
+	origin: any;
+	active: any;
+	anchor: any;
+	inserting: boolean;
+	focusing: boolean;
+	dragging: any;
+	windowPointerup: (event: any) => void;
+	windowPointermove: (event: any) => void;
 	varList: any;
 	varMap: any;
 	windowVariableChange: (event: any) => void;
 	_paddingTop: number;
-	openEdit: (...args: any[]) => any;
+	// openEdit 由 module/global.ts:214 在 editor_loaded 事件挂载到 prototype ——
+	// 用 `declare` 仅类型声明（运行时不发射 this.openEdit = undefined 初始化覆盖 prototype 挂载）
+	declare openEdit: (...args: any[]) => any;
 
 	constructor() {
 		super();
@@ -157,14 +159,14 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 在重新调整时更新
-	updateOnResize(element) {
+	updateOnResize(element: any) {
 		if (element.contents !== null) {
 			this.updateCommandElement(element);
 		}
 	}
 
 	// 创建折叠的指令缓存
-	createFoldedCommandBuffer(buffer, indent, parent) {
+	createFoldedCommandBuffer(buffer: any, indent: any, parent: any) {
 		for (const commands of buffer) {
 			if (commands instanceof Array) {
 				const length = commands.length;
@@ -180,7 +182,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 创建项目
-	createItems(commands, indent, parent = null) {
+	createItems(commands: any, indent: any, parent: any = null) {
 		const elements = this.elements;
 		const length = commands.length;
 		for (let i = 0; i < length; i++) {
@@ -217,7 +219,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 创建指令缓冲区
-	createCommandBuffer(commands, index, indent, parent) {
+	createCommandBuffer(commands: any, index: any, indent: any, parent: any) {
 		const command = commands[index];
 		let buffer = command.buffer;
 		if (buffer === undefined) {
@@ -409,7 +411,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 更新指令元素
-	updateCommandElement(element) {
+	updateCommandElement(element: any) {
 		// 设置文本缩进
 		element.style.textIndent = this.computeTextIndent(element.dataIndent);
 
@@ -499,7 +501,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 更新指令元素折叠状态
-	updateCommandElementFold(element) {
+	updateCommandElementFold(element: any) {
 		if (element?.fold) {
 			const command = element.dataItem;
 			const folded = !!command.folded;
@@ -527,7 +529,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 删除指令缓冲区
-	deleteCommandBuffers(commands) {
+	deleteCommandBuffers(commands: any) {
 		for (const command of commands) {
 			const { buffer } = command;
 			if (!buffer) continue;
@@ -541,7 +543,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 创建空项目
-	createBlankElement(commands, index, indent, parent) {
+	createBlankElement(commands: any, index: any, indent: any, parent: any) {
 		let blank = commands.blank;
 		if (blank === undefined) {
 			// 创建列表项
@@ -583,7 +585,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 计算文本缩进
-	computeTextIndent(indent) {
+	computeTextIndent(indent: any) {
 		switch (Local.language) {
 			case 'en-US':
 				return indent * 4 + 'ch';
@@ -649,7 +651,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 选择多个项目
-	selectMultiple(active) {
+	selectMultiple(active: any) {
 		const origin = this.origin;
 		this.select(origin, active);
 		this.origin = origin;
@@ -748,7 +750,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 向上翻页
-	pageUp(select) {
+	pageUp(select: any) {
 		let anchor = this.anchor;
 		if (anchor === null) {
 			anchor = this.active;
@@ -768,7 +770,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 向下翻页
-	pageDown(select) {
+	pageDown(select: any) {
 		let anchor = this.anchor;
 		if (anchor === null) {
 			anchor = this.active;
@@ -791,7 +793,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 选择指定位置的多个项目
-	selectMultipleTo(index) {
+	selectMultipleTo(index: any) {
 		if (this.start !== null) {
 			this.selectMultiple(index);
 			const elements = this.elements;
@@ -973,7 +975,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 获取指定索引的项目范围
-	getRangeByIndex(index) {
+	getRangeByIndex(index: any) {
 		const elements = this.elements;
 		const count = elements.count;
 		const element = elements[index];
@@ -1002,7 +1004,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 获取指定数据的项目范围
-	getRangeByData(data) {
+	getRangeByData(data: any) {
 		const elements = this.elements;
 		const count = elements.count;
 		let indent;
@@ -1030,7 +1032,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 判断列表项父对象是否启用
-	isParentEnabled(element) {
+	isParentEnabled(element: any) {
 		return element.dataParent?.buffer?.enabled ?? true;
 	}
 
@@ -1100,7 +1102,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 展开指令
-	unfoldCommand(command) {
+	unfoldCommand(command: any) {
 		let changed = false;
 		const commands = [];
 		// 似乎粘贴撤销后，可能因为dataParent重复而陷入死循环，因此检查command的重复性
@@ -1216,7 +1218,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 启用项目
-	enableItems(commands) {
+	enableItems(commands: any) {
 		for (const command of commands) {
 			if (command.id[0] === '!') {
 				command.id = command.id.slice(1);
@@ -1225,7 +1227,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 禁用项目
-	disableItems(commands) {
+	disableItems(commands: any) {
 		for (const command of commands) {
 			if (command.id[0] !== '!') {
 				command.id = '!' + command.id;
@@ -1327,7 +1329,7 @@ export class CommandList extends HTMLElement {
 	}
 
 	// 生成可执行的JS代码
-	generateExecutableCode(commands) {
+	generateExecutableCode(commands: any) {
 		const commandsJson = JSON.stringify(commands, null, 2);
 
 		const code = `const commands = ${commandsJson};
@@ -1417,7 +1419,7 @@ try {
 	}
 
 	// 保存指令
-	save(command) {
+	save(command: any) {
 		if (this.start !== null) {
 			const elements = this.elements;
 			const element = elements[this.start];
@@ -1480,7 +1482,7 @@ try {
 	}
 
 	// 清除元素
-	clearElements(start) {
+	clearElements(start: any) {
 		return CommonList.clearElements(this as unknown as CommonList, start);
 	}
 
@@ -1764,7 +1766,7 @@ try {
 	}
 
 	// 尝试从数据中获取事件ID
-	tryGetEventId(data) {
+	tryGetEventId(data: any) {
 		const id = data?.id;
 		if (id === 'callEvent' || id === '!callEvent') {
 			if (data.params.type === 'global') {
@@ -1775,7 +1777,7 @@ try {
 	}
 
 	// 获得焦点事件
-	listFocus(event) {
+	listFocus(event: any) {
 		if (!this.focusing) {
 			this.focusing = true;
 			this.start !== null ? this.reselect() : this.select(0);
@@ -1783,7 +1785,7 @@ try {
 	}
 
 	// 失去焦点事件
-	listBlur(event) {
+	listBlur(event: any) {
 		if (this.dragging) {
 			this.windowPointerup(this.dragging);
 		}
@@ -1958,7 +1960,7 @@ try {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: any) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
 				case 'KeyF':
@@ -2101,7 +2103,7 @@ try {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: any) {
 		if (this.dragging) {
 			return;
 		}
@@ -2178,7 +2180,7 @@ try {
 	}
 
 	// 指针弹起事件
-	pointerup(event) {
+	pointerup(event: any) {
 		if (this.dragging) {
 			return;
 		}
@@ -2343,7 +2345,7 @@ try {
 	}
 
 	// 鼠标双击事件
-	doubleclick(event) {
+	doubleclick(event: any) {
 		if (this.start !== null && event.target.tagName !== 'COMMAND-FOLD') {
 			const elements = this.elements;
 			const sData = elements[this.start].dataItem;
@@ -2458,13 +2460,13 @@ try {
 	}
 
 	// 文本 - 指针进入事件
-	static textPointerenter(event) {
+	static textPointerenter(event: any) {
 		CommandList.unhighlightTexts();
 		CommandList.highlightTexts(this);
 	}
 
 	// 文本 - 指针离开事件
-	static textPointerleave(event) {
+	static textPointerleave(event: any) {
 		CommandList.unhighlightTexts();
 	}
 }

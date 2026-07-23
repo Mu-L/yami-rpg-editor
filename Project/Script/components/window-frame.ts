@@ -5,16 +5,16 @@ import { Window } from '../tools/window-object.ts';
 // ******************************** 窗口框架 ********************************
 
 export class WindowFrame extends HTMLElement {
-	enableAmbient: boolean; //:boolean
-	activeElement: HTMLElement | null; //:element
-	focusableElements: HTMLElement[] | null; //:array
-	windowResize: ((event: Event) => void) | null; //:function
-	openEventEnabled: boolean; //:boolean
-	closeEventEnabled: boolean; //:boolean
-	closedEventEnabled: boolean; //:boolean
-	resizeEventEnabled: boolean; //:boolean
-	maximizeEventEnabled: boolean; //:boolean
-	unmaximizeEventEnabled: boolean; //:boolean
+	enableAmbient: boolean;
+	activeElement: HTMLElement | null;
+	focusableElements: HTMLElement[] | null;
+	windowResize: ((event: Event) => void) | null;
+	openEventEnabled: boolean;
+	closeEventEnabled: boolean;
+	closedEventEnabled: boolean;
+	resizeEventEnabled: boolean;
+	maximizeEventEnabled: boolean;
+	unmaximizeEventEnabled: boolean;
 
 	constructor() {
 		super();

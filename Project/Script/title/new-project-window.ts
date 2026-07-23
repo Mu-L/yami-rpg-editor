@@ -15,7 +15,34 @@ import { Path } from '../util/config.ts';
 
 // ******************************** 新建项目窗口 ********************************
 
-export const NewProject = {
+// 新建项目窗口状态
+type NewProjectState = 'passed' | 'open' | 'closed';
+
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type NewProjectMethod = ((...args: any[]) => any) | null;
+
+interface NewProjectShape {
+	// properties
+	state: NewProjectState;
+	timer: any | null;
+	// methods
+	initialize: (() => void) | null;
+	open: NewProjectMethod;
+	check: NewProjectMethod;
+	readFileList: NewProjectMethod;
+	copyFilesTo: NewProjectMethod;
+	writeData: NewProjectMethod;
+	getNewFolder: NewProjectMethod;
+	// events
+	templateInput: NewProjectMethod;
+	folderBeforeinput: NewProjectMethod;
+	folderInput: NewProjectMethod;
+	locationInput: NewProjectMethod;
+	chooseClick: NewProjectMethod;
+	confirm: NewProjectMethod;
+}
+
+export const NewProject: NewProjectShape = {
 	// properties
 	state: 'passed',
 	timer: null,

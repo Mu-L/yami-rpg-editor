@@ -4,7 +4,7 @@ export const EventBus = new (class EventBus {
 		this.events = {};
 	}
 
-	on(eventName, callback) {
+	on(eventName: any, callback: any) {
 		if (!this.events[eventName]) {
 			this.events[eventName] = [];
 		}
@@ -15,7 +15,7 @@ export const EventBus = new (class EventBus {
 		};
 	}
 
-	off(eventName, callback) {
+	off(eventName: any, callback: any) {
 		if (!this.events[eventName]) return;
 
 		this.events[eventName] = this.events[eventName].filter(
@@ -41,7 +41,7 @@ export const EventBus = new (class EventBus {
 		});
 	}
 
-	once(eventName, callback) {
+	once(eventName: any, callback: any) {
 		const wrapper = (data) => {
 			callback(data);
 			this.off(eventName, wrapper);

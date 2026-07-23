@@ -11,7 +11,7 @@ export class NumberHistory {
 	history: any;
 	value: any;
 
-	constructor(input) {
+	constructor(input: any) {
 		this.input = input;
 		this.stack = [];
 		this.index = -1;
@@ -56,7 +56,7 @@ export class NumberHistory {
 	}
 
 	// 恢复数据
-	restore(operation) {
+	restore(operation: any) {
 		let index = this.index;
 		if (operation === 'redo') {
 			index++;
@@ -96,7 +96,7 @@ export class NumberHistory {
 	}
 
 	// 输入框 - 键盘按下事件
-	inputKeydown(event) {
+	inputKeydown(event: any) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
 				case 'KeyZ':
@@ -112,7 +112,7 @@ export class NumberHistory {
 	}
 
 	// 输入框 - 输入事件
-	inputInput(event) {
+	inputInput(event: any) {
 		if (!NumberHistory.restoring) {
 			switch (event.inputType) {
 				case 'insertCompositionText':
@@ -153,7 +153,7 @@ export class NumberHistory {
 	}
 
 	// 输入框 - 失去焦点事件
-	inputBlur(event) {
+	inputBlur(event: any) {
 		HistoryTimer.finish();
 	}
 }

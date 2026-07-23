@@ -665,7 +665,7 @@ Easing.drawPreview = function () {
 	const halfsize = size / 2;
 	const spacingX = Math.floor((width - size * 4) / 5);
 	const spacingY = Math.floor(height / 2);
-	const time = this.easingMap.map(this.elapsed / this.duration);
+	const time = this.easingMap.ease(this.elapsed / this.duration);
 	const dpr = window.devicePixelRatio;
 
 	// 擦除画布
@@ -1033,11 +1033,11 @@ Easing.modeSelect = function (event) {
 		const left = 0;
 		const right = 1;
 		const startX = left + (right - left) / 2;
-		const startY = easingMap.map(startX);
+		const startY = easingMap.ease(startX);
 		const ctrlX0 = startX + (right - startX) / 3;
-		const ctrlY0 = easingMap.map(ctrlX0);
+		const ctrlY0 = easingMap.ease(ctrlX0);
 		const ctrlX1 = startX + ((right - startX) * 2) / 3;
-		const ctrlY1 = easingMap.map(ctrlX1);
+		const ctrlY1 = easingMap.ease(ctrlX1);
 		write('points-2-x', startX);
 		write('points-2-y', startY);
 		write('points-3-x', ctrlX0);
@@ -1061,11 +1061,11 @@ Easing.modeSelect = function (event) {
 		const left = points[2].x;
 		const right = 1;
 		const startX = left + (right - left) / 2;
-		const startY = easingMap.map(startX);
+		const startY = easingMap.ease(startX);
 		const ctrlX0 = startX + (right - startX) / 3;
-		const ctrlY0 = easingMap.map(ctrlX0);
+		const ctrlY0 = easingMap.ease(ctrlX0);
 		const ctrlX1 = startX + ((right - startX) * 2) / 3;
-		const ctrlY1 = easingMap.map(ctrlX1);
+		const ctrlY1 = easingMap.ease(ctrlX1);
 		write('points-5-x', startX);
 		write('points-5-y', startY);
 		write('points-6-x', ctrlX0);
@@ -1305,7 +1305,7 @@ Easing.confirm = function (event) {
 // 因为Float32会导致部分点参数出现绘制BUG:线条变粗
 // Chromium78-89都存在这个BUG而Chromium69是正常的
 Easing.CurveMap = class CurveMap extends Float64Array {
-	count; //:number
+	count: number;
 
 	constructor() {
 		super(6002);
@@ -1385,9 +1385,8 @@ Easing.EasingMap = (function IIFE() {
 			return this;
 		}
 
-		// 映射
-		// @ts-ignore
-		map(time) {
+		// 映射（改名为 ease 避开基类 Float64Array.map 协变契约）
+		ease(time: number): number {
 			return this[round(time * SCALE)];
 		}
 

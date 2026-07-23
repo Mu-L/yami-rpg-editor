@@ -27,7 +27,7 @@ Command.cases.changeActorSkill = new CommandSchema({
 				}
 			]);
 	},
-	parseOperation(operation) {
+	parseOperation(operation: any) {
 		return Local.get('command.changeActorSkill.' + operation);
 	},
 	customParse({ actor, operation, skill, skillId }) {

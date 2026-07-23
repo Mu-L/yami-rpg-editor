@@ -5,27 +5,27 @@ import { Local } from '../tools/localization.ts';
 // ******************************** 枚举上下文类 ********************************
 
 export class EnumerationContext extends TreeDataContext {
-	constructor(enumeration) {
+	constructor(enumeration: any) {
 		super(enumeration, 'strings');
 	}
 
 	// 获取枚举字符串对象
-	getString(stringId) {
+	getString(stringId: string): any {
 		return this.itemMap[stringId];
 	}
 
 	// 获取群组枚举字符串对象
-	getGroupString(groupKey, stringId) {
+	getGroupString(groupKey: string, stringId: string): any {
 		return this.groupMap[groupKey]?.itemMap[stringId];
 	}
 
 	// 获取默认枚举字符串ID
-	getDefStringId(groupKey) {
+	getDefStringId(groupKey: string): string {
 		return this.groupMap[groupKey]?.itemList[0]?.id ?? '';
 	}
 
 	// 获取枚举字符串选项列表
-	getStringItems(groupKey, allowNone = false) {
+	getStringItems(groupKey: string, allowNone: boolean = false): any[] {
 		let key = groupKey;
 		if (allowNone) {
 			key += '-allowNone';
@@ -61,7 +61,7 @@ export class EnumerationContext extends TreeDataContext {
 	}
 
 	// 获取合并的选项列表
-	getMergedItems(headItems, groupKey, mergedKey = 'merged') {
+	getMergedItems(headItems: any, groupKey: any, mergedKey: any = 'merged') {
 		const key = `${groupKey}-${mergedKey}`;
 		return this.getCachedItems(key, () => {
 			const items = [...headItems];

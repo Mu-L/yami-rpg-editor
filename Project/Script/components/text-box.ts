@@ -3,9 +3,9 @@
 // ******************************** 文本框 ********************************
 
 export class TextBox extends HTMLElement {
-	input: HTMLInputElement; //:element
-	focusEventEnabled: boolean; //:boolean
-	blurEventEnabled: boolean; //:boolean
+	input: HTMLInputElement;
+	focusEventEnabled: boolean;
+	blurEventEnabled: boolean;
 	// tree-list 等用于在 TextBox 实例上绑定重命名前的原文与被隐藏的子节点
 	lastText: string;
 	hiddenNodes: any[];

@@ -19,17 +19,17 @@ import { Path } from '../util/config.ts';
 // ******************************** 文件身体面板 ********************************
 
 export class FileBodyPane extends HTMLElement {
-	viewIndex: number | null; //:number
-	viewMode: string | null; //:string
-	timer: any; //:object
+	viewIndex: number | null;
+	viewMode: string | null;
+	timer: any;
 	elements: any[] & {
 		versionId: number;
 		count: number;
 		start: number;
 		end: number;
-	}; //:array
-	activeFile: FileItem | null; //:object
-	selections: any[]; //:array
+	};
+	activeFile: FileItem | null;
+	selections: any[];
 	content: HTMLElement & {
 		range: Uint32Array;
 		count: number;
@@ -39,16 +39,16 @@ export class FileBodyPane extends HTMLElement {
 		scrollCountPerLine: number;
 		scrollCount: number;
 		countPerLine: number;
-	}; //:element
-	pressing: ((event: PointerEvent) => void) | null; //:function
-	windowKeydown: (event: KeyboardEvent) => void; //:function
-	windowKeyup: (event: KeyboardEvent) => void; //:function
-	windowPointermove: (event: PointerEvent) => void; //:function
-	openEventEnabled: boolean; //:boolean
-	selectEventEnabled: boolean; //:boolean
-	unselectEventEnabled: boolean; //:boolean
-	popupEventEnabled: boolean; //:boolean
-	textBox: TextBox; //:element
+	};
+	pressing: ((event: PointerEvent) => void) | null;
+	windowKeydown: (event: KeyboardEvent) => void;
+	windowKeyup: (event: KeyboardEvent) => void;
+	windowPointermove: (event: PointerEvent) => void;
+	openEventEnabled: boolean;
+	selectEventEnabled: boolean;
+	unselectEventEnabled: boolean;
+	popupEventEnabled: boolean;
+	textBox: TextBox;
 	declare links: Record<string, any>;
 
 	constructor() {
@@ -108,12 +108,12 @@ export class FileBodyPane extends HTMLElement {
 		});
 
 		// 侦听事件
-		(this as any).on('scroll', this.resize);
-		(this as any).on('keydown', this.keydown);
-		(this as any).on('pointerdown', this.pointerdown);
-		(this as any).on('pointerup', this.pointerup);
-		(this as any).on('doubleclick', this.doubleclick);
-		(this as any).on('wheel', this.wheel);
+		this.on('scroll', this.resize);
+		this.on('keydown', this.keydown);
+		this.on('pointerdown', this.pointerdown);
+		this.on('pointerup', this.pointerup);
+		this.on('doubleclick', this.doubleclick);
+		this.on('wheel', this.wheel);
 		window.on('keydown', this.windowKeydown);
 	}
 
@@ -439,9 +439,16 @@ export class FileBodyPane extends HTMLElement {
 		let element = context.element;
 		if (element === undefined) {
 			// 创建文件夹
-			element = document.createElement('file-body-item') as any;
-			(element as any).file = file;
-			(element as any).context = context;
+			element = document.createElement(
+				'file-body-item'
+			) as unknown as HTMLElement & {
+				file: any;
+				context: any;
+				changed?: boolean;
+			};
+			(element as HTMLElement & { file: any; context: any }).file = file;
+			(element as HTMLElement & { file: any; context: any }).context =
+				context;
 			context.element = element;
 
 			// 激活选中状态
@@ -450,7 +457,7 @@ export class FileBodyPane extends HTMLElement {
 				(element as HTMLElement).addClass('selected');
 			}
 		}
-		(element as any).changed = true;
+		(element as HTMLElement & { changed?: boolean }).changed = true;
 		return element;
 	}
 
@@ -480,13 +487,20 @@ export class FileBodyPane extends HTMLElement {
 		let element = context.element;
 		if (element === undefined) {
 			// 创建文件
-			element = document.createElement('file-body-item') as any;
+			element = document.createElement(
+				'file-body-item'
+			) as unknown as HTMLElement & {
+				file: any;
+				context: any;
+				changed?: boolean;
+			};
 			(element as HTMLElement).addClass('file-item');
-			(element as any).file = file;
-			(element as any).context = context;
+			(element as HTMLElement & { file: any; context: any }).file = file;
+			(element as HTMLElement & { file: any; context: any }).context =
+				context;
 			context.element = element;
 		}
-		(element as any).changed = true;
+		(element as HTMLElement & { changed?: boolean }).changed = true;
 		return element;
 	}
 
@@ -585,7 +599,7 @@ export class FileBodyPane extends HTMLElement {
 			case 'image': {
 				const version = file.stats.mtimeMs;
 				const path = `${file.path}?ver=${version}`;
-				(icon as any).style.backgroundImage = CSS.encodeURL(
+				(icon as HTMLElement).style.backgroundImage = CSS.encodeURL(
 					File.route(path)
 				);
 				(File as any)
@@ -599,7 +613,7 @@ export class FileBodyPane extends HTMLElement {
 							height: number;
 						}) => {
 							if (width <= 128 && height <= 128) {
-								(icon as any).style.imageRendering =
+								(icon as HTMLElement).style.imageRendering =
 									'pixelated';
 							}
 							if (Math.max(width, height) > GL.maxTexSize) {
@@ -680,14 +694,14 @@ export class FileBodyPane extends HTMLElement {
 						const t = (100 * oy) / cw;
 						const b = 100 - t;
 						cy -= oy;
-						(icon as any).style.clipPath =
+						(icon as HTMLElement).style.clipPath =
 							`polygon(0 ${t}%, 100% ${t}%, 100% ${b}%, 0 ${b}%)`;
 					} else {
 						const ox = (ch - cw) / 2;
 						const l = (100 * ox) / ch;
 						const r = 100 - l;
 						cx -= ox;
-						(icon as any).style.clipPath =
+						(icon as HTMLElement).style.clipPath =
 							`polygon(${l}% 0, ${r}% 0, ${r}% 100%, ${l}% 100%)`;
 					}
 				}
@@ -696,15 +710,15 @@ export class FileBodyPane extends HTMLElement {
 				const sy = height / size;
 				const px = sx !== 1 ? cx / size / (sx - 1) : 0;
 				const py = sy !== 1 ? cy / size / (sy - 1) : 0;
-				(icon as any).style.backgroundImage = CSS.encodeURL(
+				(icon as HTMLElement).style.backgroundImage = CSS.encodeURL(
 					File.route(path)
 				);
-				(icon as any).style.backgroundPosition =
+				(icon as HTMLElement).style.backgroundPosition =
 					`${px * 100}% ${py * 100}%`;
-				(icon as any).style.backgroundSize =
+				(icon as HTMLElement).style.backgroundSize =
 					`${sx * 100}% ${sy * 100}%`;
 				if (size <= 128) {
-					(icon as any).style.imageRendering = 'pixelated';
+					(icon as HTMLElement).style.imageRendering = 'pixelated';
 				}
 			});
 	}
@@ -1722,26 +1736,23 @@ export class FileBodyPane extends HTMLElement {
 		textBox.input.addClass('file-body-text-box-input');
 
 		// 键盘按下事件
-		(textBox as any).on(
-			'keydown',
-			function (this: TextBox, event: KeyboardEvent) {
-				event.stopPropagation();
-				switch (event.code) {
-					case 'Enter':
-					case 'NumpadEnter':
-					case 'Escape': {
-						const item = this.parentNode as any;
-						const content = item.parentNode as HTMLElement;
-						this.input.blur();
-						content.focus();
-						break;
-					}
+		textBox.on('keydown', function (this: TextBox, event: KeyboardEvent) {
+			event.stopPropagation();
+			switch (event.code) {
+				case 'Enter':
+				case 'NumpadEnter':
+				case 'Escape': {
+					const item = this.parentNode as any;
+					const content = item.parentNode as HTMLElement;
+					this.input.blur();
+					content.focus();
+					break;
 				}
 			}
-		);
+		});
 
 		// 输入前事件
-		(textBox as any).on('beforeinput', function (event: any) {
+		textBox.on('beforeinput', function (event: any) {
 			if (
 				event.inputType === 'insertText' &&
 				typeof event.data === 'string'
@@ -1755,19 +1766,19 @@ export class FileBodyPane extends HTMLElement {
 		});
 
 		// 输入事件
-		(textBox as any).on('input', function (this: TextBox, event: Event) {
+		textBox.on('input', function (this: TextBox, event: Event) {
 			if (this.style.width !== '') {
 				this.fitContent();
 			}
 		});
 
 		// 选择事件
-		(textBox as any).on('select', function (event: Event) {
+		textBox.on('select', function (event: Event) {
 			event.stopPropagation();
 		});
 
 		// 失去焦点事件
-		(textBox as any).on('blur', function (this: TextBox, event: Event) {
+		textBox.on('blur', function (this: TextBox, event: Event) {
 			const item = this.parentNode as any;
 			const file = item.file;
 			const name = this.read().trim();

@@ -3,12 +3,12 @@ import { Local } from '../tools/localization.ts';
 // ******************************** 树形数据上下文基类 ********************************
 
 export class TreeDataContext {
-	itemMap; //:object
-	groupMap; //:object
-	itemCache; //:object
-	itemLists; //:object
+	itemMap: Record<string, any>;
+	groupMap: Record<string, any>;
+	itemCache: Record<string, any>;
+	itemLists: Record<string, any[]>;
 
-	constructor(data, keysField) {
+	constructor(data: any, keysField: any) {
 		const itemMap = {};
 		const groupMap = {};
 
@@ -60,12 +60,12 @@ export class TreeDataContext {
 	}
 
 	// 获取群组
-	getGroup(groupKey) {
+	getGroup(groupKey: any) {
 		return this.groupMap[groupKey];
 	}
 
 	// 获取选项列表（带缓存）
-	getCachedItems(key, builder) {
+	getCachedItems(key: any, builder: any) {
 		if (!this.itemLists[key]) {
 			this.itemLists[key] = builder();
 		}
@@ -73,7 +73,7 @@ export class TreeDataContext {
 	}
 
 	// 构建基础选项项
-	createItem(id, name, extra) {
+	createItem(id: any, name: any, extra: any) {
 		return { name, value: id, ...extra };
 	}
 

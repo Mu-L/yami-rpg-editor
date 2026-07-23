@@ -76,7 +76,7 @@ export const ButtonProperty = createPropertyWindow({
 		{ name: 'Size', value: 'size', default: 16 },
 		{ name: 'Letter Spacing', value: 'letterSpacing', default: 0 }
 	],
-	openData(defaults, key, value) {
+	openData(defaults: any, key: any, value: any) {
 		switch (key) {
 			case 'normalImage':
 			case 'hoverImage':
@@ -104,7 +104,7 @@ export const ButtonProperty = createPropertyWindow({
 				break;
 		}
 	},
-	saveData(key, read) {
+	saveData(key: any, read: any) {
 		switch (key) {
 			case 'normalImage':
 			case 'hoverImage':

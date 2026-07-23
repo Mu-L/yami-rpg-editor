@@ -1,14 +1,21 @@
 ﻿// ******************************** 指令操作历史 ********************************
 
 export class CommandHistory {
-	list; //:element
-	stack; //:array
-	index; //:number
-	capacity; //:number
-	versionId; //:number
-	lastState; //:number
+	list: HTMLElement & {
+		select(start: any, end?: any): void;
+		scrollToSelection(mode?: string): void;
+		update(...args: any[]): void;
+		dispatchChangeEvent(): void;
+		getRangeByData(data: any): [number, number];
+		[k: string]: any;
+	};
+	stack: any[];
+	index: number;
+	capacity: number;
+	versionId: number;
+	lastState: number;
 
-	constructor(list) {
+	constructor(list: any) {
 		this.list = list;
 		this.stack = [];
 		this.index = -1;
@@ -26,7 +33,7 @@ export class CommandHistory {
 	}
 
 	// 保存数据
-	save(data) {
+	save(data: any) {
 		// 删除多余的栈
 		const stack = this.stack;
 		const length = this.index + 1;
@@ -48,7 +55,7 @@ export class CommandHistory {
 	}
 
 	// 恢复数据
-	restore(operation) {
+	restore(operation: any) {
 		const index =
 			operation === 'undo'
 				? this.index

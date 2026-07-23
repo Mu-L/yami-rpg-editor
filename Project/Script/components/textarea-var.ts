@@ -4,9 +4,9 @@ import { TextArea } from './text-area.ts';
 // ******************************** 字符串变量框 ********************************
 
 export class TextAreaVar extends HTMLElement {
-	mode; //:string
-	strBox; //:element
-	varBox; //:element
+	mode: string;
+	strBox: HTMLElement & { [k: string]: any };
+	varBox: CustomBox;
 
 	constructor() {
 		super();
@@ -40,7 +40,7 @@ export class TextAreaVar extends HTMLElement {
 	}
 
 	// 写入数据
-	write(value) {
+	write(value: any) {
 		switch (typeof value) {
 			case 'string':
 				this.switch('constant');
@@ -110,7 +110,7 @@ export class TextAreaVar extends HTMLElement {
 	}
 
 	// 获得焦点
-	getFocus(mode) {
+	getFocus(mode: any) {
 		switch (this.mode) {
 			case 'constant':
 				return this.strBox.getFocus(mode);
@@ -120,7 +120,7 @@ export class TextAreaVar extends HTMLElement {
 	}
 
 	// 键盘按下事件
-	keydown(event) {
+	keydown(event: any) {
 		if (event.cmdOrCtrlKey || event.altKey) {
 			switch (event.code) {
 				case 'Slash':
@@ -134,7 +134,7 @@ export class TextAreaVar extends HTMLElement {
 	}
 
 	// 指针按下事件
-	pointerdown(event) {
+	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
 				if (!this.hasClass('disabled') && event.target === this) {

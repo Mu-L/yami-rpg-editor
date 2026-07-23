@@ -19,7 +19,7 @@ Command.cases.playActorAnimation = new CommandSchema({
 			{ name: 'No', value: false }
 		]);
 	},
-	parseSpeed(speed) {
+	parseSpeed(speed: any) {
 		if (speed === 1) return '';
 		return Command.parseVariableNumber(speed);
 	},

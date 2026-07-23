@@ -22,7 +22,7 @@ Command.cases.setLoop = new CommandSchema({
 			{ name: 'Loop', value: true }
 		]);
 	},
-	parseLoop(loop) {
+	parseLoop(loop: any) {
 		switch (loop) {
 			case false:
 				return Local.get('command.setLoop.once');

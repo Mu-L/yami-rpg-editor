@@ -1,11 +1,11 @@
 ﻿// ******************************** 参数操作历史 ********************************
 
 export class ParamListHistory {
-	list; //:element
-	stack; //:array
-	index; //:number
+	list: HTMLElement;
+	stack: any[];
+	index: number;
 
-	constructor(list) {
+	constructor(list: any) {
 		this.list = list;
 		this.stack = [];
 		this.index = -1;
@@ -20,7 +20,7 @@ export class ParamListHistory {
 	}
 
 	// 保存数据
-	save(data) {
+	save(data: any) {
 		// 删除多余的栈
 		const stack = this.stack;
 		const length = this.index + 1;
@@ -39,7 +39,7 @@ export class ParamListHistory {
 	}
 
 	// 恢复数据
-	restore(operation) {
+	restore(operation: any) {
 		const index =
 			operation === 'undo'
 				? this.index
@@ -76,7 +76,7 @@ export class ParamListHistory {
 	}
 
 	// 静态 - 恢复数据
-	static restore(list, data, type, operation) {
+	static restore(list: any, data: any, type: any, operation: any) {
 		const loaded = list.data === data.array;
 		switch (type) {
 			case 'insert': {

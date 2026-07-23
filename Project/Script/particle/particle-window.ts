@@ -23,7 +23,158 @@ import { GL } from '../webgl/webgl-init.ts';
 
 // ******************************** 粒子窗口 ********************************
 
-export const Particle = {
+// 粒子窗口状态
+type ParticleState = 'closed' | 'open';
+
+// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
+type ParticleMethod = ((...args: any[]) => any) | null;
+
+interface ParticleShape {
+	// properties
+	state: ParticleState;
+	page: HTMLElement;
+	head: HTMLElement;
+	body: HTMLElement & { hide(): HTMLElement; show(): HTMLElement };
+	info: HTMLElement;
+	screen: HTMLElement;
+	marquee: HTMLElement;
+	list: HTMLElement & {
+		// 运行时挂载的列表方法（Scene.list / Particle.list 共享）
+		create: ((...args: any[]) => any) | null;
+		copy: ((...args: any[]) => any) | null;
+		paste: ((...args: any[]) => any) | null;
+		delete: ((...args: any[]) => any) | null;
+		createIcon: ((...args: any[]) => any) | null;
+		updateIcon: ((...args: any[]) => any) | null;
+		createVisibilityIcon: ((...args: any[]) => any) | null;
+		updateVisibilityIcon: ((...args: any[]) => any) | null;
+		onCreate: ((...args: any[]) => any) | null;
+		onRemove: ((...args: any[]) => any) | null;
+		onDelete: ((...args: any[]) => any) | null;
+		onResume: ((...args: any[]) => any) | null;
+		// inspector 调用路径（particle-layer-page.ts:411/426）
+		unselect: ((...args: any[]) => any) | null;
+		updateItemName: ((...args: any[]) => any) | null;
+	};
+	// editor properties
+	dragging: any | null;
+	target: any | null;
+	paused: boolean;
+	history: any | null;
+	restartKey: boolean;
+	translationKey: number;
+	translationTimer: any | null;
+	showAxes: boolean;
+	showWireframe: boolean;
+	showAnchor: boolean;
+	background: any | null;
+	matrix: any | null;
+	speed: any | null;
+	zoom: any | null;
+	zoomTimer: any | null;
+	scale: any | null;
+	scaleX: any | null;
+	scaleY: any | null;
+	outerWidth: any | null;
+	outerHeight: any | null;
+	scrollLeft: any | null;
+	scrollTop: any | null;
+	scrollRight: any | null;
+	scrollBottom: any | null;
+	centerX: any | null;
+	centerY: any | null;
+	centerOffsetX: any | null;
+	centerOffsetY: any | null;
+	padding: any | null;
+	// particle properties
+	context: any | null;
+	meta: any | null;
+	layers: any[] | null;
+	emitter: any | null;
+	// methods
+	initialize: (() => void) | null;
+	open: ParticleMethod;
+	// load(context) 运行时有参数 —— 不能用无参 ParticleMethod 契约
+	load: ((context?: any) => void) | null;
+	save: ParticleMethod;
+	close: (() => void) | null;
+	// destroy(context) 运行时有参数 —— 不能签为无参 (() => void) | null
+	destroy: ((context?: any) => void) | null;
+	restart: ParticleMethod;
+	undo: ParticleMethod;
+	redo: ParticleMethod;
+	setSpeed: ParticleMethod;
+	setZoom: ParticleMethod;
+	setTarget: ParticleMethod;
+	updateTarget: ParticleMethod;
+	updateTargetItem: ParticleMethod;
+	updateParticleInfo: ParticleMethod;
+	updateHead: ParticleMethod;
+	resize: ParticleMethod;
+	getPointerCoords: ParticleMethod;
+	updateCamera: ParticleMethod;
+	updateTransform: ParticleMethod;
+	updateElements: ParticleMethod;
+	drawElements: ParticleMethod;
+	drawBackground: ParticleMethod;
+	drawCoordinateAxes: ParticleMethod;
+	drawEmitterWireframe: ParticleMethod;
+	drawEmitterAnchor: ParticleMethod;
+	drawAreaWireframe: ParticleMethod;
+	drawElementWireframes: ParticleMethod;
+	drawElementAnchors: ParticleMethod;
+	computeOuterRect: ParticleMethod;
+	selectEmitter: ParticleMethod;
+	requestAnimation: ParticleMethod;
+	updateAnimation: ParticleMethod;
+	stopAnimation: ParticleMethod;
+	requestRendering: ParticleMethod;
+	renderingFunction: ParticleMethod;
+	stopRendering: ParticleMethod;
+	switchWireframe: ParticleMethod;
+	switchAnchor: ParticleMethod;
+	switchPause: ParticleMethod;
+	planToSave: ParticleMethod;
+	saveToConfig: ParticleMethod;
+	loadFromConfig: ParticleMethod;
+	saveToProject: ParticleMethod;
+	loadFromProject: ParticleMethod;
+	// load(context) 运行时有参数 —— 不能签为无参 (() => void) | null
+	// events
+	webglRestored: ParticleMethod;
+	windowResize: ParticleMethod;
+	themechange: ParticleMethod;
+	datachange: ParticleMethod;
+	keydown: ParticleMethod;
+	restartKeyup: ParticleMethod;
+	headPointerdown: ParticleMethod;
+	viewPointerdown: ParticleMethod;
+	controlPointerdown: ParticleMethod;
+	speedInput: ParticleMethod;
+	zoomFocus: ParticleMethod;
+	zoomInput: ParticleMethod;
+	screenKeydown: ParticleMethod;
+	screenWheel: ParticleMethod;
+	screenUserscroll: ParticleMethod;
+	screenBlur: ParticleMethod;
+	marqueePointerdown: ParticleMethod;
+	marqueePointermove: ParticleMethod;
+	marqueePointerleave: ParticleMethod;
+	pointerup: ParticleMethod;
+	pointermove: ParticleMethod;
+	listKeydown: ParticleMethod;
+	listPointerdown: ParticleMethod;
+	listSelect: ParticleMethod;
+	listRecord: ParticleMethod;
+	listPopup: ParticleMethod;
+	listChange: ParticleMethod;
+	// classes（运行时挂载 ParticleEmitter/ParticleLayer/ParticleElement 类）
+	Emitter: any | null;
+	Layer: any | null;
+	Element: any | null;
+}
+
+export const Particle: ParticleShape = {
 	// properties
 	state: 'closed',
 	page: $('#particle'),

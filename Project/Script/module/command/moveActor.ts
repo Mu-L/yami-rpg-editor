@@ -31,7 +31,7 @@ Command.cases.moveActor = new CommandSchema({
 			{ name: 'No', value: false }
 		]);
 	},
-	parseMode(mode) {
+	parseMode(mode: any) {
 		let string = Local.get('command.moveActor.mode.' + mode);
 		if (mode === 'navigate-bypass') {
 			string = string.replace('(', Token('(')).replace(')', Token(')'));

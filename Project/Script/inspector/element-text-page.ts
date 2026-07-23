@@ -204,7 +204,7 @@ import { UI } from '../ui/ui-window.ts';
 					}
 					node.horizontalAlign = value;
 					// element.horizontalAlign = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'verticalAlign':
@@ -230,14 +230,14 @@ import { UI } from '../ui/ui-window.ts';
 					}
 					node.verticalAlign = value;
 					// element.verticalAlign = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'content':
 				// 直接复制，更新语言包中的内容
 				node[key] = value;
 				// element[key] = value
-				node.instances.set(key, value);
+				node.instances.setProperty(key, value);
 				break;
 			case 'direction':
 			case 'size':
@@ -250,7 +250,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node[key] !== value) {
 					node[key] = value;
 					// element[key] = value
-					node.instances.set(key, value);
+					node.instances.setProperty(key, value);
 				}
 				break;
 			case 'font': {
@@ -258,7 +258,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node.font !== font) {
 					node.font = font;
 					// element.font = font
-					node.instances.set(key, font);
+					node.instances.setProperty(key, font);
 				}
 				break;
 			}
@@ -284,7 +284,7 @@ import { UI } from '../ui/ui-window.ts';
 					}
 					node.effect = effect;
 					// element.effect = effect
-					node.instances.set('effect', effect);
+					node.instances.setProperty('effect', effect);
 				}
 				break;
 			case 'effect-shadowOffsetX':
@@ -296,7 +296,7 @@ import { UI } from '../ui/ui-window.ts';
 				if (node.effect[property] !== value) {
 					node.effect[property] = value;
 					// element.effect = node.effect
-					node.instances.set('effect', node.effect);
+					node.instances.setProperty('effect', node.effect);
 				}
 				break;
 			}

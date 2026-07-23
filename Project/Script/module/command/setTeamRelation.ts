@@ -28,7 +28,7 @@ Command.cases.setTeamRelation = new CommandSchema({
 			$('#setTeamRelation-teamId2').clear();
 		});
 	},
-	parseRelation(relation) {
+	parseRelation(relation: any) {
 		return Local.get('command.setTeamRelation.relation.' + relation);
 	},
 	customParse({ teamId1, teamId2, relation }) {

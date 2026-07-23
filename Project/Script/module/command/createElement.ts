@@ -43,7 +43,7 @@ Command.cases.createElement = new CommandSchema({
 				}
 			]);
 	},
-	parseUIAndNodeNames(uiId) {
+	parseUIAndNodeNames(uiId: any) {
 		const uiName = Command.parseFileName(uiId);
 		const data = Data.ui[uiId];
 		if (data !== undefined) {

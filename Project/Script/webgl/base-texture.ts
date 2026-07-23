@@ -18,7 +18,7 @@ export class BaseTexture {
 	}
 
 	// 恢复普通纹理
-	restoreNormalTexture() {
+	restoreNormalTexture(): void {
 		this.glTexture = GL.createTexture();
 		const { format, width, height } = this;
 		GL.bindTexture(GL.TEXTURE_2D, this.glTexture);
@@ -40,7 +40,7 @@ export class BaseTexture {
 	}
 
 	// 恢复图像纹理
-	restoreImageTexture() {
+	restoreImageTexture(): void {
 		this.glTexture = GL.createTexture();
 		const { width, height } = this;
 		GL.bindTexture(GL.TEXTURE_2D, this.glTexture);
@@ -66,7 +66,7 @@ export class BaseTexture {
 	 * @param {string} type 回调事件类型
 	 * @param {function} callback 回调函数
 	 */
-	on(type, callback) {
+	on(type: any, callback: any) {
 		// 如果已加载完成，立即执行回调
 		let cache = this[BaseTexture.CALLBACK];
 		if (cache === type) {
@@ -87,7 +87,7 @@ export class BaseTexture {
 	 * 基础纹理方法 - 执行加载回调
 	 * @param {string} type 回调事件类型
 	 */
-	reply(type) {
+	reply(type: any) {
 		const cache = this[BaseTexture.CALLBACK];
 		if (typeof cache === 'object') {
 			// 调用所有的纹理加载回调

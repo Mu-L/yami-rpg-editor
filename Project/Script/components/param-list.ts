@@ -11,9 +11,9 @@ import { Local } from '../tools/localization.ts';
 // ******************************** 参数列表 ********************************
 
 export class ParamList extends HTMLElement {
-	object: any; //:object
-	type: string | null; //:string
-	data: any[] | null; //:array
+	object: any;
+	type: string | null;
+	data: any[] | null;
 	elements: any[] & {
 		versionId: number;
 		count: number;
@@ -21,22 +21,22 @@ export class ParamList extends HTMLElement {
 		end: number;
 		head: HTMLElement | null;
 		foot: HTMLElement | null;
-	}; //:array
-	selections: any[] & { count: number }; //:array
-	start: number | null; //:number
-	end: number | null; //:number
-	origin: number | null; //:number
-	active: number | null; //:number
-	flexible: boolean; //:boolean
-	inserting: boolean; //:boolean
-	focusing: boolean; //:boolean
-	dragging: PointerEvent | null; //:event
-	history: any; //:object
-	togglable: boolean; //:boolean
+	};
+	selections: any[] & { count: number };
+	start: number | null;
+	end: number | null;
+	origin: number | null;
+	active: number | null;
+	flexible: boolean;
+	inserting: boolean;
+	focusing: boolean;
+	dragging: PointerEvent | null;
+	history: any;
+	togglable: boolean;
 	declare height: number;
-	autoSwitch: boolean; //:boolean
-	windowPointerup: (event: PointerEvent) => void; //:function
-	windowPointermove: (event: PointerEvent) => void; //:function
+	autoSwitch: boolean;
+	windowPointerup: (event: PointerEvent) => void;
+	windowPointermove: (event: PointerEvent) => void;
 	declare _paddingTop: number;
 
 	constructor() {
@@ -71,13 +71,13 @@ export class ParamList extends HTMLElement {
 		this.listenDraggingScrollbarEvent();
 
 		// 侦听事件
-		(this as any).on('scroll', this.resize);
-		(this as any).on('focus', this.listFocus);
-		(this as any).on('blur', this.listBlur);
-		(this as any).on('keydown', this.keydown);
-		(this as any).on('pointerdown', this.pointerdown);
-		(this as any).on('pointerup', this.pointerup);
-		(this as any).on('doubleclick', this.doubleclick);
+		this.on('scroll', this.resize);
+		this.on('focus', this.listFocus);
+		this.on('blur', this.listBlur);
+		this.on('keydown', this.keydown);
+		this.on('pointerdown', this.pointerdown);
+		this.on('pointerup', this.pointerup);
+		this.on('doubleclick', this.doubleclick);
 	}
 
 	// 获取内部高度
@@ -243,9 +243,9 @@ export class ParamList extends HTMLElement {
 				const detailBox = this.parentNode;
 				if (detailBox instanceof DetailBox) {
 					if (count !== 1) {
-						(detailBox as any).open();
+						(detailBox as HTMLElement & { open(): void }).open();
 					} else {
-						(detailBox as any).close();
+						(detailBox as HTMLElement & { close(): void }).close();
 					}
 				}
 			}
@@ -272,7 +272,10 @@ export class ParamList extends HTMLElement {
 		start = Math.clamp(start, 0, count - 1);
 		end = Math.clamp(end, 0, count - 1);
 		if (start !== end) {
-			const element = elements[end] as any;
+			const element = elements[end] as HTMLElement & {
+				read(): number;
+				dataItem?: any;
+			};
 			if (!element.dataItem) {
 				end--;
 			}
@@ -414,7 +417,9 @@ export class ParamList extends HTMLElement {
 	edit(): void {
 		if (this.start !== null) {
 			const elements = this.elements;
-			const element = elements[this.start] as any;
+			const element = elements[this.start] as HTMLElement & {
+				dataItem: any;
+			};
 			this.inserting = element.dataItem === null;
 			switch (this.inserting) {
 				case true:
@@ -800,7 +805,9 @@ export class ParamList extends HTMLElement {
 			case 2:
 				if (this.start !== null && document.activeElement === this) {
 					const elements = this.elements;
-					const element = elements[this.start] as any;
+					const element = elements[this.start] as HTMLElement & {
+						dataItem: any;
+					};
 					const valid = !!element.dataItem;
 					const editable = this.start === this.end;
 					const pastable = (Clipboard as any).has(this.type);
