@@ -23,7 +23,7 @@
 		"verbatimModuleSyntax": false,
 		"types": ["node"]
 	},
-	"include": ["Project/Script/**/*.ts"],
+	"include": ["Project/Script/**/*.ts", "main/**/*.ts"],
 	"exclude": [
 		"Project/Templates/**",
 		"Project/Script/vs/**",
@@ -31,7 +31,6 @@
 		"dist/**",
 		"dist-electron/**",
 		"build/**",
-		"main/**",
 		"Unused/**",
 		"jsons/**"
 	]

@@ -68,8 +68,8 @@
 		"archiver": "^7.0.1",
 		"concurrently": "^10.0.3",
 		"cross-env": "^10.1.0",
-		"electron": "^28.3.3",
-		"electron-builder": "^25.1.8",
+		"electron": "^43.2.0",
+		"electron-builder": "^26.15.3",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
 		"oxfmt": "^0.60.0",
@@ -91,7 +91,7 @@
 	},
 	"build": {
 		"appId": "com.open.yami.rpgeditor",
-		"electronVersion": "20.3.12",
+		"electronVersion": "43.2.0",
 		"directories": {
 			"buildResources": "Assets",
 			"output": "./build"
@@ -107,7 +107,7 @@
 					"!Apk/**/*"
 				]
 			},
-			"main/*.js",
+			"main/*.ts",
 			"package.json"
 		],
 		"extraResources": [

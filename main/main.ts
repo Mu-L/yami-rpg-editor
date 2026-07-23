@@ -6,7 +6,8 @@ import Koa from 'koa';
 import Mime from 'mime-types';
 import QRCode from 'qrcode';
 import ExcelJS from 'exceljs';
-import * as apkProcessor from './apk.js';
+import * as apkProcessor from './apk.ts';
+import type { IpcMainInvokeEvent, IpcMainEvent, BrowserWindowExtension } from './types/main.ts';
 import { app, Menu, BrowserWindow, ipcMain, dialog, shell, session } from 'electron';
 import fs from 'fs';
 import { spawn } from 'child_process';
@@ -40,12 +41,12 @@ for (const arg of process.argv) {
 const devServerUrl = process.argv.find((arg) => arg.startsWith('--dev-server-url='))?.split('=')[1];
 const VITE_DEV_URL = devServerUrl || 'http://localhost:5173';
 const useViteDev = !!devServerUrl;
-const generate32bit = () => {
+const generate32bit = (): string => {
 	const n = Math.random() * 0x100000000;
 	const s = Math.floor(n).toString(16);
 	return s.length === 8 ? s : s.padStart(8, '0');
 };
-function generate64bit() {
+function generate64bit(): string {
 	let id;
 	// GUID通常用作哈希表的键
 	// 避免纯数字的键(会降低访问速度)
@@ -55,9 +56,9 @@ function generate64bit() {
 	return id;
 }
 
-function getLocalIpAddress() {
+function getLocalIpAddress(): string[] {
 	const interfaces = os.networkInterfaces();
-	const results = new Set();
+	const results = new Set<string>();
 
 	for (const name of Object.keys(interfaces)) {
 		for (const iface of interfaces[name]) {
@@ -132,7 +133,7 @@ ipcMain.handle('to-excel', async (event, { langs, list }) => {
 		{ header: 'parentID', key: 'parentID', width: 20 },
 		{ header: 'isDir', key: 'isDir', width: 10 }
 	];
-	const transformList = (DataList, parentID) => {
+	const transformList = (DataList: any[], parentID?: string, isDir?: boolean) => {
 		for (let item of DataList) {
 			if (item?.class) {
 				const id = generate64bit();
@@ -312,7 +313,7 @@ ipcMain.handle('wait-write-file', () => {
 
 // 异步写入文件
 import { promises as FSP } from 'fs';
-const writeFile = async (filePath, text, check) => {
+const writeFile = async (filePath: string, text: string, check?: boolean) => {
 	if (check) await FSP.stat(filePath);
 	return FSP.writeFile(filePath, text);
 };
@@ -443,7 +444,7 @@ const createEditorWindow = function () {
 			spellcheck: false,
 			additionalArguments: ['--disable-security-warnings', ...(debug ? ['--debug-mode'] : [])]
 		}
-	});
+	}) as BrowserWindow & BrowserWindowExtension;
 
 	// 隐藏菜单栏
 	editor.setMenuBarVisibility(process.platform === 'darwin');
@@ -471,15 +472,15 @@ const createEditorWindow = function () {
 		// 窗口最大化
 		editor.maximize();
 		promise
-			.then((config) => {
-				editor.webContents.setZoomFactor(JSON.parse(config).zoom);
+			.then((config: Buffer) => {
+				editor.webContents.setZoomFactor(JSON.parse(config.toString()).zoom);
 			})
 			.catch(() => {
 				editor.webContents.setZoomFactor(1);
 			});
 	});
 
-	let forceCloseId = -1;
+	let forceCloseId: NodeJS.Timeout | null = null;
 
 	// 计划强制关闭应用
 	function scheduleForceClose() {
@@ -494,9 +495,9 @@ const createEditorWindow = function () {
 
 	// 取消强制关闭应用
 	function cancelForceClose() {
-		if (forceCloseId !== -1) {
+		if (forceCloseId !== null) {
 			clearTimeout(forceCloseId);
-			forceCloseId = -1;
+			forceCloseId = null;
 		}
 	}
 	editor.cancelForceClose = cancelForceClose;
@@ -525,7 +526,7 @@ const createEditorWindow = function () {
 		try {
 			apkProcessor.main({
 				config,
-				onProgress: (step, percentage, isError) => {
+				onProgress: (step: string, percentage: number, isError?: boolean) => {
 					if (isError) {
 						editor.send('apk-log', {
 							done: true,
@@ -536,7 +537,7 @@ const createEditorWindow = function () {
 							done: false,
 							msg: `[${percentage}%] 进度: ${step}`
 						};
-						if (step == 100) {
+						if (Number(step) == 100) {
 							data.done = true;
 						}
 						editor.send('apk-log', data);
@@ -570,7 +571,7 @@ const createEditorWindow = function () {
 	});
 
 	// 获取tsc原生可执行文件路径
-	function getTsgoExePath() {
+	function getTsgoExePath(): string {
 		const platform = process.platform;
 		const arch = process.arch;
 		const expectedPackage = 'typescript-' + platform + '-' + arch;
@@ -635,7 +636,7 @@ const createEditorWindow = function () {
 					} else {
 						res = stdout;
 					}
-					resolve();
+					resolve(undefined);
 				});
 				tsgo.on('error', reject);
 			});
@@ -648,7 +649,7 @@ const createEditorWindow = function () {
 	let tscProcess = null;
 
 	// 启动TSC
-	function startTSC(projectDir) {
+	function startTSC(projectDir: string) {
 		if (tscProcess) {
 			stopTSC(() => startTSC(projectDir));
 			return;
@@ -671,7 +672,7 @@ const createEditorWindow = function () {
 	}
 
 	// 停止TSC
-	function stopTSC(callback) {
+	function stopTSC(callback?: () => void) {
 		if (tscProcess) {
 			tscProcess.kill();
 			tscProcess.on('close', () => {
@@ -686,11 +687,18 @@ const createEditorWindow = function () {
 
 // ******************************** 创建播放器窗口 ********************************
 
-const createPlayerWindow = function (parent, projectDir) {
+const createPlayerWindow = function (
+	parent: BrowserWindow & BrowserWindowExtension,
+	projectDir: string
+): BrowserWindow & BrowserWindowExtension {
 	// 加载配置文件
 	// fs 已在顶段 import，复用即可（createPlayerWindow 内）
 	const config = path.resolve(projectDir, 'Data/config.json');
-	const window = JSON.parse(fs.readFileSync(config)).window;
+	const window = (
+		JSON.parse(fs.readFileSync(config).toString()) as {
+			window: { title: string; width: number; height: number; display?: string };
+		}
+	).window;
 
 	// WIN窗口大小调整：减去菜单栏的高度
 	let windowHeight = window.height;
@@ -713,7 +721,7 @@ const createPlayerWindow = function (parent, projectDir) {
 			spellcheck: false,
 			additionalArguments: ['--disable-security-warnings', '--debug-mode']
 		}
-	});
+	}) as BrowserWindow & BrowserWindowExtension;
 	player.config = window;
 
 	// 隐藏菜单栏
@@ -764,8 +772,12 @@ const createPlayerWindow = function (parent, projectDir) {
 // ******************************** 进程通信 ********************************
 
 // 获取事件来源窗口
-const getWindowFromEvent = function (event) {
-	return BrowserWindow.fromWebContents(event.sender);
+const getWindowFromEvent = function (
+	event: IpcMainEvent | IpcMainInvokeEvent
+): (BrowserWindow & BrowserWindowExtension) | null {
+	return BrowserWindow.fromWebContents(event.sender) as
+		| (BrowserWindow & BrowserWindowExtension)
+		| null;
 };
 
 // 最小化窗口
@@ -877,9 +889,12 @@ ipcMain.on('set-device-pixel-ratio', (event, ratio) => {
 		}
 	}
 	const bounds = window.getContentBounds();
-	const config = window.config;
-	const width = Math.round(config.width / ratio);
-	const height = Math.round(config.height / ratio);
+	const config = (
+		window as BrowserWindow &
+			BrowserWindowExtension & { config?: { width: number; height: number } }
+	).config;
+	const width = Math.round(config!.width / ratio);
+	const height = Math.round(config!.height / ratio);
 	const x = bounds.x + ((bounds.width - width) >> 1);
 	const y = bounds.y + ((bounds.height - height) >> 1);
 	// electron bug：非100%缩放时，窗口位置不能完美地被设置
@@ -962,6 +977,6 @@ ipcMain.handle('relaunch-app', async (event) => {
 		currentPlayerWindow = createPlayerWindow(window, currentprojectPath);
 		return { success: true };
 	} catch (error) {
-		return { success: false, message: error.message };
+		return { success: false, message: (error as Error).message };
 	}
 });

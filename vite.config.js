@@ -220,8 +220,8 @@ export default defineConfig({
 		'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
 	},
 
-	// 旧 Electron 20 + Chromium 90，不踩 esbuild target 语法下限
+	// Electron 43 + Chromium 150（M150），oxc target 同步最新 Chromium 渲染引擎下限
 	oxc: {
-		target: 'chrome90'
+		target: 'chrome150'
 	}
 });

@@ -15,8 +15,8 @@ export default defineConfig({
 		// 用 rollupOptions 多入口（不用 lib，lib 单入口对多入口支持差）
 		rollupOptions: {
 			input: {
-				main: resolve(__dirname, 'main/main.js'),
-				apk: resolve(__dirname, 'main/apk.js')
+				main: resolve(__dirname, 'main/main.ts'),
+				apk: resolve(__dirname, 'main/apk.ts')
 			},
 			output: {
 				// ESM format（package.json type:module 后 .js 即 ESM）

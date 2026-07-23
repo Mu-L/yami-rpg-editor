@@ -6,6 +6,7 @@ import util from 'util';
 import { exec } from 'child_process';
 const execPromise = util.promisify(exec);
 import sharp from 'sharp';
+import type { ApkConfig, ApkOptions, ApkResult } from './types/apk.ts';
 
 // 构建状态跟踪
 let isBuilding = false;
@@ -55,12 +56,12 @@ const ICON_SIZES = {
 };
 
 // 文件存在性检查
-function fileExists(filePath) {
+function fileExists(filePath: string): boolean {
 	return fs.existsSync(filePath);
 }
 
 // 复制文件夹
-async function copyFolderAsync(source, destination) {
+async function copyFolderAsync(source: string, destination: string): Promise<void> {
 	try {
 		// 创建目标目录 (recursive: true 确保父目录存在)
 		await fsp.mkdir(destination, { recursive: true });
@@ -85,13 +86,13 @@ async function copyFolderAsync(source, destination) {
 			})
 		);
 	} catch (err) {
-		console.error(`❌ 复制出错: ${err.message}`);
+		console.error(`❌ 复制出错: ${(err as Error).message}`);
 		throw err; // 可选择抛出错误或处理
 	}
 }
 
 // 发送日志函数
-function sendLog(msg, percentage = null, isError = false) {
+function sendLog(msg: string, percentage: number | null = null, isError: boolean = false): void {
 	if (global.editor && typeof global.editor.send === 'function') {
 		global.editor.send('apk-log', {
 			done: isError,
@@ -101,7 +102,7 @@ function sendLog(msg, percentage = null, isError = false) {
 }
 
 // 主执行函数
-async function main(options = {}) {
+async function main(options: ApkOptions = {}): Promise<ApkResult> {
 	// 如果正在构建中，拒绝新的构建请求
 	if (isBuilding) {
 		sendLog('当前已有构建任务正在进行中', null, false);
@@ -223,7 +224,7 @@ async function main(options = {}) {
 			onProgress?.('资源合并完成', currentProgress);
 			sendLog('资源合并完成', currentProgress);
 		} catch (err) {
-			sendLog(`资源合并失败: ${err.message}`, currentProgress, true);
+			sendLog(`资源合并失败: ${(err as Error).message}`, currentProgress, true);
 			return false;
 		}
 
@@ -262,8 +263,8 @@ async function main(options = {}) {
 		sendLog(`✅ APK修改完成! 新文件: ${config.signedApkPath}\n可以直接安装到设备`);
 		return true;
 	} catch (err) {
-		onProgress?.('处理失败: ' + err.message, currentProgress, true);
-		sendLog(`处理失败: ${err.message}`, currentProgress, true);
+		onProgress?.('处理失败: ' + (err as Error).message, currentProgress);
+		sendLog(`处理失败: ${(err as Error).message}`, currentProgress, true);
 		return false;
 	} finally {
 		isBuilding = false;
@@ -271,7 +272,7 @@ async function main(options = {}) {
 }
 
 // 反编译APK
-async function decompileApk(config) {
+async function decompileApk(config: ApkConfig): Promise<{ success: boolean; error?: string }> {
 	// console.log("开始反编译APK...");
 	const cmd = `java -jar "${config.apktoolPath}" d "${config.apkPath}" -o "${config.outputDir}" -f --only-main-classes`;
 
@@ -281,7 +282,7 @@ async function decompileApk(config) {
 			if (error) {
 				resolve({
 					success: false,
-					error: `反编译失败: ${error.stderr || error.message}`
+					error: `反编译失败: ${(error as Error & { stderr?: string }).stderr || (error as Error).message}`
 				});
 			} else {
 				// console.log("反编译成功");
@@ -305,7 +306,7 @@ async function decompileApk(config) {
 }
 
 // 修改AndroidManifest.xml
-async function modifyManifest(config) {
+async function modifyManifest(config: ApkConfig): Promise<{ success: boolean; error?: string }> {
 	// console.log("修改包名、应用名称和版本信息...");
 	const manifestPath = path.join(config.outputDir, 'AndroidManifest.xml');
 
@@ -360,13 +361,13 @@ async function modifyManifest(config) {
 	} catch (err) {
 		return {
 			success: false,
-			error: `修改AndroidManifest.xml失败: ${err.message}`
+			error: `修改AndroidManifest.xml失败: ${(err as Error).message}`
 		};
 	}
 }
 
 // 修改所有语言的应用名称
-async function modifyStrings(config) {
+async function modifyStrings(config: ApkConfig): Promise<{ success: boolean; error?: string }> {
 	// console.log("修改所有语言的应用名称...");
 	const resDir = path.join(config.outputDir, 'res');
 
@@ -391,13 +392,13 @@ async function modifyStrings(config) {
 	} catch (err) {
 		return {
 			success: false,
-			error: `修改strings.xml失败: ${err.message}`
+			error: `修改strings.xml失败: ${(err as Error).message}`
 		};
 	}
 }
 
 // 更新单个strings.xml文件
-async function updateStringsFile(stringsPath, config) {
+async function updateStringsFile(stringsPath: string, config: ApkConfig): Promise<void> {
 	try {
 		const xml = await fs.promises.readFile(stringsPath, 'utf8');
 		const result = await parseXml(xml);
@@ -432,13 +433,15 @@ async function updateStringsFile(stringsPath, config) {
 
 		// console.log(`已更新: ${stringsPath}`);
 	} catch (err) {
-		// console.error(`更新 ${stringsPath} 失败: ${err.message}`);
+		// console.error(`更新 ${stringsPath} 失败: ${(err as Error).message}`);
 		throw err;
 	}
 }
 
 // 使用sharp库安全替换应用图标
-async function replaceIconsWithSharp(config) {
+async function replaceIconsWithSharp(
+	config: ApkConfig
+): Promise<{ success: boolean; error?: string }> {
 	console.log('使用sharp处理并替换应用图标...');
 
 	try {
@@ -462,7 +465,7 @@ async function replaceIconsWithSharp(config) {
 			}
 			// console.log(`源图标尺寸: ${metadata.width}x${metadata.height}`);
 		} catch (err) {
-			throw new Error(`源图标文件无效: ${err.message}`);
+			throw new Error(`源图标文件无效: ${(err as Error).message}`);
 		}
 
 		// 查找所有图标目录（不包括anydpi目录）
@@ -514,13 +517,13 @@ async function replaceIconsWithSharp(config) {
 	} catch (err) {
 		return {
 			success: false,
-			error: `替换图标失败: ${err.message}`
+			error: `替换图标失败: ${(err as Error).message}`
 		};
 	}
 }
 
 // 删除自适应图标配置文件
-async function removeAdaptiveIconConfigs(config) {
+async function removeAdaptiveIconConfigs(config: ApkConfig): Promise<void> {
 	const resDir = path.join(config.outputDir, 'res');
 
 	// 查找所有anydpi目录
@@ -543,7 +546,7 @@ async function removeAdaptiveIconConfigs(config) {
 }
 
 // 完全移除圆形图标资源
-async function removeRoundIcons(config) {
+async function removeRoundIcons(config: ApkConfig): Promise<{ success: boolean; error?: string }> {
 	// console.log("移除圆形图标资源...");
 
 	try {
@@ -574,13 +577,15 @@ async function removeRoundIcons(config) {
 	} catch (err) {
 		return {
 			success: false,
-			error: `移除圆形图标失败: ${err.message}`
+			error: `移除圆形图标失败: ${(err as Error).message}`
 		};
 	}
 }
 
 // 修复资源引用问题
-async function fixResourceReferences(config) {
+async function fixResourceReferences(
+	config: ApkConfig
+): Promise<{ success: boolean; error?: string }> {
 	// console.log("修复资源引用问题...");
 
 	try {
@@ -603,13 +608,13 @@ async function fixResourceReferences(config) {
 	} catch (err) {
 		return {
 			success: false,
-			error: `修复资源引用失败: ${err.message}`
+			error: `修复资源引用失败: ${(err as Error).message}`
 		};
 	}
 }
 
 // 清理styles.xml中的圆形图标引用
-async function cleanStylesXml(stylesPath) {
+async function cleanStylesXml(stylesPath: string): Promise<void> {
 	const xml = await fs.promises.readFile(stylesPath, 'utf8');
 	const result = await parseXml(xml);
 
@@ -636,7 +641,7 @@ async function cleanStylesXml(stylesPath) {
 }
 
 // 清理 public.xml 中的无效引用
-async function cleanPublicXml(publicXmlPath) {
+async function cleanPublicXml(publicXmlPath: string): Promise<void> {
 	const xml = await fs.promises.readFile(publicXmlPath, 'utf8');
 	const result = await parseXml(xml);
 
@@ -661,7 +666,7 @@ async function cleanPublicXml(publicXmlPath) {
 }
 
 // 重新编译APK
-async function rebuildApk(config) {
+async function rebuildApk(config: ApkConfig): Promise<{ success: boolean; error?: string }> {
 	console.log('重新编译APK...');
 	const cmd = `java -jar "${config.apktoolPath}" b "${config.outputDir}" -o "${config.newApkPath}"`;
 
@@ -693,7 +698,7 @@ async function rebuildApk(config) {
 	} catch (error) {
 		// 提供更详细的错误信息
 		const errorMsg =
-			`重新编译失败: ${error.stderr || error.message}\n` +
+			`重新编译失败: ${(error as Error & { stderr?: string }).stderr || (error as Error).message}\n` +
 			`可能原因:\n` +
 			`1. 资源冲突(如图标格式不统一)\n` +
 			`2. AndroidManifest.xml格式错误\n` +
@@ -708,7 +713,7 @@ async function rebuildApk(config) {
 }
 
 // 对APK进行zipalign对齐处理（Android 11+要求）
-async function zipalignApk(config) {
+async function zipalignApk(config: ApkConfig): Promise<{ success: boolean; error?: string }> {
 	console.log('执行zipalign对齐处理...');
 
 	if (!fileExists(config.zipalignPath)) {
@@ -737,13 +742,13 @@ async function zipalignApk(config) {
 	} catch (error) {
 		return {
 			success: false,
-			error: `zipalign处理失败: ${error.stderr || error.message}`
+			error: `zipalign处理失败: ${(error as Error & { stderr?: string }).stderr || (error as Error).message}`
 		};
 	}
 }
 
 // 签名APK
-async function signApk(config) {
+async function signApk(config: ApkConfig): Promise<{ success: boolean; error?: string }> {
 	// console.log("签名APK...");
 
 	// 使用apksigner进行签名
@@ -774,8 +779,9 @@ async function signApk(config) {
 			return {
 				success: false,
 				error: `签名失败:\nAPKSigner错误: ${
-					apksignerError.stderr || apksignerError.message
-				}\nJarSigner错误: ${jarsignerError.stderr || jarsignerError.message}`
+					(apksignerError as Error & { stderr?: string }).stderr ||
+					(apksignerError as Error).message
+				}\nJarSigner错误: ${(jarsignerError as Error & { stderr?: string }).stderr || (jarsignerError as Error).message}`
 			};
 		}
 	}
@@ -786,7 +792,7 @@ async function signApk(config) {
 }
 
 // 验证签名
-async function verifySignature(config) {
+async function verifySignature(config: ApkConfig): Promise<void> {
 	console.log('验证APK签名...');
 
 	try {
@@ -800,12 +806,12 @@ async function verifySignature(config) {
 			console.warn('⚠️ APK签名验证结果不确定');
 		}
 	} catch (error) {
-		console.warn('无法验证签名:', error.message);
+		console.warn('无法验证签名:', (error as Error).message);
 	}
 }
 
 // XML解析辅助函数
-function parseXml(xml) {
+function parseXml(xml: string): Promise<any> {
 	return new Promise((resolve, reject) => {
 		parseString(xml, (err, result) => {
 			if (err) reject(err);
@@ -815,7 +821,7 @@ function parseXml(xml) {
 }
 
 // 中断当前构建
-function abortBuild() {
+function abortBuild(): boolean {
 	if (!isBuilding) return false;
 
 	// console.log("正在中止构建任务...");
@@ -833,7 +839,7 @@ function abortBuild() {
 }
 
 // 查询是否正在构建中
-function isBuildingStatus() {
+function isBuildingStatus(): boolean {
 	return isBuilding;
 }
 
