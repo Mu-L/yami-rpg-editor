@@ -1,100 +1,115 @@
-  <window-frame id="playAudio">
-    <title-bar>Play Audio<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="playAudio-type"></select-box>
-        <text>Audio</text><custom-box id="playAudio-audio" type="file" filter="audio"></custom-box>
-        <text>Volume</text><number-box id="playAudio-volume" min="0" max="1" step="0.1" decimals="4"></number-box>
-        <text>Sound Location</text><custom-box id="playAudio-location" type="position"></custom-box>
-      </grid-box>
-      <button id="playAudio-confirm" name="confirm">Confirm</button>
-      <button id="playAudio-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="stopAudio">
-    <title-bar>Stop Audio<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="stopAudio-type"></select-box>
-      </grid-box>
-      <button id="stopAudio-confirm" name="confirm">Confirm</button>
-      <button id="stopAudio-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setVolume">
-    <title-bar>Set Volume<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="setVolume-type"></select-box>
-        <text>Volume</text><number-var id="setVolume-volume" min="0" max="1" step="0.1" decimals="4"></number-var>
-        <text>Easing</text><select-box id="setVolume-easingId" name="easing"></select-box>
-        <text>Duration</text><number-box id="setVolume-duration" name="duration" min="0" max="3600000"
-          unit="ms"></number-box>
-        <text>Wait</text><select-box id="setVolume-wait" name="wait"></select-box>
-      </grid-box>
-      <button id="setVolume-confirm" name="confirm">Confirm</button>
-      <button id="setVolume-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setPan">
-    <title-bar>Set Pan<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="setPan-type"></select-box>
-        <text>Pan</text><number-var id="setPan-pan" min="-1" max="1" step="0.1" decimals="4"></number-var>
-        <text>Easing</text><select-box id="setPan-easingId" name="easing"></select-box>
-        <text>Duration</text><number-box id="setPan-duration" name="duration" min="0" max="3600000"
-          unit="ms"></number-box>
-        <text>Wait</text><select-box id="setPan-wait" name="wait"></select-box>
-      </grid-box>
-      <button id="setPan-confirm" name="confirm">Confirm</button>
-      <button id="setPan-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setReverb">
-    <title-bar>Set Reverb<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="setReverb-type"></select-box>
-        <text>Dry</text><number-var id="setReverb-dry" min="0" max="1" step="0.1" decimals="4"></number-var>
-        <text>Wet</text><number-var id="setReverb-wet" min="0" max="1" step="0.1" decimals="4"></number-var>
-        <text>Easing</text><select-box id="setReverb-easingId" name="easing"></select-box>
-        <text>Duration</text><number-box id="setReverb-duration" name="duration" min="0" max="3600000"
-          unit="ms"></number-box>
-        <text>Wait</text><select-box id="setReverb-wait" name="wait"></select-box>
-      </grid-box>
-      <button id="setReverb-confirm" name="confirm">Confirm</button>
-      <button id="setReverb-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setLoop">
-    <title-bar>Set Loop<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="setLoop-type"></select-box>
-        <text>Loop</text><select-box id="setLoop-loop"></select-box>
-      </grid-box>
-      <button id="setLoop-confirm" name="confirm">Confirm</button>
-      <button id="setLoop-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="saveAudio">
-    <title-bar>Save Audio<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="saveAudio-type"></select-box>
-      </grid-box>
-      <button id="saveAudio-confirm" name="confirm">Confirm</button>
-      <button id="saveAudio-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="restoreAudio">
-    <title-bar>Restore Audio<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Type</text><select-box id="restoreAudio-type"></select-box>
-      </grid-box>
-      <button id="restoreAudio-confirm" name="confirm">Confirm</button>
-      <button id="restoreAudio-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
+<window-frame id="playAudio">
+	<title-bar>Play Audio<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="playAudio-type"></select-box> <text>Audio</text
+			><custom-box id="playAudio-audio" type="file" filter="audio"></custom-box>
+			<text>Volume</text
+			><number-box id="playAudio-volume" min="0" max="1" step="0.1" decimals="4"></number-box>
+			<text>Sound Location</text
+			><custom-box id="playAudio-location" type="position"></custom-box>
+		</grid-box>
+		<button id="playAudio-confirm" name="confirm">Confirm</button>
+		<button id="playAudio-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="stopAudio">
+	<title-bar>Stop Audio<close></close></title-bar>
+	<content-frame>
+		<grid-box> <text>Type</text><select-box id="stopAudio-type"></select-box> </grid-box>
+		<button id="stopAudio-confirm" name="confirm">Confirm</button>
+		<button id="stopAudio-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setVolume">
+	<title-bar>Set Volume<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="setVolume-type"></select-box> <text>Volume</text
+			><number-var id="setVolume-volume" min="0" max="1" step="0.1" decimals="4"></number-var>
+			<text>Easing</text><select-box id="setVolume-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-box
+				id="setVolume-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="setVolume-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="setVolume-confirm" name="confirm">Confirm</button>
+		<button id="setVolume-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setPan">
+	<title-bar>Set Pan<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="setPan-type"></select-box> <text>Pan</text
+			><number-var id="setPan-pan" min="-1" max="1" step="0.1" decimals="4"></number-var>
+			<text>Easing</text><select-box id="setPan-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-box
+				id="setPan-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="setPan-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="setPan-confirm" name="confirm">Confirm</button>
+		<button id="setPan-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setReverb">
+	<title-bar>Set Reverb<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="setReverb-type"></select-box> <text>Dry</text
+			><number-var id="setReverb-dry" min="0" max="1" step="0.1" decimals="4"></number-var>
+			<text>Wet</text
+			><number-var id="setReverb-wet" min="0" max="1" step="0.1" decimals="4"></number-var>
+			<text>Easing</text><select-box id="setReverb-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-box
+				id="setReverb-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="setReverb-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="setReverb-confirm" name="confirm">Confirm</button>
+		<button id="setReverb-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setLoop">
+	<title-bar>Set Loop<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="setLoop-type"></select-box> <text>Loop</text
+			><select-box id="setLoop-loop"></select-box>
+		</grid-box>
+		<button id="setLoop-confirm" name="confirm">Confirm</button>
+		<button id="setLoop-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="saveAudio">
+	<title-bar>Save Audio<close></close></title-bar>
+	<content-frame>
+		<grid-box> <text>Type</text><select-box id="saveAudio-type"></select-box> </grid-box>
+		<button id="saveAudio-confirm" name="confirm">Confirm</button>
+		<button id="saveAudio-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="restoreAudio">
+	<title-bar>Restore Audio<close></close></title-bar>
+	<content-frame>
+		<grid-box> <text>Type</text><select-box id="restoreAudio-type"></select-box> </grid-box>
+		<button id="restoreAudio-confirm" name="confirm">Confirm</button>
+		<button id="restoreAudio-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

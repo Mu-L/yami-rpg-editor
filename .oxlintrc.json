@@ -1,0 +1,66 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"options": {
+		"typeAware": true,
+		"typeCheck": false,
+		"maxWarnings": 5000
+	},
+	"categories": {
+		"correctness": "warn",
+		"perf": "warn",
+		"pedantic": "off",
+		"nursery": "off",
+		"restriction": "off"
+	},
+	"plugins": ["typescript", "oxc", "import", "unicorn", "promise", "jsdoc"],
+	"ignorePatterns": [
+		"node_modules/**",
+		"dist/**",
+		"dist-electron/**",
+		"build/**",
+		"main/**",
+		"Unused/**",
+		"jsons/**",
+		"Project/Templates/**",
+		"Project/Script/vs/**",
+		"Project/index.html",
+		"Project/index.css",
+		"Project/Script/main/module-init.js",
+		"Project/Apk/**",
+		"Project/Fonts/**",
+		"Project/Images/**",
+		"Project/Locales/**",
+		"Project/html/**"
+	],
+	"rules": {
+		"eslint/no-unused-vars": [
+			"warn",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_",
+				"caughtErrorsIgnorePattern": "^_",
+				"destructuredArrayIgnorePattern": "^_",
+				"fix": {
+					"imports": "safe-fix"
+				}
+			}
+		],
+		"typescript/no-explicit-any": "off",
+		"typescript/no-namespace": "off",
+		"typescript/no-non-null-assertion": "off",
+		"eslint/no-console": "off",
+		"eslint/no-empty": ["warn", { "allowEmptyCatch": true }]
+	},
+	"overrides": [
+		{
+			"files": ["scripts/**/*.js", "*.config.js"],
+			"env": {
+				"node": true,
+				"commonjs": true
+			},
+			"rules": {
+				"eslint/no-undef": "off"
+			}
+		}
+	]
+}

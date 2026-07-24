@@ -1,0 +1,49 @@
+﻿import { DetailBox } from './detail-box.ts';
+
+// ******************************** 细节概要 ********************************
+
+export class DetailSummary extends HTMLElement {
+	constructor() {
+		super();
+
+		// 设置属性
+		// this.tabIndex = -1
+
+		// 侦听事件
+		this.on('keydown', this.keydown);
+		this.on('pointerdown', this.pointerdown);
+	}
+
+	// 开关父元素
+	toggle(): void {
+		const parent = this.parentNode;
+		if (parent instanceof DetailBox) {
+			parent.toggle();
+		}
+	}
+
+	// 键盘按下事件
+	keydown(event: KeyboardEvent): void {
+		switch (event.code) {
+			case 'Enter':
+			case 'NumpadEnter':
+				if (!event.cmdOrCtrlKey && !event.altKey) {
+					this.toggle();
+				}
+				break;
+		}
+	}
+
+	// 指针按下事件
+	pointerdown(event: PointerEvent): void {
+		switch (event.button) {
+			case 0:
+				if (event.target === this) {
+					this.toggle();
+				}
+				break;
+		}
+	}
+}
+
+customElements.define('detail-summary', DetailSummary);

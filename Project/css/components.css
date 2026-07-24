@@ -1876,27 +1876,19 @@ command-item.selected > command-mark-minor {
 }
 
 .command-text-highlight.boolean-type {
-	background-color: var(
-		--command-text-background-highlight-boolean
-	) !important;
+	background-color: var(--command-text-background-highlight-boolean) !important;
 }
 
 .command-text-highlight.number-type {
-	background-color: var(
-		--command-text-background-highlight-number
-	) !important;
+	background-color: var(--command-text-background-highlight-number) !important;
 }
 
 .command-text-highlight.string-type {
-	background-color: var(
-		--command-text-background-highlight-string
-	) !important;
+	background-color: var(--command-text-background-highlight-string) !important;
 }
 
 .command-text-highlight.object-type {
-	background-color: var(
-		--command-text-background-highlight-object
-	) !important;
+	background-color: var(--command-text-background-highlight-object) !important;
 }
 
 .command-text-highlight.any-type {

@@ -1,13 +1,13 @@
 /* 此文件由 build-css.js 自动生成，请勿直接编辑。 */
-@import url(css/foundation.css);
-@import url(css/animation.css);
-@import url(css/command.css);
-@import url(css/components.css);
-@import url(css/data.css);
-@import url(css/inspector.css);
-@import url(css/layout.css);
-@import url(css/log.css);
-@import url(css/particle.css);
-@import url(css/scene.css);
-@import url(css/ui.css);
-@import url(css/dialogs.css);
+@import './css/foundation.css';
+@import './css/animation.css';
+@import './css/command.css';
+@import './css/components.css';
+@import './css/data.css';
+@import './css/inspector.css';
+@import './css/layout.css';
+@import './css/log.css';
+@import './css/particle.css';
+@import './css/scene.css';
+@import './css/ui.css';
+@import './css/dialogs.css';

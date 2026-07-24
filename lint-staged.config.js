@@ -3,8 +3,6 @@
  * @type {import('lint-staged').Configuration}
  */
 module.exports = {
-	'*.{js,ts,css}': [
-		'prettier --write --config .prettierrc.json --ignore-path .prettierignore',
-		'git add -u'
-	]
-}
+	'*.{js,ts,css}': ['oxfmt -c ./.oxfmtrc.json --write'],
+	'*.{js,ts}': ['oxlint -c ./.oxlintrc.json --fix']
+};

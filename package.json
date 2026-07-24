@@ -1,23 +1,26 @@
 {
 	"name": "yami-rpg-editor",
 	"version": "1.0.0",
-	"main": "main/main.js",
-	"packageManager": "pnpm@10.13.1",
-	"productName": "Yami RPG Editor",
-	"author": "Yami",
 	"description": "2D Game Editor",
+	"author": "Yami",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yami-pro/yami-rpg-editor.git"
+	},
+	"main": "dist-electron/main.js",
 	"scripts": {
 		"buildcss": "node scripts/build-css.js",
 		"buildmodule": "node scripts/build-module.js",
 		"buildhtml": "node scripts/build-html.js",
 		"smoke": "node scripts/smoke.js",
+		"verify-imports": "node scripts/verify-imports.js",
 		"buildres": "node scripts/buildres.js",
 		"buildtime": "node scripts/buildRuntime.js",
 		"prepare": "husky",
-		"prestart": "pnpm run buildcss && pnpm run buildmodule && pnpm run buildhtml",
 		"start": "electron . --dirname=Project",
 		"setup": "pnpm install",
-		"format": "prettier --write . --config prettierrc.json",
+		"format": "oxfmt -c ./.oxfmtrc.json .",
+		"format:check": "oxfmt -c ./.oxfmtrc.json --check .",
 		"commitlint": "commitlint --config commitlint.config.js --edit ",
 		"build:win": "electron-builder --dir --win --x64",
 		"build:winexe": "electron-builder --win --x64",
@@ -28,39 +31,52 @@
 		"build:macArm": "electron-builder --dir --mac --arm64",
 		"build:macArmexe": "electron-builder --mac --arm64",
 		"build:universal": "electron-builder --dir --mac --universal",
-		"build:universalexe": "electron-builder --mac --universal"
-	},
-	"devDependencies": {
-		"@commitlint/cli": "^21.0.1",
-		"@commitlint/config-conventional": "^21.0.1",
-		"@types/node": "^22.19.19",
-		"archiver": "^7.0.1",
-		"electron": "^20.3.12",
-		"electron-builder": "^25.1.8",
-		"husky": "^9.1.7",
-		"lint-staged": "^16.4.0",
-		"prettier": "^3.8.3"
+		"build:universalexe": "electron-builder --mac --universal",
+		"dev": "pnpm run buildcss && pnpm run buildhtml && concurrently -k -n vite,electron-main,electron -c green,blue,magenta \"vite\" \"vite build --config vite.electron.config.js --watch\" \"wait-on tcp:5173 && wait-on file:dist-electron/main.js && electron . --dirname=Project --dev-server-url=http://localhost:5173\"",
+		"build:vite": "pnpm run buildcss && pnpm run buildhtml && vite build",
+		"build:electron": "vite build --config vite.electron.config.js",
+		"build:all": "pnpm run build:vite && pnpm run build:electron",
+		"start:prod": "pnpm run build:all && electron . --dirname=.",
+		"typecheck": "tsc --noEmit",
+		"lint": "oxlint -c ./.oxlintrc.json .",
+		"lint:fix": "oxlint -c ./.oxlintrc.json --fix ."
 	},
 	"dependencies": {
-		"@typescript/typescript-win32-x64": "^7.0.2",
+		"@typescript/typescript-win32-x64": "7.1.0-dev.20260723.1",
 		"axios": "^1.16.1",
 		"exceljs": "^4.4.0",
 		"fs-extra": "^11.3.5",
 		"koa": "^3.2.1",
 		"markdown-it": "^14.2.0",
 		"mime-types": "^3.0.2",
+		"monaco-editor": "^0.55.1",
 		"qrcode": "^1.5.4",
 		"sharp": "^0.34.5",
 		"steamworks.js": "^0.4.0",
-		"typescript": "^7.0.2",
+		"typescript": "7.1.0-dev.20260723.1",
 		"uglify-js": "^3.19.3",
 		"xml2js": "^0.6.2",
 		"yauzl": "^3.3.1"
 	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/yami-pro/yami-rpg-editor.git"
+	"devDependencies": {
+		"@commitlint/cli": "^21.0.1",
+		"@commitlint/config-conventional": "^21.0.1",
+		"@types/node": "^22.19.19",
+		"@vitejs/plugin-legacy": "^8.2.1",
+		"archiver": "^7.0.1",
+		"concurrently": "^10.0.3",
+		"cross-env": "^10.1.0",
+		"electron": "^43.2.0",
+		"electron-builder": "^26.15.3",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.4.0",
+		"oxfmt": "^0.60.0",
+		"oxlint": "^1.75.0",
+		"oxlint-tsgolint": "^7.0.2001",
+		"vite": "^8.1.5",
+		"wait-on": "^9.0.10"
 	},
+	"packageManager": "pnpm@10.13.1",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"electron",
@@ -73,7 +89,7 @@
 	},
 	"build": {
 		"appId": "com.open.yami.rpgeditor",
-		"electronVersion": "20.3.12",
+		"electronVersion": "43.2.0",
 		"directories": {
 			"buildResources": "Assets",
 			"output": "./build"
@@ -89,7 +105,7 @@
 					"!Apk/**/*"
 				]
 			},
-			"main/*.js",
+			"main/*.ts",
 			"package.json"
 		],
 		"extraResources": [
@@ -147,5 +163,6 @@
 				"deb"
 			]
 		}
-	}
+	},
+	"productName": "Yami RPG Editor"
 }

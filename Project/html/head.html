@@ -1,517 +1,511 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="dark">
+	<head>
+		<script>
+			window.__nodeRequire = window.require;
+		</script>
+		<title>Yami RPG Editor</title>
+		<meta charset="utf-8" content="text/html" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="stylesheet" href="index.css" />
+		<script type="module" src="Script/module/eventbus.ts" defer></script>
+		<script type="module" src="Script/util/config.ts" defer></script>
+		<script type="module" src="Script/util/object.ts" defer></script>
+		<script type="module" src="Script/util/array.ts" defer></script>
+		<script type="module" src="Script/util/string.ts" defer></script>
+		<script type="module" src="Script/util/number.ts" defer></script>
+		<script type="module" src="Script/util/function.ts" defer></script>
+		<script type="module" src="Script/util/safe.ts" defer></script>
+		<script type="module" src="Script/util/regexp.ts" defer></script>
+		<script type="module" src="Script/util/css.ts" defer></script>
+		<script type="module" src="Script/util/canvas.ts" defer></script>
+		<script type="module" src="Script/util/event-accessors.ts" defer></script>
+		<script type="module" src="Script/util/mouse-event.ts" defer></script>
+		<script type="module" src="Script/util/pointer-event.ts" defer></script>
+		<script type="module" src="Script/util/data-transfer.ts" defer></script>
+		<script type="module" src="Script/util/event-target.ts" defer></script>
+		<script type="module" src="Script/util/node-list.ts" defer></script>
+		<script type="module" src="Script/util/dom.ts" defer></script>
+		<script type="module" src="Script/util/color-utils.ts" defer></script>
+		<script type="module" src="Script/util/stage-color.ts" defer></script>
+		<script type="module" src="Script/util/math.ts" defer></script>
+		<script type="module" src="Script/util/timer.ts" defer></script>
+		<script type="module" src="Script/util/clipboard.ts" defer></script>
+		<script type="module" src="Script/util/drag-drop.ts" defer></script>
+		<script type="module" src="Script/util/keyboard.ts" defer></script>
+		<script type="module" src="Script/util/dpr.ts" defer></script>
+		<script type="module" src="Script/util/platform.ts" defer></script>
+		<script type="module" src="Script/file/file-system-core.ts" defer></script>
+		<script type="module" src="Script/file/file-system.ts" defer></script>
+		<script type="module" src="Script/file/path-utils.ts" defer></script>
+		<script type="module" src="Script/file/directory-object.ts" defer></script>
+		<script type="module" src="Script/file/folder-item.ts" defer></script>
+		<script type="module" src="Script/file/file-item.ts" defer></script>
+		<script type="module" src="Script/file/guid.ts" defer></script>
+		<script type="module" src="Script/components/element-accessors.ts" defer></script>
+		<script type="module" src="Script/components/element-methods.ts" defer></script>
+		<script type="module" src="Script/components/scroll-listener.ts" defer></script>
+		<script type="module" src="Script/components/button-extension.ts" defer></script>
+		<script type="module" src="Script/components/window-frame.ts" defer></script>
+		<script type="module" src="Script/components/title-bar.ts" defer></script>
+		<script type="module" src="Script/components/page-manager.ts" defer></script>
+		<script type="module" src="Script/components/marquee-area.ts" defer></script>
+		<script type="module" src="Script/components/detail-box.ts" defer></script>
+		<script type="module" src="Script/components/detail-summary.ts" defer></script>
+		<script type="module" src="Script/components/text-history.ts" defer></script>
+		<script type="module" src="Script/components/number-history.ts" defer></script>
+		<script type="module" src="Script/components/history-timer.ts" defer></script>
+		<script type="module" src="Script/components/text-box.ts" defer></script>
+		<script type="module" src="Script/components/text-area.ts" defer></script>
+		<script type="module" src="Script/components/keyboard-box.ts" defer></script>
+		<script type="module" src="Script/components/gamepad-box.ts" defer></script>
+		<script type="module" src="Script/components/color-box.ts" defer></script>
+		<script type="module" src="Script/components/check-box.ts" defer></script>
+		<script type="module" src="Script/components/radio-proxy.ts" defer></script>
+		<script type="module" src="Script/components/radio-box.ts" defer></script>
+		<script type="module" src="Script/components/switch-item.ts" defer></script>
+		<script type="module" src="Script/components/slider-box.ts" defer></script>
+		<script type="module" src="Script/components/number-box.ts" defer></script>
+		<script type="module" src="Script/components/select-box.ts" defer></script>
+		<script type="module" src="Script/components/select-list.ts" defer></script>
+		<script type="module" src="Script/components/menu-list.ts" defer></script>
+		<script type="module" src="Script/components/custom-box.ts" defer></script>
+		<script type="module" src="Script/components/number-var.ts" defer></script>
+		<script type="module" src="Script/components/string-var.ts" defer></script>
+		<script type="module" src="Script/components/textarea-var.ts" defer></script>
+		<script type="module" src="Script/components/select-var.ts" defer></script>
+		<script type="module" src="Script/components/file-var.ts" defer></script>
+		<script type="module" src="Script/components/filter-box.ts" defer></script>
+		<script type="module" src="Script/components/tab-bar.ts" defer></script>
+		<script type="module" src="Script/components/nav-bar.ts" defer></script>
+		<script type="module" src="Script/components/tree-list.ts" defer></script>
+		<script type="module" src="Script/components/drag-and-drop-hint.ts" defer></script>
+		<script type="module" src="Script/components/common-list.ts" defer></script>
+		<script type="module" src="Script/components/param-history.ts" defer></script>
+		<script type="module" src="Script/components/param-list.ts" defer></script>
+		<script type="module" src="Script/components/command-history.ts" defer></script>
+		<script type="module" src="Script/components/command-list.ts" defer></script>
+		<script type="module" src="Script/components/type-registry.ts" defer></script>
+		<script type="module" src="Script/components/parameter-pane.ts" defer></script>
+		<script type="module" src="Script/components/scroll-bar.ts" defer></script>
+		<script type="module" src="Script/components/file-browser.ts" defer></script>
+		<script type="module" src="Script/components/file-nav-pane.ts" defer></script>
+		<script type="module" src="Script/components/file-head-pane.ts" defer></script>
+		<script type="module" src="Script/components/file-body-pane.ts" defer></script>
+		<script type="module" src="Script/components/toast.ts" defer></script>
+		<script type="module" src="Script/components/loading-overlay.ts" defer></script>
+		<script type="module" src="Script/components/empty-state.ts" defer></script>
+		<script type="module" src="Script/codec/codec.ts" defer></script>
+		<script type="module" src="Script/webgl/webgl-init.ts" defer></script>
+		<script type="module" src="Script/webgl/webgl-methods.ts" defer></script>
+		<script type="module" src="Script/webgl/base-texture.ts" defer></script>
+		<script type="module" src="Script/webgl/texture.ts" defer></script>
+		<script type="module" src="Script/webgl/image-texture.ts" defer></script>
+		<script type="module" src="Script/webgl/texture-manager.ts" defer></script>
+		<script type="module" src="Script/webgl/batch-renderer.ts" defer></script>
+		<script type="module" src="Script/webgl/vector2.ts" defer></script>
+		<script type="module" src="Script/webgl/matrix2.ts" defer></script>
+		<script type="module" src="Script/audio/audio-manager.ts" defer></script>
+		<script type="module" src="Script/audio/audio-player.ts" defer></script>
+		<script type="module" src="Script/audio/multiple-audio-player.ts" defer></script>
+		<script type="module" src="Script/audio/reverb.ts" defer></script>
+		<script type="module" src="Script/printer/printer.ts" defer></script>
+		<script type="module" src="Script/data/data-object.ts" defer></script>
+		<script type="module" src="Script/data/metadata-manifest.ts" defer></script>
+		<script type="module" src="Script/data/metadata.ts" defer></script>
+		<script type="module" src="Script/data/project-settings-window.ts" defer></script>
+		<script type="module" src="Script/data/transition-window.ts" defer></script>
+		<script type="module" src="Script/data/team-window.ts" defer></script>
+		<script type="module" src="Script/plugin/plugin.ts" defer></script>
+		<script type="module" src="Script/variable/variable.ts" defer></script>
+		<script type="module" src="Script/variable/id.ts" defer></script>
+		<script type="module" src="Script/variable/data.ts" defer></script>
+		<script type="module" src="Script/variable/history.ts" defer></script>
+		<script type="module" src="Script/variable/panel.ts" defer></script>
+		<script type="module" src="Script/variable/list-methods.ts" defer></script>
+		<script type="module" src="Script/variable/list-events.ts" defer></script>
+		<script type="module" src="Script/tools/shortcut-registry.ts" defer></script>
+		<script type="module" src="Script/variable/keyboard-events.ts" defer></script>
+		<script type="module" src="Script/variable/window-events.ts" defer></script>
+		<script type="module" src="Script/variable/open.ts" defer></script>
+		<script type="module" src="Script/variable/initialize.ts" defer></script>
+		<script type="module" src="Script/attribute/attribute-window.ts" defer></script>
+		<script type="module" src="Script/components/tree-data-context.ts" defer></script>
+		<script type="module" src="Script/attribute/attribute-context.ts" defer></script>
+		<script type="module" src="Script/enum/enum-window.ts" defer></script>
+		<script type="module" src="Script/enum/enum-context.ts" defer></script>
+		<script type="module" src="Script/local/local-object.ts" defer></script>
+		<script type="module" src="Script/local/local-window.ts" defer></script>
+		<script type="module" src="Script/local/export-language-window.ts" defer></script>
+		<script type="module" src="Script/local/import-language-window.ts" defer></script>
+		<script type="module" src="Script/tools/window-object.ts" defer></script>
+		<script type="module" src="Script/tools/localization.ts" defer></script>
+		<script type="module" src="Script/tools/image-crop-window.ts" defer></script>
+		<script type="module" src="Script/tools/color-picker-window.ts" defer></script>
+		<script type="module" src="Script/tools/text-capture.ts" defer></script>
+		<script type="module" src="Script/tools/zoom-window.ts" defer></script>
+		<script type="module" src="Script/tools/rename-window.ts" defer></script>
+		<script type="module" src="Script/tools/set-key-window.ts" defer></script>
+		<script type="module" src="Script/tools/set-number-window.ts" defer></script>
+		<script type="module" src="Script/tools/pointer-object.ts" defer></script>
+		<script type="module" src="Script/tools/history.ts" defer></script>
+		<script type="module" src="Script/tools/undo-manager.ts" defer></script>
+		<script type="module" src="Script/tools/property-list.ts" defer></script>
+		<script type="module" src="Script/tools/condition-list.ts" defer></script>
+		<script type="module" src="Script/tools/event-list.ts" defer></script>
+		<script type="module" src="Script/tools/script-list.ts" defer></script>
+		<script type="module" src="Script/tools/scene-preset-window.ts" defer></script>
+		<script type="module" src="Script/tools/preset-element-window.ts" defer></script>
+		<script type="module" src="Script/tools/array-window.ts" defer></script>
+		<script type="module" src="Script/title/title-bar.ts" defer></script>
+		<script type="module" src="Script/title/new-project-window.ts" defer></script>
+		<script type="module" src="Script/title/deploy-project-window.ts" defer></script>
+		<script type="module" src="Script/title/menu-bar.ts" defer></script>
+		<script type="module" src="Script/title/home-page.ts" defer></script>
+		<script type="module" src="Script/layout/layout.ts" defer></script>
+		<script type="module" src="Script/scene/scene-window.ts" defer></script>
+		<script type="module" src="Script/scene/scene-camera.ts" defer></script>
+		<script type="module" src="Script/scene/scene-target.ts" defer></script>
+		<script type="module" src="Script/scene/scene-context.ts" defer></script>
+		<script type="module" src="Script/scene/scene-marquee.ts" defer></script>
+		<script type="module" src="Script/scene/scene-list.ts" defer></script>
+		<script type="module" src="Script/scene/scene-animate.ts" defer></script>
+		<script type="module" src="Script/scene/scene-map-record.ts" defer></script>
+		<script src="Script/scene/scene-create-default-animation.ts" defer></script>
+		<script type="module" src="Script/scene/scene-utility.ts" defer></script>
+		<script type="module" src="Script/scene/scene-draw.ts" defer></script>
+		<script type="module" src="Script/scene/scene-selection.ts" defer></script>
+		<script type="module" src="Script/scene/scene-edit.ts" defer></script>
+		<script type="module" src="Script/scene/scene-events.ts" defer></script>
+		<script type="module" src="Script/scene/texture-set.ts" defer></script>
+		<script type="module" src="Script/scene/coordinate-point.ts" defer></script>
+		<script type="module" src="Script/scene/default-object-folder.ts" defer></script>
+		<script type="module" src="Script/scene/move-scene.ts" defer></script>
+		<script type="module" src="Script/scene/tilemap-shortcut-list.ts" defer></script>
+		<script type="module" src="Script/scene/parallax.ts" defer></script>
+		<script type="module" src="Script/scene/light.ts" defer></script>
+		<script type="module" src="Script/ui/ui-window.ts" defer></script>
+		<script type="module" src="Script/ui/element-base.ts" defer></script>
+		<script type="module" src="Script/ui/root-element.ts" defer></script>
+		<script type="module" src="Script/ui/image-element.ts" defer></script>
+		<script type="module" src="Script/ui/text-element.ts" defer></script>
+		<script type="module" src="Script/ui/text-box-element.ts" defer></script>
+		<script type="module" src="Script/ui/dialog-element.ts" defer></script>
+		<script type="module" src="Script/ui/progress-bar-element.ts" defer></script>
+		<script type="module" src="Script/ui/button-element.ts" defer></script>
+		<script type="module" src="Script/ui/animation-element.ts" defer></script>
+		<script type="module" src="Script/ui/video-element.ts" defer></script>
+		<script type="module" src="Script/ui/window-element.ts" defer></script>
+		<script type="module" src="Script/ui/container-element.ts" defer></script>
+		<script type="module" src="Script/ui/reference-element.ts" defer></script>
+		<script type="module" src="Script/ui/element-instance-list.ts" defer></script>
+		<script type="module" src="Script/animation/animation-window.ts" defer></script>
+		<script type="module" src="Script/animation/animation-player.ts" defer></script>
+		<script type="module" src="Script/animation/curve-window.ts" defer></script>
+		<script type="module" src="Script/particle/particle-window.ts" defer></script>
+		<script type="module" src="Script/particle/particle-emitter.ts" defer></script>
+		<script type="module" src="Script/particle/particle-layer.ts" defer></script>
+		<script type="module" src="Script/particle/particle-element.ts" defer></script>
+		<script type="module" src="Script/palette/palette.ts" defer></script>
+		<script type="module" src="Script/palette/auto-tile.ts" defer></script>
+		<script type="module" src="Script/palette/tile-frame-generator.ts" defer></script>
+		<script type="module" src="Script/palette/tile-frame-index.ts" defer></script>
+		<script type="module" src="Script/palette/tile-node-window.ts" defer></script>
+		<script type="module" src="Script/sprite/sprite.ts" defer></script>
+		<script type="module" src="Script/browser/project-browser.ts" defer></script>
+		<script type="module" src="Script/browser/resource-selector.ts" defer></script>
+		<script type="module" src="Script/inspector/inspector.ts" defer></script>
+		<script type="module" src="Script/inspector/file-scene-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-ui-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-animation-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-particle-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-tileset-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-actor-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-skill-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-trigger-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-item-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-equipment-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-state-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-event-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-image-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-audio-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-video-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-font-page.ts" defer></script>
+		<script type="module" src="Script/inspector/file-script-page.ts" defer></script>
+		<script type="module" src="Script/inspector/scene-actor-page.ts" defer></script>
+		<script type="module" src="Script/inspector/scene-region-page.ts" defer></script>
+		<script type="module" src="Script/inspector/scene-light-page.ts" defer></script>
+		<script type="module" src="Script/inspector/scene-animation-page.ts" defer></script>
+		<script type="module" src="Script/inspector/scene-particle-page.ts" defer></script>
+		<script type="module" src="Script/inspector/scene-parallax-page.ts" defer></script>
+		<script type="module" src="Script/inspector/scene-tilemap-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-image-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-text-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-textbox-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-dialog-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-progress-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-button-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-animation-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-video-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-window-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-container-page.ts" defer></script>
+		<script type="module" src="Script/inspector/element-reference-page.ts" defer></script>
+		<script type="module" src="Script/inspector/animation-action-page.ts" defer></script>
+		<script src="Script/inspector/animation-bone-layer-page.ts" defer></script>
+		<script src="Script/inspector/animation-bone-frame-page.ts" defer></script>
+		<script src="Script/inspector/animation-sprite-layer-page.ts" defer></script>
+		<script src="Script/inspector/animation-sprite-frame-page.ts" defer></script>
+		<script src="Script/inspector/animation-particle-layer-page.ts" defer></script>
+		<script src="Script/inspector/animation-particle-frame-page.ts" defer></script>
+		<script src="Script/inspector/animation-sound-layer-page.ts" defer></script>
+		<script src="Script/inspector/animation-sound-frame-page.ts" defer></script>
+		<script type="module" src="Script/inspector/particle-layer-page.ts" defer></script>
+		<script type="module" src="Script/module/command/schema.ts" defer></script>
+		<script type="module" src="Script/command/command-object.ts" defer></script>
+		<script type="module" src="Script/command/command-color.ts" defer></script>
+		<script type="module" src="Script/command/command-util.ts" defer></script>
+		<script type="module" src="Script/command/command-parse.ts" defer></script>
+		<script type="module" src="Script/command/command-custom.ts" defer></script>
+		<script type="module" src="Script/module/command/activateScene.ts" defer></script>
+		<script src="Script/module/command/addAnimationComponent.ts" defer></script>
+		<script type="module" src="Script/module/command/appendTarget.ts" defer></script>
+		<script type="module" src="Script/module/command/block.ts" defer></script>
+		<script type="module" src="Script/module/command/break.ts" defer></script>
+		<script type="module" src="Script/module/command/callEvent.ts" defer></script>
+		<script type="module" src="Script/module/command/castSkill.ts" defer></script>
+		<script src="Script/module/command/changeActorAnimation.ts" defer></script>
+		<script src="Script/module/command/changeActorEquipment.ts" defer></script>
+		<script type="module" src="Script/module/command/changeActorMotion.ts" defer></script>
+		<script src="Script/module/command/changeActorPortrait.ts" defer></script>
+		<script type="module" src="Script/module/command/changeActorSkill.ts" defer></script>
+		<script type="module" src="Script/module/command/changeActorSprite.ts" defer></script>
+		<script type="module" src="Script/module/command/changeActorState.ts" defer></script>
+		<script type="module" src="Script/module/command/changeActorTeam.ts" defer></script>
+		<script src="Script/module/command/changePassableTerrain.ts" defer></script>
+		<script type="module" src="Script/module/command/changeThreat.ts" defer></script>
+		<script type="module" src="Script/module/command/clampCamera.ts" defer></script>
+		<script type="module" src="Script/module/command/comment.ts" defer></script>
+		<script type="module" src="Script/module/command/continue.ts" defer></script>
+		<script type="module" src="Script/module/command/continueGame.ts" defer></script>
+		<script type="module" src="Script/module/command/controlButton.ts" defer></script>
+		<script type="module" src="Script/module/command/controlDialog.ts" defer></script>
+		<script type="module" src="Script/module/command/createActor.ts" defer></script>
+		<script type="module" src="Script/module/command/createElement.ts" defer></script>
+		<script type="module" src="Script/module/command/createGlobalActor.ts" defer></script>
+		<script type="module" src="Script/module/command/createObject.ts" defer></script>
+		<script type="module" src="Script/module/command/createTrigger.ts" defer></script>
+		<script type="module" src="Script/module/command/deleteActor.ts" defer></script>
+		<script type="module" src="Script/module/command/deleteElement.ts" defer></script>
+		<script type="module" src="Script/module/command/deleteGlobalActor.ts" defer></script>
+		<script type="module" src="Script/module/command/deleteObject.ts" defer></script>
+		<script type="module" src="Script/module/command/deleteScene.ts" defer></script>
+		<script type="module" src="Script/module/command/deleteTile.ts" defer></script>
+		<script type="module" src="Script/module/command/deleteVariable.ts" defer></script>
+		<script type="module" src="Script/module/command/detectTargets.ts" defer></script>
+		<script type="module" src="Script/module/command/discardTargets.ts" defer></script>
+		<script type="module" src="Script/module/command/fixAngle.ts" defer></script>
+		<script type="module" src="Script/module/command/followActor.ts" defer></script>
+		<script type="module" src="Script/module/command/forEach.ts" defer></script>
+		<script type="module" src="Script/module/command/gameData.ts" defer></script>
+		<script type="module" src="Script/module/command/getActor.ts" defer></script>
+		<script type="module" src="Script/module/command/getMultipleActors.ts" defer></script>
+		<script type="module" src="Script/module/command/getTarget.ts" defer></script>
+		<script type="module" src="Script/module/command/if.ts" defer></script>
+		<script type="module" src="Script/module/command/independent.ts" defer></script>
+		<script type="module" src="Script/module/command/jumpTo.ts" defer></script>
+		<script type="module" src="Script/module/command/label.ts" defer></script>
+		<script type="module" src="Script/module/command/loadImage.ts" defer></script>
+		<script type="module" src="Script/module/command/loadScene.ts" defer></script>
+		<script type="module" src="Script/module/command/loadSubscene.ts" defer></script>
+		<script type="module" src="Script/module/command/loop.ts" defer></script>
+		<script type="module" src="Script/module/command/moveActor.ts" defer></script>
+		<script type="module" src="Script/module/command/moveCamera.ts" defer></script>
+		<script type="module" src="Script/module/command/moveElement.ts" defer></script>
+		<script type="module" src="Script/module/command/moveLight.ts" defer></script>
+		<script type="module" src="Script/module/command/nestElement.ts" defer></script>
+		<script type="module" src="Script/module/command/pauseGame.ts" defer></script>
+		<script src="Script/module/command/playActorAnimation.ts" defer></script>
+		<script type="module" src="Script/module/command/playAnimation.ts" defer></script>
+		<script type="module" src="Script/module/command/playAudio.ts" defer></script>
+		<script type="module" src="Script/module/command/preventSceneInput.ts" defer></script>
+		<script type="module" src="Script/module/command/registerEvent.ts" defer></script>
+		<script src="Script/module/command/removeAnimationComponent.ts" defer></script>
+		<script type="module" src="Script/module/command/removeTarget.ts" defer></script>
+		<script type="module" src="Script/module/command/renderOutline.ts" defer></script>
+		<script type="module" src="Script/module/command/reset.ts" defer></script>
+		<script type="module" src="Script/module/command/resetTargets.ts" defer></script>
+		<script type="module" src="Script/module/command/restoreAudio.ts" defer></script>
+		<script type="module" src="Script/module/command/restoreSceneInput.ts" defer></script>
+		<script type="module" src="Script/module/command/return.ts" defer></script>
+		<script type="module" src="Script/module/command/saveAudio.ts" defer></script>
+		<script type="module" src="Script/module/command/script.ts" defer></script>
+		<script type="module" src="Script/module/command/setActive.ts" defer></script>
+		<script type="module" src="Script/module/command/setAmbientLight.ts" defer></script>
+		<script type="module" src="Script/module/command/setAngle.ts" defer></script>
+		<script type="module" src="Script/module/command/setAnimation.ts" defer></script>
+		<script src="Script/module/command/setAnimationComponent.ts" defer></script>
+		<script type="module" src="Script/module/command/setBoolean.ts" defer></script>
+		<script type="module" src="Script/module/command/setButton.ts" defer></script>
+		<script type="module" src="Script/module/command/setCooldown.ts" defer></script>
+		<script type="module" src="Script/module/command/setCursor.ts" defer></script>
+		<script type="module" src="Script/module/command/setDialogBox.ts" defer></script>
+		<script type="module" src="Script/module/command/setElement.ts" defer></script>
+		<script type="module" src="Script/module/command/setEvent.ts" defer></script>
+		<script type="module" src="Script/module/command/setFocus.ts" defer></script>
+		<script type="module" src="Script/module/command/setGameSpeed.ts" defer></script>
+		<script type="module" src="Script/module/command/setImage.ts" defer></script>
+		<script type="module" src="Script/module/command/setInventory.ts" defer></script>
+		<script type="module" src="Script/module/command/setItem.ts" defer></script>
+		<script type="module" src="Script/module/command/setLanguage.ts" defer></script>
+		<script type="module" src="Script/module/command/setList.ts" defer></script>
+		<script type="module" src="Script/module/command/setLoop.ts" defer></script>
+		<script type="module" src="Script/module/command/setMovementSpeed.ts" defer></script>
+		<script type="module" src="Script/module/command/setNumber.ts" defer></script>
+		<script type="module" src="Script/module/command/setObject.ts" defer></script>
+		<script src="Script/module/command/setObjectAnimation.ts" defer></script>
+		<script type="module" src="Script/module/command/setPan.ts" defer></script>
+		<script type="module" src="Script/module/command/setPartyMember.ts" defer></script>
+		<script type="module" src="Script/module/command/setPlayerActor.ts" defer></script>
+		<script src="Script/module/command/setPointerEventRoot.ts" defer></script>
+		<script type="module" src="Script/module/command/setProgressBar.ts" defer></script>
+		<script type="module" src="Script/module/command/setResolution.ts" defer></script>
+		<script type="module" src="Script/module/command/setReverb.ts" defer></script>
+		<script type="module" src="Script/module/command/setShortcut.ts" defer></script>
+		<script type="module" src="Script/module/command/setSkill.ts" defer></script>
+		<script type="module" src="Script/module/command/setState.ts" defer></script>
+		<script type="module" src="Script/module/command/setString.ts" defer></script>
+		<script type="module" src="Script/module/command/setTarget.ts" defer></script>
+		<script type="module" src="Script/module/command/setTeamRelation.ts" defer></script>
+		<script type="module" src="Script/module/command/setTerrain.ts" defer></script>
+		<script type="module" src="Script/module/command/setText.ts" defer></script>
+		<script type="module" src="Script/module/command/setTextBox.ts" defer></script>
+		<script type="module" src="Script/module/command/setTile.ts" defer></script>
+		<script type="module" src="Script/module/command/setTriggerAngle.ts" defer></script>
+		<script src="Script/module/command/setTriggerDuration.ts" defer></script>
+		<script type="module" src="Script/module/command/setTriggerMotion.ts" defer></script>
+		<script type="module" src="Script/module/command/setTriggerSpeed.ts" defer></script>
+		<script type="module" src="Script/module/command/setVideo.ts" defer></script>
+		<script type="module" src="Script/module/command/setVolume.ts" defer></script>
+		<script type="module" src="Script/module/command/setWeight.ts" defer></script>
+		<script type="module" src="Script/module/command/setWindow.ts" defer></script>
+		<script type="module" src="Script/module/command/setZoomFactor.ts" defer></script>
+		<script type="module" src="Script/module/command/shakeScreen.ts" defer></script>
+		<script type="module" src="Script/module/command/showChoices.ts" defer></script>
+		<script type="module" src="Script/module/command/showText.ts" defer></script>
+		<script type="module" src="Script/module/command/simulateKey.ts" defer></script>
+		<script src="Script/module/command/stopActorAnimation.ts" defer></script>
+		<script type="module" src="Script/module/command/stopAudio.ts" defer></script>
+		<script type="module" src="Script/module/command/stopEvent.ts" defer></script>
+		<script type="module" src="Script/module/command/switch.ts" defer></script>
+		<script src="Script/module/command/switchCollisionSystem.ts" defer></script>
+		<script type="module" src="Script/module/command/tintImage.ts" defer></script>
+		<script type="module" src="Script/module/command/tintScreen.ts" defer></script>
+		<script src="Script/module/command/transferGlobalActor.ts" defer></script>
+		<script type="module" src="Script/module/command/transition.ts" defer></script>
+		<script type="module" src="Script/module/command/translateActor.ts" defer></script>
+		<script type="module" src="Script/module/command/unclampCamera.ts" defer></script>
+		<script type="module" src="Script/module/command/unloadSubscene.ts" defer></script>
+		<script type="module" src="Script/module/command/useItem.ts" defer></script>
+		<script type="module" src="Script/module/command/wait.ts" defer></script>
+		<script type="module" src="Script/module/command/waitForVideo.ts" defer></script>
+		<script type="module" src="Script/command/command-tip.ts" defer></script>
+		<script type="module" src="Script/command/text-tip.ts" defer></script>
+		<script type="module" src="Script/command/event-editor.ts" defer></script>
+		<script type="module" src="Script/command/show-options-window.ts" defer></script>
+		<script type="module" src="Script/command/set-value-operand-window.ts" defer></script>
+		<script src="Script/command/conditional-branch-window.ts" defer></script>
+		<script src="Script/command/conditional-condition-window.ts" defer></script>
+		<script type="module" src="Script/command/match-branch-window.ts" defer></script>
+		<script type="module" src="Script/command/match-condition-window.ts" defer></script>
+		<script type="module" src="Script/command/property-window-factory.ts" defer></script>
+		<script src="Script/command/set-image-property-window.ts" defer></script>
+		<script type="module" src="Script/command/set-text-property-window.ts" defer></script>
+		<script src="Script/command/set-textbox-property-window.ts" defer></script>
+		<script src="Script/command/set-dialog-property-window.ts" defer></script>
+		<script src="Script/command/set-progress-property-window.ts" defer></script>
+		<script src="Script/command/set-button-property-window.ts" defer></script>
+		<script src="Script/command/set-animation-property-window.ts" defer></script>
+		<script src="Script/command/set-video-property-window.ts" defer></script>
+		<script src="Script/command/set-window-property-window.ts" defer></script>
+		<script src="Script/command/move-element-property-window.ts" defer></script>
+		<script src="Script/command/move-light-property-window.ts" defer></script>
+		<script type="module" src="Script/command/variable-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/actor-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/skill-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/state-accessor-window.ts" defer></script>
+		<script src="Script/command/equipment-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/item-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/position-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/angle-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/trigger-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/light-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/region-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/tilemap-accessor-window.ts" defer></script>
+		<script src="Script/command/scene-object-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/element-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/ancestor-accessor-window.ts" defer></script>
+		<script type="module" src="Script/command/custom-command-window.ts" defer></script>
+		<script type="module" src="Script/command/mark-string-manager.ts" defer></script>
+		<script type="module" src="Script/log/log-window.ts" defer></script>
+		<script type="module" src="Script/log/update-log-window.ts" defer></script>
+		<script type="module" src="Script/log/related-references.ts" defer></script>
+		<script type="module" src="Script/update/updater.ts" defer></script>
+		<script type="module" src="Script/update/project.ts" defer></script>
+		<script type="module" src="Script/update/config.ts" defer></script>
+		<script type="module" src="Script/update/events.ts" defer></script>
+		<script type="module" src="Script/update/actors.ts" defer></script>
+		<script type="module" src="Script/update/skills.ts" defer></script>
+		<script type="module" src="Script/update/triggers.ts" defer></script>
+		<script type="module" src="Script/update/items.ts" defer></script>
+		<script type="module" src="Script/update/equipments.ts" defer></script>
+		<script type="module" src="Script/update/states.ts" defer></script>
+		<script type="module" src="Script/update/scenes.ts" defer></script>
+		<script type="module" src="Script/update/tilesets.ts" defer></script>
+		<script type="module" src="Script/update/elements.ts" defer></script>
+		<script type="module" src="Script/update/animations.ts" defer></script>
+		<script type="module" src="Script/update/particles.ts" defer></script>
+		<script type="module" src="Script/update/teams.ts" defer></script>
+		<script type="module" src="Script/update/localization.ts" defer></script>
+		<script type="module" src="Script/update/backup.ts" defer></script>
+		<script type="module" src="Script/update/to-latest.ts" defer></script>
+		<script type="module" src="Script/update/incremental.ts" defer></script>
+		<script type="module" src="Script/update/version-warning.ts" defer></script>
 
-<head>
-  <script>window.__nodeRequire=window.require</script>
-  <title>Yami RPG Editor</title>
-  <meta charset="utf-8" content="text/html" />
-  <meta name="viewport" content="width=device-width" />
-  <link rel="stylesheet" href="index.css" />
-  <link rel='stylesheet' href='vs/editor/editor.main.css' />
-  <script src="Script/module/eventbus.js" defer></script>
-  <script src="Script/util/config.js" defer></script>
-  <script src="Script/util/object.js" defer></script>
-  <script src="Script/util/array.js" defer></script>
-  <script src="Script/util/string.js" defer></script>
-  <script src="Script/util/number.js" defer></script>
-  <script src="Script/util/function.js" defer></script>
-  <script src="Script/util/safe.js" defer></script>
-  <script src="Script/util/regexp.js" defer></script>
-  <script src="Script/util/css.js" defer></script>
-  <script src="Script/util/canvas.js" defer></script>
-  <script src="Script/util/event-accessors.js" defer></script>
-  <script src="Script/util/mouse-event.js" defer></script>
-  <script src="Script/util/pointer-event.js" defer></script>
-  <script src="Script/util/data-transfer.js" defer></script>
-  <script src="Script/util/event-target.js" defer></script>
-  <script src="Script/util/node-list.js" defer></script>
-  <script src="Script/util/dom.js" defer></script>
-  <script src="Script/util/color-utils.js" defer></script>
-  <script src="Script/util/stage-color.js" defer></script>
-  <script src="Script/util/math.js" defer></script>
-  <script src="Script/util/timer.js" defer></script>
-  <script src="Script/util/clipboard.js" defer></script>
-  <script src="Script/util/drag-drop.js" defer></script>
-  <script src="Script/util/keyboard.js" defer></script>
-  <script src="Script/util/dpr.js" defer></script>
-  <script src="Script/util/platform.js" defer></script>
-  <script src="Script/file/file-system-core.js" defer></script>
-  <script src="Script/file/file-system.js" defer></script>
-  <script src="Script/file/path-utils.js" defer></script>
-  <script src="Script/file/directory-object.js" defer></script>
-  <script src="Script/file/folder-item.js" defer></script>
-  <script src="Script/file/file-item.js" defer></script>
-  <script src="Script/file/guid.js" defer></script>
-  <script src="Script/components/element-accessors.js" defer></script>
-  <script src="Script/components/element-methods.js" defer></script>
-  <script src="Script/components/scroll-listener.js" defer></script>
-  <script src="Script/components/button-extension.js" defer></script>
-  <script src="Script/components/window-frame.js" defer></script>
-  <script src="Script/components/title-bar.js" defer></script>
-  <script src="Script/components/page-manager.js" defer></script>
-  <script src="Script/components/marquee-area.js" defer></script>
-  <script src="Script/components/detail-box.js" defer></script>
-  <script src="Script/components/detail-summary.js" defer></script>
-  <script src="Script/components/text-history.js" defer></script>
-  <script src="Script/components/number-history.js" defer></script>
-  <script src="Script/components/history-timer.js" defer></script>
-  <script src="Script/components/text-box.js" defer></script>
-  <script src="Script/components/text-area.js" defer></script>
-  <script src="Script/components/keyboard-box.js" defer></script>
-  <script src="Script/components/gamepad-box.js" defer></script>
-  <script src="Script/components/color-box.js" defer></script>
-  <script src="Script/components/check-box.js" defer></script>
-  <script src="Script/components/radio-proxy.js" defer></script>
-  <script src="Script/components/radio-box.js" defer></script>
-  <script src="Script/components/switch-item.js" defer></script>
-  <script src="Script/components/slider-box.js" defer></script>
-  <script src="Script/components/number-box.js" defer></script>
-  <script src="Script/components/select-box.js" defer></script>
-  <script src="Script/components/select-list.js" defer></script>
-  <script src="Script/components/menu-list.js" defer></script>
-  <script src="Script/components/custom-box.js" defer></script>
-  <script src="Script/components/number-var.js" defer></script>
-  <script src="Script/components/string-var.js" defer></script>
-  <script src="Script/components/textarea-var.js" defer></script>
-  <script src="Script/components/select-var.js" defer></script>
-  <script src="Script/components/file-var.js" defer></script>
-  <script src="Script/components/filter-box.js" defer></script>
-  <script src="Script/components/tab-bar.js" defer></script>
-  <script src="Script/components/nav-bar.js" defer></script>
-  <script src="Script/components/tree-list.js" defer></script>
-  <script src="Script/components/drag-and-drop-hint.js" defer></script>
-  <script src="Script/components/common-list.js" defer></script>
-  <script src="Script/components/param-history.js" defer></script>
-  <script src="Script/components/param-list.js" defer></script>
-  <script src="Script/components/command-history.js" defer></script>
-  <script src="Script/components/command-list.js" defer></script>
-  <script src="Script/components/type-registry.js" defer></script>
-  <script src="Script/components/parameter-pane.js" defer></script>
-  <script src="Script/components/scroll-bar.js" defer></script>
-  <script src="Script/components/file-browser.js" defer></script>
-  <script src="Script/components/file-nav-pane.js" defer></script>
-  <script src="Script/components/file-head-pane.js" defer></script>
-  <script src="Script/components/file-body-pane.js" defer></script>
-  <script src="Script/components/toast.js" defer></script>
-  <script src="Script/components/loading-overlay.js" defer></script>
-  <script src="Script/components/empty-state.js" defer></script>
-  <script src="Script/codec/codec.js" defer></script>
-  <script src="Script/webgl/webgl-init.js" defer></script>
-  <script src="Script/webgl/webgl-methods.js" defer></script>
-  <script src="Script/webgl/base-texture.js" defer></script>
-  <script src="Script/webgl/texture.js" defer></script>
-  <script src="Script/webgl/image-texture.js" defer></script>
-  <script src="Script/webgl/texture-manager.js" defer></script>
-  <script src="Script/webgl/batch-renderer.js" defer></script>
-  <script src="Script/webgl/vector2.js" defer></script>
-  <script src="Script/webgl/matrix2.js" defer></script>
-  <script src="Script/audio/audio-manager.js" defer></script>
-  <script src="Script/audio/audio-player.js" defer></script>
-  <script src="Script/audio/multiple-audio-player.js" defer></script>
-  <script src="Script/audio/reverb.js" defer></script>
-  <script src="Script/printer/printer.js" defer></script>
-  <script src="Script/data/data-object.js" defer></script>
-  <script src="Script/data/metadata-manifest.js" defer></script>
-  <script src="Script/data/metadata.js" defer></script>
-  <script src="Script/data/project-settings-window.js" defer></script>
-  <script src="Script/data/transition-window.js" defer></script>
-  <script src="Script/data/team-window.js" defer></script>
-  <script src="Script/plugin/plugin.js" defer></script>
-  <script src="Script/variable/variable.js" defer></script>
-  <script src="Script/variable/id.js" defer></script>
-  <script src="Script/variable/data.js" defer></script>
-  <script src="Script/variable/history.js" defer></script>
-  <script src="Script/variable/panel.js" defer></script>
-  <script src="Script/variable/list-methods.js" defer></script>
-  <script src="Script/variable/list-events.js" defer></script>
-  <script src="Script/tools/shortcut-registry.js" defer></script>
-  <script src="Script/variable/keyboard-events.js" defer></script>
-  <script src="Script/variable/window-events.js" defer></script>
-  <script src="Script/variable/open.js" defer></script>
-  <script src="Script/variable/initialize.js" defer></script>
-  <script src="Script/attribute/attribute-window.js" defer></script>
-  <script src="Script/components/tree-data-context.js" defer></script>
-  <script src="Script/attribute/attribute-context.js" defer></script>
-  <script src="Script/enum/enum-window.js" defer></script>
-  <script src="Script/enum/enum-context.js" defer></script>
-  <script src="Script/local/local-object.js" defer></script>
-  <script src="Script/local/local-window.js" defer></script>
-  <script src="Script/local/export-language-window.js" defer></script>
-  <script src="Script/local/import-language-window.js" defer></script>
-  <script src="Script/tools/window-object.js" defer></script>
-  <script src="Script/tools/localization.js" defer></script>
-  <script src="Script/tools/image-crop-window.js" defer></script>
-  <script src="Script/tools/color-picker-window.js" defer></script>
-  <script src="Script/tools/text-capture.js" defer></script>
-  <script src="Script/tools/zoom-window.js" defer></script>
-  <script src="Script/tools/rename-window.js" defer></script>
-  <script src="Script/tools/set-key-window.js" defer></script>
-  <script src="Script/tools/set-number-window.js" defer></script>
-  <script src="Script/tools/pointer-object.js" defer></script>
-  <script src="Script/tools/history.js" defer></script>
-  <script src="Script/tools/undo-manager.js" defer></script>
-  <script src="Script/tools/property-list.js" defer></script>
-  <script src="Script/tools/condition-list.js" defer></script>
-  <script src="Script/tools/event-list.js" defer></script>
-  <script src="Script/tools/script-list.js" defer></script>
-  <script src="Script/tools/scene-preset-window.js" defer></script>
-  <script src="Script/tools/preset-element-window.js" defer></script>
-  <script src="Script/tools/array-window.js" defer></script>
-  <script src="Script/title/title-bar.js" defer></script>
-  <script src="Script/title/new-project-window.js" defer></script>
-  <script src="Script/title/deploy-project-window.js" defer></script>
-  <script src="Script/title/menu-bar.js" defer></script>
-  <script src="Script/title/home-page.js" defer></script>
-  <script src="Script/layout/layout.js" defer></script>
-  <script src="Script/scene/scene-window.js" defer></script>
-  <script src="Script/scene/scene-camera.js" defer></script>
-  <script src="Script/scene/scene-target.js" defer></script>
-  <script src="Script/scene/scene-context.js" defer></script>
-  <script src="Script/scene/scene-marquee.js" defer></script>
-  <script src="Script/scene/scene-list.js" defer></script>
-  <script src="Script/scene/scene-animate.js" defer></script>
-  <script src="Script/scene/scene-map-record.js" defer></script>
-  <script src="Script/scene/scene-create-default-animation.js" defer></script>
-  <script src="Script/scene/scene-utility.js" defer></script>
-  <script src="Script/scene/scene-draw.js" defer></script>
-  <script src="Script/scene/scene-selection.js" defer></script>
-  <script src="Script/scene/scene-edit.js" defer></script>
-  <script src="Script/scene/scene-events.js" defer></script>
-  <script src="Script/scene/texture-set.js" defer></script>
-  <script src="Script/scene/coordinate-point.js" defer></script>
-  <script src="Script/scene/default-object-folder.js" defer></script>
-  <script src="Script/scene/move-scene.js" defer></script>
-  <script src="Script/scene/tilemap-shortcut-list.js" defer></script>
-  <script src="Script/scene/parallax.js" defer></script>
-  <script src="Script/scene/light.js" defer></script>
-  <script src="Script/ui/ui-window.js" defer></script>
-  <script src="Script/ui/element-base.js" defer></script>
-  <script src="Script/ui/root-element.js" defer></script>
-  <script src="Script/ui/image-element.js" defer></script>
-  <script src="Script/ui/text-element.js" defer></script>
-  <script src="Script/ui/text-box-element.js" defer></script>
-  <script src="Script/ui/dialog-element.js" defer></script>
-  <script src="Script/ui/progress-bar-element.js" defer></script>
-  <script src="Script/ui/button-element.js" defer></script>
-  <script src="Script/ui/animation-element.js" defer></script>
-  <script src="Script/ui/video-element.js" defer></script>
-  <script src="Script/ui/window-element.js" defer></script>
-  <script src="Script/ui/container-element.js" defer></script>
-  <script src="Script/ui/reference-element.js" defer></script>
-  <script src="Script/ui/element-instance-list.js" defer></script>
-  <script src="Script/animation/animation-window.js" defer></script>
-  <script src="Script/animation/animation-player.js" defer></script>
-  <script src="Script/animation/curve-window.js" defer></script>
-  <script src="Script/particle/particle-window.js" defer></script>
-  <script src="Script/particle/particle-emitter.js" defer></script>
-  <script src="Script/particle/particle-layer.js" defer></script>
-  <script src="Script/particle/particle-element.js" defer></script>
-  <script src="Script/palette/palette.js" defer></script>
-  <script src="Script/palette/auto-tile.js" defer></script>
-  <script src="Script/palette/tile-frame-generator.js" defer></script>
-  <script src="Script/palette/tile-frame-index.js" defer></script>
-  <script src="Script/palette/tile-node-window.js" defer></script>
-  <script src="Script/sprite/sprite.js" defer></script>
-  <script src="Script/browser/project-browser.js" defer></script>
-  <script src="Script/browser/resource-selector.js" defer></script>
-  <script src="Script/inspector/inspector.js" defer></script>
-  <script src="Script/inspector/file-scene-page.js" defer></script>
-  <script src="Script/inspector/file-ui-page.js" defer></script>
-  <script src="Script/inspector/file-animation-page.js" defer></script>
-  <script src="Script/inspector/file-particle-page.js" defer></script>
-  <script src="Script/inspector/file-tileset-page.js" defer></script>
-  <script src="Script/inspector/file-actor-page.js" defer></script>
-  <script src="Script/inspector/file-skill-page.js" defer></script>
-  <script src="Script/inspector/file-trigger-page.js" defer></script>
-  <script src="Script/inspector/file-item-page.js" defer></script>
-  <script src="Script/inspector/file-equipment-page.js" defer></script>
-  <script src="Script/inspector/file-state-page.js" defer></script>
-  <script src="Script/inspector/file-event-page.js" defer></script>
-  <script src="Script/inspector/file-image-page.js" defer></script>
-  <script src="Script/inspector/file-audio-page.js" defer></script>
-  <script src="Script/inspector/file-video-page.js" defer></script>
-  <script src="Script/inspector/file-font-page.js" defer></script>
-  <script src="Script/inspector/file-script-page.js" defer></script>
-  <script src="Script/inspector/scene-actor-page.js" defer></script>
-  <script src="Script/inspector/scene-region-page.js" defer></script>
-  <script src="Script/inspector/scene-light-page.js" defer></script>
-  <script src="Script/inspector/scene-animation-page.js" defer></script>
-  <script src="Script/inspector/scene-particle-page.js" defer></script>
-  <script src="Script/inspector/scene-parallax-page.js" defer></script>
-  <script src="Script/inspector/scene-tilemap-page.js" defer></script>
-  <script src="Script/inspector/element-page.js" defer></script>
-  <script src="Script/inspector/element-image-page.js" defer></script>
-  <script src="Script/inspector/element-text-page.js" defer></script>
-  <script src="Script/inspector/element-textbox-page.js" defer></script>
-  <script src="Script/inspector/element-dialog-page.js" defer></script>
-  <script src="Script/inspector/element-progress-page.js" defer></script>
-  <script src="Script/inspector/element-button-page.js" defer></script>
-  <script src="Script/inspector/element-animation-page.js" defer></script>
-  <script src="Script/inspector/element-video-page.js" defer></script>
-  <script src="Script/inspector/element-window-page.js" defer></script>
-  <script src="Script/inspector/element-container-page.js" defer></script>
-  <script src="Script/inspector/element-reference-page.js" defer></script>
-  <script src="Script/inspector/animation-action-page.js" defer></script>
-  <script src="Script/inspector/animation-bone-layer-page.js" defer></script>
-  <script src="Script/inspector/animation-bone-frame-page.js" defer></script>
-  <script src="Script/inspector/animation-sprite-layer-page.js" defer></script>
-  <script src="Script/inspector/animation-sprite-frame-page.js" defer></script>
-  <script src="Script/inspector/animation-particle-layer-page.js" defer></script>
-  <script src="Script/inspector/animation-particle-frame-page.js" defer></script>
-  <script src="Script/inspector/animation-sound-layer-page.js" defer></script>
-  <script src="Script/inspector/animation-sound-frame-page.js" defer></script>
-  <script src="Script/inspector/particle-layer-page.js" defer></script>
-  <script src="Script/module/command/schema.js" defer></script>
-  <script src="Script/command/command-object.js" defer></script>
-  <script src="Script/command/command-color.js" defer></script>
-  <script src="Script/command/command-util.js" defer></script>
-  <script src="Script/command/command-parse.js" defer></script>
-  <script src="Script/command/command-custom.js" defer></script>
-	<script src="Script/module/command/activateScene.js" defer></script>
-	<script src="Script/module/command/addAnimationComponent.js" defer></script>
-	<script src="Script/module/command/appendTarget.js" defer></script>
-	<script src="Script/module/command/block.js" defer></script>
-	<script src="Script/module/command/break.js" defer></script>
-	<script src="Script/module/command/callEvent.js" defer></script>
-	<script src="Script/module/command/castSkill.js" defer></script>
-	<script src="Script/module/command/changeActorAnimation.js" defer></script>
-	<script src="Script/module/command/changeActorEquipment.js" defer></script>
-	<script src="Script/module/command/changeActorMotion.js" defer></script>
-	<script src="Script/module/command/changeActorPortrait.js" defer></script>
-	<script src="Script/module/command/changeActorSkill.js" defer></script>
-	<script src="Script/module/command/changeActorSprite.js" defer></script>
-	<script src="Script/module/command/changeActorState.js" defer></script>
-	<script src="Script/module/command/changeActorTeam.js" defer></script>
-	<script src="Script/module/command/changePassableTerrain.js" defer></script>
-	<script src="Script/module/command/changeThreat.js" defer></script>
-	<script src="Script/module/command/clampCamera.js" defer></script>
-	<script src="Script/module/command/comment.js" defer></script>
-	<script src="Script/module/command/continue.js" defer></script>
-	<script src="Script/module/command/continueGame.js" defer></script>
-	<script src="Script/module/command/controlButton.js" defer></script>
-	<script src="Script/module/command/controlDialog.js" defer></script>
-	<script src="Script/module/command/createActor.js" defer></script>
-	<script src="Script/module/command/createElement.js" defer></script>
-	<script src="Script/module/command/createGlobalActor.js" defer></script>
-	<script src="Script/module/command/createObject.js" defer></script>
-	<script src="Script/module/command/createTrigger.js" defer></script>
-	<script src="Script/module/command/deleteActor.js" defer></script>
-	<script src="Script/module/command/deleteElement.js" defer></script>
-	<script src="Script/module/command/deleteGlobalActor.js" defer></script>
-	<script src="Script/module/command/deleteObject.js" defer></script>
-	<script src="Script/module/command/deleteScene.js" defer></script>
-	<script src="Script/module/command/deleteTile.js" defer></script>
-	<script src="Script/module/command/deleteVariable.js" defer></script>
-	<script src="Script/module/command/detectTargets.js" defer></script>
-	<script src="Script/module/command/discardTargets.js" defer></script>
-	<script src="Script/module/command/fixAngle.js" defer></script>
-	<script src="Script/module/command/followActor.js" defer></script>
-	<script src="Script/module/command/forEach.js" defer></script>
-	<script src="Script/module/command/gameData.js" defer></script>
-	<script src="Script/module/command/getActor.js" defer></script>
-	<script src="Script/module/command/getMultipleActors.js" defer></script>
-	<script src="Script/module/command/getTarget.js" defer></script>
-	<script src="Script/module/command/if.js" defer></script>
-	<script src="Script/module/command/independent.js" defer></script>
-	<script src="Script/module/command/jumpTo.js" defer></script>
-	<script src="Script/module/command/label.js" defer></script>
-	<script src="Script/module/command/loadImage.js" defer></script>
-	<script src="Script/module/command/loadScene.js" defer></script>
-	<script src="Script/module/command/loadSubscene.js" defer></script>
-	<script src="Script/module/command/loop.js" defer></script>
-	<script src="Script/module/command/moveActor.js" defer></script>
-	<script src="Script/module/command/moveCamera.js" defer></script>
-	<script src="Script/module/command/moveElement.js" defer></script>
-	<script src="Script/module/command/moveLight.js" defer></script>
-	<script src="Script/module/command/nestElement.js" defer></script>
-	<script src="Script/module/command/pauseGame.js" defer></script>
-	<script src="Script/module/command/playActorAnimation.js" defer></script>
-	<script src="Script/module/command/playAnimation.js" defer></script>
-	<script src="Script/module/command/playAudio.js" defer></script>
-	<script src="Script/module/command/preventSceneInput.js" defer></script>
-	<script src="Script/module/command/registerEvent.js" defer></script>
-	<script src="Script/module/command/removeAnimationComponent.js" defer></script>
-	<script src="Script/module/command/removeTarget.js" defer></script>
-	<script src="Script/module/command/renderOutline.js" defer></script>
-	<script src="Script/module/command/reset.js" defer></script>
-	<script src="Script/module/command/resetTargets.js" defer></script>
-	<script src="Script/module/command/restoreAudio.js" defer></script>
-	<script src="Script/module/command/restoreSceneInput.js" defer></script>
-	<script src="Script/module/command/return.js" defer></script>
-	<script src="Script/module/command/saveAudio.js" defer></script>
-	<script src="Script/module/command/script.js" defer></script>
-	<script src="Script/module/command/setActive.js" defer></script>
-	<script src="Script/module/command/setAmbientLight.js" defer></script>
-	<script src="Script/module/command/setAngle.js" defer></script>
-	<script src="Script/module/command/setAnimation.js" defer></script>
-	<script src="Script/module/command/setAnimationComponent.js" defer></script>
-	<script src="Script/module/command/setBoolean.js" defer></script>
-	<script src="Script/module/command/setButton.js" defer></script>
-	<script src="Script/module/command/setCooldown.js" defer></script>
-	<script src="Script/module/command/setCursor.js" defer></script>
-	<script src="Script/module/command/setDialogBox.js" defer></script>
-	<script src="Script/module/command/setElement.js" defer></script>
-	<script src="Script/module/command/setEvent.js" defer></script>
-	<script src="Script/module/command/setFocus.js" defer></script>
-	<script src="Script/module/command/setGameSpeed.js" defer></script>
-	<script src="Script/module/command/setImage.js" defer></script>
-	<script src="Script/module/command/setInventory.js" defer></script>
-	<script src="Script/module/command/setItem.js" defer></script>
-	<script src="Script/module/command/setLanguage.js" defer></script>
-	<script src="Script/module/command/setList.js" defer></script>
-	<script src="Script/module/command/setLoop.js" defer></script>
-	<script src="Script/module/command/setMovementSpeed.js" defer></script>
-	<script src="Script/module/command/setNumber.js" defer></script>
-	<script src="Script/module/command/setObject.js" defer></script>
-	<script src="Script/module/command/setObjectAnimation.js" defer></script>
-	<script src="Script/module/command/setPan.js" defer></script>
-	<script src="Script/module/command/setPartyMember.js" defer></script>
-	<script src="Script/module/command/setPlayerActor.js" defer></script>
-	<script src="Script/module/command/setPointerEventRoot.js" defer></script>
-	<script src="Script/module/command/setProgressBar.js" defer></script>
-	<script src="Script/module/command/setResolution.js" defer></script>
-	<script src="Script/module/command/setReverb.js" defer></script>
-	<script src="Script/module/command/setShortcut.js" defer></script>
-	<script src="Script/module/command/setSkill.js" defer></script>
-	<script src="Script/module/command/setState.js" defer></script>
-	<script src="Script/module/command/setString.js" defer></script>
-	<script src="Script/module/command/setTarget.js" defer></script>
-	<script src="Script/module/command/setTeamRelation.js" defer></script>
-	<script src="Script/module/command/setTerrain.js" defer></script>
-	<script src="Script/module/command/setText.js" defer></script>
-	<script src="Script/module/command/setTextBox.js" defer></script>
-	<script src="Script/module/command/setTile.js" defer></script>
-	<script src="Script/module/command/setTriggerAngle.js" defer></script>
-	<script src="Script/module/command/setTriggerDuration.js" defer></script>
-	<script src="Script/module/command/setTriggerMotion.js" defer></script>
-	<script src="Script/module/command/setTriggerSpeed.js" defer></script>
-	<script src="Script/module/command/setVideo.js" defer></script>
-	<script src="Script/module/command/setVolume.js" defer></script>
-	<script src="Script/module/command/setWeight.js" defer></script>
-	<script src="Script/module/command/setWindow.js" defer></script>
-	<script src="Script/module/command/setZoomFactor.js" defer></script>
-	<script src="Script/module/command/shakeScreen.js" defer></script>
-	<script src="Script/module/command/showChoices.js" defer></script>
-	<script src="Script/module/command/showText.js" defer></script>
-	<script src="Script/module/command/simulateKey.js" defer></script>
-	<script src="Script/module/command/stopActorAnimation.js" defer></script>
-	<script src="Script/module/command/stopAudio.js" defer></script>
-	<script src="Script/module/command/stopEvent.js" defer></script>
-	<script src="Script/module/command/switch.js" defer></script>
-	<script src="Script/module/command/switchCollisionSystem.js" defer></script>
-	<script src="Script/module/command/tintImage.js" defer></script>
-	<script src="Script/module/command/tintScreen.js" defer></script>
-	<script src="Script/module/command/transferGlobalActor.js" defer></script>
-	<script src="Script/module/command/transition.js" defer></script>
-	<script src="Script/module/command/translateActor.js" defer></script>
-	<script src="Script/module/command/unclampCamera.js" defer></script>
-	<script src="Script/module/command/unloadSubscene.js" defer></script>
-	<script src="Script/module/command/useItem.js" defer></script>
-	<script src="Script/module/command/wait.js" defer></script>
-	<script src="Script/module/command/waitForVideo.js" defer></script>
-  <script src="Script/command/command-tip.js" defer></script>
-  <script src="Script/command/text-tip.js" defer></script>
-  <script src="Script/command/event-editor.js" defer></script>
-  <script src="Script/command/show-options-window.js" defer></script>
-  <script src="Script/command/set-value-operand-window.js" defer></script>
-  <script src="Script/command/conditional-branch-window.js" defer></script>
-  <script src="Script/command/conditional-condition-window.js" defer></script>
-  <script src="Script/command/match-branch-window.js" defer></script>
-  <script src="Script/command/match-condition-window.js" defer></script>
-  <script src="Script/command/property-window-factory.js" defer></script>
-  <script src="Script/command/set-image-property-window.js" defer></script>
-  <script src="Script/command/set-text-property-window.js" defer></script>
-  <script src="Script/command/set-textbox-property-window.js" defer></script>
-  <script src="Script/command/set-dialog-property-window.js" defer></script>
-  <script src="Script/command/set-progress-property-window.js" defer></script>
-  <script src="Script/command/set-button-property-window.js" defer></script>
-  <script src="Script/command/set-animation-property-window.js" defer></script>
-  <script src="Script/command/set-video-property-window.js" defer></script>
-  <script src="Script/command/set-window-property-window.js" defer></script>
-  <script src="Script/command/move-element-property-window.js" defer></script>
-  <script src="Script/command/move-light-property-window.js" defer></script>
-  <script src="Script/command/variable-accessor-window.js" defer></script>
-  <script src="Script/command/actor-accessor-window.js" defer></script>
-  <script src="Script/command/skill-accessor-window.js" defer></script>
-  <script src="Script/command/state-accessor-window.js" defer></script>
-  <script src="Script/command/equipment-accessor-window.js" defer></script>
-  <script src="Script/command/item-accessor-window.js" defer></script>
-  <script src="Script/command/position-accessor-window.js" defer></script>
-  <script src="Script/command/angle-accessor-window.js" defer></script>
-  <script src="Script/command/trigger-accessor-window.js" defer></script>
-  <script src="Script/command/light-accessor-window.js" defer></script>
-  <script src="Script/command/region-accessor-window.js" defer></script>
-  <script src="Script/command/tilemap-accessor-window.js" defer></script>
-  <script src="Script/command/scene-object-accessor-window.js" defer></script>
-  <script src="Script/command/element-accessor-window.js" defer></script>
-  <script src="Script/command/ancestor-accessor-window.js" defer></script>
-  <script src="Script/command/custom-command-window.js" defer></script>
-  <script src="Script/command/mark-string-manager.js" defer></script>
-  <script src="Script/log/log-window.js" defer></script>
-  <script src="Script/log/update-log-window.js" defer></script>
-  <script src="Script/log/related-references.js" defer></script>
-  <script src="Script/update/updater.js" defer></script>
-  <script src="Script/update/project.js" defer></script>
-  <script src="Script/update/config.js" defer></script>
-  <script src="Script/update/events.js" defer></script>
-  <script src="Script/update/actors.js" defer></script>
-  <script src="Script/update/skills.js" defer></script>
-  <script src="Script/update/triggers.js" defer></script>
-  <script src="Script/update/items.js" defer></script>
-  <script src="Script/update/equipments.js" defer></script>
-  <script src="Script/update/states.js" defer></script>
-  <script src="Script/update/scenes.js" defer></script>
-  <script src="Script/update/tilesets.js" defer></script>
-  <script src="Script/update/elements.js" defer></script>
-  <script src="Script/update/animations.js" defer></script>
-  <script src="Script/update/particles.js" defer></script>
-  <script src="Script/update/teams.js" defer></script>
-  <script src="Script/update/localization.js" defer></script>
-  <script src="Script/update/backup.js" defer></script>
-  <script src="Script/update/to-latest.js" defer></script>
-  <script src="Script/update/incremental.js" defer></script>
-  <script src="Script/update/version-warning.js" defer></script>
+		<!-- 社区- start -->
+		<!-- 指令 -->
+		<script type="module" src="Script/module/command/relaunchApp.ts" defer></script>
+		<script type="module" src="Script/module/command/commandLine.ts" defer></script>
+		<script type="module" src="Script/module/command/getObjectProperty.ts" defer></script>
+		<script type="module" src="Script/module/command/requestURL.ts" defer></script>
+		<script type="module" src="Script/module/command/downloadFile.ts" defer></script>
+		<script type="module" src="Script/module/command/uploadFile.ts" defer></script>
+		<script type="module" src="Script/module/command/httpRequest.ts" defer></script>
+		<script type="module" src="Script/module/command/webSocketConnect.ts" defer></script>
+		<script type="module" src="Script/module/command/webSocketSend.ts" defer></script>
+		<script type="module" src="Script/module/command/webSocketClose.ts" defer></script>
+		<!-- 模块 -->
+		<script type="module" src="Script/module/editdata.ts" defer></script>
+		<script type="module" src="Script/module/resource.ts" defer></script>
+		<script type="module" src="Script/module/net.ts" defer></script>
+		<script type="module" src="Script/module/global.ts" defer></script>
+		<script type="module" src="Script/module/searchstring.ts" defer></script>
+		<script type="module" src="Script/module/settingconfig.ts" defer></script>
+		<script type="module" src="Script/module/browserSearchHistory.ts" defer></script>
+		<script type="module" src="Script/module/webserver.ts" defer></script>
+		<script type="module" src="Script/module/apkbuilder.ts" defer></script>
+		<script type="module" src="Script/module/eslints.ts" defer></script>
+		<!-- 社区 - end -->
 
-  <!-- 社区- start -->
-  <!-- 指令 -->
-  <script src="Script/module/command/relaunchApp.js" defer></script>
-  <script src="Script/module/command/commandLine.js" defer></script>
-  <script src="Script/module/command/getObjectProperty.js" defer></script>
-  <script src="Script/module/command/requestURL.js" defer></script>
-  <script src="Script/module/command/downloadFile.js" defer></script>
-  <script src="Script/module/command/uploadFile.js" defer></script>
-  <script src="Script/module/command/httpRequest.js" defer></script>
-  <script src="Script/module/command/webSocketConnect.js" defer></script>
-  <script src="Script/module/command/webSocketSend.js" defer></script>
-  <script src="Script/module/command/webSocketClose.js" defer></script>
-  <!-- 模块 -->
-  <script src="Script/module/editdata.js" defer></script>
-  <script src="Script/module/resource.js" defer></script>
-  <script src="Script/module/net.js" defer></script>
-  <script src="Script/module/global.js" defer></script>
-  <script src="Script/module/searchstring.js" defer></script>
-  <script src="Script/module/settingconfig.js" defer></script>
-  <script src="Script/module/browserSearchHistory.js" defer></script>
-  <script src="Script/module/webserver.js" defer></script>
-  <script src="Script/module/apkbuilder.js" defer></script>
-  <script src="Script/module/eslints.js" defer></script>
-  <!-- 社区 - end -->
-
-  <script src="Script/main/editor.js" defer></script>
-  <script src="Script/main/hotkey.js" defer></script>
-  <script src="Script/main/path.js" defer></script>
-  <script src="Script/main/config.js" defer></script>
-  <script src="Script/main/project.js" defer></script>
-  <script src="Script/main/version.js" defer></script>
-  <script src="Script/main/open.js" defer></script>
-  <script src="Script/main/close.js" defer></script>
-  <script src="Script/main/initialize.js" defer></script>
-  <script src="Script/main/main.js" defer></script>
-  <script src='vs/loader.js' defer></script>
-  <script src='vs/editor/editor.main.nls.js' defer></script>
-  <script src='vs/editor/editor.main.js' defer></script>
-  <script src='vs/editor/javascript.js' defer></script>
-  <script src='vs/editor/typescript.js' defer></script>
-  <script src='vs/language/typescript/tsMode.js' defer></script>
-  <script src='vs/language/json/jsonMode.js' defer></script>
-</head>
+		<script type="module" src="Script/main/editor.ts" defer></script>
+		<script type="module" src="Script/main/hotkey.ts" defer></script>
+		<script type="module" src="Script/main/path.ts" defer></script>
+		<script type="module" src="Script/main/config.ts" defer></script>
+		<script type="module" src="Script/main/project.ts" defer></script>
+		<script type="module" src="Script/main/version.ts" defer></script>
+		<script type="module" src="Script/main/open.ts" defer></script>
+		<script type="module" src="Script/main/close.ts" defer></script>
+		<script type="module" src="Script/main/initialize.ts" defer></script>
+		<script type="module" src="Script/main/main.ts" defer></script>
+	</head>
+</html>

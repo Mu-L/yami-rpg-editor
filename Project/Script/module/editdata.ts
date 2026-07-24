@@ -1,0 +1,349 @@
+import { $ } from '../util/dom.ts';
+import { Command } from '../command/command-object.ts';
+import { Title } from '../title/title-bar.ts';
+import { Local } from '../tools/localization.ts';
+import { Window } from '../tools/window-object.ts';
+import * as monaco from 'monaco-editor';
+export const EditDataInstance = new (class {
+	editor = null;
+	model = null;
+	versionId = null;
+	commandList = null;
+	changed = false;
+	fontSize = 14;
+	lineHeight = 14;
+	colorOptions = {
+		mimeType: 'json',
+		tabSize: 2,
+		theme: ''
+	};
+	isCreated = false;
+	mark = $('#edit-data-mark');
+	editorParent = $('#edit-data');
+	editorDom = $('#edit-data-current');
+	eventListDom = $('#event-commands');
+	currentContent = null;
+	constructor() {
+		$('#edit-data').on('resize', () => {
+			this.resize();
+		});
+		$('#edit-data-confirm').on('click', this.save.bind(this));
+
+		// 窗口关闭事件
+		this.editorParent.on('close', (event) => {
+			if (this.changed) {
+				event.preventDefault();
+				const get = Local.createGetter('confirmation');
+				Window.confirm(
+					{
+						message: get('closeUnsavedData'),
+						close: () => {
+							this.editor.getFocus();
+						}
+					},
+					[
+						{
+							label: get('yes'),
+							click: () => {
+								this.setChangeState(false);
+								Window.close('edit-data');
+							}
+						},
+						{
+							label: get('no')
+						}
+					]
+				);
+			}
+		});
+
+		// 键盘按下事件
+		this.editorParent.on('keydown', (event) => {
+			if (event.target.hasClass('inputarea')) {
+				switch (event.code) {
+					case 'Enter':
+						event.stopPropagation();
+						break;
+				}
+			}
+		});
+
+		this.editorParent.on('closed', () => {
+			this.model.setValue('');
+		});
+	}
+	isMaximized() {
+		return $('#edit-data').hasClass('maximized');
+	}
+	resize() {
+		const content = this.editorDom;
+		const parent = content.parentElement;
+		if (!this.isMaximized()) {
+			content.style.width = '';
+			content.style.height = '';
+			const boundingRect = content.getBoundingClientRect();
+			this.editor.layout({
+				width: boundingRect.width,
+				height: parent.clientHeight - 60
+			});
+		} else {
+			const boundingRect = content.getBoundingClientRect();
+			// 保持content左右间距相同
+			content.style.width = parent.clientWidth - boundingRect.left * 2 + 'px';
+			content.style.height = parent.clientHeight - 60 + 'px';
+			this.editor.layout({
+				width: parseFloat(content.style.width),
+				height: parseFloat(content.style.height)
+			});
+		}
+	}
+	parseJSON(text: any) {
+		try {
+			const vaild = JSON.parse(text);
+			if (vaild.id && vaild.params) {
+				const result = new (class {
+					id = vaild.id;
+					params = vaild.params;
+					commands = vaild.commands;
+				})();
+				return result;
+			}
+			if (Array.isArray(vaild) && vaild.every((v) => v.id && v.params)) {
+				return vaild.map((v) => {
+					const result = new (class {
+						id = v.id;
+						params = v.params;
+						commands = v.commands;
+					})();
+					return result;
+				});
+			}
+			return null;
+		} catch {
+			return null;
+		}
+	}
+
+	save() {
+		const modelValue = this.model.getValue();
+		const parse = this.parseJSON(modelValue);
+		if (!parse) return;
+		const originalStart = this.eventListDom.start;
+		const originalEnd = this.eventListDom.end;
+
+		let hasChanges = false;
+
+		if (Array.isArray(this.currentContent)) {
+			// 批量修改
+			for (const ind in this.currentContent) {
+				const { node, value } = this.currentContent[ind];
+				if (!(ind in parse)) continue; // 索引不存在
+				const changeContent = parse[ind];
+				if (JSON.stringify(value) === JSON.stringify(changeContent)) continue; // 内容没修改
+
+				// 直接修改 dataList 中的数据
+				const list = node.dataList;
+				const dataIndex = node.dataIndex;
+
+				// 删除旧对象的 buffer（在替换之前）
+				if (list[dataIndex].buffer !== undefined) {
+					delete list[dataIndex].buffer;
+				}
+
+				// 替换数据
+				list[dataIndex] = changeContent;
+				hasChanges = true;
+			}
+		} else if (JSON.stringify(this.currentContent.value) !== JSON.stringify(parse)) {
+			// 单个修改
+			const node = this.currentContent.node;
+
+			// 直接修改 dataList 中的数据
+			const list = node.dataList;
+			const dataIndex = node.dataIndex;
+
+			// 删除旧对象的 buffer（在替换之前）
+			if (list[dataIndex].buffer !== undefined) {
+				delete list[dataIndex].buffer;
+			}
+
+			// 替换数据
+			list[dataIndex] = parse;
+			hasChanges = true;
+		}
+
+		// 如果有修改，触发 change 事件以标记数据需要保存
+		if (hasChanges) {
+			this.eventListDom.dispatchEvent(new Event('change', { bubbles: true }));
+		}
+
+		// 更新显示
+		this.eventListDom.update();
+		this.eventListDom.select(originalStart, originalEnd);
+
+		this.currentContent = null;
+		this.setChangeState(false);
+		Window.close('edit-data');
+	}
+	colorizeCodeLines(items: any, code: any) {
+		const text = document.createElement('text');
+		const options = this.colorOptions;
+		text.textContent = code;
+		options.theme = Title.theme;
+		(this as any).createTheme(Title.theme);
+		monaco.editor.colorizeElement(text, options);
+		let index = setInterval(() => {
+			if (text.children.length !== 0) {
+				clearInterval(index);
+				const nodes = text.childNodes;
+				const nLength = nodes.length;
+				const sLength = nLength >> 1;
+				const spans = new Array(sLength);
+				for (let i = 0; i < nLength; i += 2) {
+					spans[i >> 1] = nodes[i];
+				}
+				for (let i = 0; i < sLength; i++) {
+					items[i].appendChild(spans[i]);
+				}
+			}
+		});
+	}
+	open(current: any) {
+		if (!this.isCreated) {
+			this.isCreated = true;
+			const { theme } = Title;
+			(Command.cases as any).script.createTheme(theme);
+			// 假设monaco对象已加载完毕
+			this.editor = monaco.editor.create(this.editorDom, {
+				language: 'json',
+				theme: theme,
+				tabSize: 2,
+				fontSize: this.fontSize,
+				lineHeight: this.lineHeight,
+				mouseWheelScrollSensitivity: (this.lineHeight * 3) / 50,
+				fastScrollSensitivity: 5,
+				wordWrap: 'on',
+				matchBrackets: 'never',
+				folding: true,
+				formatOnType: false,
+				showDeprecated: false,
+				selectionHighlight: true,
+				detectIndentation: false,
+				insertSpaces: true,
+				roundedSelection: false,
+				overviewRulerBorder: false,
+				hideCursorInOverviewRuler: true,
+				automaticLayout: false,
+				hover: false as any,
+				lightbulb: {
+					enabled: false as any
+				},
+				minimap: {
+					enabled: false
+				},
+				scrollbar: {
+					useShadows: false,
+					horizontalScrollbarSize: 12,
+					verticalScrollbarSize: 12
+				}
+			});
+
+			this.model = this.editor.getModel();
+
+			// 编辑器 - 获得焦点
+			this.editor.getFocus = function () {
+				setTimeout(() => this.focus());
+			};
+
+			// 侦听键盘按下事件
+			this.editor.onKeyDown((event) => {
+				event = event.browserEvent;
+				if (event.ctrlKey) {
+					switch (event.code) {
+						case 'Enter':
+							event.preventDefault();
+							event.stopPropagation();
+							// this.save()
+							break;
+					}
+				}
+			});
+
+			// 侦听内容改变事件
+			this.editor.onDidChangeModelContent((event) => {
+				if (event.isFlush) return;
+				if (event.isUndoing || event.isRedoing) {
+					const versionId = this.model.getAlternativeVersionId();
+					const changed = this.versionId !== versionId;
+					if (this.changed !== changed) {
+						this.setChangeState(changed);
+					}
+				} else if (!this.changed) {
+					this.setChangeState(true);
+				}
+			});
+		}
+		this.model.setValue('');
+		this.versionId = this.model.getAlternativeVersionId();
+		this.editor.setPosition(new monaco.Position(9999, 9999));
+		this.editor.setScrollTop(0);
+		this.editor.revealLine(9999);
+		this.editor.getFocus();
+		this.commandList = current;
+		this.loadData();
+	}
+	loadData() {
+		this.currentContent = null;
+		const { elements, start, end } = this.commandList;
+		const sElement = elements[start];
+		if (start === end) {
+			const sData = sElement.dataItem;
+			this.currentContent = {
+				node: sElement,
+				value: {
+					id: sData.id,
+					params: sData.params,
+					commands: sData.commands // 添加commands属性
+				}
+			};
+			// 单个
+			this.model.setValue(JSON.stringify(this.currentContent.value, null, 2));
+		} else {
+			const value = [];
+			const includeArr = [];
+			for (let index = start; index <= end; index++) {
+				const elem = elements[index];
+				const eData = elem.dataItem;
+				if (eData && !includeArr.includes(elem.dataParent) && elem.mark !== 'footer')
+					value.push({
+						node: elem,
+						value: {
+							id: eData.id,
+							params: eData.params,
+							commands: eData.commands // 添加commands属性
+						}
+					});
+				if (elem.mark === 'header') includeArr.push(eData); // 将buffer也存储，这样能保证有唯一性
+			}
+			this.currentContent = value;
+			// 多个
+			this.model.setValue(
+				JSON.stringify(
+					value.map((v) => v.value),
+					null,
+					2
+				)
+			);
+		}
+	}
+	setChangeState(changed: any) {
+		if (this.changed !== changed) {
+			this.changed = changed;
+			if (changed) {
+				this.mark.show();
+			} else {
+				this.mark.hide();
+			}
+		}
+	}
+})();

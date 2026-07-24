@@ -1,74 +1,84 @@
-  <window-frame id="setInventory">
-    <title-bar>Set Inventory<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Actor</text><custom-box id="setInventory-actor" type="actor"></custom-box>
-        <text>Operation</text><select-box id="setInventory-operation"></select-box>
-        <text>Money</text><number-var id="setInventory-money" min="1" max="100000000"></number-var>
-        <text>Item</text><file-var id="setInventory-itemId" type="file" filter="item"></file-var>
-        <text>Quantity</text><number-var id="setInventory-quantity" min="1" max="10000"></number-var>
-        <text>Equipment</text><file-var id="setInventory-equipmentId" type="file" filter="equipment"></file-var>
-        <text>Equipment</text><custom-box id="setInventory-equipment" type="equipment"></custom-box>
-        <text>Order A</text><number-var id="setInventory-order1" min="0" max="10000"></number-var>
-        <text>Order B</text><number-var id="setInventory-order2" min="0" max="10000"></number-var>
-        <text>Global Actor</text><custom-box id="setInventory-refActor" type="actor"></custom-box>
-      </grid-box>
-      <button id="setInventory-confirm" name="confirm">Confirm</button>
-      <button id="setInventory-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="useItem">
-    <title-bar>Use Item<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Actor</text><custom-box id="useItem-actor" type="actor"></custom-box>
-        <text>Mode</text><select-box id="useItem-mode"></select-box>
-        <text>Shortcut Key</text><select-box id="useItem-key"></select-box>
-        <text>Item</text><custom-box id="useItem-itemId" type="file" filter="item"></custom-box>
-        <text>Item</text><custom-box id="useItem-item" type="item"></custom-box>
-        <text>Wait</text><select-box id="useItem-wait" name="wait"></select-box>
-      </grid-box>
-      <button id="useItem-confirm" name="confirm">Confirm</button>
-      <button id="useItem-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setItem">
-    <title-bar>Set Item<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Item</text><custom-box id="setItem-item" type="item"></custom-box>
-        <text>Operation</text><select-box id="setItem-operation"></select-box>
-        <text>Quantity</text><number-var id="setItem-quantity" min="1" max="10000"></number-var>
-      </grid-box>
-      <button id="setItem-confirm" name="confirm">Confirm</button>
-      <button id="setItem-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setCooldown">
-    <title-bar>Set Cooldown<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Actor</text><custom-box id="setCooldown-actor" type="actor"></custom-box>
-        <text>Operation</text><select-box id="setCooldown-operation"></select-box>
-        <text>Cooldown Key</text><select-var id="setCooldown-key"></select-var>
-        <text>Cooldown Time</text><number-var id="setCooldown-cooldown" min="1" max="3600000" unit="ms"></number-var>
-      </grid-box>
-      <button id="setCooldown-confirm" name="confirm">Confirm</button>
-      <button id="setCooldown-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
-  <window-frame id="setShortcut">
-    <title-bar>Set Shortcut<close></close></title-bar>
-    <content-frame>
-      <grid-box>
-        <text>Actor</text><custom-box id="setShortcut-actor" type="actor"></custom-box>
-        <text>Operation</text><select-box id="setShortcut-operation"></select-box>
-        <text>Shortcut Key</text><select-var id="setShortcut-key"></select-var>
-        <text>Shortcut Key 2</text><select-var id="setShortcut-key2"></select-var>
-        <text>Item</text><file-var id="setShortcut-itemId" type="file" filter="item"></file-var>
-        <text>Skill</text><file-var id="setShortcut-skillId" type="file" filter="skill"></file-var>
-      </grid-box>
-      <button id="setShortcut-confirm" name="confirm">Confirm</button>
-      <button id="setShortcut-cancel" name="cancel">Cancel</button>
-    </content-frame>
-  </window-frame>
+<window-frame id="setInventory">
+	<title-bar>Set Inventory<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="setInventory-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="setInventory-operation"></select-box>
+			<text>Money</text
+			><number-var id="setInventory-money" min="1" max="100000000"></number-var>
+			<text>Item</text
+			><file-var id="setInventory-itemId" type="file" filter="item"></file-var>
+			<text>Quantity</text
+			><number-var id="setInventory-quantity" min="1" max="10000"></number-var>
+			<text>Equipment</text
+			><file-var id="setInventory-equipmentId" type="file" filter="equipment"></file-var>
+			<text>Equipment</text
+			><custom-box id="setInventory-equipment" type="equipment"></custom-box>
+			<text>Order A</text
+			><number-var id="setInventory-order1" min="0" max="10000"></number-var>
+			<text>Order B</text
+			><number-var id="setInventory-order2" min="0" max="10000"></number-var>
+			<text>Global Actor</text
+			><custom-box id="setInventory-refActor" type="actor"></custom-box>
+		</grid-box>
+		<button id="setInventory-confirm" name="confirm">Confirm</button>
+		<button id="setInventory-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="useItem">
+	<title-bar>Use Item<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="useItem-actor" type="actor"></custom-box>
+			<text>Mode</text><select-box id="useItem-mode"></select-box> <text>Shortcut Key</text
+			><select-box id="useItem-key"></select-box> <text>Item</text
+			><custom-box id="useItem-itemId" type="file" filter="item"></custom-box>
+			<text>Item</text><custom-box id="useItem-item" type="item"></custom-box>
+			<text>Wait</text><select-box id="useItem-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="useItem-confirm" name="confirm">Confirm</button>
+		<button id="useItem-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setItem">
+	<title-bar>Set Item<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Item</text><custom-box id="setItem-item" type="item"></custom-box>
+			<text>Operation</text><select-box id="setItem-operation"></select-box>
+			<text>Quantity</text><number-var id="setItem-quantity" min="1" max="10000"></number-var>
+		</grid-box>
+		<button id="setItem-confirm" name="confirm">Confirm</button>
+		<button id="setItem-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setCooldown">
+	<title-bar>Set Cooldown<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="setCooldown-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="setCooldown-operation"></select-box>
+			<text>Cooldown Key</text><select-var id="setCooldown-key"></select-var>
+			<text>Cooldown Time</text
+			><number-var id="setCooldown-cooldown" min="1" max="3600000" unit="ms"></number-var>
+		</grid-box>
+		<button id="setCooldown-confirm" name="confirm">Confirm</button>
+		<button id="setCooldown-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="setShortcut">
+	<title-bar>Set Shortcut<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="setShortcut-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="setShortcut-operation"></select-box>
+			<text>Shortcut Key</text><select-var id="setShortcut-key"></select-var>
+			<text>Shortcut Key 2</text><select-var id="setShortcut-key2"></select-var>
+			<text>Item</text><file-var id="setShortcut-itemId" type="file" filter="item"></file-var>
+			<text>Skill</text
+			><file-var id="setShortcut-skillId" type="file" filter="skill"></file-var>
+		</grid-box>
+		<button id="setShortcut-confirm" name="confirm">Confirm</button>
+		<button id="setShortcut-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
