@@ -84,7 +84,7 @@ export const Resources = new (class {
 		$('#resource-open-dir').on('click', () => ipcRenderer.send('open-path', GlobalPath));
 
 		// 更新节点信息
-		this.updateNodeInfo();
+		void this.updateNodeInfo();
 	}
 
 	getCurrentNodeInfo() {
@@ -132,7 +132,7 @@ export const Resources = new (class {
 			const [{ body }] = await response.json();
 			return body;
 		} catch (error: any) {
-			console.error('Failed to load community announcement:', error);
+			console.warn('Failed to load community announcement:', error);
 			return '';
 		}
 	}
@@ -180,8 +180,7 @@ export const Resources = new (class {
 
 		const startTime = Date.now();
 		try {
-			// 使用 HEAD 请求测试连接速度
-			const testUrl = `${url}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`;
+			const testUrl = `${url}Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`;
 			const response = await fetch(testUrl, {
 				method: 'HEAD',
 				cache: 'no-cache'
@@ -192,7 +191,7 @@ export const Resources = new (class {
 			}
 			return -1;
 		} catch (error: any) {
-			console.error('Ping failed:', error);
+			console.warn('Ping failed:', error);
 			return -1;
 		}
 	}
@@ -265,7 +264,7 @@ export const Resources = new (class {
 		await this.updateFastGithubArray().then((data) => {
 			this._fastGithubArray = data;
 		});
-		const json = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`;
+		const json = `${this.fastGithubPrefix}Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`;
 		// .catch 返 { data: [] } 而非 undefined——下游 netMeta.data 链兜底，
 		// 避 GitHub raw 偶发 502 Bad Gateway 时 checkVersion 裸取 .data/.version 炸
 		return await Net.get(json, {
@@ -317,7 +316,7 @@ export const Resources = new (class {
 			}
 			return 0;
 		} catch (error: any) {
-			console.error('Failed to get file size:', error);
+			console.warn('Failed to get file size:', error);
 			return 0;
 		}
 	}
@@ -340,7 +339,7 @@ export const Resources = new (class {
 
 	async checkEditorVersion() {
 		const get = Local.createGetter('confirmation');
-		const url = `${this.fastGithubPrefix}https://raw.githubusercontent.com/Open-Yami-Community/yami-rpg-editor/refs/heads/main/Project/Script/module/packmeta.json`;
+		const url = `${this.fastGithubPrefix}Open-Yami-Community/yami-rpg-editor/refs/heads/main/Project/Script/module/packmeta.json`;
 		const jsonParse = await Net.get(url, {
 			headers: {
 				type: 'application/json',
