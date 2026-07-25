@@ -62,7 +62,7 @@ export class SelectBox extends HTMLElement {
 	}
 
 	writeDefault() {
-		this.write(this.dataItems[0].value);
+		this.write(this.dataItems[0]?.value);
 	}
 
 	input(value: any) {
@@ -149,6 +149,9 @@ export class SelectBox extends HTMLElement {
 
 	loadItems(items: any) {
 		this.dataItems = items;
+		if (this.dataValue !== null && this.dataValue !== undefined) {
+			this.update();
+		}
 	}
 
 	setItemNames(options: any) {
