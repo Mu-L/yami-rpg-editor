@@ -154,7 +154,7 @@ export default defineConfig({
 							`import '${dataUrl}'`
 						);
 				}
-				return out;
+				return { code: out, map: null };
 			}
 		},
 		{
@@ -199,7 +199,7 @@ export default defineConfig({
 						res.setHeader('Content-Type', 'application/octet-stream');
 						res.setHeader('Access-Control-Allow-Origin', '*');
 						res.end(buf);
-					} catch (error) {
+					} catch {
 						res.statusCode = 404;
 						res.end(`File not found: ${diskPath}`);
 					}

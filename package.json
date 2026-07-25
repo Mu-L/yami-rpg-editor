@@ -17,21 +17,17 @@
 		"buildres": "node scripts/buildres.js",
 		"buildtime": "node scripts/buildRuntime.js",
 		"prepare": "husky",
-		"start": "electron . --dirname=Project",
-		"setup": "pnpm install",
-		"format": "oxfmt -c ./.oxfmtrc.json .",
-		"format:check": "oxfmt -c ./.oxfmtrc.json --check .",
 		"commitlint": "commitlint --config commitlint.config.js --edit ",
-		"build:win": "electron-builder --dir --win --x64",
-		"build:winexe": "electron-builder --win --x64",
-		"build:linux": "electron-builder --dir --linux --x64",
-		"build:linuxexe": "electron-builder --linux --x64",
-		"build:mac": "electron-builder --dir --mac --x64",
-		"build:macexe": "electron-builder --mac --x64",
-		"build:macArm": "electron-builder --dir --mac --arm64",
-		"build:macArmexe": "electron-builder --mac --arm64",
-		"build:universal": "electron-builder --dir --mac --universal",
-		"build:universalexe": "electron-builder --mac --universal",
+		"build:win": "pnpm run build:all && electron-builder --dir --win --x64",
+		"build:winexe": "pnpm run build:all && electron-builder --win --x64",
+		"build:linux": "pnpm run build:all && electron-builder --dir --linux --x64",
+		"build:linuxexe": "pnpm run build:all && electron-builder --linux --x64",
+		"build:mac": "pnpm run build:all && electron-builder --dir --mac --x64",
+		"build:macexe": "pnpm run build:all && electron-builder --mac --x64",
+		"build:macArm": "pnpm run build:all && electron-builder --dir --mac --arm64",
+		"build:macArmexe": "pnpm run build:all && electron-builder --mac --arm64",
+		"build:universal": "pnpm run build:all && electron-builder --dir --mac --universal",
+		"build:universalexe": "pnpm run build:all && electron-builder --mac --universal",
 		"dev": "pnpm run buildcss && pnpm run buildhtml && concurrently -k -n vite,electron-main,electron -c green,blue,magenta \"vite\" \"vite build --config vite.electron.config.js --watch\" \"wait-on tcp:5173 && wait-on file:dist-electron/main.js && electron . --dirname=Project --dev-server-url=http://localhost:5173\"",
 		"build:vite": "pnpm run buildcss && pnpm run buildhtml && vite build",
 		"build:electron": "vite build --config vite.electron.config.js",
@@ -39,7 +35,9 @@
 		"start:prod": "pnpm run build:all && electron . --dirname=.",
 		"typecheck": "tsc --noEmit",
 		"lint": "oxlint -c ./.oxlintrc.json .",
-		"lint:fix": "oxlint -c ./.oxlintrc.json --fix ."
+		"lint:fix": "oxlint -c ./.oxlintrc.json --fix .",
+		"format": "oxfmt -c ./.oxfmtrc.json .",
+		"format:check": "oxfmt -c ./.oxfmtrc.json --check ."
 	},
 	"dependencies": {
 		"@typescript/typescript-win32-x64": "7.1.0-dev.20260724.1",
@@ -66,8 +64,8 @@
 		"archiver": "^7.0.1",
 		"concurrently": "^10.0.3",
 		"cross-env": "^10.1.0",
-		"electron": "^43.2.0",
-		"electron-builder": "^26.15.3",
+		"electron": "^20.3.12",
+		"electron-builder": "^25.1.8",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
 		"oxfmt": "^0.60.0",
@@ -96,15 +94,16 @@
 		},
 		"files": [
 			{
-				"from": "Project",
-				"to": ".",
-				"filter": [
-					"**",
-					"!config.json",
-					"!Templates/**/*",
-					"!Apk/**/*"
-				]
+			 "from": "dist",
+			 "to": "dist",
+			 "filter": [
+			  "**",
+			  "!config.json",
+			  "!Templates/**/*",
+			  "!Apk/**/*"
+			 ]
 			},
+			"dist-electron/**",
 			"main/*.ts",
 			"package.json"
 		],
@@ -118,19 +117,19 @@
 				"to": "app/node_modules/@typescript/typescript-win32-x64"
 			},
 			{
-				"from": "Project/Templates/electron-win-x64/resources/app/node_modules",
+				"from": "dist/Templates/electron-win-x64/resources/app/node_modules",
 				"to": "app/Templates/electron-win-x64/resources/app/node_modules"
 			},
 			{
-				"from": "Project/Templates/electron-mac-universal.app/Contents/resources/app/node_modules",
+				"from": "dist/Templates/electron-mac-universal.app/Contents/resources/app/node_modules",
 				"to": "app/Templates/electron-mac-universal.app/Contents/resources/app/node_modules"
 			}
 		],
 		"asar": false,
 		"asarUnpack": [
 			"node_modules/typescript",
-			"Project/Templates/electron-win-x64/resources/app/node_modules",
-			"Project/Templates/electron-mac-universal.app/Contents/resources/app/node_modules"
+			"dist/Templates/electron-win-x64/resources/app/node_modules",
+			"dist/Templates/electron-mac-universal.app/Contents/resources/app/node_modules"
 		],
 		"extraFiles": [],
 		"nsis": {
