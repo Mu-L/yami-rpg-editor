@@ -21,7 +21,7 @@ const copyDirRecursive = (src, dest) => {
 // 将 Project/ 下需原样输出的静态资源复制到 dist/
 const copyStaticAssets = (outDir) => {
 	const root = resolve(__dirname, 'Project');
-	const staticDirs = ['Script', 'Locales', 'Fonts', 'Images', 'Templates', 'Apk'];
+	const staticDirs = ['Locales', 'Fonts', 'Images', 'Templates', 'Apk'];
 	const staticFiles = ['default.json', 'commands.json'];
 	for (const dir of staticDirs) {
 		copyDirRecursive(join(root, dir), join(outDir, dir));

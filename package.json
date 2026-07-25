@@ -12,8 +12,6 @@
 		"buildcss": "node scripts/build-css.js",
 		"buildmodule": "node scripts/build-module.js",
 		"buildhtml": "node scripts/build-html.js",
-		"smoke": "node scripts/smoke.js",
-		"verify-imports": "node scripts/verify-imports.js",
 		"buildres": "node scripts/buildres.js",
 		"buildtime": "node scripts/buildRuntime.js",
 		"prepare": "husky",
@@ -94,14 +92,14 @@
 		},
 		"files": [
 			{
-			 "from": "dist",
-			 "to": "dist",
-			 "filter": [
-			  "**",
-			  "!config.json",
-			  "!Templates/**/*",
-			  "!Apk/**/*"
-			 ]
+				"from": "dist",
+				"to": "dist",
+				"filter": [
+					"**",
+					"!config.json",
+					"!Templates/**/*",
+					"!Apk/**/*"
+				]
 			},
 			"dist-electron/**",
 			"main/*.ts",
