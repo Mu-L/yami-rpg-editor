@@ -8,7 +8,7 @@ import { Title } from '@/title/title-bar.ts';
 import { Local } from '@/tools/localization.ts';
 import { Window } from '@/tools/window-object.ts';
 import { Path } from '@/util/config.ts';
-import * as monaco from 'monaco-editor';
+import monaco from '@/util/monaco.ts';
 
 Command.cases.script = new CommandSchema({
 	name: 'script',
