@@ -22,7 +22,9 @@ const copyDirRecursive = (src, dest) => {
 const copyStaticAssets = (outDir) => {
 	const root = resolve(__dirname, 'Project');
 	const staticDirs = ['Locales', 'Fonts', 'Images', 'Templates', 'Apk'];
-	const staticFiles = ['default.json', 'commands.json'];
+	const staticFiles = ['default.json', 'commands.json', 'Script/module/packmeta.json'];
+	// 创建module目录
+	mkdirSync(join(outDir, 'Script/module'), { recursive: true });
 	for (const dir of staticDirs) {
 		copyDirRecursive(join(root, dir), join(outDir, dir));
 	}
