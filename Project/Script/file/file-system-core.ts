@@ -1,5 +1,6 @@
 ﻿import { ipcRenderer, shell } from 'electron';
 import nodeFs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { Path } from '../util/config.ts';
 import { Animation } from '../animation/animation-window.ts';
 import { Data } from '../data/data-object.ts';
@@ -61,6 +62,17 @@ export const File: {
 	updateRoot: null,
 	route: null
 };
+
+// 获取回退根路径（this.root 为空时使用）：
+// - 开发模式（Vite dev server）：process.cwd()/Project（与现有行为一致）
+// - 生产模式（Electron file:// 协议）：从 HTML 文件位置推导，避免 process.cwd() 在打包后不准确
+function getFallbackRoot(): string {
+	if ((import.meta as any).env?.DEV) {
+		return Path.resolve(process.cwd(), 'Project');
+	}
+	// document.baseURI = "file:///C:/path/to/dist/index.html"
+	return Path.dirname(fileURLToPath(document.baseURI));
+}
 
 // 获取文件
 File.get = function (descriptor) {
@@ -125,10 +137,7 @@ File.get = function (descriptor) {
 					const cleanPath = path.replace(/\?ver=\d+$/, '');
 					const absPath = /^[A-Za-z]:[\\/]|^[/\\]/.test(cleanPath)
 						? cleanPath // 已是绝对路径（含盘符或 Unix 根）
-						: Path.resolve(
-								this.root || Path.resolve(process.cwd(), 'Project'),
-								cleanPath
-							);
+						: Path.resolve(this.root || getFallbackRoot(), cleanPath);
 					const content = fs.readFileSync(absPath, 'utf-8');
 					if (type === 'json') {
 						try {
@@ -393,7 +402,7 @@ File.updateRoot = function (path) {
 File.path = function (relativePath) {
 	const isAbsolute = /^[A-Za-z]:[\\/]/.test(relativePath);
 	if (isAbsolute) return relativePath;
-	const base = this.root || Path.resolve(process.cwd(), 'Project');
+	const base = this.root || getFallbackRoot();
 	return base.replace(/[\\/]+$/, '') + '/' + relativePath;
 };
 
@@ -417,7 +426,7 @@ File.path = function (relativePath) {
 // vite proxy bypass 段用正则剥 #ver= 段后读磁盘；ver 仅做浏览器缓存 bust 不用读）
 File.route = function (relativePath) {
 	const isAbsolute = /^[A-Za-z]:[\\/]/.test(relativePath);
-	const base = (this.root || Path.resolve(process.cwd(), 'Project')).replace(/[\\/]+$/, '');
+	const base = (this.root || getFallbackRoot()).replace(/[\\/]+$/, '');
 	// 绝对路径原样透传但剥连续斜杠（this.root 含尾 / + relativePath 含前 / 时拼出双斜杠，
 	// vite proxy readFileSync 找炸 ENOENT）；相对路径拼 base+'/'+relativePath
 	const route = (isAbsolute ? relativePath : base + '/' + relativePath).replace(
