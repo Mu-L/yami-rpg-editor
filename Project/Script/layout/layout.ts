@@ -1,16 +1,16 @@
-import { $ } from '../util/dom.ts';
-import { File } from '../file/file-system-core.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { GL } from '../webgl/webgl-init.ts';
-import { Cursor } from '../tools/pointer-object.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { Palette } from '../palette/palette.ts';
-import { Particle } from '../particle/particle-window.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { Home } from '../title/home-page.ts';
-import { Title } from '../title/title-bar.ts';
-import { UI } from '../ui/ui-window.ts';
+import { $ } from '@/util/dom.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { GL } from '@/webgl/webgl-init.ts';
+import { Cursor } from '@/tools/pointer-object.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { Palette } from '@/palette/palette.ts';
+import { Particle } from '@/particle/particle-window.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { Home } from '@/title/home-page.ts';
+import { Title } from '@/title/title-bar.ts';
+import { UI } from '@/ui/ui-window.ts';
 
 export const Layout = {
 	manager: $('#workspace-page-manager'),

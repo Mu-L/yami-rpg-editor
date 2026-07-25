@@ -1,6 +1,6 @@
 import { Scene } from './scene-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
-import { Vector } from '../webgl/vector2.ts';
+import { GL } from '@/webgl/webgl-init.ts';
+import { Vector } from '@/webgl/vector2.ts';
 Scene.selectObject = function (x, y) {
 	let precise = false;
 	let target = null;

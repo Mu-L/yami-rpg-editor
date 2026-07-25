@@ -1,4 +1,4 @@
-import { Path } from '../util/config.ts';
+import { Path } from '@/util/config.ts';
 import { Editor } from './editor.ts';
 
 Editor.updatePath = function (path) {

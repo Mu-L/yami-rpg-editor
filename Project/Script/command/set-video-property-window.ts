@@ -1,4 +1,4 @@
-﻿import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 

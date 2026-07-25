@@ -1,7 +1,7 @@
-﻿import './element-methods.js';
+import './element-methods.js';
 
 import { TextHistory } from './text-history.ts';
-import { Timer } from '../util/timer.ts';
+import { Timer } from '@/util/timer.ts';
 import { TextBox } from './text-box.ts';
 
 export class TextArea extends HTMLElement {

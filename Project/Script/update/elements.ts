@@ -1,7 +1,7 @@
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { UI } from '../ui/ui-window.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { UI } from '@/ui/ui-window.ts';
 import { Updater } from './updater.ts';
 
 Updater.updateElements = function (verNum) {

@@ -1,7 +1,7 @@
-﻿import { UI } from './ui-window.ts';
-import { ImageTexture } from '../webgl/image-texture.ts';
-import { Texture } from '../webgl/texture.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { UI } from './ui-window.ts';
+import { ImageTexture } from '@/webgl/image-texture.ts';
+import { Texture } from '@/webgl/texture.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 UI.Image = class ImageElement extends UI.Element {
 	texture: Texture | null;

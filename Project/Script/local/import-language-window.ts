@@ -1,10 +1,10 @@
-﻿import { $ } from '../util/dom.ts';
-import { Editor } from '../main/editor.ts';
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
-import { Path } from '../util/config.ts';
+import { $ } from '@/util/dom.ts';
+import { Editor } from '@/main/editor.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Path } from '@/util/config.ts';
 
 export const ImportLanguage = {
 	filePath: '',

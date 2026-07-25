@@ -1,5 +1,5 @@
-﻿import { Command } from './command-object.ts';
-import { Local } from '../tools/localization.ts';
+import { Command } from './command-object.ts';
+import { Local } from '@/tools/localization.ts';
 
 let _tokenMap: Record<string, string> | null = null;
 function buildTokenMap(): Record<string, string> {

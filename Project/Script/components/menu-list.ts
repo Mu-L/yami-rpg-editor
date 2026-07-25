@@ -1,5 +1,5 @@
-﻿import { Timer } from '../util/timer.ts';
-import { Window } from '../tools/window-object.ts';
+import { Timer } from '@/util/timer.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export class MenuList extends HTMLElement {
 	state: string;

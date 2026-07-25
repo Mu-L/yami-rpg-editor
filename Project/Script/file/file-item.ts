@@ -1,13 +1,13 @@
-import { request } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
-import { Meta } from '../data/metadata.ts';
+import { request } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
+import { Meta } from '@/data/metadata.ts';
 import { File } from './file-system-core.ts';
 import { FSP } from './file-system.ts';
 import { GUID } from './guid.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
-import { Path } from '../util/config.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Path } from '@/util/config.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 export class FileItem {
 	meta: any | null;

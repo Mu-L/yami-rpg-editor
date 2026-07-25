@@ -1,7 +1,7 @@
-import { $ } from '../util/dom.ts';
-import { RadioProxy } from '../components/radio-proxy.ts';
-import { History } from '../tools/history.ts';
-import { Reference } from '../log/related-references.ts';
+import { $ } from '@/util/dom.ts';
+import { RadioProxy } from '@/components/radio-proxy.ts';
+import { History } from '@/tools/history.ts';
+import { Reference } from '@/log/related-references.ts';
 
 export const Variable = {
 	list: $('#variable-list'),

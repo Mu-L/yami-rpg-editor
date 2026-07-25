@@ -1,6 +1,6 @@
-﻿import { $ } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
-import { Inspector } from '../inspector/inspector.ts';
+import { $ } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
+import { Inspector } from '@/inspector/inspector.ts';
 import { UI } from './ui-window.ts';
 
 UI.Reference = class ReferenceElement extends UI.Element {

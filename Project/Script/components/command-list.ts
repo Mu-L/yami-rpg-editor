@@ -1,20 +1,20 @@
-import { SettingConfig } from '../module/settingconfig.ts';
-import { getVariable } from '../util/safe.ts';
+import { SettingConfig } from '@/module/settingconfig.ts';
+import { getVariable } from '@/util/safe.ts';
 import { CommandHistory } from './command-history.ts';
-import { ctrl } from '../util/event-accessors.ts';
-import { Command } from '../command/command-object.ts';
-import { Data } from '../data/data-object.ts';
+import { ctrl } from '@/util/event-accessors.ts';
+import { Command } from '@/command/command-object.ts';
+import { Data } from '@/data/data-object.ts';
 import { CommonList } from './common-list.ts';
-import { Attribute } from '../attribute/attribute-window.ts';
-import { CommandSuggestion } from '../command/command-tip.ts';
-import { EventEditor } from '../command/event-editor.ts';
+import { Attribute } from '@/attribute/attribute-window.ts';
+import { CommandSuggestion } from '@/command/command-tip.ts';
+import { EventEditor } from '@/command/event-editor.ts';
 import { Menu } from './menu-list.ts';
 import { WindowFrame } from './window-frame.ts';
-import { Enum } from '../enum/enum-window.ts';
-import { GameLocal } from '../local/local-object.ts';
-import { SearchString } from '../module/searchstring.ts';
+import { Enum } from '@/enum/enum-window.ts';
+import { GameLocal } from '@/local/local-object.ts';
+import { SearchString } from '@/module/searchstring.ts';
 
-import { Local } from '../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 export class CommandList extends HTMLElement {
 	data: any;

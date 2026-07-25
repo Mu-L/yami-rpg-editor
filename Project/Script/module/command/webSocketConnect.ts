@@ -1,8 +1,8 @@
-import { $, getElementReader } from '../../util/dom.ts';
-import { Command } from '../../command/command-object.ts';
-import { VariableGetter } from '../../command/variable-accessor-window.ts';
+import { $, getElementReader } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { VariableGetter } from '@/command/variable-accessor-window.ts';
 import { CommandSchema } from './schema.ts';
-import { Local } from '../../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 Command.cases.webSocketConnect = new CommandSchema({
 	name: 'webSocketConnect',

@@ -1,6 +1,6 @@
-import { Timer } from '../util/timer.ts';
-import { Easing } from '../data/transition-window.ts';
-import { Inspector } from '../inspector/inspector.ts';
+import { Timer } from '@/util/timer.ts';
+import { Easing } from '@/data/transition-window.ts';
+import { Inspector } from '@/inspector/inspector.ts';
 import { Scene } from './scene-window.ts';
 import { TilemapShortcuts } from './tilemap-shortcut-list.ts';
 Scene.setTarget = function (target) {

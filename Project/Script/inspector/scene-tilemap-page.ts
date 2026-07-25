@@ -1,11 +1,11 @@
-﻿import { $, getElementWriter } from '../util/dom.ts';
-import { Codec } from '../codec/codec.ts';
-import { SelectBox } from '../components/select-box.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Codec } from '@/codec/codec.ts';
+import { SelectBox } from '@/components/select-box.ts';
 import { Inspector } from './inspector.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { ConditionListInterface } from '../tools/condition-list.ts';
-import { EventListInterface } from '../tools/event-list.ts';
-import { ScriptListInterface } from '../tools/script-list.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { ConditionListInterface } from '@/tools/condition-list.ts';
+import { EventListInterface } from '@/tools/event-list.ts';
+import { ScriptListInterface } from '@/tools/script-list.ts';
 
 {
 	const SceneTilemap = {

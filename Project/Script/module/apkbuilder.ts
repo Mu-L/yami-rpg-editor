@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron';
-import { $ } from '../util/dom.ts';
-import { Path } from '../util/config.ts';
-import { Editor } from '../main/editor.ts';
+import { $ } from '@/util/dom.ts';
+import { Path } from '@/util/config.ts';
+import { Editor } from '@/main/editor.ts';
 import { TemplatesPath } from './global.ts';
 export const ApkBuilder = new (class {
 	logs = [];

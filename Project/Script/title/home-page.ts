@@ -1,13 +1,13 @@
-﻿import { SettingConfig } from '../module/settingconfig.ts';
-import { $ } from '../util/dom.ts';
-import { Path } from '../util/config.ts';
-import { File } from '../file/file-system-core.ts';
-import { Menu } from '../components/menu-list.ts';
-import { FS, FSP } from '../file/file-system.ts';
-import { Layout } from '../layout/layout.ts';
-import { Editor } from '../main/editor.ts';
+import { SettingConfig } from '@/module/settingconfig.ts';
+import { $ } from '@/util/dom.ts';
+import { Path } from '@/util/config.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { FS, FSP } from '@/file/file-system.ts';
+import { Layout } from '@/layout/layout.ts';
+import { Editor } from '@/main/editor.ts';
 import { Title } from './title-bar.ts';
-import { Local } from '../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
 type HomeMethod = ((...args: any[]) => any) | null;

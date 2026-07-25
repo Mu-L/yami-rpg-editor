@@ -12,9 +12,9 @@ import fs from 'fs';
 import { spawn } from 'child_process';
 import path from 'path';
 import os from 'os';
-// ESM 下 __dirname 不存在（CommonJS 才注入），用 import.meta.url + fileURLToPath 推算
-import { fileURLToPath } from 'url';
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// 模块所在目录（dist-electron/），不依赖 import.meta.url 或 CJS __dirname 全局
+const __dirname = path.resolve(app.getAppPath(), 'dist-electron');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 

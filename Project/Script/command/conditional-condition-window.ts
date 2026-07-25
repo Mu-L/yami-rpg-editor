@@ -1,12 +1,12 @@
-import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { GamepadBox } from '../components/gamepad-box.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { GamepadBox } from '@/components/gamepad-box.ts';
 import { Command } from './command-object.ts';
 import { Token } from './mark-string-manager.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
-import { Data } from '../data/data-object.ts';
-import { Enum } from '../enum/enum-window.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
+import { Data } from '@/data/data-object.ts';
+import { Enum } from '@/enum/enum-window.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
 
 interface IfConditionTarget {
 	save: () => any;

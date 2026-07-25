@@ -1,7 +1,7 @@
-﻿import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Command } from './command-object.ts';
-import { GameLocal } from '../local/local-object.ts';
-import { Window } from '../tools/window-object.ts';
+import { GameLocal } from '@/local/local-object.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const Choices = {
 	target: null,

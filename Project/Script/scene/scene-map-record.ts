@@ -1,5 +1,5 @@
 import { Scene } from './scene-window.ts';
-import { History } from '../tools/history.ts';
+import { History } from '@/tools/history.ts';
 (() => {
 	let tilemap = null;
 	let mapData = null;

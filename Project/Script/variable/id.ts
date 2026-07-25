@@ -1,5 +1,5 @@
 import { Variable } from './variable.ts';
-import { GUID } from '../file/guid.ts';
+import { GUID } from '@/file/guid.ts';
 
 Variable.createId = function () {
 	let id;

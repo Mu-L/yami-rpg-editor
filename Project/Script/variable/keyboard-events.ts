@@ -1,5 +1,5 @@
 import { Variable } from './variable.ts';
-import { Shortcuts } from '../tools/shortcut-registry.ts';
+import { Shortcuts } from '@/tools/shortcut-registry.ts';
 
 Variable.keydown = Shortcuts.createUndoRedo(Variable);
 

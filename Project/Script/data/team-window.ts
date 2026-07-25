@@ -1,15 +1,15 @@
-﻿import { $ } from '../util/dom.ts';
-import { ctrl } from '../util/event-accessors.ts';
-import { File } from '../file/file-system-core.ts';
-import { GL } from '../webgl/webgl-init.ts';
-import { Codec } from '../codec/codec.ts';
-import { Menu } from '../components/menu-list.ts';
+import { $ } from '@/util/dom.ts';
+import { ctrl } from '@/util/event-accessors.ts';
+import { File } from '@/file/file-system-core.ts';
+import { GL } from '@/webgl/webgl-init.ts';
+import { Codec } from '@/codec/codec.ts';
+import { Menu } from '@/components/menu-list.ts';
 import { Data } from './data-object.ts';
 import { Easing } from './transition-window.ts';
-import { GUID } from '../file/guid.ts';
-import { Color } from '../tools/color-picker-window.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
+import { GUID } from '@/file/guid.ts';
+import { Color } from '@/tools/color-picker-window.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const Team = {
 	list: $('#team-list'),

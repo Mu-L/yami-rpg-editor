@@ -1,6 +1,6 @@
-﻿import { $ } from '../util/dom.ts';
-import { File } from '../file/file-system-core.ts';
-import { Editor } from '../main/editor.ts';
+import { $ } from '@/util/dom.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Editor } from '@/main/editor.ts';
 
 import { ipcRenderer } from 'electron';
 

@@ -1,7 +1,7 @@
-﻿import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
-import { Color } from '../tools/color-picker-window.ts';
+import { Color } from '@/tools/color-picker-window.ts';
 
 export const TextBoxProperty = createPropertyWindow({
 	prefix: 'setTextBox',

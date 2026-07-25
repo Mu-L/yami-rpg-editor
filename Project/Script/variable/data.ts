@@ -1,5 +1,5 @@
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Variable } from './variable.ts';
 
 Variable.unpackVariables = (function IIFE() {

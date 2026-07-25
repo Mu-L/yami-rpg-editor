@@ -1,9 +1,9 @@
-import { $, getElementReader, getElementWriter } from '../../util/dom.ts';
-import { Command } from '../../command/command-object.ts';
-import { IfBranch } from '../../command/conditional-branch-window.ts';
-import { IfCondition } from '../../command/conditional-condition-window.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { IfBranch } from '@/command/conditional-branch-window.ts';
+import { IfCondition } from '@/command/conditional-condition-window.ts';
 import { CommandSchema } from './schema.ts';
-import { Local } from '../../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 Command.cases.loop = new CommandSchema({
 	name: 'loop',

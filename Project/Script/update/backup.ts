@@ -1,6 +1,6 @@
-import { Path } from '../util/config.ts';
-import { File } from '../file/file-system-core.ts';
-import { FS } from '../file/file-system.ts';
+import { Path } from '@/util/config.ts';
+import { File } from '@/file/file-system-core.ts';
+import { FS } from '@/file/file-system.ts';
 import { Updater } from './updater.ts';
 
 Updater.backupProject = function () {

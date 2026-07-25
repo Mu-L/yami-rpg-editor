@@ -1,17 +1,17 @@
-import { $, getElementReader, getElementWriter } from '../../util/dom.ts';
-import { TextAreaVar } from '../../components/textarea-var.ts';
-import { Command } from '../../command/command-object.ts';
-import { EventEditor } from '../../command/event-editor.ts';
-import { Token } from '../../command/mark-string-manager.ts';
-import { VariableGetter } from '../../command/variable-accessor-window.ts';
-import { CustomBox } from '../../components/custom-box.ts';
-import { NumberVar } from '../../components/number-var.ts';
-import { SelectBox } from '../../components/select-box.ts';
-import { Data } from '../../data/data-object.ts';
-import { Enum } from '../../enum/enum-window.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { TextAreaVar } from '@/components/textarea-var.ts';
+import { Command } from '@/command/command-object.ts';
+import { EventEditor } from '@/command/event-editor.ts';
+import { Token } from '@/command/mark-string-manager.ts';
+import { VariableGetter } from '@/command/variable-accessor-window.ts';
+import { CustomBox } from '@/components/custom-box.ts';
+import { NumberVar } from '@/components/number-var.ts';
+import { SelectBox } from '@/components/select-box.ts';
+import { Data } from '@/data/data-object.ts';
+import { Enum } from '@/enum/enum-window.ts';
 import { CommandSchema } from './schema.ts';
-import { Local } from '../../tools/localization.ts';
-import { Selection } from '../../tools/text-capture.ts';
+import { Local } from '@/tools/localization.ts';
+import { Selection } from '@/tools/text-capture.ts';
 
 (Command.cases as any).callEvent = new CommandSchema({
 	name: 'callEvent',

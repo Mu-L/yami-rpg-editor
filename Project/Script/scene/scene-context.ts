@@ -1,8 +1,8 @@
-import { Data } from '../data/data-object.ts';
-import { Window } from '../tools/window-object.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { Particle } from '../particle/particle-window.ts';
+import { Data } from '@/data/data-object.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Particle } from '@/particle/particle-window.ts';
 import { Light } from './light.ts';
 import { Parallax } from './parallax.ts';
 import { Scene } from './scene-window.ts';

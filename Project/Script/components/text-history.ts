@@ -1,5 +1,5 @@
-﻿import { HistoryTimer } from './history-timer.ts';
-import { IEditableHistory } from '../types/history.ts';
+import { HistoryTimer } from './history-timer.ts';
+import { IEditableHistory } from '@/types/history.ts';
 
 export class TextHistory implements IEditableHistory {
 	input: HTMLElement & { [k: string]: any };

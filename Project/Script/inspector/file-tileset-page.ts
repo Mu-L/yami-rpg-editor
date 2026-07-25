@@ -1,9 +1,9 @@
-﻿import { $, getElementWriter } from '../util/dom.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { File } from '../file/file-system-core.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
-import { Palette } from '../palette/palette.ts';
-import { Scene } from '../scene/scene-window.ts';
+import { Palette } from '@/palette/palette.ts';
+import { Scene } from '@/scene/scene-window.ts';
 
 {
 	const FileTileset = {

@@ -1,4 +1,4 @@
-import { CommandSchema } from '../module/command/schema.ts';
+import { CommandSchema } from '@/module/command/schema.ts';
 
 // Command 是中央属性袋：大量字段以 null 起步，由 command-parse / command-color / command-custom / command-tip 等模块在加载后动态挂载。为避免在后续文件中赋值时类型报错，所有方法字段统一声明为可空函数类型。
 

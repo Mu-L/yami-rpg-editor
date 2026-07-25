@@ -1,4 +1,4 @@
-import { ICapacityHistory } from '../types/history.ts';
+import { ICapacityHistory } from '@/types/history.ts';
 
 export class CommandHistory implements ICapacityHistory {
 	list: HTMLElement & {

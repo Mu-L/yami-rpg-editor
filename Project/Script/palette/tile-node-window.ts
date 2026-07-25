@@ -1,9 +1,9 @@
-﻿import { $ } from '../util/dom.ts';
-import { Timer } from '../util/timer.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { Cursor } from '../tools/pointer-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Timer } from '@/util/timer.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { Cursor } from '@/tools/pointer-object.ts';
 import { Palette } from './palette.ts';
-import { Window } from '../tools/window-object.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const TileNode = {
 	canvas: $('#autoTile-selectNode-canvas'),

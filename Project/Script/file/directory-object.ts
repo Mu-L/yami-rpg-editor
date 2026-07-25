@@ -1,14 +1,14 @@
-﻿import { ipcRenderer } from 'electron';
-import { Path } from '../util/config.ts';
+import { ipcRenderer } from 'electron';
+import { Path } from '@/util/config.ts';
 import { File } from './file-system-core.ts';
-import { Data } from '../data/data-object.ts';
-import { Meta } from '../data/metadata.ts';
+import { Data } from '@/data/data-object.ts';
+import { Meta } from '@/data/metadata.ts';
 import { FileItem } from './file-item.ts';
 import { FS, FSP } from './file-system.ts';
 import { FolderItem } from './folder-item.ts';
-import { Log } from '../log/log-window.ts';
-import { Editor } from '../main/editor.ts';
-import { Window } from '../tools/window-object.ts';
+import { Log } from '@/log/log-window.ts';
+import { Editor } from '@/main/editor.ts';
+import { Window } from '@/tools/window-object.ts';
 
 type DirectoryMethod = (...args: any[]) => any;
 

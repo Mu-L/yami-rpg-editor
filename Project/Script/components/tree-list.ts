@@ -1,8 +1,8 @@
-﻿import { debounce } from '../util/safe.ts';
+import { debounce } from '@/util/safe.ts';
 import { CommonList } from './common-list.ts';
 import { Menu } from './menu-list.ts';
 import { TextBox } from './text-box.ts';
-import { Timer } from '../util/timer.ts';
+import { Timer } from '@/util/timer.ts';
 
 export class TreeList extends HTMLElement {
 	display: string;

@@ -1,6 +1,6 @@
-import { Command } from '../../command/command-object.ts';
+import { Command } from '@/command/command-object.ts';
 import { CommandSchema } from './schema.ts';
-import { Local } from '../../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 Command.cases.independent = new CommandSchema({
 	name: 'independent',

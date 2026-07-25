@@ -1,8 +1,8 @@
-import { $, getElementReader, getElementWriter } from '../util/dom.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
 import { Command } from './command-object.ts';
 import { Token } from './mark-string-manager.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
 
 interface PropertyKeyConfig {
 	name: string;

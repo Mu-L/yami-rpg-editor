@@ -1,7 +1,7 @@
-﻿import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Log } from '../log/log-window.ts';
-import { Printer } from '../printer/printer.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Log } from '@/log/log-window.ts';
+import { Printer } from '@/printer/printer.ts';
 
 export const GameLocal = {
 	active: '',

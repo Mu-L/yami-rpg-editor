@@ -1,4 +1,4 @@
-import { Title } from '../title/title-bar.ts';
+import { Title } from '@/title/title-bar.ts';
 
 interface TabDraggingEvent {
 	hint: HTMLElement & {

@@ -1,20 +1,20 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { ctrl } from '../util/event-accessors.ts';
-import { File } from '../file/file-system-core.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { GUID } from '../file/guid.ts';
-import { Menu } from '../components/menu-list.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { Data } from '../data/data-object.ts';
-import { Team } from '../data/team-window.ts';
-import { Easing } from '../data/transition-window.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { ctrl } from '@/util/event-accessors.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { GUID } from '@/file/guid.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { Data } from '@/data/data-object.ts';
+import { Team } from '@/data/team-window.ts';
+import { Easing } from '@/data/transition-window.ts';
 import { Palette } from './palette.ts';
 import { FrameGenerator } from './tile-frame-generator.ts';
 import { TileFrame } from './tile-frame-index.ts';
-import { SceneShift } from '../scene/move-scene.ts';
-import { Local } from '../tools/localization.ts';
-import { SetQuantity } from '../tools/set-number-window.ts';
-import { Window } from '../tools/window-object.ts';
+import { SceneShift } from '@/scene/move-scene.ts';
+import { Local } from '@/tools/localization.ts';
+import { SetQuantity } from '@/tools/set-number-window.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const AutoTile = {
 	canvas: $('#autoTile-canvas'),

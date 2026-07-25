@@ -1,4 +1,4 @@
-import { IEditableHistory } from '../types/history.ts';
+import { IEditableHistory } from '@/types/history.ts';
 
 export class ParamListHistory implements IEditableHistory {
 	list: HTMLElement;

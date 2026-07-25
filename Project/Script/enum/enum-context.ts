@@ -1,6 +1,6 @@
-﻿import { TreeDataContext } from '../components/tree-data-context.ts';
-import { GameLocal } from '../local/local-object.ts';
-import { Local } from '../tools/localization.ts';
+import { TreeDataContext } from '@/components/tree-data-context.ts';
+import { GameLocal } from '@/local/local-object.ts';
+import { Local } from '@/tools/localization.ts';
 
 export class EnumerationContext extends TreeDataContext {
 	constructor(enumeration: any) {

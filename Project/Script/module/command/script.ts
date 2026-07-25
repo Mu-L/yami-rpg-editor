@@ -1,13 +1,13 @@
-﻿import { ipcRenderer } from 'electron';
-import { $ } from '../../util/dom.ts';
-import { Command } from '../../command/command-object.ts';
-import { Editor } from '../../main/editor.ts';
+import { ipcRenderer } from 'electron';
+import { $ } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { Editor } from '@/main/editor.ts';
 import { CommandSchema } from './schema.ts';
-import { loadDtsFolder } from '../global.ts';
-import { Title } from '../../title/title-bar.ts';
-import { Local } from '../../tools/localization.ts';
-import { Window } from '../../tools/window-object.ts';
-import { Path } from '../../util/config.ts';
+import { loadDtsFolder } from '@/module/global.ts';
+import { Title } from '@/title/title-bar.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Path } from '@/util/config.ts';
 import * as monaco from 'monaco-editor';
 
 Command.cases.script = new CommandSchema({

@@ -1,7 +1,7 @@
-import { $, getElementWriter } from '../util/dom.ts';
-import { GlobalPathForDir, GlobalPath } from '../util/config.ts';
-import { Window } from '../tools/window-object.ts';
-import { Local } from '../tools/localization.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { GlobalPathForDir, GlobalPath } from '@/util/config.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Local } from '@/tools/localization.ts';
 import { ApkBuilder } from './apkbuilder.ts';
 import { Resources } from './resource.ts';
 import { WebServer } from './webserver.ts';

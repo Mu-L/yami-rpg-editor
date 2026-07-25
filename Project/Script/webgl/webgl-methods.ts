@@ -1,5 +1,5 @@
-﻿import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
 import { BaseTexture } from './base-texture.ts';
 import { BatchRenderer } from './batch-renderer.ts';
 import { Matrix } from './matrix2.ts';

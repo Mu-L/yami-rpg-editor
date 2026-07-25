@@ -1,6 +1,6 @@
-﻿import { $, getElementReader } from '../util/dom.ts';
+import { $, getElementReader } from '@/util/dom.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
-import { Window } from '../tools/window-object.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const StateGetter = {
 	target: null,

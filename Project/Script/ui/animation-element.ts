@@ -1,7 +1,7 @@
-﻿import { Data } from '../data/data-object.ts';
-import { Animation } from '../animation/animation-window.ts';
+import { Data } from '@/data/data-object.ts';
+import { Animation } from '@/animation/animation-window.ts';
 import { UI } from './ui-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 UI.Animation = class AnimationElement extends UI.Element {
 	player: any;

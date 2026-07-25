@@ -1,5 +1,5 @@
-﻿import { $, getElementReader } from '../util/dom.ts';
-import { Window } from '../tools/window-object.ts';
+import { $, getElementReader } from '@/util/dom.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const AngleGetter = {
 	target: null,

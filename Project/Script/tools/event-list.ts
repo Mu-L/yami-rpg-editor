@@ -1,11 +1,11 @@
-﻿import { Command } from '../command/command-object.ts';
-import { Data } from '../data/data-object.ts';
-import { EventEditor } from '../command/event-editor.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { Inspector } from '../inspector/inspector.ts';
+import { Command } from '@/command/command-object.ts';
+import { Data } from '@/data/data-object.ts';
+import { EventEditor } from '@/command/event-editor.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { Inspector } from '@/inspector/inspector.ts';
 import { Local } from './localization.ts';
 
-import { IListInterface } from '../types/list-interface.ts';
+import { IListInterface } from '@/types/list-interface.ts';
 
 export class EventListInterface implements IListInterface {
 	target: HTMLElement | null;

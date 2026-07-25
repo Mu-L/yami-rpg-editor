@@ -1,7 +1,7 @@
-import { Command } from '../command/command-object.ts';
-import { Data } from '../data/data-object.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
+import { Command } from '@/command/command-object.ts';
+import { Data } from '@/data/data-object.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
 import { Variable } from './variable.ts';
 
 // 列表 - 复制

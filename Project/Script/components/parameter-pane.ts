@@ -1,4 +1,4 @@
-﻿import { CheckBox } from './check-box.ts';
+import { CheckBox } from './check-box.ts';
 import { ColorBox } from './color-box.ts';
 import { KeyboardBox } from './keyboard-box.ts';
 import { ParamList } from './param-list.ts';
@@ -11,11 +11,11 @@ import { SelectBox } from './select-box.ts';
 import { Select } from './select-list.ts';
 import { TextBox } from './text-box.ts';
 import { TreeList } from './tree-list.ts';
-import { Data } from '../data/data-object.ts';
-import { PluginManager } from '../plugin/plugin.ts';
-import { Local } from '../tools/localization.ts';
-import { Selection } from '../tools/text-capture.ts';
-import { measureText } from '../util/dom.ts';
+import { Data } from '@/data/data-object.ts';
+import { PluginManager } from '@/plugin/plugin.ts';
+import { Local } from '@/tools/localization.ts';
+import { Selection } from '@/tools/text-capture.ts';
+import { measureText } from '@/util/dom.ts';
 
 export class ParameterPane extends HTMLElement {
 	scriptList: HTMLElement | null;

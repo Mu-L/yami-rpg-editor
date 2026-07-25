@@ -1,18 +1,18 @@
-import { Data } from '../data/data-object.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
-import { UI } from '../ui/ui-window.ts';
+import { Data } from '@/data/data-object.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { GL } from '@/webgl/webgl-init.ts';
+import { UI } from '@/ui/ui-window.ts';
 import { Animation } from './animation-window.ts';
-import { Easing } from '../data/transition-window.ts';
-import { Particle } from '../particle/particle-window.ts';
-import { ImageTexture } from '../webgl/image-texture.ts';
-import { Matrix } from '../webgl/matrix2.ts';
+import { Easing } from '@/data/transition-window.ts';
+import { Particle } from '@/particle/particle-window.ts';
+import { ImageTexture } from '@/webgl/image-texture.ts';
+import { Matrix } from '@/webgl/matrix2.ts';
 import {
 	AnimationMotion,
 	AnimationSprite,
 	AnimationImageMap,
 	AnimationTextureMap
-} from '../types/animation-player.ts';
+} from '@/types/animation-player.ts';
 
 interface AnimationData {
 	[k: string]: any;

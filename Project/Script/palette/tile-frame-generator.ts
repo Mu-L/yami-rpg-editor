@@ -1,5 +1,5 @@
-﻿import { $ } from '../util/dom.ts';
-import { Window } from '../tools/window-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const FrameGenerator = {
 	callback: null,

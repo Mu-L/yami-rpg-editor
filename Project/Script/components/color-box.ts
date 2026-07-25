@@ -1,4 +1,4 @@
-import { Color } from '../tools/color-picker-window.ts';
+import { Color } from '@/tools/color-picker-window.ts';
 
 export class ColorBox extends HTMLElement {
 	dataValue: string;

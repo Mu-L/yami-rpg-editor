@@ -1,4 +1,4 @@
-import { IArrayHistory } from '../types/history.ts';
+import { IArrayHistory } from '@/types/history.ts';
 
 export class History extends Array implements IArrayHistory {
 	index: number;

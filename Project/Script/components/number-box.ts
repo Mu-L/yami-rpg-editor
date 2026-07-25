@@ -1,5 +1,5 @@
-﻿import { NumberHistory } from './number-history.ts';
-import { measureText } from '../util/dom.ts';
+import { NumberHistory } from './number-history.ts';
+import { measureText } from '@/util/dom.ts';
 
 export class NumberBox extends HTMLElement {
 	input: HTMLInputElement;

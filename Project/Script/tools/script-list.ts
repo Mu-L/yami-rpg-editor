@@ -1,13 +1,13 @@
-import { File } from '../file/file-system-core.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { Selector } from '../browser/resource-selector.ts';
-import { Command } from '../command/command-object.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { FileItem } from '../file/file-item.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { PluginManager } from '../plugin/plugin.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { Selector } from '@/browser/resource-selector.ts';
+import { Command } from '@/command/command-object.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { FileItem } from '@/file/file-item.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { PluginManager } from '@/plugin/plugin.ts';
 
-import { IScriptListInterface } from '../types/list-interface.ts';
+import { IScriptListInterface } from '@/types/list-interface.ts';
 
 export class ScriptListInterface implements IScriptListInterface {
 	target: (HTMLElement & { [k: string]: any }) | null;

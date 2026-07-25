@@ -1,6 +1,6 @@
-import { $, getElementReader } from '../util/dom.ts';
-import { PresetObject } from '../tools/scene-preset-window.ts';
-import { Window } from '../tools/window-object.ts';
+import { $, getElementReader } from '@/util/dom.ts';
+import { PresetObject } from '@/tools/scene-preset-window.ts';
+import { Window } from '@/tools/window-object.ts';
 
 interface PositionGetterTarget {
 	dataValue: PositionData;

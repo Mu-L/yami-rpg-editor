@@ -1,4 +1,4 @@
-import { Data } from '../data/data-object.ts';
+import { Data } from '@/data/data-object.ts';
 
 // 安全获取全局变量 注意：Data.variables 在部分阶段为 null（见 data-object.js），直接访问 Data.variables.map[key] 会抛 TypeError，故统一走此函数
 export function getVariable(id: string | number | null | undefined): any {

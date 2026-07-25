@@ -1,17 +1,17 @@
-﻿import { $ } from '../util/dom.ts';
-import { ctrl } from '../util/event-accessors.ts';
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Shortcuts } from '../tools/shortcut-registry.ts';
-import { Menu } from '../components/menu-list.ts';
-import { GUID } from '../file/guid.ts';
-import { GameLocal } from '../local/local-object.ts';
-import { Reference } from '../log/related-references.ts';
-import { History } from '../tools/history.ts';
-import { Local } from '../tools/localization.ts';
-import { UndoManager } from '../tools/undo-manager.ts';
-import { Window } from '../tools/window-object.ts';
-import { RadioProxy } from '../components/radio-proxy.ts';
+import { $ } from '@/util/dom.ts';
+import { ctrl } from '@/util/event-accessors.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Shortcuts } from '@/tools/shortcut-registry.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { GUID } from '@/file/guid.ts';
+import { GameLocal } from '@/local/local-object.ts';
+import { Reference } from '@/log/related-references.ts';
+import { History } from '@/tools/history.ts';
+import { Local } from '@/tools/localization.ts';
+import { UndoManager } from '@/tools/undo-manager.ts';
+import { Window } from '@/tools/window-object.ts';
+import { RadioProxy } from '@/components/radio-proxy.ts';
 
 export const Attribute = {
 	list: $('#attribute-list'),

@@ -1,6 +1,6 @@
-import { Data } from '../data/data-object.ts';
-import { GL } from '../webgl/webgl-init.ts';
-import { Palette } from '../palette/palette.ts';
+import { Data } from '@/data/data-object.ts';
+import { GL } from '@/webgl/webgl-init.ts';
+import { Palette } from '@/palette/palette.ts';
 import { Scene } from './scene-window.ts';
 Scene.edit = function (x, y, width, height) {
 	switch (this.brush) {

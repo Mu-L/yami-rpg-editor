@@ -1,5 +1,5 @@
 import { INTRGBA } from './color-utils.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 export class StageColor {
 	hex: string;

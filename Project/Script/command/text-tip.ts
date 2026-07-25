@@ -1,6 +1,6 @@
-import { $ } from '../util/dom.ts';
-import { Window } from '../tools/window-object.ts';
-import { StringVar } from '../components/string-var.ts';
+import { $ } from '@/util/dom.ts';
+import { Window } from '@/tools/window-object.ts';
+import { StringVar } from '@/components/string-var.ts';
 
 interface TextSuggestionItem {
 	name: string;

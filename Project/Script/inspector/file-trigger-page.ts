@@ -1,10 +1,10 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { File } from '../file/file-system-core.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
-import { EventListInterface } from '../tools/event-list.ts';
-import { ScriptListInterface } from '../tools/script-list.ts';
+import { EventListInterface } from '@/tools/event-list.ts';
+import { ScriptListInterface } from '@/tools/script-list.ts';
 
 {
 	const FileTrigger = {

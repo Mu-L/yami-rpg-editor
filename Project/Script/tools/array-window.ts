@@ -1,5 +1,5 @@
-﻿import { $ } from '../util/dom.ts';
-import { Command } from '../command/command-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
 import { Local } from './localization.ts';
 import { Window } from './window-object.ts';
 

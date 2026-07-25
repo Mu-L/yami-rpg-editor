@@ -1,9 +1,9 @@
-import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { File } from '../file/file-system-core.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Local } from './localization.ts';
 import { Cursor } from './pointer-object.ts';
 import { Window } from './window-object.ts';
-import { Path } from '../util/config.ts';
+import { Path } from '@/util/config.ts';
 
 export const ImageClip = {
 	window: $('#imageClip'),

@@ -1,10 +1,10 @@
-﻿import { CSSRGBA } from '../util/color-utils.ts';
-import { getVariable } from '../util/safe.ts';
-import { GameLocal } from '../local/local-object.ts';
-import { Printer } from '../printer/printer.ts';
+import { CSSRGBA } from '@/util/color-utils.ts';
+import { getVariable } from '@/util/safe.ts';
+import { GameLocal } from '@/local/local-object.ts';
+import { Printer } from '@/printer/printer.ts';
 import { UI } from './ui-window.ts';
-import { Texture } from '../webgl/texture.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { Texture } from '@/webgl/texture.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 UI.Text = class TextElement extends UI.Element {
 	texture: Texture | null;

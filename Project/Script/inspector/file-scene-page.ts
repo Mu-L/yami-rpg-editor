@@ -1,11 +1,11 @@
-﻿import { $, getElementWriter } from '../util/dom.ts';
-import { Codec } from '../codec/codec.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Codec } from '@/codec/codec.ts';
 import { Inspector } from './inspector.ts';
-import { Editor } from '../main/editor.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { EventListInterface } from '../tools/event-list.ts';
-import { ScriptListInterface } from '../tools/script-list.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { Editor } from '@/main/editor.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { EventListInterface } from '@/tools/event-list.ts';
+import { ScriptListInterface } from '@/tools/script-list.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 {
 	const FileScene = {

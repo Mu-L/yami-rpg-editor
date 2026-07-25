@@ -1,11 +1,11 @@
-import { CSSRGBA } from '../util/color-utils.ts';
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { GL } from '../webgl/webgl-init.ts';
-import { Texture } from '../webgl/texture.ts';
-import { UI } from '../ui/ui-window.ts';
-import { Title } from '../title/title-bar.ts';
+import { CSSRGBA } from '@/util/color-utils.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { GL } from '@/webgl/webgl-init.ts';
+import { Texture } from '@/webgl/texture.ts';
+import { UI } from '@/ui/ui-window.ts';
+import { Title } from '@/title/title-bar.ts';
 
 export class Printer {
 	texture: any | null;

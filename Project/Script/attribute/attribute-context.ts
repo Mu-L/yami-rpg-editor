@@ -1,5 +1,5 @@
-﻿import { TreeDataContext } from '../components/tree-data-context.ts';
-import { GameLocal } from '../local/local-object.ts';
+import { TreeDataContext } from '@/components/tree-data-context.ts';
+import { GameLocal } from '@/local/local-object.ts';
 
 export class AttributeContext extends TreeDataContext {
 	constructor(attribute: any) {

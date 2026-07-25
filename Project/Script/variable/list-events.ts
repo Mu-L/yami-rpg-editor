@@ -1,7 +1,7 @@
-import { ctrl } from '../util/event-accessors.ts';
-import { Menu } from '../components/menu-list.ts';
-import { Reference } from '../log/related-references.ts';
-import { Local } from '../tools/localization.ts';
+import { ctrl } from '@/util/event-accessors.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { Reference } from '@/log/related-references.ts';
+import { Local } from '@/tools/localization.ts';
 import { Variable } from './variable.ts';
 
 Variable.listSelect = function (event) {

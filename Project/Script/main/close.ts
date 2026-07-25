@@ -1,20 +1,20 @@
 import { ipcRenderer } from 'electron';
-import { Data } from '../data/data-object.ts';
-import { AudioManager } from '../audio/audio-manager.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { Selector } from '../browser/resource-selector.ts';
-import { Project } from '../data/project-settings-window.ts';
-import { Directory } from '../file/directory-object.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { Layout } from '../layout/layout.ts';
+import { Data } from '@/data/data-object.ts';
+import { AudioManager } from '@/audio/audio-manager.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { Selector } from '@/browser/resource-selector.ts';
+import { Project } from '@/data/project-settings-window.ts';
+import { Directory } from '@/file/directory-object.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { Layout } from '@/layout/layout.ts';
 import { Editor } from './editor.ts';
-import { WebServer } from '../module/webserver.ts';
-import { Printer } from '../printer/printer.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { Title } from '../title/title-bar.ts';
-import { Window } from '../tools/window-object.ts';
-import { UI } from '../ui/ui-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { WebServer } from '@/module/webserver.ts';
+import { Printer } from '@/printer/printer.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { Title } from '@/title/title-bar.ts';
+import { Window } from '@/tools/window-object.ts';
+import { UI } from '@/ui/ui-window.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 Editor.close = function (save = true) {
 	Layout.manager.switch(null);

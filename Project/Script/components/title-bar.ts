@@ -1,4 +1,4 @@
-﻿import { Window } from '../tools/window-object.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export class TitleBar extends HTMLElement {
 	dragging: PointerEvent | null;

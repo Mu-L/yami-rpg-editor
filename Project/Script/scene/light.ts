@@ -1,5 +1,5 @@
 import { Scene } from './scene-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 interface LightData {
 	enabled: boolean;

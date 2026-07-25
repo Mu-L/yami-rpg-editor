@@ -1,15 +1,15 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Timer } from '../util/timer.ts';
-import { ctrl } from '../util/event-accessors.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Timer } from '@/util/timer.ts';
+import { ctrl } from '@/util/event-accessors.ts';
 import { Data } from './data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Window } from '../tools/window-object.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { GUID } from '../file/guid.ts';
-import { Menu } from '../components/menu-list.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { Local } from '../tools/localization.ts';
-import { SetKey } from '../tools/set-key-window.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { GUID } from '@/file/guid.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { Local } from '@/tools/localization.ts';
+import { SetKey } from '@/tools/set-key-window.ts';
 
 export const Easing = {
 	list: $('#easing-list'),

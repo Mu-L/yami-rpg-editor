@@ -1,7 +1,7 @@
-import { Window } from '../tools/window-object.ts';
-import { Reference } from '../log/related-references.ts';
-import { Local } from '../tools/localization.ts';
-import { UndoManager } from '../tools/undo-manager.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Reference } from '@/log/related-references.ts';
+import { Local } from '@/tools/localization.ts';
+import { UndoManager } from '@/tools/undo-manager.ts';
 import { Variable } from './variable.ts';
 
 Variable.windowClose = function (event) {

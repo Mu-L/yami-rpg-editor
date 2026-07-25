@@ -1,9 +1,9 @@
-import { $ } from '../util/dom.ts';
-import { Timer } from '../util/timer.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { Cursor } from '../tools/pointer-object.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { Palette } from '../palette/palette.ts';
+import { $ } from '@/util/dom.ts';
+import { Timer } from '@/util/timer.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { Cursor } from '@/tools/pointer-object.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Palette } from '@/palette/palette.ts';
 
 export const Sprite = {
 	state: 'closed',

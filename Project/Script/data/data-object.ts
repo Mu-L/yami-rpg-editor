@@ -1,14 +1,14 @@
-﻿import { File } from '../file/file-system-core.ts';
-import { GUID } from '../file/guid.ts';
-import { AttributeContext } from '../attribute/attribute-context.ts';
-import { Codec } from '../codec/codec.ts';
+import { File } from '@/file/file-system-core.ts';
+import { GUID } from '@/file/guid.ts';
+import { AttributeContext } from '@/attribute/attribute-context.ts';
+import { Codec } from '@/codec/codec.ts';
 import { Manifest } from './metadata-manifest.ts';
-import { EnumerationContext } from '../enum/enum-context.ts';
-import { FSP } from '../file/file-system.ts';
-import { Log } from '../log/log-window.ts';
-import { Reference } from '../log/related-references.ts';
+import { EnumerationContext } from '@/enum/enum-context.ts';
+import { FSP } from '@/file/file-system.ts';
+import { Log } from '@/log/log-window.ts';
+import { Reference } from '@/log/related-references.ts';
 
-import { PluginManager } from '../plugin/plugin.ts';
+import { PluginManager } from '@/plugin/plugin.ts';
 
 export const Data: any = {
 	manifest: null,

@@ -1,4 +1,4 @@
-import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Scene } from './scene-window.ts';
 
 interface TilemapData {

@@ -1,8 +1,8 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { File } from '../file/file-system-core.ts';
-import { UI } from '../ui/ui-window.ts';
-import { Menu } from '../components/menu-list.ts';
-import { Data } from '../data/data-object.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { File } from '@/file/file-system-core.ts';
+import { UI } from '@/ui/ui-window.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { Data } from '@/data/data-object.ts';
 import { Local } from './localization.ts';
 import { Rename } from './rename-window.ts';
 import { Window } from './window-object.ts';

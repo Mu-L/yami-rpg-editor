@@ -1,8 +1,8 @@
-import { $ } from '../util/dom.ts';
-import { Timer } from '../util/timer.ts';
-import { Inspector } from '../inspector/inspector.ts';
+import { $ } from '@/util/dom.ts';
+import { Timer } from '@/util/timer.ts';
+import { Inspector } from '@/inspector/inspector.ts';
 import { Scene } from './scene-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 Scene.requestAnimation = function () {
 	if (this.state === 'open' && this.showAnimation) {
 		Timer.appendUpdater('stageAnimation', this.updateAnimation);

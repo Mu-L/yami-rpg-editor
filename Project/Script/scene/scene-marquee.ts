@@ -1,4 +1,4 @@
-import { Data } from '../data/data-object.ts';
+import { Data } from '@/data/data-object.ts';
 import { Scene } from './scene-window.ts';
 // 选框 - 保存状态
 Scene.marquee.save = function (key = 'default') {

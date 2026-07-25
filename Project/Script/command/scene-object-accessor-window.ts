@@ -1,7 +1,7 @@
-﻿import { $, getElementReader } from '../util/dom.ts';
+import { $, getElementReader } from '@/util/dom.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
-import { PresetObject } from '../tools/scene-preset-window.ts';
-import { Window } from '../tools/window-object.ts';
+import { PresetObject } from '@/tools/scene-preset-window.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const ObjectGetter = {
 	target: null,

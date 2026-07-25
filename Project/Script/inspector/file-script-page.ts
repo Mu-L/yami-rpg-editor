@@ -1,9 +1,9 @@
-﻿import { $ } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { File } from '../file/file-system-core.ts';
+import { $ } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
-import { PluginManager } from '../plugin/plugin.ts';
+import { PluginManager } from '@/plugin/plugin.ts';
 
 {
 	const FileScript = {

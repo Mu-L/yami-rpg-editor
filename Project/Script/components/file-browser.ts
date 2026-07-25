@@ -1,13 +1,13 @@
 import { FileNavPane } from './file-nav-pane.ts';
 import { FileBodyPane } from './file-body-pane.ts';
 import { Menu } from './menu-list.ts';
-import { Directory } from '../file/directory-object.ts';
-import { FileItem } from '../file/file-item.ts';
-import { File } from '../file/file-system-core.ts';
-import { FolderItem } from '../file/folder-item.ts';
-import { Local } from '../tools/localization.ts';
-import { Path } from '../util/config.ts';
-import { FileBrowserLinks } from '../types/file-browser-links.ts';
+import { Directory } from '@/file/directory-object.ts';
+import { FileItem } from '@/file/file-item.ts';
+import { File } from '@/file/file-system-core.ts';
+import { FolderItem } from '@/file/folder-item.ts';
+import { Local } from '@/tools/localization.ts';
+import { Path } from '@/util/config.ts';
+import { FileBrowserLinks } from '@/types/file-browser-links.ts';
 
 export class FileBrowser extends HTMLElement {
 	display: 'normal' | 'search';

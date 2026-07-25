@@ -1,9 +1,9 @@
-import { $ } from '../../util/dom.ts';
-import { Command } from '../../command/command-object.ts';
-import { Animation } from '../../animation/animation-window.ts';
-import { Token } from '../../command/mark-string-manager.ts';
+import { $ } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Token } from '@/command/mark-string-manager.ts';
 import { CommandSchema } from './schema.ts';
-import { Local } from '../../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 Command.cases.addAnimationComponent = new CommandSchema({
 	name: 'addAnimationComponent',

@@ -1,8 +1,8 @@
-import { Data } from '../data/data-object.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { FileItem } from '../file/file-item.ts';
+import { Data } from '@/data/data-object.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { FileItem } from '@/file/file-item.ts';
 import { Scene } from './scene-window.ts';
-import { StageColor } from '../util/stage-color.ts';
+import { StageColor } from '@/util/stage-color.ts';
 Scene.getObjectFile = function (sceneObject) {
 	switch (sceneObject?.class) {
 		case 'actor':

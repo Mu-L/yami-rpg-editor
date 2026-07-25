@@ -1,16 +1,16 @@
-import { $, getElementWriter } from '../util/dom.ts';
-import { Timer } from '../util/timer.ts';
-import { Data } from '../data/data-object.ts';
-import { GUID } from '../file/guid.ts';
-import { File } from '../file/file-system-core.ts';
-import { FS, FSP } from '../file/file-system.ts';
-import { Layout } from '../layout/layout.ts';
-import { Log } from '../log/log-window.ts';
-import { Editor } from '../main/editor.ts';
-import { TemplatesPath } from '../module/global.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
-import { Path } from '../util/config.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Timer } from '@/util/timer.ts';
+import { Data } from '@/data/data-object.ts';
+import { GUID } from '@/file/guid.ts';
+import { File } from '@/file/file-system-core.ts';
+import { FS, FSP } from '@/file/file-system.ts';
+import { Layout } from '@/layout/layout.ts';
+import { Log } from '@/log/log-window.ts';
+import { Editor } from '@/main/editor.ts';
+import { TemplatesPath } from '@/module/global.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Path } from '@/util/config.ts';
 
 type NewProjectState = 'passed' | 'open' | 'closed';
 

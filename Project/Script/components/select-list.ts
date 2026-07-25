@@ -1,4 +1,4 @@
-import { Window } from '../tools/window-object.ts';
+import { Window } from '@/tools/window-object.ts';
 import { CommonList } from './common-list.ts';
 
 // 下拉列表的宿主元素（SelectBox 等）需提供的契约

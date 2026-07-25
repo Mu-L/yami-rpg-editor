@@ -1,6 +1,6 @@
-import { Data } from '../data/data-object.ts';
-import { Attribute } from '../attribute/attribute-window.ts';
-import { Enum } from '../enum/enum-window.ts';
+import { Data } from '@/data/data-object.ts';
+import { Attribute } from '@/attribute/attribute-window.ts';
+import { Enum } from '@/enum/enum-window.ts';
 
 // 参数面板契约（create 形参 pane 的 9 个工厂方法）
 type Pane = HTMLElement & {

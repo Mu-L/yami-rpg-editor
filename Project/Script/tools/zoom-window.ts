@@ -1,6 +1,6 @@
-﻿import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Window } from './window-object.ts';
-import { Editor } from '../main/editor.ts';
+import { Editor } from '@/main/editor.ts';
 import { webFrame } from 'electron';
 
 export const Zoom = {

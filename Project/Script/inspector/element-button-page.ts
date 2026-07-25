@@ -1,6 +1,6 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
 import { Inspector } from './inspector.ts';
-import { UI } from '../ui/ui-window.ts';
+import { UI } from '@/ui/ui-window.ts';
 
 {
 	const UIButton = {

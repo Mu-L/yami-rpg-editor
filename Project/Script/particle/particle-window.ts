@@ -1,25 +1,25 @@
-﻿import { $ } from '../util/dom.ts';
-import { FileBodyPane } from '../components/file-body-pane.ts';
-import { ctrl } from '../util/event-accessors.ts';
-import { File } from '../file/file-system-core.ts';
-import { Cursor } from '../tools/pointer-object.ts';
-import { Command } from '../command/command-object.ts';
-import { Menu } from '../components/menu-list.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { Data } from '../data/data-object.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { Layout } from '../layout/layout.ts';
+import { $ } from '@/util/dom.ts';
+import { FileBodyPane } from '@/components/file-body-pane.ts';
+import { ctrl } from '@/util/event-accessors.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Cursor } from '@/tools/pointer-object.ts';
+import { Command } from '@/command/command-object.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { Data } from '@/data/data-object.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { Layout } from '@/layout/layout.ts';
 
-import { Scene } from '../scene/scene-window.ts';
-import { History } from '../tools/history.ts';
-import { Local } from '../tools/localization.ts';
-import { UndoManager } from '../tools/undo-manager.ts';
-import { Window } from '../tools/window-object.ts';
-import { StageColor } from '../util/stage-color.ts';
-import { Timer } from '../util/timer.ts';
-import { ImageTexture } from '../webgl/image-texture.ts';
-import { Matrix } from '../webgl/matrix2.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { History } from '@/tools/history.ts';
+import { Local } from '@/tools/localization.ts';
+import { UndoManager } from '@/tools/undo-manager.ts';
+import { Window } from '@/tools/window-object.ts';
+import { StageColor } from '@/util/stage-color.ts';
+import { Timer } from '@/util/timer.ts';
+import { ImageTexture } from '@/webgl/image-texture.ts';
+import { Matrix } from '@/webgl/matrix2.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 type ParticleState = 'closed' | 'open';
 

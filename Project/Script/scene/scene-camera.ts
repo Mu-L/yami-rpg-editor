@@ -1,7 +1,7 @@
-import { $ } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
-import { GL } from '../webgl/webgl-init.ts';
-import { Inspector } from '../inspector/inspector.ts';
+import { $ } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
+import { GL } from '@/webgl/webgl-init.ts';
+import { Inspector } from '@/inspector/inspector.ts';
 import { Scene } from './scene-window.ts';
 Scene.setZoom = (function IIFE() {
 	const slider = $('#scene-zoom');

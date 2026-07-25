@@ -1,5 +1,5 @@
-﻿import { Scene } from './scene-window.ts';
-import { ImageTexture } from '../webgl/image-texture.ts';
+import { Scene } from './scene-window.ts';
+import { ImageTexture } from '@/webgl/image-texture.ts';
 
 Scene.Textures = class Textures {
 	state: string;

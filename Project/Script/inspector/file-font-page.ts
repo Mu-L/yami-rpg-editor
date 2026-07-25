@@ -1,6 +1,6 @@
-import { $ } from '../util/dom.ts';
-import { File } from '../file/file-system-core.ts';
-import { Browser } from '../browser/project-browser.ts';
+import { $ } from '@/util/dom.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Browser } from '@/browser/project-browser.ts';
 import { Inspector } from './inspector.ts';
 
 {

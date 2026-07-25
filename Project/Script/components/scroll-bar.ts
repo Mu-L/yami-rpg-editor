@@ -1,4 +1,4 @@
-import { Timer } from '../util/timer.ts';
+import { Timer } from '@/util/timer.ts';
 
 // 滑块运行时挂载的缓存字段（避免每次读 DOM style）
 interface ScrollThumb extends HTMLElement {

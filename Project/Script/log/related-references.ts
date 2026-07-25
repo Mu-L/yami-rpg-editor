@@ -1,8 +1,8 @@
-import { $ } from '../util/dom.ts';
-import { Window } from '../tools/window-object.ts';
-import { Menu } from '../components/menu-list.ts';
-import { Data } from '../data/data-object.ts';
-import { Local } from '../tools/localization.ts';
+import { $ } from '@/util/dom.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { Data } from '@/data/data-object.ts';
+import { Local } from '@/tools/localization.ts';
 
 export const Reference = {
 	keydownMap: new Map(),

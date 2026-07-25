@@ -1,5 +1,5 @@
-﻿import { Scene } from '../scene/scene-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 // undefined按位运算等价于0，因此不会产生NaN
 

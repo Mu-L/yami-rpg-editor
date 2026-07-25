@@ -1,8 +1,8 @@
-import { $ } from '../util/dom.ts';
-import { Command } from '../command/command-object.ts';
-import { Title } from '../title/title-bar.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { Title } from '@/title/title-bar.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
 import * as monaco from 'monaco-editor';
 export const EditDataInstance = new (class {
 	editor = null;

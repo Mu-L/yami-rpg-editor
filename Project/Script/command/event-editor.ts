@@ -1,15 +1,15 @@
-import { $, getElementWriter } from '../util/dom.ts';
-import { ctrl } from '../util/event-accessors.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { ctrl } from '@/util/event-accessors.ts';
 import { Command } from './command-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Editor } from '../main/editor.ts';
-import { Data } from '../data/data-object.ts';
-import { Enum } from '../enum/enum-window.ts';
-import { Window } from '../tools/window-object.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { Local } from '../tools/localization.ts';
-import { Menu } from '../components/menu-list.ts';
-import { Inspector } from '../inspector/inspector.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Editor } from '@/main/editor.ts';
+import { Data } from '@/data/data-object.ts';
+import { Enum } from '@/enum/enum-window.ts';
+import { Window } from '@/tools/window-object.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { Local } from '@/tools/localization.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { Inspector } from '@/inspector/inspector.ts';
 
 interface EventEditorList {
 	lastScrollTop: number;

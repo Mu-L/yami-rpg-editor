@@ -1,9 +1,9 @@
-﻿import { $ } from '../util/dom.ts';
-import { Timer } from '../util/timer.ts';
+import { $ } from '@/util/dom.ts';
+import { Timer } from '@/util/timer.ts';
 import '../util/event-target.js';
 import '../util/node-list.js';
 
-import { Cursor } from '../tools/pointer-object.ts';
+import { Cursor } from '@/tools/pointer-object.ts';
 
 HTMLElement.prototype.read = function (this: HTMLElement): any {
 	return this.dataValue;

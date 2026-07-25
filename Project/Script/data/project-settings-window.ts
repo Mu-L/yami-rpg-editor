@@ -1,15 +1,15 @@
-﻿import { ipcRenderer } from 'electron';
-import { $, getElementWriter } from '../util/dom.ts';
-import { Command } from '../command/command-object.ts';
-import { Selector } from '../browser/resource-selector.ts';
+import { ipcRenderer } from 'electron';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { Selector } from '@/browser/resource-selector.ts';
 import { Data } from './data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { Log } from '../log/log-window.ts';
-import { Title } from '../title/title-bar.ts';
-import { Local } from '../tools/localization.ts';
-import { AttributeListInterface } from '../tools/property-list.ts';
-import { Window } from '../tools/window-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { Log } from '@/log/log-window.ts';
+import { Title } from '@/title/title-bar.ts';
+import { Local } from '@/tools/localization.ts';
+import { AttributeListInterface } from '@/tools/property-list.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const Project = {
 	data: null,

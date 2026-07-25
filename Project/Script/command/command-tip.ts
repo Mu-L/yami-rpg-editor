@@ -1,8 +1,8 @@
-import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Command } from './command-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export interface CommandSuggestionItem {
 	value: string;

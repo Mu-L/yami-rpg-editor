@@ -1,13 +1,13 @@
-import { $ } from '../util/dom.ts';
-import { Path } from '../util/config.ts';
+import { $ } from '@/util/dom.ts';
+import { Path } from '@/util/config.ts';
 import { fileURLToPath, URL } from 'node:url';
-import { SelectBox } from '../components/select-box.ts';
-import { TextBox } from '../components/text-box.ts';
-import { WindowFrame } from '../components/window-frame.ts';
-import { File } from '../file/file-system-core.ts';
-import { FSP } from '../file/file-system.ts';
-import { Log } from '../log/log-window.ts';
-import { Editor } from '../main/editor.ts';
+import { SelectBox } from '@/components/select-box.ts';
+import { TextBox } from '@/components/text-box.ts';
+import { WindowFrame } from '@/components/window-frame.ts';
+import { File } from '@/file/file-system-core.ts';
+import { FSP } from '@/file/file-system.ts';
+import { Log } from '@/log/log-window.ts';
+import { Editor } from '@/main/editor.ts';
 
 export const Local = {
 	active: null,

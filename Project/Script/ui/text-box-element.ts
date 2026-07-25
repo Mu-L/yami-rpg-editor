@@ -1,8 +1,8 @@
-﻿import { INTRGBA } from '../util/color-utils.ts';
-import { Printer } from '../printer/printer.ts';
+import { INTRGBA } from '@/util/color-utils.ts';
+import { Printer } from '@/printer/printer.ts';
 import { UI } from './ui-window.ts';
-import { Texture } from '../webgl/texture.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { Texture } from '@/webgl/texture.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 UI.TextBox = class TextBoxElement extends UI.Element {
 	focusing: boolean;

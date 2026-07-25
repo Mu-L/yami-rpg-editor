@@ -1,13 +1,13 @@
-import { GlobalPath, Path } from '../util/config.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { FSP } from '../file/file-system.ts';
-import { Layout } from '../layout/layout.ts';
-import { Log } from '../log/log-window.ts';
+import { GlobalPath, Path } from '@/util/config.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { FSP } from '@/file/file-system.ts';
+import { Layout } from '@/layout/layout.ts';
+import { Log } from '@/log/log-window.ts';
 import { Editor } from './editor.ts';
-import { Particle } from '../particle/particle-window.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { Title } from '../title/title-bar.ts';
-import { UI } from '../ui/ui-window.ts';
+import { Particle } from '@/particle/particle-window.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { Title } from '@/title/title-bar.ts';
+import { UI } from '@/ui/ui-window.ts';
 
 Editor.saveConfig = function () {
 	const { config } = this;

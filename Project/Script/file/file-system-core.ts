@@ -1,15 +1,15 @@
-﻿import { ipcRenderer, shell } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import nodeFs from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { Path } from '../util/config.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { Data } from '../data/data-object.ts';
+import { Path } from '@/util/config.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Data } from '@/data/data-object.ts';
 import { FS, FSP } from './file-system.ts';
-import { Log } from '../log/log-window.ts';
-import { Particle } from '../particle/particle-window.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { Cursor } from '../tools/pointer-object.ts';
-import { UI } from '../ui/ui-window.ts';
+import { Log } from '@/log/log-window.ts';
+import { Particle } from '@/particle/particle-window.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { Cursor } from '@/tools/pointer-object.ts';
+import { UI } from '@/ui/ui-window.ts';
 
 type FileMethod = (...args: any[]) => any;
 

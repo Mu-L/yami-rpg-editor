@@ -1,4 +1,4 @@
-import { GL } from '../webgl/webgl-init.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 import { Particle } from './particle-window.ts';
 
 // 粒子元素层数据对象（layer.data，与 particle-layer.ts 的 ParticleLayerData 共享） 注：随机参数字段运行时是 [standard, deviation] 元组；纯值字段是 number

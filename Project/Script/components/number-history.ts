@@ -1,5 +1,5 @@
-﻿import { HistoryTimer } from './history-timer.ts';
-import { IEditableHistory } from '../types/history.ts';
+import { HistoryTimer } from './history-timer.ts';
+import { IEditableHistory } from '@/types/history.ts';
 
 export class NumberHistory implements IEditableHistory {
 	static restoring: boolean;

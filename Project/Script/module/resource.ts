@@ -1,8 +1,8 @@
-﻿import { ipcRenderer } from 'electron';
-import { GlobalPath, Path } from '../util/config.ts';
+import { ipcRenderer } from 'electron';
+import { GlobalPath, Path } from '@/util/config.ts';
 import { SettingConfig } from './settingconfig.ts';
-import { $ } from '../util/dom.ts';
-import { Window } from '../tools/window-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Window } from '@/tools/window-object.ts';
 import { Net, axios } from './net.ts';
 import {
 	fs,
@@ -15,7 +15,7 @@ import {
 	setPackMeta,
 	setNoResourceObj
 } from './global.ts';
-import { Local } from '../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 export const Resources = new (class {
 	window = $('#resource');
 	content = $('#resource-content');

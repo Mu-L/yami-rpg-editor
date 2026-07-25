@@ -1,10 +1,10 @@
-import { $ } from '../../util/dom.ts';
-import { Command } from '../../command/command-object.ts';
-import { EventEditor } from '../../command/event-editor.ts';
-import { Token } from '../../command/mark-string-manager.ts';
-import { TextSuggestion } from '../../command/text-tip.ts';
+import { $ } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { EventEditor } from '@/command/event-editor.ts';
+import { Token } from '@/command/mark-string-manager.ts';
+import { TextSuggestion } from '@/command/text-tip.ts';
 import { CommandSchema } from './schema.ts';
-import { Local } from '../../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 Command.cases.jumpTo = new CommandSchema({
 	name: 'jumpTo',

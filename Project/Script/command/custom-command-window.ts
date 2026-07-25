@@ -1,16 +1,16 @@
-import { $, getElementWriter } from '../util/dom.ts';
-import { Selector } from '../browser/resource-selector.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Selector } from '@/browser/resource-selector.ts';
 import { Command } from './command-object.ts';
-import { Menu } from '../components/menu-list.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { Data } from '../data/data-object.ts';
-import { Easing } from '../data/transition-window.ts';
-import { File } from '../file/file-system-core.ts';
-import { PluginManager } from '../plugin/plugin.ts';
-import { Local } from '../tools/localization.ts';
-import { ScriptListInterface } from '../tools/script-list.ts';
-import { Window } from '../tools/window-object.ts';
-import { ctrl } from '../util/event-accessors.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { Data } from '@/data/data-object.ts';
+import { Easing } from '@/data/transition-window.ts';
+import { File } from '@/file/file-system-core.ts';
+import { PluginManager } from '@/plugin/plugin.ts';
+import { Local } from '@/tools/localization.ts';
+import { ScriptListInterface } from '@/tools/script-list.ts';
+import { Window } from '@/tools/window-object.ts';
+import { ctrl } from '@/util/event-accessors.ts';
 
 interface CustomCommandData {
 	id: string;

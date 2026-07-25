@@ -1,6 +1,6 @@
-﻿import { Timer } from '../util/timer.ts';
+import { Timer } from '@/util/timer.ts';
 import { UI } from './ui-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 
 UI.Window = class WindowElement extends UI.Element {
 	_layout: string;

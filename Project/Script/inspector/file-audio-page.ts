@@ -1,9 +1,9 @@
-import { $, getElementReader } from '../util/dom.ts';
-import { AudioManager } from '../audio/audio-manager.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { File } from '../file/file-system-core.ts';
+import { $, getElementReader } from '@/util/dom.ts';
+import { AudioManager } from '@/audio/audio-manager.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
-import { Timer } from '../util/timer.ts';
+import { Timer } from '@/util/timer.ts';
 
 {
 	const FileAudio = {

@@ -1,7 +1,7 @@
-﻿import { SliderBox } from './slider-box.ts';
+import { SliderBox } from './slider-box.ts';
 import { Menu } from './menu-list.ts';
 import { TextBox } from './text-box.ts';
-import { FolderItem } from '../file/folder-item.ts';
+import { FolderItem } from '@/file/folder-item.ts';
 
 export class FileHeadPane extends HTMLElement {
 	address: HTMLElement & { [k: string]: any };

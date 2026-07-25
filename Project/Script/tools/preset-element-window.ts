@@ -1,7 +1,7 @@
-﻿import { $ } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
 import { Window } from './window-object.ts';
-import { UI } from '../ui/ui-window.ts';
+import { UI } from '@/ui/ui-window.ts';
 
 export const PresetElement = {
 	ui: $('#presetElement-uiId'),

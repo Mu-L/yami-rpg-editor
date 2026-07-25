@@ -1,5 +1,5 @@
-﻿import { Inspector } from './inspector.ts';
-import { UI } from '../ui/ui-window.ts';
+import { Inspector } from './inspector.ts';
+import { UI } from '@/ui/ui-window.ts';
 
 {
 	const UIContainer = {

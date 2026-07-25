@@ -1,11 +1,11 @@
-﻿import { $ } from '../util/dom.ts';
-import { Path } from '../util/config.ts';
-import { File } from '../file/file-system-core.ts';
-import { Editor } from '../main/editor.ts';
-import { Data } from '../data/data-object.ts';
-import { FSP } from '../file/file-system.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Path } from '@/util/config.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Editor } from '@/main/editor.ts';
+import { Data } from '@/data/data-object.ts';
+import { FSP } from '@/file/file-system.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const ExportLanguage = {
 	initialize: null,

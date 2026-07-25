@@ -1,7 +1,7 @@
-import { File } from '../file/file-system-core.ts';
-import { Directory } from '../file/directory-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Directory } from '@/file/directory-object.ts';
 import { Editor } from './editor.ts';
-import { Updater } from '../update/updater.ts';
+import { Updater } from '@/update/updater.ts';
 
 Editor.checkForEditorUpdates = function () {
 	const ver1 = Editor.config.version;

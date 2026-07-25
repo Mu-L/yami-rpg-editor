@@ -1,6 +1,6 @@
-﻿import { $ } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
-import { Scene } from '../scene/scene-window.ts';
+import { $ } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
+import { Scene } from '@/scene/scene-window.ts';
 import { Window } from './window-object.ts';
 
 export const PresetObject = {

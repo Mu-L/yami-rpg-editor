@@ -1,10 +1,10 @@
-import { $ } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Reference } from '../log/related-references.ts';
-import { History } from '../tools/history.ts';
-import { UndoManager } from '../tools/undo-manager.ts';
-import { Window } from '../tools/window-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Reference } from '@/log/related-references.ts';
+import { History } from '@/tools/history.ts';
+import { UndoManager } from '@/tools/undo-manager.ts';
+import { Window } from '@/tools/window-object.ts';
 import { Variable } from './variable.ts';
 
 Variable.open = function (target = null) {

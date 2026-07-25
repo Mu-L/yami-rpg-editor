@@ -1,7 +1,7 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
 import { Inspector } from './inspector.ts';
-import { Particle } from '../particle/particle-window.ts';
+import { Particle } from '@/particle/particle-window.ts';
 
 {
 	const ParticleLayer = {

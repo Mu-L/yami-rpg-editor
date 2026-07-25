@@ -1,4 +1,4 @@
-﻿import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Window } from './window-object.ts';
 
 export const SetQuantity = {

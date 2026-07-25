@@ -1,4 +1,4 @@
-﻿import { GL } from '../webgl/webgl-init.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 import { UI } from './ui-window.ts';
 
 UI.Root = class RootElement extends UI.Element {

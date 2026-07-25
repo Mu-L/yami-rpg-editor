@@ -1,12 +1,12 @@
-﻿import './element-methods.js';
+import './element-methods.js';
 
 import { ParamListHistory } from './param-history.ts';
-import { ctrl } from '../util/event-accessors.ts';
+import { ctrl } from '@/util/event-accessors.ts';
 import { DetailBox } from './detail-box.ts';
 import { CommonList } from './common-list.ts';
 import { Menu } from './menu-list.ts';
 import { WindowFrame } from './window-frame.ts';
-import { Local } from '../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 export class ParamList extends HTMLElement {
 	object: any;

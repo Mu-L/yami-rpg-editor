@@ -1,6 +1,6 @@
-﻿import { $ } from '../util/dom.ts';
-import { Window } from '../tools/window-object.ts';
-import { Updater } from '../update/updater.ts';
+import { $ } from '@/util/dom.ts';
+import { Window } from '@/tools/window-object.ts';
+import { Updater } from '@/update/updater.ts';
 
 export const UpdateLog = {
 	content: $('#update-log-content'),

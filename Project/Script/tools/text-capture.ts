@@ -1,14 +1,14 @@
-﻿import { $ } from '../util/dom.ts';
-import { ctrl } from '../util/event-accessors.ts';
-import { TextSuggestion } from '../command/text-tip.ts';
-import { VariableGetter } from '../command/variable-accessor-window.ts';
-import { Menu } from '../components/menu-list.ts';
-import { Localization } from '../local/local-window.ts';
-import { Printer } from '../printer/printer.ts';
+import { $ } from '@/util/dom.ts';
+import { ctrl } from '@/util/event-accessors.ts';
+import { TextSuggestion } from '@/command/text-tip.ts';
+import { VariableGetter } from '@/command/variable-accessor-window.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { Localization } from '@/local/local-window.ts';
+import { Printer } from '@/printer/printer.ts';
 import { Color } from './color-picker-window.ts';
 import { Local } from './localization.ts';
 import { Window } from './window-object.ts';
-import { Variable } from '../variable/variable.ts';
+import { Variable } from '@/variable/variable.ts';
 
 export const Selection = {
 	target: null,

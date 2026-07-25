@@ -1,9 +1,9 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Command } from '../command/command-object.ts';
-import { IfCondition } from '../command/conditional-condition-window.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { IListInterface } from '../types/list-interface.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { IfCondition } from '@/command/conditional-condition-window.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { IListInterface } from '@/types/list-interface.ts';
 import { Local } from './localization.ts';
 import { Window } from './window-object.ts';
 

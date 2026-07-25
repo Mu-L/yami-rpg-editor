@@ -1,7 +1,7 @@
 import { Data } from './data-object.ts';
 import { Meta } from './metadata.ts';
-import { File } from '../file/file-system-core.ts';
-import { Title } from '../title/title-bar.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Title } from '@/title/title-bar.ts';
 
 export class Manifest {
 	actors: any[] = [];

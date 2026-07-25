@@ -1,5 +1,5 @@
-import { Local } from '../tools/localization.ts';
-import { TreeDataItem, TreeDataGroup, TreeDataCache, TreeDataLists } from '../types/tree-data.ts';
+import { Local } from '@/tools/localization.ts';
+import { TreeDataItem, TreeDataGroup, TreeDataCache, TreeDataLists } from '@/types/tree-data.ts';
 
 export class TreeDataContext {
 	itemMap: Record<string, TreeDataItem>;

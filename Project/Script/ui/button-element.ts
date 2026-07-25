@@ -1,4 +1,4 @@
-﻿import { Inspector } from '../inspector/inspector.ts';
+import { Inspector } from '@/inspector/inspector.ts';
 import { UI } from './ui-window.ts';
 
 UI.Button = class ButtonElement extends UI.Element {

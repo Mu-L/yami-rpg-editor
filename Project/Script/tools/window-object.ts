@@ -1,11 +1,11 @@
-﻿import { $, measureText } from '../util/dom.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { UI } from '../ui/ui-window.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { Layout } from '../layout/layout.ts';
-import { Particle } from '../particle/particle-window.ts';
-import { Menubar } from '../title/menu-bar.ts';
-import { Title } from '../title/title-bar.ts';
+import { $, measureText } from '@/util/dom.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { UI } from '@/ui/ui-window.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Layout } from '@/layout/layout.ts';
+import { Particle } from '@/particle/particle-window.ts';
+import { Menubar } from '@/title/menu-bar.ts';
+import { Title } from '@/title/title-bar.ts';
 
 export const Window = {
 	ambient: $('#window-ambient'),

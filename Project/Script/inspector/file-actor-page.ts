@@ -1,17 +1,17 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { Command } from '../command/command-object.ts';
-import { Data } from '../data/data-object.ts';
-import { Enum } from '../enum/enum-window.ts';
-import { File } from '../file/file-system-core.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { Command } from '@/command/command-object.ts';
+import { Data } from '@/data/data-object.ts';
+import { Enum } from '@/enum/enum-window.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { EventListInterface } from '../tools/event-list.ts';
-import { Local } from '../tools/localization.ts';
-import { AttributeListInterface } from '../tools/property-list.ts';
-import { ScriptListInterface } from '../tools/script-list.ts';
-import { Window } from '../tools/window-object.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { EventListInterface } from '@/tools/event-list.ts';
+import { Local } from '@/tools/localization.ts';
+import { AttributeListInterface } from '@/tools/property-list.ts';
+import { ScriptListInterface } from '@/tools/script-list.ts';
+import { Window } from '@/tools/window-object.ts';
 
 {
 	const FileActor = {

@@ -1,11 +1,11 @@
 import { ipcRenderer } from 'electron';
-import { $ } from '../util/dom.ts';
-import { Path } from '../util/config.ts';
-import { FSP } from '../file/file-system.ts';
-import { Log } from '../log/log-window.ts';
-import { Editor } from '../main/editor.ts';
-import { Deployment } from '../title/deploy-project-window.ts';
-import { Window } from '../tools/window-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Path } from '@/util/config.ts';
+import { FSP } from '@/file/file-system.ts';
+import { Log } from '@/log/log-window.ts';
+import { Editor } from '@/main/editor.ts';
+import { Deployment } from '@/title/deploy-project-window.ts';
+import { Window } from '@/tools/window-object.ts';
 export const WebServer = new (class {
 	port = 5959;
 	constructor() {

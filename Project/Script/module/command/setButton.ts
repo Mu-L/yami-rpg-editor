@@ -1,9 +1,9 @@
-import { $, getElementReader } from '../../util/dom.ts';
-import { Command } from '../../command/command-object.ts';
-import { Token } from '../../command/mark-string-manager.ts';
-import { ButtonProperty } from '../../command/set-button-property-window.ts';
+import { $, getElementReader } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { Token } from '@/command/mark-string-manager.ts';
+import { ButtonProperty } from '@/command/set-button-property-window.ts';
 import { CommandSchema } from './schema.ts';
-import { Local } from '../../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 Command.cases.setButton = new CommandSchema({
 	name: 'setButton',

@@ -1,5 +1,5 @@
 import { Updater } from './updater.ts';
-import { Editor } from '../main/editor.ts';
+import { Editor } from '@/main/editor.ts';
 
 Updater.updateProject = function (verNum) {
 	if (verNum < Updater.getVersionNumber('1.0.122')) {

@@ -1,19 +1,19 @@
-import { ctrl } from '../util/event-accessors.ts';
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { Menu } from '../components/menu-list.ts';
-import { Directory } from '../file/directory-object.ts';
-import { FileItem } from '../file/file-item.ts';
-import { Reference } from '../log/related-references.ts';
-import { Palette } from '../palette/palette.ts';
+import { ctrl } from '@/util/event-accessors.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { Menu } from '@/components/menu-list.ts';
+import { Directory } from '@/file/directory-object.ts';
+import { FileItem } from '@/file/file-item.ts';
+import { Reference } from '@/log/related-references.ts';
+import { Palette } from '@/palette/palette.ts';
 import { ObjectFolder } from './default-object-folder.ts';
 import { SceneShift } from './move-scene.ts';
 import { Scene } from './scene-window.ts';
-import { Title } from '../title/title-bar.ts';
-import { Local } from '../tools/localization.ts';
-import { Cursor } from '../tools/pointer-object.ts';
+import { Title } from '@/title/title-bar.ts';
+import { Local } from '@/tools/localization.ts';
+import { Cursor } from '@/tools/pointer-object.ts';
 Scene.webglRestored = function (event) {
 	if (Scene.state === 'open') {
 		Scene.requestRendering();

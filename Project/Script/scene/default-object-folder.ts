@@ -1,6 +1,6 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Editor } from '../main/editor.ts';
-import { Window } from '../tools/window-object.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Editor } from '@/main/editor.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export const ObjectFolder = {
 	initialize: null,

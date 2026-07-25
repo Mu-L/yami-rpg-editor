@@ -1,10 +1,10 @@
-import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { getVariable } from '../util/safe.ts';
-import { Attribute } from '../attribute/attribute-window.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { getVariable } from '@/util/safe.ts';
+import { Attribute } from '@/attribute/attribute-window.ts';
 import { EventEditor } from './event-editor.ts';
 import { TextSuggestion } from './text-tip.ts';
-import { SelectBox } from '../components/select-box.ts';
-import { Window } from '../tools/window-object.ts';
+import { SelectBox } from '@/components/select-box.ts';
+import { Window } from '@/tools/window-object.ts';
 
 interface VariableGetterTarget {
 	filter: string;

@@ -1,4 +1,4 @@
-import { File } from '../file/file-system-core.ts';
+import { File } from '@/file/file-system-core.ts';
 import { AudioManager } from './audio-manager.ts';
 import { Reverb } from './reverb.ts';
 

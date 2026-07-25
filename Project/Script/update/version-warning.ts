@@ -1,5 +1,5 @@
 import { Updater } from './updater.ts';
-import { Local } from '../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 (Updater as any).getTSVersionWarning = function () {
 	if ('zh-CN|zh-TW'.includes(Local.language)) {

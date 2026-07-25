@@ -1,8 +1,8 @@
-﻿import { $ } from '../util/dom.ts';
-import { Window } from '../tools/window-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Window } from '@/tools/window-object.ts';
 import { AutoTile } from './auto-tile.ts';
 import { Palette } from './palette.ts';
-import { Cursor } from '../tools/pointer-object.ts';
+import { Cursor } from '@/tools/pointer-object.ts';
 
 export const TileFrame = {
 	window: $('#autoTile-frameIndex'),

@@ -1,8 +1,8 @@
-import { Scene } from '../scene/scene-window.ts';
-import { GL } from '../webgl/webgl-init.ts';
-import { Easing } from '../data/transition-window.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { GL } from '@/webgl/webgl-init.ts';
+import { Easing } from '@/data/transition-window.ts';
 import { Particle } from './particle-window.ts';
-import { ImageTexture } from '../webgl/image-texture.ts';
+import { ImageTexture } from '@/webgl/image-texture.ts';
 
 interface ParticleLayerData {
 	interval: number;

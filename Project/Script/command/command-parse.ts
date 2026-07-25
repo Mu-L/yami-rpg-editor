@@ -1,13 +1,13 @@
-import { getVariable, reportError } from '../util/safe.ts';
-import { Attribute } from '../attribute/attribute-window.ts';
+import { getVariable, reportError } from '@/util/safe.ts';
+import { Attribute } from '@/attribute/attribute-window.ts';
 import { Command } from './command-object.ts';
 import { Token } from './mark-string-manager.ts';
-import { Data } from '../data/data-object.ts';
-import { Enum } from '../enum/enum-window.ts';
-import { FileItem } from '../file/file-item.ts';
-import { File } from '../file/file-system-core.ts';
-import { GameLocal } from '../local/local-object.ts';
-import { Local } from '../tools/localization.ts';
+import { Data } from '@/data/data-object.ts';
+import { Enum } from '@/enum/enum-window.ts';
+import { FileItem } from '@/file/file-item.ts';
+import { File } from '@/file/file-system-core.ts';
+import { GameLocal } from '@/local/local-object.ts';
+import { Local } from '@/tools/localization.ts';
 
 Command.parseBlend = function (blend: string): string {
 	return Local.get('blend.' + blend);

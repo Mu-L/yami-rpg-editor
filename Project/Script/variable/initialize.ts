@@ -1,7 +1,7 @@
-import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Variable } from './variable.ts';
-import { Reference } from '../log/related-references.ts';
-import { History } from '../tools/history.ts';
+import { Reference } from '@/log/related-references.ts';
+import { History } from '@/tools/history.ts';
 
 Variable.initialize = function () {
 	// 必须等 #variable 与 #variable-list 同时就绪，否则 list 为 null 时 后续 list.on(...) 会崩（"Cannot read properties of null (reading 'on')"）

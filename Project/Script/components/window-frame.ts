@@ -1,6 +1,6 @@
-﻿import { TitleBar } from './title-bar.ts';
-import { Layout } from '../layout/layout.ts';
-import { Window } from '../tools/window-object.ts';
+import { TitleBar } from './title-bar.ts';
+import { Layout } from '@/layout/layout.ts';
+import { Window } from '@/tools/window-object.ts';
 
 export class WindowFrame extends HTMLElement {
 	enableAmbient: boolean;

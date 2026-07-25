@@ -1,10 +1,10 @@
-﻿import { $, getElementWriter } from '../util/dom.ts';
-import { Data } from '../data/data-object.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Data } from '@/data/data-object.ts';
 import { Inspector } from './inspector.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { ConditionListInterface } from '../tools/condition-list.ts';
-import { EventListInterface } from '../tools/event-list.ts';
-import { ScriptListInterface } from '../tools/script-list.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { ConditionListInterface } from '@/tools/condition-list.ts';
+import { EventListInterface } from '@/tools/event-list.ts';
+import { ScriptListInterface } from '@/tools/script-list.ts';
 
 {
 	const SceneActor = {

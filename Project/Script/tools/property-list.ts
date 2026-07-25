@@ -1,13 +1,13 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Attribute } from '../attribute/attribute-window.ts';
-import { Command } from '../command/command-object.ts';
-import { SelectBox } from '../components/select-box.ts';
-import { Enum } from '../enum/enum-window.ts';
-import { Inspector } from '../inspector/inspector.ts';
-import { GameLocal } from '../local/local-object.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Attribute } from '@/attribute/attribute-window.ts';
+import { Command } from '@/command/command-object.ts';
+import { SelectBox } from '@/components/select-box.ts';
+import { Enum } from '@/enum/enum-window.ts';
+import { Inspector } from '@/inspector/inspector.ts';
+import { GameLocal } from '@/local/local-object.ts';
 import { Window } from './window-object.ts';
 
-import { IListInterface } from '../types/list-interface.ts';
+import { IListInterface } from '@/types/list-interface.ts';
 
 export class AttributeListInterface implements IListInterface {
 	target: HTMLElement | null;

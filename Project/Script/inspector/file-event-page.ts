@@ -1,11 +1,11 @@
-﻿import { $, getElementReader, getElementWriter } from '../util/dom.ts';
-import { Browser } from '../browser/project-browser.ts';
-import { EventEditor } from '../command/event-editor.ts';
-import { Enum } from '../enum/enum-window.ts';
-import { File } from '../file/file-system-core.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Browser } from '@/browser/project-browser.ts';
+import { EventEditor } from '@/command/event-editor.ts';
+import { Enum } from '@/enum/enum-window.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
-import { Local } from '../tools/localization.ts';
-import { Window } from '../tools/window-object.ts';
+import { Local } from '@/tools/localization.ts';
+import { Window } from '@/tools/window-object.ts';
 
 {
 	const FileEvent = {

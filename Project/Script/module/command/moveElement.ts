@@ -1,10 +1,10 @@
-import { $, getElementReader, getElementWriter } from '../../util/dom.ts';
-import { Command } from '../../command/command-object.ts';
-import { Token } from '../../command/mark-string-manager.ts';
-import { TransformProperty } from '../../command/move-element-property-window.ts';
-import { Data } from '../../data/data-object.ts';
+import { $, getElementReader, getElementWriter } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
+import { Token } from '@/command/mark-string-manager.ts';
+import { TransformProperty } from '@/command/move-element-property-window.ts';
+import { Data } from '@/data/data-object.ts';
 import { CommandSchema } from './schema.ts';
-import { Local } from '../../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 Command.cases.moveElement = new CommandSchema({
 	name: 'moveElement',

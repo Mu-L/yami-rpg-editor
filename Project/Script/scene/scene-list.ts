@@ -1,10 +1,10 @@
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Codec } from '../codec/codec.ts';
-import { Layout } from '../layout/layout.ts';
-import { Editor } from '../main/editor.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Codec } from '@/codec/codec.ts';
+import { Layout } from '@/layout/layout.ts';
+import { Editor } from '@/main/editor.ts';
 import { Scene } from './scene-window.ts';
-import { Local } from '../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 // 列表 - 复制
 Scene.list.copy = function (item) {
 	if (item) {

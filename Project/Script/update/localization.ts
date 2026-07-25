@@ -1,5 +1,5 @@
-import { File } from '../file/file-system-core.ts';
-import { FSP } from '../file/file-system.ts';
+import { File } from '@/file/file-system-core.ts';
+import { FSP } from '@/file/file-system.ts';
 import { Updater } from './updater.ts';
 
 Updater.createLocalization = async function (verNum) {

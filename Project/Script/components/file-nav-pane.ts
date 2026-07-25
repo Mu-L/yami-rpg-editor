@@ -1,13 +1,13 @@
 import './element-methods.js';
-import { Path } from '../util/config.ts';
-import { File } from '../file/file-system-core.ts';
+import { Path } from '@/util/config.ts';
+import { File } from '@/file/file-system-core.ts';
 import { CommonList } from './common-list.ts';
 import { Menu } from './menu-list.ts';
 import { TextBox } from './text-box.ts';
-import { Directory } from '../file/directory-object.ts';
-import { FS, FSP } from '../file/file-system.ts';
-import { Timer } from '../util/timer.ts';
-import { FileBrowserLinks } from '../types/file-browser-links.ts';
+import { Directory } from '@/file/directory-object.ts';
+import { FS, FSP } from '@/file/file-system.ts';
+import { Timer } from '@/util/timer.ts';
+import { FileBrowserLinks } from '@/types/file-browser-links.ts';
 
 export class FileNavPane extends HTMLElement {
 	declare _connected: boolean;

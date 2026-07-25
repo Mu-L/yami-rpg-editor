@@ -1,10 +1,10 @@
-﻿import { $, getElementWriter } from '../util/dom.ts';
-import { Animation } from '../animation/animation-window.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Animation } from '@/animation/animation-window.ts';
 import { Inspector } from './inspector.ts';
-import { Scene } from '../scene/scene-window.ts';
-import { ConditionListInterface } from '../tools/condition-list.ts';
-import { EventListInterface } from '../tools/event-list.ts';
-import { ScriptListInterface } from '../tools/script-list.ts';
+import { Scene } from '@/scene/scene-window.ts';
+import { ConditionListInterface } from '@/tools/condition-list.ts';
+import { EventListInterface } from '@/tools/event-list.ts';
+import { ScriptListInterface } from '@/tools/script-list.ts';
 
 {
 	const SceneAnimation = {

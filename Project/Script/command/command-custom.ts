@@ -1,13 +1,13 @@
-import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Command } from './command-object.ts';
-import { Window } from '../tools/window-object.ts';
+import { Window } from '@/tools/window-object.ts';
 import { CommandSuggestion, CommandSuggestionItem } from './command-tip.ts';
 import { Token } from './mark-string-manager.ts';
-import { TreeList } from '../components/tree-list.ts';
-import { Data } from '../data/data-object.ts';
-import { Layout } from '../layout/layout.ts';
-import { PluginManager } from '../plugin/plugin.ts';
-import { Local } from '../tools/localization.ts';
+import { TreeList } from '@/components/tree-list.ts';
+import { Data } from '@/data/data-object.ts';
+import { Layout } from '@/layout/layout.ts';
+import { PluginManager } from '@/plugin/plugin.ts';
+import { Local } from '@/tools/localization.ts';
 
 interface CustomParameter {
 	type: string;

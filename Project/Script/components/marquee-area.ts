@@ -1,5 +1,5 @@
-﻿import './element-methods.js';
-import { MarqueeSaveMap } from '../types/marquee-area.ts';
+import './element-methods.js';
+import { MarqueeSaveMap } from '@/types/marquee-area.ts';
 
 export class MarqueeArea extends HTMLElement {
 	selection: HTMLElement;

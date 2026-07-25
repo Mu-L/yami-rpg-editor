@@ -1,8 +1,8 @@
-import { $, getElementWriter } from '../util/dom.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
 import { Inspector } from './inspector.ts';
-import { EventListInterface } from '../tools/event-list.ts';
-import { ScriptListInterface } from '../tools/script-list.ts';
-import { UI } from '../ui/ui-window.ts';
+import { EventListInterface } from '@/tools/event-list.ts';
+import { ScriptListInterface } from '@/tools/script-list.ts';
+import { UI } from '@/ui/ui-window.ts';
 
 {
 	const UIElement = {

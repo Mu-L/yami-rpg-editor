@@ -1,5 +1,5 @@
-import { Path } from '../util/config.ts';
-import { Meta } from '../data/metadata.ts';
+import { Path } from '@/util/config.ts';
+import { Meta } from '@/data/metadata.ts';
 import { FileItem } from './file-item.ts';
 import { File } from './file-system-core.ts';
 import { FSP } from './file-system.ts';

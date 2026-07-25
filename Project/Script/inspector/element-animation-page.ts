@@ -1,7 +1,7 @@
-﻿import { $, getElementWriter } from '../util/dom.ts';
-import { Animation } from '../animation/animation-window.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Animation } from '@/animation/animation-window.ts';
 import { Inspector } from './inspector.ts';
-import { UI } from '../ui/ui-window.ts';
+import { UI } from '@/ui/ui-window.ts';
 
 {
 	const UIAnimation = {

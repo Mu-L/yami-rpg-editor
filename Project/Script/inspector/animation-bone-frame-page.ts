@@ -1,6 +1,6 @@
-﻿import { $, getElementWriter } from '../util/dom.ts';
-import { Animation } from '../animation/animation-window.ts';
-import { Curve } from '../animation/curve-window.ts';
+import { $, getElementWriter } from '@/util/dom.ts';
+import { Animation } from '@/animation/animation-window.ts';
+import { Curve } from '@/animation/curve-window.ts';
 import { Inspector } from './inspector.ts';
 
 {

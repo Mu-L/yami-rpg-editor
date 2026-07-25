@@ -1,4 +1,4 @@
-import { $ } from '../util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Variable } from './variable.ts';
 
 Variable.openPropertyPanel = function (variable) {

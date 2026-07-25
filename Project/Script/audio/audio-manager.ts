@@ -1,4 +1,4 @@
-﻿import { File } from '../file/file-system-core.ts';
+import { File } from '@/file/file-system-core.ts';
 import { AudioPlayer } from './audio-player.ts';
 import { MultipleAudioPlayer } from './multiple-audio-player.ts';
 

@@ -1,6 +1,6 @@
-import { Data } from '../data/data-object.ts';
-import { Codec } from '../codec/codec.ts';
-import { File } from '../file/file-system-core.ts';
+import { Data } from '@/data/data-object.ts';
+import { Codec } from '@/codec/codec.ts';
+import { File } from '@/file/file-system-core.ts';
 import { Updater } from './updater.ts';
 
 Updater.updateTeams = function (verNum) {

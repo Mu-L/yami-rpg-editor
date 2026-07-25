@@ -1,4 +1,4 @@
-﻿import { Timer } from '../util/timer.ts';
+import { Timer } from '@/util/timer.ts';
 
 (() => {
 	let target: HTMLElement | null = null;

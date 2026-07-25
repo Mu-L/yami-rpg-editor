@@ -1,7 +1,7 @@
-import { $, getElementReader } from '../util/dom.ts';
+import { $, getElementReader } from '@/util/dom.ts';
 import { VariableGetter } from './variable-accessor-window.ts';
-import { PresetElement } from '../tools/preset-element-window.ts';
-import { Window } from '../tools/window-object.ts';
+import { PresetElement } from '@/tools/preset-element-window.ts';
+import { Window } from '@/tools/window-object.ts';
 
 interface ElementGetterTarget {
 	dataValue: ElementData;

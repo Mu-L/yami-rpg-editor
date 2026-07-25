@@ -1,5 +1,5 @@
 import { Select } from './select-list.ts';
-import { Local } from '../tools/localization.ts';
+import { Local } from '@/tools/localization.ts';
 
 export class SelectBox extends HTMLElement {
 	info: HTMLElement & { [k: string]: any };

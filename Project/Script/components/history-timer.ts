@@ -1,4 +1,4 @@
-﻿import { Timer } from '../util/timer.ts';
+import { Timer } from '@/util/timer.ts';
 
 export const HistoryTimer = new Timer({
 	duration: 2000,

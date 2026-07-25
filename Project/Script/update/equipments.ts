@@ -1,6 +1,6 @@
-import { Data } from '../data/data-object.ts';
-import { File } from '../file/file-system-core.ts';
-import { Inspector } from '../inspector/inspector.ts';
+import { Data } from '@/data/data-object.ts';
+import { File } from '@/file/file-system-core.ts';
+import { Inspector } from '@/inspector/inspector.ts';
 import { Updater } from './updater.ts';
 
 Updater.updateEquipments = function (verNum) {

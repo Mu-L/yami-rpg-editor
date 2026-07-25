@@ -1,5 +1,5 @@
-import { $ } from '../../util/dom.ts';
-import { Command } from '../../command/command-object.ts';
+import { $ } from '@/util/dom.ts';
+import { Command } from '@/command/command-object.ts';
 import { CommandSchema } from './schema.ts';
 
 Command.cases.comment = new CommandSchema({

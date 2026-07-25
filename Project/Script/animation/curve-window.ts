@@ -1,9 +1,9 @@
-import { $ } from '../util/dom.ts';
-import { Timer } from '../util/timer.ts';
+import { $ } from '@/util/dom.ts';
+import { Timer } from '@/util/timer.ts';
 import { Animation } from './animation-window.ts';
-import { Data } from '../data/data-object.ts';
-import { Easing } from '../data/transition-window.ts';
-import { Layout } from '../layout/layout.ts';
+import { Data } from '@/data/data-object.ts';
+import { Easing } from '@/data/transition-window.ts';
+import { Layout } from '@/layout/layout.ts';
 
 type CurveState = 'closed' | 'open';
 

@@ -1,19 +1,19 @@
-import { Timer } from '../util/timer.ts';
-import { Data } from '../data/data-object.ts';
-import { Window } from '../tools/window-object.ts';
-import { GL } from '../webgl/webgl-init.ts';
+import { Timer } from '@/util/timer.ts';
+import { Data } from '@/data/data-object.ts';
+import { Window } from '@/tools/window-object.ts';
+import { GL } from '@/webgl/webgl-init.ts';
 import { Menu } from './menu-list.ts';
 import { TextBox } from './text-box.ts';
-import { Directory } from '../file/directory-object.ts';
-import { FileItem } from '../file/file-item.ts';
-import { File } from '../file/file-system-core.ts';
-import { FSP } from '../file/file-system.ts';
-import { FolderItem } from '../file/folder-item.ts';
-import { Reference } from '../log/related-references.ts';
-import { Editor } from '../main/editor.ts';
-import { Local } from '../tools/localization.ts';
-import { Path } from '../util/config.ts';
-import { FileBrowserLinks } from '../types/file-browser-links.ts';
+import { Directory } from '@/file/directory-object.ts';
+import { FileItem } from '@/file/file-item.ts';
+import { File } from '@/file/file-system-core.ts';
+import { FSP } from '@/file/file-system.ts';
+import { FolderItem } from '@/file/folder-item.ts';
+import { Reference } from '@/log/related-references.ts';
+import { Editor } from '@/main/editor.ts';
+import { Local } from '@/tools/localization.ts';
+import { Path } from '@/util/config.ts';
+import { FileBrowserLinks } from '@/types/file-browser-links.ts';
 
 export class FileBodyPane extends HTMLElement {
 	viewIndex: number | null;
