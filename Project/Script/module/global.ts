@@ -29,6 +29,7 @@ import nodeFs from 'node:fs';
 import fsExtra from 'fs-extra';
 import nodeYauzl from 'yauzl';
 import MarkdownIt from 'markdown-it';
+
 const GlobalPath = Path.resolve(os.homedir(), '.openyami');
 // ESM 下 __dirname 不存在，用 import.meta.url 推算
 const _moduleURL = new URL(import.meta.url);
@@ -625,8 +626,6 @@ export function loadDtsFolder(folderPath, monaco, recursive = true) {
 								fileUri
 							)
 						);
-
-						console.log(`[Monaco] Loaded d.ts: ${fileUri}`);
 					} catch (readErr) {
 						console.error(`Failed to read file: ${fullPath}`, readErr);
 					}
