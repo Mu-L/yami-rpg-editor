@@ -42,7 +42,7 @@
 		"lint:fix": "oxlint -c ./.oxlintrc.json --fix ."
 	},
 	"dependencies": {
-		"@typescript/typescript-win32-x64": "7.1.0-dev.20260723.1",
+		"@typescript/typescript-win32-x64": "7.1.0-dev.20260724.1",
 		"axios": "^1.16.1",
 		"exceljs": "^4.4.0",
 		"fs-extra": "^11.3.5",
@@ -53,7 +53,7 @@
 		"qrcode": "^1.5.4",
 		"sharp": "^0.34.5",
 		"steamworks.js": "^0.4.0",
-		"typescript": "7.1.0-dev.20260723.1",
+		"typescript": "7.1.0-dev.20260724.1",
 		"uglify-js": "^3.19.3",
 		"xml2js": "^0.6.2",
 		"yauzl": "^3.3.1"
