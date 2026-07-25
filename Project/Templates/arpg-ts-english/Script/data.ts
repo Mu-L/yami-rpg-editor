@@ -133,7 +133,7 @@ let Data = new class DataManager {
             }
             break
           default:
-            if (!this.config.deployed) {
+            if (!this.config.deployed && Array.isArray(group)) {
               // 处理同步资产文件的元数据
               for (const meta of group as Array<FileMeta>) {
                 meta.guid = this.parseGUID(meta)
