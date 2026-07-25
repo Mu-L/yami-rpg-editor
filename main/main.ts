@@ -8,7 +8,7 @@ import QRCode from 'qrcode';
 import ExcelJS from 'exceljs';
 import * as apkProcessor from './apk.ts';
 import type { IpcMainInvokeEvent, IpcMainEvent, BrowserWindowExtension } from './types/main.ts';
-import { app, Menu, BrowserWindow, ipcMain, dialog, shell, session } from 'electron';
+import { app, Menu, BrowserWindow, ipcMain, dialog, shell, session, clipboard } from 'electron';
 import fs from 'fs';
 import { spawn } from 'child_process';
 import path from 'path';
@@ -309,6 +309,22 @@ ipcMain.handle('write-file', (event, filePath, text, check) => {
 // 等待写入文件
 ipcMain.handle('wait-write-file', () => {
 	return Promise.allSettled(promises);
+});
+
+// 剪贴板
+ipcMain.handle('clipboard-has', (_event, format: string) => {
+	const buffer = clipboard.readBuffer(format);
+	return buffer.length !== 0;
+});
+ipcMain.handle('clipboard-read', (_event, format: string) => {
+	const buffer = clipboard.readBuffer(format);
+	const string = buffer.toString();
+	return string ? JSON.parse(string) : null;
+});
+ipcMain.handle('clipboard-write', (_event, format: string, object: any) => {
+	const string = JSON.stringify(object);
+	const buffer = Buffer.from(string);
+	clipboard.writeBuffer(format, buffer);
 });
 
 // 异步写入文件
@@ -696,7 +712,12 @@ const createPlayerWindow = function (
 	const config = path.resolve(projectDir, 'Data/config.json');
 	const window = (
 		JSON.parse(fs.readFileSync(config).toString()) as {
-			window: { title: string; width: number; height: number; display?: string };
+			window: {
+				title: string;
+				width: number;
+				height: number;
+				display?: string;
+			};
 		}
 	).window;
 
