@@ -185,10 +185,6 @@ detail-grid > text {
 	border: 1px solid rgba(232, 163, 61, 0.3);
 	border-radius: 2px;
 }
-.disabled {
-	opacity: 0.5;
-	pointer-events: none;
-}
 
 .validate-error {
 	outline: 1px solid var(--text-color-error);

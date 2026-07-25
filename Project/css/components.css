@@ -413,7 +413,8 @@ radio-box.standard.disabled {
 }
 
 /* --------------------------------
- * 滑动�? * --------------------------------
+ * 滑动条
+ * --------------------------------
  */
 slider-box {
 	display: block;
@@ -1651,7 +1652,6 @@ command-item {
 	text-overflow: ellipsis;
 }
 
-/* vscode生成的span似乎在第一次双击时有概率失�?*/
 command-item > span {
 	pointer-events: none;
 }
@@ -1660,13 +1660,17 @@ command-item.item command-mark-major:before {
 	content: '>';
 }
 
+command-item.disabled.selected > command-text:not(.transparent) {
+	pointer-events: auto;
+	color: var(--text-color-accelerator-selected) !important;
+}
+
 command-item.disabled > command-mark-major,
 command-item.disabled > command-mark-minor,
 command-item.disabled > command-fold,
 command-item.disabled > command-text:not(.transparent),
-command-item.disabled > text,
-command-item.disabled > span > span {
-	color: var(--command-color-mark-minor) !important;
+command-item.disabled > text {
+	color: var(--command-color-mark-minor);
 }
 
 command-item:hover {
@@ -1674,11 +1678,6 @@ command-item:hover {
 }
 
 command-item.selected {
-	color: white;
-	background-color: var(--selected-background);
-}
-
-command-item.selected > span > span {
 	color: white;
 	background-color: var(--selected-background);
 }
@@ -1903,13 +1902,13 @@ field-set > command-list {
 }
 
 /* --------------------------------
- * 文件浏览�? * --------------------------------
+ * 文件浏览器
+ * --------------------------------
  */
 file-browser {
 	position: absolute;
 }
 
-/* 如果设置了nav背景色而未设置body背景�? * 在nav垂直溢出时会导致body丢失子像素渲�? */
 file-nav-pane {
 	position: absolute;
 	width: 18%;
@@ -2278,8 +2277,6 @@ file-body-icon.icon-file-other {
 	opacity: 0.8;
 }
 
-/* 当字号与行高是某些相等的�? * 底部会出现部分第三行的文�? * 可能是文本垂直偏移造成
- * 设置 15px 的行高可以解�? */
 file-body-name {
 	display: -webkit-box;
 	height: 30px;

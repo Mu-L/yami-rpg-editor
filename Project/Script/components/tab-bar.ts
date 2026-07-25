@@ -178,6 +178,17 @@ export class TabBar extends HTMLElement {
 		const value = this.read();
 		if (this.data!.remove(item)) {
 			this.update();
+			// 关闭后恢复选中状态
+			if (this.data!.length > 0) {
+				if (value === item || value === undefined || !this.data!.includes(value)) {
+					// 关闭的是当前选中的标签，或原选中标签已不存在，选中相邻标签
+					const index = Math.min(this.selectionIndex, this.data!.length - 1);
+					this.select(this.data![index]);
+				} else {
+					// 关闭的不是当前选中的标签，恢复原选中状态
+					this.write(value);
+				}
+			}
 			if (this.closedEventEnabled) {
 				const closed = new Event('closed') as Event & {
 					closedItems: any[];
@@ -306,6 +317,7 @@ export class TabBar extends HTMLElement {
 				if (element.tagName === 'TAB-CLOSE') {
 					// 阻止拖拽开始事件
 					event.preventDefault();
+					const parent = element.parentNode as HTMLElement;
 					const dragging: TabDraggingEvent = {
 						hint: null as unknown as HTMLElement & {
 							target: HTMLElement;
@@ -323,9 +335,12 @@ export class TabBar extends HTMLElement {
 								height: number;
 							}): void;
 						},
-						target: element.parentNode as HTMLElement,
+						target: parent,
 						offsetX: event.offsetX,
-						mode: 'close'
+						mode: 'close',
+						relate(event: PointerEvent): boolean {
+							return (event.target as HTMLElement).closest('tab-item') === parent;
+						}
 					};
 					this.dragging = dragging;
 					window.on('pointerup', this.windowPointerup);
@@ -545,8 +560,13 @@ export class TabBar extends HTMLElement {
 		if (dragging && dragging.relate!(event)) {
 			switch (dragging.mode) {
 				case 'close':
-					if (dragging.target === event.target) {
-						this.close(((event.target as TabElement).parentNode as TabDragTarget).item);
+					{
+						const target = (event.target as HTMLElement).closest(
+							'tab-item'
+						) as TabDragTarget | null;
+						if (target && dragging.target === target) {
+							this.close(target.item);
+						}
 					}
 					break;
 				case 'popup':

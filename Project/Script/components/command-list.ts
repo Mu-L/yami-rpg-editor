@@ -1176,6 +1176,11 @@ export class CommandList extends HTMLElement {
 						break;
 				}
 				this.update();
+				if (!this.focusing) {
+					this.focusing = true;
+				}
+				this.select(this.start);
+				this.scrollToSelection('alter');
 				this.dispatchChangeEvent();
 			}
 		}
@@ -1360,6 +1365,10 @@ try {
 				});
 				list.splice(start, end - start);
 				this.update();
+				// 确保 focus 状态正确，否则右键菜单删除后点击无法选中
+				if (!this.focusing) {
+					this.focusing = true;
+				}
 				this.select(this.start);
 				this.scrollToSelection('alter');
 				this.dispatchChangeEvent();
