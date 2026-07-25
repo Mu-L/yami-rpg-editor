@@ -1,0 +1,24 @@
+<window-frame id="setBoolean">
+	<title-bar>Set Boolean<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box
+				id="setBoolean-variable"
+				type="variable"
+				filter="writable-boolean"
+			></custom-box>
+			<text>Operation</text><select-box id="setBoolean-operation"></select-box>
+			<text>Type</text><select-box id="setBoolean-operand-type"></select-box>
+			<text>Constant</text><select-box id="setBoolean-constant-value"></select-box>
+			<text>Variable</text
+			><custom-box id="setBoolean-common-variable" type="variable" filter="all"></custom-box>
+			<text>Index</text
+			><number-var id="setBoolean-list-index" min="0" max="1000000000"></number-var>
+			<text>Param Name</text><string-var id="setBoolean-parameter-key"></string-var>
+			<text>Script</text><text-box id="setBoolean-script"></text-box>
+		</grid-box>
+		<button id="setBoolean-confirm" name="confirm">Confirm</button>
+		<button id="setBoolean-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

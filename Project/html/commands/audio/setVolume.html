@@ -1,0 +1,21 @@
+<window-frame id="setVolume">
+	<title-bar>Set Volume<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="setVolume-type"></select-box> <text>Volume</text
+			><number-var id="setVolume-volume" min="0" max="1" step="0.1" decimals="4"></number-var>
+			<text>Easing</text><select-box id="setVolume-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-box
+				id="setVolume-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="setVolume-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="setVolume-confirm" name="confirm">Confirm</button>
+		<button id="setVolume-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

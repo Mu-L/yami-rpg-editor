@@ -1,0 +1,20 @@
+<window-frame id="httpRequest">
+	<title-bar>httpRequest<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>URL</text><string-var id="httpRequest-url"></string-var> <text>Method</text
+			><select-box id="httpRequest-method"></select-box> <text>Header</text
+			><param-list id="httpRequest-header"></param-list> <text>Data</text
+			><param-list id="httpRequest-data"></param-list> <text>TimeOut</text
+			><number-box id="httpRequest-timeout"></number-box> <text>ResponseType</text
+			><select-box id="httpRequest-responseType"></select-box> <text>WithCredentials</text
+			><check-box class="standard" id="httpRequest-withCredentials"></check-box>
+			<text>AuthUser</text><string-var id="httpRequest-authUser"></string-var>
+			<text>AuthPass</text><string-var id="httpRequest-authPass"></string-var>
+			<text>CallBack</text
+			><custom-box id="httpRequest-callback" type="file" filter="event"></custom-box>
+		</grid-box>
+		<button id="httpRequest-confirm" name="confirm">Confirm</button>
+		<button id="httpRequest-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

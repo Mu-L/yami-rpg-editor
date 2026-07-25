@@ -1,0 +1,33 @@
+<window-frame id="setList">
+	<title-bar>Set List<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box id="setList-variable" type="variable" filter="object"></custom-box>
+			<text>Operation</text><select-box id="setList-operation"></select-box>
+			<text>Numbers</text
+			><custom-box id="setList-numbers" type="array" filter="number"></custom-box>
+			<text>Strings</text
+			><custom-box id="setList-strings" type="array" filter="string"></custom-box>
+			<text>Index</text><number-var id="setList-index" min="0" max="1000000000"></number-var>
+			<text>Boolean</text><select-box id="setList-boolean"></select-box> <text>Number</text
+			><number-box
+				id="setList-number"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-box>
+			<text>String</text><text-area id="setList-string"></text-area> <text>Variable</text
+			><custom-box id="setList-operand" type="variable" filter="all"></custom-box>
+			<text>Separator</text><text-area-var id="setList-separator"></text-area-var>
+			<text>Attribute Group</text
+			><custom-box id="setList-attribute-groupId" type="attribute-group"></custom-box>
+			<text>Enum Group</text
+			><custom-box id="setList-enum-groupId" type="enum-group"></custom-box> <text>Actor</text
+			><custom-box id="setList-actor" type="actor"></custom-box> <text>Default</text
+			><check-box id="setList-index-skip-check" class="standard"></check-box>
+		</grid-box>
+		<button id="setList-confirm" name="confirm">Confirm</button>
+		<button id="setList-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

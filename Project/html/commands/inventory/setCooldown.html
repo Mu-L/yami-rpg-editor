@@ -1,0 +1,14 @@
+<window-frame id="setCooldown">
+	<title-bar>Set Cooldown<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="setCooldown-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="setCooldown-operation"></select-box>
+			<text>Cooldown Key</text><select-var id="setCooldown-key"></select-var>
+			<text>Cooldown Time</text
+			><number-var id="setCooldown-cooldown" min="1" max="3600000" unit="ms"></number-var>
+		</grid-box>
+		<button id="setCooldown-confirm" name="confirm">Confirm</button>
+		<button id="setCooldown-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

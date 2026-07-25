@@ -1,0 +1,31 @@
+<window-frame id="getActor">
+	<title-bar>Get Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Write to Variable</text
+			><custom-box id="getActor-variable" type="variable" filter="object"></custom-box>
+			<text>Position</text><custom-box id="getActor-position" type="position"></custom-box>
+			<text>Area</text><select-box id="getActor-area"></select-box> <text>Size</text
+			><number-var id="getActor-size" min="0" max="512" decimals="4" unit="tile"></number-var>
+			<text>Radius</text
+			><number-var
+				id="getActor-radius"
+				min="0"
+				max="256"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Selector</text><select-box id="getActor-selector"></select-box> <text>Team</text
+			><select-var id="getActor-teamId"></select-var> <text>Condition</text
+			><select-box id="getActor-condition"></select-box> <text>Attribute</text
+			><select-box id="getActor-attribute"></select-box> <text>Attribute 2</text
+			><select-box id="getActor-divisor"></select-box> <text>Activation</text
+			><select-box id="getActor-activation"></select-box> <text>Exclusion</text
+			><select-box id="getActor-exclusion"></select-box> <text>Exclusion Actor</text
+			><custom-box id="getActor-exclusionActor" type="actor"></custom-box>
+			<text>Exclusion Team</text><select-var id="getActor-exclusionTeamId"></select-var>
+		</grid-box>
+		<button id="getActor-confirm" name="confirm">Confirm</button>
+		<button id="getActor-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

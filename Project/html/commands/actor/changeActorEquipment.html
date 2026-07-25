@@ -1,0 +1,20 @@
+<window-frame id="changeActorEquipment">
+	<title-bar>Change Actor Equipment<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="changeActorEquipment-actor" type="actor"></custom-box>
+			<text>Operation</text><select-box id="changeActorEquipment-operation"></select-box>
+			<text>Shortcut Key</text><select-var id="changeActorEquipment-slot"></select-var>
+			<text>Equipment</text
+			><custom-box
+				id="changeActorEquipment-equipmentId"
+				type="file"
+				filter="equipment"
+			></custom-box>
+			<text>Equipment</text
+			><custom-box id="changeActorEquipment-equipment" type="equipment"></custom-box>
+		</grid-box>
+		<button id="changeActorEquipment-confirm" name="confirm">Confirm</button>
+		<button id="changeActorEquipment-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

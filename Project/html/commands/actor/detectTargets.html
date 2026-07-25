@@ -1,0 +1,20 @@
+<window-frame id="detectTargets">
+	<title-bar>Detect Targets<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="detectTargets-actor" type="actor"></custom-box>
+			<text>Distance</text
+			><number-var
+				id="detectTargets-distance"
+				min="0"
+				max="512"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Selector</text><select-box id="detectTargets-selector"></select-box>
+			<text>In Sight</text><select-box id="detectTargets-inSight"></select-box>
+		</grid-box>
+		<button id="detectTargets-confirm" name="confirm">Confirm</button>
+		<button id="detectTargets-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

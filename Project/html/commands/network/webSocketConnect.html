@@ -1,0 +1,19 @@
+<window-frame id="webSocketConnect">
+	<title-bar>webSocketConnect<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>URL</text><string-var id="webSocketConnect-url"></string-var> <text>ID</text
+			><string-var id="webSocketConnect-id"></string-var> <text>Protocols</text
+			><string-var id="webSocketConnect-protocols"></string-var> <text>OnOpen</text
+			><custom-box id="webSocketConnect-onOpen" type="file" filter="event"></custom-box>
+			<text>OnMessage</text
+			><custom-box id="webSocketConnect-onMessage" type="file" filter="event"></custom-box>
+			<text>OnError</text
+			><custom-box id="webSocketConnect-onError" type="file" filter="event"></custom-box>
+			<text>OnClose</text
+			><custom-box id="webSocketConnect-onClose" type="file" filter="event"></custom-box>
+		</grid-box>
+		<button id="webSocketConnect-confirm" name="confirm">Confirm</button>
+		<button id="webSocketConnect-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

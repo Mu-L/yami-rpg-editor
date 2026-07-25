@@ -1,0 +1,16 @@
+<window-frame id="setEvent">
+	<title-bar>Set Event<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Operation</text><select-box id="setEvent-operation"></select-box>
+			<text>Variable</text
+			><custom-box id="setEvent-variable" type="variable" filter="object"></custom-box>
+			<text>Event</text
+			><custom-box id="setEvent-eventId" type="file" filter="event"></custom-box>
+			<text>Choice Index</text
+			><number-var id="setEvent-choiceIndex" min="0" max="255"></number-var>
+		</grid-box>
+		<button id="setEvent-confirm" name="confirm">Confirm</button>
+		<button id="setEvent-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

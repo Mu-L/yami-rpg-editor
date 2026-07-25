@@ -1,0 +1,21 @@
+<window-frame id="moveElement">
+	<title-bar>Move Element<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Element</text><custom-box id="moveElement-element" type="element"></custom-box>
+			<text>Properties</text><param-list id="moveElement-properties"></param-list>
+			<text>Easing</text><select-box id="moveElement-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-box
+				id="moveElement-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="moveElement-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="moveElement-confirm" name="confirm">Confirm</button>
+		<button id="moveElement-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

@@ -1,0 +1,44 @@
+<window-frame id="getMultipleActors">
+	<title-bar>Get Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Write to List</text
+			><custom-box
+				id="getMultipleActors-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Position</text
+			><custom-box id="getMultipleActors-position" type="position"></custom-box>
+			<text>Area</text><select-box id="getMultipleActors-area"></select-box> <text>Width</text
+			><number-var
+				id="getMultipleActors-width"
+				min="0"
+				max="512"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Height</text
+			><number-var
+				id="getMultipleActors-height"
+				min="0"
+				max="512"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Radius</text
+			><number-var
+				id="getMultipleActors-radius"
+				min="0"
+				max="256"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Selector</text><select-box id="getMultipleActors-selector"></select-box>
+			<text>Team</text><select-var id="getMultipleActors-teamId"></select-var>
+			<text>Activation</text><select-box id="getMultipleActors-activation"></select-box>
+		</grid-box>
+		<button id="getMultipleActors-confirm" name="confirm">Confirm</button>
+		<button id="getMultipleActors-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

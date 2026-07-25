@@ -1,0 +1,18 @@
+<window-frame id="registerEvent">
+	<title-bar>Register Event<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Target</text><select-box id="registerEvent-target"></select-box> <text>Actor</text
+			><custom-box id="registerEvent-actor" type="actor"></custom-box> <text>Element</text
+			><custom-box id="registerEvent-element" type="element"></custom-box>
+			<text>Operation</text><select-box id="registerEvent-operation"></select-box>
+			<text>Type</text><select-box id="registerEvent-type"></select-box> <text>Priority</text
+			><check-box id="registerEvent-priority" class="standard large"></check-box>
+			<text>Namespace</text
+			><check-box id="registerEvent-namespace" class="standard large"></check-box>
+			<text>Tag Name</text><string-var id="registerEvent-tag"></string-var>
+		</grid-box>
+		<button id="registerEvent-confirm" name="confirm">Confirm</button>
+		<button id="registerEvent-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

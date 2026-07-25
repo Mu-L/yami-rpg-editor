@@ -1,0 +1,32 @@
+<window-frame id="setObject">
+	<title-bar>Set Object<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Variable</text
+			><custom-box id="setObject-variable" type="variable" filter="object"></custom-box>
+			<text>Type</text><select-box id="setObject-operand-type"></select-box> <text>Actor</text
+			><custom-box id="setObject-operand-actor" type="actor"></custom-box> <text>Skill</text
+			><custom-box id="setObject-operand-skill" type="skill"></custom-box> <text>State</text
+			><custom-box id="setObject-operand-state" type="state"></custom-box>
+			<text>Equipment</text
+			><custom-box id="setObject-operand-equipment" type="equipment"></custom-box>
+			<text>Item</text><custom-box id="setObject-operand-item" type="item"></custom-box>
+			<text>Trigger</text
+			><custom-box id="setObject-operand-trigger" type="trigger"></custom-box>
+			<text>Light</text><custom-box id="setObject-operand-light" type="light"></custom-box>
+			<text>Object</text><custom-box id="setObject-operand-object" type="object"></custom-box>
+			<text>Element</text
+			><custom-box id="setObject-operand-element" type="element"></custom-box>
+			<text>Variable</text
+			><custom-box
+				id="setObject-operand-variable"
+				type="variable"
+				filter="object"
+			></custom-box>
+			<text>Index</text
+			><number-var id="setObject-operand-list-index" min="0" max="1000000000"></number-var>
+		</grid-box>
+		<button id="setObject-confirm" name="confirm">Confirm</button>
+		<button id="setObject-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

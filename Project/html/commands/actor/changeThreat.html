@@ -1,0 +1,19 @@
+<window-frame id="changeThreat">
+	<title-bar>Change Threat<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="changeThreat-actor" type="actor"></custom-box>
+			<text>Target</text><custom-box id="changeThreat-target" type="actor"></custom-box>
+			<text>Operation</text><select-box id="changeThreat-operation"></select-box>
+			<text>Threat</text
+			><number-var
+				id="changeThreat-threat"
+				min="0"
+				max="1000000000"
+				decimals="4"
+			></number-var>
+		</grid-box>
+		<button id="changeThreat-confirm" name="confirm">Confirm</button>
+		<button id="changeThreat-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

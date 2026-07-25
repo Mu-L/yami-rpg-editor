@@ -1,0 +1,21 @@
+<window-frame id="shakeScreen">
+	<title-bar>Tint Screen<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Shake Mode</text><select-box id="shakeScreen-mode"></select-box> <text>Power</text
+			><number-box id="shakeScreen-power" min="1" max="10"></number-box> <text>Speed</text
+			><number-box id="shakeScreen-speed" min="1" max="10"></number-box> <text>Easing</text
+			><select-box id="shakeScreen-easingId" name="easing"></select-box> <text>Duration</text
+			><number-box
+				id="shakeScreen-duration"
+				name="duration"
+				min="1"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="shakeScreen-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="shakeScreen-confirm" name="confirm">Confirm</button>
+		<button id="shakeScreen-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

@@ -1,0 +1,56 @@
+<window-frame id="followActor">
+	<title-bar>Follow Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="followActor-actor" type="actor"></custom-box>
+			<text>Target</text><custom-box id="followActor-target" type="actor"></custom-box>
+			<text>Mode</text><select-box id="followActor-mode"></select-box>
+			<text>Min Distance</text
+			><number-var
+				id="followActor-minDist"
+				min="0"
+				max="16"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Max Distance</text
+			><number-var
+				id="followActor-maxDist"
+				min="0"
+				max="20"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Offset Ratio</text
+			><number-box
+				id="followActor-offset"
+				min="-0.8"
+				max="0.8"
+				decimals="4"
+				unit="r"
+			></number-box>
+			<text>Vert Distance</text
+			><number-box
+				id="followActor-vertDist"
+				min="0"
+				max="4"
+				decimals="4"
+				unit="tile"
+			></number-box>
+			<text>Buffer Distance</text
+			><number-box
+				id="followActor-bufferDist"
+				min="0"
+				max="4"
+				decimals="4"
+				unit="tile"
+			></number-box>
+			<text>Navigate</text><select-box id="followActor-navigate"></select-box>
+			<text>Bypass Actors</text><select-box id="followActor-bypass"></select-box>
+			<text>Once</text><select-box id="followActor-once"></select-box> <text>Wait</text
+			><select-box id="followActor-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="followActor-confirm" name="confirm">Confirm</button>
+		<button id="followActor-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

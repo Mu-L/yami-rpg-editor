@@ -1,0 +1,21 @@
+<window-frame id="setMovementSpeed">
+	<title-bar>Set Movement Speed<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="setMovementSpeed-actor" type="actor"></custom-box>
+			<text>Property</text><select-box id="setMovementSpeed-property"></select-box>
+			<text>Base Speed</text
+			><number-var
+				id="setMovementSpeed-base"
+				min="0"
+				max="32"
+				decimals="4"
+				unit="t/s"
+			></number-var>
+			<text>Speed Factor</text
+			><number-var id="setMovementSpeed-factor" min="0" max="4" decimals="4"></number-var>
+		</grid-box>
+		<button id="setMovementSpeed-confirm" name="confirm">Confirm</button>
+		<button id="setMovementSpeed-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

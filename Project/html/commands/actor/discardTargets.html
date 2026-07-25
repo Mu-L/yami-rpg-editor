@@ -1,0 +1,19 @@
+<window-frame id="discardTargets">
+	<title-bar>Discard Targets<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="discardTargets-actor" type="actor"></custom-box>
+			<text>Selector</text><select-box id="discardTargets-selector"></select-box>
+			<text>Distance</text
+			><number-var
+				id="discardTargets-distance"
+				min="0"
+				max="512"
+				decimals="4"
+				unit="tile"
+			></number-var>
+		</grid-box>
+		<button id="discardTargets-confirm" name="confirm">Confirm</button>
+		<button id="discardTargets-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

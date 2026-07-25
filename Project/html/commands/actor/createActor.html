@@ -1,0 +1,20 @@
+<window-frame id="createActor">
+	<title-bar>Create Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text
+			><custom-box id="createActor-actorId" type="file" filter="actor"></custom-box>
+			<text>Team</text><select-box id="createActor-teamId"></select-box> <text>Position</text
+			><custom-box id="createActor-position" type="position"></custom-box> <text>Angle</text
+			><number-var
+				id="createActor-angle"
+				min="-360"
+				max="360"
+				decimals="4"
+				unit="deg"
+			></number-var>
+		</grid-box>
+		<button id="createActor-confirm" name="confirm">Confirm</button>
+		<button id="createActor-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

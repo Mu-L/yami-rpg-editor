@@ -1,0 +1,21 @@
+<window-frame id="moveLight">
+	<title-bar>Move Light<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Light</text><custom-box id="moveLight-light" type="light"></custom-box>
+			<text>Properties</text><param-list id="moveLight-properties"></param-list>
+			<text>Easing</text><select-box id="moveLight-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-box
+				id="moveLight-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="moveLight-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="moveLight-confirm" name="confirm">Confirm</button>
+		<button id="moveLight-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

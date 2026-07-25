@@ -1,0 +1,19 @@
+<window-frame id="changeActorPortrait">
+	<title-bar>Change Actor Portrait<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="changeActorPortrait-actor" type="actor"></custom-box>
+			<text>Mode</text><select-box id="changeActorPortrait-mode"></select-box>
+			<text>Portrait</text
+			><custom-box id="changeActorPortrait-portrait" type="file" filter="image"></custom-box>
+			<text>Clip</text
+			><custom-box
+				id="changeActorPortrait-clip"
+				type="clip"
+				image="changeActorPortrait-portrait"
+			></custom-box>
+		</grid-box>
+		<button id="changeActorPortrait-confirm" name="confirm">Confirm</button>
+		<button id="changeActorPortrait-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

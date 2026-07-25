@@ -1,0 +1,21 @@
+<window-frame id="moveCamera">
+	<title-bar>Move Camera<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Mode</text><select-box id="moveCamera-mode"></select-box> <text>Position</text
+			><custom-box id="moveCamera-position" type="position"></custom-box> <text>Actor</text
+			><custom-box id="moveCamera-actor" type="actor"></custom-box> <text>Easing</text
+			><select-box id="moveCamera-easingId" name="easing"></select-box> <text>Duration</text
+			><number-box
+				id="moveCamera-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="moveCamera-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="moveCamera-confirm" name="confirm">Confirm</button>
+		<button id="moveCamera-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

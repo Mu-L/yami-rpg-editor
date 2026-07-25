@@ -1,0 +1,21 @@
+<window-frame id="setPan">
+	<title-bar>Set Pan<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="setPan-type"></select-box> <text>Pan</text
+			><number-var id="setPan-pan" min="-1" max="1" step="0.1" decimals="4"></number-var>
+			<text>Easing</text><select-box id="setPan-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-box
+				id="setPan-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-box>
+			<text>Wait</text><select-box id="setPan-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="setPan-confirm" name="confirm">Confirm</button>
+		<button id="setPan-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

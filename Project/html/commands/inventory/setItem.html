@@ -1,0 +1,12 @@
+<window-frame id="setItem">
+	<title-bar>Set Item<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Item</text><custom-box id="setItem-item" type="item"></custom-box>
+			<text>Operation</text><select-box id="setItem-operation"></select-box>
+			<text>Quantity</text><number-var id="setItem-quantity" min="1" max="10000"></number-var>
+		</grid-box>
+		<button id="setItem-confirm" name="confirm">Confirm</button>
+		<button id="setItem-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

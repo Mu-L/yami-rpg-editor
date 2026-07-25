@@ -1,0 +1,27 @@
+<window-frame id="setZoomFactor">
+	<title-bar>Set Zoom Factor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Zoom Factor</text
+			><number-var
+				id="setZoomFactor-zoom"
+				min="1"
+				max="8"
+				step="0.1"
+				decimals="4"
+			></number-var>
+			<text>Easing</text><select-box id="setZoomFactor-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-var
+				id="setZoomFactor-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-var>
+			<text>Wait</text><select-box id="setZoomFactor-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="setZoomFactor-confirm" name="confirm">Confirm</button>
+		<button id="setZoomFactor-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

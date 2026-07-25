@@ -1,0 +1,21 @@
+<window-frame id="setAngle">
+	<title-bar>Set Angle<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="setAngle-actor" type="actor"></custom-box>
+			<text>Angle</text><custom-box id="setAngle-angle" type="angle"></custom-box>
+			<text>Easing</text><select-box id="setAngle-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-var
+				id="setAngle-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-var>
+			<text>Wait</text><select-box id="setAngle-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="setAngle-confirm" name="confirm">Confirm</button>
+		<button id="setAngle-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

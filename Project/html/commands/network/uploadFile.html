@@ -1,0 +1,17 @@
+<window-frame id="uploadFile">
+	<title-bar>uploadFile<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>URL</text><string-var id="uploadFile-url"></string-var> <text>LocalPath</text
+			><string-var id="uploadFile-path"></string-var> <text>Method</text
+			><select-box id="uploadFile-method"></select-box> <text>Field</text
+			><string-var id="uploadFile-field"></string-var> <text>Header</text
+			><param-list id="uploadFile-header"></param-list> <text>CallBack</text
+			><custom-box id="uploadFile-callback" type="file" filter="event"></custom-box>
+			<text>RateCallBack</text
+			><custom-box id="uploadFile-rateCallback" type="file" filter="event"></custom-box>
+		</grid-box>
+		<button id="uploadFile-confirm" name="confirm">Confirm</button>
+		<button id="uploadFile-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

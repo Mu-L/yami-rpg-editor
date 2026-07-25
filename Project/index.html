@@ -8087,7 +8087,6 @@
 		<button id="comment-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="setBoolean">
 	<title-bar>Set Boolean<close></close></title-bar>
 	<content-frame>
@@ -8364,7 +8363,6 @@
 		<button id="setObjectProperty-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="if">
 	<title-bar>If<close></close></title-bar>
 	<content-frame>
@@ -8423,6 +8421,27 @@
 		<button id="forEach-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
+<window-frame id="break">
+	<title-bar>Break<close></close></title-bar>
+	<content-frame>
+		<button id="break-confirm" name="confirm">Confirm</button>
+		<button id="break-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="continue">
+	<title-bar>Continue<close></close></title-bar>
+	<content-frame>
+		<button id="continue-confirm" name="confirm">Confirm</button>
+		<button id="continue-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="independent">
+	<title-bar>Independent<close></close></title-bar>
+	<content-frame>
+		<button id="independent-confirm" name="confirm">Confirm</button>
+		<button id="independent-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
 <window-frame id="callEvent">
 	<title-bar>Call Event<close></close></title-bar>
 	<content-frame>
@@ -8469,24 +8488,6 @@
 		<button id="return-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-<window-frame id="registerEvent">
-	<title-bar>Register Event<close></close></title-bar>
-	<content-frame>
-		<grid-box>
-			<text>Target</text><select-box id="registerEvent-target"></select-box> <text>Actor</text
-			><custom-box id="registerEvent-actor" type="actor"></custom-box> <text>Element</text
-			><custom-box id="registerEvent-element" type="element"></custom-box>
-			<text>Operation</text><select-box id="registerEvent-operation"></select-box>
-			<text>Type</text><select-box id="registerEvent-type"></select-box> <text>Priority</text
-			><check-box id="registerEvent-priority" class="standard large"></check-box>
-			<text>Namespace</text
-			><check-box id="registerEvent-namespace" class="standard large"></check-box>
-			<text>Tag Name</text><string-var id="registerEvent-tag"></string-var>
-		</grid-box>
-		<button id="registerEvent-confirm" name="confirm">Confirm</button>
-		<button id="registerEvent-cancel" name="cancel">Cancel</button>
-	</content-frame>
-</window-frame>
 <window-frame id="stopEvent">
 	<title-bar>Stop Event<close></close></title-bar>
 	<content-frame>
@@ -8504,6 +8505,24 @@
 		</grid-box>
 		<button id="stopEvent-confirm" name="confirm">Confirm</button>
 		<button id="stopEvent-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="registerEvent">
+	<title-bar>Register Event<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Target</text><select-box id="registerEvent-target"></select-box> <text>Actor</text
+			><custom-box id="registerEvent-actor" type="actor"></custom-box> <text>Element</text
+			><custom-box id="registerEvent-element" type="element"></custom-box>
+			<text>Operation</text><select-box id="registerEvent-operation"></select-box>
+			<text>Type</text><select-box id="registerEvent-type"></select-box> <text>Priority</text
+			><check-box id="registerEvent-priority" class="standard large"></check-box>
+			<text>Namespace</text
+			><check-box id="registerEvent-namespace" class="standard large"></check-box>
+			<text>Tag Name</text><string-var id="registerEvent-tag"></string-var>
+		</grid-box>
+		<button id="registerEvent-confirm" name="confirm">Confirm</button>
+		<button id="registerEvent-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
 <window-frame id="setEvent">
@@ -8597,7 +8616,6 @@
 		<button id="wait-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="createElement">
 	<title-bar>Create Element<close></close></title-bar>
 	<content-frame>
@@ -8770,6 +8788,16 @@
 		<button id="setVideo-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
+<window-frame id="waitForVideo">
+	<title-bar>Wait For Video<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Element</text><custom-box id="waitForVideo-element" type="element"></custom-box>
+		</grid-box>
+		<button id="waitForVideo-confirm" name="confirm">Confirm</button>
+		<button id="waitForVideo-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
 <window-frame id="setWindow">
 	<title-bar>Set Window<close></close></title-bar>
 	<content-frame>
@@ -8779,16 +8807,6 @@
 		</grid-box>
 		<button id="setWindow-confirm" name="confirm">Confirm</button>
 		<button id="setWindow-cancel" name="cancel">Cancel</button>
-	</content-frame>
-</window-frame>
-<window-frame id="waitForVideo">
-	<title-bar>Wait For Video<close></close></title-bar>
-	<content-frame>
-		<grid-box>
-			<text>Element</text><custom-box id="waitForVideo-element" type="element"></custom-box>
-		</grid-box>
-		<button id="waitForVideo-confirm" name="confirm">Confirm</button>
-		<button id="waitForVideo-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
 <window-frame id="setElement">
@@ -8872,7 +8890,6 @@
 		<button id="setFocus-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="createObject">
 	<title-bar>Create Object<close></close></title-bar>
 	<content-frame>
@@ -9029,7 +9046,6 @@
 		<button id="setObjectAnimation-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="playAudio">
 	<title-bar>Play Audio<close></close></title-bar>
 	<content-frame>
@@ -9145,7 +9161,6 @@
 		<button id="restoreAudio-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="createActor">
 	<title-bar>Create Actor<close></close></title-bar>
 	<content-frame>
@@ -9893,7 +9908,6 @@
 		<button id="renderOutline-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="castSkill">
 	<title-bar>Cast Skill<close></close></title-bar>
 	<content-frame>
@@ -10023,7 +10037,6 @@
 		<button id="setTriggerMotion-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="setInventory">
 	<title-bar>Set Inventory<close></close></title-bar>
 	<content-frame>
@@ -10108,7 +10121,6 @@
 		<button id="setShortcut-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="activateScene">
 	<title-bar>Activate Scene<close></close></title-bar>
 	<content-frame>
@@ -10159,6 +10171,13 @@
 		<button id="unloadSubscene-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
+<window-frame id="deleteScene">
+	<title-bar>Delete Scene<close></close></title-bar>
+	<content-frame>
+		<button id="deleteScene-confirm" name="confirm">Confirm</button>
+		<button id="deleteScene-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
 <window-frame id="clampCamera">
 	<title-bar>Clamp Camera<close></close></title-bar>
 	<content-frame>
@@ -10198,6 +10217,13 @@
 		</grid-box>
 		<button id="clampCamera-confirm" name="confirm">Confirm</button>
 		<button id="clampCamera-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="unclampCamera">
+	<title-bar>Unclamp Camera<close></close></title-bar>
+	<content-frame>
+		<button id="unclampCamera-confirm" name="confirm">Confirm</button>
+		<button id="unclampCamera-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
 <window-frame id="moveCamera">
@@ -10363,7 +10389,6 @@
 		<button id="setTerrain-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="requestURL">
 	<title-bar>requestURL<close></close></title-bar>
 	<content-frame>
@@ -10476,7 +10501,6 @@
 		<button id="webSocketClose-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
 <window-frame id="setGameSpeed">
 	<title-bar>Set Game Speed<close></close></title-bar>
 	<content-frame>
@@ -10549,6 +10573,41 @@
 		<button id="gameData-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
+<window-frame id="reset">
+	<title-bar>Reset<close></close></title-bar>
+	<content-frame>
+		<button id="reset-confirm" name="confirm">Confirm</button>
+		<button id="reset-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="pauseGame">
+	<title-bar>Pause Game<close></close></title-bar>
+	<content-frame>
+		<button id="pauseGame-confirm" name="confirm">Confirm</button>
+		<button id="pauseGame-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="continueGame">
+	<title-bar>Continue Game<close></close></title-bar>
+	<content-frame>
+		<button id="continueGame-confirm" name="confirm">Confirm</button>
+		<button id="continueGame-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="preventSceneInput">
+	<title-bar>Prevent Scene Input<close></close></title-bar>
+	<content-frame>
+		<button id="preventSceneInput-confirm" name="confirm">Confirm</button>
+		<button id="preventSceneInput-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
+<window-frame id="restoreSceneInput">
+	<title-bar>Restore Scene Input<close></close></title-bar>
+	<content-frame>
+		<button id="restoreSceneInput-confirm" name="confirm">Confirm</button>
+		<button id="restoreSceneInput-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
 <window-frame id="simulateKey">
 	<title-bar>Simulate Key<close></close></title-bar>
 	<content-frame>
@@ -10613,7 +10672,13 @@
 		<button id="script-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
-
+<window-frame id="relaunchApp">
+	<title-bar>Relaunch App<close></close></title-bar>
+	<content-frame>
+		<button id="relaunchApp-confirm" name="confirm">Confirm</button>
+		<button id="relaunchApp-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
 </body>
 
 </html>

@@ -1,0 +1,27 @@
+<window-frame id="return">
+	<title-bar>Return<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="return-type"></select-box> <text>Boolean</text
+			><select-box id="return-boolean"></select-box> <text>Number</text
+			><number-var
+				id="return-number"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-var>
+			<text>String</text><string-var id="return-string"></string-var> <text>Object</text
+			><custom-box id="return-object" type="variable" filter="object"></custom-box>
+			<text>Actor</text><custom-box id="return-actor" type="actor"></custom-box>
+			<text>Skill</text><custom-box id="return-skill" type="skill"></custom-box>
+			<text>State</text><custom-box id="return-state" type="state"></custom-box>
+			<text>Equipment</text><custom-box id="return-equipment" type="equipment"></custom-box>
+			<text>Item</text><custom-box id="return-item" type="item"></custom-box>
+			<text>Trigger</text><custom-box id="return-trigger" type="trigger"></custom-box>
+			<text>Light</text><custom-box id="return-light" type="light"></custom-box>
+			<text>Element</text><custom-box id="return-element" type="element"></custom-box>
+		</grid-box>
+		<button id="return-confirm" name="confirm">Confirm</button>
+		<button id="return-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

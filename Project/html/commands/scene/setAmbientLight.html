@@ -1,0 +1,25 @@
+<window-frame id="setAmbientLight">
+	<title-bar>Set Ambient Light<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Red</text
+			><number-var id="setAmbientLight-red" min="0" max="255" step="5"></number-var>
+			<text>Green</text
+			><number-var id="setAmbientLight-green" min="0" max="255" step="5"></number-var>
+			<text>Blue</text
+			><number-var id="setAmbientLight-blue" min="0" max="255" step="5"></number-var>
+			<text>Easing</text><select-box id="setAmbientLight-easingId" name="easing"></select-box>
+			<text>Duration</text
+			><number-var
+				id="setAmbientLight-duration"
+				name="duration"
+				min="0"
+				max="3600000"
+				unit="ms"
+			></number-var>
+			<text>Wait</text><select-box id="setAmbientLight-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="setAmbientLight-confirm" name="confirm">Confirm</button>
+		<button id="setAmbientLight-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

@@ -1,0 +1,21 @@
+<window-frame id="moveActor">
+	<title-bar>Move Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="moveActor-actor" type="actor"></custom-box>
+			<text>Mode</text><select-box id="moveActor-mode"></select-box> <text>Angle</text
+			><number-var
+				id="moveActor-angle"
+				min="-360"
+				max="360"
+				decimals="4"
+				unit="deg"
+			></number-var>
+			<text>Destination</text
+			><custom-box id="moveActor-destination" type="position"></custom-box> <text>Wait</text
+			><select-box id="moveActor-wait" name="wait"></select-box>
+		</grid-box>
+		<button id="moveActor-confirm" name="confirm">Confirm</button>
+		<button id="moveActor-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

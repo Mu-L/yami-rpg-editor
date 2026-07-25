@@ -1,0 +1,19 @@
+<window-frame id="changeActorSprite">
+	<title-bar>Change Actor Sprite<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Actor</text><custom-box id="changeActorSprite-actor" type="actor"></custom-box>
+			<text>Animation</text
+			><custom-box
+				id="changeActorSprite-animationId"
+				type="file"
+				filter="animation"
+			></custom-box>
+			<text>Sprite Name</text><select-box id="changeActorSprite-spriteId"></select-box>
+			<text>Sprite</text
+			><custom-box id="changeActorSprite-image" type="file" filter="image"></custom-box>
+		</grid-box>
+		<button id="changeActorSprite-confirm" name="confirm">Confirm</button>
+		<button id="changeActorSprite-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

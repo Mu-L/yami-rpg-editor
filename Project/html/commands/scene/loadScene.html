@@ -1,0 +1,16 @@
+<window-frame id="loadScene">
+	<title-bar>Load Scene<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Scene</text
+			><file-var id="loadScene-sceneId" type="file" filter="scene"></file-var>
+			<text>Transfer Player</text><select-box id="loadScene-transfer"></select-box>
+			<text>X</text
+			><number-var id="loadScene-x" min="0" max="512" step="0.5" decimals="4"></number-var>
+			<text>Y</text
+			><number-var id="loadScene-y" min="0" max="512" step="0.5" decimals="4"></number-var>
+		</grid-box>
+		<button id="loadScene-confirm" name="confirm">Confirm</button>
+		<button id="loadScene-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>
