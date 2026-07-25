@@ -45,7 +45,7 @@ const __dirname =
 export const fs = fsExtra;
 export const yauzl = nodeYauzl;
 
-export const CommunityVersion = '26072001';
+export const CommunityVersion = '26072501';
 
 EventBus.once('editor_loaded', () => {
 	const checkForProjectUpdatesOrigin = Editor.checkForProjectUpdates;
