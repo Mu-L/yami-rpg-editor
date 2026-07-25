@@ -1,7 +1,6 @@
 import { Updater } from './updater.ts';
 import { Local } from '../tools/localization.ts';
 
-// 获取TS版本更新警告
 (Updater as any).getTSVersionWarning = function () {
 	if ('zh-CN|zh-TW'.includes(Local.language)) {
 		return {

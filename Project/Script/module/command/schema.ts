@@ -23,8 +23,6 @@ import { Data } from '../../data/data-object.ts';
 import { Local } from '../../tools/localization.ts';
 import { Window } from '../../tools/window-object.ts';
 
-// ******************************** 指令 schema 基类 ********************************
-
 export class CommandSchema {
 	name: string;
 	fields: any[];
@@ -52,9 +50,6 @@ export class CommandSchema {
 		this.customLoad = config.load ?? config.customLoad;
 		this.customSave = config.save ?? config.customSave;
 		this.noWindow = config.noWindow ?? false;
-		// 挂载配置中其余属性（如 windowFrame / eventArgs 等数据字段，
-		// 以及 parseMode / parseOperation 等辅助方法），
-		// 使 this.xxx 在 onInitialize/customParse/Load/Save 内部可用
 		const reserved = new Set([
 			'name',
 			'fields',
@@ -90,7 +85,6 @@ export class CommandSchema {
 		return typeof field.default === 'function' ? field.default() : field.default;
 	}
 
-	// 默认数据工厂
 	createDefault() {
 		const data = {};
 		for (const field of this.fields) {
@@ -102,7 +96,6 @@ export class CommandSchema {
 		return data;
 	}
 
-	// 初始化
 	initialize() {
 		if (this.onInitialize) {
 			return this.onInitialize();
@@ -110,7 +103,6 @@ export class CommandSchema {
 		$(`#${this.confirmId}`).on('click', () => this.save());
 	}
 
-	// 解析 - 子类可重写或提供 parse 函数
 	parse(data: any) {
 		if (this.customParse) {
 			return this.customParse(data);
@@ -129,7 +121,6 @@ export class CommandSchema {
 		return contents;
 	}
 
-	// 加载
 	load(data: any) {
 		if (this.customLoad) {
 			return this.customLoad(data);
@@ -143,7 +134,6 @@ export class CommandSchema {
 		}
 	}
 
-	// 保存
 	save() {
 		if (this.customSave) {
 			return this.customSave();
@@ -169,12 +159,10 @@ export class CommandSchema {
 
 	// --- 静态分发方法 ---
 
-	// 按 id 查找已注册的指令处理器
 	static _resolve(id: any) {
 		return Command.cases[id];
 	}
 
-	// 拓扑排序
 	static _topoSort(names: any, getDeps: any) {
 		const graph: Map<string, string[]> = new Map(names.map((n) => [n, []]));
 		const inDegree: Map<string, number> = new Map(names.map((n) => [n, 0]));
@@ -198,7 +186,6 @@ export class CommandSchema {
 		return result;
 	}
 
-	// 初始化所有指令
 	static initAll() {
 		Command.words = new Command.WordList();
 		const subMap = {
@@ -233,7 +220,6 @@ export class CommandSchema {
 		}
 	}
 
-	// 插入指令
 	static insert(target: any, id: any) {
 		Command.target = target;
 		if (id) {
@@ -243,7 +229,6 @@ export class CommandSchema {
 		CommandSuggestion.open();
 	}
 
-	// 打开指令窗口
 	static open(id: any) {
 		const handler = CommandSchema._resolve(id);
 		if (handler !== undefined) {
@@ -282,7 +267,6 @@ export class CommandSchema {
 		}
 	}
 
-	// 编辑指令
 	static edit(target: any, command: any) {
 		const { id, params } = command;
 		const handler = CommandSchema._resolve(id);
@@ -318,7 +302,6 @@ export class CommandSchema {
 		}
 	}
 
-	// 保存指令
 	static save(params: any) {
 		const { id, target } = Command;
 		target.save({ id, params });
@@ -330,7 +313,6 @@ export class CommandSchema {
 		}
 	}
 
-	// 解析指令
 	static parse(command: any, varMap: any) {
 		Command.varMap = varMap;
 		let id = command?.id;

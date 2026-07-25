@@ -16,10 +16,7 @@ import { Local } from '../tools/localization.ts';
 import { SetQuantity } from '../tools/set-number-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 自动图块 ********************************
-
 export const AutoTile = {
-	// properties
 	canvas: $('#autoTile-canvas'),
 	templateList: $('#autoTile-templates'),
 	nodeList: $('#autoTile-nodes'),
@@ -39,7 +36,6 @@ export const AutoTile = {
 	offsetX: null,
 	offsetY: null,
 	changed: false,
-	// methods
 	initialize: null,
 	open: null,
 	create: null,
@@ -72,7 +68,6 @@ export const AutoTile = {
 	updateFrameItem: null,
 	updateCanvas: null,
 	drawFrame: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	dprchange: null,
@@ -95,19 +90,15 @@ export const AutoTile = {
 	confirm: null
 };
 
-// list methods
 AutoTile.templateList.updateNodeElement = Easing.list.updateNodeElement;
 AutoTile.templateList.updateItemName = Team.list.updateItemName;
 AutoTile.templateList.addElementClass = Easing.list.addElementClass;
 AutoTile.templateList.updateTextNode = Easing.list.updateTextNode;
 
-// 初始化
 AutoTile.initialize = function () {
-	// 设置最大数量
 	this.nodeMaximum = 64;
 	this.frameMaximum = 256;
 
-	// 绑定模板列表
 	const list = this.templateList;
 	list.removable = true;
 	list.renamable = true;
@@ -115,7 +106,6 @@ AutoTile.initialize = function () {
 	list.creators.push(list.addElementClass);
 	list.updaters.push(list.updateTextNode);
 
-	// 侦听事件
 	window.on('dprchange', this.dprchange);
 	$('#autoTile').on('close', this.windowClose);
 	$('#autoTile').on('closed', this.windowClosed);
@@ -138,7 +128,6 @@ AutoTile.initialize = function () {
 	$('#autoTile-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 AutoTile.open = function ({ template, image, x, y }) {
 	Window.open('autoTile');
 	$('#autoTile-image').write(image);
@@ -157,7 +146,6 @@ AutoTile.open = function ({ template, image, x, y }) {
 	$('#autoTile-image').getFocus();
 };
 
-// 创建自动图块
 AutoTile.create = function () {
 	return {
 		template: Data.autotiles[0].id,
@@ -167,19 +155,16 @@ AutoTile.create = function () {
 	};
 };
 
-// 插入模板
 AutoTile.insertTemplate = function (dItem) {
 	this.templateList.addNodeTo(this.createTemplateData(), dItem);
 };
 
-// 复制模板
 AutoTile.copyTemplate = function (item) {
 	if (item) {
 		(Clipboard as any).write('yami.ruletile.template', item);
 	}
 };
 
-// 粘贴模板
 AutoTile.pasteTemplate = function (dItem) {
 	const copy = (Clipboard as any).read('yami.ruletile.template');
 	if (copy) {
@@ -189,7 +174,6 @@ AutoTile.pasteTemplate = function (dItem) {
 	}
 };
 
-// 删除模板
 AutoTile.deleteTemplate = function (item) {
 	const items = this.templates;
 	if (items.length > 1) {
@@ -217,7 +201,6 @@ AutoTile.deleteTemplate = function (item) {
 	}
 };
 
-// 移动模板图块帧
 AutoTile.shiftTemplateFrames = function (template, offsetX, offsetY) {
 	const sprite = this.image;
 	if (!(sprite instanceof Image)) {
@@ -245,7 +228,6 @@ AutoTile.shiftTemplateFrames = function (template, offsetX, offsetY) {
 	this.changed = true;
 };
 
-// 创建模板ID
 AutoTile.createTemplateId = function () {
 	let id;
 	do {
@@ -254,7 +236,6 @@ AutoTile.createTemplateId = function () {
 	return id;
 };
 
-// 创建模板数据
 AutoTile.createTemplateData = function () {
 	return {
 		id: this.createTemplateId(),
@@ -264,7 +245,6 @@ AutoTile.createTemplateData = function () {
 	};
 };
 
-// 获取ID匹配的模板
 AutoTile.getTemplateById = function (id) {
 	const { templates } = this;
 	const { length } = templates;
@@ -276,7 +256,6 @@ AutoTile.getTemplateById = function (id) {
 	return undefined;
 };
 
-// 插入节点
 AutoTile.insertNode = function (id = this.nodeIndex) {
 	if (id <= this.nodes.length) {
 		this.nodes.splice(id, 0, this.createNodeData());
@@ -288,7 +267,6 @@ AutoTile.insertNode = function (id = this.nodeIndex) {
 	}
 };
 
-// 剪切节点
 AutoTile.cutNode = function (id = this.nodeIndex) {
 	if (this.nodes.length > 1) {
 		this.copyNode(id);
@@ -296,14 +274,12 @@ AutoTile.cutNode = function (id = this.nodeIndex) {
 	}
 };
 
-// 复制节点
 AutoTile.copyNode = function (id = this.nodeIndex) {
 	if (id < this.nodes.length) {
 		(Clipboard as any).write('yami.ruletile.node', this.nodes[id]);
 	}
 };
 
-// 粘贴节点
 AutoTile.pasteNode = function (id = this.nodes.length) {
 	const copy = (Clipboard as any).read('yami.ruletile.node');
 	if (copy && id <= this.nodes.length) {
@@ -313,7 +289,6 @@ AutoTile.pasteNode = function (id = this.nodes.length) {
 	}
 };
 
-// 删除节点
 AutoTile.deleteNode = function (id = this.nodeIndex) {
 	if (id < this.nodes.length && this.nodes.length > 1) {
 		this.nodes.splice(id, 1);
@@ -329,7 +304,6 @@ AutoTile.deleteNode = function (id = this.nodeIndex) {
 	}
 };
 
-// 设置节点数量
 AutoTile.setNodeQuantity = function (count) {
 	const nodes = this.nodes;
 	const length = nodes.length;
@@ -348,7 +322,6 @@ AutoTile.setNodeQuantity = function (count) {
 	}
 };
 
-// 创建节点数据
 AutoTile.createNodeData = function () {
 	return {
 		rule: 0,
@@ -356,7 +329,6 @@ AutoTile.createNodeData = function () {
 	};
 };
 
-// 创建节点选项
 AutoTile.createNodeItems = function (id = this.nodeIndex) {
 	const list = this.nodeList.reload();
 	const cover = this.template.cover;
@@ -374,14 +346,12 @@ AutoTile.createNodeItems = function (id = this.nodeIndex) {
 	list.write(Math.min(id, length - 1));
 };
 
-// 编辑帧
 AutoTile.editFrame = function () {
 	if (this.image !== null) {
 		TileFrame.open();
 	}
 };
 
-// 插入帧
 AutoTile.insertFrame = function (id = this.frameIndex) {
 	if (id <= this.frames.length) {
 		this.frames.splice(id, 0, this.createFrameData());
@@ -390,7 +360,6 @@ AutoTile.insertFrame = function (id = this.frameIndex) {
 	}
 };
 
-// 剪切帧
 AutoTile.cutFrame = function (id = this.frameIndex) {
 	if (this.frames.length > 1) {
 		this.copyFrame(id);
@@ -398,7 +367,6 @@ AutoTile.cutFrame = function (id = this.frameIndex) {
 	}
 };
 
-// 复制帧
 AutoTile.copyFrame = function (id = this.frameIndex) {
 	if (id < this.frames.length) {
 		(Clipboard as any).write('yami.ruletile.frame', {
@@ -407,7 +375,6 @@ AutoTile.copyFrame = function (id = this.frameIndex) {
 	}
 };
 
-// 粘贴帧
 AutoTile.pasteFrame = function (id = this.frames.length) {
 	const copy = (Clipboard as any).read('yami.ruletile.frame');
 	if (copy && id <= this.frames.length) {
@@ -417,7 +384,6 @@ AutoTile.pasteFrame = function (id = this.frames.length) {
 	}
 };
 
-// 删除帧
 AutoTile.deleteFrame = function (id = this.frameIndex) {
 	if (id < this.frames.length && this.frames.length > 1) {
 		this.frames.splice(id, 1);
@@ -426,7 +392,6 @@ AutoTile.deleteFrame = function (id = this.frameIndex) {
 	}
 };
 
-// 设置帧数量
 AutoTile.setFrameQuantity = function (count) {
 	const frames = this.frames;
 	const length = frames.length;
@@ -442,7 +407,6 @@ AutoTile.setFrameQuantity = function (count) {
 	}
 };
 
-// 生成图块帧
 AutoTile.generateFrames = function (id, strideX, strideY, count) {
 	const sprite = this.image;
 	if (!(sprite instanceof Image)) {
@@ -469,12 +433,10 @@ AutoTile.generateFrames = function (id, strideX, strideY, count) {
 	this.changed = true;
 };
 
-// 创建帧数据
 AutoTile.createFrameData = function () {
 	return 0;
 };
 
-// 创建帧列表
 AutoTile.createFrameItems = function (id = this.frameIndex) {
 	const list = this.frameList.reload();
 	const frames = this.frames;
@@ -494,7 +456,6 @@ AutoTile.createFrameItems = function (id = this.frameIndex) {
 	list.write(Math.min(id, frames.length - 1));
 };
 
-// 更新帧选项
 AutoTile.updateFrameItem = function () {
 	const frames = this.frames;
 	const index = this.frameIndex;
@@ -507,7 +468,6 @@ AutoTile.updateFrameItem = function () {
 	this.drawFrame();
 };
 
-// 更新画布
 AutoTile.updateCanvas = function () {
 	const canvas = this.canvas;
 	const { width, height } = CSS.getDevicePixelContentBoxSize(canvas);
@@ -519,17 +479,14 @@ AutoTile.updateCanvas = function () {
 	}
 };
 
-// 绘制帧图像
 AutoTile.drawFrame = function () {
 	const canvas = this.canvas;
 	const context = canvas.getContext('2d');
 	const width = canvas.width;
 	const height = canvas.height;
 
-	// 擦除画布
 	context.clearRect(0, 0, width, height);
 
-	// 加载图像
 	if (!(this.image instanceof Image)) {
 		if (this.image === this.noImage) return;
 		const guid = this.imageId;
@@ -552,7 +509,6 @@ AutoTile.drawFrame = function () {
 		});
 	}
 
-	// 获取帧数据
 	const image = this.image;
 	const frames = this.frames;
 	const frame = frames[this.frameIndex];
@@ -561,11 +517,9 @@ AutoTile.drawFrame = function () {
 	const x = (this.offsetX + (frame & 0xff)) * tileWidth;
 	const y = (this.offsetY + (frame >> 8)) * tileHeight;
 
-	// 绘制图像
 	context.drawAndFitImage(image, x, y, tileWidth, tileHeight);
 };
 
-// 窗口 - 关闭事件
 AutoTile.windowClose = function (event) {
 	if (this.changed) {
 		event.preventDefault();
@@ -590,7 +544,6 @@ AutoTile.windowClose = function (event) {
 	}
 }.bind(AutoTile);
 
-// 窗口 - 已关闭事件
 AutoTile.windowClosed = function (event) {
 	this.templates = null;
 	this.template = null;
@@ -604,7 +557,6 @@ AutoTile.windowClosed = function (event) {
 	this.frameList.clear();
 }.bind(AutoTile);
 
-// 设备像素比改变事件
 AutoTile.dprchange = function (event) {
 	if (this.nodes !== null) {
 		this.updateCanvas();
@@ -612,7 +564,6 @@ AutoTile.dprchange = function (event) {
 	}
 }.bind(AutoTile);
 
-// 模板列表 - 键盘按下事件
 AutoTile.templatesKeydown = function (event) {
 	const item = this.read();
 	if (event.cmdOrCtrlKey) {
@@ -638,22 +589,18 @@ AutoTile.templatesKeydown = function (event) {
 	}
 };
 
-// 模板列表 - 选择事件
 AutoTile.templatesSelect = function (event) {
 	const item = event.value;
 	this.template = item;
 	this.nodes = item.nodes;
 
-	// 创建节点列表
 	this.createNodeItems();
 }.bind(AutoTile);
 
-// 模板列表 - 改变事件
 AutoTile.templatesChange = function (event) {
 	this.changed = true;
 }.bind(AutoTile);
 
-// 模板列表 - 菜单弹出事件
 AutoTile.templatesPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
@@ -721,7 +668,6 @@ AutoTile.templatesPopup = function (event) {
 	);
 };
 
-// 节点列表 - 写入事件
 AutoTile.nodesWrite = function (event) {
 	const nodeIndex = event.value;
 	this.nodeIndex = nodeIndex;
@@ -738,11 +684,9 @@ AutoTile.nodesWrite = function (event) {
 	write('rule-6', (rule >> 12) & 0b11);
 	write('rule-7', (rule >> 14) & 0b11);
 
-	// 创建帧列表
 	this.createFrameItems();
 }.bind(AutoTile);
 
-// 节点列表 - 菜单弹出事件
 AutoTile.nodesPopup = function (event) {
 	const id = event.value;
 	const cover = this.template.cover;
@@ -826,7 +770,6 @@ AutoTile.nodesPopup = function (event) {
 	);
 }.bind(AutoTile);
 
-// 节点列表 - 键盘按下事件
 AutoTile.nodesKeydown = function (event) {
 	if (event.cmdOrCtrlKey) {
 		switch (event.code) {
@@ -854,7 +797,6 @@ AutoTile.nodesKeydown = function (event) {
 	}
 };
 
-// 规则相邻关系 - 输入事件
 AutoTile.ruleNeighborInput = function (event) {
 	const read = getElementReader('autoTile-rule');
 	const rule =
@@ -870,13 +812,11 @@ AutoTile.ruleNeighborInput = function (event) {
 	AutoTile.changed = true;
 };
 
-// 帧列表 - 写入事件
 AutoTile.framesWrite = function (event) {
 	this.frameIndex = event.value;
 	this.drawFrame();
 }.bind(AutoTile);
 
-// 帧列表 - 菜单弹出事件
 AutoTile.framesPopup = function (event) {
 	const id = event.value;
 	const frames = this.frames;
@@ -967,7 +907,6 @@ AutoTile.framesPopup = function (event) {
 	);
 }.bind(AutoTile);
 
-// 帧列表 - 键盘按下事件
 AutoTile.framesKeydown = function (event) {
 	if (event.cmdOrCtrlKey) {
 		switch (event.code) {
@@ -1000,7 +939,6 @@ AutoTile.framesKeydown = function (event) {
 	}
 };
 
-// 帧列表 - 鼠标双击事件
 AutoTile.framesDoubleclick = function (event) {
 	const element = event.target;
 	if (element.tagName === 'COMMON-ITEM' && element.hasClass('selected')) {
@@ -1008,19 +946,16 @@ AutoTile.framesDoubleclick = function (event) {
 	}
 }.bind(AutoTile);
 
-// 画布 - 鼠标点击事件
 AutoTile.canvasClick = function (event) {
 	this.editFrame();
 }.bind(AutoTile);
 
-// 图像 - 输入事件
 AutoTile.imageInput = function (event) {
 	AutoTile.imageId = this.read();
 	AutoTile.image = null;
 	AutoTile.drawFrame();
 };
 
-// 偏移X - 输入事件
 AutoTile.offsetXInput = function (event) {
 	const x = this.read();
 	if (AutoTile.offsetX !== x) {
@@ -1029,7 +964,6 @@ AutoTile.offsetXInput = function (event) {
 	}
 };
 
-// 偏移Y - 输入事件
 AutoTile.offsetYInput = function (event) {
 	const y = this.read();
 	if (AutoTile.offsetY !== y) {
@@ -1038,11 +972,9 @@ AutoTile.offsetYInput = function (event) {
 	}
 };
 
-// 确定按钮 - 鼠标点击事件
 AutoTile.confirm = function (event) {
 	if (this.changed) {
 		this.changed = false;
-		// 删除数据绑定的元素对象
 		const templates = this.templates;
 		TreeList.deleteCaches(templates);
 		Data.autotiles = templates;
@@ -1058,7 +990,6 @@ AutoTile.confirm = function (event) {
 		x: this.offsetX,
 		y: this.offsetY
 	};
-	// 重新选择图块
 	if (isNew) {
 		const { marquee } = Palette;
 		if (marquee.visible) {

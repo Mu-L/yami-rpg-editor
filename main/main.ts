@@ -1,6 +1,5 @@
 // [YAMI RPG EDITOR]主线程
 
-// ******************************** 加载模块 ********************************
 // ESM import——npm 包和 Node 内建模块 external 掉后 runtime 用 createRequire 桥解析
 import Koa from 'koa';
 import Mime from 'mime-types';
@@ -17,11 +16,9 @@ import os from 'os';
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'; // 关闭警告
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-// 如果启动时包含dirname参数
-// 表示应用运行在node.js调试模式中
-// 重定向根目录并开启应用的调试模式
+// 含 --dirname 参数时表示 Node.js 调试模式，重定向根目录并开启调试
 let debug = false;
 let dirname = app.getAppPath();
 const regexp = /^--dirname=(.+)$/;
@@ -34,10 +31,7 @@ for (const arg of process.argv) {
 	}
 }
 
-// Vite dev 模式：dev 腹本（dev:electron）经 --dev-server-url 参数传递开发服务器 URL；
-// prod 模式（start:prod）不传此参数，走 dist/index.html（vite build 产物）。
-// 注：判据须用 devServerUrl 存在性——不能用 debug（--debug-mode 触发与 dev/prod 无关），
-// 否则 start:prod 腹本带 --debug-mode 时误判走 dev URL 致空白页
+// 判据用 devServerUrl 存在性而非 debug，避免 start:prod 带 --debug-mode 时误走 dev URL 致空白页
 const devServerUrl = process.argv.find((arg) => arg.startsWith('--dev-server-url='))?.split('=')[1];
 const VITE_DEV_URL = devServerUrl || 'http://localhost:5173';
 const useViteDev = !!devServerUrl;
@@ -48,8 +42,7 @@ const generate32bit = (): string => {
 };
 function generate64bit(): string {
 	let id;
-	// GUID通常用作哈希表的键
-	// 避免纯数字的键(会降低访问速度)
+	// GUID 用作哈希表键，避免纯数字键降低访问速度
 	do {
 		id = generate32bit() + generate32bit();
 	} while (!/[a-f]/.test(id));
@@ -71,7 +64,6 @@ function getLocalIpAddress(): string[] {
 	return Array.from(results);
 }
 
-// ******************************** 本地开发服务器 ********************************
 let isServerState = false;
 ipcMain.on('get-server-state', (event) => {
 	event.returnValue = isServerState;
@@ -122,7 +114,6 @@ ipcMain.handle('get-local-ip', () => {
 	return getLocalIpAddress();
 });
 
-// to-excel
 ipcMain.handle('to-excel', async (event, { langs, list }) => {
 	const workbook = new ExcelJS.Workbook();
 	const worksheet = workbook.addWorksheet('open-yami');
@@ -145,7 +136,6 @@ ipcMain.handle('to-excel', async (event, { langs, list }) => {
 					isDir: 1
 				});
 			} else {
-				// 基础数据
 				const data = {
 					id: item.id,
 					name: item.name || '',
@@ -172,7 +162,6 @@ ipcMain.handle('to-excel', async (event, { langs, list }) => {
 		});
 });
 
-// from-excel
 ipcMain.handle('from-excel', async (event) => {
 	try {
 		const window = getWindowFromEvent(event);
@@ -199,11 +188,9 @@ ipcMain.handle('from-excel', async (event) => {
 			if (value) colMap[value] = colNumber;
 		});
 
-		// 构建数据结构
 		const dataMap = new Map();
 		const rootNodes = [];
 
-		// 从第二行开始遍历数据
 		for (let rowIndex = 2; rowIndex <= worksheet.rowCount; rowIndex++) {
 			const row = worksheet.getRow(rowIndex);
 			const isDirCell = row.getCell(colMap['isDir']);
@@ -267,9 +254,7 @@ ipcMain.handle('from-excel', async (event) => {
 	}
 });
 
-// ******************************** 文件系统 ********************************
-
-// 获取存档目录Sync
+// 获取存档目录
 ipcMain.on('get-dir-path-sync', (event, location) => {
 	switch (location) {
 		case 'app-data':
@@ -287,7 +272,6 @@ ipcMain.on('get-dir-path-sync', (event, location) => {
 	}
 });
 
-// 获取存档目录
 ipcMain.handle('get-dir-path', (event, location) => {
 	switch (location) {
 		case 'app-data':
@@ -301,17 +285,14 @@ ipcMain.handle('get-dir-path', (event, location) => {
 	}
 });
 
-// 写入文件
 ipcMain.handle('write-file', (event, filePath, text, check) => {
 	return protectPromise(writeFile(filePath, text, check));
 });
 
-// 等待写入文件
 ipcMain.handle('wait-write-file', () => {
 	return Promise.allSettled(promises);
 });
 
-// 剪贴板
 ipcMain.handle('clipboard-has', (_event, format: string) => {
 	const buffer = clipboard.readBuffer(format);
 	return buffer.length !== 0;
@@ -327,14 +308,12 @@ ipcMain.handle('clipboard-write', (_event, format: string, object: any) => {
 	clipboard.writeBuffer(format, buffer);
 });
 
-// 异步写入文件
 import { promises as FSP } from 'fs';
 const writeFile = async (filePath: string, text: string, check?: boolean) => {
 	if (check) await FSP.stat(filePath);
 	return FSP.writeFile(filePath, text);
 };
 
-// 保护承诺对象
 const promises = [];
 const protectPromise = function (promise) {
 	promises.push(promise);
@@ -347,10 +326,7 @@ const protectPromise = function (promise) {
 	return promise;
 };
 
-// ******************************** 注册事件 ********************************
-
 const extensionPath = path.join('./extension');
-// 准备完毕
 app.on('ready', () => {
 	createEditorMenu();
 	createEditorWindow();
@@ -364,7 +340,6 @@ app.on('ready', () => {
 	});
 });
 
-// 窗口全部关闭后退出应用
 app.on('window-all-closed', () => {
 	app.quit();
 });
@@ -376,18 +351,12 @@ app.on('before-quit', async (event) => {
 	app.exit();
 });
 
-// ******************************** 创建编辑器菜单栏 ********************************
-
 const createEditorMenu = function () {
-	// 创建模板
 	const template = createMenuTemplate();
 
-	// 设置菜单
 	const menu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(menu);
 };
-
-// ******************************** 创建编辑器菜单栏 ********************************
 
 const createMenuTemplate = function () {
 	const template = [];
@@ -407,7 +376,6 @@ const createMenuTemplate = function () {
 			role: 'forceReload'
 		});
 	}
-	// F11全屏
 	if (process.platform !== 'darwin') {
 		file.submenu.push({
 			label: 'FullScreen',
@@ -415,7 +383,6 @@ const createMenuTemplate = function () {
 			role: 'toggleFullScreen'
 		});
 	}
-	// F12开发者工具
 	file.submenu.push({
 		label: 'Toogle DevTools',
 		accelerator: 'F12',
@@ -442,10 +409,7 @@ const createMenuTemplate = function () {
 	return template;
 };
 
-// ******************************** 创建编辑器窗口 ********************************
-
 const createEditorWindow = function () {
-	// 创建窗口
 	const editor = new BrowserWindow({
 		title: 'Yami RPG Editor',
 		width: 1600,
@@ -462,10 +426,8 @@ const createEditorWindow = function () {
 		}
 	}) as BrowserWindow & BrowserWindowExtension;
 
-	// 隐藏菜单栏
 	editor.setMenuBarVisibility(process.platform === 'darwin');
 
-	// 加载文件
 	if (useViteDev) {
 		// Vite dev 模式：载 dev server URL，HMR + 模块解析由 Vite 接管
 		editor.loadURL(VITE_DEV_URL);
@@ -475,7 +437,6 @@ const createEditorWindow = function () {
 		editor.loadFile(indexPath);
 	}
 
-	// 侦听窗口模式切换事件
 	editor.on('maximize', () => editor.send('maximize'));
 	editor.on('unmaximize', () => editor.send('unmaximize'));
 	editor.on('enter-full-screen', () => editor.send('enter-full-screen'));
@@ -485,7 +446,6 @@ const createEditorWindow = function () {
 	const configPath = path.resolve(path.join(os.homedir(), '.openyami'), 'config.json');
 	const promise = FSP.readFile(configPath);
 	editor.once('ready-to-show', () => {
-		// 窗口最大化
 		editor.maximize();
 		promise
 			.then((config: Buffer) => {
@@ -500,7 +460,6 @@ const createEditorWindow = function () {
 
 	// 计划强制关闭应用
 	function scheduleForceClose() {
-		// 如果渲染线程未响应，超时2秒后退出应用
 		forceCloseId = setTimeout(() => {
 			if (!editor.stopCloseEvent) {
 				editor.stopCloseEvent = true;
@@ -518,7 +477,6 @@ const createEditorWindow = function () {
 	}
 	editor.cancelForceClose = cancelForceClose;
 
-	// 侦听窗口关闭事件
 	editor.on('close', (event) => {
 		if (!editor.stopCloseEvent) {
 			apkProcessor.abortBuild();
@@ -530,7 +488,6 @@ const createEditorWindow = function () {
 
 	global.editor = editor;
 
-	// 构建APK
 	ipcMain.handle('build-apk', (event, config) => {
 		if (apkProcessor.isBuilding()) {
 			editor.send('apk-log', {
@@ -571,17 +528,14 @@ const createEditorWindow = function () {
 		event.returnValue = apkProcessor.isBuilding();
 	});
 
-	// 停止构建APK
 	ipcMain.handle('stop-build-apk', () => {
 		apkProcessor.abortBuild();
 	});
 
-	// 启动TSC事件
 	ipcMain.on('start-tsc', (event, projectDir) => {
 		startTSC(path.normalize(projectDir));
 	});
 
-	// 停止TSC事件
 	ipcMain.on('stop-tsc', () => {
 		stopTSC();
 	});
@@ -594,7 +548,6 @@ const createEditorWindow = function () {
 		const platformPackageName = '@typescript/' + expectedPackage;
 		let exeDir;
 		try {
-			// 尝试通过 require.resolve 解析平台包路径
 			const packageJsonPath = require.resolve(platformPackageName + '/package.json');
 			exeDir = path.join(path.dirname(packageJsonPath), 'lib');
 		} catch {
@@ -619,7 +572,6 @@ const createEditorWindow = function () {
 		return exe;
 	}
 
-	// 编译TS代码
 	ipcMain.handle('tsc-file', async (event, code) => {
 		let res, error;
 		try {
@@ -641,7 +593,6 @@ const createEditorWindow = function () {
 				stderr += data.toString();
 			});
 
-			// 将代码写入标准输入
 			tsgo.stdin.write(code);
 			tsgo.stdin.end();
 
@@ -675,12 +626,10 @@ const createEditorWindow = function () {
 			stdio: ['ignore', 'pipe', 'pipe'],
 			cwd: projectDir
 		});
-		// 监听 stdout（正常输出）
 		tscProcess.stdout.on('data', (data) => {
 			editor.send('tsc-log', data.toString());
 			if (!editor.isDestroyed()) editor.send('tsc-log', data.toString());
 		});
-		// 监听 stderr（错误输出）
 		tscProcess.stderr.on('data', (data) => {
 			editor.send('tsc-log', data.toString());
 			if (!editor.isDestroyed()) editor.send('tsc-log', data.toString());
@@ -701,14 +650,10 @@ const createEditorWindow = function () {
 	}
 };
 
-// ******************************** 创建播放器窗口 ********************************
-
 const createPlayerWindow = function (
 	parent: BrowserWindow & BrowserWindowExtension,
 	projectDir: string
 ): BrowserWindow & BrowserWindowExtension {
-	// 加载配置文件
-	// fs 已在顶段 import，复用即可（createPlayerWindow 内）
 	const config = path.resolve(projectDir, 'Data/config.json');
 	const window = (
 		JSON.parse(fs.readFileSync(config).toString()) as {
@@ -727,7 +672,6 @@ const createPlayerWindow = function (
 		windowHeight = Math.max(windowHeight - 20, 0);
 	}
 
-	// 创建窗口
 	const player = new BrowserWindow({
 		icon: `${projectDir}Icon/icon.png`,
 		title: window.title,
@@ -745,13 +689,10 @@ const createPlayerWindow = function (
 	}) as BrowserWindow & BrowserWindowExtension;
 	player.config = window;
 
-	// 隐藏菜单栏
 	player.setMenuBarVisibility(false);
 
-	// 加载页面文件
 	player.loadFile(`${projectDir}index.html`);
 
-	// 设置窗口模式
 	player.once('ready-to-show', () => {
 		player.show();
 		switch (window.display) {
@@ -766,7 +707,6 @@ const createPlayerWindow = function (
 		}
 	});
 
-	// 侦听窗口关闭事件
 	player.on('close', (event) => {
 		if (!player.stopCloseEvent) {
 			player.send('before-close-window');
@@ -781,7 +721,6 @@ const createPlayerWindow = function (
 		}
 	});
 
-	// 侦听窗口关闭事件
 	player.once('closed', () => {
 		if (parent && !parent?.isDestroyed()) {
 			parent.send('player-window-closed');
@@ -789,8 +728,6 @@ const createPlayerWindow = function (
 	});
 	return player;
 };
-
-// ******************************** 进程通信 ********************************
 
 // 获取事件来源窗口
 const getWindowFromEvent = function (
@@ -801,7 +738,6 @@ const getWindowFromEvent = function (
 		| null;
 };
 
-// 最小化窗口
 ipcMain.on('minimize-window', (event) => {
 	const window = getWindowFromEvent(event);
 	if (window.isMinimized()) {
@@ -811,7 +747,6 @@ ipcMain.on('minimize-window', (event) => {
 	}
 });
 
-// 最大化窗口
 ipcMain.on('maximize-window', (event) => {
 	const window = getWindowFromEvent(event);
 	if (!window.isFullScreen()) {
@@ -823,32 +758,27 @@ ipcMain.on('maximize-window', (event) => {
 	}
 });
 
-// 关闭窗口
 ipcMain.on('close-window', (event) => {
 	const window = getWindowFromEvent(event);
 	window.close();
 });
 
-// 阻止关闭窗口
 ipcMain.on('prevent-close-window', (event) => {
 	const window = getWindowFromEvent(event);
 	window.cancelForceClose();
 });
 
-// 强制关闭窗口
 ipcMain.on('force-close-window', (event) => {
 	const window = getWindowFromEvent(event);
 	window.stopCloseEvent = true;
 	window.close();
 });
 
-// 开关全屏模式
 ipcMain.on('toggle-full-screen', (event) => {
 	const window = getWindowFromEvent(event);
 	window.setFullScreen(!window.isFullScreen());
 });
 
-// 打开资源管理器路径
 ipcMain.on('open-path', (event, targetPath) => {
 	shell.openPath(path.normalize(targetPath));
 });
@@ -859,21 +789,18 @@ ipcMain.on('open-vscode', (event, scriptPath, line, column) => {
 	shell.openExternal(`vscode://file/${url}`);
 });
 
-// 在资源管理器中显示
 ipcMain.on('show-item-in-folder', (event, filePath) => {
 	shell.showItemInFolder(path.normalize(filePath));
 });
 
 let currentprojectPath = '';
 let currentPlayerWindow = null;
-// 创建播放器窗口
 ipcMain.on('create-player-window', (event, projectPath) => {
 	const window = getWindowFromEvent(event);
 	currentprojectPath = projectPath;
 	currentPlayerWindow = createPlayerWindow(window, projectPath);
 });
 
-// 更新最大小化图标
 ipcMain.handle('update-max-min-icon', (event) => {
 	const window = getWindowFromEvent(event);
 	return window.isMaximized()
@@ -883,19 +810,16 @@ ipcMain.handle('update-max-min-icon', (event) => {
 			: 'unmaximize';
 });
 
-// 显示打开对话框
 ipcMain.handle('show-open-dialog', (event, options) => {
 	const window = getWindowFromEvent(event);
 	return dialog.showOpenDialog(window, options);
 });
 
-// 显示保存对话框
 ipcMain.handle('show-save-dialog', (event, options) => {
 	const window = getWindowFromEvent(event);
 	return dialog.showSaveDialog(window, options);
 });
 
-// 把文件扔进回收站
 ipcMain.handle('trash-item', (event, filePath) => {
 	return shell.trashItem(path.normalize(filePath));
 });
@@ -922,12 +846,10 @@ ipcMain.on('set-device-pixel-ratio', (event, ratio) => {
 	window.setContentBounds({ x, y, width, height });
 });
 
-// 打开开发者工具
 ipcMain.on('open-devTools', (event) => {
 	event.sender.openDevTools();
 });
 
-// 设置显示模式
 ipcMain.on('set-display-mode', (event, display) => {
 	const window = getWindowFromEvent(event);
 	switch (display) {
@@ -955,13 +877,11 @@ ipcMain.on('set-display-mode', (event, display) => {
 	}
 });
 
-/* commandLine */
-// 获取
+// commandLine
 ipcMain.on('get-command-line-switch', (event, name) => {
 	event.returnValue = app.commandLine.getSwitchValue(name);
 });
 
-// 添加
 ipcMain.on('add-command-line-switch', (event, name, value) => {
 	if (value) {
 		app.commandLine.appendSwitch(name, value);
@@ -970,12 +890,10 @@ ipcMain.on('add-command-line-switch', (event, name, value) => {
 	}
 });
 
-// 删除
 ipcMain.on('remove-command-line-switch', (event, name) => {
 	app.commandLine.removeSwitch(name);
 });
 
-// 是否存在
 ipcMain.on('has-command-line-switch', (event, name) => {
 	event.returnValue = app.commandLine.hasSwitch(name);
 });
@@ -987,7 +905,6 @@ ipcMain.handle('relaunch-app', async (event) => {
 		// 如果有窗口，等待它真正关闭
 		if (currentPlayerWindow) {
 			return await new Promise((resolve) => {
-				// 监听窗口关闭完成
 				currentPlayerWindow.once('closed', () => {
 					currentPlayerWindow = createPlayerWindow(window, currentprojectPath);
 					resolve({ success: true });

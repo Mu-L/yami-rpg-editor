@@ -3,8 +3,6 @@ import { ImageTexture } from '../webgl/image-texture.ts';
 import { Texture } from '../webgl/texture.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 进度条元素 ********************************
-
 UI.ProgressBar = class ProgressBarElement extends UI.Element {
 	texture: Texture | null;
 	_image: string;
@@ -39,12 +37,10 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 		this.blend = data.blend;
 	}
 
-	// 读取文本
 	get image() {
 		return this._image;
 	}
 
-	// 设置文本
 	set image(value: any) {
 		if (this._image !== value) {
 			this._image = value;
@@ -61,13 +57,11 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 		}
 	}
 
-	// 绘制图像
 	draw() {
 		if (this.visible === false) {
 			return this.drawChildren();
 		}
 
-		// 绘制进度条
 		const { texture } = this;
 		if (texture === null) {
 			this.drawDefaultImage();
@@ -85,7 +79,6 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 			const scaleY = this.height / texture.height;
 			const { vertices, vertexLength, drawingLength } = this.calculateProgressVertices();
 
-			// 绘制图像
 			GL.alpha = this.opacity;
 			GL.blend = this.blend;
 			GL.matrix
@@ -119,11 +112,9 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 			GL.drawArrays(GL.TRIANGLE_FAN, 0, drawingLength);
 		}
 
-		// 绘制子元素
 		this.drawChildren();
 	}
 
-	// 计算进度条顶点
 	calculateProgressVertices() {
 		const type = this.type;
 		const progress = Math.clamp(this.progress, 0, 1);
@@ -355,7 +346,6 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 		}
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -364,14 +354,12 @@ UI.ProgressBar = class ProgressBarElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.texture?.destroy();
 		this.destroyChildren();
 	}
 
-	// 静态 - 返回数据
 	static response = {
 		vertices: new Float32Array(28),
 		angles: new Float64Array(4),

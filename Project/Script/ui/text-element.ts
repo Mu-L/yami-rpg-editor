@@ -6,8 +6,6 @@ import { UI } from './ui-window.ts';
 import { Texture } from '../webgl/texture.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 文本元素 ********************************
-
 UI.Text = class TextElement extends UI.Element {
 	texture: Texture | null;
 	printer: Printer | null;
@@ -34,10 +32,8 @@ UI.Text = class TextElement extends UI.Element {
 	textOuterHeight: number;
 	blend: string;
 
-	// 全局变量正则表达式
 	static globalVarRegexp = /<global(::?)([0-9a-f]{16})>/g;
 
-	// 替换全局变量
 	static replaceGlobalVariable(text: any) {
 		return text.replace(this.globalVarRegexp, (match, delimiter, varId) => {
 			const name = getVariable(varId)?.name;
@@ -73,12 +69,10 @@ UI.Text = class TextElement extends UI.Element {
 		this.blend = data.blend ?? 'normal';
 	}
 
-	// 读取方向
 	get direction() {
 		return this._direction;
 	}
 
-	// 写入方向
 	set direction(value: any) {
 		if (this._direction !== value) {
 			this._direction = value;
@@ -89,12 +83,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取水平对齐
 	get horizontalAlign() {
 		return this._horizontalAlign;
 	}
 
-	// 写入水平对齐
 	set horizontalAlign(value: any) {
 		if (this._horizontalAlign !== value) {
 			switch (value) {
@@ -113,12 +105,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取垂直对齐
 	get verticalAlign() {
 		return this._verticalAlign;
 	}
 
-	// 写入垂直对齐
 	set verticalAlign(value: any) {
 		if (this._verticalAlign !== value) {
 			switch (value) {
@@ -137,24 +127,20 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取文本内容
 	get content() {
 		return this._content;
 	}
 
-	// 写入文本内容
 	set content(value: any) {
 		// 需要刷新语言包中的内容，不做差异判断
 		this._rawContent = value;
 		this._content = TextElement.replaceGlobalVariable(GameLocal.replace(value));
 	}
 
-	// 读取字体大小
 	get size() {
 		return this._size;
 	}
 
-	// 写入字体大小
 	set size(value: any) {
 		if (this._size !== value) {
 			this._size = value;
@@ -165,12 +151,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取行间距
 	get lineSpacing() {
 		return this._lineSpacing;
 	}
 
-	// 写入行间距
 	set lineSpacing(value: any) {
 		if (this._lineSpacing !== value) {
 			this._lineSpacing = value;
@@ -181,12 +165,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取字间距
 	get letterSpacing() {
 		return this._letterSpacing;
 	}
 
-	// 写入字间距
 	set letterSpacing(value: any) {
 		if (this._letterSpacing !== value) {
 			this._letterSpacing = value;
@@ -197,12 +179,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取颜色
 	get color() {
 		return this._color;
 	}
 
-	// 写入颜色
 	set color(value: any) {
 		if (this._color !== value) {
 			this._color = value;
@@ -213,12 +193,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取字体
 	get font() {
 		return this._font;
 	}
 
-	// 写入字体
 	set font(value: any) {
 		if (this._font !== value) {
 			this._font = value;
@@ -229,12 +207,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取字型
 	get typeface() {
 		return this._typeface;
 	}
 
-	// 写入字型
 	set typeface(value: any) {
 		if (this._typeface !== value) {
 			switch (value) {
@@ -266,12 +242,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取文字效果
 	get effect() {
 		return this._effect;
 	}
 
-	// 写入文字效果
 	set effect(value: any) {
 		this._effect = value;
 		if (this.printer) {
@@ -280,12 +254,10 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 读取溢出模式
 	get overflow() {
 		return this._overflow;
 	}
 
-	// 写入溢出模式
 	set overflow(value: any) {
 		if (this._overflow !== value) {
 			this._overflow = value;
@@ -315,7 +287,6 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 更新文本
 	update() {
 		let printer = this.printer;
 		if (printer === null) {
@@ -348,43 +319,35 @@ UI.Text = class TextElement extends UI.Element {
 					? printer.printHeight !== this.height
 					: printer.printWidth !== this.width))
 		) {
-			// 更新打印机并绘制文本
 			this.updatePrinter();
 		}
 	}
 
-	// 更新文本内容
 	updateTextContent() {
 		const content = this._rawContent;
 		this._rawContent = '';
 		this.content = content;
 	}
 
-	// 更新打印机
 	updatePrinter() {
 		const { printer } = this;
 		if (printer) {
-			// 重置打印机
 			if (printer.content) {
 				printer.reset();
 			}
-			// 设置打印区域并打印文本
 			printer.setPrintArea(this.width, this.height);
 			printer.draw(this.content);
 			this.calculateTextPosition();
 		}
 	}
 
-	// 绘制图像
 	draw() {
 		if (this.visible === false) {
 			return this.drawChildren();
 		}
 
-		// 更新文本
 		this.update();
 
-		// 绘制文本
 		if (this.content) {
 			GL.alpha = this.opacity;
 			GL.blend = this.blend;
@@ -397,17 +360,14 @@ UI.Text = class TextElement extends UI.Element {
 				this.textOuterHeight
 			);
 
-			// 绘制内嵌图像元素
 			for (const image of this.printer.images) {
 				image.draw();
 			}
 		}
 
-		// 绘制子元素
 		this.drawChildren();
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -420,7 +380,6 @@ UI.Text = class TextElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 计算文本位置
 	calculateTextPosition() {
 		const printer = this.printer;
 		if (printer !== null) {
@@ -446,12 +405,10 @@ UI.Text = class TextElement extends UI.Element {
 			this.textOuterWidth = outerWidth;
 			this.textOuterHeight = outerHeight;
 
-			// 调整内嵌图像元素
 			this.resizeEmbeddedImages(offsetX, offsetY);
 		}
 	}
 
-	// 调整内嵌图像元素
 	resizeEmbeddedImages(offsetX: any, offsetY: any) {
 		const images = this.printer.images;
 		if (images.changed) {
@@ -467,7 +424,6 @@ UI.Text = class TextElement extends UI.Element {
 		}
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.texture?.destroy();

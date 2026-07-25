@@ -3,28 +3,20 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 瓦片地图访问器窗口 ********************************
-
 export const TilemapGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 TilemapGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#tilemapGetter-type').loadItems([
 		{ name: 'Event Trigger Tilemap', value: 'trigger' },
 		{ name: 'By Tilemap ID', value: 'by-id' },
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置关联元素
 	$('#tilemapGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -32,11 +24,9 @@ TilemapGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#tilemapGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#tilemapGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 TilemapGetter.open = function (target) {
 	this.target = target;
 	Window.open('tilemapGetter');
@@ -60,7 +50,6 @@ TilemapGetter.open = function (target) {
 	$('#tilemapGetter-type').getFocus();
 };
 
-// 确定按钮 - 鼠标点击事件
 TilemapGetter.confirm = function (event) {
 	const read = getElementReader('tilemapGetter');
 	const type = read('type');

@@ -18,10 +18,8 @@ import { Selection } from '../tools/text-capture.ts';
 import { UndoManager } from '../tools/undo-manager.ts';
 import { Window } from '../tools/window-object.ts';
 import { ipcRenderer } from 'electron';
-// ******************************** 游戏本地化窗口 ********************************
 
 export const Localization = {
-	// properties
 	list: $('#localization-list'),
 	panel: $('#localization-inspector').hide(),
 	searcher: $('#localization-searcher'),
@@ -32,7 +30,6 @@ export const Localization = {
 	languages: null,
 	history: null,
 	changed: false,
-	// methods
 	initialize: null,
 	open: null,
 	undo: null,
@@ -46,7 +43,6 @@ export const Localization = {
 	unpackLocalization: null,
 	packLocalization: null,
 	resizeTextArea: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	keydown: null,
@@ -68,7 +64,6 @@ export const Localization = {
 	toExcel: null as any
 };
 
-// list methods
 Localization.list.copy = null;
 Localization.list.paste = null;
 Localization.list.delete = null;
@@ -86,9 +81,7 @@ Localization.list.onCreate = null;
 Localization.list.onDelete = null;
 Localization.list.onResume = null;
 
-// 初始化
 Localization.initialize = function () {
-	// 绑定本地化列表
 	const { list } = this;
 	list.removable = true;
 	list.renamable = true;
@@ -98,13 +91,10 @@ Localization.initialize = function () {
 	list.creators.push(list.createInitText);
 	list.creators.push(list.updateInitText);
 
-	// 设置面板项目默认值
 	this.panel.item = null;
 
-	// 设置列表搜索框按钮
 	this.searcher.addCloseButton();
 
-	// 设置历史操作处理器
 	History.processors['localization-list-operation'] = (operation, data) => {
 		const { response } = data;
 		list.restore(operation, response);
@@ -130,7 +120,6 @@ Localization.initialize = function () {
 		this.changed = true;
 	};
 
-	// 侦听事件
 	$('#localization').on('close', this.windowClose);
 	$('#localization').on('closed', this.windowClosed);
 	list.on('keydown', this.listKeydown);
@@ -152,12 +141,10 @@ Localization.initialize = function () {
 	$('#localization-to-excel').on('click', this.toExcel);
 	$('#localization-from-excel').on('click', this.fromExcel);
 
-	// 初始化子对象
 	ExportLanguage.initialize();
 	ImportLanguage.initialize();
 };
 
-// 创建输入框
 Localization.createInputs = function () {
 	const inputs = (this.inputs = {});
 	for (const language of this.languages) {
@@ -177,7 +164,6 @@ Localization.createInputs = function () {
 	}
 };
 
-// 打开窗口
 Localization.open = function (target = null) {
 	this.target = target;
 	this._previousActive = UndoManager.getActive();
@@ -187,7 +173,6 @@ Localization.open = function (target = null) {
 	this.createInputs();
 	Window.open('localization');
 
-	// 查询项目并更新列表
 	const list = this.list;
 	const item = !target ? undefined : this.getItemById(target.read());
 	if (item) {
@@ -200,35 +185,29 @@ Localization.open = function (target = null) {
 	} else {
 		list.update();
 		list.restoreScroll();
-		// 打开本地化输入框时默认选择第一项
 		if (target instanceof Object) {
 			list.select(list.data[0]);
 		}
 	}
 
-	// 列表获得焦点
 	list.getFocus();
 
-	// 侦听事件
 	window.on('keydown', this.keydown);
 	window.on('keydown', Reference.getKeydownListener(list, 'localization'));
 };
 
-// 撤销操作
 Localization.undo = function () {
 	if (this.history.canUndo()) {
 		this.history.restore('undo');
 	}
 };
 
-// 重做操作
 Localization.redo = function () {
 	if (this.history.canRedo()) {
 		this.history.restore('redo');
 	}
 };
 
-// 创建ID
 Localization.createId = function () {
 	let id;
 	do {
@@ -237,7 +216,6 @@ Localization.createId = function () {
 	return id;
 };
 
-// 注册本地化
 Localization.register = function (item) {
 	if (item.class === 'folder') {
 		for (const child of item.children) {
@@ -248,7 +226,6 @@ Localization.register = function (item) {
 	}
 };
 
-// 取消注册本地化
 Localization.unregister = function (item) {
 	if (item.class === 'folder') {
 		for (const child of item.children) {
@@ -259,7 +236,6 @@ Localization.unregister = function (item) {
 	}
 };
 
-// 获取ID匹配的项目
 Localization.getItemById = (function IIFE() {
 	const find = (items, id) => {
 		const length = items.length;
@@ -282,7 +258,6 @@ Localization.getItemById = (function IIFE() {
 	};
 })();
 
-// 打开内容面板
 Localization.openContentPanel = function (item) {
 	const panel = this.panel;
 	if (panel.item !== item) {
@@ -297,7 +272,6 @@ Localization.openContentPanel = function (item) {
 	}
 };
 
-// 关闭内容面板
 Localization.closeContentPanel = function () {
 	const panel = this.panel;
 	if (panel.item) {
@@ -306,9 +280,7 @@ Localization.closeContentPanel = function () {
 	}
 };
 
-// 解包本地化数据
 Localization.unpackLocalization = (function IIFE() {
-	// 使用引用文件夹类来保存展开状态
 	class ReferencedFolder {
 		data: any;
 		class: string;
@@ -321,12 +293,10 @@ Localization.unpackLocalization = (function IIFE() {
 			this.children = clone(item.children);
 		}
 
-		// 读取展开状态
 		get expanded() {
 			return this.data.expanded;
 		}
 
-		// 写入展开状态
 		set expanded(value: any) {
 			this.data.expanded = value;
 			File.planToSave(Data.manifest.project.localization);
@@ -353,7 +323,6 @@ Localization.unpackLocalization = (function IIFE() {
 	};
 })();
 
-// 打包本地化数据
 Localization.packLocalization = (function IIFE() {
 	const clone = (items) => {
 		const length = items.length;
@@ -379,14 +348,12 @@ Localization.packLocalization = (function IIFE() {
 	};
 })();
 
-// 面板 - 调整输入区域大小
 Localization.resizeTextArea = function (textarea) {
 	const shadowDOM = textarea.querySelector('textarea');
 	textarea.style.height = '0';
 	textarea.style.height = `${Math.clamp(shadowDOM.scrollHeight + 11, 40, 200)}px`;
 };
 
-// 窗口 - 关闭事件
 Localization.windowClose = function (event) {
 	this.list.saveScroll();
 	if (this.changed) {
@@ -412,7 +379,6 @@ Localization.windowClose = function (event) {
 	}
 }.bind(Localization);
 
-// 窗口 - 已关闭事件
 Localization.windowClosed = function (event) {
 	this.data = null;
 	this.idMap = null;
@@ -429,10 +395,8 @@ Localization.windowClosed = function (event) {
 	window.off('keydown', Reference.getKeydownListener(this.list));
 }.bind(Localization);
 
-// 键盘按下事件
 Localization.keydown = Shortcuts.createUndoRedo(Localization);
 
-// 列表 - 键盘按下事件
 Localization.listKeydown = function (event) {
 	const item = this.read();
 	if (event.cmdOrCtrlKey) {
@@ -461,7 +425,6 @@ Localization.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 Localization.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0:
@@ -476,7 +439,6 @@ Localization.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 鼠标双击事件
 Localization.listDoubleclick = function (event) {
 	if (Localization.target && Localization.list.read()?.id !== undefined) {
 		Localization.target.getFocus?.();
@@ -486,7 +448,6 @@ Localization.listDoubleclick = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 Localization.listSelect = function (event) {
 	const item = event.value;
 	return item.class !== 'folder'
@@ -494,7 +455,6 @@ Localization.listSelect = function (event) {
 		: Localization.closeContentPanel();
 };
 
-// 列表 - 记录事件
 Localization.listRecord = function (event) {
 	Localization.changed = true;
 	Localization.history.save({
@@ -503,12 +463,10 @@ Localization.listRecord = function (event) {
 	});
 };
 
-// 列表 - 打开事件
 Localization.listOpen = function (event) {
 	Localization.listDoubleclick(event);
 };
 
-// 列表 - 菜单弹出事件
 Localization.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
@@ -610,7 +568,6 @@ Localization.listPopup = function (event) {
 	);
 };
 
-// 面板 - 输入事件
 Localization.panelInput = function (event) {
 	const element = event.target;
 	if (element.tagName === 'TEXTAREA') {
@@ -641,7 +598,6 @@ Localization.panelInput = function (event) {
 	}
 };
 
-// 面板 - 键盘按下事件
 Localization.panelKeydown = function (event) {
 	if (event.target.tagName === 'TEXTAREA' && event.cmdOrCtrlKey) {
 		switch (event.code) {
@@ -655,7 +611,6 @@ Localization.panelKeydown = function (event) {
 	}
 };
 
-// 搜索框 - 输入事件
 Localization.searcherInput = function (event) {
 	if (event.inputType === 'insertCompositionText') {
 		return;
@@ -664,7 +619,6 @@ Localization.searcherInput = function (event) {
 	Localization.list.searchNodesDebounced(text);
 };
 
-// 确定按钮 - 鼠标点击事件
 Localization.confirm = function (event) {
 	if (this.target) {
 		const item = this.list.read();
@@ -680,21 +634,17 @@ Localization.confirm = function (event) {
 	Window.close('localization');
 }.bind(Localization);
 
-// 应用按钮 - 鼠标点击事件
 Localization.apply = function (event) {
 	if (this.changed) {
 		this.changed = false;
 
-		// 保存本地化数据
 		this.packLocalization();
 		File.planToSave(Data.manifest.project.localization);
 
-		// 发送本地化改变事件
 		window.dispatchEvent(new Event('localizationchange'));
 	}
 }.bind(Localization);
 
-// 导入Excel按钮 - 鼠标点击事件
 Localization.fromExcel = async function (event) {
 	const items = await ipcRenderer.invoke('from-excel');
 	if (JSON.stringify(items) == JSON.stringify(Data.localization.list) || !items.length) return;
@@ -706,7 +656,6 @@ Localization.fromExcel = async function (event) {
 	Localization.apply();
 }.bind(Localization);
 
-// 导出Excel按钮 - 鼠标点击事件
 Localization.toExcel = function (event) {
 	ipcRenderer.invoke('to-excel', {
 		langs: this.languages,
@@ -725,8 +674,7 @@ Localization.list.copy = function (item) {
 Localization.list.paste = function (dItem) {
 	const copy = (Clipboard as any).read('yami.data.localization');
 	if (copy) {
-		// 只有冲突时进行更换ID
-		// 支持跨项目复制保留ID
+		// 只有冲突时进行更换ID 支持跨项目复制保留ID
 		if (Localization.idMap[copy.id]) {
 			copy.id = Localization.createId();
 			copy.name += ' - Copy';
@@ -751,7 +699,6 @@ Localization.list.delete = function (item) {
 						const index = elements.indexOf(item.element);
 						this.deleteNode(item);
 						Localization.closeContentPanel();
-						// 自动选择下一个列表项
 						const last = elements.count - 1;
 						const element = elements[Math.min(index, last)];
 						if (element instanceof HTMLElement) {

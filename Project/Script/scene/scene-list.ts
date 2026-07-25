@@ -157,7 +157,6 @@ Scene.list.restoreRecursiveStates = (function IIFE() {
 		if (node[key] !== undefined) {
 			node[key] = states[index++];
 		}
-		// 兼容动画图层列表
 		const children = node.children;
 		if (children !== undefined) {
 			const length = children.length;
@@ -179,7 +178,6 @@ Scene.list.setRecursiveStates = (function IIFE() {
 			backups.push(node[key]);
 			node[key] = state;
 		}
-		// 兼容动画图层列表
 		const children = node.children;
 		if (children !== undefined) {
 			const length = children.length;
@@ -214,8 +212,6 @@ Scene.list.updateFolderState = (function IIFE() {
 	};
 	const toggle = (folder) => {
 		folder[key] = !folder[key];
-		// 撤销重做时无法控制列表的更新顺序
-		// 所以在这里手动刷新元素图标
 		switch (key) {
 			case 'hidden':
 				list.updateVisibilityIcon(folder);
@@ -251,9 +247,7 @@ Scene.list.updateFolderState = (function IIFE() {
 	};
 })();
 
-// 列表 - 判断是否可以开关状态
-// 因为可视和锁定状态自动更新导致了历史操作可能无法正确还原
-// 锁死不包含场景对象的文件夹是为了保证撤消重做结果的正确性
+// 列表 - 判断是否可以开关状态 因为可视和锁定状态自动更新导致了历史操作可能无法正确还原 锁死不包含场景对象的文件夹是为了保证撤消重做结果的正确性
 Scene.list.canSwitchState = (function IIFE() {
 	const check = (item) => {
 		if (item.class === 'folder') {
@@ -271,7 +265,6 @@ Scene.list.canSwitchState = (function IIFE() {
 
 // 列表 - 重写创建图标方法
 Scene.list.createIcon = (function IIFE() {
-	// 图标创建函数集合
 	const iconCreators = {
 		folder: () => {
 			const icon = document.createElement('node-icon');
@@ -357,7 +350,6 @@ Scene.list.updateIcon = function (item) {
 Scene.list.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -476,7 +468,6 @@ Scene.list.createVisibilityIcon = function (item) {
 	const hiddenIcon = document.createElement('visibility-icon');
 	element.appendChild(hiddenIcon);
 	element.hiddenIcon = hiddenIcon;
-	// 使用hiddenState来避开原生属性hidden
 	element.hiddenState = null;
 };
 

@@ -11,10 +11,7 @@ import { TreeList } from '../components/tree-list.ts';
 import { Local } from '../tools/localization.ts';
 import { SetKey } from '../tools/set-key-window.ts';
 
-// ******************************** 过渡窗口 ********************************
-
 export const Easing = {
-	// properties
 	list: $('#easing-list'),
 	curve: $('#easing-curve-canvas'),
 	preview: $('#easing-preview-canvas'),
@@ -37,7 +34,6 @@ export const Easing = {
 	startPoint: null,
 	endPoint: null,
 	changed: false,
-	// methods
 	initialize: null,
 	get: null,
 	clear: null,
@@ -62,7 +58,6 @@ export const Easing = {
 	requestRendering: null,
 	renderingFunction: null,
 	stopRendering: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	dprchange: null,
@@ -85,12 +80,10 @@ export const Easing = {
 	durationInput: null,
 	delayInput: null,
 	confirm: null,
-	// classes
 	CurveMap: null,
 	EasingMap: null
 };
 
-// list methods
 Easing.list.saveSelection = null;
 Easing.list.restoreSelection = null;
 Easing.list.updateNodeElement = null;
@@ -100,15 +93,11 @@ Easing.list.updateTextNode = null;
 Easing.list.createKeyTextNode = null;
 Easing.list.updateKeyTextNode = null;
 
-// 初始化
-// 用箭头函数绑定 Easing 词法作用域，避免裸调 initialize() 时 this===undefined 炸
-// （initialize.js 用 .call(Easing) 绑 this，但若别处裸调会丢上下文；箭头函数根除问题）
+// 用箭头函数绑定 Easing 词法作用域，避免裸调 initialize() 时 this===undefined 炸 （initialize.js 用 .call(Easing) 绑 this，但若别处裸调会丢上下文；箭头函数根除问题）
 Easing.initialize = () => {
-	// 设置起点和终点
 	Easing.startPoint = { x: 0, y: 0 };
 	Easing.endPoint = { x: 1, y: 1 };
 
-	// 绑定过渡列表
 	const { list } = Easing;
 	list.removable = true;
 	list.renamable = true;
@@ -118,20 +107,17 @@ Easing.initialize = () => {
 	list.creators.push(list.createKeyTextNode);
 	list.updaters.push(list.updateKeyTextNode);
 
-	// 创建模式选项
 	$('#easing-mode').loadItems([
 		{ name: 'Use 2 Points', value: 2 },
 		{ name: 'Use 5 Points', value: 5 },
 		{ name: 'Use 8 Points', value: 8 }
 	]);
 
-	// 创建回放选项
 	$('#easing-preview-reverse').loadItems([
 		{ name: 'ON', value: true },
 		{ name: 'OFF', value: false }
 	]);
 
-	// 设置模式关联元素
 	const inputs = [];
 	for (let i = 0; i < 8; i++) {
 		inputs.push($(`#easing-points-${i}-x`), $(`#easing-points-${i}-y`));
@@ -144,11 +130,9 @@ Easing.initialize = () => {
 			{ case: 8, targets: inputs }
 		]);
 
-	// 设置初始缩放率
 	Easing.scale = 1;
 	$('#easing-scale').write(Easing.scale);
 
-	// 设置预览参数
 	Easing.reverse = true;
 	Easing.duration = 400;
 	Easing.delay = 400;
@@ -156,7 +140,6 @@ Easing.initialize = () => {
 	$('#easing-preview-duration').write(Easing.duration);
 	$('#easing-preview-delay').write(Easing.delay);
 
-	// 创建计时器
 	Easing.timer = new Timer({
 		duration: Easing.duration,
 		update: (timer) => {
@@ -171,7 +154,6 @@ Easing.initialize = () => {
 		callback: (timer) => {
 			switch (timer.state) {
 				case 'playing':
-					// 如果存在等待时间
 					if (Easing.delay !== 0) {
 						timer.state = 'waiting';
 						timer.elapsed = timer.playbackRate > 0 ? 0 : Easing.delay;
@@ -200,7 +182,6 @@ Easing.initialize = () => {
 		}
 	});
 
-	// 侦听事件
 	window.on('dprchange', Easing.dprchange);
 	window.on('themechange', Easing.themechange);
 	$('#easing').on('close', Easing.windowClose);
@@ -230,18 +211,15 @@ Easing.initialize = () => {
 	$('#easing-confirm').on('click', Easing.confirm);
 };
 
-// 创建作用域
 (() => {
 	const maps = {};
 	const linear = { map: (a) => a };
 	const get = (id) => {
-		// 返回现有映射表
 		const map = maps[id];
 		if (map !== undefined) {
 			return map;
 		}
 
-		// 创建新的映射表
 		const easing = Data.easings.map[id];
 		if (easing) {
 			const { points } = easing;
@@ -251,7 +229,6 @@ Easing.initialize = () => {
 			return (maps[id] = map);
 		}
 
-		// 返回缺省值
 		return linear;
 	};
 	const clear = () => {
@@ -260,52 +237,39 @@ Easing.initialize = () => {
 		}
 	};
 
-	// 获取映射表
 	Easing.get = get;
 
-	// 清除映射表集合
 	Easing.clear = clear;
 })();
 
-// 打开窗口
 Easing.open = function () {
 	Window.open('easing');
 
-	// 创建数据副本
 	this.data = Object.clone(Data.easings);
 
-	// 创建映射表
 	this.curveMap = new Easing.CurveMap();
 	this.easingMap = new Easing.EasingMap();
 
-	// 重置并添加计时器
 	this.timer.state = 'playing';
 	this.timer.playbackRate = 1;
 	this.timer.elapsed = 0;
 	this.timer.add();
 
-	// 创建控制点图像
 	this.createPointImage();
 
-	// 创建预览图像
 	this.createPreviewImage();
 
-	// 更新画布
 	this.updateCanvases();
 
-	// 更新列表项目
 	this.list.restoreSelection();
 
-	// 列表获得焦点
 	this.list.getFocus();
 };
 
-// 加载数据
 Easing.load = function (easing) {
 	const points = easing.points;
 	this.points = points;
 
-	// 写入数据
 	const write = getElementWriter('easing', easing);
 	const length = points.length;
 	write('mode', length);
@@ -318,24 +282,20 @@ Easing.load = function (easing) {
 		write(`points-${i}-y`, 0);
 	}
 
-	// 更新映射表并绘制图形
 	this.updateMaps();
 	this.requestRendering();
 };
 
-// 插入
 Easing.insert = function (dItem) {
 	this.list.addNodeTo(this.createData(), dItem);
 };
 
-// 复制
 Easing.copy = function (item) {
 	if (item) {
 		(Clipboard as any).write('yami.data.easing', item);
 	}
 };
 
-// 粘贴
 Easing.paste = function (dItem) {
 	const copy = (Clipboard as any).read('yami.data.easing');
 	if (copy) {
@@ -345,7 +305,6 @@ Easing.paste = function (dItem) {
 	}
 };
 
-// 删除
 Easing.delete = function (item) {
 	const items = this.data;
 	if (items.length > 1) {
@@ -372,7 +331,6 @@ Easing.delete = function (item) {
 	}
 };
 
-// 创建ID
 Easing.createId = function () {
 	let id;
 	do {
@@ -381,7 +339,6 @@ Easing.createId = function () {
 	return id;
 };
 
-// 创建数据
 Easing.createData = function () {
 	return {
 		id: this.createId(),
@@ -394,7 +351,6 @@ Easing.createData = function () {
 	};
 };
 
-// 设置过渡曲线的键
 Easing.setEasingKey = function (item) {
 	SetKey.open(item.key, (key) => {
 		item.key = key;
@@ -403,7 +359,6 @@ Easing.setEasingKey = function (item) {
 	});
 };
 
-// 获取ID匹配的数据
 Easing.getItemById = function (id) {
 	const { data } = this;
 	const { length } = data;
@@ -415,16 +370,13 @@ Easing.getItemById = function (id) {
 	return undefined;
 };
 
-// 更新映射表
 Easing.updateMaps = function () {
 	const { startPoint, endPoint } = this;
 	this.curveMap.update(startPoint, ...this.points, endPoint);
 	this.easingMap.update(startPoint, ...this.points, endPoint);
 };
 
-// 更新画布
 Easing.updateCanvases = function () {
-	// 更新曲线画布
 	const { curve } = this;
 	const { width: cWidth, height: cHeight } = CSS.getDevicePixelContentBoxSize(curve);
 	if (curve.width !== cWidth || curve.height !== cHeight) {
@@ -436,11 +388,9 @@ Easing.updateCanvases = function () {
 		}
 		curve.centerX = cWidth >> 1;
 		curve.centerY = cHeight >> 1;
-		// 间隔设置为偶数可保证50%缩放率时原点是整数
 		curve.spacing = Math.floor(Math.max(cWidth / 12, 20) / 2) * 2;
 	}
 
-	// 更新预览画布
 	const { preview } = this;
 	const { width: pWidth, height: pHeight } = CSS.getDevicePixelContentBoxSize(preview);
 	if (preview.width !== pWidth) {
@@ -451,7 +401,6 @@ Easing.updateCanvases = function () {
 	}
 };
 
-// 绘制曲线
 Easing.drawCurve = function () {
 	const canvas = this.curve;
 	const scale = this.scale;
@@ -462,7 +411,6 @@ Easing.drawCurve = function () {
 	const originX = (this.originX = canvas.centerX - spacing * 5);
 	const originY = (this.originY = canvas.centerY + spacing * 5);
 
-	// 擦除画布
 	let { context } = canvas;
 	if (!context) {
 		context = canvas.context = canvas.getContext('2d', {
@@ -471,7 +419,6 @@ Easing.drawCurve = function () {
 	}
 	context.clearRect(0, 0, width, height);
 
-	// 绘制虚线网格
 	context.beginPath();
 	for (let y = originY % spacing; y < height; y += spacing) {
 		context.moveTo(0, y + 0.5);
@@ -485,7 +432,6 @@ Easing.drawCurve = function () {
 	context.setLineDash([1]);
 	context.stroke();
 
-	// 绘制辅助线
 	context.strokeStyle = canvas.axisColor;
 	context.beginPath();
 	context.moveTo(originX, originY - fullSize + 0.5);
@@ -493,7 +439,6 @@ Easing.drawCurve = function () {
 	context.lineTo(originX + fullSize + 0.5, originY);
 	context.stroke();
 
-	// 绘制坐标轴
 	context.beginPath();
 	context.moveTo(0, originY + 0.5);
 	context.lineTo(width, originY + 0.5);
@@ -503,7 +448,6 @@ Easing.drawCurve = function () {
 	context.setLineDash([]);
 	context.stroke();
 
-	// 绘制坐标轴文本
 	context.textBaseline = 'top';
 	context.font = '12px Arial';
 	context.fillStyle = canvas.textColor;
@@ -513,7 +457,6 @@ Easing.drawCurve = function () {
 	context.fillText('PROGRESSION', 4, -12);
 	context.setTransform(1, 0, 0, 1, 0, 0);
 
-	// 绘制曲线
 	context.lineWidth = 2;
 	context.strokeStyle = canvas.curveColor;
 	context.beginPath();
@@ -528,7 +471,6 @@ Easing.drawCurve = function () {
 	}
 	context.stroke();
 
-	// 绘制激活曲线
 	context.strokeStyle = canvas.curveColorActive;
 	context.beginPath();
 	context.moveTo(originX + 0.5, originY + 0.5);
@@ -545,7 +487,6 @@ Easing.drawCurve = function () {
 	context.stroke();
 	context.lineWidth = 1;
 
-	// 绘制连接线
 	const active = this.activePoint;
 	const points = this.points;
 	const pLength = points.length;
@@ -574,7 +515,6 @@ Easing.drawCurve = function () {
 		context.stroke();
 	}
 
-	// 绘制控制点
 	const image = this.pointImage;
 	if (image === null) return;
 	for (let i = 0; i < pLength; i++) {
@@ -596,7 +536,6 @@ Easing.drawCurve = function () {
 	}
 };
 
-// 绘制预览视图
 Easing.drawPreview = function () {
 	const canvas = this.preview;
 	const width = canvas.width;
@@ -609,7 +548,6 @@ Easing.drawPreview = function () {
 	const time = this.easingMap.ease(this.elapsed / this.duration);
 	const dpr = window.devicePixelRatio;
 
-	// 擦除画布
 	let { context } = canvas;
 	if (!context) {
 		context = canvas.context = canvas.getContext('2d', {
@@ -618,7 +556,6 @@ Easing.drawPreview = function () {
 	}
 	context.clearRect(0, 0, width, height);
 
-	// 绘制位移元素
 	{
 		const offset = Math.round(60 * dpr);
 		const y0 = spacingY - halfsize + offset;
@@ -628,7 +565,6 @@ Easing.drawPreview = function () {
 		context.drawImage(image, 0, 0, size, size, dx, dy, size, size);
 	}
 
-	// 绘制缩放元素
 	{
 		const minScale = 0.5 * dpr;
 		const maxScale = 1.75 * dpr;
@@ -641,7 +577,6 @@ Easing.drawPreview = function () {
 		context.drawImage(image, size, 0, size, size, dx, dy, side, side);
 	}
 
-	// 绘制旋转元素
 	{
 		const angle = time * Math.PI * 2;
 		const ox = spacingX * 3 + halfsize * 5;
@@ -652,7 +587,6 @@ Easing.drawPreview = function () {
 		context.setTransform(1, 0, 0, 1, 0, 0);
 	}
 
-	// 绘制透明元素
 	{
 		const alpha = time;
 		const dx = spacingX * 4 + halfsize * 6;
@@ -663,7 +597,6 @@ Easing.drawPreview = function () {
 	}
 };
 
-// 更新控制点
 Easing.updatePoints = function () {
 	const read = getElementReader('easing');
 	const count = read('mode');
@@ -680,7 +613,6 @@ Easing.updatePoints = function () {
 	}
 };
 
-// 选择控制点 - 通过坐标
 Easing.selectPointByCoords = function (mouseX, mouseY) {
 	let target = null;
 	let weight = 0;
@@ -719,7 +651,6 @@ Easing.selectPointByCoords = function (mouseX, mouseY) {
 	return target;
 };
 
-// 创建控制点图像
 Easing.createPointImage = function () {
 	if (!this.pointImage) {
 		File.get({
@@ -731,7 +662,6 @@ Easing.createPointImage = function () {
 	}
 };
 
-// 创建预览图像
 Easing.createPreviewImage = function () {
 	if (!this.previewImage) {
 		const canvas = document.createElement('canvas');
@@ -752,24 +682,20 @@ Easing.createPreviewImage = function () {
 	}
 };
 
-// 请求渲染
 Easing.requestRendering = function () {
 	if (this.data !== null) {
 		Timer.appendUpdater('sharedRendering', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 Easing.renderingFunction = function () {
 	Easing.drawCurve();
 };
 
-// 停止渲染
 Easing.stopRendering = function () {
 	Timer.removeUpdater('sharedRendering', this.renderingFunction);
 };
 
-// 窗口 - 关闭事件
 Easing.windowClose = function (event) {
 	if (Easing.changed) {
 		event.preventDefault();
@@ -794,7 +720,6 @@ Easing.windowClose = function (event) {
 	}
 };
 
-// 窗口 - 已关闭事件
 Easing.windowClosed = function (event) {
 	this.list.saveSelection();
 	this.curve.blur();
@@ -809,7 +734,6 @@ Easing.windowClosed = function (event) {
 	this.stopRendering();
 }.bind(Easing);
 
-// 设备像素比改变事件
 Easing.dprchange = function (event) {
 	if (this.data !== null) {
 		this.updateCanvases();
@@ -817,7 +741,6 @@ Easing.dprchange = function (event) {
 	}
 }.bind(Easing);
 
-// 主题改变事件
 Easing.themechange = function (event) {
 	const canvas = this.curve;
 	switch (event.value) {
@@ -841,12 +764,10 @@ Easing.themechange = function (event) {
 	this.requestRendering();
 }.bind(Easing);
 
-// 数据 - 改变事件
 Easing.dataChange = function (event) {
 	this.changed = true;
 }.bind(Easing);
 
-// 列表 - 键盘按下事件
 Easing.listKeydown = function (event) {
 	const item = this.read();
 	if (event.cmdOrCtrlKey) {
@@ -872,17 +793,14 @@ Easing.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 Easing.listSelect = function (event) {
 	Easing.load(event.value);
 };
 
-// 列表 - 打开事件
 Easing.listOpen = function (event) {
 	Easing.setEasingKey(event.value);
 };
 
-// 列表 - 菜单弹出事件
 Easing.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
@@ -945,7 +863,6 @@ Easing.listPopup = function (event) {
 	);
 };
 
-// 模式 - 选择事件
 Easing.modeSelect = function (event) {
 	this.updatePoints();
 	const points = this.points;
@@ -1012,7 +929,6 @@ Easing.modeSelect = function (event) {
 	this.requestRendering();
 }.bind(Easing);
 
-// 控制点输入框 - 输入事件
 Easing.pointInput = function (event) {
 	const key = Inspector.getKey(this);
 	const value = this.read();
@@ -1030,13 +946,11 @@ Easing.pointInput = function (event) {
 	Easing.requestRendering();
 };
 
-// 缩放单选框 - 输入事件
 Easing.scaleInput = function (event) {
 	this.scale = event.value;
 	this.requestRendering();
 }.bind(Easing);
 
-// 曲线画布 - 键盘按下事件
 Easing.curveKeydown = function (event) {
 	const point = this.activePoint;
 	if (point !== null) {
@@ -1085,7 +999,6 @@ Easing.curveKeydown = function (event) {
 	}
 }.bind(Easing);
 
-// 曲线画布 - 指针按下事件
 Easing.curvePointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -1106,7 +1019,6 @@ Easing.curvePointerdown = function (event) {
 	}
 }.bind(Easing);
 
-// 曲线画布 - 鼠标滚轮事件
 Easing.curveWheel = function (event) {
 	if (!this.dragging && event.deltaY !== 0) {
 		const radios = document.getElementsByName('easing-scale');
@@ -1124,7 +1036,6 @@ Easing.curveWheel = function (event) {
 	}
 }.bind(Easing);
 
-// 曲线画布 - 失去焦点事件
 Easing.curveBlur = function (event) {
 	this.pointerup();
 	if (this.activePoint !== null) {
@@ -1133,7 +1044,6 @@ Easing.curveBlur = function (event) {
 	}
 }.bind(Easing);
 
-// 指针弹起事件
 Easing.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging === null) {
@@ -1149,7 +1059,6 @@ Easing.pointerup = function (event) {
 	}
 }.bind(Easing);
 
-// 指针移动事件
 Easing.pointermove = function (event) {
 	if (this.activePoint !== null) {
 		const dragging = this.dragging;
@@ -1172,12 +1081,10 @@ Easing.pointermove = function (event) {
 	}
 }.bind(Easing);
 
-// 回放 - 输入事件
 Easing.reverseInput = function (event) {
 	Easing.reverse = this.read();
 };
 
-// 持续时间 - 输入事件
 Easing.durationInput = function (event) {
 	Easing.duration = this.read();
 	const timer = Easing.timer;
@@ -1188,7 +1095,6 @@ Easing.durationInput = function (event) {
 	}
 };
 
-// 延时 - 输入事件
 Easing.delayInput = function (event) {
 	Easing.delay = this.read();
 	const timer = Easing.timer;
@@ -1199,18 +1105,15 @@ Easing.delayInput = function (event) {
 	}
 };
 
-// 确定按钮 - 鼠标点击事件
 Easing.confirm = function (event) {
 	if (this.changed) {
 		this.changed = false;
 		this.clear();
-		// 删除数据绑定的元素对象
 		const easings = this.data;
 		TreeList.deleteCaches(easings);
 		Data.easings = easings;
 		Data.createGUIDMap(easings);
 		File.planToSave(Data.manifest.project.easings);
-		// 发送数据改变事件
 		const datachange = new Event('datachange');
 		datachange.key = 'easings';
 		window.dispatchEvent(datachange);
@@ -1218,9 +1121,7 @@ Easing.confirm = function (event) {
 	Window.close('easing');
 }.bind(Easing);
 
-// 三次方曲线映射表类 - 必须使用Float64
-// 因为Float32会导致部分点参数出现绘制BUG:线条变粗
-// Chromium78-89都存在这个BUG而Chromium69是正常的
+// 三次方曲线映射表类 - 必须使用Float64 因为Float32会导致部分点参数出现绘制BUG:线条变粗 Chromium78-89都存在这个BUG而Chromium69是正常的
 Easing.CurveMap = class CurveMap extends Float64Array {
 	count: number;
 
@@ -1228,7 +1129,6 @@ Easing.CurveMap = class CurveMap extends Float64Array {
 		super(6002);
 	}
 
-	// 更新数据
 	update(...points) {
 		const length = points.length - 1;
 		for (let i = 0; i < length; i += 3) {
@@ -1254,7 +1154,6 @@ Easing.CurveMap = class CurveMap extends Float64Array {
 	}
 };
 
-// 过渡映射表类
 Easing.EasingMap = (function IIFE() {
 	const SCALE = 1000;
 	const round = Math.round;
@@ -1263,7 +1162,6 @@ Easing.EasingMap = (function IIFE() {
 			super(SCALE + 1);
 		}
 
-		// 更新数据
 		update(...points) {
 			const length = points.length - 1;
 			let pos = -1;
@@ -1294,8 +1192,7 @@ Easing.EasingMap = (function IIFE() {
 					}
 				}
 			}
-			// 尾数不一定是精确值
-			// 因此需要设置为1
+			// 尾数不一定是精确值 因此需要设置为1
 			this[SCALE] = 1;
 			return this;
 		}
@@ -1305,7 +1202,6 @@ Easing.EasingMap = (function IIFE() {
 			return this[round(time * SCALE)];
 		}
 
-		// 静态 - 缓入缓出
 		static easeInOut = (function IIFE() {
 			const p1 = { x: 0, y: 0 };
 			const p2 = { x: 0.42, y: 0 };
@@ -1317,10 +1213,8 @@ Easing.EasingMap = (function IIFE() {
 	};
 })();
 
-// 列表 - 保存选项状态
 Easing.list.saveSelection = function () {
 	const { easings } = Data;
-	// 将数据保存在外部可以切换项目后重置
 	if (easings.selection === undefined) {
 		Object.defineProperty(easings, 'selection', {
 			writable: true,
@@ -1333,7 +1227,6 @@ Easing.list.saveSelection = function () {
 	}
 };
 
-// 列表 - 恢复选项状态
 Easing.list.restoreSelection = function () {
 	const id = Data.easings.selection;
 	const item = Easing.getItemById(id) ?? this.data[0];
@@ -1342,42 +1235,34 @@ Easing.list.restoreSelection = function () {
 	this.scrollToSelection();
 };
 
-// 列表 - 重写更新节点元素方法
 Easing.list.updateNodeElement = function (element) {
 	const { item } = element;
 	if (!element.textNode) {
-		// 创建文本节点
 		const textNode = document.createTextNode('');
 		element.appendChild(textNode);
 
-		// 设置元素属性
 		element.draggable = true;
 		element.textNode = textNode;
 
-		// 调用组件创建器
 		for (const creator of this.creators) {
 			creator(item);
 		}
 	}
 
-	// 调用组件更新器
 	for (const updater of this.updaters) {
 		updater(item);
 	}
 };
 
-// 列表 - 重写更新项目名称方法
 Easing.list.updateItemName = function (item) {
 	this.updateTextNode(item);
 	this.updateKeyTextNode(item);
 };
 
-// 列表 - 添加元素类名
 Easing.list.addElementClass = function (item) {
 	item.element.addClass('plain');
 };
 
-// 列表 - 更新文本节点
 Easing.list.updateTextNode = function (item) {
 	const textNode = item.element.textNode;
 	const items = item.parent.children;
@@ -1391,7 +1276,6 @@ Easing.list.updateTextNode = function (item) {
 	}
 };
 
-// 创建键文本节点
 Easing.list.createKeyTextNode = function (item) {
 	const keyTextNode = document.createElement('text');
 	keyTextNode.key = '';
@@ -1400,7 +1284,6 @@ Easing.list.createKeyTextNode = function (item) {
 	item.element.keyTextNode = keyTextNode;
 };
 
-// 更新键文本节点
 Easing.list.updateKeyTextNode = function (item) {
 	const keyTextNode = item.element.keyTextNode;
 	const key = item.key;

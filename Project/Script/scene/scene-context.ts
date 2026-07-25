@@ -96,7 +96,6 @@ Scene.loadObjects = function () {
 	this.computeActiveTilemapId();
 };
 
-// 加载图块纹理
 Scene.loadTextures = async function () {
 	if (this.state === 'closed') return;
 	const promises = [];
@@ -157,7 +156,6 @@ Scene.loadTextures = async function () {
 	}
 };
 
-// 加载所有上下文
 Scene.loadAllContexts = function () {
 	for (const actor of this.actors) {
 		this.loadActorContext(actor);
@@ -176,7 +174,6 @@ Scene.loadAllContexts = function () {
 	}
 };
 
-// 加载角色上下文
 Scene.loadActorContext = function (actor) {
 	if (actor.player) {
 		actor.player.destroy();
@@ -193,7 +190,6 @@ Scene.loadActorContext = function (actor) {
 		const animation = Data.animations[animationId];
 		if (animation !== undefined) {
 			const player = new Animation.Player(animation);
-			// 加载精灵哈希表
 			const images = {};
 			const sprites = data.sprites;
 			const length = sprites.length;
@@ -214,14 +210,12 @@ Scene.loadActorContext = function (actor) {
 		}
 	}
 
-	// 设置默认参数
 	Object.defineProperty(actor, 'player', {
 		configurable: true,
 		value: this.createDefaultAnimation(actor)
 	});
 };
 
-// 加载光源上下文
 Scene.loadLightContext = function (light) {
 	Object.defineProperty(light, 'instance', {
 		configurable: true,
@@ -229,7 +223,6 @@ Scene.loadLightContext = function (light) {
 	});
 };
 
-// 加载动画上下文
 Scene.loadAnimationContext = function (animation) {
 	if (animation.player) {
 		animation.player.destroy();
@@ -256,14 +249,12 @@ Scene.loadAnimationContext = function (animation) {
 		return;
 	}
 
-	// 设置默认参数
 	Object.defineProperty(animation, 'player', {
 		configurable: true,
 		value: this.createDefaultAnimation(animation)
 	});
 };
 
-// 加载视差图上下文
 Scene.loadParallaxContext = function (parallax) {
 	if (parallax.player) {
 		parallax.player.destroy();
@@ -275,7 +266,6 @@ Scene.loadParallaxContext = function (parallax) {
 	});
 };
 
-// 加载粒子上下文
 Scene.loadParticleContext = function (particle) {
 	if (particle.emitter) {
 		particle.emitter.destroy();
@@ -296,7 +286,6 @@ Scene.loadParticleContext = function (particle) {
 	}
 };
 
-// 加载对象上下文
 Scene.loadObjectContext = function (object) {
 	switch (object.class) {
 		case 'actor':
@@ -322,7 +311,6 @@ Scene.loadObjectContext = function (object) {
 	}
 };
 
-// 重载对象上下文
 Scene.reloadObjectContext = function (object) {
 	switch (object.class) {
 		case 'folder':
@@ -350,7 +338,6 @@ Scene.reloadObjectContext = function (object) {
 	}
 };
 
-// 销毁对象上下文
 Scene.destroyObjectContext = function (object) {
 	switch (object.class) {
 		case 'folder':
@@ -385,7 +372,6 @@ Scene.destroyObjectContext = function (object) {
 	}
 };
 
-// 创建预览对象
 Scene.createPreviewObject = function (file) {
 	if (!this.previewObject) {
 		const name = file.basename;
@@ -424,7 +410,6 @@ Scene.createPreviewObject = function (file) {
 	}
 };
 
-// 删除预览对象
 Scene.deletePreviewObject = function () {
 	const object = this.previewObject;
 	if (object) {
@@ -447,7 +432,6 @@ Scene.deletePreviewObject = function () {
 	}
 };
 
-// 更新视差图
 Scene.updateParallaxes = function (deltaTime) {
 	for (const parallax of this.parallaxes) {
 		if (parallax.hidden) continue;

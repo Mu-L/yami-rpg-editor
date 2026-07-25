@@ -2,8 +2,6 @@
 import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 
-// ******************************** 设置视频 - 属性窗口 ********************************
-
 export const VideoProperty = createPropertyWindow({
 	prefix: 'setVideo',
 	locale: 'command.setVideo',

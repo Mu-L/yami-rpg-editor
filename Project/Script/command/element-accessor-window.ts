@@ -3,16 +3,12 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetElement } from '../tools/preset-element-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 元素访问器窗口 ********************************
-
-// 元素访问器目标对象（由调用方传入）
 interface ElementGetterTarget {
 	dataValue: ElementData;
 	input: (getter: any) => void;
 	isPluginInput?: boolean;
 }
 
-// 元素数据对象（switch 各 type 含不同字段）
 interface ElementData {
 	type:
 		| 'trigger'
@@ -43,20 +39,15 @@ interface ElementGetterShape {
 }
 
 export const ElementGetter: ElementGetterShape = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
 	checkDataForPlugin: null,
 	createDefaultForPlugin: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 ElementGetter.initialize = function (): void {
-	// 创建访问器类型选项
 	($('#elementGetter-type') as any).loadItems([
 		{ name: 'Event Trigger Element', value: 'trigger' },
 		{ name: 'Latest Element', value: 'latest' },
@@ -70,7 +61,6 @@ ElementGetter.initialize = function (): void {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置关联元素
 	($('#elementGetter-type') as any).enableHiddenMode().relate([
 		{ case: 'by-id', targets: [$('#elementGetter-presetId')] },
 		{
@@ -91,11 +81,9 @@ ElementGetter.initialize = function (): void {
 		}
 	]);
 
-	// 侦听事件
 	($('#elementGetter-confirm') as HTMLElement).on('click', this.confirm!);
 };
 
-// 打开窗口
 ElementGetter.open = function (this: ElementGetterShape, target: ElementGetterTarget): void {
 	this.target = target;
 	Window.open('elementGetter');
@@ -141,7 +129,6 @@ ElementGetter.open = function (this: ElementGetterShape, target: ElementGetterTa
 	($('#elementGetter-type') as HTMLElement & { getFocus(): void }).getFocus();
 };
 
-// 检查插件版本的元素访问器数据有效性
 ElementGetter.checkDataForPlugin = function (data: any): boolean {
 	if (data instanceof Object) {
 		return (data as { getter?: string }).getter === 'element';
@@ -149,7 +136,6 @@ ElementGetter.checkDataForPlugin = function (data: any): boolean {
 	return false;
 };
 
-// 创建插件版本的默认元素访问器
 ElementGetter.createDefaultForPlugin = function (): {
 	getter: string;
 	type: string;
@@ -157,7 +143,6 @@ ElementGetter.createDefaultForPlugin = function (): {
 	return { getter: 'element', type: 'trigger' };
 };
 
-// 确定按钮 - 鼠标点击事件
 ElementGetter.confirm = function (this: ElementGetterShape, event: Event): void {
 	const read = getElementReader('elementGetter');
 	const type = read('type');
@@ -224,7 +209,6 @@ ElementGetter.confirm = function (this: ElementGetterShape, event: Event): void 
 			break;
 		}
 	}
-	// 如果是插件输入框，额外附加一个属性
 	if (this.target!.isPluginInput) {
 		getter = { getter: 'element', ...getter };
 	}

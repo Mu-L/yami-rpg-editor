@@ -2,8 +2,6 @@
 import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 
-// ******************************** 设置进度条 - 属性窗口 ********************************
-
 export const ProgressBarProperty = createPropertyWindow({
 	prefix: 'setProgressBar',
 	locale: 'command.setProgressBar',

@@ -1,6 +1,3 @@
-// ******************************** 画布上下文方法 ********************************
-
-// 画布上下文方法 - 绘制图像必要时缩小使之包含于画布
 CanvasRenderingContext2D.prototype.drawAndFitImage = function (
 	this: CanvasRenderingContext2D,
 	image: CanvasImageSource & { width: number; height: number },

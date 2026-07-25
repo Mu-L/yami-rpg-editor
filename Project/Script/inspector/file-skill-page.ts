@@ -6,39 +6,28 @@ import { EventListInterface } from '../tools/event-list.ts';
 import { AttributeListInterface } from '../tools/property-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 文件 - 技能页面 ********************************
-
 {
 	const FileSkill = {
-		// properties
 		target: null,
 		meta: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null,
 		listChange: null
 	};
 
-	// 初始化
 	FileSkill.initialize = function () {
-		// 绑定属性列表
 		$('#fileSkill-attributes').bind(new AttributeListInterface());
 
-		// 绑定事件列表
 		$('#fileSkill-events').bind(new EventListInterface(this));
 
-		// 绑定脚本列表
 		$('#fileSkill-scripts').bind(new ScriptListInterface());
 
-		// 绑定脚本参数面板
 		$('#fileSkill-parameter-pane').bind($('#fileSkill-scripts'));
 
-		// 侦听事件
 		$('#fileSkill-icon, #fileSkill-clip, #fileSkill-inherit').on('input', this.paramInput);
 		$('#fileSkill-attributes, #fileSkill-events, #fileSkill-scripts').on(
 			'change',
@@ -46,7 +35,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建技能
 	FileSkill.create = function () {
 		return {
 			icon: '',
@@ -58,13 +46,11 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	FileSkill.open = function (skill, meta) {
 		if (this.meta !== meta) {
 			this.target = skill;
 			this.meta = meta;
 
-			// 写入数据
 			const write = getElementWriter('fileSkill', skill);
 			write('icon');
 			write('clip');
@@ -75,7 +61,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	FileSkill.close = function () {
 		if (this.target) {
 			Browser.unselect(this.meta);
@@ -88,7 +73,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	FileSkill.update = function (skill, key, value) {
 		File.planToSave(this.meta);
 		switch (key) {
@@ -107,12 +91,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 参数 - 输入事件
 	FileSkill.paramInput = function (event) {
 		FileSkill.update(FileSkill.target, Inspector.getKey(this), this.read());
 	};
 
-	// 列表 - 改变事件
 	FileSkill.listChange = function (event) {
 		File.planToSave(FileSkill.meta);
 	};

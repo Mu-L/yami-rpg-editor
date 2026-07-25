@@ -14,9 +14,6 @@ import {
 	AnimationTextureMap
 } from '../types/animation-player.ts';
 
-// ******************************** 动画播放器类 ********************************
-
-// 动画数据对象（Data.animations[i]）
 interface AnimationData {
 	[k: string]: any;
 }
@@ -81,14 +78,12 @@ Animation.Player = class AnimationPlayer {
 		this.loadMotions();
 	}
 
-	// 设置动作
 	setMotion(key: any) {
 		const motions = this.motions;
 		const motion = motions[key];
 		if (motion !== undefined && this.motion !== motion) {
 			this.motion = motion;
 			this.dirCases = motion.dirCases;
-			// 如果方向模式发生变化，重新计算方向
 			const dirMap = AnimationPlayer.dirMaps[motion.mode];
 			if (this.dirMap !== dirMap) {
 				this.dirMap = dirMap;
@@ -102,40 +97,32 @@ Animation.Player = class AnimationPlayer {
 		return false;
 	}
 
-	// 加载动画方向
 	loadDirCase() {
 		const params = this.dirMap[this.direction];
 		if (params) {
 			const dirCase = this.dirCases[params.index];
 			this.layers = dirCase.layers;
-			// 销毁上下文中的粒子发射器
-			// 加载当前动作的上下文
 			this.destroyContextEmitters();
 			this.loadContexts(this.contexts);
 			this.computeLength();
 		}
 	}
 
-	// 设置缩放系数
 	setScale(scale: any) {
 		this.scale = scale;
 	}
 
-	// 设置播放速度
 	setSpeed(speed: any) {
 		this.speed = speed;
 	}
 
-	// 设置不透明度
 	setOpacity(opacity: any) {
 		this.opacity = opacity;
 	}
 
-	// 设置动画角度
 	setAngle(angle: any) {
 		this.angle = angle;
 		const directions = this.dirMap.length;
-		// 将角度映射为0~方向数量的数值
 		const proportion = Math.modRadians(angle) / (Math.PI * 2);
 		const section = (proportion * directions + 0.5) % directions;
 		const direction = Math.floor(section);
@@ -144,7 +131,6 @@ Animation.Player = class AnimationPlayer {
 		return dirChanged;
 	}
 
-	// 设置动画方向
 	setDirection(direction: any) {
 		if (this.direction !== direction) {
 			const params = this.dirMap[direction];
@@ -157,15 +143,12 @@ Animation.Player = class AnimationPlayer {
 		return false;
 	}
 
-	// 获取方向角度
 	getDirectionAngle() {
 		const length = this.dirMap.length;
 		return (this.direction / length) * Math.PI * 2;
 	}
 
-	// 更新旋转角度
 	updateRotation() {
-		// 如果开启了动画旋转，调整旋转角度
 		if (this.rotatable) {
 			this.rotation = this.mirror
 				? -this.angle - this.getDirectionAngle()
@@ -173,7 +156,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 跳转到指定帧
 	goto(index: any) {
 		index = Math.clamp(index, 0, this.length - 1);
 		// 跳转到前面的动画帧时增加循环计数
@@ -183,12 +165,10 @@ Animation.Player = class AnimationPlayer {
 		this.index = index;
 	}
 
-	// 重新开始
 	restart() {
 		this.index = 0;
 	}
 
-	// 重置
 	reset() {
 		this.index = 0;
 		this.length = 0;
@@ -199,32 +179,26 @@ Animation.Player = class AnimationPlayer {
 		this.destroyContextEmitters();
 	}
 
-	// 设置动画位置
 	setPosition(x: any, y: any) {
 		const matrix = AnimationPlayer.matrix.set6f(1, 0, 0, 1, x, y);
 
-		// 设置镜像
 		if (this.mirror) {
 			matrix.mirrorh();
 		}
 
-		// 设置旋转
 		if (this.rotation !== 0) {
 			matrix.rotate(this.rotation);
 		}
 
-		// 设置缩放
 		if (this.scale !== 1) {
 			matrix.scale(this.scale, this.scale);
 		}
 	}
 
-	// 设置精灵图像表
 	setSpriteImages(images: any) {
 		this.images = Object.setPrototypeOf(images, this.images);
 	}
 
-	// 计算帧列表参数
 	updateFrameParameters(contexts: any, index: any) {
 		const { count } = contexts;
 		outer: for (let i = 0; i < count; i++) {
@@ -253,7 +227,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 加载精灵哈希表
 	loadSprites() {
 		const spriteMap = this.sprites;
 		const imageMap = this.images;
@@ -266,7 +239,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 加载动作哈希表
 	loadMotions() {
 		const motionMap = this.motions;
 		for (const motion of this.data.motions) {
@@ -274,20 +246,16 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 加载图层上下文列表
 	loadContexts(contexts: any) {
 		AnimationPlayer.loadContexts(this, contexts);
 	}
 
-	// 更新动画
 	update(deltaTime: any) {
 		if (this.length !== 0) {
-			// 递增动画帧索引
 			this.index += (deltaTime * this.speed) / AnimationPlayer.step;
 			// 如果动画播放结束
 			if (this.index >= this.end) {
 				if (this.motion.loop) {
-					// 如果动作是循环的，重新开始
 					this.index = (this.index % this.end) + this.loopStart;
 				} else {
 					// 否则设为尾帧索引，执行结束回调
@@ -295,13 +263,9 @@ Animation.Player = class AnimationPlayer {
 				}
 			}
 		}
-		// 更新粒子发射器
-		// if (this.emitterCount !== 0) {
-		//   this.emitParticles(deltaTime)
-		// }
+		// if (this.emitterCount !== 0) { this.emitParticles(deltaTime) }
 	}
 
-	// 计算长度
 	computeLength() {
 		let length = 0;
 		const { contexts, motion } = this;
@@ -319,7 +283,6 @@ Animation.Player = class AnimationPlayer {
 		this.end = motion.skip && this.loopStart < lastFrame ? lastFrame : length;
 	}
 
-	// 发射粒子
 	emitParticles(deltaTime: any) {
 		deltaTime *= this.speed;
 		const { contexts } = this;
@@ -348,7 +311,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 更新粒子
 	updateParticles(deltaTime: any) {
 		deltaTime *= this.speed;
 		const { emitters } = this;
@@ -366,11 +328,9 @@ Animation.Player = class AnimationPlayer {
 		return totalCount;
 	}
 
-	// 绘制动画
 	draw(opacity: any, light: any) {
 		const { emitters } = this;
 		const { length } = emitters;
-		// 绘制背景粒子
 		if (length !== 0) {
 			GL.batchRenderer.draw();
 			for (let i = 0; i < length; i++) {
@@ -380,7 +340,6 @@ Animation.Player = class AnimationPlayer {
 				}
 			}
 		}
-		// 绘制动画精灵
 		const { contexts } = this;
 		const { count } = contexts;
 		for (let i = 0; i < count; i++) {
@@ -395,7 +354,6 @@ Animation.Player = class AnimationPlayer {
 				}
 			}
 		}
-		// 绘制前景粒子
 		if (length !== 0) {
 			GL.batchRenderer.draw();
 			for (let i = 0; i < length; i++) {
@@ -407,7 +365,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 绘制精灵
 	drawSprite(context: any, texture: any, light: any) {
 		const gl = GL;
 		const vertices = gl.arrays[0].float32;
@@ -497,7 +454,6 @@ Animation.Player = class AnimationPlayer {
 		attributes[vi + 31] = anchor;
 	}
 
-	// 获取纹理
 	getTexture(spriteId: any) {
 		const textures = this.textures;
 		const texture = textures[spriteId];
@@ -535,20 +491,15 @@ Animation.Player = class AnimationPlayer {
 		return texture;
 	}
 
-	// 销毁
 	destroy() {
-		// 销毁图像纹理
 		for (const texture of Object.values(this.textures)) {
 			if (texture instanceof ImageTexture) {
 				texture.destroy();
 			}
 		}
 		this.textures = null;
-		// 销毁更新中的粒子发射器
 		this.destroyUpdatingEmitters();
-		// 销毁上下文的粒子发射器
 		this.destroyContextEmitters();
-		// 销毁编辑器元素
 		for (const motion of Object.values(this.motions) as any[]) {
 			for (const dirCase of motion.dirCases) {
 				if (dirCase.loaded === undefined) continue;
@@ -562,7 +513,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 销毁更新中的粒子发射器
 	destroyUpdatingEmitters() {
 		const { emitters } = this;
 		const { length } = emitters;
@@ -573,7 +523,6 @@ Animation.Player = class AnimationPlayer {
 		emitters.length = 0;
 	}
 
-	// 销毁上下文的粒子发射器
 	destroyContextEmitters() {
 		const { contexts } = this;
 		const { count } = contexts;
@@ -591,7 +540,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 清除粒子对象
 	clearParticles() {
 		const { emitters } = this;
 		const { length } = emitters;
@@ -601,20 +549,17 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 设置为UI动画组件
 	setAsUIComponent() {
 		if (!this.isUIComponent) {
 			this.isUIComponent = true;
 		}
 	}
 
-	// 静态 - 动画属性
 	static step = 0;
 	static matrix = new Matrix();
 	static lightSamplingModes = { raw: 0, global: 1, anchor: 2 };
 	static stage;
 
-	// 各种模式的动画方向映射表
 	static dirMaps = {
 		'1-dir': [{ index: 0, mirror: false }],
 		'1-dir-mirror': [
@@ -679,12 +624,10 @@ Animation.Player = class AnimationPlayer {
 		]
 	};
 
-	// 静态 - 更新动画步长
 	static updateStep() {
 		this.step = 1000 / Data.config.animation.frameRate;
 	}
 
-	// 静态 - 加载动画图层上下文列表
 	static loadContexts(animation: any, contexts: any) {
 		contexts.count = 0;
 		if (animation.layers !== null) {
@@ -693,7 +636,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 静态 - 加载动画图层上下文
 	static #loadContext(animation, layers, parent, contexts) {
 		for (const layer of layers) {
 			let context = contexts[contexts.count];
@@ -736,7 +678,6 @@ Animation.Player = class AnimationPlayer {
 		}
 	}
 
-	// 静态 - 上下文方法 - 重置
 	static contextReset(this: any) {
 		const parent = this.parent;
 		const matrix = this.matrix;
@@ -750,7 +691,6 @@ Animation.Player = class AnimationPlayer {
 		this.frame = null;
 	}
 
-	// 静态 - 上下文方法 - 更新
 	static contextUpdate(this: any, frame, time, next) {
 		const parent = this.parent;
 		const matrix = this.matrix;
@@ -781,10 +721,8 @@ Animation.Player = class AnimationPlayer {
 		this.frame = frame;
 	}
 
-	// 静态 - 上下文方法 - 更新精灵
 	static contextUpdateSprite(this: any, frame, time, next) {
 		AnimationPlayer.contextUpdate.call(this, frame, time, next);
-		// 读取锚点、轴点、色调
 		let anchorX = frame.anchorX;
 		let anchorY = frame.anchorY;
 		let pivotX = frame.pivotX;
@@ -793,7 +731,6 @@ Animation.Player = class AnimationPlayer {
 		let green = frame.tint[1];
 		let blue = frame.tint[2];
 		let gray = frame.tint[3];
-		// 计算参数插值
 		if (next !== undefined) {
 			const reverse = 1 - time;
 			anchorX = anchorX * reverse + next.anchorX * time;
@@ -805,12 +742,10 @@ Animation.Player = class AnimationPlayer {
 			blue = Math.clamp(blue * reverse + next.tint[2] * time, -255, 255);
 			gray = Math.clamp(gray * reverse + next.tint[3] * time, 0, 255);
 		}
-		// 获取或创建色调数组
 		let tint = this.tint;
 		if (tint === undefined) {
 			tint = this.tint = new Int16Array(4);
 		}
-		// 写入参数
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
 		this.pivotX = pivotX;
@@ -821,10 +756,8 @@ Animation.Player = class AnimationPlayer {
 		tint[3] = gray;
 	}
 
-	// 静态 - 上下文方法 - 更新粒子
 	static contextUpdateParticle(this: any, frame, time, next) {
 		AnimationPlayer.contextUpdate.call(this, frame, time, next);
-		// 获取或创建粒子发射器
 		let emitter = this.emitter;
 		if (emitter === undefined) {
 			const guid = this.layer.particleId;
@@ -836,7 +769,6 @@ Animation.Player = class AnimationPlayer {
 			this.emitter = emitter;
 			this.animation.emitters.push(emitter);
 		}
-		// 更新粒子发射器
 		let scale = frame.scale * this.animation.scale;
 		let speed = frame.speed;
 		if (next !== undefined) {

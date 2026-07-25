@@ -1,8 +1,6 @@
 ﻿import { HistoryTimer } from './history-timer.ts';
 import { IEditableHistory } from '../types/history.ts';
 
-// ******************************** 文本操作历史 ********************************
-
 export class TextHistory implements IEditableHistory {
 	input: HTMLElement & { [k: string]: any };
 	stack: any[];
@@ -36,10 +34,8 @@ export class TextHistory implements IEditableHistory {
 		this.selectionStart = 0;
 		this.selectionEnd = 0;
 
-		// 扩展方法 - 替换文本
 		input.replace = TextHistory.inputReplace;
 
-		// 侦听事件
 		input.on('keydown', this.inputKeydown);
 		input.on('beforeinput', this.inputBeforeinput);
 		input.on('input', this.inputInput);
@@ -48,7 +44,6 @@ export class TextHistory implements IEditableHistory {
 		input.on('compositionend', this.inputCompositionEnd);
 	}
 
-	// 重置历史
 	reset() {
 		if (this.stack.length !== 0) {
 			this.stack = [];
@@ -58,7 +53,6 @@ export class TextHistory implements IEditableHistory {
 		this.lastInsert = '';
 	}
 
-	// 保存数据
 	save() {
 		if (this.inputType) {
 			this.inputType = '';
@@ -77,14 +71,12 @@ export class TextHistory implements IEditableHistory {
 			editingStart: this.editingStart
 		};
 
-		// 删除多余的栈
 		const stack = this.stack;
 		const length = this.index + 1;
 		if (length < stack.length) {
 			stack.length = length;
 		}
 
-		// 堆栈上限: 20
 		if (stack.length < 20) {
 			this.index++;
 			stack.push(data);
@@ -94,7 +86,6 @@ export class TextHistory implements IEditableHistory {
 		}
 	}
 
-	// 恢复数据
 	restore(operation: any) {
 		if (operation === 'undo') {
 			this.save();
@@ -108,7 +99,6 @@ export class TextHistory implements IEditableHistory {
 			const data = this.stack[index];
 			const { deleted, inserted, lastStart, lastEnd, editingStart } = data;
 
-			// 撤销或重做
 			let inputType;
 			TextHistory.restoring = true;
 			switch (operation) {
@@ -154,17 +144,14 @@ export class TextHistory implements IEditableHistory {
 		}
 	}
 
-	// 撤销条件判断
 	canUndo() {
 		return this.index >= 0 || !!this.inputType;
 	}
 
-	// 重做条件判断
 	canRedo() {
 		return this.index + 1 < this.stack.length;
 	}
 
-	// 更新状态
 	updateStates(event: any) {
 		const { input } = this;
 		const inputType = event.inputType;
@@ -218,7 +205,6 @@ export class TextHistory implements IEditableHistory {
 		}
 	}
 
-	// 更新选择区域
 	updateSelection(event: any) {
 		const { input } = this;
 		this.lastInsert = event.data;
@@ -226,7 +212,6 @@ export class TextHistory implements IEditableHistory {
 		this.selectionEnd = input.selectionEnd;
 	}
 
-	// 输入框 - 键盘按下事件
 	inputKeydown(event: any) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
@@ -242,7 +227,6 @@ export class TextHistory implements IEditableHistory {
 		}
 	}
 
-	// 输入框 - 输入前事件
 	inputBeforeinput(event: any) {
 		const { history } = this;
 		switch (event.inputType) {
@@ -300,7 +284,6 @@ export class TextHistory implements IEditableHistory {
 		history.updateStates(event);
 	}
 
-	// 输入框 - 输入事件
 	inputInput(event: any) {
 		switch (event.inputType) {
 			case 'insertCompositionText':
@@ -315,12 +298,10 @@ export class TextHistory implements IEditableHistory {
 		}
 	}
 
-	// 输入框 - 失去焦点事件
 	inputBlur(event: any) {
 		HistoryTimer.finish();
 	}
 
-	// 输入框 - 文本合成开始事件
 	inputCompositionstart(event: any) {
 		const { history } = this;
 		const struct = TextHistory.eventStruct;
@@ -330,7 +311,6 @@ export class TextHistory implements IEditableHistory {
 		history.updateSelection(event);
 	}
 
-	// 输入框 - 文本合成结束事件
 	inputCompositionEnd(event: any) {
 		const { history } = this;
 		if (event.data || history.deleted) {
@@ -344,16 +324,13 @@ export class TextHistory implements IEditableHistory {
 	}
 }
 
-// 文本操作历史恢复中状态开关
 TextHistory.restoring = false;
 
-// 模拟事件结构
 TextHistory.eventStruct = {
 	inputType: 'inputCompositionText',
 	data: null
 };
 
-// 输入框 - 替换文本
 TextHistory.inputReplace = (function IIFE() {
 	const eventStruct = {
 		inputType: 'replaceText',

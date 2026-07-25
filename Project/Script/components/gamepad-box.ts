@@ -1,16 +1,11 @@
-// ******************************** 手柄按键框 ********************************
-
 export class GamepadBox extends HTMLElement {
-	// 属性声明
 	input: HTMLElement;
 	dataValue: number;
 	static intervalIndex;
 
-	// 构造函数
 	constructor() {
 		super();
 
-		// 创建输入框
 		const input = document.createElement('input');
 		input.addClass('gamepad-box-input');
 		input.type = 'text';
@@ -19,42 +14,35 @@ export class GamepadBox extends HTMLElement {
 		input.on('blur', this.inputBlur);
 		this.appendChild(input);
 
-		// 设置属性
 		this.input = input;
 		this.dataValue = null;
 	}
 
-	// 读取数据
 	read(): number | null {
 		return this.dataValue;
 	}
 
-	// 写入数据
 	write(button: number): void {
 		this.dataValue = button;
 		this.input.value = GamepadBox.getButtonName(button);
 	}
 
-	// 启用元素
 	enable() {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
-	// 禁用元素
 	disable() {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
-	// 获得焦点
 	getFocus(mode: any) {
 		return this.input.getFocus(mode);
 	}
 
-	// 输入框 - 键盘按下事件
 	inputKeydown(event: any) {
 		switch (event.code) {
 			case 'Tab':
@@ -70,11 +58,9 @@ export class GamepadBox extends HTMLElement {
 		}
 	}
 
-	// 输入框 - 获得焦点事件
 	inputFocus(event: any) {
 		let lastPad = null;
 
-		// 输入键值
 		const inputKeyCode = () => {
 			const pads = navigator.getGamepads();
 			const pad = pads[0] || pads[1] || pads[2] || pads[3] || null;
@@ -105,15 +91,12 @@ export class GamepadBox extends HTMLElement {
 		GamepadBox.intervalIndex = setInterval(inputKeyCode);
 	}
 
-	// 输入框 - 失去焦点事件
 	inputBlur(event: any) {
 		clearInterval(GamepadBox.intervalIndex);
 		GamepadBox.intervalIndex = null;
 	}
 
-	// 获取按键名称
 	static getButtonName = (function IIFE() {
-		// 键值 -> 键名
 		const codeToName = {
 			0: 'A',
 			1: 'B',
@@ -133,7 +116,6 @@ export class GamepadBox extends HTMLElement {
 			15: 'Right'
 		};
 
-		// 返回函数
 		return function (code) {
 			return code === -1 ? '' : (codeToName[code] ?? `Button_${code}`);
 		};

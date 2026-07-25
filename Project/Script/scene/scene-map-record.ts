@@ -1,6 +1,5 @@
 import { Scene } from './scene-window.ts';
 import { History } from '../tools/history.ts';
-// 创建作用域
 (() => {
 	let tilemap = null;
 	let mapData = null;
@@ -9,7 +8,6 @@ import { History } from '../tools/history.ts';
 	let count = 0;
 	let length = 0;
 
-	// 开始地图数据记录
 	Scene.beginMapRecord = function () {
 		switch (this.layer) {
 			case 'tilemap':
@@ -28,7 +26,6 @@ import { History } from '../tools/history.ts';
 		}
 	};
 
-	// 关闭地图数据记录
 	Scene.closeMapRecord = function () {
 		if (mapData !== null) {
 			tilemap = null;
@@ -40,7 +37,6 @@ import { History } from '../tools/history.ts';
 		}
 	};
 
-	// 保存地图数据记录
 	Scene.saveMapRecord = function () {
 		if (count === 0) return;
 		if (tilemap) {
@@ -65,7 +61,6 @@ import { History } from '../tools/history.ts';
 		count = 0;
 	};
 
-	// 记录地图数据
 	Scene.recordMapData = function (index) {
 		if (states[index] === 0) {
 			states[index] = 1;
@@ -75,7 +70,6 @@ import { History } from '../tools/history.ts';
 		}
 	};
 
-	// 恢复地图数据
 	Scene.restoreMapData = function () {
 		for (let i = count - 2; i >= 0; i -= 2) {
 			const index = changes[i];
@@ -85,7 +79,6 @@ import { History } from '../tools/history.ts';
 		count = 0;
 	};
 
-	// 撤销地图数据
 	Scene.undoMapData = function (mapData, changes) {
 		const length = changes.length;
 		for (let i = length - 1; i > 0; i -= 2) {
@@ -96,7 +89,6 @@ import { History } from '../tools/history.ts';
 		}
 	};
 
-	// 重做地图数据
 	Scene.redoMapData = function (mapData, changes) {
 		const length = changes.length;
 		for (let i = 1; i < length; i += 2) {
@@ -108,7 +100,6 @@ import { History } from '../tools/history.ts';
 	};
 })();
 
-// 创建历史操作对象
 Scene.createHistory = (function IIFE() {
 	const onSave = (data) => {
 		data.layer = Scene.tilemap ?? Scene.layer;

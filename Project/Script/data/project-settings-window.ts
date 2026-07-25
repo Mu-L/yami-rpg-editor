@@ -11,21 +11,16 @@ import { Local } from '../tools/localization.ts';
 import { AttributeListInterface } from '../tools/property-list.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 项目设置窗口 ********************************
-
 export const Project = {
-	// properties
 	data: null,
 	changed: false,
 	importedFonts: null,
 	languages: null,
 	tscStarted: false,
-	// methods
 	initialize: null,
 	open: null,
 	startTSC: null,
 	stopTSC: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	projectChange: null,
@@ -34,82 +29,67 @@ export const Project = {
 	confirm: null
 };
 
-// 初始化
 Project.initialize = function () {
-	// 创建窗口显示模式选项
 	$('#config-window-display').loadItems([
 		{ name: 'Windowed', value: 'windowed' },
 		{ name: 'Maximized', value: 'maximized' },
 		{ name: 'Fullscreen', value: 'fullscreen' }
 	]);
 
-	// 创建角色碰撞选项
 	$('#config-collision-actor-enabled').loadItems([
 		{ name: 'Enabled', value: true },
 		{ name: 'Disabled', value: false }
 	]);
 
-	// 创建场景碰撞选项
 	$('#config-collision-scene-enabled').loadItems([
 		{ name: 'Enabled', value: true },
 		{ name: 'Disabled', value: false }
 	]);
 
-	// 设置场景碰撞关联元素
 	$('#config-collision-scene-enabled')
 		.enableHiddenMode()
 		.relate([{ case: true, targets: [$('#config-collision-scene-actorSize')] }]);
 
-	// 创建触发器碰撞模式选项
 	$('#config-collision-trigger-collideWithActorShape').loadItems([
 		{ name: "Collide With Actor's Shape", value: true },
 		{ name: "Collide With Actor's Anchor", value: false }
 	]);
 
-	// 绑定导入字体列表
 	$('#config-text-importedFonts').bind(this.importedFonts);
 
-	// 创建高清晰度选项
 	$('#config-text-highDefinition').loadItems([
 		{ name: 'Yes', value: true },
 		{ name: 'No', value: false }
 	]);
 
-	// 绑定角色临时属性列表
 	$('#config-actor-tempAttributes').bind(new AttributeListInterface());
 
-	// 创建WebGL低延时模式选项
 	$('#config-webgl-desynchronized').loadItems([
 		{ name: 'Enabled', value: true },
 		{ name: 'Disabled', value: false }
 	]);
 
-	// 创建WebGL纹理放大滤波器选项
 	$('#config-webgl-textureMagFilter').loadItems([
 		{ name: 'Nearest', value: 'nearest' },
 		{ name: 'Linear', value: 'linear' }
 	]);
 
-	// 创建WebGL纹理缩小滤波器选项
 	$('#config-webgl-textureMinFilter').loadItems([
 		{ name: 'Nearest', value: 'nearest' },
 		{ name: 'Linear', value: 'linear' }
 	]);
 
-	// 创建脚本自动编译选项
 	$('#config-script-autoCompile').loadItems([
 		{ name: 'Enabled', value: true },
 		{ name: 'Disabled', value: false }
 	]);
 
-	// 创建存档位置选项
 	$('#config-save-location').loadItems([
 		{ name: 'App Data', value: 'app-data' },
 		{ name: 'Documents', value: 'documents' },
 		{ name: 'Local Directory', value: 'local' }
 	]);
 
-	// 设置场景碰撞关联元素
 	$('#config-save-location')
 		.enableHiddenMode()
 		.relate([
@@ -119,17 +99,14 @@ Project.initialize = function () {
 			}
 		]);
 
-	// 绑定语言列表
 	$('#config-localization-languages').bind(this.languages);
 
-	// 创建预加载选项
 	$('#config-preload').loadItems([
 		{ name: 'Never', value: 'never' },
 		{ name: 'Always', value: 'always' },
 		{ name: 'Only on Deployment', value: 'deployed' }
 	]);
 
-	// 侦听事件
 	window.on('datachange', this.projectChange);
 	$('#project-settings').on('close', this.windowClose);
 	$('#project-settings').on('closed', this.windowClosed);
@@ -158,17 +135,13 @@ Project.initialize = function () {
 	);
 };
 
-// 打开窗口
 Project.open = function () {
 	Window.open('project-settings');
 
-	// 创建数据副本
 	this.data = Object.clone(Data.config);
 
-	// 创建音效衰减过渡选项
 	$('#config-soundAttenuation-easingId').loadItems(Data.createEasingItems());
 
-	// 写入数据
 	const write = getElementWriter('config', this.data);
 	write('window-title');
 	write('window-width');
@@ -219,7 +192,6 @@ Project.open = function () {
 	write('deadzone');
 };
 
-// 启动TypeScript编译
 Project.startTSC = function () {
 	if (!this.tscStarted) {
 		this.tscStarted = true;
@@ -227,7 +199,6 @@ Project.startTSC = function () {
 	}
 };
 
-// 停止TypeScript编译
 Project.stopTSC = function () {
 	if (this.tscStarted) {
 		this.tscStarted = false;
@@ -236,7 +207,6 @@ Project.stopTSC = function () {
 	}
 };
 
-// 窗口 - 关闭事件
 Project.windowClose = function (event) {
 	if (Project.changed) {
 		event.preventDefault();
@@ -261,12 +231,10 @@ Project.windowClose = function (event) {
 	}
 };
 
-// 窗口 - 已关闭事件
 Project.windowClosed = function (event) {
 	Project.data = null;
 };
 
-// 项目 - 改变事件
 Project.projectChange = function (event) {
 	if (event.key === 'config') {
 		const last = event.last.script;
@@ -281,12 +249,10 @@ Project.projectChange = function (event) {
 	}
 };
 
-// 数据 - 改变事件
 Project.dataChange = function (event) {
 	this.changed = true;
 }.bind(Project);
 
-// 参数 - 输入事件
 Project.paramInput = function (event) {
 	const key = Inspector.getKey(this);
 	const value = this.read();
@@ -302,7 +268,6 @@ Project.paramInput = function (event) {
 	}
 };
 
-// 过滤重复的语言
 (Project as any).filterDuplicateLanguages = function () {
 	const local = this.data.localization;
 	const languages = [];
@@ -312,7 +277,6 @@ Project.paramInput = function (event) {
 	local.languages = languages;
 };
 
-// 确定按钮 - 鼠标点击事件
 Project.confirm = function (event) {
 	if (this.changed) {
 		this.changed = false;
@@ -322,7 +286,6 @@ Project.confirm = function (event) {
 		const title2 = this.data.window.title;
 		Data.config = this.data;
 		File.planToSave(Data.manifest.project.config);
-		// 更新标题名称
 		if (title1 !== title2) {
 			Title.updateTitleName();
 		}
@@ -334,7 +297,6 @@ Project.confirm = function (event) {
 	Window.close('project-settings');
 }.bind(Project);
 
-// 导入字体列表接口
 Project.importedFonts = {
 	fontId: null,
 	filter: 'font',
@@ -358,11 +320,9 @@ Project.importedFonts = {
 	}
 };
 
-// 语言列表接口
 Project.languages = {
 	initialize: function (list) {
 		$('#language-confirm').on('click', () => {
-			// 如果是插入模式且语言重复，阻止操作
 			if (list.inserting) {
 				const languages = Project.data.localization.languages;
 				const langName = $('#language-name').read();
@@ -396,7 +356,6 @@ Project.languages = {
 		};
 	},
 	update: function () {
-		// 创建默认游戏语言选项
 		const selectBox = $('#config-localization-default');
 		const defaultLang = selectBox.read();
 		selectBox.loadItems(Project.languages.createValidItems());

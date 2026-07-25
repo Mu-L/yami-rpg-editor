@@ -1,5 +1,3 @@
-﻿// ******************************** 页面管理器 ********************************
-
 export class PageManager extends HTMLElement {
 	index: any;
 	active: HTMLElement | null;
@@ -8,7 +6,6 @@ export class PageManager extends HTMLElement {
 	constructor() {
 		super();
 
-		// 处理子元素
 		const elements = this.childNodes;
 		if (elements.length > 0) {
 			let i = elements.length;
@@ -22,13 +19,11 @@ export class PageManager extends HTMLElement {
 			}
 		}
 
-		// 设置属性
 		this.index = null;
 		this.active = null;
 		this.switchEventEnabled = false;
 	}
 
-	// 切换页面
 	switch(value: any): void {
 		const last = this.index;
 		if (last !== value) {
@@ -47,10 +42,6 @@ export class PageManager extends HTMLElement {
 				this.active = target;
 				active?.removeClass('visible');
 				target?.addClass('visible');
-				// if (target) {
-				//   this.scrollLeft = 0
-				//   this.scrollTop = 0
-				// }
 				if (this.switchEventEnabled) {
 					const event: any = new Event('switch');
 					event.last = last;
@@ -63,7 +54,6 @@ export class PageManager extends HTMLElement {
 		}
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,

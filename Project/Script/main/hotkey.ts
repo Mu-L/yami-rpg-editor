@@ -1,6 +1,5 @@
 import { Editor } from './editor.ts';
 
-// 开关快捷键
 Editor.switchHotkey = (function IIFE() {
 	const keydown = function (event) {
 		if (event.cmdOrCtrlKey) {

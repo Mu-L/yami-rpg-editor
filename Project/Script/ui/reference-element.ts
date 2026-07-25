@@ -3,8 +3,6 @@ import { Data } from '../data/data-object.ts';
 import { Inspector } from '../inspector/inspector.ts';
 import { UI } from './ui-window.ts';
 
-// ******************************** 引用元素 ********************************
-
 UI.Reference = class ReferenceElement extends UI.Element {
 	_prefabId = undefined;
 	_synchronous = undefined;
@@ -19,12 +17,10 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		this.synchronous = data.synchronous;
 	}
 
-	// 读取预制件ID
 	get prefabId() {
 		return this._prefabId;
 	}
 
-	// 写入预制件ID
 	set prefabId(value: any) {
 		if (this._prefabId !== value) {
 			const firstTime = this._prefabId === undefined;
@@ -32,7 +28,6 @@ UI.Reference = class ReferenceElement extends UI.Element {
 			this.clear();
 			const preset = Data.uiPresets[value];
 			if (preset && preset.data.class !== 'reference') {
-				// 加载被引用的元素
 				this.loadElement(preset.data, this);
 				if (this.children.length !== 0) {
 					this.prefab = this.children[0];
@@ -51,12 +46,10 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		}
 	}
 
-	// 读取同步开关
 	get synchronous() {
 		return this._synchronous;
 	}
 
-	// 写入同步开关
 	set synchronous(value: any) {
 		if (this._synchronous !== value) {
 			this._synchronous = value;
@@ -69,7 +62,6 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		}
 	}
 
-	// 设置为预制件大小
 	setToPrefabSize() {
 		if (!this.prefab) return;
 		const sTransform = this.transform;
@@ -108,7 +100,6 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		this.resize();
 	}
 
-	// 加载元素
 	loadElement(node: any, parent: any) {
 		const { presetId } = node;
 		const { paths } = parent;
@@ -123,7 +114,6 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		}
 	}
 
-	// 更新
 	update() {
 		this.prefab.destroyChildren();
 		this.prefab.children.length = 0;
@@ -132,12 +122,10 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		}
 	}
 
-	// 绘制图像
 	draw() {
 		this.drawChildren();
 	}
 
-	// 锁定元素大小
 	lockTransform() {
 		if (this.prefab) {
 			const parent = this;
@@ -250,7 +238,6 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		}
 	}
 
-	// 取消锁定元素大小
 	unlockTransform() {
 		if (this.prefab) {
 			this.prefab.transform = new (class Transform {
@@ -325,7 +312,6 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		}
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -334,13 +320,11 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.clear();
 	}
 
-	// 清除元素
 	clear() {
 		if (this.prefab) {
 			this.getRoot().removeReference(this.prefab);
@@ -350,11 +334,8 @@ UI.Reference = class ReferenceElement extends UI.Element {
 		}
 	}
 
-	// 获取根元素
 	getRoot() {
-		// 删除元素操作必须用这个获取
 		if (UI.root) return UI.root;
-		// 关闭标签页后销毁用这个获取
 		let element = this.parent;
 		while (!(element instanceof UI.Root)) {
 			element = element.parent;

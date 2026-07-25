@@ -1,4 +1,3 @@
-// ******************************** Loading 遮罩 ********************************
 // 长任务进度反馈；支持嵌套（多次 show 需对应多次 hide）
 
 export class LoadingOverlay extends HTMLElement {
@@ -16,20 +15,17 @@ export class LoadingOverlay extends HTMLElement {
 		}
 	}
 
-	// 设置提示文字
 	setText(text: string): void {
 		const t = this.querySelector('.loading-text');
 		if (t) t.textContent = text || '';
 	}
 
-	// 显示遮罩
 	show(text?: string): void {
 		this.setText(text ?? '');
 		this._count++;
 		this.classList.add('visible');
 	}
 
-	// 隐藏遮罩（嵌套计数归零才真正隐藏）
 	hide(): void {
 		this._count = Math.max(0, this._count - 1);
 		if (this._count === 0) {
@@ -40,7 +36,6 @@ export class LoadingOverlay extends HTMLElement {
 
 customElements.define('loading-overlay', LoadingOverlay as CustomElementConstructor);
 
-// 全局便捷接口
 export const Loading = {
 	_el(): LoadingOverlay {
 		let el = document.querySelector('loading-overlay');

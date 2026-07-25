@@ -1,9 +1,6 @@
 import { Scene } from './scene-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 光源类 ********************************
-
-// 光源数据对象（Data.lights[i]）
 interface LightData {
 	enabled: boolean;
 	type: 'point' | 'area';
@@ -40,7 +37,6 @@ export class Light {
 		this.measure();
 	}
 
-	// 绘制图像
 	draw(projMatrix: number[], opacity: number): void {
 		opacity *= this.data.enabled ? 1 : 0.3;
 		switch (this.data.type) {
@@ -51,7 +47,6 @@ export class Light {
 		}
 	}
 
-	// 绘制点光
 	drawPointLight(projMatrix: any, opacity: any) {
 		const gl = GL;
 		const vertices = gl.arrays[0].float32;
@@ -93,7 +88,6 @@ export class Light {
 		gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
 	}
 
-	// 绘制区域光
 	drawAreaLight(projMatrix: any, opacity: any) {
 		const light = this.data;
 		const textures = Scene.textures;
@@ -144,7 +138,6 @@ export class Light {
 		gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
 	}
 
-	// 测量
 	measure() {
 		const light = this.data;
 		if (light.type !== 'area') return;

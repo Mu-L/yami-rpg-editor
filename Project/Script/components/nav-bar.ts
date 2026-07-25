@@ -1,5 +1,3 @@
-﻿// ******************************** 导航栏 ********************************
-
 export class NavBar extends HTMLElement {
 	writeEventEnabled: boolean;
 	selectEventEnabled: boolean;
@@ -7,7 +5,6 @@ export class NavBar extends HTMLElement {
 	constructor() {
 		super();
 
-		// 处理子元素
 		const elements = this.childNodes;
 		if (elements.length > 0) {
 			let i = elements.length;
@@ -23,21 +20,17 @@ export class NavBar extends HTMLElement {
 			}
 		}
 
-		// 设置属性
 		this.writeEventEnabled = false;
 		this.selectEventEnabled = false;
 
-		// 侦听事件
 		this.on('pointerdown', this.pointerdown);
 	}
 
-	// 读取数据
 	read(): any {
 		const item = this.querySelector('.selected');
 		return item ? (item as HTMLElement & { dataValue: any }).dataValue : undefined;
 	}
 
-	// 写入数据
 	write(value: any): void {
 		const items = this.childNodes;
 		const length = items.length;
@@ -61,7 +54,6 @@ export class NavBar extends HTMLElement {
 		}
 	}
 
-	// 取消选择
 	unselect(): void {
 		const item = this.querySelector('.selected');
 		if (item) {
@@ -69,18 +61,8 @@ export class NavBar extends HTMLElement {
 		}
 	}
 
-	// 加载选项
-	// loadItems(items) {
-	//   this.textContent = ''
-	//   for (const item of items) {
-	//     const li = document.createElement('nav-item')
-	//     li.dataValue = item.value
-	//     li.textContent = item.name
-	//     this.appendChild(li)
-	//   }
-	// }
+	// for (const item of items) { const li = document.createElement('nav-item') li.textContent = item.name
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -97,7 +79,6 @@ export class NavBar extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0: {

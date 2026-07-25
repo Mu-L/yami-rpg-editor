@@ -26,10 +26,7 @@ import { ImageTexture } from '../webgl/image-texture.ts';
 import { Matrix } from '../webgl/matrix2.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** UI 窗口 ********************************
-
 export const UI = {
-	// properties
 	state: 'closed',
 	page: $('#ui'),
 	head: $('#ui-head'),
@@ -38,7 +35,6 @@ export const UI = {
 	marquee: $('#ui-marquee'),
 	searcher: $('#ui-searcher'),
 	list: $('#ui-list'),
-	// editor properties
 	dragging: null,
 	target: null,
 	hover: null,
@@ -71,14 +67,12 @@ export const UI = {
 	paddingLeft: null,
 	paddingTop: null,
 	inspectorTypeMap: null,
-	// ui properties
 	context: null,
 	meta: null,
 	width: null,
 	height: null,
 	nodes: null,
 	root: null,
-	// methods
 	initialize: null,
 	open: null,
 	load: null,
@@ -149,7 +143,6 @@ export const UI = {
 	loadFromConfig: null,
 	saveToProject: null,
 	loadFromProject: null,
-	// events
 	webglRestored: null,
 	windowResize: null,
 	themechange: null,
@@ -182,7 +175,6 @@ export const UI = {
 	listRename: null,
 	listChange: null,
 	listPageResize: null,
-	// classes
 	Element: null,
 	Root: null,
 	Image: null,
@@ -196,17 +188,13 @@ export const UI = {
 	Window: null,
 	Container: null,
 	Reference: null,
-	// methods
 	createShortcut: null
 };
 
-// marquee methods
 UI.marquee.resize = null;
 
-// list properties
 UI.list.page = $('#ui-element');
 UI.list.head = $('#ui-list-head');
-// list methods
 UI.list.copy = null;
 UI.list.paste = null;
 UI.list.delete = null;
@@ -216,7 +204,6 @@ EventBus.once('editor_loaded', () => {
 	UI.list.restoreRecursiveStates = Scene.list.restoreRecursiveStates;
 	UI.list.setRecursiveStates = Scene.list.setRecursiveStates;
 	UI.list.updateItemClass = Scene.list.updateItemClass;
-	// updateItemClass 从 Scene.list 复制，赋值后才能往 updaters 推；
 	// 否则 UI.initialize 早跑时会推入 undefined，updateNodeElement 调 undefined(item) 炸
 	UI.list.updaters.push(UI.list.updateItemClass);
 });
@@ -234,8 +221,7 @@ EventBus.once('editor_loaded', () => {
 	UI.list.updateVisibilityIcon = Scene.list.updateVisibilityIcon;
 	UI.list.createLockIcon = Scene.list.createLockIcon;
 	UI.list.updateLockIcon = Scene.list.updateLockIcon;
-	// 上面 8 个方法是从 Scene.list 复制而来，赋值完成后才能往 creators/updaters 推；
-	// 否则 UI.initialize 早跑时会推入 undefined，updateNodeElement 调 undefined(item) 炸
+	// 上面 8 个方法是从 Scene.list 复制而来，赋值完成后才能往 creators/updaters 推；否则 UI.initialize 早跑时会推入 undefined，updateNodeElement 调 undefined(item) 炸
 	const { list } = UI;
 	list.creators.push(list.createEventIcon);
 	list.creators.push(list.updateEventIcon);
@@ -251,12 +237,9 @@ UI.list.onRemove = null;
 UI.list.onDelete = null;
 UI.list.onResume = null;
 
-// 初始化
 UI.initialize = function () {
-	// 绑定滚动条
 	this.screen.addScrollbars();
 
-	// 创建控制点
 	const points = {
 		rotate: {
 			TL: { x: 0, y: 0, angle: 225 },
@@ -278,12 +261,10 @@ UI.initialize = function () {
 	};
 	// 控制点按优先级从低到高排序
 	points.list = [
-		// 旋转控制点
 		points.rotate.TL,
 		points.rotate.TR,
 		points.rotate.BL,
 		points.rotate.BR,
-		// 调整控制点
 		points.resize.T,
 		points.resize.L,
 		points.resize.R,
@@ -295,7 +276,6 @@ UI.initialize = function () {
 	];
 	this.controlPoints = points;
 
-	// 创建控制点纹理
 	File.get({
 		local: 'Images/ui_control_point.png',
 		type: 'image'
@@ -306,7 +286,6 @@ UI.initialize = function () {
 		this.controlPointTexture.base.protected = true;
 	});
 
-	// 创建位移计时器
 	this.translationTimer = new Timer({
 		duration: Infinity,
 		update: (timer) => {
@@ -345,7 +324,6 @@ UI.initialize = function () {
 		}
 	});
 
-	// 创建缩放计时器
 	this.zoomTimer = new Timer({
 		duration: 80,
 		update: (timer) => {
@@ -362,13 +340,10 @@ UI.initialize = function () {
 		}
 	});
 
-	// 设置舞台边距
 	this.padding = 800;
 
-	// 创建变换矩阵
 	this.matrix = new Matrix();
 
-	// 设置检查器类型映射表
 	this.inspectorTypeMap = {
 		image: 'uiImage',
 		text: 'uiText',
@@ -383,26 +358,18 @@ UI.initialize = function () {
 		reference: 'uiReference'
 	};
 
-	// 设置列表搜索框按钮和过滤器
 	this.searcher.addCloseButton();
 	this.searcher.addKeydownFilter();
 
-	// 绑定对象目录列表
 	const { list } = this;
 	list.removable = true;
 	list.renamable = true;
 	list.bind(() => this.nodes);
-	// updateItemClass 从 Scene.list 复制，在 editor_loaded 事件后才就绪；
-	// 其 updaters.push 已挪进 EventBus.once('editor_loaded') 回调，
-	// 此处推入会拿到 undefined，updateNodeElement 调 undefined(item) 会炸
-	// createConditionIcon / updateConditionIcon 在本模块顶层已定义，可立即推
+	// 其 updaters.push 已挪进 EventBus.once('editor_loaded') 回调，此处推入会拿到 undefined，updateNodeElement 调 undefined(item) 会炸
 	list.creators.push(list.createConditionIcon);
 	list.creators.push(list.updateConditionIcon);
-	// createEventIcon 等 8 个方法从 Scene.list 复制，在 editor_loaded 事件后才就绪；
-	// 其 creators/updaters.push 已挪进 EventBus.once('editor_loaded') 回调，
-	// 此处推入会拿到 undefined，updateNodeElement 调 undefined(item) 会炸
+	// 其 creators/updaters.push 已挪进 EventBus.once('editor_loaded') 回调，此处推入会拿到 undefined，updateNodeElement 调 undefined(item) 会炸
 
-	// 设置历史操作处理器
 	History.processors['ui-object-create'] = (operation, data) => {
 		const { response } = data;
 		list.restore(operation, response);
@@ -456,8 +423,7 @@ UI.initialize = function () {
 		const { instances, transform } = target;
 		data.anchorX = transform.anchorX;
 		data.anchorY = transform.anchorY;
-		// transform.anchorX = anchorX
-		// transform.anchorY = anchorY
+		// transform.anchorX = anchorX transform.anchorY = anchorY
 		instances.set('transform-anchorX', anchorX);
 		instances.set('transform-anchorY', anchorY);
 		if (editor.target === target) {
@@ -473,8 +439,7 @@ UI.initialize = function () {
 		const { instances, transform } = target;
 		data.x = transform.x;
 		data.y = transform.y;
-		// transform.x = x
-		// transform.y = y
+		// transform.x = x transform.y = y
 		instances.set('transform-x', x);
 		instances.set('transform-y', y);
 		if (editor.target === target) {
@@ -490,8 +455,7 @@ UI.initialize = function () {
 		const { instances, transform } = target;
 		data.width = transform.width;
 		data.height = transform.height;
-		// transform.width = width
-		// transform.height = height
+		// transform.width = width transform.height = height
 		instances.set('transform-width', width);
 		instances.set('transform-height', height);
 		if (editor.target === target) {
@@ -517,7 +481,6 @@ UI.initialize = function () {
 		UI.planToSave();
 	};
 
-	// 侦听事件
 	window.on('themechange', this.themechange);
 	window.on('localizationchange', this.localizationchange);
 	window.on('keydown', this.keydown);
@@ -552,7 +515,6 @@ UI.initialize = function () {
 	list.page.on('resize', this.listPageResize);
 };
 
-// 打开界面
 UI.open = function (context) {
 	if (this.context === context) {
 		return;
@@ -560,10 +522,8 @@ UI.open = function (context) {
 	this.save();
 	this.close();
 
-	// 设置粒子元素舞台
 	Particle.Element.stage = this;
 
-	// 首次加载界面
 	const { meta } = context;
 	if (!context.ui) {
 		context.ui = Data.ui[meta.guid];
@@ -591,7 +551,6 @@ UI.open = function (context) {
 	}
 };
 
-// 加载界面
 UI.load = function (context) {
 	const firstLoad = !context.editor;
 	if (firstLoad) {
@@ -606,20 +565,16 @@ UI.load = function (context) {
 	}
 	const { ui, editor } = context;
 
-	// 加载界面属性
 	this.width = ui.width;
 	this.height = ui.height;
 	this.nodes = ui.nodes;
 
-	// 加载编辑器属性
 	this.root = editor.root;
 	this.history = editor.history;
 	this.centerX = editor.centerX;
 	this.centerY = editor.centerY;
 
-	// 初始化
 	if (firstLoad) {
-		// 加载所有元素
 		const nodes = this.nodes;
 		const length = nodes.length;
 		for (let i = 0; i < length; i++) {
@@ -629,24 +584,19 @@ UI.load = function (context) {
 		this.updateAllReferences();
 	}
 
-	// 更新列表
 	this.list.update();
 	// this.list.scrollTop = editor.listScrollTop
 
-	// 设置目标对象
 	this.setTarget(editor.target);
 
-	// 更新元素字体
 	if (this.context.fontChanged) {
 		this.updateElementFont();
 	}
 
-	// 更新元素文本语言
 	if (this.context.languageChanged) {
 		this.updateElementLanguage();
 	}
 
-	// 更新元素文本缩放
 	if (this.context.scalingChanged) {
 		this.updateElementTextScaling();
 	}
@@ -654,17 +604,14 @@ UI.load = function (context) {
 	UndoManager.setActive(UI);
 };
 
-// 保存界面
 UI.save = function () {
 	if (this.state === 'open') {
 		const { ui, editor } = this.context;
 
-		// 保存界面属性
 		ui.width = this.width;
 		ui.height = this.height;
 		ui.nodes = this.nodes;
 
-		// 保存编辑器属性
 		editor.target = this.target;
 		editor.root = this.root;
 		editor.history = this.history;
@@ -674,11 +621,9 @@ UI.save = function () {
 	}
 };
 
-// 关闭界面
 UI.close = function () {
 	if (this.state !== 'closed') {
 		this.screen.blur();
-		// 关闭检查器
 		if (Inspector.type === 'fileUI') {
 			Inspector.close();
 		}
@@ -697,7 +642,6 @@ UI.close = function () {
 	}
 };
 
-// 销毁界面
 UI.destroy = function (context) {
 	if (!context.editor) return;
 	if (this.context === context) {
@@ -706,18 +650,15 @@ UI.destroy = function (context) {
 	}
 	// 销毁UI组件实例
 	context.editor.root.destroy();
-	// 销毁绑定的元素
 	TreeList.deleteCaches(context.ui.nodes);
 };
 
-// 复制对象
 UI.copy = function () {
 	if (this.state === 'open' && this.target !== null) {
 		this.list.copy(this.target);
 	}
 };
 
-// 粘贴对象
 UI.paste = function (x, y) {
 	if (this.state === 'open' && this.dragging === null) {
 		if (x === undefined) {
@@ -734,14 +675,12 @@ UI.paste = function (x, y) {
 	}
 };
 
-// 副本
 UI.duplicate = function () {
 	if (this.target) {
 		this.list.duplicate(this.target);
 	}
 };
 
-// 创建对象
 UI.create = function (kind, x, y) {
 	const map = this.inspectorTypeMap;
 	const key = map[kind];
@@ -752,7 +691,6 @@ UI.create = function (kind, x, y) {
 	this.list.addNodeTo(node);
 };
 
-// 创建预制件
 UI.createPrefab = function (prefab, parent, x, y) {
 	const reference = Inspector.uiReference.create();
 	reference.name = prefab.name;
@@ -770,7 +708,6 @@ UI.createPrefab = function (prefab, parent, x, y) {
 	this.list.addNodeTo(reference, parent);
 };
 
-// 创建快捷方式
 UI.createShortcut = function (item) {
 	const reference = Inspector.uiReference.create();
 	reference.name = this.list.generateUniqueName(item);
@@ -786,19 +723,16 @@ UI.createShortcut = function (item) {
 	}
 };
 
-// 删除对象
 UI.delete = function () {
 	if (this.state === 'open' && this.target !== null && this.dragging === null) {
 		this.list.delete(this.target);
 	}
 };
 
-// 开关对象
 UI.toggle = function () {
 	this.list.toggle(this.target);
 };
 
-// 撤销操作
 UI.undo = function () {
 	if (this.state === 'open' && !this.dragging && this.history.canUndo()) {
 		this.history.restore('undo');
@@ -806,7 +740,6 @@ UI.undo = function () {
 	}
 };
 
-// 重做操作
 UI.redo = function () {
 	if (this.state === 'open' && !this.dragging && this.history.canRedo()) {
 		this.history.restore('redo');
@@ -814,7 +747,6 @@ UI.redo = function () {
 	}
 };
 
-// 设置缩放
 UI.setZoom = (function IIFE() {
 	const slider = $('#ui-zoom');
 	return function (zoom) {
@@ -854,7 +786,6 @@ UI.setZoom = (function IIFE() {
 	};
 })();
 
-// 设置容器大小
 UI.setSize = function (width, height) {
 	if (this.width !== width) {
 		this.centerX = (this.centerX * width) / this.width;
@@ -868,7 +799,6 @@ UI.setSize = function (width, height) {
 	this.requestRendering();
 };
 
-// 设置悬停对象
 UI.setHover = function (hover) {
 	if (this.hover !== hover) {
 		this.hover = hover;
@@ -876,7 +806,6 @@ UI.setHover = function (hover) {
 	}
 };
 
-// 设置目标对象
 UI.setTarget = function (target) {
 	if (this.target !== target) {
 		this.target = target;
@@ -892,7 +821,6 @@ UI.setTarget = function (target) {
 	}
 };
 
-// 显示目标对象
 UI.revealTarget = (function IIFE() {
 	const timer = new Timer({
 		duration: 200,
@@ -964,7 +892,6 @@ UI.revealTarget = (function IIFE() {
 	};
 })();
 
-// 转移目标对象锚点
 UI.shiftAnchor = function (anchorX, anchorY) {
 	const target = this.target;
 	if (target !== null) {
@@ -991,21 +918,18 @@ UI.shiftAnchor = function (anchorX, anchorY) {
 				anchorY: transform.anchorY
 			});
 		}
-		// transform.anchorX = anchorX
-		// transform.anchorY = anchorY
+		// transform.anchorX = anchorX transform.anchorY = anchorY
 		instances.set('transform-anchorX', anchorX);
 		instances.set('transform-anchorY', anchorY);
 		instances.resize();
 		this.requestRendering();
 
-		// 更新编辑器
 		if (editor.target === target) {
 			editor.write({ anchorX, anchorY });
 		}
 	}
 };
 
-// 转移目标对象
 UI.shiftTarget = function (x, y) {
 	const target = this.target;
 	if (target !== null) {
@@ -1032,14 +956,12 @@ UI.shiftTarget = function (x, y) {
 				y: transform.y
 			});
 		}
-		// transform.x = x
-		// transform.y = y
+		// transform.x = x transform.y = y
 		instances.set('transform-x', x);
 		instances.set('transform-y', y);
 		instances.resize();
 		this.requestRendering();
 
-		// 更新编辑器
 		if (editor.target === target) {
 			editor.write({
 				x: x,
@@ -1049,7 +971,6 @@ UI.shiftTarget = function (x, y) {
 	}
 };
 
-// 调整目标对象
 UI.resizeTarget = function (width, height) {
 	const target = this.target;
 	if (target !== null) {
@@ -1087,7 +1008,6 @@ UI.resizeTarget = function (width, height) {
 		instances.resize();
 		this.requestRendering();
 
-		// 更新编辑器
 		if (editor.target === target) {
 			editor.write({
 				width: width,
@@ -1097,7 +1017,6 @@ UI.resizeTarget = function (width, height) {
 	}
 };
 
-// 旋转目标对象
 UI.rotateTarget = function (rotation) {
 	const target = this.target;
 	if (target !== null) {
@@ -1128,14 +1047,12 @@ UI.rotateTarget = function (rotation) {
 		instances.resize();
 		this.requestRendering();
 
-		// 更新编辑器
 		if (editor.target === target) {
 			editor.write({ rotation });
 		}
 	}
 };
 
-// 设置控制点
 UI.setControlPoint = function (point) {
 	if (this.controlPointActive !== point) {
 		this.controlPointActive = point;
@@ -1176,14 +1093,12 @@ UI.setControlPoint = function (point) {
 	}
 };
 
-// 更新悬停对象
 UI.updateHover = function () {
 	if (this.hover && !this.hover.instance) {
 		this.setHover(null);
 	}
 };
 
-// 更新目标对象
 UI.updateTarget = function () {
 	const item = this.list.read();
 	if (item !== this.target) {
@@ -1191,7 +1106,6 @@ UI.updateTarget = function () {
 	}
 };
 
-// 更新目标对象列表项
 UI.updateTargetItem = function () {
 	const { target } = this;
 	if (target !== null) {
@@ -1206,7 +1120,6 @@ UI.updateTargetItem = function () {
 	}
 };
 
-// 更新元素字体
 UI.updateElementFont = function () {
 	if (this.state === 'open') {
 		if (this.context.fontChanged) {
@@ -1242,7 +1155,6 @@ UI.updateElementFont = function () {
 	}
 };
 
-// 更新元素语言
 UI.updateElementLanguage = function () {
 	if (this.state === 'open') {
 		if (this.context.languageChanged) {
@@ -1259,7 +1171,6 @@ UI.updateElementLanguage = function () {
 	}
 };
 
-// 更新元素文本缩放
 UI.updateElementTextScaling = function () {
 	if (this.state === 'open') {
 		if (this.context.scalingChanged) {
@@ -1276,7 +1187,6 @@ UI.updateElementTextScaling = function () {
 	}
 };
 
-// 更新索引颜色
 UI.updateIndexedColor = function (index) {
 	if (this.state === 'open') {
 		const TextElement = UI.Text;
@@ -1296,7 +1206,6 @@ UI.updateIndexedColor = function (index) {
 	}
 };
 
-// 更新控制点
 UI.updateControlPoints = function () {
 	if (this.target !== null) {
 		const POINT_RADIUS = 4 / this.scale;
@@ -1334,7 +1243,6 @@ UI.updateControlPoints = function () {
 		const ox4 = Math.cos(angle4) * POINT_RADIUS;
 		const oy4 = Math.sin(angle4) * POINT_RADIUS;
 
-		// 旋转控制点: 左上|右上|左下|右下
 		const { rotate } = points;
 		rotate.TL.x = x1 + (ox1 - ox4) * 3;
 		rotate.TL.y = y1 + (oy1 - oy4) * 3;
@@ -1344,7 +1252,6 @@ UI.updateControlPoints = function () {
 		rotate.BL.y = y2 + (oy2 - oy1) * 3;
 		rotate.BR.x = x3 + (ox3 - ox2) * 3;
 		rotate.BR.y = y3 + (oy3 - oy2) * 3;
-		// 调整控制点: 上|左|右|下|左上|右上|左下|右下
 		const { resize } = points;
 		resize.T.x = (x4 + x1) / 2 + ox1;
 		resize.T.y = (y4 + y1) / 2 + oy1;
@@ -1371,7 +1278,6 @@ UI.updateControlPoints = function () {
 	}
 };
 
-// 更新所有文本
 UI.updateAllTexts = function () {
 	if (!Title.tabBar.data) return;
 	for (const context of Title.tabBar.data) {
@@ -1382,7 +1288,6 @@ UI.updateAllTexts = function () {
 	this.updateElementLanguage();
 };
 
-// 更新所有打印机
 UI.updateAllPrinters = function () {
 	if (!Title.tabBar.data) return;
 	for (const context of Title.tabBar.data) {
@@ -1393,7 +1298,6 @@ UI.updateAllPrinters = function () {
 	this.updateElementTextScaling();
 };
 
-// 更新所有引用元素
 UI.updateAllReferences = function () {
 	if (this.state === 'open') {
 		const update = (elements) => {
@@ -1409,7 +1313,6 @@ UI.updateAllReferences = function () {
 	}
 };
 
-// 更新节点元素
 UI.updateElement = function (target) {
 	let nodes;
 	let instance;
@@ -1417,7 +1320,6 @@ UI.updateElement = function (target) {
 		nodes = this.nodes;
 		instance = this.root;
 	} else {
-		// 递归查找父节点
 		const find = (node) => {
 			const children = node.children;
 			if (children.includes(target)) {
@@ -1446,17 +1348,14 @@ UI.updateElement = function (target) {
 	this.requestRendering();
 };
 
-// 删除节点元素
 UI.deleteElement = function (target) {
 	target.instance.remove();
 	target.instance.destroy();
 };
 
-// 更新头部位置
 UI.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -1465,24 +1364,10 @@ UI.updateHead = function () {
 			head.left = left;
 			head.style.left = `${left}px`;
 		}
-		// 调整居中组件的位置
-		// const width = nRect.right - iRect.right
-		// if (head.width !== width) {
-		//   head.width = width
-		//   const [start, center, end] = head.children
-		//   end.style.marginLeft = '0'
-		//   const sRect = start.rect()
-		//   const cRect = center.rect()
-		//   const eRect = end.rect()
-		//   const spacing = eRect.left - sRect.right - cRect.width
-		//   const difference = sRect.right - nRect.left - eRect.width
-		//   const margin = Math.min(spacing, difference)
-		//   end.style.marginLeft = `${margin}px`
-		// }
+		// 调整居中组件的位置 const width = nRect.right - iRect.right if (head.width !== width) { head.width = width const [start, center, end] = head.children end.style.marginLeft = '0' const sRect = start.rect() const cRect = center.rect() const eRect = end.rect() const spacing = eRect.left - sRect.right - cRect.width const difference = sRect.right - nRect.left - eRect.width const margin = Math.min(spacing, difference) end.style.marginLeft = `${margin}px` }
 	}
 };
 
-// 调整大小
 UI.resize = function () {
 	if (this.state === 'open' && this.screen.clientWidth !== 0) {
 		const scale = this.scale;
@@ -1520,7 +1405,6 @@ UI.resize = function () {
 	}
 };
 
-// 获取指针坐标
 UI.getPointerCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
 	return function (event) {
@@ -1532,7 +1416,6 @@ UI.getPointerCoords = (function IIFE() {
 	};
 })();
 
-// 更新摄像机位置
 UI.updateCamera = function (x = this.centerX, y = this.centerY) {
 	const dpr = window.devicePixelRatio;
 	const screen = this.screen;
@@ -1547,7 +1430,6 @@ UI.updateCamera = function (x = this.centerX, y = this.centerY) {
 	screen.scrollTop = (scrollY - (GL.height >> 1) + toleranceForDPR) / dpr;
 };
 
-// 更新变换参数
 UI.updateTransform = function () {
 	const dpr = window.devicePixelRatio;
 	const screen = this.screen;
@@ -1569,7 +1451,6 @@ UI.updateTransform = function () {
 	this.centerY = Math.roundTo((scrollY - this.paddingTop) / this.scaleY, 4);
 };
 
-// 注册预设元素
 UI.registerPreset = (function IIFE() {
 	const generatePresetId = () => {
 		const { uiPresets } = Data;
@@ -1598,7 +1479,6 @@ UI.registerPreset = (function IIFE() {
 	};
 })();
 
-// 取消注册预设元素
 UI.unregisterPreset = function (node) {
 	delete Data.uiPresets[node.presetId];
 	for (const child of node.children) {
@@ -1606,11 +1486,9 @@ UI.unregisterPreset = function (node) {
 	}
 };
 
-// 创建预制件选项
 UI.createPrefabItem = function (parent, x, y) {
 	const { uiPrefabs } = Editor.project;
 	const items = [];
-	// 添加有效的预制件选项
 	if (uiPrefabs.length !== 0) {
 		const click = function () {
 			UI.createPrefab(this.data, parent, x, y);
@@ -1634,26 +1512,22 @@ UI.createPrefabItem = function (parent, x, y) {
 	};
 };
 
-// 是否包含该预制件
 UI.hasPrefab = function (node) {
 	return Editor.project.uiPrefabs.includes(node.presetId);
 };
 
-// 设置为预制件
 UI.setAsPrefab = function (node) {
 	if (Editor.project.uiPrefabs.append(node.presetId)) {
 		UI.list.updateIcon(node);
 	}
 };
 
-// 取消设置为
 UI.unsetAsPrefab = function (node) {
 	if (Editor.project.uiPrefabs.remove(node.presetId)) {
 		UI.list.updateIcon(node);
 	}
 };
 
-// 清除无效预制件
 UI.clearInvalidPrefabs = function (uiPrefabs) {
 	let i = uiPrefabs.length;
 	while (--i >= 0) {
@@ -1664,7 +1538,6 @@ UI.clearInvalidPrefabs = function (uiPrefabs) {
 	}
 };
 
-// 创建元素
 UI.createElement = function (node, main) {
 	let instance;
 	switch (node.class) {
@@ -1719,7 +1592,6 @@ UI.createElement = function (node, main) {
 	return instance;
 };
 
-// 加载元素
 UI.loadElement = function (node, parent) {
 	const instance = this.createElement(node, true);
 	if (parent !== undefined) {
@@ -1730,19 +1602,16 @@ UI.loadElement = function (node, parent) {
 	}
 };
 
-// 绘制背景
 UI.drawBackground = function () {
 	const gl = GL;
 	gl.clearColor(...this.background.getGLRGBA());
 	gl.clear(gl.COLOR_BUFFER_BIT);
 };
 
-// 绘制元素
 UI.drawElements = function () {
 	this.root.draw();
 };
 
-// 绘制坐标轴
 UI.drawCoordinateAxes = function () {
 	if (this.target !== null) {
 		const { parent } = this.target.instance;
@@ -1815,7 +1684,6 @@ UI.drawCoordinateAxes = function () {
 	}
 };
 
-// 绘制悬停元素线框
 UI.drawHoverWireframe = function () {
 	if (this.hover !== null && this.hover !== this.target) {
 		const { instance } = this.hover;
@@ -1825,7 +1693,6 @@ UI.drawHoverWireframe = function () {
 	}
 };
 
-// 绘制目标元素线框
 UI.drawTargetWireframe = function () {
 	if (this.target !== null) {
 		const { instance } = this.target;
@@ -1833,7 +1700,6 @@ UI.drawTargetWireframe = function () {
 	}
 };
 
-// 绘制目标元素锚点
 UI.drawTargetAnchor = function () {
 	if (this.target !== null) {
 		const { instance } = this.target;
@@ -1871,7 +1737,6 @@ UI.drawTargetAnchor = function () {
 	}
 };
 
-// 绘制控制点
 UI.drawControlPoints = function () {
 	const target = this.target;
 	const texture = this.controlPointTexture;
@@ -1921,7 +1786,6 @@ UI.drawControlPoints = function () {
 	}
 };
 
-// 选择控制点
 UI.selectControlPoint = function (x, y) {
 	if (this.target !== null && !(this.target.class === 'reference' && this.target.synchronous)) {
 		const radius = 6 / this.scale;
@@ -1940,9 +1804,7 @@ UI.selectControlPoint = function (x, y) {
 	return null;
 };
 
-// 选择对象
 UI.selectObject = (function IIFE() {
-	// 递归查找
 	const find = (elements, x, y) => {
 		const length = elements.length;
 		for (let i = length - 1; i >= 0; i--) {
@@ -1965,14 +1827,12 @@ UI.selectObject = (function IIFE() {
 	};
 })();
 
-// 请求渲染
 UI.requestRendering = function () {
 	if (this.state === 'open') {
 		Timer.appendUpdater('stageRendering', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 UI.renderingFunction = function () {
 	if (GL.width * GL.height !== 0) {
 		UI.drawBackground();
@@ -1985,12 +1845,10 @@ UI.renderingFunction = function () {
 	}
 };
 
-// 停止渲染
 UI.stopRendering = function () {
 	Timer.removeUpdater('stageRendering', this.renderingFunction);
 };
 
-// 开关设置
 UI.switchSettings = function () {
 	if (!Inspector.fileUI.button.hasClass('selected')) {
 		Inspector.open('fileUI', UI);
@@ -1999,18 +1857,15 @@ UI.switchSettings = function () {
 	}
 };
 
-// 计划保存
 UI.planToSave = function () {
 	File.planToSave(this.meta);
 };
 
-// 保存状态到配置文件
 UI.saveToConfig = function (config) {
 	config.colors.uiBackground = this.background.hex;
 	config.colors.uiForeground = this.foreground.hex;
 };
 
-// 从配置文件中加载状态
 UI.loadFromConfig = function (config) {
 	this.background = new StageColor(config.colors.uiBackground, () => this.requestRendering());
 	this.foreground = new StageColor(config.colors.uiForeground, () => {
@@ -2021,29 +1876,23 @@ UI.loadFromConfig = function (config) {
 	});
 };
 
-// 保存状态到项目文件
 UI.saveToProject = function (project) {
 	const { ui, uiPrefabs } = project;
 	ui.zoom = this.zoom ?? ui.zoom;
-	// 更新后添加的uiPrefabs
-	// 取消升级时似乎可能undefined？先这样吧
 	UI.clearInvalidPrefabs(uiPrefabs ?? []);
 };
 
-// 从项目文件中加载状态
 UI.loadFromProject = function (project) {
 	const { ui } = project;
 	this.setZoom(ui.zoom);
 };
 
-// WebGL - 上下文恢复事件
 UI.webglRestored = function (event) {
 	if (UI.state === 'open') {
 		UI.requestRendering();
 	}
 };
 
-// 窗口 - 调整大小事件
 UI.windowResize = function (event) {
 	this.updateHead();
 	if (this.state === 'open') {
@@ -2053,17 +1902,14 @@ UI.windowResize = function (event) {
 	}
 }.bind(UI);
 
-// 主题改变事件
 UI.themechange = function (event) {
 	this.requestRendering();
 }.bind(UI);
 
-// 本地化改变事件
 UI.localizationchange = function (event) {
 	this.updateAllTexts();
 }.bind(UI);
 
-// 键盘按下事件
 UI.keydown = function (event) {
 	if (UI.state === 'open' && UI.dragging === null) {
 		if (event.cmdOrCtrlKey) {
@@ -2080,7 +1926,6 @@ UI.keydown = function (event) {
 	}
 };
 
-// 头部 - 指针按下事件
 UI.headPointerdown = function (event) {
 	if (!(event.target instanceof HTMLInputElement)) {
 		event.preventDefault();
@@ -2090,7 +1935,6 @@ UI.headPointerdown = function (event) {
 	}
 };
 
-// 开关 - 指针按下事件
 UI.switchPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -2106,7 +1950,6 @@ UI.switchPointerdown = function (event) {
 	}
 };
 
-// 快捷栏 - 指针按下事件
 UI.shortcutPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -2119,17 +1962,14 @@ UI.shortcutPointerdown = function (event) {
 	}
 };
 
-// 缩放 - 获得焦点事件
 UI.zoomFocus = function (event) {
 	UI.screen.focus();
 };
 
-// 缩放 - 输入事件
 UI.zoomInput = function (event) {
 	UI.setZoom(this.read());
 };
 
-// 屏幕 - 键盘按下事件
 UI.screenKeydown = function (event) {
 	if (this.state === 'open' && this.dragging === null) {
 		if (event.cmdOrCtrlKey) {
@@ -2258,7 +2098,6 @@ UI.screenKeydown = function (event) {
 	}
 }.bind(UI);
 
-// 位移键弹起事件
 UI.translationKeyup = function (event) {
 	if (this.translationKey === 0b0000) {
 		return;
@@ -2288,7 +2127,6 @@ UI.translationKeyup = function (event) {
 	}
 }.bind(UI);
 
-// 屏幕 - 鼠标滚轮事件
 UI.screenWheel = function (event) {
 	if (this.state === 'open' && this.dragging === null) {
 		event.preventDefault();
@@ -2299,7 +2137,6 @@ UI.screenWheel = function (event) {
 	}
 }.bind(UI);
 
-// 屏幕 - 用户滚动事件
 UI.screenUserscroll = function (event) {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
@@ -2311,14 +2148,12 @@ UI.screenUserscroll = function (event) {
 	}
 }.bind(UI);
 
-// 屏幕 - 失去焦点事件
 UI.screenBlur = function (event) {
 	this.translationKeyup();
 	this.pointerup();
 	// this.marqueePointerleave()
 }.bind(UI);
 
-// 选框 - 指针按下事件
 UI.marqueePointerdown = function (event) {
 	if (this.dragging) {
 		return;
@@ -2400,7 +2235,6 @@ UI.marqueePointerdown = function (event) {
 				event.startY = object.transform.y;
 				window.on('pointerup', this.pointerup);
 				window.on('pointermove', this.pointermove);
-				// 预览按钮
 				this.requestRendering();
 			}
 			this.setTarget(object);
@@ -2417,7 +2251,6 @@ UI.marqueePointerdown = function (event) {
 	}
 }.bind(UI);
 
-// 选框 - 指针移动事件
 UI.marqueePointermove = function (event) {
 	if (!this.dragging) {
 		this.marquee.pointerevent = event;
@@ -2438,7 +2271,6 @@ UI.marqueePointermove = function (event) {
 	}
 }.bind(UI);
 
-// 选框 - 指针离开事件
 UI.marqueePointerleave = function (event) {
 	if (this.marquee.pointerevent) {
 		this.marquee.pointerevent = null;
@@ -2446,7 +2278,6 @@ UI.marqueePointerleave = function (event) {
 	}
 }.bind(UI);
 
-// 选框 - 鼠标双击事件
 UI.marqueeDoubleclick = function (event) {
 	if (this.target) {
 		this.screenBlur();
@@ -2454,7 +2285,6 @@ UI.marqueeDoubleclick = function (event) {
 	}
 }.bind(UI);
 
-// 指针弹起事件
 UI.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging === null) {
@@ -2469,7 +2299,6 @@ UI.pointerup = function (event) {
 			case 'object-resize':
 				break;
 			case 'object-move':
-				// 预览按钮
 				this.requestRendering();
 				break;
 			case 'ready-to-scroll':
@@ -2491,7 +2320,6 @@ UI.pointerup = function (event) {
 	}
 }.bind(UI);
 
-// 指针移动事件
 UI.pointermove = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
@@ -2680,7 +2508,6 @@ UI.pointermove = function (event) {
 	}
 }.bind(UI);
 
-// 菜单 - 弹出事件
 UI.menuPopup = function (event) {
 	this.translationKeyup();
 	const { x, y } = this.getPointerCoords(event);
@@ -2835,7 +2662,6 @@ UI.menuPopup = function (event) {
 			}
 		}
 	];
-	// 添加设置为预制件菜单项目
 	if (selected) {
 		if (!UI.hasPrefab(target)) {
 			items.push({
@@ -2864,7 +2690,6 @@ UI.menuPopup = function (event) {
 	);
 };
 
-// 搜索框 - 输入事件
 UI.searcherInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const text = this.input.value;
@@ -2872,7 +2697,6 @@ UI.searcherInput = function (event) {
 	}
 };
 
-// 列表 - 键盘按下事件
 UI.listKeydown = function (event) {
 	if (!this.data) {
 		return;
@@ -2914,7 +2738,6 @@ UI.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 UI.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -2966,12 +2789,10 @@ UI.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 UI.listSelect = function (event) {
 	UI.setTarget(event.value);
 };
 
-// 列表 - 记录事件
 UI.listRecord = function (event) {
 	const response = event.value;
 	switch (response.type) {
@@ -2999,7 +2820,6 @@ UI.listRecord = function (event) {
 	}
 };
 
-// 列表 - 菜单弹出事件
 UI.listPopup = function (event) {
 	const item = event.value;
 	const menuItems = [];
@@ -3177,7 +2997,6 @@ UI.listPopup = function (event) {
 			}
 		});
 	}
-	// 添加设置为预制件菜单项目
 	if (selected) {
 		if (!UI.hasPrefab(item)) {
 			menuItems.push({
@@ -3206,12 +3025,10 @@ UI.listPopup = function (event) {
 	);
 };
 
-// 列表 - 打开事件
 UI.listOpen = function (event) {
 	UI.revealTarget(event.value);
 };
 
-// 列表 - 重命名事件
 UI.listRename = function (response) {
 	const editor = Inspector.uiElement;
 	const target = response.item;
@@ -3232,12 +3049,10 @@ UI.listRename = function (response) {
 	});
 };
 
-// 列表 - 改变事件
 UI.listChange = function (event) {
 	UI.planToSave();
 };
 
-// 列表页面 - 调整大小事件
 UI.listPageResize = function (event) {
 	UI.list.updateHead();
 	UI.list.resize();
@@ -3303,7 +3118,6 @@ UI.list.cancelSearch = function () {
 
 // 列表 - 重写创建图标方法
 UI.list.createIcon = (function IIFE() {
-	// 图标创建函数集合
 	const iconCreators = {
 		image: () => {
 			const icon = document.createElement('node-icon');
@@ -3422,7 +3236,6 @@ UI.list.updateIcon = function (item) {
 UI.list.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();

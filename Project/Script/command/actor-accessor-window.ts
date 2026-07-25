@@ -3,23 +3,16 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 角色访问器窗口 ********************************
-
 export const ActorGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
 	checkDataForPlugin: null,
 	createDefaultForPlugin: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 ActorGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#actorGetter-type').loadItems([
 		{ name: 'Event Trigger Actor', value: 'trigger' },
 		{ name: 'Skill Caster', value: 'caster' },
@@ -32,7 +25,6 @@ ActorGetter.initialize = function () {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置关联元素
 	$('#actorGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -42,11 +34,9 @@ ActorGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#actorGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#actorGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 ActorGetter.open = function (target) {
 	this.target = target;
 	Window.open('actorGetter');
@@ -84,7 +74,6 @@ ActorGetter.open = function (target) {
 	$('#actorGetter-type').getFocus();
 };
 
-// 检查插件版本的角色访问器数据有效性
 ActorGetter.checkDataForPlugin = function (data) {
 	if (data instanceof Object) {
 		return data.getter === 'actor';
@@ -92,12 +81,10 @@ ActorGetter.checkDataForPlugin = function (data) {
 	return false;
 };
 
-// 创建插件版本的默认角色访问器
 ActorGetter.createDefaultForPlugin = function () {
 	return { getter: 'actor', type: 'trigger' };
 };
 
-// 确定按钮 - 鼠标点击事件
 ActorGetter.confirm = function (event) {
 	const read = getElementReader('actorGetter');
 	const type = read('type');
@@ -140,7 +127,6 @@ ActorGetter.confirm = function (event) {
 			break;
 		}
 	}
-	// 如果是插件输入框，额外附加一个属性
 	if (this.target.isPluginInput) {
 		getter = { getter: 'actor', ...getter };
 	}

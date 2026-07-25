@@ -1,7 +1,5 @@
 import { NumberBox } from './number-box.ts';
 
-// ******************************** 滑动框 ********************************
-
 export class SliderBox extends HTMLElement {
 	filler: HTMLElement;
 	input: HTMLInputElement;
@@ -15,21 +13,17 @@ export class SliderBox extends HTMLElement {
 	constructor() {
 		super();
 
-		// 创建进度条
 		const bar = document.createElement('slider-bar');
 
-		// 创建填充物
 		const filler = document.createElement('slider-filler');
 		bar.appendChild(filler);
 
-		// 创建输入框
 		const input = document.createElement('input');
 		input.addClass('slider-input');
 		input.type = 'range';
 		input.tabIndex = -1;
 		input.on('wheel', this.inputWheel);
 
-		// 设置属性
 		this.bar = bar;
 		this.filler = filler;
 		this.input = input;
@@ -37,7 +31,6 @@ export class SliderBox extends HTMLElement {
 		this.focusEventEnabled = false;
 		this.blurEventEnabled = false;
 
-		// 侦听事件
 		this.on('input', this.sliderInput);
 	}
 
@@ -56,32 +49,27 @@ export class SliderBox extends HTMLElement {
 		this.appendChild(this.input);
 	}
 
-	// 读取数据
 	read() {
 		return parseFloat(this.input.value);
 	}
 
-	// 写入数据
 	write(value: any) {
 		this.input.value = value;
 		this.updateFiller();
 	}
 
-	// 启用元素
 	enable() {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
-	// 禁用元素
 	disable() {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
-	// 更新装填物
 	updateFiller() {
 		const filler = this.filler;
 		const value = this.read();
@@ -97,7 +85,6 @@ export class SliderBox extends HTMLElement {
 		}
 	}
 
-	// 与数字框元素同步数值
 	synchronize(target: any) {
 		const slider = this;
 		const number = target;
@@ -105,45 +92,35 @@ export class SliderBox extends HTMLElement {
 			return;
 		}
 
-		// 设置新的同步关系
 		if (number instanceof NumberBox) {
 			const writeSlider = slider.write;
 			const writeNumber = number.write;
 
-			// 滑动框 - 指针按下事件
-			// 在输入事件之前获得焦点
-			// 触发focus事件时可获取到旧的值
 			const sliderPointerdown = () => {
 				slider.input.focus();
 			};
 
-			// 滑动框 - 输入事件
 			const sliderInput = (event?) => {
 				writeNumber.call(number, slider.read());
 				event && number.dispatchEvent(new Event('input'));
 			};
 
-			// 数字框 - 输入事件
 			const numberInput = (event?) => {
 				writeSlider.call(slider, number.read());
 				event && slider.dispatchEvent(new Event('input'));
 			};
 
-			// 设置同步对象
 			slider.synchronizer = target;
 
-			// 侦听事件
 			slider.input.on('pointerdown', sliderPointerdown);
 			slider.input.on('input', sliderInput);
 			number.input.on('input', numberInput);
 
-			// 重写滑动框写入方法
 			slider.write = (value) => {
 				writeSlider.call(slider, value);
 				sliderInput();
 			};
 
-			// 重写数字框写入方法
 			number.write = (value) => {
 				writeNumber.call(number, value);
 				numberInput();
@@ -151,7 +128,6 @@ export class SliderBox extends HTMLElement {
 		}
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -178,16 +154,13 @@ export class SliderBox extends HTMLElement {
 		}
 	}
 
-	// 滑动框 - 输入事件
 	sliderInput(event: any) {
 		this.updateFiller();
 	}
 
-	// 输入框 - 鼠标滚轮事件
 	inputWheel(event: any) {
 		if (event.deltaY === 0) return;
 		if (this.parentNode.activeWheel) {
-			// 阻止滚动页面的默认行为
 			event.preventDefault();
 			const input = this;
 			const last = input.value;

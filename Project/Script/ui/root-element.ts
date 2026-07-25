@@ -1,8 +1,6 @@
 ﻿import { GL } from '../webgl/webgl-init.ts';
 import { UI } from './ui-window.ts';
 
-// ******************************** 根元素 ********************************
-
 UI.Root = class RootElement extends UI.Element {
 	background: number;
 	references = {};
@@ -16,7 +14,6 @@ UI.Root = class RootElement extends UI.Element {
 		this.background = null;
 	}
 
-	// 绘制图像
 	draw() {
 		GL.matrix.set(UI.matrix);
 		GL.alpha = 1;
@@ -25,7 +22,6 @@ UI.Root = class RootElement extends UI.Element {
 		this.drawChildren();
 	}
 
-	// 调整大小
 	resize() {
 		this.x = 0;
 		this.y = 0;
@@ -35,7 +31,6 @@ UI.Root = class RootElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 添加被引用的元素
 	addReference(prefabElement: any) {
 		const map = this.references;
 		const id = prefabElement.node.presetId;
@@ -45,7 +40,6 @@ UI.Root = class RootElement extends UI.Element {
 		map[id].append(prefabElement);
 	}
 
-	// 移除被引用的元素
 	removeReference(prefabElement: any) {
 		const map = this.references;
 		const id = prefabElement.node.presetId;
@@ -54,7 +48,6 @@ UI.Root = class RootElement extends UI.Element {
 		}
 	}
 
-	// 更新引用元素(通过变动的元素位置判断)
 	tryUpdateReferenceElements(element: any) {
 		const map = this.references;
 		while (element !== this) {
@@ -68,7 +61,6 @@ UI.Root = class RootElement extends UI.Element {
 		}
 	}
 
-	// 销毁元素
 	destroy() {
 		this.destroyChildren();
 	}

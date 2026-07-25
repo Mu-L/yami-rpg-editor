@@ -2,33 +2,25 @@
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 文本页面 ********************************
-
 {
 	const UIText = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UIText.initialize = function () {
-		// 创建文本方向选项
 		$('#uiText-direction').loadItems([
 			{ name: 'Horizontal - TB', value: 'horizontal-tb' },
 			{ name: 'Vertical - LR', value: 'vertical-lr' },
 			{ name: 'Vertical - RL', value: 'vertical-rl' }
 		]);
 
-		// 创建字型选项
 		$('#uiText-typeface').loadItems([
 			{ name: 'Regular', value: 'regular' },
 			{ name: 'Bold', value: 'bold' },
@@ -36,7 +28,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Bold Italic', value: 'bold-italic' }
 		]);
 
-		// 创建文字效果类型选项
 		$('#uiText-effect-type').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Shadow', value: 'shadow' },
@@ -44,7 +35,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Outline', value: 'outline' }
 		]);
 
-		// 创建溢出处理选项
 		$('#uiText-overflow').loadItems([
 			{ name: 'Visible', value: 'visible' },
 			{ name: 'Wrap', value: 'wrap' },
@@ -52,19 +42,16 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Wrap Truncate', value: 'wrap-truncate' }
 		]);
 
-		// 创建混合模式选项
 		$('#uiText-blend').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Additive', value: 'additive' },
 			{ name: 'Subtract', value: 'subtract' }
 		]);
 
-		// 同步滑动框和数字框的数值
 		$('#uiText-size-slider').synchronize($('#uiText-size'));
 		$('#uiText-lineSpacing-slider').synchronize($('#uiText-lineSpacing'));
 		$('#uiText-letterSpacing-slider').synchronize($('#uiText-letterSpacing'));
 
-		// 设置文字效果类型关联元素
 		$('#uiText-effect-type')
 			.enableHiddenMode()
 			.relate([
@@ -83,7 +70,6 @@ import { UI } from '../ui/ui-window.ts';
 				{ case: 'outline', targets: [$('#uiText-effect-color')] }
 			]);
 
-		// 侦听事件
 		const elements = $(`#uiText-direction, #uiText-horizontalAlign, #uiText-verticalAlign,
     #uiText-content, #uiText-size, #uiText-lineSpacing, #uiText-letterSpacing, #uiText-color, #uiText-font,
     #uiText-typeface, #uiText-effect-type, #uiText-effect-shadowOffsetX, #uiText-effect-shadowOffsetY,
@@ -98,7 +84,6 @@ import { UI } from '../ui/ui-window.ts';
 		sliders.on('blur', Inspector.sliderBlur);
 	};
 
-	// 创建文本
 	UIText.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -132,12 +117,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIText.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiText', node);
 			write('direction');
 			write('horizontalAlign');
@@ -160,7 +143,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIText.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -170,7 +152,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIText.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -290,7 +271,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIText.paramInput = function (event) {
 		UIText.update(UIText.target, Inspector.getKey(this), this.read());
 	};

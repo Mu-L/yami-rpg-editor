@@ -3,8 +3,6 @@ import { Animation } from '../animation/animation-window.ts';
 import { UI } from './ui-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 动画元素 ********************************
-
 UI.Animation = class AnimationElement extends UI.Element {
 	player: any;
 	_animation: string;
@@ -29,12 +27,10 @@ UI.Animation = class AnimationElement extends UI.Element {
 		this.animation = data.animation;
 	}
 
-	// 读取动画ID
 	get animation() {
 		return this._animation;
 	}
 
-	// 写入动画ID
 	set animation(value: any) {
 		if (this._animation !== value) {
 			this._animation = value;
@@ -54,12 +50,10 @@ UI.Animation = class AnimationElement extends UI.Element {
 		}
 	}
 
-	// 读取动作
 	get motion() {
 		return this._motion;
 	}
 
-	// 写入动作
 	set motion(value: any) {
 		if (this._motion !== value) {
 			this._motion = value;
@@ -67,12 +61,10 @@ UI.Animation = class AnimationElement extends UI.Element {
 		}
 	}
 
-	// 读取可旋转开关
 	get rotatable() {
 		return this._rotatable;
 	}
 
-	// 写入可旋转开关
 	set rotatable(value: any) {
 		if (this._rotatable !== value) {
 			this._rotatable = value;
@@ -86,12 +78,10 @@ UI.Animation = class AnimationElement extends UI.Element {
 		}
 	}
 
-	// 读取角度
 	get angle() {
 		return this._angle;
 	}
 
-	// 写入角度
 	set angle(value: any) {
 		if (this._angle !== value) {
 			this._angle = value;
@@ -99,12 +89,10 @@ UI.Animation = class AnimationElement extends UI.Element {
 		}
 	}
 
-	// 读取帧索引
 	get frame() {
 		return this._frame;
 	}
 
-	// 写入帧索引
 	set frame(value: any) {
 		if (this._frame !== value) {
 			this._frame = value;
@@ -112,12 +100,10 @@ UI.Animation = class AnimationElement extends UI.Element {
 		}
 	}
 
-	// 读取偏移X
 	get offsetX() {
 		return this._offsetX;
 	}
 
-	// 写入偏移X
 	set offsetX(value: any) {
 		if (this._offsetX !== value) {
 			this._offsetX = value;
@@ -127,12 +113,10 @@ UI.Animation = class AnimationElement extends UI.Element {
 		}
 	}
 
-	// 读取偏移Y
 	get offsetY() {
 		return this._offsetY;
 	}
 
-	// 写入偏移Y
 	set offsetY(value: any) {
 		if (this._offsetY !== value) {
 			this._offsetY = value;
@@ -142,7 +126,6 @@ UI.Animation = class AnimationElement extends UI.Element {
 		}
 	}
 
-	// 绘制图像
 	draw() {
 		if (this.visible === false) {
 			return this.drawChildren();
@@ -172,14 +155,11 @@ UI.Animation = class AnimationElement extends UI.Element {
 			gl.batchRenderer.unbindProgram();
 		}
 
-		// 绘制锚点
 		this.drawAnchor();
 
-		// 绘制子元素
 		this.drawChildren();
 	}
 
-	// 绘制锚点
 	drawAnchor() {
 		if (UI.target === this.node) {
 			const gl = GL;
@@ -215,7 +195,6 @@ UI.Animation = class AnimationElement extends UI.Element {
 		}
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -225,13 +204,11 @@ UI.Animation = class AnimationElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 计算动画位置
 	calculateAnimationPosition() {
 		this.animationX = this.x + this.width / 2 + this.offsetX;
 		this.animationY = this.y + this.height / 2 + this.offsetY;
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.player?.destroy();

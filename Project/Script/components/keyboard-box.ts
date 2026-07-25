@@ -1,5 +1,3 @@
-﻿// ******************************** 键盘按键框 ********************************
-
 export class KeyboardBox extends HTMLElement {
 	input: HTMLInputElement;
 	dataValue: number;
@@ -10,14 +8,12 @@ export class KeyboardBox extends HTMLElement {
 	constructor() {
 		super();
 
-		// 创建输入框
 		const input = document.createElement('input');
 		input.addClass('keyboard-box-input');
 		input.type = 'text';
 		input.on('keydown', this.inputKeydown);
 		this.appendChild(input);
 
-		// 设置属性
 		this.input = input;
 		this.dataValue = 0;
 		this.inputEventEnabled = false;
@@ -25,18 +21,15 @@ export class KeyboardBox extends HTMLElement {
 		this.blurEventEnabled = false;
 	}
 
-	// 读取数据
 	read(): number {
 		return this.dataValue;
 	}
 
-	// 写入数据
 	write(code: number): void {
 		this.dataValue = code;
 		this.input.value = String(code);
 	}
 
-	// 输入键值
 	inputCode(code: number): void {
 		if (this.dataValue !== code) {
 			this.write(code);
@@ -51,26 +44,22 @@ export class KeyboardBox extends HTMLElement {
 		}
 	}
 
-	// 启用元素
 	enable(): void {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
-	// 禁用元素
 	disable(): void {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
-	// 获得焦点
 	getFocus(mode: string): HTMLInputElement {
 		return this.input.getFocus(mode);
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -100,7 +89,6 @@ export class KeyboardBox extends HTMLElement {
 		}
 	}
 
-	// 输入框 - 键盘按下事件
 	inputKeydown(event: KeyboardEvent): void {
 		event.stopPropagation();
 		event.preventDefault();

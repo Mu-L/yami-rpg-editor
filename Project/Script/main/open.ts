@@ -18,18 +18,14 @@ import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 import { Updater } from '../update/updater.ts';
 
-// 打开项目
 Editor.open = async function (path, agreed = false) {
-	// 规范化路径分隔符
 	path = Path.slash(path ?? this.config.project);
 
-	// 路径为空则返回
 	if (!path) {
 		Layout.manager.switch('home');
 		return;
 	}
 
-	// 验证路径有效性
 	try {
 		if (!FS.statSync(path).isFile()) {
 			throw new Error('Invalid project path');
@@ -39,16 +35,12 @@ Editor.open = async function (path, agreed = false) {
 		return;
 	}
 
-	// 关闭项目
 	await this.close();
 
-	// 更新文件根目录
 	File.updateRoot(path);
 
-	// 获取本地化方法
 	const get = Local.createGetter('confirmation');
 
-	// 加载项目
 	try {
 		const json = FS.readFileSync(path, 'utf8');
 		this.project = JSON.parse(json);
@@ -113,7 +105,6 @@ Editor.open = async function (path, agreed = false) {
 		);
 	}
 
-	// 加载数据文件
 	try {
 		const ver = this.project.version;
 		const verNum = Updater.getVersionNumber(ver);
@@ -148,15 +139,11 @@ Editor.open = async function (path, agreed = false) {
 		);
 	}
 
-	// 加载项目文件
 	try {
-		// 更新路径
 		this.updatePath(path);
 
-		// 加载完所有数据后再检查更新
 		await this.checkForProjectUpdates();
 
-		// 使用更新后的数据初始化
 		Printer.loadDefault();
 		Command.custom.loadCommandList();
 		Animation.Player.updateStep();
@@ -183,10 +170,8 @@ Editor.open = async function (path, agreed = false) {
 		return;
 	}
 
-	// 设置状态
 	this.state = 'open';
 
-	// 打开快捷键
 	this.switchHotkey(true);
 
 	// 启动TS编译
@@ -194,17 +179,12 @@ Editor.open = async function (path, agreed = false) {
 		Project.startTSC();
 	}
 
-	// 更新标题名称
 	Title.updateTitleName();
 
-	// 初始化游戏本地化语言
-	// 因为是追加的内容
-	// 必须置于检查更新之后
+	// 初始化游戏本地化语言 因为是追加的内容 必须置于检查更新之后
 	GameLocal.initialize();
 
-	// 打开开发服务器
-	// SettingConfig.config 在 SettingConfig 实例化期 load() 从 yami-config.json 载入；
-	// 但若 load() 抛错或文件缺失未兜底，config.server 可能是 undefined，裸取 .auto 会炸
+	// 打开开发服务器 SettingConfig.config 在 SettingConfig 实例化期 load() 从 yami-config.json 载入；但若 load() 抛错或文件缺失未兜底，config.server 可能是 undefined，裸取 .auto 会炸
 	const serverConfig = SettingConfig.config?.server ?? {};
 	if (serverConfig.auto) WebServer.start(path);
 };

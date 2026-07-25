@@ -3,41 +3,31 @@ import { File } from '../file/file-system-core.ts';
 import { Browser } from '../browser/project-browser.ts';
 import { Inspector } from './inspector.ts';
 
-// ******************************** 文件 - 图像页面 ********************************
-
 {
 	const FileImage = {
-		// properties
 		target: null,
 		meta: null,
 		symbol: null,
 		image: null,
-		// methods
 		initialize: null,
 		open: null,
 		close: null,
 		updateImage: null,
-		// events
 		windowResize: null
 	};
 
-	// 初始化
 	FileImage.initialize = function () {
-		// 获取图像元素
 		this.image = $('#fileImage-image');
 
-		// 侦听事件
 		$('#fileImage').on('resize', this.windowResize);
 		$('#fileImage-image-detail').on('toggle', this.windowResize);
 	};
 
-	// 打开数据
 	FileImage.open = function (file, meta) {
 		if (this.target !== file) {
 			this.target = file;
 			this.meta = meta;
 
-			// 加载元数据
 			const elName = $('#fileImage-name');
 			const elSize = $('#fileImage-size');
 			const elResolution = $('#fileImage-resolution');
@@ -46,12 +36,10 @@ import { Inspector } from './inspector.ts';
 			elSize.textContent = File.parseFileSize(size);
 			elResolution.textContent = '';
 
-			// 加载图像
 			const image = this.image.hide();
 			const path = File.route(file.path);
 			image.src = path;
 
-			// 更新图像信息
 			const symbol = (this.symbol = Symbol());
 			new Promise<void>((resolve, reject) => {
 				const intervalIndex = setInterval(() => {
@@ -75,7 +63,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 关闭数据
 	FileImage.close = function () {
 		if (this.target) {
 			Browser.unselect(this.meta);
@@ -86,9 +73,7 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 更新图像
 	FileImage.updateImage = function () {
-		// 隐藏元素避免滚动条意外出现
 		const image = this.image.hide();
 		const frame = image.parentNode;
 		const frameBox = CSS.getDevicePixelContentBoxSize(frame);
@@ -122,7 +107,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 窗口 - 调整大小事件
 	FileImage.windowResize = function (event) {
 		if (FileImage.target !== null && FileImage.symbol === null) {
 			FileImage.updateImage();

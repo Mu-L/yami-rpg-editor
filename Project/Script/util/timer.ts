@@ -1,5 +1,3 @@
-// ******************************** 计时器类 ********************************
-
 import { $ } from './dom.ts';
 
 export class Timer {
@@ -105,7 +103,6 @@ export class Timer {
 	}
 }
 
-// properties
 Timer.timers = [];
 Timer.updaters = {
 	stageAnimation: null,
@@ -121,7 +118,6 @@ Timer.frameTime = 0;
 Timer.tpf = Infinity;
 Timer.animationIndex = -1;
 Timer.animationWaiting = 0;
-// methods
 Timer.initialize = null;
 Timer.start = null;
 Timer.update = null;
@@ -129,17 +125,13 @@ Timer.play = null;
 Timer.appendUpdater = null;
 Timer.removeUpdater = null;
 
-// 初始化
 Timer.initialize = function (this: typeof Timer) {
-	// 设置初始参数
 	this.timestamp = 0;
 	this.deltaTime = 0;
 	this.frameCount = 0;
 	this.frameTime = 0;
 	this.tpf = Infinity;
 
-	// 监测其他窗口的状态
-	// 在最大化时停止播放动画
 	const windowOpen = (event: Event) => {
 		if ((event.target as HTMLElement).hasClass('maximized')) {
 			this.animationWaiting++;
@@ -163,17 +155,14 @@ Timer.initialize = function (this: typeof Timer) {
 	windows.on('unmaximize', windowUnmaximize);
 };
 
-// 开始动画
 Timer.start = function (timestamp: number) {
 	Timer.timestamp = timestamp - Timer.deltaTime;
 	Timer.update(timestamp);
 };
 
-// 更新动画
 Timer.update = function (timestamp: number) {
 	let deltaTime = timestamp - Timer.timestamp;
 
-	// 计算FPS相关数据
 	Timer.frameCount++;
 	Timer.frameTime += deltaTime;
 	if (Timer.frameTime > 995) {
@@ -185,19 +174,15 @@ Timer.update = function (timestamp: number) {
 	// 修正间隔 - 减少跳帧视觉差异
 	deltaTime = Math.min(deltaTime, Timer.tpf + 1, 35);
 
-	// 更新属性
 	Timer.timestamp = timestamp;
 	Timer.deltaTime = deltaTime;
 
-	// 更新计时器
 	const { timers } = Timer;
 	let i = timers.length;
 	while (--i >= 0) {
 		timers[i].tick(deltaTime);
 	}
 
-	// 更新更新器
-	// 逐个获取更新器以便中途插入更新器
 	const updaters = Timer.updaters;
 	const { stageAnimation } = updaters;
 	if (stageAnimation !== null && Timer.animationWaiting === 0 && document.hasFocus()) {
@@ -223,7 +208,6 @@ Timer.update = function (timestamp: number) {
 		updaters.sharedRendering2 = null;
 	}
 
-	// 继续或结束动画
 	if (Timer.timers.length > 0 || stageAnimation !== null || sharedAnimation !== null) {
 		Timer.animationIndex = requestAnimationFrame(Timer.update);
 	} else {
@@ -231,14 +215,12 @@ Timer.update = function (timestamp: number) {
 	}
 };
 
-// 播放动画
 Timer.play = function (this: typeof Timer) {
 	if (this.animationIndex === -1) {
 		this.animationIndex = requestAnimationFrame(this.start);
 	}
 };
 
-// 添加更新器
 Timer.appendUpdater = function (
 	this: typeof Timer,
 	key: string,
@@ -251,7 +233,6 @@ Timer.appendUpdater = function (
 	}
 };
 
-// 移除更新器
 Timer.removeUpdater = function (
 	this: typeof Timer,
 	key: string,

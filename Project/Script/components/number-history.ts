@@ -1,8 +1,6 @@
 ﻿import { HistoryTimer } from './history-timer.ts';
 import { IEditableHistory } from '../types/history.ts';
 
-// ******************************** 数值操作历史 ********************************
-
 export class NumberHistory implements IEditableHistory {
 	static restoring: boolean;
 	input: any;
@@ -18,13 +16,11 @@ export class NumberHistory implements IEditableHistory {
 		this.index = -1;
 		this.lastValue = '';
 
-		// 侦听事件
 		input.on('keydown', this.inputKeydown);
 		input.on('input', this.inputInput);
 		input.on('blur', this.inputBlur);
 	}
 
-	// 重置历史
 	reset() {
 		if (this.stack.length !== 0) {
 			this.stack = [];
@@ -33,20 +29,17 @@ export class NumberHistory implements IEditableHistory {
 		this.lastValue = this.input.value;
 	}
 
-	// 保存数据
 	save() {
 		const data = {
 			value: this.lastValue
 		};
 
-		// 删除多余的栈
 		const stack = this.stack;
 		const length = this.index + 1;
 		if (length < stack.length) {
 			stack.length = length;
 		}
 
-		// 堆栈上限: 20
 		if (stack.length < 20) {
 			this.index++;
 			stack.push(data);
@@ -56,7 +49,6 @@ export class NumberHistory implements IEditableHistory {
 		}
 	}
 
-	// 恢复数据
 	restore(operation: any) {
 		let index = this.index;
 		if (operation === 'redo') {
@@ -74,7 +66,6 @@ export class NumberHistory implements IEditableHistory {
 			NumberHistory.restoring = false;
 			HistoryTimer.finish();
 
-			// 改变指针
 			switch (operation) {
 				case 'undo':
 					this.index--;
@@ -86,17 +77,14 @@ export class NumberHistory implements IEditableHistory {
 		}
 	}
 
-	// 撤销条件判断
 	canUndo() {
 		return this.index >= 0;
 	}
 
-	// 重做条件判断
 	canRedo() {
 		return this.index + 1 < this.stack.length;
 	}
 
-	// 输入框 - 键盘按下事件
 	inputKeydown(event: any) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
@@ -112,7 +100,6 @@ export class NumberHistory implements IEditableHistory {
 		}
 	}
 
-	// 输入框 - 输入事件
 	inputInput(event: any) {
 		if (!NumberHistory.restoring) {
 			switch (event.inputType) {
@@ -147,11 +134,9 @@ export class NumberHistory implements IEditableHistory {
 		}
 	}
 
-	// 输入框 - 失去焦点事件
 	inputBlur(event: any) {
 		HistoryTimer.finish();
 	}
 }
 
-// 数值操作历史恢复中状态开关
 NumberHistory.restoring = false;

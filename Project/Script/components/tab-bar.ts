@@ -1,8 +1,5 @@
 import { Title } from '../title/title-bar.ts';
 
-// ******************************** 标签栏 ********************************
-
-// 拖拽中的事件聚合体（pointerdown / dragstart 共用）
 interface TabDraggingEvent {
 	hint: HTMLElement & {
 		target: HTMLElement;
@@ -22,7 +19,6 @@ interface TabDraggingEvent {
 	relate?(event: PointerEvent): boolean;
 }
 
-// 标签项数据（this.data[i]）运行时挂 .item 字段
 interface TabItem {
 	item: string;
 	type?: 'directory' | 'file';
@@ -37,7 +33,6 @@ interface TabElement extends HTMLElement {
 	text: HTMLElement;
 }
 
-// 拖拽事件运行时挂载 .target.item / .parentNode.item 扩展
 interface TabDragTarget extends HTMLElement {
 	item: string;
 }
@@ -56,7 +51,6 @@ export class TabBar extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.data = null;
 		this.dragging = null;
 		this.selectionIndex = 0;
@@ -67,19 +61,16 @@ export class TabBar extends HTMLElement {
 		this.dirItem = null;
 		this.windowPointerup = TabBar.windowPointerup.bind(this);
 
-		// 侦听事件
 		this.on('pointerdown', this.pointerdown);
 		this.on('dragstart', this.dragstart);
 		this.on('dragend', this.dragend);
 	}
 
-	// 读取数据
 	read(): any {
 		const item = this.querySelector('.selected') as HTMLElement | null;
 		return item ? (item as TabElement).item : undefined;
 	}
 
-	// 写入数据
 	write(value: any): void {
 		const items = this.childNodes;
 		const length = items.length;
@@ -106,7 +97,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 更新标签列表
 	update(): void {
 		this.clear();
 		for (const item of this.data!) {
@@ -125,7 +115,6 @@ export class TabBar extends HTMLElement {
 				(tab as TabElement).item = item;
 				(tab as TabElement & { text: HTMLElement }).text = text;
 				tab.appendChild(text);
-				// 给目录以外的标签添加关闭按钮
 				if ((item as TabItem).type !== 'directory') {
 					const mark = document.createElement('tab-close');
 					mark.textContent = '\u2716';
@@ -136,12 +125,10 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 解析标签名称
 	parseTabName(item: any): string {
 		return `${item.icon} ${item.name}`;
 	}
 
-	// 选择项目
 	select(item: any): void {
 		if (this.read() !== item) {
 			this.write(item);
@@ -155,7 +142,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 取消选择
 	unselect(): void {
 		const item = this.querySelector('.selected') as HTMLElement | null;
 		if (item) {
@@ -163,25 +149,20 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 插入项目
 	insert(item: any): void {
 		if (!this.data!.includes(item)) {
-			// 索引超过长度时会加入到末尾
 			this.data!.splice(this.selectionIndex + 1, 0, item);
 			this.update();
 		}
 	}
 
-	// 关闭项目
 	close(item: any): void {
 		if (item === this.dirItem) return;
 		const value = this.read();
 		if (this.data!.remove(item)) {
 			this.update();
-			// 关闭后恢复选中状态
 			if (this.data!.length > 0) {
 				if (value === item || value === undefined || !this.data!.includes(value)) {
-					// 关闭的是当前选中的标签，或原选中标签已不存在，选中相邻标签
 					const index = Math.min(this.selectionIndex, this.data!.length - 1);
 					this.select(this.data![index]);
 				} else {
@@ -201,7 +182,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 关闭属性匹配的项目
 	closeByProperty(key: string, value: any): void {
 		for (const context of this.data!) {
 			if (context[key] === value) {
@@ -211,7 +191,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 关闭其他项目
 	closeOtherTabs(item: any): void {
 		const value = this.read();
 		const items = this.data!;
@@ -239,7 +218,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 关闭右侧项目
 	closeTabsToTheRight(item: any): void {
 		const value = this.read();
 		const items = this.data!;
@@ -267,7 +245,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 查找项目
 	find(meta: any): any {
 		for (const node of this.childNodes as unknown as NodeListOf<
 			HTMLElement & { item: HTMLElement }
@@ -279,13 +256,11 @@ export class TabBar extends HTMLElement {
 		return undefined;
 	}
 
-	// 清除列表
 	clear(): void {
 		this.unselect();
 		this.textContent = '';
 	}
 
-	// 添加事件
 	on = (
 		type: string,
 		listener: (event: any) => void,
@@ -308,14 +283,12 @@ export class TabBar extends HTMLElement {
 		}
 	};
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		this.dragend();
 		switch (event.button) {
 			case 0: {
 				const element = event.target as HTMLElement;
 				if (element.tagName === 'TAB-CLOSE') {
-					// 阻止拖拽开始事件
 					event.preventDefault();
 					const parent = element.parentNode as HTMLElement;
 					const dragging: TabDraggingEvent = {
@@ -387,7 +360,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 拖拽开始事件
 	dragstart(event: DragEvent): void {
 		if (!this.dragging) {
 			const hint = document.createElement('drag-and-drop-hint') as HTMLElement & {
@@ -424,7 +396,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 拖拽结束事件
 	dragend(event?: DragEvent): void {
 		if (this.dragging) {
 			this.removeClass('dragging');
@@ -437,7 +408,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 拖拽进入事件
 	dragenter(event: DragEvent): void {
 		if (this.dragging) {
 			event.preventDefault();
@@ -445,7 +415,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 拖拽离开事件
 	dragleave(event: DragEvent): void {
 		if (this.dragging && !this.contains(event.relatedTarget as Node)) {
 			this.dragging.offsetX = -1;
@@ -453,7 +422,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 拖拽悬停事件
 	dragover(event: DragEvent): void {
 		const { dragging } = this;
 		if (dragging) {
@@ -472,7 +440,6 @@ export class TabBar extends HTMLElement {
 					return hint.hide();
 				}
 				// 避免使用event.offsetX
-				// 这样当指针落在关闭按钮上也能计算位置
 				const rect = element.rect();
 				const middle = rect.width / 2;
 				const offsetX = event.clientX - rect.left;
@@ -527,7 +494,6 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	// 拖拽释放事件
 	drop(event: DragEvent): void {
 		const { dragging } = this;
 		if (!dragging) {
@@ -550,11 +516,9 @@ export class TabBar extends HTMLElement {
 			}
 		}
 
-		// 创建项目后不能触发拖拽结束事件
 		this.dragend();
 	}
 
-	// 窗口 - 指针弹起事件
 	static windowPointerup(this: TabBar, event: PointerEvent): void {
 		const { dragging } = this;
 		if (dragging && dragging.relate!(event)) {

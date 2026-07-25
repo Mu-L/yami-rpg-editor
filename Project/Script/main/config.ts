@@ -9,7 +9,6 @@ import { Scene } from '../scene/scene-window.ts';
 import { Title } from '../title/title-bar.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// 保存配置文件
 Editor.saveConfig = function () {
 	const { config } = this;
 	if (!config) {
@@ -23,7 +22,6 @@ Editor.saveConfig = function () {
 		Animation.saveToConfig(config);
 		Particle.saveToConfig(config);
 
-		// 写入配置文件
 		const json = JSON.stringify(config, null, 2);
 		const last = config.code;
 		if (json && json !== last) {
@@ -37,13 +35,10 @@ Editor.saveConfig = function () {
 	}
 };
 
-// 加载配置文件
 Editor.loadConfig = function () {
 	const { config } = this;
-	// schema 兜底：旧配置或首次启动可能缺字段，缺失则用默认值
-	// （与 Project/default.json 保持一致），避免下游直取炸
+	// schema 兜底：旧配置或首次启动可能缺字段，缺失则用默认值 （与 Project/default.json 保持一致），避免下游直取炸
 	if (config) {
-		// colors：Scene/UI/Animation/Particle 的 StageColor 来源
 		const colors = (config.colors ??= {});
 		const colorDefaults = {
 			sceneBackground: '00000000',
@@ -55,7 +50,6 @@ Editor.loadConfig = function () {
 		for (const key in colorDefaults) {
 			if (colors[key] === undefined) colors[key] = colorDefaults[key];
 		}
-		// dialogs：新建/打开/部署/导入/导出 各窗口的默认目录
 		const dialogs = (config.dialogs ??= {});
 		const dialogDefaults = {
 			new: '',
@@ -74,12 +68,10 @@ Editor.loadConfig = function () {
 			config.scriptEditor.mode ??= 'by-file-extension';
 			config.scriptEditor.path ??= '';
 		}
-		// 标量字段
 		if (config.theme === undefined) config.theme = 'dark';
 		if (config.language === undefined) config.language = '';
 		if (config.project === undefined) config.project = '';
-		// recent 必须是数组：旧配置可能存了 null/对象/字符串等非数组值，
-		// 下游 Editor.updatePath 会调 items.find/remove/unshift，非数组会炸
+		// recent 必须是数组：旧配置可能存了 null/对象/字符串等非数组值，下游 Editor.updatePath 会调 items.find/remove/unshift，非数组会炸
 		if (!Array.isArray(config.recent)) config.recent = [];
 		if (config.zoom === undefined) config.zoom = 1;
 	}

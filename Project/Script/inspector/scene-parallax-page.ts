@@ -5,34 +5,26 @@ import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 场景 - 视差图页面 ********************************
-
 {
 	const SceneParallax = {
-		// properties
 		owner: Scene,
 		target: null,
 		nameBox: $('#sceneParallax-name'),
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	SceneParallax.initialize = function () {
-		// 创建图层选项
 		$('#sceneParallax-layer').loadItems([
 			{ name: 'Background', value: 'background' },
 			{ name: 'Foreground', value: 'foreground' }
 		]);
 
-		// 创建光线采样选项
 		$('#sceneParallax-light').loadItems([
 			{ name: 'Raw', value: 'raw' },
 			{ name: 'Global Sampling', value: 'global' },
@@ -40,32 +32,25 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 			{ name: 'Ambient Light', value: 'ambient' }
 		]);
 
-		// 创建混合模式选项
 		$('#sceneParallax-blend').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Additive', value: 'additive' },
 			{ name: 'Subtract', value: 'subtract' }
 		]);
 
-		// 同步滑动框和数字框的数值
 		$('#sceneParallax-tint-0-slider').synchronize($('#sceneParallax-tint-0'));
 		$('#sceneParallax-tint-1-slider').synchronize($('#sceneParallax-tint-1'));
 		$('#sceneParallax-tint-2-slider').synchronize($('#sceneParallax-tint-2'));
 		$('#sceneParallax-tint-3-slider').synchronize($('#sceneParallax-tint-3'));
 
-		// 绑定条件列表
 		$('#sceneParallax-conditions').bind(new ConditionListInterface(this, Scene));
 
-		// 绑定事件列表
 		$('#sceneParallax-events').bind(new EventListInterface(this, Scene));
 
-		// 绑定脚本列表
 		$('#sceneParallax-scripts').bind(new ScriptListInterface(this, Scene));
 
-		// 绑定脚本参数面板
 		$('#sceneParallax-parameter-pane').bind($('#sceneParallax-scripts'));
 
-		// 侦听事件
 		const elements = $(`#sceneParallax-name,
     #sceneParallax-image, #sceneParallax-layer, #sceneParallax-order,
     #sceneParallax-light, #sceneParallax-blend,
@@ -92,7 +77,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建视差图
 	SceneParallax.create = function () {
 		return {
 			class: 'parallax',
@@ -128,12 +112,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	SceneParallax.open = function (parallax) {
 		if (this.target !== parallax) {
 			this.target = parallax;
 
-			// 写入数据
 			const write = getElementWriter('sceneParallax', parallax);
 			write('name');
 			write('image');
@@ -166,7 +148,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	SceneParallax.close = function () {
 		if (this.target) {
 			Scene.list.unselect(this.target);
@@ -179,7 +160,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 写入数据
 	SceneParallax.write = function (options) {
 		if (options.x !== undefined) {
 			$('#sceneParallax-x').write(options.x);
@@ -189,7 +169,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	SceneParallax.update = function (parallax, key, value) {
 		Scene.planToSave();
 		switch (key) {
@@ -265,7 +244,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	SceneParallax.paramInput = function (event) {
 		SceneParallax.update(SceneParallax.target, Inspector.getKey(this), this.read());
 	};

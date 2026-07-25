@@ -13,7 +13,6 @@ import { Sprite } from '../sprite/sprite.ts';
 import { Title } from '../title/title-bar.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// 保存项目文件
 Editor.saveProject = function () {
 	const { project } = this;
 	if (!project) {
@@ -31,7 +30,6 @@ Editor.saveProject = function () {
 		PluginManager.saveToProject(project);
 		Title.saveToProject(project);
 
-		// 写入项目文件
 		const json = JSON.stringify(project, null, 2);
 		const last = project.code;
 		if (json && json !== last) {
@@ -46,8 +44,6 @@ Editor.saveProject = function () {
 	}
 };
 
-// 加载项目文件
-// 标签的加载安排到最后
 Editor.loadProject = function () {
 	const { project } = this;
 	Scene.loadFromProject(project);
@@ -62,7 +58,6 @@ Editor.loadProject = function () {
 	Title.loadFromProject(project);
 };
 
-// 保存元数据清单文件
 Editor.saveManifest = function () {
 	return Data.saveManifest();
 };

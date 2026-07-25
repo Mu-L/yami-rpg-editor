@@ -5,34 +5,26 @@ import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 场景 - 光源页面 ********************************
-
 {
 	const SceneLight = {
-		// properties
 		owner: Scene,
 		target: null,
 		nameBox: $('#sceneLight-name'),
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	SceneLight.initialize = function () {
-		// 加载类型选项
 		$('#sceneLight-type').loadItems([
 			{ name: 'Point', value: 'point' },
 			{ name: 'Area', value: 'area' }
 		]);
 
-		// 加载混合模式选项
 		$('#sceneLight-blend').loadItems([
 			{ name: 'Screen', value: 'screen' },
 			{ name: 'Additive', value: 'additive' },
@@ -40,7 +32,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 			{ name: 'Max', value: 'max' }
 		]);
 
-		// 设置类型关联元素
 		$('#sceneLight-type')
 			.enableHiddenMode()
 			.relate([
@@ -61,19 +52,14 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 				}
 			]);
 
-		// 绑定条件列表
 		$('#sceneLight-conditions').bind(new ConditionListInterface(this, Scene));
 
-		// 绑定事件列表
 		$('#sceneLight-events').bind(new EventListInterface(this, Scene));
 
-		// 绑定脚本列表
 		$('#sceneLight-scripts').bind(new ScriptListInterface(this, Scene));
 
-		// 绑定脚本参数面板
 		$('#sceneLight-parameter-pane').bind($('#sceneLight-scripts'));
 
-		// 同步滑动框和数字框的数值
 		$('#sceneLight-range-slider').synchronize($('#sceneLight-range'));
 		$('#sceneLight-intensity-slider').synchronize($('#sceneLight-intensity'));
 		$('#sceneLight-anchorX-slider').synchronize($('#sceneLight-anchorX'));
@@ -86,7 +72,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#sceneLight-blue-slider').synchronize($('#sceneLight-blue'));
 		$('#sceneLight-direct-slider').synchronize($('#sceneLight-direct'));
 
-		// 侦听事件
 		const elements = $(`
     #sceneLight-name, #sceneLight-type,
     #sceneLight-blend, #sceneLight-x, #sceneLight-y,
@@ -110,7 +95,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建光源
 	SceneLight.create = function () {
 		return {
 			class: 'light',
@@ -141,12 +125,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	SceneLight.open = function (light) {
 		if (this.target !== light) {
 			this.target = light;
 
-			// 写入数据
 			const write = getElementWriter('sceneLight', light);
 			write('name');
 			write('type');
@@ -171,7 +153,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	SceneLight.close = function () {
 		if (this.target) {
 			Scene.list.unselect(this.target);
@@ -184,7 +165,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 写入数据
 	SceneLight.write = function (options) {
 		if (options.x !== undefined) {
 			$('#sceneLight-x').write(options.x);
@@ -194,7 +174,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	SceneLight.update = function (light, key, value) {
 		Scene.planToSave();
 		switch (key) {
@@ -248,7 +227,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	// 基本参数 - 输入事件
 	SceneLight.paramInput = function (event) {
 		SceneLight.update(SceneLight.target, Inspector.getKey(this), this.read());
 	};

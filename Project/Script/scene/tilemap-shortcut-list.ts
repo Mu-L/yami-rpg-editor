@@ -1,9 +1,6 @@
 import { $ } from '../util/dom.ts';
 import { Scene } from './scene-window.ts';
 
-// ******************************** 瓦片地图快捷方式列表类 ********************************
-
-// 瓦片地图数据对象（Data.scene.tilemaps[i]）
 interface TilemapData {
 	shortcut: number;
 	name: string;
@@ -20,7 +17,6 @@ export class TilemapShortcuts {
 		this.reset();
 	}
 
-	// 重置
 	reset(): void {
 		this[1] = null;
 		this[2] = null;
@@ -30,7 +26,6 @@ export class TilemapShortcuts {
 		this[6] = null;
 	}
 
-	// 更新
 	update(): void {
 		this.reset();
 		for (const tilemap of this.tilemaps) {
@@ -56,7 +51,6 @@ export class TilemapShortcuts {
 		Scene.updateHead();
 	}
 
-	// 获取空索引
 	getEmptyIndex(): number {
 		for (let i = 1; i <= 6; i++) {
 			if (!this[i]) return i;
@@ -64,7 +58,6 @@ export class TilemapShortcuts {
 		return 0;
 	}
 
-	// 静态 - 选项元素
 	static elements = {
 		1: $('#scene-layer-tilemap-1'),
 		2: $('#scene-layer-tilemap-2'),
@@ -74,7 +67,6 @@ export class TilemapShortcuts {
 		6: $('#scene-layer-tilemap-6')
 	};
 
-	// 静态 - 初始化
 	static initialize(): void {
 		const { elements } = this;
 		for (let i = 1; i <= 6; i++) {

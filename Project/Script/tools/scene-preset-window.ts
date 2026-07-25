@@ -3,21 +3,16 @@ import { Data } from '../data/data-object.ts';
 import { Scene } from '../scene/scene-window.ts';
 import { Window } from './window-object.ts';
 
-// ******************************** 场景预设对象窗口 ********************************
-
 export const PresetObject = {
-	// properties
 	scene: $('#presetObject-sceneId'),
 	list: $('#presetObject-list'),
 	searcher: $('#presetObject-searcher'),
 	target: null,
 	nodes: null,
-	// methods
 	initialize: null,
 	open: null,
 	buildNodes: null,
 	getDefaultPresetId: null,
-	// events
 	windowClosed: null,
 	sceneIdWrite: null,
 	listOpen: null,
@@ -26,21 +21,16 @@ export const PresetObject = {
 	confirm: null
 };
 
-// list methods
 PresetObject.list.createIcon = null;
 
-// 初始化
 PresetObject.initialize = function () {
-	// 绑定对象目录列表
 	this.list.bind(() => this.nodes);
 
 	// 列表 - 重写创建图标方法
 	this.list.createIcon = Scene.list.createIcon;
 
-	// 设置列表搜索框按钮
 	this.searcher.addCloseButton();
 
-	// 侦听事件
 	this.scene.on('write', this.sceneIdWrite);
 	this.list.on('open', this.listOpen);
 	this.searcher.on('keydown', this.searcherKeydown);
@@ -50,12 +40,10 @@ PresetObject.initialize = function () {
 	$('#presetObject-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 PresetObject.open = function (target) {
 	this.target = target;
 	Window.open('presetObject');
 
-	// 写入数据
 	const { scene, list } = this;
 	const presetId = target.read() || (Scene.target?.presetId ?? '');
 	const sceneId = Data.scenePresets[presetId]?.sceneId ?? Scene.meta?.guid ?? '';
@@ -104,7 +92,6 @@ PresetObject.buildNodes = (function IIFE() {
 	};
 })();
 
-// 获取默认的场景预设对象ID
 PresetObject.getDefaultPresetId = function (className = 'any') {
 	if (Scene.target && (className === 'any' || Scene.target.class === className)) {
 		return Scene.target.presetId;
@@ -112,7 +99,6 @@ PresetObject.getDefaultPresetId = function (className = 'any') {
 	return '';
 };
 
-// 窗口 - 已关闭事件
 PresetObject.windowClosed = function (event) {
 	PresetObject.target = null;
 	PresetObject.nodes = null;
@@ -120,7 +106,6 @@ PresetObject.windowClosed = function (event) {
 	PresetObject.list.clear();
 };
 
-// 场景ID - 写入事件
 PresetObject.sceneIdWrite = function (event) {
 	const scene = Data.scenes[event.value];
 	const filter = PresetObject.target.filter;
@@ -135,12 +120,10 @@ PresetObject.sceneIdWrite = function (event) {
 	}
 };
 
-// 列表 - 打开事件
 PresetObject.listOpen = function (event) {
 	PresetObject.confirm();
 };
 
-// 搜索框 - 键盘按下事件
 PresetObject.searcherKeydown = function (event) {
 	switch (event.code) {
 		case 'ArrowUp':
@@ -157,7 +140,6 @@ PresetObject.searcherKeydown = function (event) {
 	}
 };
 
-// 搜索框 - 输入事件
 PresetObject.searcherInput = function (event) {
 	if (event.inputType === 'insertCompositionText') {
 		return;
@@ -175,7 +157,6 @@ PresetObject.searcherInput = function (event) {
 	}
 };
 
-// 确定按钮 - 鼠标点击事件
 PresetObject.confirm = function (event) {
 	const node = this.list.read();
 	const presetId = node?.presetId;

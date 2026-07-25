@@ -9,8 +9,6 @@ import { FS, FSP } from '../file/file-system.ts';
 import { Timer } from '../util/timer.ts';
 import { FileBrowserLinks } from '../types/file-browser-links.ts';
 
-// ******************************** 文件导航面板 ********************************
-
 export class FileNavPane extends HTMLElement {
 	declare _connected: boolean;
 	timer: any;
@@ -31,7 +29,6 @@ export class FileNavPane extends HTMLElement {
 	constructor() {
 		super();
 
-		// 创建重命名计时器
 		const timer = new Timer({
 			duration: 500,
 			callback: (timer: any) => {
@@ -50,7 +47,6 @@ export class FileNavPane extends HTMLElement {
 			}
 		});
 
-		// 设置属性
 		this.timer = timer;
 		this.elements = [] as any;
 		this.elements.versionId = 0;
@@ -65,7 +61,6 @@ export class FileNavPane extends HTMLElement {
 		this.textBox = FileNavPane.textBox;
 		this.listenDraggingScrollbarEvent();
 
-		// 侦听事件
 		this.on('scroll', this.resize);
 		this.on('keydown', this.keydown);
 		this.on('pointerdown', this.pointerdown);
@@ -75,7 +70,6 @@ export class FileNavPane extends HTMLElement {
 		window.on('dirchange', this.dirchange.bind(this));
 	}
 
-	// 连接回调：构造期间禁止设置 attribute（如 tabIndex 会反射为 DOM attribute），
 	// 因此将需要反射为 DOM 属性的 IDL 属性推迟到接入 DOM 后再设置
 	connectedCallback(): void {
 		if (!this._connected) {
@@ -84,7 +78,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 加载文件夹
 	load(...folders: any[]): void {
 		this.select(...folders);
 		for (let folder of folders) {
@@ -95,13 +88,11 @@ export class FileNavPane extends HTMLElement {
 		this.update();
 	}
 
-	// 更新列表
 	update(): void {
 		const { elements } = this;
 		elements.start = -1;
 		elements.count = 0;
 
-		// 创建列表项目
 		const { directory } = this.parentNode as HTMLElement & {
 			directory: string;
 		};
@@ -109,24 +100,19 @@ export class FileNavPane extends HTMLElement {
 			this.createItems(directory, 0);
 		}
 
-		// 清除多余的元素
 		this.clearElements(elements.count);
 
-		// 重新调整
 		this.resize();
 	}
 
-	// 重新调整
 	resize(): void {
 		CommonList.resize(this as unknown as CommonList);
 	}
 
-	// 更新头部和尾部元素
 	updateHeadAndFoot(): void {
 		CommonList.updateHeadAndFoot(this as unknown as CommonList);
 	}
 
-	// 在重新调整时更新
 	updateOnResize(element: any): void {
 		if (element.changed) {
 			element.changed = false;
@@ -134,7 +120,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 创建项目
 	createItems(dir: any, indent: number): void {
 		if (dir.sorted === undefined) {
 			dir.sorted = true;
@@ -152,12 +137,10 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 创建文件夹元素
 	createFolderElement(file: any, indent: number): HTMLElement {
 		const context = file.getContext(this);
 		let element = context.element;
 		if (element === undefined) {
-			// 创建文件夹
 			element = document.createElement('file-nav-item') as unknown as HTMLElement & {
 				file: any;
 				context: any;
@@ -185,7 +168,6 @@ export class FileNavPane extends HTMLElement {
 			).context = context;
 			context.element = element;
 
-			// 激活选中状态
 			const { selections } = this;
 			if (selections.length !== 0 && selections.includes(file)) {
 				(element as HTMLElement).addClass('selected');
@@ -196,24 +178,19 @@ export class FileNavPane extends HTMLElement {
 		return element;
 	}
 
-	// 更新文件夹元素
 	updateFolderElement(element: any): void {
 		const { file, context } = element;
 		if (!element.textNode) {
-			// 创建折叠标记
 			const folderMark = document.createElement('folder-mark');
 			element.appendChild(folderMark);
 
-			// 创建文件夹图标
 			const fileIcon = document.createElement('file-nav-icon');
 			fileIcon.addClass('icon-folder');
 			element.appendChild(fileIcon);
 
-			// 创建文本节点
 			const textNode = document.createTextNode(file.name);
 			element.appendChild(textNode);
 
-			// 设置元素属性
 			element.draggable = true;
 			element.expanded = false;
 			element.markVisible = true;
@@ -223,14 +200,12 @@ export class FileNavPane extends HTMLElement {
 			element.textNode = textNode;
 		}
 
-		// 开关折叠标记
 		const markVisible = file.subfolders.length !== 0;
 		if (element.markVisible !== markVisible) {
 			element.markVisible = markVisible;
 			element.folderMark.style.visibility = markVisible ? 'inherit' : 'hidden';
 		}
 
-		// 设置折叠标记
 		const expanded = markVisible && context.expanded;
 		if (element.expanded !== expanded) {
 			element.expanded = expanded;
@@ -246,7 +221,6 @@ export class FileNavPane extends HTMLElement {
 			}
 		}
 
-		// 设置文本缩进
 		const textIndent = element.indent * 12;
 		if (element.textIndent !== textIndent) {
 			element.textIndent = textIndent;
@@ -254,7 +228,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 选择项目
 	select(...files: any[]): void {
 		this.unselect();
 		this.selections = files;
@@ -272,7 +245,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 取消选择
 	unselect(): void {
 		const files = this.selections;
 		if (files.length !== 0) {
@@ -288,7 +260,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 选择相对位置的项目
 	selectRelative(direction: 'up' | 'down'): void {
 		const elements = this.elements;
 		const count = elements.count;
@@ -322,7 +293,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 滚动到选中项
 	scrollToSelection(mode: string = 'active'): void {
 		const { selections } = this;
 		if (selections.length === 1 && (this as any).hasScrollBar()) {
@@ -355,7 +325,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 获取选项
 	getSelections(): any[] {
 		const { browser } = this.links;
 		switch (browser.display) {
@@ -367,7 +336,6 @@ export class FileNavPane extends HTMLElement {
 		return [];
 	}
 
-	// 重命名
 	rename(file: any): void {
 		const { textBox } = FileNavPane;
 		if (
@@ -387,7 +355,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 取消重命名
 	cancelRenaming(): void {
 		const { timer } = this;
 		if (timer.target) {
@@ -399,9 +366,7 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 清除元素
 	clearElements(start: number): void {
-		// 有条件地调整缓存大小
 		const { elements } = this;
 		if (elements.length > 256 && elements.length !== start) {
 			elements.length = start;
@@ -412,7 +377,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 清除列表
 	clear(): this {
 		this.unselect();
 		this.textContent = '';
@@ -424,7 +388,6 @@ export class FileNavPane extends HTMLElement {
 		return this;
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -438,7 +401,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 键盘按下事件
 	keydown(event: KeyboardEvent): void {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
@@ -458,8 +420,7 @@ export class FileNavPane extends HTMLElement {
 			switch (event.code) {
 				case 'Space':
 					event.preventDefault();
-					// this.links.body.content.focus()
-					// 返回：为了不占用这个按键
+					// this.links.body.content.focus() 返回：为了不占用这个按键
 					return;
 				case 'ArrowRight': {
 					event.preventDefault();
@@ -474,14 +435,7 @@ export class FileNavPane extends HTMLElement {
 					}
 					break;
 				}
-				// case 'Enter':
-				// case 'NumpadEnter': {
-				//   const item = this.selection
-				//   if (!item || item.children) {
-				//     event.stopPropagation()
-				//   }
-				//   break
-				// }
+				// const item = this.selection if (!item || item.children) {
 				case 'ArrowUp':
 					event.preventDefault();
 					this.selectRelative('up');
@@ -505,7 +459,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		this.cancelRenaming();
 		switch (event.button) {
@@ -513,7 +466,6 @@ export class FileNavPane extends HTMLElement {
 			case 2: {
 				let element = event.target as HTMLElement;
 				if (element.tagName === 'FOLDER-MARK') {
-					// 阻止拖拽开始事件
 					event.preventDefault();
 					if (event.button === 0) {
 						const file = (element.parentNode as HTMLElement & { file: any }).file;
@@ -619,18 +571,10 @@ export class FileNavPane extends HTMLElement {
 				}
 				break;
 			}
-			// case 2: {
-			//   const element = event.target.seek('file-nav-item')
-			//   if (element.tagName === 'DIR-ITEM' &&
-			//     !element.hasClass('selected')) {
-			//     this.select(element.file)
-			//   }
-			//   break
-			// }
+			// const element = event.target.seek('file-nav-item') if (element.tagName === 'DIR-ITEM' && !element.hasClass('selected')) {
 		}
 	}
 
-	// 指针弹起事件
 	pointerup(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
@@ -643,7 +587,6 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 鼠标双击事件
 	doubleclick(event: Event): void {
 		let element = event.target as HTMLElement;
 		if (element.tagName === 'FILE-NAV-ICON') {
@@ -660,14 +603,12 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 选择事件
 	listSelect(event: Event): void {
 		const { browser } = this.links;
 		browser.restoreDisplay();
 		browser.update();
 	}
 
-	// 目录改变事件
 	dirchange(event: Event): void {
 		const folders: any[] = [];
 		const { inoMap } = Directory as any;
@@ -690,14 +631,12 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	// 静态 - 创建文本输入框
 	static textBox = (function IIFE() {
 		const textBox = new TextBox();
 		textBox.setMaxLength(64);
 		(textBox as any).addClass('file-nav-text-box');
 		(textBox as any).input.addClass('file-nav-text-box-input');
 
-		// 键盘按下事件
 		textBox.on('keydown', function (this: HTMLElement, event: KeyboardEvent) {
 			event.stopPropagation();
 			switch (event.code) {
@@ -713,7 +652,6 @@ export class FileNavPane extends HTMLElement {
 			}
 		});
 
-		// 输入前事件
 		textBox.on('beforeinput', function (event: any) {
 			if (event.inputType === 'insertText' && typeof event.data === 'string') {
 				const regexp = /[\\/:*?"<>|]/;
@@ -724,17 +662,14 @@ export class FileNavPane extends HTMLElement {
 			}
 		});
 
-		// 输入事件
 		textBox.on('input', function (this: TextBox) {
 			this.fitContent();
 		});
 
-		// 选择事件
 		textBox.on('select', function (event: Event) {
 			event.stopPropagation();
 		});
 
-		// 失去焦点事件
 		textBox.on('blur', function (this: TextBox) {
 			const item = this.parentNode as any;
 			const file = item.file;

@@ -7,17 +7,13 @@ import { Particle } from '../particle/particle-window.ts';
 import { Menubar } from '../title/menu-bar.ts';
 import { Title } from '../title/title-bar.ts';
 
-// ******************************** 窗口对象 ********************************
-
 export const Window = {
-	// properties
 	ambient: $('#window-ambient'),
 	frames: [],
 	positionMode: 'center',
 	absolutePos: { x: 0, y: 0 },
 	overlapRoot: null,
 	activeElement: null,
-	// methods
 	initialize: null,
 	open: null,
 	close: null,
@@ -29,14 +25,11 @@ export const Window = {
 	restoreActiveElement: null,
 	refocus: null,
 	confirm: null,
-	// events
 	keydown: null,
 	cancel: null
 };
 
-// 初始化
 Window.initialize = function () {
-	// 侦听取消按钮事件
 	const buttons = document.getElementsByName('cancel');
 	const length = buttons.length;
 	for (let i = 0; i < length; i++) {
@@ -44,7 +37,6 @@ Window.initialize = function () {
 	}
 };
 
-// 打开窗口
 Window.open = function (id) {
 	const frames = this.frames;
 	const element = document.getElementById(id);
@@ -52,7 +44,6 @@ Window.open = function (id) {
 		return;
 	}
 
-	// 打开窗口
 	const { activeElement } = document;
 	if (!frames.includes(element)) {
 		if (frames.length > 0) {
@@ -71,8 +62,7 @@ Window.open = function (id) {
 			window.on('keydown', Window.keydown);
 		}
 
-		// 解决失去焦点后还能使用键盘滚动的问题
-		// 延时获得焦点是为了解决鼠标按下瞬间焦点切换被阻止的问题
+		// 解决失去焦点后还能使用键盘滚动的问题 延时获得焦点是为了解决鼠标按下瞬间焦点切换被阻止的问题
 		Title.target.tabIndex = -1;
 		Title.target.focus();
 		setTimeout(() => {
@@ -85,20 +75,17 @@ Window.open = function (id) {
 	}
 };
 
-// 关闭窗口
 Window.close = function (id = null) {
 	const frames = this.frames;
 	if (!frames.length) {
 		return;
 	}
 
-	// 获取窗口
 	const element = frames[frames.length - 1];
 	if (id && id !== element.id) {
 		return;
 	}
 
-	// 关闭窗口
 	if (element.close()) {
 		if (frames.length > 0) {
 			frames[frames.length - 1].focus();
@@ -114,14 +101,12 @@ Window.close = function (id = null) {
 			window.on('keydown', Particle.keydown);
 			window.off('keydown', Window.keydown);
 		}
-		// 关闭堆叠位置模式
 		if (this.overlapRoot === element) {
 			this.setPositionMode('center');
 		}
 	}
 };
 
-// 关闭所有窗口
 Window.closeAll = function () {
 	const frames = this.frames;
 	let i = frames.length;
@@ -134,7 +119,6 @@ Window.closeAll = function () {
 	}
 };
 
-// 判断窗口是否已打开
 Window.isWindowOpen = function (id) {
 	for (const frame of this.frames) {
 		if (frame.id === id) return true;
@@ -142,7 +126,6 @@ Window.isWindowOpen = function (id) {
 	return false;
 };
 
-// 获取顶部的窗口
 Window.getTopWindow = function () {
 	const { frames } = this;
 	if (frames.length !== 0) {
@@ -151,7 +134,6 @@ Window.getTopWindow = function () {
 	return undefined;
 };
 
-// 设置位置模式
 Window.setPositionMode = function (mode) {
 	if (this.positionMode !== mode) {
 		if (this.overlapRoot) {
@@ -174,7 +156,6 @@ Window.setPositionMode = function (mode) {
 	}
 };
 
-// 保存激活元素
 Window.saveActiveElement = function () {
 	const { activeElement } = document;
 	if (activeElement !== document.body) {
@@ -183,7 +164,6 @@ Window.saveActiveElement = function () {
 	}
 };
 
-// 恢复激活元素
 Window.restoreActiveElement = function () {
 	if (this.activeElement) {
 		this.activeElement.focus();
@@ -191,7 +171,6 @@ Window.restoreActiveElement = function () {
 	}
 };
 
-// 重新聚焦
 Window.refocus = function () {
 	const active = document.activeElement;
 	if (active !== document.body) {
@@ -200,7 +179,6 @@ Window.refocus = function () {
 	}
 };
 
-// 弹出确认框
 Window.confirm = (function IIFE() {
 	const elWindow = $('#confirmation');
 	const elMessage = $('#confirmation-message');
@@ -243,7 +221,6 @@ Window.confirm = (function IIFE() {
 			{ once: true }
 		);
 
-		// 计算窗口的大小
 		const measure = measureText(message);
 		const textWidth = measure.width;
 		const textHeight = measure.lines * 20;
@@ -256,7 +233,6 @@ Window.confirm = (function IIFE() {
 	};
 })();
 
-// 键盘按下事件
 Window.keydown = function (event) {
 	if (event.altKey) {
 		switch (event.code) {
@@ -312,7 +288,6 @@ Window.keydown = function (event) {
 	}
 };
 
-// 取消按钮 - 鼠标点击事件
 Window.cancel = function (event) {
 	let element = event.target.parentNode;
 	while (element) {
@@ -324,7 +299,6 @@ Window.cancel = function (event) {
 	}
 };
 
-// 添加窗口环境元素方法 - 更新
 Window.ambient.update = function () {
 	const frames = Window.frames;
 	let i = frames.length;

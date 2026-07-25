@@ -1,7 +1,5 @@
 ﻿import { Timer } from '../util/timer.ts';
 
-// ******************************** 滚动侦听器 ********************************
-
 (() => {
 	let target: HTMLElement | null = null;
 	let highSpeed = 0;
@@ -10,12 +8,10 @@
 	let scrollVertical = false;
 	let scrollUpdater: (() => void) | null = null;
 
-	// 计算滚动距离
 	const computeScrollDelta = (speed: number): number => {
 		let delta = speed * Timer.deltaTime;
 		const dpr = window.devicePixelRatio;
 		const tolerance = 0.0001;
-		// 修正数值让正反方向每帧的滚动距离相等
 		if (delta > 0) {
 			return Math.max(Math.floor(delta), 1) / dpr + tolerance;
 		}
@@ -25,7 +21,6 @@
 		return 0;
 	};
 
-	// 滚动检测计时器
 	const timer = new Timer({
 		duration: Infinity,
 		update: (timer) => {
@@ -49,7 +44,6 @@
 		}
 	});
 
-	// 指针移动事件
 	const pointermove = (event: PointerEvent) => {
 		const dpr = window.devicePixelRatio;
 		const rect = (target as HTMLElement).rect();
@@ -59,7 +53,6 @@
 		const t = rect.top;
 		const cr = (target as HTMLElement).clientWidth + l;
 		const cb = (target as HTMLElement).clientHeight + t;
-		// 对于非100%像素分辨率cr和cb偏大
 		const r = Math.min(rect.right, cr) - dpr;
 		const b = Math.min(rect.bottom, cb) - dpr;
 		const scrollSpeedX = scrollHorizontal
@@ -97,7 +90,6 @@
 		}
 	};
 
-	// 添加滚动侦听器
 	(
 		HTMLElement.prototype as HTMLElement & {
 			addScrollListener: (
@@ -136,7 +128,6 @@
 		window.on('pointermove', pointermove);
 	};
 
-	// 移除滚动侦听器
 	(
 		HTMLElement.prototype as HTMLElement & {
 			removeScrollListener: () => void;

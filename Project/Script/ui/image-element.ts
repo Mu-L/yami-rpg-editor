@@ -3,8 +3,6 @@ import { ImageTexture } from '../webgl/image-texture.ts';
 import { Texture } from '../webgl/texture.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 图像元素 ********************************
-
 UI.Image = class ImageElement extends UI.Element {
 	texture: Texture | null;
 	_display: string;
@@ -31,12 +29,10 @@ UI.Image = class ImageElement extends UI.Element {
 		this.blend = data.blend ?? 'normal';
 	}
 
-	// 读取图像
 	get image() {
 		return this._image;
 	}
 
-	// 写入图像
 	set image(value: any) {
 		if (this._image !== value) {
 			this._image = value;
@@ -53,23 +49,19 @@ UI.Image = class ImageElement extends UI.Element {
 		}
 	}
 
-	// 读取显示模式
 	get display() {
 		return this._display;
 	}
 
-	// 写入显示模式
 	set display(value: any) {
 		this._display = value;
 	}
 
-	// 绘制图像
 	draw() {
 		if (this.visible === false) {
 			return this.drawChildren();
 		}
 
-		// 绘制图片
 		const { texture } = this;
 		if (texture !== null)
 			draw: {
@@ -145,7 +137,6 @@ UI.Image = class ImageElement extends UI.Element {
 			this.drawDefaultImage();
 		}
 
-		// 绘制子元素
 		if (GL.maskTexture.binding === this) {
 			GL.unbindFBO();
 			if (GL.depthTest) {
@@ -155,7 +146,6 @@ UI.Image = class ImageElement extends UI.Element {
 			this.drawChildren();
 			GL.masking = false;
 			GL.maskTexture.binding = null;
-			// 擦除遮罩纹理缓冲区
 			const [x1, y1, x2, y2] = this.computeBoundingRectangle();
 			const sl = Math.max(Math.floor(x1 - 1), 0);
 			const st = Math.max(Math.floor(y1 - 1), 0);
@@ -177,7 +167,6 @@ UI.Image = class ImageElement extends UI.Element {
 		}
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -186,14 +175,12 @@ UI.Image = class ImageElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.texture?.destroy();
 		this.destroyChildren();
 	}
 
-	// 计算外接矩形
 	computeBoundingRectangle() {
 		const matrix = GL.matrix.set(UI.matrix).multiply(this.matrix);
 		const L = this.x;
@@ -222,6 +209,5 @@ UI.Image = class ImageElement extends UI.Element {
 		return vertices;
 	}
 
-	// 公共属性
 	static sharedFloat64Array = new Float64Array(4);
 };

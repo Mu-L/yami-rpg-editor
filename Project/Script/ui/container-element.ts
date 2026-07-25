@@ -1,14 +1,10 @@
 ﻿import { UI } from './ui-window.ts';
 
-// ******************************** 容器元素 ********************************
-
 UI.Container = class ContainerElement extends UI.Element {
-	// 绘制图像
 	draw() {
 		this.drawChildren();
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -17,7 +13,6 @@ UI.Container = class ContainerElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.destroyChildren();

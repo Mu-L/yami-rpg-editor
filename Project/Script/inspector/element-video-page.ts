@@ -2,32 +2,24 @@
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 视频页面 ********************************
-
 {
 	const UIVideo = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UIVideo.initialize = function () {
-		// 创建循环选项
 		$('#uiVideo-loop').loadItems([
 			{ name: 'Once', value: false },
 			{ name: 'Loop', value: true }
 		]);
 
-		// 创建翻转选项
 		$('#uiVideo-flip').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Horizontal', value: 'horizontal' },
@@ -35,14 +27,12 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Both', value: 'both' }
 		]);
 
-		// 创建混合模式选项
 		$('#uiVideo-blend').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Additive', value: 'additive' },
 			{ name: 'Subtract', value: 'subtract' }
 		]);
 
-		// 侦听事件
 		const elements = $(
 			'#uiVideo-video, #uiVideo-playbackRate, #uiVideo-loop, #uiVideo-flip, #uiVideo-blend'
 		);
@@ -51,7 +41,6 @@ import { UI } from '../ui/ui-window.ts';
 		elements.on('blur', Inspector.inputBlur(this, UI));
 	};
 
-	// 创建视频
 	UIVideo.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -77,12 +66,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIVideo.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiVideo', node);
 			write('video');
 			write('playbackRate');
@@ -93,7 +80,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIVideo.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -103,7 +89,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIVideo.update = function (node, key, value) {
 		UI.planToSave();
 		switch (key) {
@@ -120,7 +105,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIVideo.paramInput = function (event) {
 		UIVideo.update(UIVideo.target, Inspector.getKey(this), this.read());
 	};

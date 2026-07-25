@@ -1,7 +1,5 @@
 ﻿import { GL } from './webgl-init.ts';
 
-// ******************************** 纹理类 ********************************
-
 export class Texture {
 	complete: boolean;
 	base: any;
@@ -18,7 +16,6 @@ export class Texture {
 			return;
 		}
 
-		// 设置属性
 		this.complete = true;
 		this.base = GL.createNormalTexture(options);
 		this.gl = GL;
@@ -28,7 +25,6 @@ export class Texture {
 		this.height = 0;
 	}
 
-	// 裁剪
 	clip(x: any, y: any, width: any, height: any) {
 		this.x = x;
 		this.y = y;
@@ -37,7 +33,6 @@ export class Texture {
 		return this;
 	}
 
-	// 擦除
 	clear(red = 0, green = 0, blue = 0, alpha = 0) {
 		const gl = this.gl;
 		gl.bindFBO(gl.frameBuffer);
@@ -53,7 +48,6 @@ export class Texture {
 		gl.unbindFBO();
 	}
 
-	// 调整大小
 	resize(width: any, height: any) {
 		const { gl, base } = this;
 		const { format } = base;
@@ -74,7 +68,6 @@ export class Texture {
 		return this.clip(0, 0, base.width, base.height);
 	}
 
-	// 从图像中取样
 	fromImage(image: any) {
 		// 上传空图像会被Chromium警告
 		if (image.width === 0 && image.height === 0) {
@@ -101,7 +94,6 @@ export class Texture {
 		return this.clip(0, 0, base.width, base.height);
 	}
 
-	// 获取图像数据
 	getImageData(x: any, y: any, width: any, height: any) {
 		const gl = this.gl;
 		const base = this.base;
@@ -124,29 +116,8 @@ export class Texture {
 		return null;
 	}
 
-	// 查看纹理 - 调试用
-	// view() {
-	//   if (!this.viewer) {
-	//     this.viewer = new Image()
-	//     this.viewer.style.position = 'fixed'
-	//     this.viewer.style.background = 'var(--grid-background)'
-	//     document.body.appendChild(this.viewer)
-	//   }
-	//   const {x, y, width, height} = this
-	//   if (width > 0 && height > 0) {
-	//     const imageData = this.getImageData(x, y, width, height)
-	//     const canvas = document.createElement('canvas')
-	//     canvas.width = width
-	//     canvas.height = height
-	//     const context = canvas.getContext('2d')
-	//     context.putImageData(imageData, 0, 0)
-	//     this.viewer.src = canvas.toDataURL()
-	//   } else {
-	//     this.viewer.src = ''
-	//   }
-	// }
+	// 查看纹理 - 调试用 view() { if (!this.viewer) { this.viewer = new Image() this.viewer.style.position = 'fixed' this.viewer.style.background = 'var(--grid-background)' document.body.appendChild(this.viewer) } const {x, y, width, height} = this if (width > 0 && height > 0) { const imageData = this.getImageData(x, y, width, height) const canvas = document.createElement('canvas') canvas.width = width canvas.height = height const context = canvas.getContext('2d') context.putImageData(imageData, 0, 0) this.viewer.src = canvas.toDataURL() } else { this.viewer.src = '' } }
 
-	// 销毁
 	destroy() {
 		if (this.base) {
 			this.complete = false;

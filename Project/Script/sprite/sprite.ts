@@ -5,10 +5,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 import { Animation } from '../animation/animation-window.ts';
 import { Palette } from '../palette/palette.ts';
 
-// ******************************** 精灵窗口 ********************************
-
 export const Sprite = {
-	// properties
 	state: 'closed',
 	body: $('#sprite-body'),
 	window: $('#sprite-frame').hide(),
@@ -49,7 +46,6 @@ export const Sprite = {
 	paddingTop: null,
 	centerX: null,
 	centerY: null,
-	// methods
 	initialize: null,
 	open: null,
 	close: null,
@@ -73,7 +69,6 @@ export const Sprite = {
 	stopRendering: null,
 	saveToProject: null,
 	loadFromProject: null,
-	// events
 	windowResize: null,
 	themechange: null,
 	zoomFocus: null,
@@ -86,15 +81,11 @@ export const Sprite = {
 	pointermove: null
 };
 
-// 初始化
 Sprite.initialize = function () {
-	// 绑定滚动条
 	this.screen.addScrollbars();
 
-	// 创建画布上下文
 	this.context = this.canvas.getContext('2d', { desynchronized: true });
 
-	// 创建缩放计时器
 	this.zoomTimer = new Timer({
 		duration: 80,
 		update: (timer) => {
@@ -111,7 +102,6 @@ Sprite.initialize = function () {
 		}
 	});
 
-	// 侦听事件
 	window.on('themechange', this.themechange);
 	$('#animSpriteFrame').on('resize', this.windowResize);
 	$('#animSpriteFrame-properties-detail').on('toggle', this.windowResize);
@@ -124,7 +114,6 @@ Sprite.initialize = function () {
 	this.marquee.on('pointerdown', this.marqueePointerdown);
 };
 
-// 打开精灵
 Sprite.open = function (target) {
 	if (this.target !== target) {
 		this.close();
@@ -136,7 +125,6 @@ Sprite.open = function (target) {
 	}
 };
 
-// 关闭精灵
 Sprite.close = function () {
 	if (this.state !== 'closed') {
 		this.state = 'closed';
@@ -150,7 +138,6 @@ Sprite.close = function () {
 	}
 };
 
-// 挂起
 Sprite.suspend = function () {
 	if (this.state === 'open') {
 		this.state = 'suspended';
@@ -160,7 +147,6 @@ Sprite.suspend = function () {
 	}
 };
 
-// 继续
 Sprite.resume = function () {
 	if (this.state === 'suspended') {
 		this.state = 'open';
@@ -171,7 +157,6 @@ Sprite.resume = function () {
 	}
 };
 
-// 设置缩放
 Sprite.setZoom = (function IIFE() {
 	const slider = $('#sprite-zoom');
 	return function (zoom) {
@@ -211,7 +196,6 @@ Sprite.setZoom = (function IIFE() {
 	};
 })();
 
-// 加载精灵图像
 Sprite.loadImage = async function () {
 	const symbol = (this.symbol = Symbol());
 	const name = Animation.timelineMarquee.layer.sprite;
@@ -241,7 +225,6 @@ Sprite.loadImage = async function () {
 	}
 };
 
-// 更新目标对象信息
 Sprite.updateTargetInfo = function () {
 	const { target } = this;
 	if (target) {
@@ -253,7 +236,6 @@ Sprite.updateTargetInfo = function () {
 	}
 };
 
-// 调整大小
 Sprite.resize = function () {
 	if (this.state === 'open') {
 		const scale = this.scale;
@@ -284,7 +266,6 @@ Sprite.resize = function () {
 		this.paddingLeft = paddingLeft;
 		this.paddingTop = paddingTop;
 
-		// 调整选框
 		this.marquee.style.left = `${paddingLeft / dpr}px`;
 		this.marquee.style.top = `${paddingTop / dpr}px`;
 		this.marquee.style.width = `${innerWidth / dpr}px`;
@@ -292,7 +273,6 @@ Sprite.resize = function () {
 		this.marquee.scaleX = scaledUnitWidth / dpr;
 		this.marquee.scaleY = scaledUnitHeight / dpr;
 
-		// 更新选中位置
 		if (this.marquee.visible) {
 			this.marquee.select();
 		} else {
@@ -305,7 +285,6 @@ Sprite.resize = function () {
 			this.updateTargetInfo();
 		}
 
-		// 调整画布
 		const canvasWidth = Math.min(innerWidth, screenWidth);
 		const canvasHeight = Math.min(innerHeight, screenHeight);
 		this.canvas.style.left = `${paddingLeft / dpr}px`;
@@ -328,7 +307,6 @@ Sprite.resize = function () {
 	}
 };
 
-// 获取单位坐标
 Sprite.getUnitCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
 	return function (event) {
@@ -342,7 +320,6 @@ Sprite.getUnitCoords = (function IIFE() {
 	};
 })();
 
-// 更新摄像机位置
 Sprite.updateCamera = function (x = this.centerX, y = this.centerY) {
 	const dpr = window.devicePixelRatio;
 	const screen = this.screen;
@@ -358,8 +335,6 @@ Sprite.updateCamera = function (x = this.centerX, y = this.centerY) {
 	screen.scrollTop = (scrollY - (this.screenHeight >> 1) + toleranceY) / dpr;
 };
 
-// 更新变换参数
-// 这里获取的是canvas的边框参数
 Sprite.updateTransform = function () {
 	const dpr = window.devicePixelRatio;
 	const screen = this.screen;
@@ -378,13 +353,10 @@ Sprite.updateTransform = function () {
 	this.centerY = Math.roundTo((scrollY - this.paddingTop) / this.scaledUnitHeight, 4);
 };
 
-// 更新背景图像
 Sprite.updateBackground = Palette.updateBackground;
 
-// 绘制精灵
 Sprite.drawSprite = function () {
 	if (this.body.clientWidth > 0 && this.canvas.width !== 0 && this.canvas.height !== 0) {
-		// 擦除画布
 		const context = this.context;
 		const sl = this.scrollLeft;
 		const st = this.scrollTop;
@@ -392,13 +364,11 @@ Sprite.drawSprite = function () {
 		const sb = this.scrollBottom;
 		context.clearRect(sl, st, sr - sl, sb - st);
 
-		// 绘制图层
 		this.drawSpriteLayer();
 		this.drawGridLayer();
 	}
 };
 
-// 绘制精灵层
 Sprite.drawSpriteLayer = function () {
 	const context = this.context;
 	const image = this.image;
@@ -415,7 +385,6 @@ Sprite.drawSpriteLayer = function () {
 	context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
 };
 
-// 绘制网格层
 Sprite.drawGridLayer = function () {
 	if (this.showGrid) {
 		const context = this.context;
@@ -444,7 +413,6 @@ Sprite.drawGridLayer = function () {
 	}
 };
 
-// 选择精灵
 Sprite.selectSprite = function (hindex, vindex) {
 	const target = this.target;
 	if (target !== null) {
@@ -479,7 +447,6 @@ Sprite.selectSprite = function (hindex, vindex) {
 	}
 };
 
-// 滚动到选中位置
 Sprite.scrollToSelection = function () {
 	const marquee = this.marquee;
 	if (marquee.visible) {
@@ -508,24 +475,20 @@ Sprite.scrollToSelection = function () {
 	}
 };
 
-// 请求渲染
 Sprite.requestRendering = function () {
 	if (this.state === 'open') {
 		Timer.appendUpdater('sharedRendering', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 Sprite.renderingFunction = function () {
 	Sprite.drawSprite();
 };
 
-// 停止渲染
 Sprite.stopRendering = function () {
 	Timer.removeUpdater('sharedRendering', this.renderingFunction);
 };
 
-// 保存状态到项目文件
 Sprite.saveToProject = function (project) {
 	const { sprite } = project;
 	const zoom = this.zoom;
@@ -534,15 +497,12 @@ Sprite.saveToProject = function (project) {
 	}
 };
 
-// 从项目文件中加载状态
 Sprite.loadFromProject = function (project) {
 	const { sprite } = project;
 	this.setZoom(sprite.zoom);
 };
 
-// 窗口 - 调整大小事件
 Sprite.windowResize = function (event) {
-	// 检查器页面不可见时挂起
 	if (this.body.clientWidth === 0) {
 		return this.suspend();
 	}
@@ -557,7 +517,6 @@ Sprite.windowResize = function (event) {
 	}
 }.bind(Sprite);
 
-// 主题改变事件
 Sprite.themechange = function (event) {
 	switch (event.value) {
 		case 'light':
@@ -570,17 +529,14 @@ Sprite.themechange = function (event) {
 	this.requestRendering();
 }.bind(Sprite);
 
-// 缩放 - 获得焦点事件
 Sprite.zoomFocus = function (event) {
 	Sprite.screen.focus();
 };
 
-// 缩放 - 输入事件
 Sprite.zoomInput = function (event) {
 	Sprite.setZoom(this.read());
 };
 
-// 屏幕 - 键盘按下事件
 Sprite.screenKeydown = function (event) {
 	if (Sprite.state === 'open' && Sprite.dragging === null) {
 		switch (event.code) {
@@ -629,7 +585,6 @@ Sprite.screenKeydown = function (event) {
 	}
 };
 
-// 屏幕 - 鼠标滚轮事件
 Sprite.screenWheel = function (event) {
 	event.preventDefault();
 	if (event.deltaY !== 0 && this.dragging === null) {
@@ -637,7 +592,6 @@ Sprite.screenWheel = function (event) {
 	}
 }.bind(Sprite);
 
-// 屏幕 - 用户滚动事件
 Sprite.screenUserscroll = function (event) {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
@@ -649,7 +603,6 @@ Sprite.screenUserscroll = function (event) {
 	}
 }.bind(Sprite);
 
-// 选框 - 指针按下事件
 Sprite.marqueePointerdown = function (event) {
 	// 优先触发检查器输入框的blur事件
 	if (Inspector.manager.focusing) {
@@ -689,7 +642,6 @@ Sprite.marqueePointerdown = function (event) {
 	}
 }.bind(Sprite);
 
-// 指针弹起事件
 Sprite.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
@@ -705,7 +657,6 @@ Sprite.pointerup = function (event) {
 	}
 }.bind(Sprite);
 
-// 指针移动事件
 Sprite.pointermove = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {

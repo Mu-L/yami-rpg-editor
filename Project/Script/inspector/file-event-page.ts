@@ -7,34 +7,26 @@ import { Inspector } from './inspector.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 文件 - 事件页面 ********************************
-
 {
 	const FileEvent = {
-		// properties
 		target: null,
 		meta: null,
 		parameters: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		paramInput: null,
 		typeWrite: null,
 		listChange: null
 	};
 
-	// 初始化
 	FileEvent.initialize = function () {
-		// 创建类型选项
 		$('#fileEvent-type').loadItems(EventEditor.types.global);
 		EventEditor.types.relatedElements.push($('#fileEvent-type'));
 
-		// 创建返回类型选项
 		$('#fileEvent-returnType').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Boolean', value: 'boolean' },
@@ -51,10 +43,8 @@ import { Window } from '../tools/window-object.ts';
 			{ name: 'Element', value: 'element' }
 		]);
 
-		// 绑定参数列表
 		$('#fileEvent-parameters').bind(this.parameters);
 
-		// 侦听事件
 		$(
 			`#fileEvent-type, #fileEvent-enabled, #fileEvent-priority, #fileEvent-namespace, #fileEvent-returnType, #fileEvent-description`
 		).on('input', this.paramInput);
@@ -62,7 +52,6 @@ import { Window } from '../tools/window-object.ts';
 		$('#fileEvent-parameters').on('change', this.listChange);
 	};
 
-	// 创建事件
 	FileEvent.create = function (filter) {
 		const type = EventEditor.types[filter][0].value;
 		switch (filter) {
@@ -86,7 +75,6 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 打开数据
 	FileEvent.open = function (event, meta) {
 		if (this.meta !== meta) {
 			this.target = event;
@@ -96,7 +84,6 @@ import { Window } from '../tools/window-object.ts';
 				Enum.getMergedItems(EventEditor.types.global, 'global-event')
 			);
 
-			// 写入数据
 			const write = getElementWriter('fileEvent', event);
 			write('type');
 			write('enabled');
@@ -108,7 +95,6 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 关闭数据
 	FileEvent.close = function () {
 		if (this.target) {
 			Browser.unselect(this.meta);
@@ -118,14 +104,12 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 写入数据
 	FileEvent.write = function (options) {
 		if (options.type !== undefined) {
 			$('#fileEvent-type').write(options.type);
 		}
 	};
 
-	// 更新数据
 	FileEvent.update = function (event, key, value) {
 		File.planToSave(this.meta);
 		switch (key) {
@@ -147,12 +131,10 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 参数 - 输入事件
 	FileEvent.paramInput = function (event) {
 		FileEvent.update(FileEvent.target, Inspector.getKey(this), this.read());
 	};
 
-	// 类型 - 写入事件
 	FileEvent.typeWrite = function (event) {
 		const enabledInput = $('#fileEvent-enabled');
 		const enabledLabel = enabledInput.previousElementSibling;
@@ -194,17 +176,14 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 列表 - 改变事件
 	FileEvent.listChange = function (event) {
 		File.planToSave(FileEvent.meta);
 	};
 
-	// 事件参数列表接口
 	FileEvent.parameters = {
 		initialize: function (list) {
 			$('#fileEvent-parameter-confirm').on('click', () => list.save());
 
-			// 加载类型选项
 			$('#fileEvent-parameter-type').loadItems([
 				{ name: 'Boolean', value: 'boolean' },
 				{ name: 'Number', value: 'number' },

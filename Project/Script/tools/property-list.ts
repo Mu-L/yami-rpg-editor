@@ -8,7 +8,6 @@ import { GameLocal } from '../local/local-object.ts';
 import { Window } from './window-object.ts';
 
 import { IListInterface } from '../types/list-interface.ts';
-// ******************************** 属性列表接口 ********************************
 
 export class AttributeListInterface implements IListInterface {
 	target: HTMLElement | null;
@@ -23,20 +22,17 @@ export class AttributeListInterface implements IListInterface {
 		this.owner = owner ?? null;
 	}
 
-	// 初始化
 	initialize(list: HTMLElement): void {
 		this.target = null;
 		this.type = 'object-attribute';
 		this.group = list.getAttribute('group');
 
-		// 创建参数历史操作
 		const { editor, owner } = this;
 		if (editor && owner) {
 			this.history = new Inspector.ParamHistory(editor, owner, list);
 		}
 	}
 
-	// 解析项目
 	parse(item: any): any {
 		if (item instanceof Object) {
 			let { key, value } = item;
@@ -84,13 +80,11 @@ export class AttributeListInterface implements IListInterface {
 		return item;
 	}
 
-	// 打开窗口
 	open(item: any = { key: '', value: 0 }) {
 		Window.open('object-attribute');
 		AttributeListInterface.target = this.target;
 		const isNew = item.key === '';
 		if (isNew) {
-			// 新建属性数据
 			item.key = Attribute.getDefAttributeId(this.group);
 			switch (Attribute.getGroupAttribute(this.group, item.key)?.type) {
 				case 'boolean':
@@ -140,7 +134,6 @@ export class AttributeListInterface implements IListInterface {
 		}
 	}
 
-	// 保存数据
 	save() {
 		const read = getElementReader('object-attribute');
 		const type = AttributeListInterface.typeBox.read();
@@ -170,12 +163,9 @@ export class AttributeListInterface implements IListInterface {
 		return { key, value };
 	}
 
-	// 静态 - 正在编辑中的数据所在的列表
 	static target = null;
 
-	// 静态 - 初始化
 	static initialize() {
-		// 创建类型选项
 		this.typeBox.loadItems([
 			{ name: 'Boolean', value: 'boolean' },
 			{ name: 'Number', value: 'number' },
@@ -183,7 +173,6 @@ export class AttributeListInterface implements IListInterface {
 			{ name: 'Enum', value: 'enum' }
 		]);
 
-		// 设置类型关联元素
 		this.typeBox.enableHiddenMode().relate([
 			{
 				case: 'boolean',
@@ -194,20 +183,17 @@ export class AttributeListInterface implements IListInterface {
 			{ case: 'enum', targets: [$('#object-attribute-enum-value')] }
 		]);
 
-		// 创建布尔值常量选项
 		$('#object-attribute-boolean-value').loadItems([
 			{ name: 'False', value: false },
 			{ name: 'True', value: true }
 		]);
 
-		// 侦听事件
 		$('#object-attribute-key').on('write', this.keyWrite);
 		$('#object-attribute-confirm').on('click', (event) => {
 			AttributeListInterface.target.save();
 		});
 	}
 
-	// 属性键写入事件
 	static keyWrite(event: any) {
 		const group = AttributeListInterface.target.getAttribute('group');
 		const attr = Attribute.getGroupAttribute(group, event.value);

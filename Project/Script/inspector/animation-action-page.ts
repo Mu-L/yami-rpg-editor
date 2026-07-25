@@ -2,14 +2,10 @@
 import { Animation } from '../animation/animation-window.ts';
 import { Inspector } from './inspector.ts';
 
-// ******************************** 动画 - 动作页面 ********************************
-
 {
 	const AnimMotion = {
-		// properties
 		owner: null,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		createDir: null,
@@ -17,13 +13,10 @@ import { Inspector } from './inspector.ts';
 		close: null,
 		write: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	AnimMotion.initialize = function () {
-		// 设置所有者代理
 		this.owner = {
 			setTarget: (motion) => {
 				Animation.setMotion(motion);
@@ -31,7 +24,6 @@ import { Inspector } from './inspector.ts';
 			}
 		};
 
-		// 创建动画模式选项
 		$('#animMotion-mode').loadItems([
 			{ name: '1 Directional', value: '1-dir' },
 			{ name: '2 Directional', value: '2-dir' },
@@ -43,10 +35,8 @@ import { Inspector } from './inspector.ts';
 			{ name: '5 Directional - Mirror', value: '5-dir-mirror' }
 		]);
 
-		// 设置循环关联元素
 		$('#animMotion-loop').relate([$('#animMotion-loopStart')]);
 
-		// 侦听事件
 		const elMode = $('#animMotion-mode');
 		const elements = $('#animMotion-skip, #animMotion-loop, #animMotion-loopStart');
 		elMode.on('input', this.paramInput);
@@ -55,7 +45,6 @@ import { Inspector } from './inspector.ts';
 		elements.on('blur', Inspector.inputBlur(this, Animation));
 	};
 
-	// 创建动作
 	AnimMotion.create = function (motionId) {
 		return {
 			class: 'motion',
@@ -68,17 +57,14 @@ import { Inspector } from './inspector.ts';
 		};
 	};
 
-	// 创建方向
 	AnimMotion.createDir = function () {
 		return { layers: [] };
 	};
 
-	// 打开数据
 	AnimMotion.open = function (motion) {
 		if (this.target !== motion) {
 			this.target = motion;
 
-			// 写入数据
 			const write = getElementWriter('animMotion', motion);
 			write('mode');
 			write('skip');
@@ -87,24 +73,19 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 关闭数据
 	AnimMotion.close = function () {
 		if (this.target) {
-			// 此处不能unselect并update
-			// Animation.list.unselect(this.target)
-			// Animation.updateTarget()
+			// 此处不能unselect并update Animation.list.unselect(this.target) Animation.updateTarget()
 			this.target = null;
 		}
 	};
 
-	// 写入数据
 	AnimMotion.write = function (options) {
 		if (options.mode !== undefined) {
 			$('#animMotion-mode').write(options.mode);
 		}
 	};
 
-	// 更新数据
 	AnimMotion.update = function (motion, key, value) {
 		Animation.planToSave();
 		switch (key) {
@@ -129,7 +110,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 参数 - 输入事件
 	AnimMotion.paramInput = function (event) {
 		AnimMotion.update(AnimMotion.target, Inspector.getKey(this), this.read());
 	};

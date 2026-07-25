@@ -1,5 +1,3 @@
-﻿// ******************************** 单选框代理 ********************************
-
 interface RadioRelationEntry {
 	case: any;
 	targets: RadioProxy[];
@@ -22,7 +20,6 @@ export class RadioProxy extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.dataValue = null;
 		this.relations = [];
 		this.cancelable = false;
@@ -30,12 +27,10 @@ export class RadioProxy extends HTMLElement {
 		this.inputEventEnabled = false;
 	}
 
-	// 读取数据
 	read(): any {
 		return this.dataValue;
 	}
 
-	// 写入数据
 	write(value: any): void {
 		const elements = document.getElementsByName(
 			this.id
@@ -60,7 +55,6 @@ export class RadioProxy extends HTMLElement {
 		}
 	}
 
-	// 输入数据
 	input(value: any): void {
 		const lastValue = this.dataValue;
 		if (lastValue !== value) {
@@ -78,7 +72,6 @@ export class RadioProxy extends HTMLElement {
 		}
 	}
 
-	// 重置数据
 	reset(): void {
 		if (this.dataValue !== null) {
 			const elements = document.getElementsByName(
@@ -94,7 +87,6 @@ export class RadioProxy extends HTMLElement {
 		}
 	}
 
-	// 启用元素
 	enable(): void {
 		if (this.removeClass('disabled')) {
 			const elements = document.getElementsByName(this.id);
@@ -105,7 +97,6 @@ export class RadioProxy extends HTMLElement {
 		}
 	}
 
-	// 禁用元素
 	disable(): void {
 		if (this.addClass('disabled')) {
 			const elements = document.getElementsByName(this.id);
@@ -116,12 +107,10 @@ export class RadioProxy extends HTMLElement {
 		}
 	}
 
-	// 添加相关元素
 	relate(entries: RadioRelationEntry[]): void {
 		this.relations = entries;
 	}
 
-	// 启用或禁用相关元素
 	toggleRelatedElements(): void {
 		if (this.relations.length !== 0) {
 			if (!this.hasClass('disabled')) {
@@ -151,7 +140,6 @@ export class RadioProxy extends HTMLElement {
 		}
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -168,7 +156,6 @@ export class RadioProxy extends HTMLElement {
 		}
 	}
 
-	// 静态 - 代理映射表
 	static map: Record<string, RadioProxy> = {};
 }
 

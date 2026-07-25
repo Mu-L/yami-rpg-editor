@@ -1,7 +1,5 @@
 ﻿import { UI } from './ui-window.ts';
 
-// ******************************** 视频元素 ********************************
-
 UI.Video = class VideoElement extends UI.Element {
 	video: string;
 	loop: boolean;
@@ -16,13 +14,11 @@ UI.Video = class VideoElement extends UI.Element {
 		this.blend = data.blend;
 	}
 
-	// 绘制图像
 	draw() {
 		this.drawDefaultImage();
 		this.drawChildren();
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -31,7 +27,6 @@ UI.Video = class VideoElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.destroyChildren();

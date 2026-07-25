@@ -1,10 +1,8 @@
 import { Variable } from './variable.ts';
 import { Shortcuts } from '../tools/shortcut-registry.ts';
 
-// 键盘按下事件
 Variable.keydown = Shortcuts.createUndoRedo(Variable);
 
-// 列表 - 键盘按下事件
 Variable.listKeydown = function (event) {
 	const item = this.read();
 	if (event.cmdOrCtrlKey) {
@@ -33,7 +31,6 @@ Variable.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 Variable.listPointerdown = function (event) {
 	switch (event.button) {
 		case 3:
@@ -42,7 +39,6 @@ Variable.listPointerdown = function (event) {
 	}
 };
 
-// 面板 - 键盘按下事件
 Variable.panelKeydown = function (event) {
 	switch (event.target.tagName) {
 		case 'INPUT':
@@ -61,7 +57,6 @@ Variable.panelKeydown = function (event) {
 	}
 };
 
-// 搜索框 - 输入事件
 Variable.searcherInput = function (event) {
 	if (event.inputType === 'insertCompositionText') {
 		return;

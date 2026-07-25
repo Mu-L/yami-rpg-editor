@@ -3,11 +3,8 @@ import { File } from '../file/file-system-core.ts';
 import { Inspector } from '../inspector/inspector.ts';
 import { Updater } from './updater.ts';
 
-// 更新粒子数据
 Updater.updateParticles = function (verNum) {
-	// 更新到1.0.95版本：[min, max]参数换算成[std, dev]
 	if (verNum < Updater.getVersionNumber('1.0.95')) {
-		// 转换[min, max]到[std, dev]
 		const convert = (array) => {
 			const min = array[0];
 			const max = array[1];
@@ -46,9 +43,6 @@ Updater.updateParticles = function (verNum) {
 			File.planToSave(meta);
 		}
 	}
-	// 更新到1.0.122版本
-	// 删除hframes|vframes属性
-	// 添加sprite属性
 	if (verNum < Updater.getVersionNumber('1.0.122')) {
 		const keys = Object.keys(Inspector.particleLayer.create());
 		for (const [guid, particle] of Object.entries(Data.particles)) {

@@ -30,7 +30,7 @@ import fsExtra from 'fs-extra';
 import nodeYauzl from 'yauzl';
 import MarkdownIt from 'markdown-it';
 const GlobalPath = Path.resolve(os.homedir(), '.openyami');
-// ESM 下 __dirname 不存在，用 import.meta.url 推算：file: 协议剥两次得 dist/，http/https 兜底 process.cwd()/Project
+// ESM 下 __dirname 不存在，用 import.meta.url 推算
 const _moduleURL = new URL(import.meta.url);
 const _modulePath =
 	_moduleURL.protocol === 'file:'
@@ -38,21 +38,18 @@ const _modulePath =
 		: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 const __dirname =
 	_moduleURL.protocol === 'file:'
-		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+		? Path.dirname(Path.dirname(_modulePath))
 		: Path.resolve(process.cwd(), 'Project');
 // oxlint-disable no-unused-vars
-/* 小改动或者不确定放哪的都可以放这 */
 export const fs = fsExtra;
 export const yauzl = nodeYauzl;
 
-export const CommunityVersion = '26072001'; // 社区编辑器版本
+export const CommunityVersion = '26072001';
 
 EventBus.once('editor_loaded', () => {
-	// 更新项目数据
 	const checkForProjectUpdatesOrigin = Editor.checkForProjectUpdates;
 	Editor.checkForProjectUpdates = function (verNum) {
 		checkForProjectUpdatesOrigin.call(this, verNum);
-		// 增加缺失的属性
 		if (!Data.config.deadzone) {
 			Data.config.deadzone = 0.4;
 			Project.changed = true;
@@ -62,12 +59,11 @@ EventBus.once('editor_loaded', () => {
 
 export let PackMeta = JSON.parse(
 	nodeFs.readFileSync(Path.join(__dirname, 'Script/module', 'packmeta.json'), 'utf-8')
-); // 资源 meta 信息
+);
 
-export const TemplatesPath = Path.resolve(GlobalPath, 'Templates'); // 模板路径
+export const TemplatesPath = Path.resolve(GlobalPath, 'Templates');
 if (!fs.existsSync(TemplatesPath)) fs.mkdirSync(TemplatesPath, { recursive: true });
 
-// 检测是否安装了资源包
 export function isNoResource() {
 	const bak = JSON.parse(JSON.stringify(PackMeta));
 	delete bak['Editor'];
@@ -81,7 +77,6 @@ export function isNoResource() {
 	});
 	try {
 		const checkArr = [];
-		// 分别检测包是否存在
 		Object.keys(p).map((v) => {
 			p[v] = {};
 			p[v]['check'] = false;
@@ -102,9 +97,7 @@ export function isNoResource() {
 
 export let NoResourceObj = isNoResource();
 
-// ESM 下被 import 的 let 绑定对导入方是只读的（live binding 但 const 语义），
-// 跨模块整体赋值会抛 Assignment to constant variable；故提供 setter，
-// 在本模块内部完成赋值，让 live binding 把新值传给所有导入方
+// ESM let 绑定对导入方只读，故提供 setter 在本模块内部赋值，通过 live binding 传给所有导入方
 export function setPackMeta(value) {
 	PackMeta = value;
 }
@@ -113,24 +106,21 @@ export function setNoResourceObj(value) {
 }
 
 window.addEventListener('localize', () => {
-	Resources.initialize(); // 初始化
+	Resources.initialize();
 	if (!NoResourceObj['arpg-ts-english'].check && !NoResourceObj['arpg-ts-chinese'].check) {
 		Resources.open();
-		Resources.checkEditorVersion(); // 只检测编辑器版本
-		// 启动时是否检测更新（settingconfig.update.checkOnStart 开关，默认 true）
+		Resources.checkEditorVersion();
 		if (SettingConfig.config?.update?.checkOnStart !== false) {
 			Resources.checkVersion();
 		}
 	} else {
-		// 启动时是否检测更新（settingconfig.update.checkOnStart 开关，默认 true）
 		if (SettingConfig.config?.update?.checkOnStart !== false) {
 			Resources.checkVersion();
 		}
 	}
-	Resources.loaded = true; // 已检查过资源
+	Resources.loaded = true;
 });
 
-/* 新项目确认 */
 $('#newProject-confirm').off('click', NewProject.confirm);
 export const TitleConfirmOld = NewProject.confirm;
 NewProject.confirm = function () {
@@ -148,13 +138,11 @@ NewProject.confirm = function () {
 };
 $('#newProject-confirm').off('click', NewProject.confirm);
 
-// 解压zip
 export const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
 	return new Promise((resolve, reject) => {
 		let totalFiles = 0;
 		let extractedFiles = 0;
 
-		// 打开 ZIP 文件
 		yauzl.open(zipPath, { lazyEntries: true }, (err, zipfile) => {
 			if (err) return reject(err);
 			zipfile.on('entry', () => {
@@ -164,17 +152,14 @@ export const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
 			zipfile.on('entry', (entry) => {
 				const destPath = Path.join(outputDir, entry.fileName);
 
-				// 如果是目录，创建目录
 				if (entry.fileName.endsWith('/')) {
 					fs.ensureDirSync(destPath);
 					zipfile.readEntry();
 					return;
 				}
 
-				// 确保目标目录存在
 				fs.ensureDirSync(Path.dirname(destPath));
 
-				// 解压文件
 				zipfile.openReadStream(entry, (err, readStream) => {
 					if (err) return reject(err);
 
@@ -216,22 +201,18 @@ export function find_dItem(fn) {
 	var insertBefore = false;
 
 	if (!cur) {
-		//什么都没选，直接插入到最底下
 		return fn();
 	}
 	if (cur.class == 'folder') {
-		//选中了文件夹
 		return fn(cur);
 	}
 	if (!next) {
-		//没有下一个元素，但是当前元素在文件夹内
 		if (cur.parent.class == 'folder') {
 			return fn(cur.parent);
 		}
 		return fn();
 	}
 
-	//是和自己同一个文件夹内
 	if (next.parent == cur.parent) {
 		if (next.class == 'folder') {
 			insertBefore = true;
@@ -267,12 +248,9 @@ EventBus.once('editor_loaded', () => {
 		}
 	};
 
-	// 列表 - 粘贴
 	Enum.list.paste = function () {
 		const copy = (Clipboard as any).read('yami.data.enumeration');
 		if (copy) {
-			// 只有冲突时进行更换ID
-			// 支持跨项目复制保留ID
 			if (Enum.idMap[copy.id]) {
 				copy.id = Enum.createId();
 				//如果需要去掉后面的 -copy，把下面这行注释就好了
@@ -285,12 +263,9 @@ EventBus.once('editor_loaded', () => {
 		}
 	};
 
-	// 列表 - 粘贴
 	Variable.list.paste = function () {
 		const copy = (Clipboard as any).read('yami.data.variable');
 		if (copy) {
-			// 只有冲突时进行更换ID
-			// 支持跨项目复制保留ID
 			if (Variable.idMap[copy.id]) {
 				copy.id = Variable.createId();
 				//如果需要去掉后面的 -copy，把下面这行注释就好了
@@ -303,12 +278,9 @@ EventBus.once('editor_loaded', () => {
 		}
 	};
 
-	// 列表 - 粘贴
 	Attribute.list.paste = function () {
 		const copy = (Clipboard as any).read('yami.data.attribute');
 		if (copy) {
-			// 只有冲突时进行更换ID
-			// 支持跨项目复制保留ID
 			if (Attribute.idMap[copy.id]) {
 				copy.id = Attribute.createId();
 				//如果需要去掉后面的 -copy，把下面这行注释就好了
@@ -321,12 +293,9 @@ EventBus.once('editor_loaded', () => {
 		}
 	};
 
-	// 列表 - 粘贴
 	Localization.list.paste = function () {
 		const copy = (Clipboard as any).read('yami.data.localization');
 		if (copy) {
-			// 只有冲突时进行更换ID
-			// 支持跨项目复制保留ID
 			if (Localization.idMap[copy.id]) {
 				copy.id = Localization.createId();
 				//如果需要去掉后面的 -copy，把下面这行注释就好了
@@ -338,7 +307,6 @@ EventBus.once('editor_loaded', () => {
 		}
 	};
 
-	// 列表 - 粘贴
 	UI.list.paste = function (_, callback) {
 		const copy = (Clipboard as any).read('yami.ui.object');
 		if (copy && this.data) {
@@ -349,7 +317,6 @@ EventBus.once('editor_loaded', () => {
 	};
 });
 
-// 主界面 - 版本号
 export const homeElem = $('#home-version');
 
 homeElem.textContent = `当前社区版本：${CommunityVersion} 当前编辑器版本：${Updater.latestEditorVersion} 
@@ -364,7 +331,6 @@ homeElem.textContent = `当前社区版本：${CommunityVersion} 当前编辑器
 	);
 })();
 
-// 自动图块 - 显示引用数量
 const originAutoTileTemplateUpdate = AutoTile.templateList.update;
 AutoTile.templateList.update = function () {
 	originAutoTileTemplateUpdate.call(this);
@@ -373,20 +339,18 @@ AutoTile.templateList.update = function () {
 		.filter((v) => v.type === 'auto');
 	const countMap = {};
 	const data = this.data;
-	// 计数
 	for (let i = 0; i < autoList.length; i++) {
 		const tiles = autoList[i].tiles;
 		for (let j = 0; j < tiles.length; j++) {
 			const tile = tiles[j];
 
-			if (typeof tile !== 'object') continue; // 可能不是对象
+			if (typeof tile !== 'object') continue;
 			const template = tile.template;
 			if (!countMap[template]) countMap[template] = 0;
 			countMap[template]++;
-			break; // 只需要计数一次
+			break;
 		}
 	}
-	// 显示
 	for (let i = 0; i < data.length; i++) {
 		const item = data[i];
 		const count = countMap[item.id] || 0;
@@ -400,15 +364,12 @@ AutoTile.templateList.update = function () {
 	}
 };
 
-// ================================ 更新日志窗口 - 切换公告功能 ================================
-
-UpdateLog.currentMode = 'internal'; // 'internal' or 'community'
+UpdateLog.currentMode = 'internal';
 UpdateLog.internalItems = [];
 UpdateLog.communityItems = [];
 
 export const UpdateLogInitializeOrigin = UpdateLog.initialize;
 window.on('localize', () => {
-	// 设置标签页按钮的本地化文本
 	const tabInternal = $('#update-log-tab-internal');
 	const tabCommunity = $('#update-log-tab-community');
 	const tabDonation = $('#update-log-tab-donation');
@@ -419,7 +380,6 @@ window.on('localize', () => {
 UpdateLog.initialize = function () {
 	UpdateLogInitializeOrigin.call(this);
 
-	// 使用事件委托处理标签页按钮点击
 	const tabsContainer = $('#update-log-tabs');
 	if (tabsContainer) {
 		tabsContainer.addEventListener('click', (event) => {
@@ -444,7 +404,6 @@ UpdateLog.open = function (items = null) {
 		this.internalItems = items;
 		this.currentMode = 'internal';
 		this.update(items);
-		// 异步加载社区版公告
 		this.loadCommunityReleases();
 	} else {
 		UpdateLogOpenOrigin.call(this);
@@ -461,7 +420,6 @@ UpdateLog.update = function (items) {
 	if (this.currentMode === 'internal') {
 		UpdateLogUpdateOrigin.call(this, items);
 	} else {
-		// 显示社区版公告
 		this.content.clear();
 		const communityItems = this.communityItems;
 
@@ -500,7 +458,6 @@ UpdateLog.switchMode = function (mode) {
 		this.displayDonationList();
 	}
 
-	// 更新按钮状态
 	const tabInternal = $('#update-log-tab-internal');
 	const tabCommunity = $('#update-log-tab-community');
 	const tabDonation = $('#update-log-tab-donation');
@@ -520,7 +477,6 @@ UpdateLog.switchMode = function (mode) {
 	}
 };
 
-// 加载社区版公告
 UpdateLog.loadCommunityReleases = async function () {
 	try {
 		const response = await fetch(
@@ -540,7 +496,6 @@ UpdateLog.loadCommunityReleases = async function () {
 	}
 };
 
-// 显示捐赠名单
 UpdateLog.displayDonationList = function () {
 	this.content.clear();
 	const donationData = [
@@ -582,7 +537,6 @@ UpdateLog.displayDonationList = function () {
 	this.content.appendChild(donationList);
 };
 
-// 解析社区版公告
 UpdateLog.parseCommunityReleases = function (releases) {
 	const items = [];
 	for (const release of releases) {

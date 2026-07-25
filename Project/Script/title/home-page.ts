@@ -9,20 +9,16 @@ import { Editor } from '../main/editor.ts';
 import { Title } from './title-bar.ts';
 import { Local } from '../tools/localization.ts';
 
-// ******************************** 主页面对象 ********************************
-
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
 type HomeMethod = ((...args: any[]) => any) | null;
 
 interface HomeShape {
-	// methods
 	initialize: (() => void) | null;
 	updateCenterPosition: HomeMethod;
 	parseRecentProjects: HomeMethod;
 	removeRecentProject: HomeMethod;
 	readFileList: HomeMethod;
 	countFileList: HomeMethod;
-	// events
 	windowResize: HomeMethod;
 	windowLocalize: HomeMethod;
 	startClick: HomeMethod;
@@ -31,14 +27,12 @@ interface HomeShape {
 }
 
 export const Home: HomeShape = {
-	// methods
 	initialize: null,
 	updateCenterPosition: null,
 	parseRecentProjects: null,
 	removeRecentProject: null,
 	readFileList: null,
 	countFileList: null,
-	// events
 	windowResize: null,
 	windowLocalize: null,
 	startClick: null,
@@ -46,9 +40,7 @@ export const Home: HomeShape = {
 	recentPointerup: null
 };
 
-// 初始化
 Home.initialize = function () {
-	// 侦听事件
 	window.on('resize', this.windowResize);
 	window.on('localize', this.windowLocalize);
 	$('#home-start-list').on('click', this.startClick);
@@ -56,7 +48,6 @@ Home.initialize = function () {
 	$('#home-recent-list').on('pointerup', this.recentPointerup);
 };
 
-// 更新居中位置
 Home.updateCenterPosition = function () {
 	if (Layout.manager.index === 'home') {
 		const elPage = $('#home');
@@ -70,18 +61,14 @@ Home.updateCenterPosition = function () {
 	}
 };
 
-// 窗口 - 调整大小事件
 Home.windowResize = function (event) {
-	// 不支持page(home):resize事件
-	// 先用window:resize代替
+	// 不支持page(home):resize事件 先用window:resize代替
 	Home.updateCenterPosition();
 };
 
-// 解析最近的项目
 Home.parseRecentProjects = function () {
 	const nodes = $('.home-recent-item');
 	const items = Editor.config.recent;
-	// 获取统计模式配置，默认为'count'（只统计数量）
 	const statsMode =
 		typeof SettingConfig !== 'undefined' && SettingConfig.config.recent
 			? SettingConfig.config.recent.statsMode
@@ -98,17 +85,14 @@ Home.parseRecentProjects = function () {
 			node.show();
 		}
 
-		// 创建标题栏
 		const eBar = document.createElement('box');
 		eBar.addClass('home-recent-bar');
 		node.appendChild(eBar);
 
-		// 创建标题文本
 		const eTitle = document.createElement('text');
 		eTitle.addClass('home-recent-title');
 		eBar.appendChild(eTitle);
 
-		// 创建日期文本
 		const eDate = document.createElement('text');
 		const date = new Date(item.date);
 		const Y = date.getFullYear();
@@ -121,19 +105,16 @@ Home.parseRecentProjects = function () {
 		eDate.textContent = `${Y}/${M}/${D} ${h}:${m2}`;
 		eBar.appendChild(eDate);
 
-		// 创建路径文本
 		const ePath = document.createElement('text');
 		const path = item.path;
 		ePath.addClass('home-recent-path');
 		ePath.textContent = Path.normalize(path);
 		node.appendChild(ePath);
 
-		// 创建统计列表
 		const eStat = document.createElement('box');
 		eStat.addClass('home-recent-stat');
 		node.appendChild(eStat);
 
-		// 检查文件是否存在
 		const dirname = Path.dirname(path);
 		new Promise((resolve, reject) => {
 			if (FS.existsSync(path)) {
@@ -144,7 +125,6 @@ Home.parseRecentProjects = function () {
 			}
 		})
 			.then((data) => {
-				// 设置标题文本
 				const { window } = JSON.parse(data as any);
 				eTitle.textContent = window.title;
 
@@ -195,16 +175,13 @@ Home.parseRecentProjects = function () {
 					const count = counts[type];
 					const size = File.parseFileSize(sizes[type]);
 
-					// 创建统计文本
 					const eText = document.createElement('text');
 					eText.addClass('home-recent-data');
 
 					// 根据统计模式显示不同的信息
 					if (statsMode === 'size') {
-						// 只显示大小
 						eText.textContent = `${name}: ${size}`;
 					} else {
-						// 只显示数量
 						eText.textContent = `${name}: ${count}`;
 					}
 					eStat.appendChild(eText);
@@ -222,7 +199,6 @@ Home.parseRecentProjects = function () {
 	}
 };
 
-// 移除最近的项目
 Home.removeRecentProject = function (index) {
 	const nodes = $('.home-recent-item');
 	const items = Editor.config.recent;
@@ -245,10 +221,8 @@ Home.removeRecentProject = function (index) {
 	}
 };
 
-// 读取文件列表
 Home.countFileList = (function IIFE() {
 	const extnameToTypeMap = {
-		// 数据类型
 		'.actor': 'data',
 		'.skill': 'data',
 		'.trigger': 'data',
@@ -262,16 +236,13 @@ Home.countFileList = (function IIFE() {
 		'.anim': 'data',
 		'.particle': 'data',
 		'.json': 'data',
-		// 脚本类型
 		'.js': 'script',
 		'.ts': 'script',
-		// 图像类型
 		'.png': 'image',
 		'.jpg': 'image',
 		'.jpeg': 'image',
 		'.cur': 'image',
 		'.webp': 'image',
-		// 媒体类型
 		'.mp3': 'media',
 		'.m4a': 'media',
 		'.ogg': 'media',
@@ -280,7 +251,6 @@ Home.countFileList = (function IIFE() {
 		'.mp4': 'media',
 		'.mkv': 'media',
 		'.webm': 'media',
-		// 其他类型
 		'.ttf': 'other',
 		'.otf': 'other',
 		'.woff': 'other',
@@ -324,7 +294,6 @@ Home.countFileList = (function IIFE() {
 
 Home.readFileList = (function IIFE() {
 	const extnameToTypeMap = {
-		// 数据类型
 		'.actor': 'data',
 		'.skill': 'data',
 		'.trigger': 'data',
@@ -338,16 +307,13 @@ Home.readFileList = (function IIFE() {
 		'.anim': 'data',
 		'.particle': 'data',
 		'.json': 'data',
-		// 脚本类型
 		'.js': 'script',
 		'.ts': 'script',
-		// 图像类型
 		'.png': 'image',
 		'.jpg': 'image',
 		'.jpeg': 'image',
 		'.cur': 'image',
 		'.webp': 'image',
-		// 媒体类型
 		'.mp3': 'media',
 		'.m4a': 'media',
 		'.ogg': 'media',
@@ -356,7 +322,6 @@ Home.readFileList = (function IIFE() {
 		'.mp4': 'media',
 		'.mkv': 'media',
 		'.webm': 'media',
-		// 其他类型
 		'.ttf': 'other',
 		'.otf': 'other',
 		'.woff': 'other',
@@ -404,14 +369,12 @@ Home.readFileList = (function IIFE() {
 	};
 })();
 
-// 窗口 - 本地化事件
 Home.windowLocalize = function (event) {
 	if (Layout.manager.index === 'home') {
 		Home.parseRecentProjects();
 	}
 };
 
-// 开始列表 - 鼠标点击事件
 Home.startClick = function (event) {
 	const element = event.target;
 	if (element.hasClass('home-start-item')) {
@@ -426,7 +389,6 @@ Home.startClick = function (event) {
 	}
 };
 
-// 最近列表 - 鼠标点击事件
 Home.recentClick = function (event) {
 	const element = event.target;
 	if (element.hasClass('home-recent-item') && !element.hasClass('disabled')) {
@@ -437,7 +399,6 @@ Home.recentClick = function (event) {
 	}
 };
 
-// 最近列表 - 指针弹起事件
 Home.recentPointerup = function (event) {
 	switch (event.button) {
 		case 2: {

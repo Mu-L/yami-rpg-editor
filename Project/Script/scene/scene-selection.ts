@@ -6,7 +6,6 @@ Scene.selectObject = function (x, y) {
 	let target = null;
 	let weight = 0;
 
-	// 选择角色和动画对象
 	if (!target) {
 		const actors = this.actors;
 		const animations = this.animations;
@@ -41,22 +40,18 @@ Scene.selectObject = function (x, y) {
 		}
 	}
 
-	// 选择区域对象
 	if (!precise) {
 		target = this.selectRegion(x, y) ?? target;
 	}
 
-	// 选择粒子发射器对象
 	if (!target) {
 		target = this.selectParticleEmitter(x, y);
 	}
 
-	// 选择光源对象
 	if (!target && this.showLight) {
 		target = this.selectLight(x, y);
 	}
 
-	// 选择视差图和瓦片地图对象
 	if (!target) {
 		target = this.selectSortedLayer(x, y);
 	}
@@ -64,7 +59,6 @@ Scene.selectObject = function (x, y) {
 	return target;
 };
 
-// 选择区域
 Scene.selectRegion = function (x, y) {
 	let target = null;
 	let weight = 0;
@@ -92,7 +86,6 @@ Scene.selectRegion = function (x, y) {
 	return target;
 };
 
-// 选择光源
 Scene.selectLight = function (x, y) {
 	let target = null;
 	let weight = 0;
@@ -146,7 +139,6 @@ Scene.selectLight = function (x, y) {
 	return target;
 };
 
-// 选择粒子发射器
 Scene.selectParticleEmitter = function (x, y) {
 	let target = null;
 	let weight = 0;
@@ -163,7 +155,6 @@ Scene.selectParticleEmitter = function (x, y) {
 		}
 		const emitter = particle.emitter;
 		if (emitter?.bounding.hasArea) {
-			// 如果粒子发射器存在区域
 			const rect = emitter.bounding;
 			const point = convert(particle);
 			const rx = mx - point.x;
@@ -202,7 +193,6 @@ Scene.selectParticleEmitter = function (x, y) {
 	return target;
 };
 
-// 选择有序图层(视差图和瓦片地图)
 Scene.selectSortedLayer = function (x, y) {
 	const sPoint = this.sharedPoint.set(x, y);
 	const dPoint = this.getConvertedCoords(sPoint);
@@ -275,7 +265,6 @@ Scene.selectSortedLayer = function (x, y) {
 	return null;
 };
 
-// 绘制椭圆线框
 Scene.drawOvalWireframe = function (ox, oy, hr, vr, color) {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
@@ -315,7 +304,6 @@ Scene.drawOvalWireframe = function (ox, oy, hr, vr, color) {
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, vi / 2);
 };
 
-// 绘制目标锚点
 Scene.drawTargetAnchor = function (target, angle, color = 0xff00ff00) {
 	const { x, y } = this.getConvertedCoords(target);
 	const gl = GL;
@@ -369,7 +357,6 @@ Scene.drawTargetAnchor = function (target, angle, color = 0xff00ff00) {
 	gl.drawArrays(gl.TRIANGLES, 0, 12);
 };
 
-// 绘制矩形线框
 Scene.drawRectWireframe = function (dl, dt, dr, db, ax, ay, angle) {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
@@ -392,7 +379,6 @@ Scene.drawRectWireframe = function (dl, dt, dr, db, ax, ay, angle) {
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 10);
 };
 
-// 绘制瓦片地图上的矩形线框
 Scene.drawRectWireframeOnTilemap = function (rl, rt, rw, rh, ax, ay, angle) {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
@@ -422,7 +408,6 @@ Scene.drawRectWireframeOnTilemap = function (rl, rt, rw, rh, ax, ay, angle) {
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 10);
 };
 
-// 设置矩形线框顶点
 Scene.setRectWireframeVertices = function (vertices, dl, dt, dr, db, matrix) {
 	const a = matrix[0];
 	const b = matrix[1];

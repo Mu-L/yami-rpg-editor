@@ -2,8 +2,6 @@
 import { Matrix } from '../webgl/matrix2.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 元素基类 ********************************
-
 UI.Element = class UIElement {
 	node: any;
 	x: number;
@@ -32,7 +30,6 @@ UI.Element = class UIElement {
 		this.connected = false;
 	}
 
-	// 绘制线框
 	drawWireframe(color: any) {
 		const gl = GL;
 		const vertices = gl.arrays[0].float32;
@@ -98,7 +95,6 @@ UI.Element = class UIElement {
 		gl.drawArrays(gl.LINE_LOOP, 0, 4);
 	}
 
-	// 绘制默认图像
 	drawDefaultImage() {
 		GL.alpha = this.opacity;
 		GL.blend = (this as any).blend;
@@ -106,19 +102,16 @@ UI.Element = class UIElement {
 		GL.fillRect(this.x, this.y, this.width, this.height, 0x80ffffff);
 	}
 
-	// 连接元素
 	connect() {
 		this.connected = true;
 		this.connectChildren();
 	}
 
-	// 断开元素
 	disconnect() {
 		this.connected = false;
 		this.disconnectChildren();
 	}
 
-	// 连接子元素
 	connectChildren() {
 		const children = this.children;
 		const length = children.length;
@@ -127,7 +120,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 断开子元素
 	disconnectChildren() {
 		const children = this.children;
 		const length = children.length;
@@ -136,7 +128,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 绘制子元素
 	drawChildren() {
 		const children = this.children;
 		const length = children.length;
@@ -145,7 +136,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 调整子元素
 	resizeChildren() {
 		const children = this.children;
 		const length = children.length;
@@ -154,7 +144,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 销毁子元素
 	destroyChildren() {
 		const children = this.children;
 		const length = children.length;
@@ -163,7 +152,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 销毁元素
 	destroy() {
 		const { node } = this;
 		if (!node) return;
@@ -173,7 +161,6 @@ UI.Element = class UIElement {
 		node.instances.remove(this);
 	}
 
-	// 加入子对象
 	appendChild(element: any) {
 		if (element && this.children.append(element)) {
 			element.parent instanceof UI.Element && element.parent.children.remove(element);
@@ -185,7 +172,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 加入子对象到指定位置
 	appendChildTo(element: any, index: any) {
 		if (element instanceof UI.Element) {
 			if (element.parent instanceof UI.Element) {
@@ -205,7 +191,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 从父对象中移除
 	remove() {
 		if (this.parent instanceof UI.Element && this.parent.children.remove(this)) {
 			UI.root.tryUpdateReferenceElements(this.parent);
@@ -219,7 +204,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 计算位置
 	calculatePosition() {
 		if (this.connected === false) {
 			return;
@@ -243,14 +227,12 @@ UI.Element = class UIElement {
 		const skewY = transform.skewY;
 		const opacity = transform.opacity * parent.opacity;
 
-		// 写入计算值
 		this.x = x - anchorX;
 		this.y = y - anchorY;
 		this.width = width;
 		this.height = height;
 		this.opacity = opacity;
 
-		// 计算矩阵变换
 		if (rotation !== 0) {
 			matrix.rotateAt(x, y, Math.radians(rotation));
 		}
@@ -262,7 +244,6 @@ UI.Element = class UIElement {
 		}
 	}
 
-	// 判断是否包含指定元素
 	contains(element: any) {
 		while (element) {
 			if (element === this) {
@@ -273,7 +254,6 @@ UI.Element = class UIElement {
 		return false;
 	}
 
-	// 判断点是否在矩形区域内
 	isPointIn(x: any, y: any) {
 		const W = this.width;
 		const H = this.height;

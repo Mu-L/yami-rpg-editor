@@ -3,21 +3,14 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 场景对象访问器窗口 ********************************
-
 export const ObjectGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 ObjectGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#objectGetter-type').loadItems([
 		{ name: 'Event Trigger Object', value: 'trigger' },
 		{ name: 'Latest Scene Object', value: 'latest' },
@@ -25,7 +18,6 @@ ObjectGetter.initialize = function () {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置关联元素
 	$('#objectGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -33,11 +25,9 @@ ObjectGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#objectGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#objectGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 ObjectGetter.open = function (target) {
 	this.target = target;
 	Window.open('objectGetter');
@@ -62,7 +52,6 @@ ObjectGetter.open = function (target) {
 	$('#objectGetter-type').getFocus();
 };
 
-// 确定按钮 - 鼠标点击事件
 ObjectGetter.confirm = function (event) {
 	const read = getElementReader('objectGetter');
 	const type = read('type');

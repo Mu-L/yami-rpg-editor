@@ -3,8 +3,6 @@ import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 import { Color } from '../tools/color-picker-window.ts';
 
-// ******************************** 设置文本框 - 属性窗口 ********************************
-
 export const TextBoxProperty = createPropertyWindow({
 	prefix: 'setTextBox',
 	locale: 'command.setTextBox',

@@ -11,9 +11,6 @@ import { Local } from '../tools/localization.ts';
 import { Menu } from '../components/menu-list.ts';
 import { Inspector } from '../inspector/inspector.ts';
 
-// ******************************** 事件编辑器 ********************************
-
-// 事件编辑器列表子对象契约（大量动态挂载方法 + DOM 扩展）
 interface EventEditorList {
 	lastScrollTop: number;
 	selectIndex: ((index: number) => void) | null;
@@ -39,7 +36,6 @@ interface EventEditorList {
 	foldable: boolean;
 	creators: any[];
 	updaters: any[];
-	// DOM 扩展方法（HTMLElement 子类化）
 	bind(getter: () => any): void;
 	on(type: string, listener: (event: any) => void, options?: any): void;
 	off(type: string, listener: (event: any) => void, options?: any): void;
@@ -130,7 +126,6 @@ interface EventEditorShape {
 }
 
 export const EventEditor: EventEditorShape = {
-	// properties
 	list: $('#event-open-list'),
 	commandList: $('#event-commands'),
 	outerGutter: $('#event-commands-gutter-outer'),
@@ -139,7 +134,6 @@ export const EventEditor: EventEditorShape = {
 	data: null,
 	caches: [],
 	types: null,
-	// methods
 	initialize: null,
 	openLocalEvent: null,
 	openGlobalEvent: null,
@@ -162,7 +156,6 @@ export const EventEditor: EventEditorShape = {
 	fetchCommandBuffer: null,
 	clearCommandBuffers: null,
 	getGlobalEventName: null,
-	// events
 	windowLocalize: null,
 	windowClose: null,
 	windowClosed: null,
@@ -181,7 +174,6 @@ export const EventEditor: EventEditorShape = {
 	apply: null
 };
 
-// list methods
 EventEditor.list.lastScrollTop = 0;
 EventEditor.list.selectIndex = null;
 EventEditor.list.close = null;
@@ -202,9 +194,7 @@ EventEditor.list.updateInitText = null;
 EventEditor.list.updateItemName = null;
 EventEditor.list.closeButtonClick = null;
 
-// 初始化
 EventEditor.initialize = function () {
-	// 绑定打开事件列表
 	const { list } = this;
 	list.removable = true;
 	list.foldable = false;
@@ -213,7 +203,6 @@ EventEditor.initialize = function () {
 	list.creators.push(list.createInitText);
 	list.creators.push(list.updateInitText);
 
-	// 创建事件类型选项
 	const types = {
 		common: { name: 'Common', value: 'common', tip: '' },
 		create: { name: 'Create', value: 'create', tip: '' },
@@ -469,19 +458,16 @@ EventEditor.initialize = function () {
 		relatedElements: []
 	};
 
-	// 设置指令列表的内部高度
 	const INNER_HEIGHT = 600;
 	Object.defineProperty(this.commandList, 'innerHeight', {
 		configurable: true,
 		value: INNER_HEIGHT
 	});
 
-	// 设置行号列表和指令列表的底部填充高度
 	const PADDING_BOTTOM = INNER_HEIGHT - 20;
 	this.commandList.style.paddingBottom = `${PADDING_BOTTOM + 10}px`;
 	this.innerGutter.style.paddingBottom = `${PADDING_BOTTOM}px`;
 
-	// 侦听事件
 	window.on('localize', this.windowLocalize);
 	$('#event').on('close', this.windowClose);
 	$('#event').on('closed', this.windowClosed);
@@ -497,13 +483,11 @@ EventEditor.initialize = function () {
 	$('#event-apply').on('click', this.apply);
 };
 
-// 打开本地事件
 EventEditor.openLocalEvent = function (inserting, filter, name, event, callback) {
 	this.unpackOpenEvents();
 	Window.open('event');
 	window.on('keydown', this.windowKeydown);
 
-	// 查询项目并更新列表
 	const list = this.list;
 	const item = list.createLocalEventItem(inserting, filter, name, event, callback);
 	list.addNodeTo(item, null);
@@ -512,12 +496,10 @@ EventEditor.openLocalEvent = function (inserting, filter, name, event, callback)
 	list.restoreScroll();
 	list.scrollToSelection('middle');
 
-	// 列表获得焦点
 	list.getFocus();
 	return item;
 };
 
-// 打开数据
 EventEditor.openGlobalEvent = function (guid) {
 	if (!Window.isWindowOpen('event')) {
 		this.unpackOpenEvents();
@@ -527,7 +509,6 @@ EventEditor.openGlobalEvent = function (guid) {
 		return;
 	}
 
-	// 查询项目并更新列表
 	const list = this.list;
 	const item = this.getItemById(guid);
 	if (item) {
@@ -545,11 +526,9 @@ EventEditor.openGlobalEvent = function (guid) {
 	}
 	list.scrollToSelection('middle');
 
-	// 列表获得焦点
 	list.getFocus();
 };
 
-// 打开相关事件
 EventEditor.openRelatedEvents = function (contexts) {
 	const list = this.list;
 	const items = [];
@@ -588,7 +567,6 @@ EventEditor.openRelatedEvents = function (contexts) {
 	}
 };
 
-// 查找相关事件
 EventEditor.findRelatedEvents = function (eventId) {
 	const guidMap = Data.manifest.guidMap;
 	const references = [];
@@ -706,7 +684,6 @@ EventEditor.findRelatedEvents = function (eventId) {
 	this.openRelatedEvents(references);
 };
 
-// 获取所有本地事件
 EventEditor.getAllLocalEvents = function () {
 	const listMap = {};
 	for (const [id, actor] of Object.entries<any>(Data.actors)) {
@@ -757,7 +734,6 @@ EventEditor.getAllLocalEvents = function () {
 	return listMap;
 };
 
-// 清除所有事件标记类名
 EventEditor.clearAllEventClasses = function (...items) {
 	for (const item of items) {
 		item.element.removeClass('local-event');
@@ -766,14 +742,12 @@ EventEditor.clearAllEventClasses = function (...items) {
 	}
 };
 
-// 清除相关事件标记类名
 EventEditor.clearRelatedEventClasses = function (...items) {
 	for (const item of items) {
 		item.element.removeClass('related-event');
 	}
 };
 
-// 保存数据
 EventEditor.save = function (item) {
 	const commands = item.commands;
 	commands.history.saveState();
@@ -790,7 +764,6 @@ EventEditor.save = function (item) {
 	};
 };
 
-// 判断是否已改变
 EventEditor.isChanged = function () {
 	for (const item of this.data) {
 		if (item.changed) {
@@ -800,7 +773,6 @@ EventEditor.isChanged = function () {
 	return false;
 };
 
-// 获取ID匹配的项目
 EventEditor.getItemById = function (id) {
 	const items = this.data;
 	const length = items.length;
@@ -813,7 +785,6 @@ EventEditor.getItemById = function (id) {
 	return undefined;
 };
 
-// 获取事件匹配的项目
 EventEditor.getItemByEvent = function (event) {
 	const items = this.data;
 	const length = items.length;
@@ -826,39 +797,31 @@ EventEditor.getItemByEvent = function (event) {
 	return undefined;
 };
 
-// 打开指令列表
 EventEditor.openCommandList = function (item) {
-	// 获取指令缓存
 	this.fetchCommandBuffer(item);
 	$('#event-commands-fieldset').show();
 	$('#event-type').show();
 
 	const { commands, filter } = item;
 
-	// 创建类型选项
 	$('#event-type').loadItems(Enum.getMergedItems(this.types[filter], filter + '-event'));
 
-	// 创建类型工具提示
 	$('#event-type').createTooltip();
 
-	// 写入数据
 	const write = getElementWriter('event');
 	write('commands', commands);
 	write('type', item.type);
 };
 
-// 关闭指令列表
 EventEditor.closeCommandList = function () {
 	this.commandList.clear();
 	$('#event-commands-fieldset').hide();
 	$('#event-type').hide();
 };
 
-// 解包已打开事件列表
 EventEditor.unpackOpenEvents = function () {
 	const copies = [];
 	const events = Editor.project.openEvents;
-	// 移除无效的事件
 	let i = events.length;
 	while (--i >= 0) {
 		if (Data.events[events[i].id] === undefined) {
@@ -877,7 +840,6 @@ EventEditor.unpackOpenEvents = function () {
 	this.data = copies;
 };
 
-// 打包已打开事件列表
 EventEditor.packOpenEvents = function () {
 	const copies = [];
 	for (const item of this.data) {
@@ -888,7 +850,6 @@ EventEditor.packOpenEvents = function () {
 	Editor.project.openEvents = copies;
 };
 
-// 调整行号列表
 EventEditor.resizeGutter = function () {
 	const { outerGutter, innerGutter } = this;
 	const height = outerGutter.clientHeight;
@@ -914,7 +875,6 @@ EventEditor.resizeGutter = function () {
 	}
 };
 
-// 更新行号列表
 EventEditor.updateGutter = function (force) {
 	const { commandList } = this;
 	const { scrollTop } = commandList;
@@ -943,12 +903,10 @@ EventEditor.updateGutter = function (force) {
 			}
 		}
 	}
-	// 通过容差来消除非1:1时的抖动
 	const tolerance = 0.0001;
 	outerGutter.scrollTop = (scrollTop + tolerance) % 20;
 };
 
-// 添加指令数据到缓存列表
 EventEditor.appendCommandsToCaches = function (commands) {
 	const { caches } = this;
 	if (caches.append(commands) && caches.length > 50) {
@@ -956,11 +914,9 @@ EventEditor.appendCommandsToCaches = function (commands) {
 	}
 };
 
-// 获取指令缓存
 EventEditor.fetchCommandBuffer = function (item) {
 	if (item.commands) return;
 	const { event, id } = item;
-	// 初始化指令数据标记
 	const commands = event.commands;
 	if (!commands.symbol) {
 		Object.defineProperty(commands, 'symbol', {
@@ -969,13 +925,11 @@ EventEditor.fetchCommandBuffer = function (item) {
 		});
 	}
 
-	// 获取指令数据缓存
 	const symbol = commands.symbol;
 	let commandsClone = this.caches.find((target) => {
 		return target.symbol === symbol;
 	});
 
-	// 克隆指令数据
 	if (!commandsClone) {
 		commandsClone = Object.clone(commands);
 		Object.defineProperties(commandsClone, {
@@ -993,7 +947,6 @@ EventEditor.fetchCommandBuffer = function (item) {
 	item.commands = commandsClone;
 };
 
-// 清除指令缓存元素
 EventEditor.clearCommandBuffers = function () {
 	const { commandList } = this;
 	for (const commands of this.caches) {
@@ -1007,14 +960,11 @@ EventEditor.clearCommandBuffers = function () {
 	}
 };
 
-// 获取全局事件名称
 EventEditor.getGlobalEventName = function (id) {
 	return Data.manifest.guidMap[id]?.file.basename ?? '';
 };
 
-// 窗口 - 本地化事件
 EventEditor.windowLocalize = function (event) {
-	// 更新事件类型选项名称
 	const types = EventEditor.types;
 	const getType = Local.createGetter('eventTypes');
 	const getTip = Local.createGetter('eventTips');
@@ -1029,7 +979,6 @@ EventEditor.windowLocalize = function (event) {
 			item.tip = Local.parseTip(tip, name);
 		}
 	}
-	// 更新事件类型相关元素
 	for (const selectBox of types.relatedElements) {
 		selectBox.createTooltip();
 		if (selectBox.read()) {
@@ -1038,7 +987,6 @@ EventEditor.windowLocalize = function (event) {
 	}
 };
 
-// 窗口 - 关闭事件
 EventEditor.windowClose = function (event) {
 	this.closing = true;
 	if (this.isChanged()) {
@@ -1052,9 +1000,6 @@ EventEditor.windowClose = function (event) {
 				{
 					label: get('yes'),
 					click: () => {
-						// 尝试恢复指令数据
-						// 成功则添加到缓存
-						// 失败则从缓存中移除
 						for (const item of this.data) {
 							if (item.changed) {
 								item.changed = false;
@@ -1080,7 +1025,6 @@ EventEditor.windowClose = function (event) {
 	this.closing = false;
 }.bind(EventEditor);
 
-// 窗口 - 已关闭事件
 EventEditor.windowClosed = function (event) {
 	this.clearAllEventClasses(...this.data);
 	this.packOpenEvents();
@@ -1091,9 +1035,7 @@ EventEditor.windowClosed = function (event) {
 	window.off('keydown', this.windowKeydown);
 }.bind(EventEditor);
 
-// 窗口 - 调整大小事件
 EventEditor.windowResize = function (event) {
-	// 设置指令列表的内部高度
 	const { list, commandList } = EventEditor;
 	const parent = commandList.parentNode as HTMLElement;
 	const outerHeight = parent.clientHeight;
@@ -1103,30 +1045,23 @@ EventEditor.windowResize = function (event) {
 		value: innerHeight
 	});
 
-	// 设置行号列表和指令列表的底部填充高度
 	const { innerGutter } = EventEditor;
 	const paddingBottom = innerHeight - 20;
 	commandList.style.paddingBottom = `${paddingBottom + 10}px`;
 	innerGutter.style.paddingBottom = `${paddingBottom}px`;
 
-	// 调整列表
 	list.resize();
 	commandList.resize();
 
-	// 当使用快捷键滚动到底部并且溢出时再最大化窗口
-	// 会触发BUG: 插入指令resize刷新时增加scrollTop
-	// 重置scrollTop可以避免这个现象
-	// 由于scroll是异步事件因此不会重复触发
+	// 会触发BUG: 插入指令resize刷新时增加scrollTop 重置scrollTop可以避免这个现象 由于scroll是异步事件因此不会重复触发
 	const st = commandList.scrollTop;
 	commandList.scrollTop = 0;
 	commandList.scrollTop = st;
 
-	// 调整行号列表
 	EventEditor.resizeGutter();
 	EventEditor.updateGutter(true);
 };
 
-// 窗口 - 键盘按下事件
 EventEditor.windowKeydown = function (event) {
 	if (event.cmdOrCtrlKey) {
 		switch (event.code) {
@@ -1151,7 +1086,6 @@ EventEditor.windowKeydown = function (event) {
 	}
 };
 
-// 窗口 - 键盘弹起事件
 EventEditor.windowKeyup = function (event) {
 	if (!event.altKey) {
 		switch (event.code) {
@@ -1165,8 +1099,6 @@ EventEditor.windowKeyup = function (event) {
 	}
 };
 
-// 窗口 - 指针移动事件
-// ctrl组合快捷键导致blur无法触发按键弹起事件，补救方法
 EventEditor.windowPointermove = function (event) {
 	if (!event.altKey) {
 		EventEditor.list.removeClass('alt');
@@ -1176,7 +1108,6 @@ EventEditor.windowPointermove = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 EventEditor.listPointerdown = function (event) {
 	if (event.altKey && event.button === 0) {
 		const element = event.target;
@@ -1192,7 +1123,6 @@ EventEditor.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 EventEditor.listSelect = function (event) {
 	const item = event.value;
 	EventEditor.openCommandList(item);
@@ -1201,7 +1131,6 @@ EventEditor.listSelect = function (event) {
 	}
 };
 
-// 列表 - 菜单弹出事件
 EventEditor.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
@@ -1253,7 +1182,6 @@ EventEditor.listPopup = function (event) {
 	);
 };
 
-// 类型 - 输入事件
 EventEditor.typeInput = function (event) {
 	const item = EventEditor.list.read();
 	if (!item.changed) {
@@ -1264,7 +1192,6 @@ EventEditor.typeInput = function (event) {
 	EventEditor.list.updateItemName(item);
 };
 
-// 指令列表 - 改变事件
 EventEditor.commandListChange = function (event) {
 	if (EventEditor.closing) return;
 	const item = EventEditor.list.read();
@@ -1275,28 +1202,23 @@ EventEditor.commandListChange = function (event) {
 	}
 };
 
-// 指令列表 - 更新事件
 EventEditor.commandListUpdate = function (event) {
 	EventEditor.resizeGutter();
 	EventEditor.updateGutter(true);
 };
 
-// 指令列表 - 滚动事件
 EventEditor.commandListScroll = function (event) {
 	EventEditor.updateGutter(false);
 };
 
-// 确定按钮 - 鼠标点击事件
 EventEditor.confirm = function (event) {
 	this.apply();
 	Window.close('event');
 }.bind(EventEditor);
 
-// 应用按钮 - 鼠标点击事件
 EventEditor.apply = function (event) {
 	for (const item of this.data) {
 		switch (item.class) {
-			// 保存全局事件
 			case 'global':
 				if (item.changed) {
 					item.changed = false;
@@ -1312,7 +1234,6 @@ EventEditor.apply = function (event) {
 					event.commands = save.commands;
 				}
 				break;
-			// 保存本地事件
 			case 'local':
 				if (item.changed || item.inserting) {
 					item.changed = false;
@@ -1330,7 +1251,6 @@ EventEditor.apply = function (event) {
 	}
 }.bind(EventEditor);
 
-// 列表 - 选择索引
 EventEditor.list.selectIndex = function (index) {
 	const elements = this.elements;
 	const last = elements.count - 1;
@@ -1340,7 +1260,6 @@ EventEditor.list.selectIndex = function (index) {
 	}
 };
 
-// 列表 - 关闭
 EventEditor.list.close = function (item) {
 	if (item === undefined) {
 		item = this.read();
@@ -1351,7 +1270,6 @@ EventEditor.list.close = function (item) {
 			EventEditor.clearAllEventClasses(item);
 			this.deleteNode(item);
 			EventEditor.closeCommandList();
-			// 自动选择下一个列表项
 			this.selectIndex(index);
 		};
 		if (item.changed) {
@@ -1375,7 +1293,6 @@ EventEditor.list.close = function (item) {
 	}
 };
 
-// 列表 - 关闭多个事件
 EventEditor.list.closeMultiple = function (items, callback) {
 	if (items.length === 0) return;
 	const closeMultiple = () => {
@@ -1407,36 +1324,30 @@ EventEditor.list.closeMultiple = function (items, callback) {
 	closeMultiple();
 };
 
-// 列表 - 关闭下面的事件
 EventEditor.list.closeBelow = function (item) {
 	const index = this.data.indexOf(item);
 	this.closeMultiple(this.data.slice(index + 1));
 };
 
-// 列表 - 关闭其他的事件
 EventEditor.list.closeOthers = function (item) {
 	const items = this.data.slice();
 	items.remove(item);
 	this.closeMultiple(items);
 };
 
-// 列表 - 关闭全部的事件
 EventEditor.list.closeAll = function () {
 	const callback = () => EventEditor.closeCommandList();
 	this.closeMultiple(this.data.slice(), callback);
 };
 
-// 列表 - 保存滚动状态
 EventEditor.list.saveScroll = function () {
 	this.lastScrollTop = this.scrollTop;
 };
 
-// 列表 - 恢复滚动状态
 EventEditor.list.restoreScroll = function () {
 	this.scrollTop = this.lastScrollTop;
 };
 
-// 列表 - 定义属性
 EventEditor.list.defineProperties = function (item) {
 	return Object.defineProperties(item, {
 		name: {
@@ -1482,7 +1393,6 @@ EventEditor.list.defineProperties = function (item) {
 	});
 };
 
-// 列表 - 创建本地事件项目
 EventEditor.list.createLocalEventItem = function (inserting, filter, name, event, callback) {
 	const item = EventEditor.list.defineProperties({ id: '' });
 	item.name = name;
@@ -1496,7 +1406,6 @@ EventEditor.list.createLocalEventItem = function (inserting, filter, name, event
 	return item;
 };
 
-// 列表 - 创建全局事件项目
 EventEditor.list.createGlobalEventItem = function (guid) {
 	const item = EventEditor.list.defineProperties({ id: guid });
 	const event = Data.events[guid];
@@ -1511,7 +1420,6 @@ EventEditor.list.createGlobalEventItem = function (guid) {
 	return item;
 };
 
-// 列表 - 更新项目类名
 EventEditor.list.updateItemClass = function (item) {
 	const { element } = item;
 	element.addClass('event-open-item');
@@ -1522,7 +1430,6 @@ EventEditor.list.updateItemClass = function (item) {
 	}
 };
 
-// 列表 - 重写创建图标方法
 EventEditor.list.createIcon = function () {
 	const closeButton = document.createElement('text');
 	closeButton.textContent = '×';
@@ -1531,7 +1438,6 @@ EventEditor.list.createIcon = function () {
 	return closeButton;
 };
 
-// 列表 - 创建初始化文本
 EventEditor.list.createInitText = function (item) {
 	const { element } = item;
 	const initText = document.createElement('text');
@@ -1541,7 +1447,6 @@ EventEditor.list.createInitText = function (item) {
 	element.attrValue = '';
 };
 
-// 列表 - 更新初始化文本
 EventEditor.list.updateInitText = function (item) {
 	const { element } = item;
 	if (element.initText !== undefined) {
@@ -1558,13 +1463,11 @@ EventEditor.list.updateInitText = function (item) {
 	}
 };
 
-// 列表 - 重写更新项目名称方法
 EventEditor.list.updateItemName = function (item) {
 	TreeList.prototype.updateItemName.call(this, item);
 	this.updateInitText(item);
 };
 
-// 列表 - 关闭按钮点击事件
 EventEditor.list.closeButtonClick = function (event) {
 	EventEditor.list.close((event.target as any).parentNode.item);
 };

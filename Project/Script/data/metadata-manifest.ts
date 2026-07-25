@@ -3,8 +3,6 @@ import { Meta } from './metadata.ts';
 import { File } from '../file/file-system-core.ts';
 import { Title } from '../title/title-bar.ts';
 
-// ******************************** 元数据清单类 ********************************
-
 export class Manifest {
 	actors: any[] = [];
 	skills: any[] = [];
@@ -45,7 +43,6 @@ export class Manifest {
 		});
 	}
 
-	// 更新
 	update() {
 		const { metaList } = this;
 		const { versionId } = Meta;
@@ -59,7 +56,6 @@ export class Manifest {
 		}
 	}
 
-	// 删除元数据
 	deleteMeta(meta: any) {
 		const { guidMap } = this;
 		const { pathMap } = this;
@@ -74,9 +70,7 @@ export class Manifest {
 		}
 		const { dataMap } = meta;
 		if (dataMap) {
-			// 从待保存列表中移除
 			File.cancelSave(meta);
-			// 关闭已打开的标签
 			switch (dataMap) {
 				case Data.scenes:
 				case Data.ui:
@@ -85,7 +79,6 @@ export class Manifest {
 					Title.tabBar.closeByProperty('meta', meta);
 					break;
 			}
-			// 移除UI预设元素的链接
 			switch (dataMap) {
 				case Data.scenes:
 					Data.unregisterScenePresets(guid);

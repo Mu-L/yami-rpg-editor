@@ -5,10 +5,7 @@ import { Cursor } from '../tools/pointer-object.ts';
 import { Palette } from './palette.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 图块节点窗口 ********************************
-
 export const TileNode = {
-	// properties
 	canvas: $('#autoTile-selectNode-canvas'),
 	context: null,
 	screen: $('#autoTile-selectNode-screen'),
@@ -24,7 +21,6 @@ export const TileNode = {
 	scrollTop: null,
 	scrollRight: null,
 	scrollBottom: null,
-	// methods
 	initialize: null,
 	open: null,
 	updateTransform: null,
@@ -35,7 +31,6 @@ export const TileNode = {
 	stopRendering: null,
 	scrollToSelection: null,
 	getDevicePixelClientBoxSize: null,
-	// events
 	dprchange: null,
 	windowClosed: null,
 	keydown: null,
@@ -45,19 +40,15 @@ export const TileNode = {
 	pointermove: null
 };
 
-// 初始化
 TileNode.initialize = function () {
-	// 设置画布上下文
 	this.context = this.canvas.getContext('2d');
 
-	// 侦听事件
 	window.on('dprchange', this.dprchange);
 	$('#autoTile-selectNode').on('closed', this.windowClosed);
 	this.screen.on('scroll', this.screenScroll);
 	this.marquee.on('pointerdown', this.marqueePointerdown);
 };
 
-// 打开
 TileNode.open = function (nodes, image, offsetX, offsetY) {
 	const MAX_CONTENT_WIDTH = 1180;
 	const MAX_CONTENT_HEIGHT = 696;
@@ -95,7 +86,6 @@ TileNode.open = function (nodes, image, offsetX, offsetY) {
 		screen.style.overflowY = 'hidden';
 	}
 
-	// 计算窗口属性
 	contentWidth = Math.clamp(contentWidth, MIN_CONTENT_WIDTH, MAX_CONTENT_WIDTH);
 	contentHeight = Math.clamp(contentHeight, MIN_CONTENT_HEIGHT, MAX_CONTENT_HEIGHT);
 	windowFrame.style.width = `${contentWidth}px`;
@@ -103,7 +93,6 @@ TileNode.open = function (nodes, image, offsetX, offsetY) {
 	window.on('keydown', this.keydown);
 	Window.open('autoTile-selectNode');
 
-	// 设置选框
 	const screenBox = this.getDevicePixelClientBoxSize(screen);
 	const screenWidth = screenBox.width;
 	const screenHeight = screenBox.height;
@@ -121,7 +110,6 @@ TileNode.open = function (nodes, image, offsetX, offsetY) {
 		this.marquee.select(0, 0, 1, 1);
 	}
 
-	// 设置画布
 	const canvasWidth = Math.min(innerWidth, screenWidth);
 	const canvasHeight = Math.min(innerHeight, screenHeight);
 	this.canvas.style.left = `${left}px`;
@@ -131,13 +119,11 @@ TileNode.open = function (nodes, image, offsetX, offsetY) {
 	this.canvas.style.width = `${canvasWidth / dpr}px`;
 	this.canvas.style.height = `${canvasHeight / dpr}px`;
 
-	// 设置滚动条并渲染图块
 	this.scrollToSelection();
 	this.updateTransform();
 	this.requestRendering();
 };
 
-// 更新变换参数
 TileNode.updateTransform = function () {
 	const dpr = window.devicePixelRatio;
 	this.scrollLeft = this.screen.scrollLeft * dpr;
@@ -147,12 +133,10 @@ TileNode.updateTransform = function () {
 	this.context.setTransform(1, 0, 0, 1, -this.scrollLeft, -this.scrollTop);
 };
 
-// 更新背景图像
 TileNode.updateBackground = function (...args) {
 	return Palette.updateBackground(...args);
 };
 
-// 绘制图块节点
 TileNode.drawNodes = function () {
 	if (!this.nodes) return;
 	const context = this.context;
@@ -188,24 +172,20 @@ TileNode.drawNodes = function () {
 	}
 };
 
-// 请求渲染
 TileNode.requestRendering = function () {
 	if (this.nodes !== null) {
 		Timer.appendUpdater('sharedRendering', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 TileNode.renderingFunction = function () {
 	TileNode.drawNodes();
 };
 
-// 停止渲染
 TileNode.stopRendering = function () {
 	Timer.removeUpdater('sharedRendering', this.renderingFunction);
 };
 
-// 滚动到选中位置
 TileNode.scrollToSelection = function () {
 	const marquee = this.marquee;
 	if (marquee.visible) {
@@ -228,7 +208,6 @@ TileNode.scrollToSelection = function () {
 	}
 };
 
-// 获取设备像素客户框大小
 TileNode.getDevicePixelClientBoxSize = function (element) {
 	const rect = element.rect();
 	const css = element.css();
@@ -252,7 +231,6 @@ TileNode.getDevicePixelClientBoxSize = function (element) {
 	return { width, height };
 };
 
-// 设备像素比改变事件
 TileNode.dprchange = function (event) {
 	if (this.nodes !== null) {
 		const marquee = this.marquee;
@@ -262,7 +240,6 @@ TileNode.dprchange = function (event) {
 	}
 }.bind(TileNode);
 
-// 窗口 - 已关闭事件
 TileNode.windowClosed = function (event) {
 	this.nodes = null;
 	this.image = null;
@@ -275,7 +252,6 @@ TileNode.windowClosed = function (event) {
 	window.off('keydown', this.keydown);
 }.bind(TileNode);
 
-// 键盘按下事件
 TileNode.keydown = function (event) {
 	event.preventDefault();
 	if (this.dragging) {
@@ -337,14 +313,12 @@ TileNode.keydown = function (event) {
 	}
 }.bind(TileNode);
 
-// 屏幕 - 滚动事件
 TileNode.screenScroll = function (event) {
 	this.updateTransform();
 	this.updateBackground();
 	this.requestRendering();
 }.bind(TileNode);
 
-// 选框区域 - 指针按下事件
 TileNode.marqueePointerdown = function (event) {
 	if (this.dragging) {
 		return;
@@ -388,7 +362,6 @@ TileNode.marqueePointerdown = function (event) {
 	}
 }.bind(TileNode);
 
-// 指针弹起事件
 TileNode.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
@@ -414,8 +387,7 @@ TileNode.pointerup = function (event) {
 						}
 						Palette.explicit = true;
 						Palette.marquee.addClass('explicit');
-						// 关闭窗口会额外触发一次本事件
-						// 换做 mouseup 事件也一样
+						// 关闭窗口会额外触发一次本事件 换做 mouseup 事件也一样
 						Window.close('autoTile-selectNode');
 					}
 				}
@@ -431,7 +403,6 @@ TileNode.pointerup = function (event) {
 	}
 }.bind(TileNode);
 
-// 指针移动事件
 TileNode.pointermove = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {

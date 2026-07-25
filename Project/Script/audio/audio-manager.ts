@@ -2,38 +2,28 @@
 import { AudioPlayer } from './audio-player.ts';
 import { MultipleAudioPlayer } from './multiple-audio-player.ts';
 
-// ******************************** 音频管理器 ********************************
-
 export const AudioManager = {
-	// properties
 	context: null,
 	player: null,
 	se: null,
 	analyser: null,
 	waveforms: {},
-	// methods
 	initialize: null,
 	getWaveform: null,
 	close: null
 };
 
-// 初始化
 AudioManager.initialize = function () {
-	// 创建音频上下文
 	this.context = new AudioContext();
 
-	// 创建分析器
 	this.analyser = this.context.createAnalyser();
 	this.analyser.connect(this.context.destination);
 
-	// 创建音频播放器
 	this.player = new AudioPlayer();
 
-	// 创建音效播放器
 	this.se = new MultipleAudioPlayer();
 };
 
-// 获取波形图
 AudioManager.getWaveform = function (guid) {
 	const waveforms = this.waveforms;
 	const waveform = waveforms[guid];
@@ -50,8 +40,7 @@ AudioManager.getWaveform = function (guid) {
 		if (waveforms[guid] !== promise) {
 			return;
 		}
-		// 解码音频数据会阻塞线程
-		// 可以通过取消操作来避免
+		// 解码音频数据会阻塞线程 可以通过取消操作来避免
 		if (promise.canceled) {
 			delete waveforms[guid];
 			return;
@@ -88,7 +77,6 @@ AudioManager.getWaveform = function (guid) {
 	return promise;
 };
 
-// 关闭
 AudioManager.close = function () {
 	this.player.stop();
 	this.waveforms = {};

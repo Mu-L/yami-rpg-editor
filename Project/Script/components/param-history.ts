@@ -1,5 +1,3 @@
-﻿// ******************************** 参数操作历史 ********************************
-
 import { IEditableHistory } from '../types/history.ts';
 
 export class ParamListHistory implements IEditableHistory {
@@ -13,7 +11,6 @@ export class ParamListHistory implements IEditableHistory {
 		this.index = -1;
 	}
 
-	// 重置历史
 	reset() {
 		if (this.stack.length !== 0) {
 			this.stack = [];
@@ -21,16 +18,13 @@ export class ParamListHistory implements IEditableHistory {
 		}
 	}
 
-	// 保存数据
 	save(data: any) {
-		// 删除多余的栈
 		const stack = this.stack;
 		const length = this.index + 1;
 		if (length < stack.length) {
 			stack.length = length;
 		}
 
-		// 堆栈上限: 100
 		if (stack.length < 100) {
 			this.index++;
 			stack.push(data);
@@ -40,7 +34,6 @@ export class ParamListHistory implements IEditableHistory {
 		}
 	}
 
-	// 恢复数据
 	restore(operation: any) {
 		const index =
 			operation === 'undo' ? this.index : operation === 'redo' ? this.index + 1 : null;
@@ -51,7 +44,6 @@ export class ParamListHistory implements IEditableHistory {
 			const type = data.type;
 			ParamListHistory.restore(list, data, type, operation);
 
-			// 改变指针
 			switch (operation) {
 				case 'undo':
 					this.index--;
@@ -63,17 +55,14 @@ export class ParamListHistory implements IEditableHistory {
 		}
 	}
 
-	// 撤销条件判断
 	canUndo() {
 		return this.index >= 0;
 	}
 
-	// 重做条件判断
 	canRedo() {
 		return this.index + 1 < this.stack.length;
 	}
 
-	// 静态 - 恢复数据
 	static restore(list: any, data: any, type: any, operation: any) {
 		const loaded = list.data === data.array;
 		switch (type) {

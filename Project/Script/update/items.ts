@@ -3,9 +3,7 @@ import { File } from '../file/file-system-core.ts';
 import { Inspector } from '../inspector/inspector.ts';
 import { Updater } from './updater.ts';
 
-// 更新物品数据
 Updater.updateItems = function (verNum) {
-	// 更新到1.0.122版本：添加inherit属性
 	if (verNum < Updater.getVersionNumber('1.0.122')) {
 		const items = Data.items;
 		const keys = Object.keys(Inspector.fileItem.create());

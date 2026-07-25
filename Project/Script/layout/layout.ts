@@ -12,10 +12,7 @@ import { Home } from '../title/home-page.ts';
 import { Title } from '../title/title-bar.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 布局对象 ********************************
-
 export const Layout = {
-	// properties
 	manager: $('#workspace-page-manager'),
 	items: null,
 	heads: null,
@@ -26,7 +23,6 @@ export const Layout = {
 	resizing: null,
 	focusableSelector: null,
 	focusableElements: null,
-	// methods
 	initialize: null,
 	switchLayout: null,
 	createGroups: null,
@@ -50,7 +46,6 @@ export const Layout = {
 	loadLayoutScheme: null,
 	saveToConfig: null,
 	loadFromConfig: null,
-	// events
 	windowResize: null,
 	windowLocalize: null,
 	pageSwitch: null,
@@ -69,17 +64,13 @@ export const Layout = {
 	pointermove: null
 };
 
-// 初始化
 Layout.initialize = function () {
-	// 获取导航栏项目和绑定页面
 	const nav = $('#layout-nav');
 	const manager = $('#layout-page-manager');
 	const items = (this.items = {});
 	for (const item of nav.childNodes) {
 		const key = item.getAttribute('value');
-		// 在初始化语言包之前清除标签内容
-		// 因为设置语言包可能会有几帧延时
-		// item.lastChild.textContent = ''
+		// 在初始化语言包之前清除标签内容 因为设置语言包可能会有几帧延时 item.lastChild.textContent = ''
 		item.draggable = true;
 		items[key] = item;
 	}
@@ -88,12 +79,10 @@ Layout.initialize = function () {
 		items[key].page = page;
 	}
 
-	// 创建导航栏项目列表
 	Object.defineProperty(items, 'list', {
 		value: Object.values(items)
 	});
 
-	// 获取头部元素集合
 	this.heads = [
 		Scene.head,
 		Scene.list.head,
@@ -106,7 +95,6 @@ Layout.initialize = function () {
 		Palette.head
 	];
 
-	// 读取默认布局
 	File.get({
 		local: 'default.json',
 		type: 'json'
@@ -114,19 +102,16 @@ Layout.initialize = function () {
 		this.default = config.layout;
 	});
 
-	// 设置可获得焦点的元素选择器
 	this.focusableSelector = `
   input, textarea, button, select-box, check-box, radio-box,
   color-box, custom-box, common-list, node-list, param-list,
   command-list, file-body-content`;
 
-	// 侦听事件
 	window.on('resize', this.windowResize);
 	window.on('localize', this.windowLocalize);
 	this.manager.on('switch', this.pageSwitch);
 };
 
-// 切换布局
 Layout.switchLayout = function (layout) {
 	this.layout = layout;
 	const { manager } = this;
@@ -141,9 +126,7 @@ Layout.switchLayout = function (layout) {
 	}
 };
 
-// 创建群组元素
 Layout.createGroups = function (item, parent) {
-	// 创建群组
 	const group = document.createElement('group');
 	parent.appendChild(group);
 	if (item.children) {
@@ -167,12 +150,10 @@ Layout.createGroups = function (item, parent) {
 		).split = item.split;
 		group.addClass(item.split);
 
-		// 创建后代群组
 		for (const child of item.children) {
 			this.createGroups(child, group);
 		}
 	} else {
-		// 创建群组内容
 		const { end, tabs } = item;
 		(
 			group as HTMLElement & {
@@ -194,7 +175,6 @@ Layout.createGroups = function (item, parent) {
 		).tabs = tabs;
 		this.createGroupContent(group);
 
-		// 添加标签页面
 		const nav = (
 			group as HTMLElement & {
 				end: any;
@@ -220,11 +200,9 @@ Layout.createGroups = function (item, parent) {
 		}
 	}
 
-	// 创建群组边界
 	this.createGroupBorder(group);
 };
 
-// 更新群组元素
 Layout.updateGroups = (function IIFE() {
 	const update = (group, split, start) => {
 		const end = group.end;
@@ -307,7 +285,6 @@ Layout.updateGroups = (function IIFE() {
 	};
 })();
 
-// 更新群组标签列表
 Layout.updateGroupTabs = function (group) {
 	const tabs = [];
 	for (const item of group.nav.childNodes) {
@@ -316,7 +293,6 @@ Layout.updateGroupTabs = function (group) {
 	group.tabs = tabs;
 };
 
-// 更新群组信息
 Layout.updateGroupInfo = function () {
 	for (const info of this.resizing.infos) {
 		const box = CSS.getDevicePixelContentBoxSize(info.manager);
@@ -324,7 +300,6 @@ Layout.updateGroupInfo = function () {
 	}
 };
 
-// 合并群组
 Layout.mergeGroups = (function IIFE() {
 	const merge = (outer) => {
 		const nodes = outer.childNodes;
@@ -339,9 +314,7 @@ Layout.mergeGroups = (function IIFE() {
 				while (nodes.length > 1) {
 					const node = nodes[0];
 					const end = node.end;
-					// 合并后可能产生1px的偏差
-					// 这是由于两次划分变成了一次划分
-					// 而每次划分都是取得近似的整数值
+					// 这是由于两次划分变成了一次划分 而每次划分都是取得近似的整数值
 					if (end !== undefined) {
 						node.end = Math.roundTo(gs * (1 - end) + ge * end, 6);
 					}
@@ -361,7 +334,6 @@ Layout.mergeGroups = (function IIFE() {
 	};
 })();
 
-// 设置群组尺寸
 Layout.setGroupSize = function (group, hint, direction) {
 	const parent = group.parentNode;
 	const prev = group.previousSibling;
@@ -407,7 +379,6 @@ Layout.setGroupSize = function (group, hint, direction) {
 	}
 };
 
-// 计算指定群组之前的所有兄弟群组大小
 Layout.computeSizesBefore = function (group) {
 	const parent = group.parentNode;
 	const space =
@@ -440,7 +411,6 @@ Layout.computeSizesBefore = function (group) {
 	}
 };
 
-// 计算指定群组之后的所有兄弟群组大小
 Layout.computeSizesAfter = function (group) {
 	const parent = group.parentNode;
 	const space =
@@ -473,7 +443,6 @@ Layout.computeSizesAfter = function (group) {
 	}
 };
 
-// 更新提示元素
 Layout.updateHint = function (location) {
 	const { dragging } = this;
 	const { hint } = dragging;
@@ -530,7 +499,6 @@ Layout.updateHint = function (location) {
 	}
 };
 
-// 获取关键群组
 Layout.getKeyGroups = (function IIFE() {
 	const find = (list, node) => {
 		if (node.split !== undefined) {
@@ -549,7 +517,6 @@ Layout.getKeyGroups = (function IIFE() {
 	};
 })();
 
-// 获取元素所在的群组
 Layout.getGroupOfElement = function (element) {
 	while ((element = element.parentNode)) {
 		if (element.tagName === 'GROUP') {
@@ -559,8 +526,7 @@ Layout.getGroupOfElement = function (element) {
 	return null;
 };
 
-// 准备获得焦点
-// 在获得焦点之前给群组添加ready-to-focus类来防止闪烁
+// 准备获得焦点 在获得焦点之前给群组添加ready-to-focus类来防止闪烁
 Layout.readyToFocus = function (element) {
 	const group = this.getGroupOfElement(element);
 	if (group) {
@@ -572,9 +538,7 @@ Layout.readyToFocus = function (element) {
 	}
 };
 
-// 创建群组内容
 Layout.createGroupContent = function (group) {
-	// 创建导航栏
 	const nav = document.createElement('nav-bar');
 	nav.on('write', this.navWrite);
 	nav.on('pointerdown', this.navPointerdown);
@@ -582,28 +546,22 @@ Layout.createGroupContent = function (group) {
 	nav.on('dragend', this.navDragend);
 	group.appendChild(nav);
 
-	// 创建页面管理器
 	const manager = document.createElement('page-manager');
 	manager.addClass('group-manager');
 	group.appendChild(manager);
 
-	// 设置群组属性
 	group.nav = nav;
 	group.manager = manager;
 };
 
-// 创建群组边界
 Layout.createGroupBorder = function (group) {
-	// 创建边框
 	const border = document.createElement('group-border');
 	border.on('pointerdown', this.borderPointerdown);
 	group.appendChild(border);
 
-	// 设置群组属性
 	group.border = border;
 };
 
-// 启用可获得焦点的元素
 Layout.enableFocusableElements = function () {
 	const elements = this.focusableElements;
 	if (elements) {
@@ -616,7 +574,6 @@ Layout.enableFocusableElements = function () {
 	}
 };
 
-// 禁用可获得焦点的元素
 Layout.disableFocusableElements = function () {
 	const { active } = this.manager;
 	if (active) {
@@ -629,15 +586,12 @@ Layout.disableFocusableElements = function () {
 				nodes.push(element);
 			}
 		}
-		// 因为禁用情况下可能会创建新元素(脚本参数)
-		// 因此记录已修改的元素再进行恢复更安全
+		// 因为禁用情况下可能会创建新元素(脚本参数) 因此记录已修改的元素再进行恢复更安全
 		this.focusableElements = nodes;
 	}
 };
 
-// 保存导航栏状态
 Layout.saveNavStates = function () {
-	// 记录并取消选择导航标签
 	for (const item of this.items.list) {
 		if (item.hasClass('selected')) {
 			const nav = item.parentNode;
@@ -647,7 +601,6 @@ Layout.saveNavStates = function () {
 	}
 };
 
-// 保存布局方案
 Layout.saveLayoutScheme = (function IIFE() {
 	const read = (data, group) => {
 		if (group.split !== undefined) {
@@ -673,23 +626,18 @@ Layout.saveLayoutScheme = (function IIFE() {
 	};
 })();
 
-// 加载布局方案
 Layout.loadLayoutScheme = function (key) {
 	const scheme = Layout.layout[key];
 	const page = this.manager.active;
 	if (page.scheme !== scheme) {
-		// 创建新的群组
 		page.scheme = scheme;
 		this.createGroups(scheme, page.clear());
 		this.updateGroups();
-		// 写入导航栏默认值
 		const groups = this.getKeyGroups();
 		for (const group of groups) {
 			group.nav.write(group.tabs[0]);
 		}
 	} else {
-		// 首先装载子元素
-		// 触发事件的时候可以正确定位祖先元素
 		const items = this.items;
 		const groups = this.getKeyGroups();
 		for (const group of groups) {
@@ -701,14 +649,12 @@ Layout.loadLayoutScheme = function (key) {
 			}
 		}
 		this.updateGroups(true);
-		// 写入导航栏记录值
 		for (const { nav } of groups) {
 			nav.write(nav.lastValue);
 		}
 	}
 };
 
-// 保存状态到配置文件
 Layout.saveToConfig = function (config) {
 	const { layout } = this;
 	for (const page of this.manager.childNodes) {
@@ -721,17 +667,14 @@ Layout.saveToConfig = function (config) {
 	config.layout = layout;
 };
 
-// 从配置文件中加载状态
 Layout.loadFromConfig = function (config) {
 	this.layout = config.layout;
 };
 
-// 窗口 - 调整大小事件
 Layout.windowResize = function (event) {
 	Layout.updateGroups();
 };
 
-// 窗口 - 本地化事件
 Layout.windowLocalize = function (event) {
 	if (Layout.manager.active !== null) {
 		for (const group of Layout.getKeyGroups()) {
@@ -740,10 +683,7 @@ Layout.windowLocalize = function (event) {
 	}
 };
 
-// 页面 - 切换事件
 Layout.pageSwitch = function (event) {
-	// 关闭上一次的编辑器(优先执行)
-	// 保存导航栏状态时可避免resize
 	switch (event.last) {
 		case 'scene':
 			Scene.save();
@@ -763,7 +703,6 @@ Layout.pageSwitch = function (event) {
 			break;
 	}
 
-	// 保存导航栏状态
 	switch (event.last) {
 		case 'directory':
 		case 'scene':
@@ -774,7 +713,6 @@ Layout.pageSwitch = function (event) {
 			break;
 	}
 
-	// 插入画布元素到新的页面
 	switch (event.value) {
 		case 'scene': {
 			const body = Scene.body;
@@ -805,7 +743,6 @@ Layout.pageSwitch = function (event) {
 			break;
 	}
 
-	// 加载新的页面布局方案
 	switch (event.value) {
 		case 'home':
 			Title.tabBar.removeClass('visible');
@@ -839,13 +776,11 @@ Layout.pageSwitch = function (event) {
 	}
 };
 
-// 导航栏 - 写入事件
 Layout.navWrite = function (event) {
 	const index = event.value;
 	this.parentNode.manager.switch(index);
 };
 
-// 导航栏 - 指针按下事件
 Layout.navPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -875,7 +810,6 @@ Layout.navPointerdown = function (event) {
 	}
 };
 
-// 导航栏 - 拖拽开始事件
 Layout.navDragstart = function (event) {
 	if (!Layout.dragging) {
 		Layout.dragging = event;
@@ -910,7 +844,6 @@ Layout.navDragstart = function (event) {
 	}
 };
 
-// 导航栏 - 拖拽结束事件
 Layout.navDragend = function (event) {
 	const { dragging } = Layout;
 	if (dragging) {
@@ -935,7 +868,6 @@ Layout.navDragend = function (event) {
 	}
 };
 
-// 导航栏 - 拖拽进入事件
 Layout.navDragenter = function (event) {
 	const { dragging } = Layout;
 	if (dragging) {
@@ -965,7 +897,6 @@ Layout.navDragenter = function (event) {
 	}
 };
 
-// 导航栏 - 拖拽离开事件
 Layout.navDragleave = function (event) {
 	const { dragging } = Layout;
 	if (dragging && dragging.location && dragging.location.trigger === event.target) {
@@ -973,13 +904,11 @@ Layout.navDragleave = function (event) {
 	}
 };
 
-// 导航栏 - 拖拽悬停事件
 Layout.navDragover = function (event) {
 	event.preventDefault();
 	event.dataTransfer.dropEffect = 'move';
 };
 
-// 导航栏 - 拖拽释放事件
 Layout.navDrop = function (event) {
 	const { dragging } = Layout;
 	if (!dragging) {
@@ -1008,7 +937,6 @@ Layout.navDrop = function (event) {
 				break;
 		}
 
-		// 创建群组容器
 		if (split !== undefined && parent.split !== split) {
 			parent.replaceChild((parent = document.createElement('group')), target);
 			parent.end = target.end;
@@ -1023,7 +951,6 @@ Layout.navDrop = function (event) {
 			Layout.createGroupBorder(parent);
 		}
 
-		// 创建目标群组
 		switch (direction) {
 			case 'inside':
 				dGroup = target;
@@ -1045,7 +972,6 @@ Layout.navDrop = function (event) {
 				break;
 		}
 
-		// 更新导航栏和页面管理器
 		const sNav = sGroup.nav;
 		const dNav = dGroup.nav;
 		const sManager = sGroup.manager;
@@ -1058,7 +984,6 @@ Layout.navDrop = function (event) {
 			sManager.active = null;
 		}
 
-		// 插入导航栏项目和页面
 		const page = item.page;
 		if (trigger.tagName === 'NAV-ITEM') {
 			dNav.insertBefore(item, trigger);
@@ -1068,23 +993,17 @@ Layout.navDrop = function (event) {
 			dManager.appendChild(page);
 		}
 
-		// 更新改动群组的标签列表
 		Layout.updateGroupTabs(sGroup);
 		Layout.updateGroupTabs(dGroup);
 
-		// 擦除页面的宽高属性
-		// 调整节点树后滚动条会重置
-		// 需要触发调整事件来恢复
+		// 擦除页面的宽高属性 调整节点树后滚动条会重置 需要触发调整事件来恢复
 		page.width = null;
 		page.height = null;
 
-		// 处理跨群组转移事件
 		if (sNav !== dNav) {
-			// 写入源导航栏默认值
 			if (sNav.hasChildNodes()) {
 				sNav.write(sNav.childNodes[0].getAttribute('value'));
 			} else {
-				// 删除空的关键群组
 				const pGroup = sGroup.parentNode;
 				const prev = sGroup.previousSibling;
 				const next = sGroup.nextSibling;
@@ -1095,15 +1014,12 @@ Layout.navDrop = function (event) {
 				}
 				sGroup.remove();
 
-				// 删除外部容器
 				if (nodes.length === 2) {
 					nodes[0].end = pGroup.end;
 					pGroup.parentNode.replaceChild(nodes[0], pGroup);
 				}
 			}
 
-			// 合并群组容器
-			// 更新目标群组大小
 			switch (direction) {
 				case 'left':
 				case 'top':
@@ -1117,7 +1033,6 @@ Layout.navDrop = function (event) {
 					break;
 			}
 
-			// 更新群组样式
 			Layout.updateGroups(true);
 			Layout.navPointerdown({
 				button: 0,
@@ -1127,7 +1042,6 @@ Layout.navDrop = function (event) {
 	}
 };
 
-// 区域 - 拖拽离开事件
 Layout.regionDragleave = function (event) {
 	const { dragging } = Layout;
 	if (dragging && dragging.location && dragging.location.trigger === this) {
@@ -1135,7 +1049,6 @@ Layout.regionDragleave = function (event) {
 	}
 };
 
-// 区域 - 拖拽悬停事件
 Layout.regionDragover = function (event) {
 	const { dragging } = Layout;
 	if ((dragging && dragging.clientX !== event.clientX) || dragging.clientY !== event.clientY) {
@@ -1309,7 +1222,6 @@ Layout.regionDragover = function (event) {
 	}
 };
 
-// 边界 - 指针按下事件
 Layout.borderPointerdown = function (event) {
 	// event.preventDefault()
 	switch (event.button) {
@@ -1349,7 +1261,6 @@ Layout.borderPointerdown = function (event) {
 	}
 };
 
-// 指针弹起事件
 Layout.pointerup = function (event) {
 	const { resizing } = Layout;
 	if (resizing === null) {
@@ -1376,7 +1287,6 @@ Layout.pointerup = function (event) {
 	}
 };
 
-// 指针移动事件
 Layout.pointermove = function (event) {
 	let end;
 	const { resizing } = Layout;

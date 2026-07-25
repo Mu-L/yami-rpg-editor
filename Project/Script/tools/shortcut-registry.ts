@@ -1,5 +1,3 @@
-// ******************************** 快捷键注册表 ********************************
-
 export const ShortcutRegistry = {
 	shortcuts: {},
 
@@ -12,9 +10,7 @@ export const ShortcutRegistry = {
 	}
 };
 
-// 通用快捷键处理器
 export const Shortcuts = {
-	// 创建剪贴板处理器
 	createClipboard(target: any) {
 		return function (event) {
 			if (event.cmdOrCtrlKey) {
@@ -50,7 +46,6 @@ export const Shortcuts = {
 		};
 	},
 
-	// 创建撤销/重做处理器
 	createUndoRedo(target: any) {
 		return function (event) {
 			if (event.cmdOrCtrlKey) {
@@ -71,7 +66,6 @@ export const Shortcuts = {
 		};
 	},
 
-	// 创建列表操作处理器
 	createListOps(target: any) {
 		return function (event) {
 			if (event.cmdOrCtrlKey) {
@@ -133,7 +127,6 @@ export const Shortcuts = {
 		};
 	},
 
-	// 创建 WASD 滚动处理器
 	createScroll(target: any) {
 		let scrollKeys = 0;
 		let scrollTimer = null;

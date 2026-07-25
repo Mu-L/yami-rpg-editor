@@ -2,23 +2,16 @@
 import { VariableGetter } from './variable-accessor-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 状态访问器窗口 ********************************
-
 export const StateGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
 	checkDataForPlugin: null,
 	createDefaultForPlugin: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 StateGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#stateGetter-type').loadItems([
 		{ name: 'Event Trigger State', value: 'trigger' },
 		{ name: 'Latest State', value: 'latest' },
@@ -26,7 +19,6 @@ StateGetter.initialize = function () {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置关联元素
 	$('#stateGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -37,11 +29,9 @@ StateGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#stateGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#stateGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 StateGetter.open = function (target) {
 	this.target = target;
 	Window.open('stateGetter');
@@ -69,7 +59,6 @@ StateGetter.open = function (target) {
 	$('#stateGetter-type').getFocus();
 };
 
-// 检查插件版本的状态访问器数据有效性
 StateGetter.checkDataForPlugin = function (data) {
 	if (data instanceof Object) {
 		return data.getter === 'state';
@@ -77,12 +66,10 @@ StateGetter.checkDataForPlugin = function (data) {
 	return false;
 };
 
-// 创建插件版本的默认状态访问器
 StateGetter.createDefaultForPlugin = function () {
 	return { getter: 'state', type: 'trigger' };
 };
 
-// 确定按钮 - 鼠标点击事件
 StateGetter.confirm = function (event) {
 	const read = getElementReader('stateGetter');
 	const type = read('type');
@@ -110,7 +97,6 @@ StateGetter.confirm = function (event) {
 			break;
 		}
 	}
-	// 如果是插件输入框，额外附加一个属性
 	if (this.target.isPluginInput) {
 		getter = { getter: 'state', ...getter };
 	}

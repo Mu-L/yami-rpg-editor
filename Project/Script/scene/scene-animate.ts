@@ -9,7 +9,6 @@ Scene.requestAnimation = function () {
 	}
 };
 
-// 更新动画帧
 Scene.updateAnimation = function (deltaTime) {
 	const { animationInterval } = Scene;
 	if (animationInterval > 0) {
@@ -27,30 +26,25 @@ Scene.updateAnimation = function (deltaTime) {
 	}
 };
 
-// 停止更新动画
 Scene.stopAnimation = function () {
 	Timer.removeUpdater('stageAnimation', this.updateAnimation);
 };
 
-// 请求渲染
 Scene.requestRendering = function () {
 	if (this.state === 'open') {
 		Timer.appendUpdater('stageRendering', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 Scene.renderingFunction = function () {
 	Scene.updateAnimations(0);
 	Scene.drawScene();
 };
 
-// 停止渲染
 Scene.stopRendering = function () {
 	Timer.removeUpdater('stageRendering', this.renderingFunction);
 };
 
-// 切换图层
 Scene.switchLayer = (function IIFE() {
 	const layerGroup = $('#scene-layer');
 	const items = { tilemap: null };
@@ -65,18 +59,15 @@ Scene.switchLayer = (function IIFE() {
 			return;
 		}
 
-		// 关闭瓦片地图
 		if (selection === null) {
 			this.closeTilemap(false);
 			this.computeActiveTilemapId();
 		}
 
-		// 更新元素样式
 		selection?.removeClass('selected');
 		element?.addClass('selected');
 		selection = element;
 
-		// 切换选框模式
 		const marquee = this.marquee;
 		switch ((this.layer = layer)) {
 			case 'object':
@@ -99,7 +90,6 @@ Scene.switchLayer = (function IIFE() {
 	};
 })();
 
-// 切换笔刷
 Scene.switchBrush = (function IIFE() {
 	const list = $('#scene-brush');
 	const items = {};
@@ -114,12 +104,10 @@ Scene.switchBrush = (function IIFE() {
 			return;
 		}
 
-		// 更新元素样式
 		selection?.removeClass('selected');
 		element.addClass('selected');
 		selection = element;
 
-		// 切换选框模式
 		const marquee = this.marquee;
 		switch ((this.brush = brush)) {
 			case 'eraser':
@@ -137,7 +125,6 @@ Scene.switchBrush = (function IIFE() {
 	};
 })();
 
-// 开关网格
 Scene.switchGrid = (function IIFE() {
 	const item = $('#scene-switch-grid');
 	return function (enabled = !this.showGrid) {
@@ -151,7 +138,6 @@ Scene.switchGrid = (function IIFE() {
 	};
 })();
 
-// 开关灯光
 Scene.switchLight = (function IIFE() {
 	const item = $('#scene-switch-light');
 	return function (enabled = !this.showLight) {
@@ -165,7 +151,6 @@ Scene.switchLight = (function IIFE() {
 	};
 })();
 
-// 开关动画
 Scene.switchAnimation = (function IIFE() {
 	const item = $('#scene-switch-animation');
 	return function (enabled = !this.showAnimation) {
@@ -182,7 +167,6 @@ Scene.switchAnimation = (function IIFE() {
 	};
 })();
 
-// 开关设置
 Scene.switchSettings = function () {
 	if (!Inspector.fileScene.button.hasClass('selected')) {
 		Inspector.open('fileScene', Scene.context.scene);
@@ -191,7 +175,6 @@ Scene.switchSettings = function () {
 	}
 };
 
-// 切换地形
 Scene.switchTerrain = function () {
 	const context = this.marquee.key === 'terrain' ? this.marquee : this.marquee.saveData.terrain;
 	context.terrain = (context.terrain + 2) % 3;
@@ -203,7 +186,6 @@ Scene.switchTerrain = function () {
 	}
 };
 
-// 重置动画
 Scene.resetAnimations = function () {
 	if (this.state === 'open') {
 		for (const { player } of this.actors) {
@@ -220,7 +202,6 @@ Scene.resetAnimations = function () {
 	}
 };
 
-// 更新字体
 Scene.updateFont = function () {
 	const context = GL.context2d;
 	const size = window.devicePixelRatio * 12;

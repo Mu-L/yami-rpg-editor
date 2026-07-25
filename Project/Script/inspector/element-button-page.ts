@@ -2,26 +2,19 @@
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 按钮页面 ********************************
-
 {
 	const UIButton = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UIButton.initialize = function () {
-		// 创建显示选项
 		$('#uiButton-display').loadItems([
 			{ name: 'Stretch', value: 'stretch' },
 			{ name: 'Tile', value: 'tile' },
@@ -29,7 +22,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Slice', value: 'slice' }
 		]);
 
-		// 设置显示模式关联元素
 		$('#uiButton-display')
 			.enableHiddenMode()
 			.relate([
@@ -57,7 +49,6 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 创建翻转选项
 		$('#uiButton-flip').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Horizontal', value: 'horizontal' },
@@ -65,7 +56,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Both', value: 'both' }
 		]);
 
-		// 创建图像效果选项
 		$('#uiButton-imageEffect').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Tint', value: 'tint-1' },
@@ -73,7 +63,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Tint (Normal, Hover, Active)', value: 'tint-3' }
 		]);
 
-		// 设置图像效果关联元素
 		$('#uiButton-imageEffect')
 			.enableHiddenMode()
 			.relate([
@@ -95,13 +84,11 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 创建文本方向选项
 		$('#uiButton-direction').loadItems([
 			{ name: 'Horizontal', value: 'horizontal-tb' },
 			{ name: 'Vertical', value: 'vertical-lr' }
 		]);
 
-		// 创建字型选项
 		$('#uiButton-typeface').loadItems([
 			{ name: 'Regular', value: 'regular' },
 			{ name: 'Bold', value: 'bold' },
@@ -109,7 +96,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Bold Italic', value: 'bold-italic' }
 		]);
 
-		// 创建文字效果类型选项
 		$('#uiButton-textEffect-type').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Shadow', value: 'shadow' },
@@ -117,7 +103,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Outline', value: 'outline' }
 		]);
 
-		// 设置文字效果类型关联元素
 		$('#uiButton-textEffect-type')
 			.enableHiddenMode()
 			.relate([
@@ -142,14 +127,12 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 同步滑动框和数字框的数值
 		$('#uiButton-imagePadding-slider').synchronize($('#uiButton-imagePadding'));
 		$('#uiButton-imageOpacity-slider').synchronize($('#uiButton-imageOpacity'));
 		$('#uiButton-size-slider').synchronize($('#uiButton-size'));
 		$('#uiButton-letterSpacing-slider').synchronize($('#uiButton-letterSpacing'));
 		$('#uiButton-textPadding-slider').synchronize($('#uiButton-textPadding'));
 
-		// 侦听事件
 		const elements = $(`#uiButton-display,
     #uiButton-normalImage, #uiButton-normalClip,
     #uiButton-hoverImage, #uiButton-hoverClip,
@@ -173,7 +156,6 @@ import { UI } from '../ui/ui-window.ts';
 		sliders.on('blur', Inspector.sliderBlur);
 	};
 
-	// 创建按钮
 	UIButton.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -225,12 +207,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIButton.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiButton', node);
 			write('display');
 			write('normalImage');
@@ -279,7 +259,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIButton.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -289,7 +268,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIButton.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -349,8 +327,7 @@ import { UI } from '../ui/ui-window.ts';
 			case 'activeColor':
 				if (node[key] !== value) {
 					node[key] = value;
-					// element[key] = value
-					// element.state = 'changed'
+					// element[key] = value element.state = 'changed'
 					node.instances.setProperty(key, value);
 					node.instances.setProperty('state', 'changed');
 				}
@@ -397,8 +374,7 @@ import { UI } from '../ui/ui-window.ts';
 				const [property, index] = key.split('-');
 				if (node[property][index] !== value) {
 					node[property][index] = value;
-					// element[property][index] = value
-					// element.state = 'changed'
+					// element[property][index] = value element.state = 'changed'
 					node.instances.setProperty(key, value);
 					node.instances.setProperty('state', 'changed');
 				}
@@ -446,7 +422,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIButton.paramInput = function (event) {
 		UIButton.update(UIButton.target, Inspector.getKey(this), this.read());
 	};

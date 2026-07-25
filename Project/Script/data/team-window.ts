@@ -11,15 +11,11 @@ import { Color } from '../tools/color-picker-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 队伍窗口 ********************************
-
 export const Team = {
-	// properties
 	list: $('#team-list'),
 	data: null,
 	maximum: null,
 	changed: false,
-	// methods
 	initialize: null,
 	open: null,
 	createId: null,
@@ -27,7 +23,6 @@ export const Team = {
 	getItemById: null,
 	unpackTeams: null,
 	packTeams: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	listKeydown: null,
@@ -38,7 +33,6 @@ export const Team = {
 	confirm: null
 };
 
-// list methods
 Team.list.insert = null;
 Team.list.copy = null;
 Team.list.paste = null;
@@ -54,12 +48,9 @@ Team.list.updateTextNode = Easing.list.updateTextNode;
 Team.list.createMarks = null;
 Team.list.updateMarks = null;
 
-// 初始化
 Team.initialize = function () {
-	// 设置最大数量
 	this.maximum = 256;
 
-	// 绑定队伍列表
 	const { list } = this;
 	list.removable = true;
 	list.renamable = true;
@@ -70,7 +61,6 @@ Team.initialize = function () {
 	list.creators.push(list.createMarks);
 	list.updaters.push(list.updateMarks);
 
-	// 侦听事件
 	$('#team').on('close', this.windowClose);
 	$('#team').on('closed', this.windowClosed);
 	list.on('keydown', this.listKeydown);
@@ -81,21 +71,16 @@ Team.initialize = function () {
 	$('#team-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 Team.open = function (data) {
 	Window.open('team');
 
-	// 解包队伍数据
 	this.unpackTeams();
 
-	// 更新列表项目
 	this.list.restoreSelection();
 
-	// 列表获得焦点
 	this.list.getFocus();
 };
 
-// 创建ID
 Team.createId = function () {
 	let id;
 	do {
@@ -104,7 +89,6 @@ Team.createId = function () {
 	return id;
 };
 
-// 创建数据
 Team.createData = function () {
 	const id = this.createId();
 	const relations = {};
@@ -125,10 +109,8 @@ Team.createData = function () {
 	};
 };
 
-// 获取ID匹配的数据
 Team.getItemById = Easing.getItemById;
 
-// 解包队伍数据
 Team.unpackTeams = function () {
 	const items = Data.teams.list;
 	const length = items.length;
@@ -164,7 +146,6 @@ Team.unpackTeams = function () {
 	this.data = copies;
 };
 
-// 打包队伍数据
 Team.packTeams = function () {
 	const items = this.data;
 	const length = items.length;
@@ -193,7 +174,6 @@ Team.packTeams = function () {
 	Data.createTeamMap();
 };
 
-// 窗口 - 关闭事件
 Team.windowClose = function (event) {
 	if (Team.changed) {
 		event.preventDefault();
@@ -218,13 +198,11 @@ Team.windowClose = function (event) {
 	}
 };
 
-// 窗口 - 已关闭事件
 Team.windowClosed = function (event) {
 	this.data = null;
 	this.list.clear();
 }.bind(Team);
 
-// 列表 - 键盘按下事件
 Team.listKeydown = function (event) {
 	const item = this.read();
 	if (event.cmdOrCtrlKey) {
@@ -250,11 +228,9 @@ Team.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 Team.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0:
-			// 设置队伍颜色
 			if (event.target.hasClass('team-icon')) {
 				const element = event.target.parentNode;
 				const team = element.item;
@@ -269,7 +245,6 @@ Team.listPointerdown = function (event) {
 					}
 				});
 			}
-			// 设置队伍关系
 			if (event.target.hasClass('team-relation-mark')) {
 				const element = event.target.parentNode;
 				const teamA = this.read();
@@ -281,7 +256,6 @@ Team.listPointerdown = function (event) {
 				this.updateMarks(teamB);
 				Team.changed = true;
 			}
-			// 设置队伍碰撞
 			if (event.target.hasClass('team-collision-mark')) {
 				const element = event.target.parentNode;
 				const teamA = this.read();
@@ -297,9 +271,7 @@ Team.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 Team.listSelect = function (event) {
-	// 更新队伍关系
 	for (const team of this.data) {
 		const element = team.element;
 		if (element !== undefined) {
@@ -311,12 +283,10 @@ Team.listSelect = function (event) {
 	}
 };
 
-// 列表 - 改变事件
 Team.listChange = function (event) {
 	Team.changed = true;
 };
 
-// 列表 - 菜单弹出事件
 Team.listPopup = function (event) {
 	const item = event.value;
 	const length = Team.data.length;
@@ -375,7 +345,6 @@ Team.listPopup = function (event) {
 	);
 };
 
-// 确定按钮 - 鼠标点击事件
 Team.confirm = function (event) {
 	if (this.changed) {
 		this.changed = false;
@@ -388,7 +357,6 @@ Team.confirm = function (event) {
 	Window.close('team');
 }.bind(Team);
 
-// 列表 - 插入
 Team.list.insert = function (dItem) {
 	if (this.data.length < Team.maximum) {
 		const team = Team.createData();
@@ -401,14 +369,12 @@ Team.list.insert = function (dItem) {
 	}
 };
 
-// 列表 - 复制
 Team.list.copy = function (item) {
 	if (item) {
 		(Clipboard as any).write('yami.data.team', item);
 	}
 };
 
-// 列表 - 粘贴
 Team.list.paste = function (dItem) {
 	const copy = (Clipboard as any).read('yami.data.team');
 	if (copy) {
@@ -438,7 +404,6 @@ Team.list.paste = function (dItem) {
 	}
 };
 
-// 列表 - 删除
 Team.list.delete = function (item) {
 	const items = this.data;
 	if (items.length > 1) {
@@ -469,10 +434,8 @@ Team.list.delete = function (item) {
 	}
 };
 
-// 列表 - 保存选项状态
 Team.list.saveSelection = function () {
 	const { teams } = Data;
-	// 将数据保存在外部可以切换项目后重置
 	if (teams.selection === undefined) {
 		Object.defineProperty(teams, 'selection', {
 			writable: true,
@@ -485,7 +448,6 @@ Team.list.saveSelection = function () {
 	}
 };
 
-// 列表 - 恢复选项状态
 Team.list.restoreSelection = function () {
 	const id = Data.teams.selection;
 	const item = Team.getItemById(id) ?? this.data[0];
@@ -494,7 +456,6 @@ Team.list.restoreSelection = function () {
 	this.scrollToSelection();
 };
 
-// 列表 - 重写创建图标方法
 Team.list.createIcon = function (item) {
 	const { element } = item;
 	const icon = document.createElement('node-icon');
@@ -504,7 +465,6 @@ Team.list.createIcon = function (item) {
 	Team.list.updateIcon(item);
 };
 
-// 列表 - 更新图标
 Team.list.updateIcon = function (item) {
 	const icon = item.element.nodeIcon;
 	const color = item.color;
@@ -518,20 +478,16 @@ Team.list.updateIcon = function (item) {
 	}
 };
 
-// 列表 - 重写更新项目名称方法
 Team.list.updateItemName = function (item) {
 	this.updateTextNode(item);
 };
 
-// 列表 - 创建标记
 Team.list.createMarks = function (item) {
 	const { element } = item;
-	// 创建关系标记
 	const relationMark = document.createElement('text');
 	relationMark.addClass('team-relation-mark');
 	element.relationMark = relationMark;
 	element.appendChild(relationMark);
-	// 创建碰撞标记
 	const collisionMark = document.createElement('text');
 	collisionMark.addClass('team-collision-mark');
 	collisionMark.textContent = '\uf066';
@@ -539,11 +495,9 @@ Team.list.createMarks = function (item) {
 	element.appendChild(collisionMark);
 };
 
-// 列表 - 更新标记
 Team.list.updateMarks = function (item) {
 	const selection = Team.list.read();
 	if (selection === null) return;
-	// 更新关系标记
 	const relationMark = item.element.relationMark;
 	const relations = selection.relations;
 	const relation = relations[item.id];
@@ -562,7 +516,6 @@ Team.list.updateMarks = function (item) {
 				break;
 		}
 	}
-	// 更新碰撞标记
 	const collisionMark = item.element.collisionMark;
 	const collisions = selection.collisions;
 	const collision = collisions[item.id];

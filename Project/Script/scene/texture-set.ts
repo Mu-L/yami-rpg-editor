@@ -1,8 +1,6 @@
 ﻿import { Scene } from './scene-window.ts';
 import { ImageTexture } from '../webgl/image-texture.ts';
 
-// ******************************** 纹理集合类 ********************************
-
 Scene.Textures = class Textures {
 	state: string;
 
@@ -11,14 +9,12 @@ Scene.Textures = class Textures {
 		this[''] = null;
 	}
 
-	// 添加纹理
 	append(texture: any) {
 		if (this.state === 'open') {
 			this[texture.base.guid] = texture;
 		}
 	}
 
-	// 加载纹理
 	load(guid: any) {
 		if (!this[guid]) {
 			const texture = new ImageTexture(guid);
@@ -44,7 +40,6 @@ Scene.Textures = class Textures {
 		return this[guid];
 	}
 
-	// 销毁纹理
 	destroy() {
 		this.state = 'closed';
 		for (const texture of Object.values(this)) {

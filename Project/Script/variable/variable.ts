@@ -3,10 +3,7 @@ import { RadioProxy } from '../components/radio-proxy.ts';
 import { History } from '../tools/history.ts';
 import { Reference } from '../log/related-references.ts';
 
-// ******************************** 变量窗口 ********************************
-
 export const Variable = {
-	// properties
 	list: $('#variable-list'),
 	panel: $('#variable-properties-flex').hide(),
 	manager: $('#variable-value-manager'),
@@ -27,7 +24,6 @@ export const Variable = {
 	idMap: null,
 	history: null,
 	changed: false,
-	// methods
 	initialize: null,
 	open: null,
 	undo: null,
@@ -41,7 +37,6 @@ export const Variable = {
 	unpackVariables: null,
 	packVariables: null,
 	saveHistory: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	keydown: null,
@@ -64,7 +59,6 @@ export const Variable = {
 	apply: null
 };
 
-// list methods
 Variable.list.copy = null;
 Variable.list.paste = null;
 Variable.list.delete = null;
@@ -78,8 +72,7 @@ Variable.list.updateIcon = null;
 Variable.list.addElementClass = null;
 Variable.list.updateItemClass = null;
 
-// radio-box 组的共享 radio-proxy 实例由 RadioBox 升级时惰性塞入 RadioProxy.map，
-// 故 inputs.sort/type/boolean 不能在顶层求值（彼时 map 为空），改为惰性 getter
+// radio-box 组的共享 radio-proxy 实例由 RadioBox 升级时惰性塞入 RadioProxy.map，故 inputs.sort/type/boolean 不能在顶层求值（彼时 map 为空），改为惰性 getter
 Object.defineProperties(Variable.inputs, {
 	sort: {
 		get() {

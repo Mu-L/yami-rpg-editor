@@ -1,8 +1,6 @@
 ﻿import { NumberHistory } from './number-history.ts';
 import { measureText } from '../util/dom.ts';
 
-// ******************************** 数字框 ********************************
-
 export class NumberBox extends HTMLElement {
 	input: HTMLInputElement;
 	decimals: number;
@@ -12,7 +10,6 @@ export class NumberBox extends HTMLElement {
 	constructor(dom?: any) {
 		super();
 
-		// 获取参数
 		dom = dom ?? this;
 		const min = dom.getAttribute('min') ?? '0';
 		const max = dom.getAttribute('max') ?? '0';
@@ -20,8 +17,6 @@ export class NumberBox extends HTMLElement {
 		const unit = dom.getAttribute('unit');
 		const decimals = parseInt(dom.getAttribute('decimals')) || 0;
 
-		// 创建输入框
-		// 设置title为空可避免数值不匹配step时弹出提示
 		const input = document.createElement('input');
 		input.addClass('number-box-input');
 		input.type = 'number';
@@ -34,7 +29,6 @@ export class NumberBox extends HTMLElement {
 		input.on('change', this.inputChange);
 		this.appendChild(input);
 
-		// 检查标签元素
 		if (this.childNodes.length > 1) {
 			const label = this.childNodes[0].textContent;
 			const font = 'var(--font-family-mono)';
@@ -42,7 +36,6 @@ export class NumberBox extends HTMLElement {
 			input.style.paddingLeft = `${padding}px`;
 		}
 
-		// 创建单位文本
 		if (unit !== null) {
 			const unitText = document.createElement('text');
 			const font = 'var(--font-family-mono)';
@@ -53,14 +46,12 @@ export class NumberBox extends HTMLElement {
 			input.style.paddingRight = `${padding}px`;
 		}
 
-		// 设置属性
 		this.input = input;
 		this.decimals = decimals;
 		this.focusEventEnabled = false;
 		this.blurEventEnabled = false;
 	}
 
-	// 读取数据
 	read(): number {
 		const min = parseFloat(this.input.min);
 		const max = parseFloat(this.input.max);
@@ -70,7 +61,6 @@ export class NumberBox extends HTMLElement {
 		return value;
 	}
 
-	// 写入数据
 	write(value: any): void {
 		const { input } = this;
 		input.value = String(value);
@@ -78,26 +68,22 @@ export class NumberBox extends HTMLElement {
 		input.history.reset();
 	}
 
-	// 启用元素
 	enable() {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
-	// 禁用元素
 	disable() {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
-	// 获得焦点
 	getFocus(mode: any) {
 		return this.input.getFocus(mode);
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -124,19 +110,14 @@ export class NumberBox extends HTMLElement {
 		}
 	}
 
-	// 输入框 - 键盘按下事件
 	inputKeydown(event: any) {
 		!NumberBox.whiteList.includes(event.code) && !event.cmdOrCtrlKey && event.preventDefault();
 	}
 
-	// 输入框 - 内容改变事件
 	inputChange(event: any) {
-		// 如果小数位数达到8位使用上下键调整
-		// 可能精度不足等效于先取近似值再操作
 		this.value = this.parentNode.read();
 	}
 
-	// 静态 - 按键白名单
 	static whiteList = [
 		'Digit0',
 		'Digit1',

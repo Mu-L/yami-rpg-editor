@@ -1,5 +1,3 @@
-﻿// ******************************** 滤镜框 ********************************
-
 export class FilterBox extends HTMLElement {
 	canvas: HTMLCanvasElement | null;
 	dataValue: [number, number, number, number] | null;
@@ -7,23 +5,19 @@ export class FilterBox extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.canvas = null;
 		this.dataValue = null;
 	}
 
-	// 读取数据
 	read(): [number, number, number, number] | null {
 		return this.dataValue;
 	}
 
-	// 写入数据
 	write(tint: [number, number, number, number]): void {
 		this.dataValue = tint;
 		this.update();
 	}
 
-	// 更新画面
 	update(): void {
 		let { canvas } = this;
 		if (!canvas) {
@@ -43,7 +37,6 @@ export class FilterBox extends HTMLElement {
 			this.appendChild((this.canvas = canvas));
 		}
 
-		// 绘制垂直渐变色带
 		const { context, width, height } = canvas as HTMLCanvasElement & {
 			context: CanvasRenderingContext2D & {
 				gradient?: CanvasGradient;
@@ -65,7 +58,6 @@ export class FilterBox extends HTMLElement {
 		context.fillStyle = context.gradient;
 		context.fillRect(0, 0, width, height);
 
-		// 绘制水平渐变色带
 		const leftGradient = context.createLinearGradient(0, 0, width >> 1, 0);
 		leftGradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
 		leftGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
@@ -77,7 +69,6 @@ export class FilterBox extends HTMLElement {
 		context.fillStyle = rightGradient;
 		context.fillRect(width >> 1, 0, width - (width >> 1), height);
 
-		// 灰度混合
 		if (gray) {
 			context.globalCompositeOperation = 'saturation';
 			context.globalAlpha = gray / 255;
@@ -86,7 +77,6 @@ export class FilterBox extends HTMLElement {
 			context.globalAlpha = 1;
 		}
 
-		// 加法混合
 		const addR = Math.max(red, 0);
 		const addG = Math.max(green, 0);
 		const addB = Math.max(blue, 0);
@@ -96,7 +86,6 @@ export class FilterBox extends HTMLElement {
 			context.fillRect(0, 0, width, height);
 		}
 
-		// 减法混合
 		const subR = Math.max(-red, 0);
 		const subG = Math.max(-green, 0);
 		const subB = Math.max(-blue, 0);
@@ -113,7 +102,6 @@ export class FilterBox extends HTMLElement {
 		}
 	}
 
-	// 清除画布
 	clear(): void {
 		if (this.canvas) {
 			this.removeChild(this.canvas);

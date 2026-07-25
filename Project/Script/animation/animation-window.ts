@@ -28,19 +28,14 @@ import { ImageTexture } from '../webgl/image-texture.ts';
 import { Matrix } from '../webgl/matrix2.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 动画窗口 ********************************
-
-// 动画窗口状态
 type AnimationState = 'closed' | 'open';
 
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
 type AnimationMethod = ((...args: any[]) => any) | null;
 
 interface AnimationShape {
-	// properties
 	state: AnimationState;
-	// DOM 元素字段：运行时挂载大量扩展方法（.hide()/.show()/.update()/.write()/.on() 等），
-	// 统一用 HTMLElement & {[ k: string ]: any} 兜底，避免穷举
+	// DOM 元素字段：运行时挂载大量扩展方法（.hide()/.show()/.update()/.write()/.on() 等），统一用 HTMLElement & {[ k: string ]: any} 兜底，避免穷举
 	page: HTMLElement & { [k: string]: any };
 	head: HTMLElement & { [k: string]: any };
 	body: HTMLElement & {
@@ -71,7 +66,6 @@ interface AnimationShape {
 }
 
 export const Animation: AnimationShape = {
-	// properties
 	state: 'closed',
 	page: $('#animation'),
 	head: $('#animation-head'),
@@ -95,7 +89,6 @@ export const Animation: AnimationShape = {
 	innerPointerArea: $('#animation-timeline-pointer-area-inner'),
 	pointer: $('#animation-timeline-pointer'),
 	dirTags: null,
-	// editor properties
 	dragging: null,
 	playing: false,
 	motion: null,
@@ -136,7 +129,6 @@ export const Animation: AnimationShape = {
 	centerOffsetY: null,
 	padding: null,
 	inspectorTypeMap: null,
-	// animation properties
 	context: null,
 	meta: null,
 	player: null,
@@ -146,7 +138,6 @@ export const Animation: AnimationShape = {
 	layers: null,
 	animIndex: null,
 	frameMax: null,
-	// methods
 	initialize: null,
 	open: null,
 	load: null,
@@ -275,7 +266,6 @@ export const Animation: AnimationShape = {
 	loadFromConfig: null,
 	saveToProject: null,
 	loadFromProject: null,
-	// events
 	webglRestored: null,
 	windowResize: null,
 	themechange: null,
@@ -328,17 +318,13 @@ export const Animation: AnimationShape = {
 	innerTimelineListPointermove: null,
 	innerTimelineListPointerleave: null,
 	innerTimelineListDblclick: null,
-	// classes
 	Player: null
 };
 
-// marquee methods
 Animation.marquee.resize = null;
 
-// list properties
 Animation.list.page = $('#animation-motion');
 Animation.list.head = $('#animation-list-head');
-// list methods
 Animation.list.copy = null;
 Animation.list.paste = null;
 Animation.list.delete = null;
@@ -351,24 +337,17 @@ Animation.list.createLoopIcon = null;
 Animation.list.updateLoopIcon = null;
 Animation.list.onDelete = null;
 
-// layerList methods
 Animation.layerList.update = null;
 Animation.layerList.create = null;
 Animation.layerList.copy = null;
 Animation.layerList.paste = null;
 Animation.layerList.delete = null;
-// ESM 求值顺序错：scene-window.js:338-339 占位赋 null 早跑，scene-list.js:156/177 真定义晚跑
-// （仅被 module-init.js:164 求值，不在 scene-window.js 链里）——此处模块顶层赋值会固化拿 null。
-// 改在 Animation.initialize 钩子内（initialize 段）补赋真函数，此时 scene-list.js 已求值
+// ESM 求值顺序错：scene-window.js:338-339 占位赋 null 早跑，scene-list.js:156/177 真定义晚跑 （仅被 module-init.js:164 求值，不在 scene-window.js 链里）——此处模块顶层赋值会固化拿 null。改在 Animation.initialize 钩子内（initialize 段）补赋真函数，此时 scene-list.js 已求值
 Animation.layerList.createIcon = null;
-// ESM 求值顺序错：scene-window.js:353 占位赋 null 早跑，scene-list.js:477 真定义晚跑（仅被
-// module-init.js:164 求值，不在 scene-window.js 链里）——此处模块顶层赋值会固化拿 null。
-// 删此 4 赋值，改在 Animation.initialize 钩子内（503 段）直接用 Scene.list.* （真定义已跑后）
+// ESM 求值顺序错：scene-window.js:353 占位赋 null 早跑，scene-list.js:477 真定义晚跑（仅被 module-init.js:164 求值，不在 scene-window.js 链里）——此处模块顶层赋值会固化拿 null。删此 4 赋值，改在 Animation.initialize 钩子内（503 段）直接用 Scene.list.* （真定义已跑后）
 Animation.layerList.onDelete = null;
 
-// timeline properties
 Animation.timeline.head = $('#animation-timeline-head');
-// timeline methods
 Animation.timeline.updateHead = null;
 
 // outerTimelineList properties
@@ -394,12 +373,9 @@ Animation.timelineMarquee.isSelected = null;
 Animation.timelineMarquee.isExtendable = null;
 Animation.timelineMarquee.isShrinkable = null;
 
-// 初始化
 Animation.initialize = function () {
-	// 添加设置滚动方法
 	this.screen.addSetScrollMethod();
 
-	// 创建控制点
 	const points = {
 		jointRotate: {},
 		rectRotate: {
@@ -422,12 +398,10 @@ Animation.initialize = function () {
 	};
 	// 控制点按优先级从低到高排序
 	points.rectList = [
-		// 旋转控制点
 		points.rectRotate.TL,
 		points.rectRotate.TR,
 		points.rectRotate.BL,
 		points.rectRotate.BR,
-		// 调整控制点
 		points.rectResize.T,
 		points.rectResize.L,
 		points.rectResize.R,
@@ -439,7 +413,6 @@ Animation.initialize = function () {
 	];
 	this.controlPoints = points;
 
-	// 创建位移计时器
 	this.translationTimer = new Timer({
 		duration: Infinity,
 		update: (timer) => {
@@ -477,7 +450,6 @@ Animation.initialize = function () {
 		}
 	});
 
-	// 创建缩放计时器
 	this.zoomTimer = new Timer({
 		duration: 80,
 		update: (timer) => {
@@ -494,7 +466,6 @@ Animation.initialize = function () {
 		}
 	});
 
-	// 设置方向标签
 	this.dirTags = {
 		'1-dir': ['→'],
 		'1-dir-mirror': ['→'],
@@ -506,13 +477,10 @@ Animation.initialize = function () {
 		'8-dir': ['↓', '←', '→', '↑', '↙', '↘', '↖', '↗']
 	};
 
-	// 设置舞台边距
 	this.padding = 800;
 
-	// 创建变换矩阵
 	this.matrix = new Matrix();
 
-	// 设置检查器类型映射表
 	this.inspectorTypeMap = {
 		joint: 'animJointFrame',
 		sprite: 'animSpriteFrame',
@@ -520,11 +488,9 @@ Animation.initialize = function () {
 		sound: 'animSoundFrame'
 	};
 
-	// 设置列表搜索框按钮和过滤器
 	this.searcher.addCloseButton();
 	this.searcher.addKeydownFilter();
 
-	// 绑定对象目录列表
 	const { list } = this;
 	list.removable = true;
 	list.bind(() => this.motions);
@@ -532,23 +498,19 @@ Animation.initialize = function () {
 	list.creators.push(list.createLoopIcon);
 	list.creators.push(list.updateLoopIcon);
 
-	// 绑定图层目录列表
 	const { layerList } = this;
 	layerList.removable = true;
 	layerList.renamable = true;
 	layerList.bind(() => this.layers);
-	// 直接用 Scene.list.* 真定义（Animation.initialize 跑时 scene-list.js 已求值），
-	// 不用 layerList.* ——后者在模块顶层被 scene-window.js:353 占位赋 null 固化，拿到 null
+	// 直接用 Scene.list.* 真定义（Animation.initialize 跑时 scene-list.js 已求值），不用 layerList.* ——后者在模块顶层被 scene-window.js:353 占位赋 null 固化，拿到 null
 	layerList.creators.push(Scene.list.createVisibilityIcon);
 	layerList.updaters.push(Scene.list.updateVisibilityIcon);
 	layerList.creators.push(Scene.list.createLockIcon);
 	layerList.updaters.push(Scene.list.updateLockIcon);
-	// 补赋递归状态方法（同根因：模块顶层赋值会固化拿 null，挪到 initialize 内赋真函数）
-	// 保留 5282/5303 段 this.setRecursiveStates + 567/569/580/582 段 layerList.* 调用姿势不变
+	// 补赋递归状态方法（同根因：模块顶层赋值会固化拿 null，挪到 initialize 内赋真函数） 保留 5282/5303 段 this.setRecursiveStates + 567/569/580/582 段 layerList.* 调用姿势不变
 	layerList.restoreRecursiveStates = Scene.list.restoreRecursiveStates;
 	layerList.setRecursiveStates = Scene.list.setRecursiveStates;
 
-	// 设置历史操作处理器
 	History.processors['animation-object-create'] = (operation, data) => {
 		const { response } = data;
 		list.restore(operation, response);
@@ -651,7 +613,6 @@ Animation.initialize = function () {
 		const { layer, x, length } = operation === 'undo' ? sMarquee : dMarquee;
 		Animation.outerTimelineList.restoreMotionAndLayer(motion, direction, layer);
 		Animation.player.index = x;
-		// 取消选择选框来避免获取错误的窗口宽高
 		Animation.unselectMarquee();
 		Animation.updateTimeline();
 		const y = Animation.getLayerIndex(layer);
@@ -737,7 +698,6 @@ Animation.initialize = function () {
 		Animation.planToSave();
 	};
 
-	// 侦听事件
 	window.on('themechange', this.themechange);
 	window.on('datachange', this.datachange);
 	window.on('enumchange', this.enumchange);
@@ -787,11 +747,9 @@ Animation.initialize = function () {
 	this.innerTimelineList.on('pointerleave', this.innerTimelineListPointerleave);
 	this.innerTimelineList.on('dblclick', this.innerTimelineListDblclick);
 
-	// 初始化子对象
 	Curve.initialize();
 };
 
-// 打开精灵
 Animation.open = function (context) {
 	if (this.context === context) {
 		return;
@@ -799,10 +757,8 @@ Animation.open = function (context) {
 	this.save();
 	this.close();
 
-	// 设置粒子元素舞台
 	Particle.Element.stage = this;
 
-	// 首次加载动画
 	const { meta } = context;
 	if (!context.animation) {
 		context.animation = Data.animations[meta.guid];
@@ -830,7 +786,6 @@ Animation.open = function (context) {
 	}
 };
 
-// 加载动画
 Animation.load = function (context) {
 	const firstLoad = !context.editor;
 	if (firstLoad) {
@@ -851,34 +806,26 @@ Animation.load = function (context) {
 	}
 	const { animation, editor } = context;
 
-	// 加载动画属性
 	this.mode = animation.mode;
 	this.sprites = animation.sprites;
 	this.motions = animation.motions;
 
-	// 加载编辑器属性
 	this.player = editor.player;
 	this.history = editor.history;
 	this.centerX = editor.centerX;
 	this.centerY = editor.centerY;
 
-	// 重置动画矩阵
 	Animation.Player.matrix.reset();
 
-	// 初始化
 	if (firstLoad) {
-		// 加载精灵纹理
 		this.loadTextures();
 	}
 
-	// 更新列表
 	this.list.update();
 	// this.list.scrollTop = editor.listScrollTop
 
-	// 设置动作对象
 	this.setMotion(editor.motion);
 
-	// 设置目标对象
 	if (editor.target) {
 		this.selectFrame(editor.target, editor.selectionX, editor.selectionLength);
 	}
@@ -886,17 +833,14 @@ Animation.load = function (context) {
 	UndoManager.setActive(Animation);
 };
 
-// 保存动画
 Animation.save = function () {
 	if (this.state === 'open') {
 		const { animation, editor } = this.context;
 
-		// 保存动画属性
 		animation.mode = this.mode;
 		animation.sprites = this.sprites;
 		animation.motions = this.motions;
 
-		// 保存编辑器属性
 		editor.motion = this.motion;
 		editor.target = this.target;
 		editor.player = this.player;
@@ -909,12 +853,10 @@ Animation.save = function () {
 	}
 };
 
-// 关闭精灵
 Animation.close = function () {
 	if (this.state !== 'closed') {
 		this.screen.blur();
 		this.setMotion(null);
-		// 关闭检查器
 		if (Inspector.type === 'fileAnimation') {
 			Inspector.close();
 		}
@@ -939,7 +881,6 @@ Animation.close = function () {
 	}
 };
 
-// 销毁动画
 Animation.destroy = function (context) {
 	if (!context.editor) return;
 	if (this.context === context) {
@@ -950,7 +891,6 @@ Animation.destroy = function (context) {
 	TreeList.deleteCaches(context.animation.motions);
 };
 
-// 播放动画
 Animation.play = function () {
 	if (this.playing) {
 		return this.stop();
@@ -970,7 +910,6 @@ Animation.play = function () {
 	$('#animation-timeline-play').addClass('playing');
 };
 
-// 停止播放
 Animation.stop = function () {
 	if (this.playing) {
 		this.playing = false;
@@ -980,28 +919,24 @@ Animation.stop = function () {
 	}
 };
 
-// 复制对象
 Animation.copy = function () {
 	if (this.state === 'open' && this.motion !== null) {
 		this.list.copy(this.motion);
 	}
 };
 
-// 粘贴对象
 Animation.paste = function () {
 	if (this.state === 'open' && this.dragging === null) {
 		this.list.paste(null);
 	}
 };
 
-// 删除对象
 Animation.delete = function () {
 	if (this.state === 'open' && this.motion !== null && this.dragging === null) {
 		this.list.delete(this.motion);
 	}
 };
 
-// 撤销操作
 Animation.undo = function () {
 	if (this.state === 'open' && !this.dragging && this.history.canUndo()) {
 		this.history.restore('undo');
@@ -1009,7 +944,6 @@ Animation.undo = function () {
 	}
 };
 
-// 重做操作
 Animation.redo = function () {
 	if (this.state === 'open' && !this.dragging && this.history.canRedo()) {
 		this.history.restore('redo');
@@ -1017,7 +951,6 @@ Animation.redo = function () {
 	}
 };
 
-// 打开图层
 Animation.openLayer = function (layer) {
 	this.layerList.selectWithNoEvent(layer);
 	switch (layer.class) {
@@ -1036,7 +969,6 @@ Animation.openLayer = function (layer) {
 	}
 };
 
-// 跳到上一帧
 Animation.previousFrame = function () {
 	const { length } = this.player;
 	if (length <= 1) return;
@@ -1050,7 +982,6 @@ Animation.previousFrame = function () {
 	this.loadFrames(x);
 };
 
-// 跳到下一帧
 Animation.nextFrame = function () {
 	const { length } = this.player;
 	if (length <= 1) return;
@@ -1064,7 +995,6 @@ Animation.nextFrame = function () {
 	this.loadFrames(x);
 };
 
-// 跳到上一个关键帧
 Animation.previousKeyFrame = function () {
 	if (this.player.length <= 1) return;
 	const contexts = this.player.contexts;
@@ -1115,7 +1045,6 @@ Animation.previousKeyFrame = function () {
 	}
 };
 
-// 跳到下一个关键帧
 Animation.nextKeyFrame = function () {
 	if (this.player.length <= 1) return;
 	const contexts = this.player.contexts;
@@ -1164,7 +1093,6 @@ Animation.nextKeyFrame = function () {
 	}
 };
 
-// 设置速度
 Animation.setSpeed = (function IIFE() {
 	const numberBox = $('#animation-speed');
 	return function (speed) {
@@ -1173,7 +1101,6 @@ Animation.setSpeed = (function IIFE() {
 	};
 })();
 
-// 设置缩放
 Animation.setZoom = (function IIFE() {
 	const slider = $('#animation-zoom');
 	return function (zoom) {
@@ -1219,7 +1146,6 @@ Animation.setZoom = (function IIFE() {
 	};
 })();
 
-// 设置悬停对象
 Animation.setHover = function (hover) {
 	if (this.hover !== hover) {
 		this.hover = hover;
@@ -1227,7 +1153,6 @@ Animation.setHover = function (hover) {
 	}
 };
 
-// 设置动作对象
 Animation.setMotion = function (motion) {
 	if (this.motion !== motion) {
 		this.motion = motion;
@@ -1256,7 +1181,6 @@ Animation.setMotion = function (motion) {
 	}
 };
 
-// 设置动作模式
 Animation.setMotionMode = function (mode) {
 	if (!this.motion) return;
 	const dirCases = this.motion.dirCases;
@@ -1267,21 +1191,17 @@ Animation.setMotionMode = function (mode) {
 		mode: this.motion.mode,
 		dirCases: dirCases.slice()
 	});
-	// 设置新的模式
 	this.motion.mode = mode;
-	// 补充缺少的动作方向
 	const dirs = this.dirTags[mode];
 	const length = dirs.length;
 	for (let i = dirCases.length; i < length; i++) {
 		dirCases[i] = Inspector.animMotion.createDir();
 	}
-	// 删除多余的动作方向
 	if (dirCases.length > length) {
 		dirCases.length = length;
 	}
 };
 
-// 设置动作方向
 Animation.setDirection = function (direction) {
 	if (!this.motion) return;
 	const dirCases = this.motion.dirCases;
@@ -1303,7 +1223,6 @@ Animation.setDirection = function (direction) {
 	}
 };
 
-// 创建方向选项
 Animation.createDirItems = function () {
 	const dirList = this.dirList;
 	const motion = this.motion;
@@ -1331,7 +1250,6 @@ Animation.createDirItems = function () {
 	}
 };
 
-// 编辑动作对象
 Animation.editMotion = function (motion) {
 	const proxy = {
 		read() {
@@ -1353,7 +1271,6 @@ Animation.editMotion = function (motion) {
 	Enum.open(proxy, 'string');
 };
 
-// 获取新的动作ID
 Animation.getNewMotionId = function (callback) {
 	const proxy = {
 		read() {
@@ -1366,7 +1283,6 @@ Animation.getNewMotionId = function (callback) {
 	Enum.open(proxy, 'string');
 };
 
-// 显示目标对象
 Animation.revealTarget = (function IIFE() {
 	const timer = new Timer({
 		duration: 200,
@@ -1418,7 +1334,6 @@ Animation.revealTarget = (function IIFE() {
 	};
 })();
 
-// 转移目标对象
 Animation.shiftTarget = function (x, y) {
 	const context = this.targetContext;
 	const target = this.target;
@@ -1453,14 +1368,12 @@ Animation.shiftTarget = function (x, y) {
 		this.updateFrameContexts();
 		this.requestRendering();
 
-		// 更新编辑器
 		if (editor.target === target) {
 			editor.write({ x, y });
 		}
 	}
 };
 
-// 调整目标对象
 Animation.resizeTarget = function (scaleX, scaleY) {
 	const context = this.targetContext;
 	const target = this.target;
@@ -1499,14 +1412,12 @@ Animation.resizeTarget = function (scaleX, scaleY) {
 		this.updateFrameContexts();
 		this.requestRendering();
 
-		// 更新编辑器
 		if (editor.target === target) {
 			editor.write({ scaleX, scaleY });
 		}
 	}
 };
 
-// 旋转目标对象
 Animation.rotateTarget = function (rotation) {
 	const context = this.targetContext;
 	const target = this.target;
@@ -1539,14 +1450,12 @@ Animation.rotateTarget = function (rotation) {
 		this.updateFrameContexts();
 		this.requestRendering();
 
-		// 更新编辑器
 		if (editor.target === target) {
 			editor.write({ rotation });
 		}
 	}
 };
 
-// 设置控制点
 Animation.setControlPoint = function (point) {
 	if (this.controlPointActive !== point) {
 		this.controlPointActive = point;
@@ -1581,7 +1490,6 @@ Animation.setControlPoint = function (point) {
 				} else {
 					cursor = 'nesw-resize';
 				}
-				// 水平镜像视图模式
 				if (this.mirror)
 					switch (cursor) {
 						case 'nwse-resize':
@@ -1598,7 +1506,6 @@ Animation.setControlPoint = function (point) {
 	}
 };
 
-// 更新动作对象
 Animation.updateMotion = function () {
 	const item = this.list.read();
 	if (item !== this.motion) {
@@ -1606,7 +1513,6 @@ Animation.updateMotion = function () {
 	}
 };
 
-// 更新动作对象列表项
 Animation.updateMotionItem = function () {
 	const { motion } = this;
 	if (motion !== null) {
@@ -1617,7 +1523,6 @@ Animation.updateMotionItem = function () {
 	}
 };
 
-// 更新目标对象
 Animation.updateTarget = function () {
 	if (this.target !== null) {
 		const { layer } = this.timelineMarquee;
@@ -1627,7 +1532,6 @@ Animation.updateTarget = function () {
 	}
 };
 
-// 更新目标对象的上下文
 Animation.updateTargetContext = function () {
 	const target = this.target;
 	if (target !== null) {
@@ -1644,14 +1548,12 @@ Animation.updateTargetContext = function () {
 	this.targetContext = null;
 };
 
-// 更新播放器动作
 Animation.updatePlayerMotion = function () {
 	this.player.motion = this.motion;
 	this.player.direction = this.direction;
 	this.player.layers = this.layers;
 };
 
-// 更新所有帧的上下文
 Animation.updateFrameContexts = function () {
 	const player = this.player;
 	const fi = player.index;
@@ -1672,7 +1574,6 @@ Animation.updateFrameContexts = function () {
 	}
 };
 
-// 更新音效上下文
 Animation.updateSoundContexts = function () {
 	const player = this.player;
 	const index = Math.floor(player.index);
@@ -1686,7 +1587,6 @@ Animation.updateSoundContexts = function () {
 			// 如果当前帧是关键帧且未播放过，则播放动画音效
 			if (frame && frame.start === index && context.version !== index) {
 				context.version = index;
-				// 播放动画音效
 				if (frame.sound) {
 					AudioManager.se.play(frame.sound, frame.volume);
 				}
@@ -1695,7 +1595,6 @@ Animation.updateSoundContexts = function () {
 	}
 };
 
-// 重置音效上下文
 Animation.resetSoundContexts = function () {
 	const player = this.player;
 	const contexts = player.contexts;
@@ -1709,12 +1608,10 @@ Animation.resetSoundContexts = function () {
 	}
 };
 
-// 停止播放声音
 Animation.stopPlayingSound = function () {
 	AudioManager.se.stop();
 };
 
-// 更新控制点
 Animation.updateControlPoints = function (context) {
 	let L, T, R, B;
 	const { layer, frame } = context;
@@ -1783,7 +1680,6 @@ Animation.updateControlPoints = function (context) {
 	const ox4 = Math.cos(angle4) * POINT_RADIUS;
 	const oy4 = Math.sin(angle4) * POINT_RADIUS;
 
-	// 旋转控制点: 左上|右上|左下|右下
 	const { rectRotate } = points;
 	rectRotate.TL.x = x1 + (ox1 - ox4) * 3;
 	rectRotate.TL.y = y1 + (oy1 - oy4) * 3;
@@ -1793,7 +1689,6 @@ Animation.updateControlPoints = function (context) {
 	rectRotate.BL.y = y2 + (oy2 - oy1) * 3;
 	rectRotate.BR.x = x3 + (ox3 - ox2) * 3;
 	rectRotate.BR.y = y3 + (oy3 - oy2) * 3;
-	// 调整控制点: 上|左|右|下|左上|右上|左下|右下
 	const { rectResize } = points;
 	rectResize.T.x = (x4 + x1) / 2 + ox1;
 	rectResize.T.y = (y4 + y1) / 2 + oy1;
@@ -1824,11 +1719,9 @@ Animation.updateControlPoints = function (context) {
 	return true;
 };
 
-// 更新头部位置
 Animation.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -1837,7 +1730,6 @@ Animation.updateHead = function () {
 			head.left = left;
 			head.style.left = `${left}px`;
 		}
-		// 调整居中组件的位置
 		const width = nRect.right - iRect.right;
 		if (head.width !== width) {
 			head.width = width;
@@ -1854,7 +1746,6 @@ Animation.updateHead = function () {
 	}
 };
 
-// 调整大小
 Animation.resize = function () {
 	if (this.state === 'open' && this.screen.clientWidth !== 0) {
 		const scale = this.scale;
@@ -1883,7 +1774,6 @@ Animation.resize = function () {
 	}
 };
 
-// 获取指针坐标
 Animation.getPointerCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
 	return function (event) {
@@ -1898,7 +1788,6 @@ Animation.getPointerCoords = (function IIFE() {
 	};
 })();
 
-// 获取帧坐标
 Animation.getFrameCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
 	return function (event, clamp = false) {
@@ -1906,7 +1795,6 @@ Animation.getFrameCoords = (function IIFE() {
 		const coords = event.getRelativeCoords(list);
 		let x = Math.floor(coords.x / 16);
 		let y = Math.floor(coords.y / 20);
-		// 限定在列表框内
 		if (clamp) {
 			const sl = list.scrollLeft / 16;
 			const st = list.scrollTop / 20;
@@ -1921,7 +1809,6 @@ Animation.getFrameCoords = (function IIFE() {
 	};
 })();
 
-// 获取关键帧对象
 Animation.getKeyFrame = function (x, y) {
 	if (this.timelineMarquee.isPointIn(x, y)) {
 		const { layer, x: sx, length } = this.timelineMarquee;
@@ -1938,7 +1825,6 @@ Animation.getKeyFrame = function (x, y) {
 	return null;
 };
 
-// 获取图层索引
 Animation.getLayerIndex = function (layer) {
 	const timelines = this.innerTimelineList.childNodes;
 	const length = timelines.length;
@@ -1950,7 +1836,6 @@ Animation.getLayerIndex = function (layer) {
 	return -1;
 };
 
-// 获取动作列表选项
 Animation.getMotionListItems = function (animationId) {
 	const motions = Data.animations[animationId]?.motions;
 	if (!motions)
@@ -1961,7 +1846,6 @@ Animation.getMotionListItems = function (animationId) {
 			}
 		];
 
-	// 设置选项缓存
 	if (!('listItems' in motions)) {
 		Object.defineProperty(motions, 'listItems', {
 			writable: true,
@@ -1989,12 +1873,10 @@ Animation.getMotionListItems = function (animationId) {
 	return items;
 };
 
-// 获取精灵图列表选项
 Animation.getSpriteListItems = function (animationId) {
 	const sprites = Data.animations[animationId]?.sprites;
 	if (!sprites) return [{ name: 'No Image', value: '' }];
 
-	// 设置选项缓存
 	if (!('listItems' in sprites)) {
 		Object.defineProperty(sprites, 'listItems', {
 			writable: true,
@@ -2020,7 +1902,6 @@ Animation.getSpriteListItems = function (animationId) {
 	return items;
 };
 
-// 更新摄像机位置
 Animation.updateCamera = function (x = this.centerX, y = this.centerY) {
 	const screen = this.screen;
 	const dpr = window.devicePixelRatio;
@@ -2035,7 +1916,6 @@ Animation.updateCamera = function (x = this.centerX, y = this.centerY) {
 	screen.scrollTop = (scrollY - (GL.height >> 1) + toleranceForDPR) / dpr;
 };
 
-// 更新变换参数
 Animation.updateTransform = function () {
 	const screen = this.screen;
 	const dpr = window.devicePixelRatio;
@@ -2054,7 +1934,6 @@ Animation.updateTransform = function () {
 	this.centerY = Math.roundTo((scrollY - this.outerHeight / 2) / this.scaleY, 4);
 };
 
-// 更新矩阵
 Animation.updateMatrix = function () {
 	const matrix = this.matrix
 		.reset()
@@ -2065,7 +1944,6 @@ Animation.updateMatrix = function () {
 	}
 };
 
-// 更新刻度尺
 Animation.updateRuler = function () {
 	const { outerRuler, innerRuler } = this;
 	const width = outerRuler.clientWidth;
@@ -2094,25 +1972,18 @@ Animation.updateRuler = function () {
 	}
 };
 
-// 更新时间轴
 Animation.updateTimeline = function () {
-	// 创建时间轴
 	Animation.createTimelines();
 
-	// 更新时间轴长度
 	Animation.updateTimelineLength();
 
-	// 更新选框
 	Animation.updateMarquee();
 
-	// 更新指针区域高度
 	Animation.updatePointerArea();
 
-	// 加载帧数据
 	Animation.loadFrames(Animation.player.index, true);
 };
 
-// 更新时间轴长度
 Animation.updateTimelineLength = function () {
 	this.player.computeLength();
 	const end = this.player.length;
@@ -2123,7 +1994,6 @@ Animation.updateTimelineLength = function () {
 	}
 };
 
-// 更新指针区域高度
 Animation.updatePointerArea = function () {
 	const list = this.outerTimelineList;
 	const area = this.outerPointerArea;
@@ -2137,7 +2007,6 @@ Animation.updatePointerArea = function () {
 	}
 };
 
-// 更新指针位置
 Animation.updatePointer = function () {
 	const x = Math.floor(this.player.index);
 	const { pointer } = this;
@@ -2147,7 +2016,6 @@ Animation.updatePointer = function () {
 	}
 };
 
-// 更新光标
 Animation.updateCursor = function (x, y) {
 	const { timelineCursor } = this;
 	if (timelineCursor.x !== x || timelineCursor.y !== y) {
@@ -2163,7 +2031,6 @@ Animation.updateCursor = function (x, y) {
 	}
 };
 
-// 选择指定的帧
 Animation.selectFrame = function (frame, fStart, fLength) {
 	if (!frame) {
 		return this.unselectMarquee();
@@ -2201,14 +2068,12 @@ Animation.selectFrame = function (frame, fStart, fLength) {
 	}
 };
 
-// 选择选框
 Animation.selectMarquee = function (x, y, length, origin) {
 	this.stop();
 	const timelines = this.innerTimelineList.childNodes;
 	const ex = this.frameMax;
 	const ey = timelines.length;
 	if (x >= 0 && x + length <= ex && y >= 0 && y < ey) {
-		// 更新选框
 		const { layer } = timelines[y];
 		const marquee = this.timelineMarquee;
 		if (marquee.layer !== layer || marquee.x !== x || marquee.length !== length) {
@@ -2217,10 +2082,8 @@ Animation.selectMarquee = function (x, y, length, origin) {
 			marquee.length = length;
 			this.updateMarquee();
 
-			// 打开帧数据
 			this.openFrame();
 
-			// 选择图层列表
 			this.layerList.selectWithNoEvent(layer);
 		}
 		if (origin !== undefined) {
@@ -2229,7 +2092,6 @@ Animation.selectMarquee = function (x, y, length, origin) {
 	}
 };
 
-// 取消选择选框
 Animation.unselectMarquee = function (frame) {
 	const marquee = this.timelineMarquee;
 	if (frame !== undefined ? this.target === frame : marquee.layer !== null) {
@@ -2247,7 +2109,6 @@ Animation.unselectMarquee = function (frame) {
 	}
 };
 
-// 更新选框
 Animation.updateMarquee = function () {
 	const marquee = this.timelineMarquee;
 	const { layer } = marquee;
@@ -2267,7 +2128,6 @@ Animation.updateMarquee = function () {
 	marquee.hide();
 };
 
-// 滚动到选框的位置
 Animation.scrollToMarquee = function (shiftKey) {
 	const { x, y, length, origin } = this.timelineMarquee;
 	if (y !== -1) {
@@ -2289,7 +2149,6 @@ Animation.scrollToMarquee = function (shiftKey) {
 	}
 };
 
-// 更新转移选框
 Animation.updateMarqueeShift = function (x, y, length) {
 	const timelines = this.innerTimelineList.childNodes;
 	const marquee = this.timelineMarqueeShift;
@@ -2308,7 +2167,6 @@ Animation.updateMarqueeShift = function (x, y, length) {
 	}
 };
 
-// 选择单个帧 - 相对位置
 Animation.selectFrameRelative = function (direction) {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -2337,7 +2195,6 @@ Animation.selectFrameRelative = function (direction) {
 	this.loadFrames(x);
 };
 
-// 选择单个帧 - 在首尾
 Animation.selectFrameAtHomeEnd = function (direction) {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -2369,7 +2226,6 @@ Animation.selectFrameAtHomeEnd = function (direction) {
 	this.loadFrames(x);
 };
 
-// 选择关键帧有关的所有帧
 Animation.selectAllFramesOfKey = function () {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -2387,7 +2243,6 @@ Animation.selectAllFramesOfKey = function () {
 	}
 };
 
-// 选择多个帧 - 相对位置
 Animation.multiSelectFramesRelative = function (direction) {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -2418,7 +2273,6 @@ Animation.multiSelectFramesRelative = function (direction) {
 	this.loadFrames(forward ? x + length - 1 : x);
 };
 
-// 选择多个帧 - 到首尾
 Animation.multiSelectFramesToHomeEnd = function (direction) {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -2454,7 +2308,6 @@ Animation.multiSelectFramesToHomeEnd = function (direction) {
 	this.loadFrames(x);
 };
 
-// 打开帧数据
 Animation.openFrame = function () {
 	const marquee = this.timelineMarquee;
 	const { layer, x } = marquee;
@@ -2481,7 +2334,6 @@ Animation.openFrame = function () {
 	}
 };
 
-// 加载精灵纹理
 Animation.loadTextures = function () {
 	if (this.state === 'closed') return;
 	const { floor, max } = Math;
@@ -2524,7 +2376,6 @@ Animation.loadTextures = function () {
 			});
 		}
 	}
-	// 销毁不再使用的图像纹理
 	for (const spriteId of Object.keys(last)) {
 		const texture = last[spriteId];
 		if (texture !== textures[spriteId] && texture instanceof ImageTexture) {
@@ -2533,7 +2384,6 @@ Animation.loadTextures = function () {
 	}
 };
 
-// 加载帧数据
 Animation.loadFrames = function (index, forceReload = false) {
 	const player = this.player;
 	const fe = player.length;
@@ -2541,28 +2391,22 @@ Animation.loadFrames = function (index, forceReload = false) {
 	if (player.index !== fi || forceReload) {
 		player.index = fi;
 
-		// 更新所有帧的上下文
 		this.updateFrameContexts();
 
-		// 更新目标对象的上下文
 		this.updateTargetContext();
 
-		// 更新指针位置
 		this.updatePointer();
 
-		// 请求绘制画面
 		this.requestRendering();
 	}
 };
 
-// 绘制背景
 Animation.drawBackground = function () {
 	const gl = GL;
 	gl.clearColor(...this.background.getGLRGBA());
 	gl.clear(gl.COLOR_BUFFER_BIT);
 };
 
-// 绘制描图纸
 Animation.drawOnionskins = function () {
 	if (this.showOnionskin) {
 		GL.alpha = 0.25;
@@ -2573,7 +2417,6 @@ Animation.drawOnionskins = function () {
 	}
 };
 
-// 绘制精灵图层
 Animation.drawSpriteLayers = function (contexts = this.player.contexts) {
 	const { player } = this;
 	const { count } = contexts;
@@ -2604,7 +2447,6 @@ Animation.drawSpriteLayers = function (contexts = this.player.contexts) {
 	gl.batchRenderer.draw();
 };
 
-// 绘制粒子发射器
 Animation.drawEmitters = function () {
 	if (!this.showMark) return;
 	const gl = GL;
@@ -2659,7 +2501,6 @@ Animation.drawEmitters = function () {
 	}
 };
 
-// 发射粒子
 Animation.emitParticles = function (deltaTime) {
 	const { player } = this;
 	const { contexts } = player;
@@ -2688,7 +2529,6 @@ Animation.emitParticles = function (deltaTime) {
 	}
 };
 
-// 更新粒子
 Animation.updateParticles = function (deltaTime) {
 	this.particleUpdating = false;
 	const { emitters } = this.player;
@@ -2704,7 +2544,6 @@ Animation.updateParticles = function (deltaTime) {
 	}
 };
 
-// 绘制背景粒子
 Animation.drawBackParticles = function () {
 	if (this.particleUpdating) {
 		const { emitters } = this.player;
@@ -2716,7 +2555,6 @@ Animation.drawBackParticles = function () {
 	}
 };
 
-// 绘制前景粒子
 Animation.drawFrontParticles = function () {
 	if (this.particleUpdating) {
 		const { emitters } = this.player;
@@ -2728,7 +2566,6 @@ Animation.drawFrontParticles = function () {
 	}
 };
 
-// 绘制坐标轴
 Animation.drawCoordinateAxes = function () {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
@@ -2775,7 +2612,6 @@ Animation.drawCoordinateAxes = function () {
 	gl.drawArrays(gl.LINES, 0, 4);
 };
 
-// 绘制关节节点
 Animation.drawJointNodes = function () {
 	if (!this.showMark) return;
 	const gl = GL;
@@ -2829,7 +2665,6 @@ Animation.drawJointNodes = function () {
 	}
 };
 
-// 绘制关节箭头
 Animation.drawJointArrows = function () {
 	if (!this.showMark) return;
 	const gl = GL;
@@ -2900,7 +2735,6 @@ Animation.drawJointArrows = function () {
 	}
 };
 
-// 绘制关节旋转器
 Animation.drawJointSpinner = function () {
 	const context = this.targetContext;
 	const target = this.target;
@@ -2970,7 +2804,6 @@ Animation.drawJointSpinner = function () {
 	}
 };
 
-// 绘制悬停图像线框
 Animation.drawHoverWireframe = function () {
 	const hover = this.hover;
 	if (hover !== null && hover !== this.target) {
@@ -2996,7 +2829,6 @@ Animation.drawHoverWireframe = function () {
 	}
 };
 
-// 绘制目标图像线框
 Animation.drawTargetWireframe = function () {
 	const context = this.targetContext;
 	if (context !== null && this.target !== null) {
@@ -3014,7 +2846,6 @@ Animation.drawTargetWireframe = function () {
 	}
 };
 
-// 绘制精灵线框
 Animation.drawSpriteWireframe = function (context, color) {
 	const key = context.layer.sprite;
 	const texture = this.player.textures[key];
@@ -3083,7 +2914,6 @@ Animation.drawSpriteWireframe = function (context, color) {
 	gl.drawArrays(gl.LINE_LOOP, 0, 4);
 };
 
-// 绘制粒子发射器线框
 Animation.drawEmitterWireframe = function (context, color) {
 	const emitter = context.emitter;
 	if (!emitter?.hasArea) return;
@@ -3151,7 +2981,6 @@ Animation.drawEmitterWireframe = function (context, color) {
 	gl.drawArrays(gl.LINE_LOOP, 0, 4);
 };
 
-// 绘制目标精灵锚点
 Animation.drawTargetAnchor = function () {
 	const context = this.targetContext;
 	if (context !== null && this.target !== null) {
@@ -3185,7 +3014,6 @@ Animation.drawTargetAnchor = function () {
 	}
 };
 
-// 绘制精灵控制点
 Animation.drawSpriteControlPoints = function () {
 	const context = this.targetContext;
 	const target = this.target;
@@ -3236,7 +3064,6 @@ Animation.drawSpriteControlPoints = function () {
 	}
 };
 
-// 创建时间轴
 Animation.createTimelines = (function IIFE() {
 	const createTimelines = (layers) => {
 		for (const layer of layers) {
@@ -3302,7 +3129,6 @@ Animation.createTimelines = (function IIFE() {
 	};
 })();
 
-// 获取指定位置的关键帧
 Animation.getFrame = function (frames, x) {
 	const length = frames.length;
 	for (let i = 0; i < length; i++) {
@@ -3316,7 +3142,6 @@ Animation.getFrame = function (frames, x) {
 	return null;
 };
 
-// 排序关键帧
 Animation.sortFrames = function (frames) {
 	let end = 0;
 	const length = frames.length;
@@ -3332,7 +3157,6 @@ Animation.sortFrames = function (frames) {
 	}
 };
 
-// 移动指定位置后面的帧
 Animation.shiftFrames = function (frames, start, offset) {
 	const length = frames.length;
 	for (let i = start; i < length; i++) {
@@ -3342,7 +3166,6 @@ Animation.shiftFrames = function (frames, start, offset) {
 	}
 };
 
-// 保存关键帧列表
 Animation.saveFrames = function (layers, sMarquee, dMarquee = sMarquee) {
 	const changes = [];
 	for (const layer of layers) {
@@ -3360,7 +3183,6 @@ Animation.saveFrames = function (layers, sMarquee, dMarquee = sMarquee) {
 	});
 };
 
-// 克隆关键帧
 Animation.cloneFrame = function (frames, index) {
 	const frame = frames[index];
 	const clone = (frames[index] = Object.clone(frame));
@@ -3370,7 +3192,6 @@ Animation.cloneFrame = function (frames, index) {
 	});
 };
 
-// 插入关键帧
 Animation.insertFrame = function () {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -3387,33 +3208,22 @@ Animation.insertFrame = function () {
 		const end = frame.end;
 		if (x >= end) continue;
 		if (x > start) {
-			// 插入到关键帧中间
 			const insert = Object.clone(frame);
-			// const next = frames[i + 1]
-			// if (next && ex > next.start) {
-			//   this.shiftFrames(frames, i + 1, ex - next.start)
-			// }
 			insert.start = x;
 			insert.end = Math.max(ex, end);
 			this.cloneFrame(frames, i).end = x;
 			frames.splice(i + 1, 0, insert);
 		} else if (x === start) {
-			// 插入到关键帧之前
 			const proto = frames[i - 1] ?? frame;
 			const insert = Object.clone(proto);
-			// this.shiftFrames(frames, i, length)
 			insert.start = x;
 			insert.end = ex;
 			frames.splice(i, 0, insert);
 		} else {
-			// 插入到空白帧
 			if (i !== 0) {
 				this.cloneFrame(frames, i - 1).end = x;
 			}
 			const insert = Object.clone(frame);
-			// if (ex > start) {
-			//   this.shiftFrames(frames, i, ex - start)
-			// }
 			insert.start = x;
 			insert.end = ex;
 			frames.splice(i, 0, insert);
@@ -3423,7 +3233,6 @@ Animation.insertFrame = function () {
 		this.openFrame();
 		return;
 	}
-	// 追加到尾部
 	const last = frames[fLength - 1];
 	let insert = last;
 	if (last) {
@@ -3444,7 +3253,6 @@ Animation.insertFrame = function () {
 	this.openFrame();
 };
 
-// 延长帧
 Animation.extendFrame = function () {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1 || !marquee.isExtendable()) {
@@ -3461,26 +3269,18 @@ Animation.extendFrame = function () {
 		const end = frame.end;
 		if (x >= end) continue;
 		if (x >= start) {
-			// 插入到关键帧之前或中间
 			this.cloneFrame(frames, i).end += length;
-			// const next = frames[i + 1]
-			// if (next && frame.end > next.start) {
-			//   this.shiftFrames(frames, i + 1, frame.end - next.start)
-			// }
+			// const next = frames[i + 1] if (next && frame.end > next.start) { this.shiftFrames(frames, i + 1, frame.end - next.start) }
 		} else {
-			// 插入到空白帧
 			if (i === 0) return;
 			this.cloneFrame(frames, i - 1).end = ex;
-			// if (ex > start) {
-			//   this.shiftFrames(frames, i, ex - start)
-			// }
+			// if (ex > start) { this.shiftFrames(frames, i, ex - start) }
 		}
 		this.sortFrames(frames);
 		this.updateTimeline();
 		this.openFrame();
 		return;
 	}
-	// 追加到尾部
 	if (fLength !== 0) {
 		this.cloneFrame(frames, fLength - 1).end = ex;
 		this.updateTimeline();
@@ -3488,7 +3288,6 @@ Animation.extendFrame = function () {
 	}
 };
 
-// 删除帧
 Animation.deleteFrame = function (shrink = false) {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1 || (!shrink && !marquee.isSelected())) {
@@ -3506,12 +3305,10 @@ Animation.deleteFrame = function (shrink = false) {
 				const start = frame.start;
 				if (ex > start) {
 					if (x <= start) {
-						// 计算删除关键帧后的偏移值
 						const end = frame.end;
 						const extra = Math.max(end - ex, 0);
 						this.shiftFrames(frames, ++i, -length - extra);
 					} else {
-						// 直接偏移
 						this.shiftFrames(frames, ++i, -length);
 					}
 					break block;
@@ -3526,10 +3323,8 @@ Animation.deleteFrame = function (shrink = false) {
 		if (ex <= start) continue;
 		if (x >= end) break;
 		if (x <= start) {
-			// 选中关键帧头部则删除整个关键帧
 			frames.splice(i, 1);
 		} else {
-			// 裁剪关键帧
 			this.cloneFrame(frames, i).end = x + Math.max(end - ex, 0);
 		}
 	}
@@ -3537,7 +3332,6 @@ Animation.deleteFrame = function (shrink = false) {
 	this.openFrame();
 };
 
-// 复制帧
 Animation.copyFrame = function (returnData = false) {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -3557,20 +3351,17 @@ Animation.copyFrame = function (returnData = false) {
 		copies.push(Object.clone(frame));
 	}
 	if (copies.length !== 0) {
-		// 重置关键帧位置
 		for (const frame of copies) {
 			frame.start -= x;
 			frame.end -= x;
 		}
-		// 选中关键帧头部则必要时扩展选框长度
-		// 否则裁剪尾部关键帧
+		// 选中关键帧头部则必要时扩展选框长度 否则裁剪尾部关键帧
 		const last = copies[copies.length - 1];
 		if (last.start >= 0) {
 			length = Math.max(last.end, length);
 		} else {
 			last.end = Math.min(last.end, length);
 		}
-		// 裁剪头部关键帧
 		const first = copies[0];
 		if (first.start < 0) {
 			first.start = 0;
@@ -3583,7 +3374,6 @@ Animation.copyFrame = function (returnData = false) {
 	}
 };
 
-// 粘贴帧
 Animation.pasteFrame = function (data, destination) {
 	const { layer, x, y, length: sLength } = destination ?? this.timelineMarquee;
 	if (!data) data = (Clipboard as any).read(`yami.animFrame.${layer.class}`);
@@ -3597,7 +3387,6 @@ Animation.pasteFrame = function (data, destination) {
 		frame.start += x;
 		frame.end += x;
 	}
-	// const ex = x + dLength
 	const frames = layer.frames;
 	const fLength = frames.length;
 	for (let i = 0; i < fLength; i++) {
@@ -3606,24 +3395,16 @@ Animation.pasteFrame = function (data, destination) {
 		const end = frame.end;
 		if (x >= end) continue;
 		if (x > start) {
-			// 插入到关键帧中间
-			// const next = frames[i + 1]
-			// if (next && ex > next.start) {
-			//   this.shiftFrames(frames, i + 1, ex - next.start)
-			// }
+			// 插入到关键帧中间 const next = frames[i + 1] if (next && ex > next.start) { this.shiftFrames(frames, i + 1, ex - next.start) }
 			if (x < end) {
 				this.cloneFrame(frames, i).end = x;
 			}
 			frames.splice(i + 1, 0, ...copies);
 		} else if (x === start) {
-			// 插入到关键帧之前
-			// this.shiftFrames(frames, i, dLength)
+			// 插入到关键帧之前 this.shiftFrames(frames, i, dLength)
 			frames.splice(i, 0, ...copies);
 		} else {
-			// 插入到空白帧
-			// if (ex > start) {
-			//   this.shiftFrames(frames, i, ex - start)
-			// }
+			// 插入到空白帧 if (ex > start) { this.shiftFrames(frames, i, ex - start) }
 			frames.splice(i, 0, ...copies);
 		}
 		this.sortFrames(frames);
@@ -3631,14 +3412,12 @@ Animation.pasteFrame = function (data, destination) {
 		this.openFrame();
 		return;
 	}
-	// 追加到尾部
 	frames.push(...copies);
 	this.updateTimeline();
 	this.loadFrames(x);
 	this.openFrame();
 };
 
-// 选择所有帧
 Animation.selectAllFrames = function () {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -3654,7 +3433,6 @@ Animation.selectAllFrames = function () {
 	}
 };
 
-// 拖放帧
 Animation.dragAndDropFrame = function () {
 	const { layer: sLayer, x: sx, y: sy, length } = this.timelineMarquee;
 	const { layer: dLayer, x: dx, y: dy } = this.timelineMarqueeShift;
@@ -3683,7 +3461,6 @@ Animation.dragAndDropFrame = function () {
 	}
 };
 
-// 调整选框
 Animation.adjustMarquee = function () {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -3694,7 +3471,6 @@ Animation.adjustMarquee = function () {
 	const ex = x + length;
 	const frames = layer.frames;
 	const fLength = frames.length;
-	// 调整选框头部
 	for (let i = 0; i < fLength; i++) {
 		const frame = frames[i];
 		const start = frame.start;
@@ -3708,7 +3484,6 @@ Animation.adjustMarquee = function () {
 		}
 		break;
 	}
-	// 调整选框尾部
 	for (let i = fLength - 1; i >= 0; i--) {
 		const frame = frames[i];
 		const start = frame.start;
@@ -3721,13 +3496,11 @@ Animation.adjustMarquee = function () {
 		}
 		break;
 	}
-	// 重新选择选框
 	if (changed) {
 		this.selectMarquee(x, y, length, x);
 	}
 };
 
-// 移动图层位置
 Animation.shiftLayerPosition = function (layer, x, y) {
 	let editor;
 	if (Inspector.animJointFrame.target) {
@@ -3754,7 +3527,6 @@ Animation.shiftLayerPosition = function (layer, x, y) {
 	this.requestRendering();
 };
 
-// 移动选中的帧
 Animation.shiftSelectedFrames = function (mode) {
 	const marquee = this.timelineMarquee;
 	if (marquee.y === -1) {
@@ -3822,7 +3594,6 @@ Animation.shiftSelectedFrames = function (mode) {
 	}
 };
 
-// 选择控制点
 Animation.selectControlPoint = function (x, y) {
 	const target = this.target;
 	const context = this.targetContext;
@@ -3843,7 +3614,6 @@ Animation.selectControlPoint = function (x, y) {
 			case 'particle': {
 				const emitter = context.emitter;
 				if (!emitter?.hasArea) return null;
-				// 符合条件则执行下面的内容
 			}
 			case 'sprite':
 				if (this.controlPointVisible) {
@@ -3866,7 +3636,6 @@ Animation.selectControlPoint = function (x, y) {
 	return null;
 };
 
-// 选择对象
 Animation.selectObject = function (x, y) {
 	const { contexts } = this.player;
 	const last = contexts.count - 1;
@@ -3887,7 +3656,6 @@ Animation.selectObject = function (x, y) {
 				const oy = context.matrix[7];
 				const dist = Math.dist(ox, oy, x, y);
 				if (dist <= jointRadius) {
-					// 选中时提高优先级来激活控制点
 					const w = active === context ? Infinity : jointRadius - dist;
 					if (target === null || weight < w) {
 						target = frame;
@@ -3971,7 +3739,6 @@ Animation.selectObject = function (x, y) {
 		}
 	}
 
-	// 选择图像对象
 	if (target === null) {
 		for (let i = last; i >= 0; i--) {
 			const context = contexts[i];
@@ -3992,7 +3759,6 @@ Animation.selectObject = function (x, y) {
 	return target;
 };
 
-// 判断点是否在关键帧区域内
 Animation.isPointInFrame = function (context, x, y) {
 	const key = context.layer.sprite;
 	const texture = this.player.textures[key];
@@ -4020,9 +3786,7 @@ Animation.isPointInFrame = function (context, x, y) {
 	const cross2 = x2 * y3 - y2 * x3;
 	const cross3 = x3 * y4 - y3 * x4;
 	const cross4 = x4 * y1 - y4 * x1;
-	// 如果矩形选择区域中有两个点重合
-	// 代表是零面积区域，则无法选中
-	// 后面的公式会失效
+	// 如果矩形选择区域中有两个点重合 代表是零面积区域，则无法选中 后面的公式会失效
 	if (
 		(x1 === x2 && y1 === y2) ||
 		(x2 === x3 && y2 === y3) ||
@@ -4036,7 +3800,6 @@ Animation.isPointInFrame = function (context, x, y) {
 	);
 };
 
-// 获取动画范围
 Animation.getAnimationRange = (function IIFE() {
 	const marquee = Animation.timelineMarquee;
 	const range = { start: 0, end: 0 };
@@ -4054,7 +3817,6 @@ Animation.getAnimationRange = (function IIFE() {
 	};
 })();
 
-// 请求刷新列表
 Animation.requestRefreshingList = function () {
 	if (this.state === 'open') {
 		const list = this.list;
@@ -4068,17 +3830,14 @@ Animation.requestRefreshingList = function () {
 	}
 };
 
-// 请求更新动画
 Animation.requestAnimation = function () {
 	if (this.state === 'open') {
 		Timer.appendUpdater('stageAnimation', this.updateAnimation);
 	}
 };
 
-// 更新动画帧
 Animation.updateAnimation = function (deltaTime) {
 	deltaTime *= Animation.speed;
-	// 更新动画帧
 	if (Animation.playing) {
 		const { start, end } = Animation.getAnimationRange();
 		const offset = deltaTime / Animation.Player.step;
@@ -4100,10 +3859,8 @@ Animation.updateAnimation = function (deltaTime) {
 		Animation.emitParticles(deltaTime);
 		Animation.updateSoundContexts(index);
 	}
-	// 更新粒子
 	Animation.updateParticles(deltaTime);
-	// 不能保证加载帧的时候一定会请求渲染(尾帧截止)
-	// 所以在播放状态时再次请求渲染
+	// 不能保证加载帧的时候一定会请求渲染(尾帧截止) 所以在播放状态时再次请求渲染
 	if (Animation.playing || Animation.particleUpdating) {
 		Animation.requestRendering();
 	} else {
@@ -4111,19 +3868,16 @@ Animation.updateAnimation = function (deltaTime) {
 	}
 };
 
-// 停止更新动画
 Animation.stopAnimation = function () {
 	Timer.removeUpdater('stageAnimation', this.updateAnimation);
 };
 
-// 请求渲染
 Animation.requestRendering = function () {
 	if (this.state === 'open') {
 		Timer.appendUpdater('stageRendering', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 Animation.renderingFunction = function () {
 	if (GL.width * GL.height !== 0) {
 		Animation.drawBackground();
@@ -4145,12 +3899,10 @@ Animation.renderingFunction = function () {
 	}
 };
 
-// 停止渲染
 Animation.stopRendering = function () {
 	Timer.removeUpdater('stageRendering', this.renderingFunction);
 };
 
-// 开关标记
 Animation.switchMark = (function IIFE() {
 	const item = $('#animation-switch-mark');
 	return function (enabled = !this.showMark) {
@@ -4164,7 +3916,6 @@ Animation.switchMark = (function IIFE() {
 	};
 })();
 
-// 开关描图纸
 Animation.switchOnionskin = (function IIFE() {
 	const item = $('#animation-switch-onionskin');
 	return function (enabled = !this.showOnionskin) {
@@ -4172,7 +3923,6 @@ Animation.switchOnionskin = (function IIFE() {
 		this.requestRendering();
 		if (enabled) {
 			item.addClass('selected');
-			// 加载描图纸上下文并计算参数
 			if (this.motion) {
 				const player = this.player;
 				const { prev, next } = player.onionskin;
@@ -4186,7 +3936,6 @@ Animation.switchOnionskin = (function IIFE() {
 	};
 })();
 
-// 开关镜像
 Animation.switchMirror = (function IIFE() {
 	const item = $('#animation-switch-mirror');
 	return function (enabled = !this.mirror) {
@@ -4203,7 +3952,6 @@ Animation.switchMirror = (function IIFE() {
 	};
 })();
 
-// 开关设置
 Animation.switchSettings = function () {
 	if (!Inspector.fileAnimation.button.hasClass('selected')) {
 		Inspector.open('fileAnimation', Animation);
@@ -4212,7 +3960,6 @@ Animation.switchSettings = function () {
 	}
 };
 
-// 开关循环
 Animation.switchLoop = (function IIFE() {
 	const item = $('#animation-timeline-loop');
 	return function (enabled = !this.loop) {
@@ -4230,24 +3977,20 @@ Animation.switchLoop = (function IIFE() {
 	};
 })();
 
-// 计划保存
 Animation.planToSave = function () {
 	File.planToSave(this.meta);
 };
 
-// 保存状态到配置文件
 Animation.saveToConfig = function (config) {
 	config.colors.animationBackground = this.background.hex;
 };
 
-// 从配置文件中加载状态
 Animation.loadFromConfig = function (config) {
 	this.background = new StageColor(config.colors.animationBackground, () =>
 		this.requestRendering()
 	);
 };
 
-// 保存状态到项目文件
 Animation.saveToProject = function (project) {
 	const { animation } = project;
 	animation.mark = this.showMark ?? animation.mark;
@@ -4258,7 +4001,6 @@ Animation.saveToProject = function (project) {
 	animation.zoom = this.zoom ?? animation.zoom;
 };
 
-// 从项目文件中加载状态
 Animation.loadFromProject = function (project) {
 	const { animation } = project;
 	this.switchMark(animation.mark);
@@ -4269,14 +4011,12 @@ Animation.loadFromProject = function (project) {
 	this.setZoom(animation.zoom);
 };
 
-// WebGL - 上下文恢复事件
 Animation.webglRestored = function (event) {
 	if (Animation.state === 'open') {
 		Animation.requestRendering();
 	}
 };
 
-// 窗口 - 调整大小事件
 Animation.windowResize = function (event) {
 	this.updateHead();
 	if (this.state === 'open') {
@@ -4286,12 +4026,10 @@ Animation.windowResize = function (event) {
 	}
 }.bind(Animation);
 
-// 主题改变事件
 Animation.themechange = function (event) {
 	this.requestRendering();
 }.bind(Animation);
 
-// 数据改变事件
 Animation.datachange = function (event) {
 	switch (event.key) {
 		case 'config':
@@ -4300,12 +4038,10 @@ Animation.datachange = function (event) {
 	}
 }.bind(Animation);
 
-// 枚举改变事件
 Animation.enumchange = function (event) {
 	this.requestRefreshingList();
 }.bind(Animation);
 
-// 键盘按下事件
 Animation.keydown = function (event) {
 	if (Animation.state === 'open' && Animation.dragging === null) {
 		if (event.altKey) {
@@ -4348,7 +4084,6 @@ Animation.keydown = function (event) {
 	}
 };
 
-// 头部 - 指针按下事件
 Animation.headPointerdown = function (event) {
 	if (!(event.target instanceof HTMLInputElement)) {
 		event.preventDefault();
@@ -4358,7 +4093,6 @@ Animation.headPointerdown = function (event) {
 	}
 };
 
-// 开关 - 指针按下事件
 Animation.switchPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -4380,22 +4114,18 @@ Animation.switchPointerdown = function (event) {
 	}
 };
 
-// 速度 - 输入事件
 Animation.speedInput = function (event) {
 	Animation.speed = this.read();
 };
 
-// 缩放 - 获得焦点事件
 Animation.zoomFocus = function (event) {
 	Animation.screen.focus();
 };
 
-// 缩放 - 输入事件
 Animation.zoomInput = function (event) {
 	Animation.setZoom(this.read());
 };
 
-// 屏幕 - 键盘按下事件
 Animation.screenKeydown = function (event) {
 	if (this.state === 'open' && this.motion !== null && this.dragging === null) {
 		if (event.cmdOrCtrlKey) {
@@ -4496,7 +4226,6 @@ Animation.screenKeydown = function (event) {
 	}
 }.bind(Animation);
 
-// 位移键弹起事件
 Animation.translationKeyup = function (event) {
 	if (this.translationKey === 0b0000) {
 		return;
@@ -4525,7 +4254,6 @@ Animation.translationKeyup = function (event) {
 	}
 }.bind(Animation);
 
-// 屏幕 - 鼠标滚轮事件
 Animation.screenWheel = function (event) {
 	if (this.state === 'open' && this.dragging === null) {
 		event.preventDefault();
@@ -4536,7 +4264,6 @@ Animation.screenWheel = function (event) {
 	}
 }.bind(Animation);
 
-// 屏幕 - 用户滚动事件
 Animation.screenUserscroll = function (event) {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
@@ -4546,14 +4273,12 @@ Animation.screenUserscroll = function (event) {
 	}
 }.bind(Animation);
 
-// 屏幕 - 失去焦点事件
 Animation.screenBlur = function (event) {
 	this.translationKeyup();
 	this.pointerup();
 	// this.marqueePointerleave()
 }.bind(Animation);
 
-// 选框 - 指针按下事件
 Animation.marqueePointerdown = function (event) {
 	if (this.dragging || !this.motion) {
 		return;
@@ -4662,7 +4387,6 @@ Animation.marqueePointerdown = function (event) {
 	}
 }.bind(Animation);
 
-// 选框 - 指针移动事件
 Animation.marqueePointermove = function (event) {
 	if (!this.dragging && this.motion) {
 		this.marquee.pointerevent = event;
@@ -4683,7 +4407,6 @@ Animation.marqueePointermove = function (event) {
 	}
 }.bind(Animation);
 
-// 选框 - 指针离开事件
 Animation.marqueePointerleave = function (event) {
 	if (this.marquee.pointerevent) {
 		this.marquee.pointerevent = null;
@@ -4691,7 +4414,6 @@ Animation.marqueePointerleave = function (event) {
 	}
 }.bind(Animation);
 
-// 选框 - 鼠标双击事件
 Animation.marqueeDoubleclick = function (event) {
 	if (this.target) {
 		this.screenBlur();
@@ -4699,7 +4421,6 @@ Animation.marqueeDoubleclick = function (event) {
 	}
 }.bind(Animation);
 
-// 指针弹起事件
 Animation.pointerup = function (event) {
 	const { dragging } = Animation;
 	if (dragging === null) {
@@ -4726,7 +4447,6 @@ Animation.pointerup = function (event) {
 	}
 };
 
-// 指针移动事件
 Animation.pointermove = function (event) {
 	const { dragging } = Animation;
 	if (dragging.relate(event)) {
@@ -4913,7 +4633,6 @@ Animation.pointermove = function (event) {
 	}
 };
 
-// 搜索框 - 输入事件
 Animation.searcherInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const text = this.input.value;
@@ -4921,7 +4640,6 @@ Animation.searcherInput = function (event) {
 	}
 };
 
-// 列表 - 键盘按下事件
 Animation.listKeydown = function (event) {
 	if (!this.data) {
 		return;
@@ -4950,14 +4668,11 @@ Animation.listKeydown = function (event) {
 			case 'Backspace':
 				this.cancelSearch();
 				break;
-			// case 'Escape':
-			//   Animation.setMotion(null)
-			//   break
+			// case 'Escape': Animation.setMotion(null) break
 		}
 	}
 };
 
-// 列表 - 指针按下事件
 Animation.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -4973,12 +4688,10 @@ Animation.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 Animation.listSelect = function (event) {
 	Animation.setMotion(event.value);
 };
 
-// 列表 - 记录事件
 Animation.listRecord = function (event) {
 	const response = event.value;
 	const { type } = response;
@@ -4994,12 +4707,10 @@ Animation.listRecord = function (event) {
 	}
 };
 
-// 列表 - 打开事件
 Animation.listOpen = function (event) {
 	Animation.editMotion(event.value);
 };
 
-// 列表 - 菜单弹出事件
 Animation.listPopup = function (event) {
 	const item = event.value;
 	const get = Local.createGetter('menuAnimationList');
@@ -5040,7 +4751,6 @@ Animation.listPopup = function (event) {
 					Animation.getNewMotionId((motionId) => {
 						const motion = Inspector.animMotion.create(motionId);
 						this.addNodeTo(motion, item);
-						// 打开新建动作的检查器页面
 						Inspector.open('animMotion', motion);
 					});
 				}
@@ -5085,18 +4795,15 @@ Animation.listPopup = function (event) {
 	);
 };
 
-// 列表 - 改变事件
 Animation.listChange = function (event) {
 	Animation.planToSave();
 };
 
-// 列表页面 - 调整大小事件
 Animation.listPageResize = function (event) {
 	Animation.list.updateHead();
 	Animation.list.resize();
 };
 
-// 方向列表 - 指针按下事件
 Animation.dirListPointerdown = function (event) {
 	const element = event.target;
 	if (element.tagName === 'ANIM-DIR' && !element.hasClass('selected')) {
@@ -5105,14 +4812,12 @@ Animation.dirListPointerdown = function (event) {
 	}
 };
 
-// 时间轴页面 - 调整大小事件
 Animation.timelinePageResize = function (event) {
 	Animation.updatePointerArea();
 	Animation.timeline.updateHead();
 	Animation.layerList.resize();
 };
 
-// 时间轴工具栏 - 鼠标按下事件
 Animation.timelineToolbarPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -5138,7 +4843,6 @@ Animation.timelineToolbarPointerdown = function (event) {
 	}
 };
 
-// 图层列表 - 鼠标滚轮事件
 Animation.layerListWheel = function (event) {
 	event.preventDefault();
 	if (event.deltaY !== 0) {
@@ -5146,7 +4850,6 @@ Animation.layerListWheel = function (event) {
 	}
 };
 
-// 图层列表 - 滚动事件
 Animation.layerListScroll = function (event) {
 	const { outerTimelineList } = Animation;
 	const { scrollTop } = this;
@@ -5156,7 +4859,6 @@ Animation.layerListScroll = function (event) {
 	}
 };
 
-// 图层列表 - 键盘按下事件
 Animation.layerListKeydown = function (event) {
 	// 避免重命名输入框键盘按下事件
 	if (event.target !== this || !this.data) {
@@ -5189,7 +4891,6 @@ Animation.layerListKeydown = function (event) {
 	}
 };
 
-// 图层列表 - 指针按下事件
 Animation.layerListPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -5239,12 +4940,10 @@ Animation.layerListPointerdown = function (event) {
 	}
 };
 
-// 图层列表 - 选择事件
 Animation.layerListSelect = function (event) {
 	Animation.openLayer(event.value);
 };
 
-// 图层列表 - 记录事件
 Animation.layerListRecord = function (event) {
 	const response = event.value;
 	const { type } = response;
@@ -5264,7 +4963,6 @@ Animation.layerListRecord = function (event) {
 	}
 };
 
-// 图层列表 - 菜单弹出事件
 Animation.layerListPopup = function (event) {
 	const item = event.value;
 	const get = Local.createGetter('menuAnimationLayerList');
@@ -5384,12 +5082,10 @@ Animation.layerListPopup = function (event) {
 	);
 };
 
-// 图层列表 - 改变事件
 Animation.layerListChange = function (event) {
 	Animation.planToSave();
 };
 
-// 时间轴列表 - 键盘按下事件
 Animation.outerTimelineListKeydown = function (event) {
 	if (this.dragging !== null) return;
 	if (event.cmdOrCtrlKey) {
@@ -5472,7 +5168,6 @@ Animation.outerTimelineListKeydown = function (event) {
 	}
 };
 
-// 时间轴列表 - 鼠标滚轮事件
 Animation.outerTimelineListWheel = function (event) {
 	event.preventDefault();
 	if (event.deltaY !== 0) {
@@ -5480,7 +5175,6 @@ Animation.outerTimelineListWheel = function (event) {
 	}
 };
 
-// 时间轴列表 - 滚动事件
 Animation.outerTimelineListScroll = function (event) {
 	const { scrollLeft, scrollTop } = this;
 	if (this.lastScrollLeft !== scrollLeft) {
@@ -5513,12 +5207,10 @@ Animation.outerTimelineListScroll = function (event) {
 	}
 };
 
-// 时间轴列表 - 失去焦点事件
 Animation.outerTimelineListBlur = function (event) {
 	Animation.outerTimelineListPointerup();
 };
 
-// 时间轴列表 - 指针按下事件
 Animation.outerTimelineListPointerdown = function (event) {
 	if (Animation.dragging) {
 		return;
@@ -5596,7 +5288,6 @@ Animation.outerTimelineListPointerdown = function (event) {
 	}
 };
 
-// 时间轴列表 - 指针弹起事件
 Animation.outerTimelineListPointerup = function (event) {
 	const { dragging } = Animation.outerTimelineList;
 	if (dragging === null) {
@@ -5723,7 +5414,6 @@ Animation.outerTimelineListPointerup = function (event) {
 	}
 };
 
-// 时间轴列表 - 指针移动事件
 Animation.outerTimelineListPointermove = function (event) {
 	const { dragging } = Animation.outerTimelineList;
 	if (dragging.relate(event)) {
@@ -5761,7 +5451,6 @@ Animation.outerTimelineListPointermove = function (event) {
 				const x = Math.clamp(coords.x, 0, right);
 				const y = Math.clamp(coords.y, 0, bottom);
 				Animation.updateMarqueeShift(x, y);
-				// 更新转移选框的样式
 				dragging.layer.class === marquee.layer?.class
 					? marquee.removeClass('disabled')
 					: marquee.addClass('disabled');
@@ -5793,10 +5482,8 @@ Animation.outerTimelineListPointermove = function (event) {
 	}
 };
 
-// 时间轴列表 - 指针移动事件
 Animation.innerTimelineListPointermove = function (event) {
-	// 本事件可能被直接调用
-	// 因此不使用this来获取元素
+	// 本事件可能被直接调用 因此不使用this来获取元素
 	const { x, y } = Animation.getFrameCoords(event);
 	const list = Animation.innerTimelineList;
 	const ex = Animation.frameMax;
@@ -5807,13 +5494,11 @@ Animation.innerTimelineListPointermove = function (event) {
 	Animation.timelineCursor.pointerevent = event;
 };
 
-// 时间轴列表 - 指针离开事件
 Animation.innerTimelineListPointerleave = function (event) {
 	Animation.timelineCursor.pointerevent = null;
 	Animation.updateCursor(-1, -1);
 };
 
-// 时间轴列表 - 鼠标双击事件
 Animation.innerTimelineListDblclick = function (event) {
 	if (this.pointerevent.enableDblclickEvent) {
 		const { x, y } = Animation.getFrameCoords(event);
@@ -5877,7 +5562,6 @@ Animation.list.cancelSearch = function () {
 Animation.list.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -6006,7 +5690,6 @@ Animation.layerList.delete = function (item) {
 
 // 图层列表 - 重写创建图标方法
 Animation.layerList.createIcon = (function IIFE() {
-	// 图标创建函数集合
 	const iconCreators = {
 		joint: () => {
 			const icon = document.createElement('node-icon');
@@ -6046,7 +5729,6 @@ Animation.layerList.onDelete = function (item) {
 Animation.timeline.updateHead = function () {
 	const { head } = this;
 	if (this.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -6062,7 +5744,6 @@ Animation.timeline.updateHead = function () {
 			Animation.toolbar.style.width = `${padding}px`;
 			Animation.outerRuler.style.left = `${padding}px`;
 		}
-		// 更新刻度尺
 		Animation.updateRuler();
 	}
 };

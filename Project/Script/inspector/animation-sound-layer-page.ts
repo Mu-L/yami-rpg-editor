@@ -2,32 +2,24 @@
 import { Animation } from '../animation/animation-window.ts';
 import { Inspector } from './inspector.ts';
 
-// ******************************** 动画 - 音效层页面 ********************************
-
 {
 	const AnimSoundLayer = {
-		// properties
 		motion: null,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	AnimSoundLayer.initialize = function () {
-		// 创建播放速度选项
 		$('#animSoundLayer-playbackRate').loadItems([
 			{ name: 'Default', value: 'default' },
 			{ name: 'Inherit', value: 'inherit' }
 		]);
 
-		// 侦听事件
 		const element = $('#animSoundLayer-playbackRate');
 		element.on('input', this.paramInput);
 		element.on('focus', Inspector.inputFocus);
@@ -41,7 +33,6 @@ import { Inspector } from './inspector.ts';
 		);
 	};
 
-	// 创建音效层
 	AnimSoundLayer.create = function () {
 		return {
 			class: 'sound',
@@ -53,19 +44,16 @@ import { Inspector } from './inspector.ts';
 		};
 	};
 
-	// 打开数据
 	AnimSoundLayer.open = function (layer) {
 		if (this.target !== layer) {
 			this.target = layer;
 			this.motion = Animation.motion;
 
-			// 写入数据
 			const write = getElementWriter('animSoundLayer', layer);
 			write('playbackRate');
 		}
 	};
 
-	// 关闭数据
 	AnimSoundLayer.close = function () {
 		if (this.target) {
 			this.target = null;
@@ -73,7 +61,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 更新数据
 	AnimSoundLayer.update = function (layer, key, value) {
 		Animation.planToSave();
 		switch (key) {
@@ -85,7 +72,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 参数 - 输入事件
 	AnimSoundLayer.paramInput = function (event) {
 		AnimSoundLayer.update(AnimSoundLayer.target, Inspector.getKey(this), this.read());
 	};

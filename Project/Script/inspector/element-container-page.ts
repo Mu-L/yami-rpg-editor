@@ -1,20 +1,15 @@
 ﻿import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 容器页面 ********************************
-
 {
 	const UIContainer = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		create: null,
 		open: null,
 		close: null
 	};
 
-	// 创建容器
 	UIContainer.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -35,7 +30,6 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIContainer.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
@@ -43,7 +37,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIContainer.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);

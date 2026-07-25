@@ -2,8 +2,6 @@
 import { UI } from './ui-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 窗口元素 ********************************
-
 UI.Window = class WindowElement extends UI.Element {
 	_layout: string;
 	scrollWidth: number;
@@ -47,12 +45,10 @@ UI.Window = class WindowElement extends UI.Element {
 		};
 	}
 
-	// 读取布局
 	get layout() {
 		return this._layout;
 	}
 
-	// 写入布局
 	set layout(value: any) {
 		if (this._layout !== value) {
 			this._layout = value;
@@ -73,12 +69,10 @@ UI.Window = class WindowElement extends UI.Element {
 		}
 	}
 
-	// 读取滚动X
 	get scrollX() {
 		return this._scrollX;
 	}
 
-	// 写入滚动X
 	set scrollX(value: any) {
 		const max = this.scrollWidth - this.width;
 		const scrollX = Math.clamp(value, 0, max);
@@ -91,12 +85,10 @@ UI.Window = class WindowElement extends UI.Element {
 		}
 	}
 
-	// 读取滚动Y
 	get scrollY() {
 		return this._scrollY;
 	}
 
-	// 写入滚动Y
 	set scrollY(value: any) {
 		const max = this.scrollHeight - this.height;
 		const scrollY = Math.clamp(value, 0, max);
@@ -109,7 +101,6 @@ UI.Window = class WindowElement extends UI.Element {
 		}
 	}
 
-	// 绘制图像
 	draw() {
 		switch (this.overflow) {
 			case 'visible':
@@ -160,7 +151,6 @@ UI.Window = class WindowElement extends UI.Element {
 				if (sw > 0 && sh > 0) {
 					const wasEnabled = GL.isEnabled(GL.SCISSOR_TEST);
 					let prevBox = null;
-					// 计算当前裁剪框(以左下角为原点)
 					let nx = sl;
 					let ny = GL.height - sb;
 					let nw = sw;
@@ -196,7 +186,6 @@ UI.Window = class WindowElement extends UI.Element {
 		}
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -220,7 +209,6 @@ UI.Window = class WindowElement extends UI.Element {
 		this._calculateScrollArea();
 	}
 
-	// 请求调整大小
 	requestResizing = ((IIFE) => {
 		const timer = new Timer({
 			duration: 0,
@@ -229,7 +217,6 @@ UI.Window = class WindowElement extends UI.Element {
 		return () => timer.add();
 	})();
 
-	// 计算滚动区域
 	_calculateScrollArea() {
 		const { max } = Math;
 		const { children } = this;
@@ -251,17 +238,14 @@ UI.Window = class WindowElement extends UI.Element {
 		}
 		this.scrollWidth = scrollWidth;
 		this.scrollHeight = scrollHeight;
-		// this.scrollX = this.scrollX
-		// this.scrollY = this.scrollY
+		// this.scrollX = this.scrollX this.scrollY = this.scrollY
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.destroyChildren();
 	}
 
-	// 水平网格 - 调整大小
 	static horizontalGridResize() {
 		this.calculatePosition();
 		const { children } = this;
@@ -302,7 +286,6 @@ UI.Window = class WindowElement extends UI.Element {
 		}
 	}
 
-	// 垂直网格 - 调整大小
 	static verticalGridResize() {
 		this.calculatePosition();
 		const { children } = this;

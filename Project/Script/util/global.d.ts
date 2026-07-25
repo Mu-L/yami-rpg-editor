@@ -1,9 +1,6 @@
-// 全局类型扩展声明
-// 本文件集中声明 Project/Script/util/ 各模块对内置对象 / window 的新增成员类型,
-// 避免 TS2339 / TS2551 报错。所有扩展均来自 util/*.ts 的实际运行时挂载。
+// 全局类型扩展声明 本文件集中声明 Project/Script/util/ 各模块对内置对象 / window 的新增成员类型, 避免 TS2339 / TS2551 报错。所有扩展均来自 util/*.ts 的实际运行时挂载。
 
-// 注：本文件保持 ambient script（无顶层 import/export），interface 声明才能自动合并到全局。
-// 故 EditorEvent 别名在此内联，不 import types/editor-event.ts（顶层 import 会破坏 ambient 语义）。
+// 注：本文件保持 ambient script（无顶层 import/export），interface 声明才能自动合并到全局。故 EditorEvent 别名在此内联，不 import types/editor-event.ts（顶层 import 会破坏 ambient 语义）。
 type EditorEvent =
 	| KeyboardEvent
 	| MouseEvent
@@ -13,20 +10,12 @@ type EditorEvent =
 	| InputEvent
 	| Event;
 
-// ============== Clipboard 静态扩展 (util/clipboard.ts) ==============
-// util/clipboard.ts 中 Object.assign(Clipboard, {...}) 挂载到全局 Clipboard 构造函数对象本身（静态方法）
-// 注：Clipboard 是构造函数对象，interface Clipboard 声明的是实例方法；
-// Object.assign 挂载点是构造函数对象本身（静态方法），与 instance interface 不同。
-// 调用方用 (Clipboard as any).write/read 绕过静态方法 vs 实例方法的类型冲突。
-// 注：lib.dom.d.ts 的 Clipboard interface 优先级高于 declare var 声明合并，
-// 无法通过 global.d.ts 根上消除协变冲突 —— 调用方必须用 `(Clipboard as any).xxx` 必要断言。
 interface Clipboard {
 	has(format: string): boolean;
 	read(format: string): any;
 	write(format: string, object: any): void;
 }
 
-// ============== Math 扩展 (util/math.ts) ==============
 interface Math {
 	clamp(number: number, minimum: number, maximum: number): number;
 	roundTo(number: number, decimalPlaces: number): number;
@@ -38,7 +27,6 @@ interface Math {
 	modRadians(radians: number, period?: number): number;
 }
 
-// ============== Array 扩展 (util/array.ts) ==============
 interface ArrayConstructor {
 	empty: any[];
 	subtract<T>(a: T[], b: T[]): T[];
@@ -50,50 +38,41 @@ interface Array<T> {
 	set(array: Array<T>): void;
 }
 
-// ============== String 扩展 (util/string.ts) ==============
 interface StringConstructor {
 	compress(string: string): string;
 }
 
-// ============== Number 扩展 (util/number.ts) ==============
 interface NumberConstructor {
 	computeIndexDigits(length: number): number;
 	padZero(number: number, length: number, padString?: string): string;
 }
 
-// ============== Object 扩展 (util/object.ts) ==============
 interface ObjectConstructor {
 	empty: Record<string, never>;
 	clone<T>(object: T): T;
 }
 
-// ============== RegExp 扩展 (util/regexp.ts) ==============
 interface RegExpConstructor {
 	number: RegExp;
 }
 
-// ============== MouseEvent 扩展 (util/mouse-event.ts) ==============
 interface MouseEvent {
 	getRelativeCoords(element: HTMLElement): { x: number; y: number };
 }
 
-// ============== PointerEvent 扩展 (util/pointer-event.ts) ==============
 interface PointerEvent {
 	relate(event: PointerEvent): boolean;
 }
 
-// ============== NodeList 扩展 (util/node-list.ts) ==============
 interface NodeList {
 	enable(): void;
 	disable(): void;
 }
 
-// ============== Function 扩展 (util/function.ts) ==============
 interface FunctionConstructor {
 	empty: () => void;
 }
 
-// ============== CSS 扩展 (util/css.ts) ==============
 declare namespace CSS {
 	function encodeURL(url: string): string;
 	function rasterize(...args: any[]): any;
@@ -103,7 +82,6 @@ declare namespace CSS {
 	};
 }
 
-// ============== CanvasRenderingContext2D 扩展 (util/canvas.ts) ==============
 interface CanvasRenderingContext2D {
 	drawAndFitImage(
 		image: CanvasImageSource,
@@ -119,12 +97,10 @@ interface CanvasRenderingContext2D {
 	resize(width: number, height: number): void;
 }
 
-// ============== DataTransfer 扩展 (util/data-transfer.ts) ==============
 interface DataTransfer {
 	hideDragImage(): void;
 }
 
-// ============== HTMLElement 扩展 == count / test / seek ==============
 interface HTMLElement {
 	count: number;
 	test(name: string): RegExp;
@@ -133,9 +109,7 @@ interface HTMLElement {
 	// ScrollBar / CommandList 共用的滚动监听方法（scroll-listener.ts 中挂载到 HTMLElement.prototype）
 	addScrollListener: (...args: any[]) => any;
 	removeScrollListener: (...args: any[]) => any;
-	// element-methods.ts 中挂载到 HTMLElement.prototype 的元素方法
-	// 注：show/hide/clear 等方法被子类（FilterBox/LoadingOverlay/ToastManager 等）重写为不同签名，
-	// 故返回类型用 any 兼容子类，避免 TS2416 冲突。
+	// element-methods.ts 中挂载到 HTMLElement.prototype 的元素方法 注：show/hide/clear 等方法被子类（FilterBox/LoadingOverlay/ToastManager 等）重写为不同签名，故返回类型用 any 兼容子类，避免 TS2416 冲突。
 	dataValue: any;
 	read(): any;
 	write(value: any): any;
@@ -199,7 +173,6 @@ interface HTMLElement {
 	stats: { ino: number };
 }
 
-// ============== TextBox 扩展 (components/text-box.ts + tree-list.ts) ==============
 interface TextBox extends HTMLElement {
 	lastText: string;
 	hiddenNodes: any[];
@@ -207,12 +180,10 @@ interface TextBox extends HTMLElement {
 	input: HTMLInputElement;
 }
 
-// ============== path 扩展 (util/config.ts: path.slash) ==============
 interface PlatformPath {
 	slash: (path: string) => string;
 }
 
-// ============== Window 自定义成员 ==============
 interface Window {
 	config: any;
 	on: (
@@ -228,7 +199,6 @@ interface Window {
 	spaceKey: boolean;
 }
 
-// ============== Event / KeyboardEvent 扩展 (util/keyboard.ts + Electron) ==============
 interface Event {
 	spaceKey: boolean;
 	cmdOrCtrlKey: boolean;
@@ -237,17 +207,11 @@ interface Event {
 	raw: any;
 	// param-list.ts 中局使用（event.latest）
 	latest: any;
-	// check-box.ts 中局使用（write/input 事件挂载 .value）
 	value: any;
 	// select-box.ts 中局使用（input 事件挂载 .last）
 	last: any;
 }
 
-// ============== EventTarget 扩展 (util/event-target.ts) ==============
-// 注：listener 签名 `(event: EditorEvent) => void` 对齐 event-target.ts 实现签名，
-// 兼容 EventListenerOrEventListenerObject（lib.dom.d.ts 的 addEventListener 重载要求）。
-// 协变冲突（子类 `(event: PointerEvent) => void` 比基类更具体）不在此根上消除 ——
-// 因 `addEventListener` 重载约束，改用调用点 `as unknown as` 绕。
 interface EventTarget {
 	on(
 		type: string,
@@ -261,9 +225,6 @@ interface EventTarget {
 	): void;
 }
 
-// ============== HTMLElement 扩展 (components/ 大量自定义元素属性) ==============
-// 注意: getFocus/show/hide/close/click/enable/disable/blur/focus/empty 等方法
-// 在 components/ 内的自定义元素类中被重写, 故不在此声明, 让子类自己定义.
 interface HTMLElement {
 	addClass(name: string): boolean;
 	removeClass(name: string): boolean;
@@ -319,7 +280,6 @@ interface HTMLElement {
 	hide(...args: any[]): any;
 }
 
-// ============== Element / ParentNode / ChildNode 扩展 ==============
 interface Element {
 	addClass(name: string): boolean;
 	removeClass(name: string): boolean;
@@ -361,7 +321,6 @@ interface ChildNode {
 	accelerator: any;
 }
 
-// ============== Event / KeyboardEvent 扩展 ==============
 interface Event {
 	target: HTMLElement;
 	cmdOrCtrlKey: boolean;
@@ -378,7 +337,6 @@ interface KeyboardEvent {
 	cmdOrCtrlKey: boolean;
 }
 
-// ============== NodeListOf 扩展 (util/node-list.ts) ==============
 interface NodeListOf<TNode extends Node> {
 	on: (
 		type: string,
@@ -392,7 +350,6 @@ interface NodeListOf<TNode extends Node> {
 	) => void;
 }
 
-// ============== NodeList 扩展 (util/node-list.ts) ==============
 interface NodeList {
 	on(type: string, listener: (event: EditorEvent) => void, options?: any): NodeList;
 	enable(): void;
@@ -401,44 +358,36 @@ interface NodeList {
 	item: any;
 }
 
-// ============== MouseEvent 扩展 (util/mouse-event.ts) ==============
 interface MouseEvent {
 	getRelativeCoords(element: HTMLElement): { x: number; y: number };
 }
 
-// ============== PointerEvent 扩展 (util/pointer-event.ts) ==============
 interface PointerEvent {
 	relate(event: PointerEvent): boolean;
 }
 
-// ============== String 扩展 (util/string.ts) ==============
 interface String {
 	test(name: string): RegExp;
 }
 
-// ============== StringConstructor 扩展 (util/string.ts) ==============
 interface StringConstructor {
 	compress(string: string): string;
 }
 
-// ============== RegExpConstructor 扩展 (util/regexp.ts) ==============
 interface RegExpConstructor {
 	number: RegExp;
 }
 
-// ============== NumberConstructor 扩展 (util/number.ts) ==============
 interface NumberConstructor {
 	computeIndexDigits(length: number): number;
 	padZero(number: number, length: number, padString?: string): string;
 }
 
-// ============== ObjectConstructor 扩展 (util/object.ts) ==============
 interface ObjectConstructor {
 	empty: Record<string, never>;
 	clone<T>(object: T): T;
 }
 
-// ============== HTMLButtonElement 扩展 (components/button-extension.ts) ==============
 interface HTMLButtonElement {
 	enable(): void;
 	disable(): void;
@@ -448,9 +397,6 @@ interface HTMLInputElement {
 	getFocus(mode?: string): HTMLInputElement;
 }
 
-// ============== Timer 静态成员扩展 (util/timer.ts) ==============
-// Timer 类在 timer.ts 内 export, 但静态属性 / 方法在文件末尾动态挂载,
-// 这些不在 class 体内声明, 需在此补充类型
 interface TimerStatic {
 	timers: any[];
 	updaters: {

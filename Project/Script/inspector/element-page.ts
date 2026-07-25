@@ -4,11 +4,8 @@ import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素页面 ********************************
-
 {
 	const UIElement = {
-		// properties
 		owner: UI,
 		target: null,
 		synchronous: false,
@@ -19,7 +16,6 @@ import { UI } from '../ui/ui-window.ts';
 		eventsGroup: $('#uiElement-events-group'),
 		scriptsGroup: $('#uiElement-scripts-group'),
 		parameterPane: $('#uiElement-parameter-pane'),
-		// methods
 		initialize: null,
 		createTransform: null,
 		lockSizeInputs: null,
@@ -28,13 +24,11 @@ import { UI } from '../ui/ui-window.ts';
 		close: null,
 		write: null,
 		update: null,
-		// events
 		pageSwitch: null,
 		alignmentClick: null,
 		paramInput: null
 	};
 
-	// 初始化
 	UIElement.initialize = function () {
 		this.pointerEvents.loadItems([
 			{ name: 'Enabled', value: 'enabled' },
@@ -42,22 +36,14 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Skipped', value: 'skipped' }
 		]);
 
-		// 绑定事件列表
 		$('#uiElement-events').bind(new EventListInterface(this, UI));
 
-		// 绑定脚本列表
 		$('#uiElement-scripts').bind(new ScriptListInterface(this, UI));
 
-		// 绑定脚本参数面板
 		this.parameterPane.bind($('#uiElement-scripts'));
 
-		// 移除以上群组元素
-		// this.generalGroup.remove()
-		// this.transformGroup.remove()
-		// this.eventsGroup.remove()
-		// this.scriptsGroup.remove()
+		// this.generalGroup.remove() this.transformGroup.remove() this.eventsGroup.remove() this.scriptsGroup.remove()
 
-		// 侦听事件
 		Inspector.manager.on('switch', this.pageSwitch);
 		const alignElements = $('.uiElement-transform-align');
 		const otherElements = $(`#uiElement-name,
@@ -73,7 +59,6 @@ import { UI } from '../ui/ui-window.ts';
 		$('#uiElement-events, #uiElement-scripts').on('change', UI.listChange);
 	};
 
-	// 创建变换参数
 	UIElement.createTransform = function () {
 		return {
 			anchorX: 0,
@@ -95,7 +80,6 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 锁定大小输入框
 	UIElement.lockSizeInputs = function () {
 		if (!this.synchronous) {
 			this.synchronous = true;
@@ -106,7 +90,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 取消锁定大小输入框
 	UIElement.unlockSizeInputs = function () {
 		if (this.synchronous) {
 			this.synchronous = false;
@@ -117,12 +100,10 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 打开数据
 	UIElement.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiElement', node);
 			write('name');
 			if (node.pointerEvents) {
@@ -133,7 +114,6 @@ import { UI } from '../ui/ui-window.ts';
 				this.pointerEvents.hide();
 				this.pointerEvents.previousElementSibling.hide();
 			}
-			// 锁定或解锁大小输入框
 			if (node.class === 'reference' && node.synchronous) {
 				this.lockSizeInputs();
 			} else {
@@ -160,7 +140,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIElement.close = function () {
 		if (this.target) {
 			this.target = null;
@@ -170,7 +149,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 写入数据
 	UIElement.write = function (options) {
 		if (options.anchorX !== undefined) {
 			$('#uiElement-transform-anchorX').write(options.anchorX);
@@ -222,10 +200,8 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIElement.update = function (node, key, value) {
 		UI.planToSave();
-		// const element = node.instance
 		const transform = node.transform;
 		switch (key) {
 			case 'name':
@@ -258,8 +234,7 @@ import { UI } from '../ui/ui-window.ts';
 				const index = key.indexOf('-') + 1;
 				const property = key.slice(index);
 				if (transform[property] !== value) {
-					// transform[property] = value
-					// element.resize()
+					// transform[property] = value element.resize()
 					node.instances.setProperty(key, value);
 					node.instances.resize();
 				}
@@ -269,7 +244,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 页面 - 切换事件
 	UIElement.pageSwitch = function (event) {
 		switch (event.value) {
 			case 'uiImage':
@@ -294,7 +268,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	}.bind(UIElement);
 
-	// 对齐 - 鼠标点击事件
 	UIElement.alignmentClick = function (event) {
 		let x;
 		let y;
@@ -405,7 +378,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 参数 - 输入事件
 	UIElement.paramInput = function (event) {
 		UIElement.update(UIElement.target, Inspector.getKey(this), this.read());
 	};

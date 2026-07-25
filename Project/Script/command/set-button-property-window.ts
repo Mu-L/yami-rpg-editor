@@ -2,8 +2,6 @@
 import { Command } from './command-object.ts';
 import { Token } from './mark-string-manager.ts';
 
-// ******************************** 设置按钮 - 属性窗口 ********************************
-
 export const ButtonProperty = createPropertyWindow({
 	prefix: 'setButton',
 	locale: 'command.setButton',

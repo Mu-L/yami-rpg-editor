@@ -16,8 +16,6 @@ import { SearchString } from '../module/searchstring.ts';
 
 import { Local } from '../tools/localization.ts';
 
-// ******************************** 指令列表 ********************************
-
 export class CommandList extends HTMLElement {
 	data: any;
 	elements: any;
@@ -36,14 +34,12 @@ export class CommandList extends HTMLElement {
 	varMap: any;
 	windowVariableChange: (event: any) => void;
 	_paddingTop: number;
-	// openEdit 由 module/global.ts:214 在 editor_loaded 事件挂载到 prototype ——
-	// 用 `declare` 仅类型声明（运行时不发射 this.openEdit = undefined 初始化覆盖 prototype 挂载）
+	// openEdit 由 module/global.ts:214 在 editor_loaded 事件挂载到 prototype —— 用 `declare` 仅类型声明（运行时不发射 this.openEdit = undefined 初始化覆盖 prototype 挂载）
 	declare openEdit: (...args: any[]) => any;
 
 	constructor() {
 		super();
 
-		// 设置属性
 		this.tabIndex = 0;
 		this.data = null;
 		this.varList = null;
@@ -69,7 +65,6 @@ export class CommandList extends HTMLElement {
 		this.windowPointermove = CommandList.windowPointermove.bind(this);
 		this.windowVariableChange = CommandList.windowVariableChange.bind(this);
 
-		// 侦听事件
 		this.on('scroll', this.resize);
 		this.on('focus', this.listFocus);
 		this.on('blur', this.listBlur);
@@ -80,12 +75,10 @@ export class CommandList extends HTMLElement {
 		window.on('variablechange', this.windowVariableChange);
 	}
 
-	// 读取操作历史
 	get history() {
 		return this.data.history;
 	}
 
-	// 读取上边距
 	get paddingTop() {
 		let pt = this._paddingTop;
 		if (pt === undefined) {
@@ -94,12 +87,10 @@ export class CommandList extends HTMLElement {
 		return pt;
 	}
 
-	// 读取数据
 	read(): any {
 		return this.data;
 	}
 
-	// 写入数据
 	write(data: any): void {
 		this.data = data;
 		this.textContent = '';
@@ -115,55 +106,43 @@ export class CommandList extends HTMLElement {
 		});
 	}
 
-	// 更新列表
 	update(): void {
-		// 分析变量数据
 		this.analyzeVariables();
 
 		const { elements } = this;
 		elements.start = -1;
 		elements.count = 0;
 
-		// 创建列表项
 		this.createItems(this.data, 0);
 
-		// 写入索引
 		const { count } = elements;
 		for (let i = 0; i < count; i++) {
 			elements[i].dataValue = i;
 		}
 
-		// 清除多余的元素
 		this.clearElements(elements.count);
 
-		// 发送更新事件
 		this.dispatchUpdateEvent();
 
-		// 重新调整
 		this.resize();
 	}
 
-	// 重新调整
 	resize(...args: any[]): void {
 		CommonList.resize(this as unknown as CommonList);
 
-		// 检查变量有效性
 		this.scheduleCheckVariables();
 	}
 
-	// 更新头部和尾部元素
 	updateHeadAndFoot() {
 		return CommonList.updateHeadAndFoot(this as unknown as CommonList);
 	}
 
-	// 在重新调整时更新
 	updateOnResize(element: any) {
 		if (element.contents !== null) {
 			this.updateCommandElement(element);
 		}
 	}
 
-	// 创建折叠的指令缓存
 	createFoldedCommandBuffer(buffer: any, indent: any, parent: any) {
 		for (const commands of buffer) {
 			if (commands instanceof Array) {
@@ -179,7 +158,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 创建项目
 	createItems(commands: any, indent: any, parent: any = null) {
 		const elements = this.elements;
 		const length = commands.length;
@@ -202,11 +180,9 @@ export class CommandList extends HTMLElement {
 			}
 		}
 
-		// 创建空项目
 		elements[elements.count++] = this.createBlankElement(commands, length, indent, parent);
 	}
 
-	// 创建指令缓冲区
 	createCommandBuffer(commands: any, index: any, indent: any, parent: any) {
 		const command = commands[index];
 		let buffer = command.buffer;
@@ -218,7 +194,6 @@ export class CommandList extends HTMLElement {
 				value: buffer
 			});
 
-			// 创建列表项
 			let li;
 			let textId = '';
 			let tooltip = '';
@@ -235,33 +210,27 @@ export class CommandList extends HTMLElement {
 			li.dataIndent = indent;
 			buffer.push(li);
 
-			// 创建内容
 			const contents = Command.parse(command, this.varMap);
 			const length = contents.length;
 			for (let i = 0; i < length; i++) {
 				const content = contents[i];
 
-				// 保存内容
 				if (content.text !== undefined) {
 					content.color = color;
 					content.textId = textId;
 					content.tooltip = tooltip;
 					content.class = className;
 					li.contents.push(content);
-					// 重置文本ID和工具提示
 					if (textId) textId = '';
 					if (tooltip) tooltip = '';
 					if (className) className = '';
 				}
 
-				// 改变颜色
 				if (content.color !== undefined) {
 					switch (content.color) {
-						// 恢复颜色
 						case 'restore':
 							color = mainColor;
 							continue;
-						// 保存颜色
 						case 'save':
 							mainColor = color;
 							continue;
@@ -271,22 +240,18 @@ export class CommandList extends HTMLElement {
 					}
 				}
 
-				// 设置文本ID
 				if (content.textId !== undefined) {
 					textId = content.textId;
 				}
 
-				// 设置工具提示
 				if (content.tooltip !== undefined) {
 					tooltip = content.tooltip;
 				}
 
-				// 设置自定义类名
 				if (content.class !== undefined) {
 					className = content.class;
 				}
 
-				// 换行
 				if (content.break !== undefined) {
 					li = document.createElement('command-item');
 					li.contents = [];
@@ -299,13 +264,11 @@ export class CommandList extends HTMLElement {
 					continue;
 				}
 
-				// 折叠
 				if (content.fold !== undefined) {
 					li.fold = document.createElement('command-fold');
 					li.appendChild(li.fold);
 				}
 
-				// 创建子项目
 				if (content.children !== undefined) {
 					buffer.push(content.children);
 
@@ -322,7 +285,6 @@ export class CommandList extends HTMLElement {
 					}
 				}
 
-				// 创建脚本项目
 				if (content.script !== undefined) {
 					const MAX_LINES = 20;
 					let code = content.script;
@@ -364,7 +326,6 @@ export class CommandList extends HTMLElement {
 			}
 		}
 
-		// 设置数据索引
 		if (buffer[0].dataIndex !== index) {
 			for (const target of buffer) {
 				if (target instanceof HTMLElement) {
@@ -373,7 +334,6 @@ export class CommandList extends HTMLElement {
 			}
 		}
 
-		// 更新开关状态
 		const enabled = command.id[0] !== '!';
 		if (buffer.enabled !== enabled) {
 			buffer.enabled = enabled;
@@ -395,12 +355,9 @@ export class CommandList extends HTMLElement {
 		return buffer;
 	}
 
-	// 更新指令元素
 	updateCommandElement(element: any) {
-		// 设置文本缩进
 		element.style.textIndent = this.computeTextIndent(element.dataIndent);
 
-		// 创建标记
 		if (element.dataKey) {
 			const mark = document.createElement('command-mark-major');
 			mark.textContent = '>';
@@ -411,14 +368,11 @@ export class CommandList extends HTMLElement {
 			element.insertBefore(mark, element.firstElementChild);
 		}
 
-		// 创建内容元素
 		for (const content of element.contents) {
-			// 创建文本
 			if (content.text !== undefined) {
 				const text = document.createElement('command-text');
 				text.textContent = content.text;
 				text.addClass(content.color);
-				// 如果存在文本ID，添加类名并侦听相关事件
 				if (content.textId) {
 					let id = content.textId;
 					const i = id.indexOf('-');
@@ -455,19 +409,16 @@ export class CommandList extends HTMLElement {
 							text.addClass('ui-identifier');
 							break;
 					}
-					// 使用name代替class可包含空格问号等特殊字符
 					text.name = id;
 					text.addClass(text.varType + '-type');
 					text.addClass('command-text-identifier');
 					text.onpointerenter = CommandList.textPointerenter;
 					text.onpointerleave = CommandList.textPointerleave;
 				}
-				// 如果存在工具提示
 				if (content.tooltip) {
 					text.setTooltip(content.tooltip);
 					text.addClass('plugin-link');
 				}
-				// 如果存在自定义类名
 				if (content.class) {
 					if (content.class.indexOf('parent:') === 0) {
 						element.addClass(content.class.replace('parent:', ''));
@@ -481,11 +432,9 @@ export class CommandList extends HTMLElement {
 		}
 		element.contents = null;
 
-		// 更新折叠状态
 		this.updateCommandElementFold(element);
 	}
 
-	// 更新指令元素折叠状态
 	updateCommandElementFold(element: any) {
 		if (element?.fold) {
 			const command = element.dataItem;
@@ -494,7 +443,6 @@ export class CommandList extends HTMLElement {
 				element.folded = folded;
 				if (folded) {
 					element.fold.textContent = '+';
-					// 在头部列表项中添加省略号
 					if (!element.ellipsis) {
 						element.ellipsis = document.createElement('command-text');
 						element.ellipsis.textContent = ' ......';
@@ -502,7 +450,6 @@ export class CommandList extends HTMLElement {
 					}
 				} else {
 					element.fold.textContent = '-';
-					// 在头部列表项中移除省略号
 					if (element.ellipsis) {
 						element.ellipsis.remove();
 						element.ellipsis = null;
@@ -512,7 +459,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 删除指令缓冲区
 	deleteCommandBuffers(commands: any) {
 		for (const command of commands) {
 			const { buffer } = command;
@@ -526,14 +472,11 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 创建空项目
 	createBlankElement(commands: any, index: any, indent: any, parent: any) {
 		let blank = commands.blank;
 		if (blank === undefined) {
-			// 创建列表项
 			blank = document.createElement('command-item');
 
-			// 设置元素属性
 			blank.contents = Array.empty;
 			blank.enabled = true;
 			blank.dataKey = true;
@@ -547,12 +490,10 @@ export class CommandList extends HTMLElement {
 			});
 		}
 
-		// 更新数据索引
 		if (blank.dataIndex !== index) {
 			blank.dataIndex = index;
 		}
 
-		// 更新开关状态
 		if (parent) {
 			const { enabled } = parent.buffer;
 			if (blank.enabled !== enabled) {
@@ -568,7 +509,6 @@ export class CommandList extends HTMLElement {
 		return blank;
 	}
 
-	// 计算文本缩进
 	computeTextIndent(indent: any) {
 		switch (Local.language) {
 			case 'en-US':
@@ -578,13 +518,11 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 选择项目
 	select(start, end = start) {
 		if (start > end) {
 			[start, end] = [end, start];
 		}
 
-		// 限制范围
 		const elements = this.elements;
 		const count = elements.count;
 		start = Math.clamp(start, 0, count - 1);
@@ -620,21 +558,17 @@ export class CommandList extends HTMLElement {
 			}
 		}
 
-		// 取消选择
 		this.unselect();
 
-		// 更新属性
 		this.start = start;
 		this.end = end;
 		this.origin = start;
 		this.active = start;
 		this.anchor = null;
 
-		// 选择目标
 		this.reselect();
 	}
 
-	// 选择多个项目
 	selectMultiple(active: any) {
 		const origin = this.origin;
 		this.select(origin, active);
@@ -642,13 +576,11 @@ export class CommandList extends HTMLElement {
 		this.active = Math.clamp(active, this.start, this.end);
 	}
 
-	// 选择全部项目
 	selectAll() {
 		this.select(0, Infinity);
 		this.active = this.getRangeByIndex(this.end)[0];
 	}
 
-	// 取消选择
 	unselect() {
 		if (this.start !== null) {
 			const { selections } = this;
@@ -664,7 +596,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 重新选择
 	reselect() {
 		if (this.focusing && this.start !== null) {
 			const { selections } = this;
@@ -681,7 +612,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 向上选择项目
 	selectUp() {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -700,7 +630,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 向下选择
 	selectDown() {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -730,7 +659,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 向上翻页
 	pageUp(select: any) {
 		let anchor = this.anchor;
 		if (anchor === null) {
@@ -750,7 +678,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 向下翻页
 	pageDown(select: any) {
 		let anchor = this.anchor;
 		if (anchor === null) {
@@ -773,7 +700,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 选择指定位置的多个项目
 	selectMultipleTo(index: any) {
 		if (this.start !== null) {
 			this.selectMultiple(index);
@@ -801,7 +727,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 向上选择多个项目
 	selectMultipleUp() {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -847,7 +772,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 向下选择多个项目
 	selectMultipleDown() {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -890,7 +814,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 滚动到选中项
 	scrollToSelection(mode = 'active') {
 		if (this.start !== null) {
 			let scrollTop;
@@ -929,7 +852,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 滚动并重新调整
 	scrollAndResize() {
 		const scrolltop = this.scrollTop;
 		this.scrollToSelection('active');
@@ -938,7 +860,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 获取指定索引的项目范围
 	getRangeByIndex(index: any) {
 		const elements = this.elements;
 		const count = elements.count;
@@ -967,7 +888,6 @@ export class CommandList extends HTMLElement {
 		return [start, end];
 	}
 
-	// 获取指定数据的项目范围
 	getRangeByData(data: any) {
 		const elements = this.elements;
 		const count = elements.count;
@@ -995,12 +915,10 @@ export class CommandList extends HTMLElement {
 		return [start, end];
 	}
 
-	// 判断列表项父对象是否启用
 	isParentEnabled(element: any) {
 		return element.dataParent?.buffer?.enabled ?? true;
 	}
 
-	// 插入指令
 	insert(id = '') {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -1013,7 +931,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 编辑指令
 	edit(data?) {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -1037,9 +954,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 编辑数据
-
-	// 折叠指令
 	fold(element?) {
 		if (element === undefined && this.start !== null) {
 			const elements = this.elements;
@@ -1065,7 +979,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 展开指令
 	unfoldCommand(command: any) {
 		let changed = false;
 		const commands = [];
@@ -1087,7 +1000,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 折叠后重新选择列表项
 	reselectAfterFolding() {
 		let head;
 		let foot;
@@ -1113,7 +1025,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 开关指令
 	toggle() {
 		if (this.start !== null) {
 			const { elements, start, end } = this;
@@ -1186,7 +1097,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 启用项目
 	enableItems(commands: any) {
 		for (const command of commands) {
 			if (command.id[0] === '!') {
@@ -1195,7 +1105,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 禁用项目
 	disableItems(commands: any) {
 		for (const command of commands) {
 			if (command.id[0] !== '!') {
@@ -1204,7 +1113,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 复制项目
 	copy() {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -1220,7 +1128,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 复制为文本
 	copyAsText() {
 		if (this.start !== null) {
 			let string = '';
@@ -1232,7 +1139,6 @@ export class CommandList extends HTMLElement {
 					this.updateCommandElement(element);
 				}
 				let indent = element.dataIndent;
-				// 如果当前缩进已经打印过至少一条指令，跳过无效指令
 				if (element.dataItem === null && lastIndent === indent) {
 					if (SettingConfig.config.other.copyAsTextKeepEmptyLine) string += '\n';
 					continue;
@@ -1244,13 +1150,11 @@ export class CommandList extends HTMLElement {
 						continue;
 					}
 					if (node.hasClass('transparent')) {
-						// 添加空白指令字符
 						string += ''.padStart(
 							node.textContent.length,
 							Local.get('command.blankCommandChar')
 						);
 					} else if (node.hasClass('comment')) {
-						// 添加注释指令前缀
 						// string = string.slice(0, -1) + '#' + node.textContent
 						string += '#' + node.textContent;
 					} else {
@@ -1263,7 +1167,6 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	// 复制为JS代码
 	copyAsJSCode() {
 		if (this.start !== null) {
 			const { start, end, elements } = this;
@@ -1290,13 +1193,11 @@ export class CommandList extends HTMLElement {
 				commands.push(command);
 			}
 
-			// 生成可执行的JS代码
 			let jsCode = this.generateExecutableCode(commands);
 			navigator.clipboard.writeText(jsCode);
 		}
 	}
 
-	// 生成可执行的JS代码
 	generateExecutableCode(commands: any) {
 		const commandsJson = JSON.stringify(commands, null, 2);
 
@@ -1314,7 +1215,6 @@ try {
 		return code;
 	}
 
-	// 粘贴项目
 	paste() {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -1344,7 +1244,6 @@ try {
 		}
 	}
 
-	// 删除项目
 	delete() {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -1376,21 +1275,18 @@ try {
 		}
 	}
 
-	// 撤销操作
 	undo() {
 		if (!this.dragging && this.history.canUndo()) {
 			this.history.restore('undo');
 		}
 	}
 
-	// 重做操作
 	redo() {
 		if (!this.dragging && this.history.canRedo()) {
 			this.history.restore('redo');
 		}
 	}
 
-	// 保存指令
 	save(command: any) {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -1413,8 +1309,6 @@ try {
 					this.selectDown();
 					break;
 				case false:
-					// 将新旧指令打包到一个数组中
-					// 便于切换语言删除缓存时使用
 					this.history.save({
 						type: 'replace',
 						parent: parent,
@@ -1432,7 +1326,6 @@ try {
 		}
 	}
 
-	// 获取选中项的位置
 	getSelectionPosition() {
 		if (this.start === null) {
 			return null;
@@ -1453,12 +1346,10 @@ try {
 		return { x, y };
 	}
 
-	// 清除元素
 	clearElements(start: any) {
 		return CommonList.clearElements(this as unknown as CommonList, start);
 	}
 
-	// 清除列表
 	clear() {
 		this.unselect();
 		this.textContent = '';
@@ -1478,18 +1369,14 @@ try {
 		return this;
 	}
 
-	// 分析变量数据
 	analyzeVariables() {
-		// 检查左值变量
 		function checkLeftValue(variable) {
 			const { name, type } = variable;
 			if (flags[name]) {
-				// 如果已经存在同名变量
 				let varItem = varMap[name + type];
 				if (varItem === undefined) {
 					if (type !== 'any') {
 						varItem = varMap[name + 'any'];
-						// 修改any类型的变量为具体类型
 						if (varItem) varItem.type = type;
 					} else {
 						varItem =
@@ -1499,21 +1386,17 @@ try {
 							varMap[name + 'object'];
 					}
 				}
-				// 增加变量的引用计数
 				if (varItem) varItem.refCount++;
 			} else {
-				// 首次添加该左值变量
 				flags[name] = true;
 				varMap[name + type] = variable;
 				varList.push(variable);
 			}
 		}
 
-		// 检查操作数变量
 		function checkOperator(variable) {
 			const { name, type } = variable;
 			if (flags[name]) {
-				// 如果已经存在同名变量
 				const varItem =
 					type !== 'any'
 						? (varMap[name + type] ?? varMap[name + 'any'])
@@ -1522,7 +1405,6 @@ try {
 							varMap[name + 'number'] ??
 							varMap[name + 'string'] ??
 							varMap[name + 'object']);
-				// 增加变量的引用计数
 				if (varItem) varItem.refCount++;
 			} else {
 				// 如果不存在变量，添加并提示用户
@@ -1534,34 +1416,28 @@ try {
 			}
 		}
 
-		// 初始化相关变量
 		const varMap = {};
 		const varList = [];
 		const leftValues = [];
 		const operators = [];
 		const flags = { '': true };
 
-		// 获取指令列表中的所有变量
 		for (const variable of Command.fetchVariables(this.read())) {
 			(variable.isLeftValue ? leftValues : operators).push(variable);
 		}
 
-		// 检查左值列表中的变量
 		for (const variable of leftValues) {
 			checkLeftValue(variable);
 		}
 
-		// 检查操作数列表中的变量
 		for (const variable of operators) {
 			checkOperator(variable);
 		}
 
-		// 设置变量的图标类名
 		for (const variable of varList) {
 			variable.icon = `icon-${variable.type}`;
 		}
 
-		// 按类型和名称排序列表项，并返回
 		const orders = {
 			boolean: 0,
 			number: 1,
@@ -1583,7 +1459,6 @@ try {
 		return { varList, varMap };
 	}
 
-	// 检查变量有效性（rAF 合并调度，避免滚动时重复全量检查）
 	scheduleCheckVariables() {
 		if (this._checkVariablesScheduled) return;
 		this._checkVariablesScheduled = true;
@@ -1593,15 +1468,12 @@ try {
 		});
 	}
 
-	// 检查变量有效性（同步执行实际检查）
 	checkVariables() {
-		// 检查本地变量
 		const varMap = this.varMap;
 		const varTypes = ['boolean', 'number', 'string', 'object', 'any'];
 		for (const text of this.getElementsByClassName('local-variable-identifier')) {
 			const type = text.varType;
 			const key = text.varKey;
-			// 排除none变量
 			if (!key) continue;
 			let varItem;
 			if (type !== 'any') {
@@ -1630,7 +1502,6 @@ try {
 			}
 		}
 
-		// 检查全局变量
 		for (const text of this.getElementsByClassName('global-variable-identifier')) {
 			const key = text.varKey;
 			if (key === '') continue;
@@ -1646,7 +1517,6 @@ try {
 			}
 		}
 
-		// 检查属性
 		for (const text of this.getElementsByClassName('attribute-identifier')) {
 			const id = text.varId;
 			const attr = Attribute.getAttribute(id);
@@ -1655,7 +1525,6 @@ try {
 			} else {
 				text.addClass('invalid');
 			}
-			// 忽略textId的更新，重开一下事件编辑器就好了
 			const attrName = String.compress(
 				attr ? GameLocal.replace(attr.name) : Command.parseUnlinkedId(id)
 			);
@@ -1664,7 +1533,6 @@ try {
 			}
 		}
 
-		// 检查枚举
 		for (const text of this.getElementsByClassName('enum-identifier')) {
 			const id = text.varId;
 			const string = Enum.getString(id);
@@ -1673,7 +1541,6 @@ try {
 			} else {
 				text.addClass('invalid');
 			}
-			// 忽略textId的更新，重开一下事件编辑器就好了
 			const stringName = string
 				? GameLocal.replace(string.name)
 				: Command.parseUnlinkedId(id);
@@ -1682,7 +1549,6 @@ try {
 			}
 		}
 
-		// 检查文件
 		for (const text of this.getElementsByClassName('file-identifier')) {
 			const fileId = text.varKey;
 			if (fileId === '') continue;
@@ -1698,7 +1564,6 @@ try {
 			}
 		}
 
-		// 检查场景对象
 		for (const text of this.getElementsByClassName('scene-identifier')) {
 			const presetId = text.varKey;
 			if (presetId === '') continue;
@@ -1710,7 +1575,6 @@ try {
 			}
 		}
 
-		// 检查界面元素
 		for (const text of this.getElementsByClassName('ui-identifier')) {
 			const presetId = text.varKey;
 			if (presetId === '') continue;
@@ -1723,7 +1587,6 @@ try {
 		}
 	}
 
-	// 尝试从数据中获取事件ID
 	tryGetEventId(data: any) {
 		const id = data?.id;
 		if (id === 'callEvent' || id === '!callEvent') {
@@ -1734,7 +1597,6 @@ try {
 		return undefined;
 	}
 
-	// 获得焦点事件
 	listFocus(event: any) {
 		if (!this.focusing) {
 			this.focusing = true;
@@ -1742,7 +1604,6 @@ try {
 		}
 	}
 
-	// 失去焦点事件
 	listBlur(event: any) {
 		if (this.dragging) {
 			this.windowPointerup(this.dragging);
@@ -1763,7 +1624,6 @@ try {
 		}
 	}
 
-	// 查找文本
 	findString(
 		str,
 		elements,
@@ -1814,7 +1674,6 @@ try {
 				continue;
 			}
 			if (element?.dataItem && element.dataItem.folded) {
-				// 查找折叠区域
 				const { buffer } = element.dataItem;
 				if (!buffer) continue;
 				for (const item of buffer) {
@@ -1870,19 +1729,16 @@ try {
 		return findList;
 	}
 
-	// 滚动到指定行
 	scrollToRow(targetIndex, position = 'center') {
 		const count = this.elements.count;
 		const rowHeight = 20;
 
-		// 边界检查
 		if (targetIndex < 0) targetIndex = 0;
 		if (targetIndex >= count) targetIndex = count - 1;
 
 		const ch = this.innerHeight;
 		const targetRowTop = targetIndex * rowHeight;
 
-		// 计算目标滚动位置
 		let targetScrollTop;
 		switch (position) {
 			case 'top':
@@ -1891,20 +1747,17 @@ try {
 			case 'bottom':
 				targetScrollTop = targetRowTop + rowHeight - ch;
 				break;
-			default: // center
+			default:
 				targetScrollTop = targetRowTop - ch / 2 + rowHeight / 2;
 		}
 
-		// 限制滚动范围
 		const maxScrollTop = count * rowHeight - ch;
 		targetScrollTop = Math.max(0, Math.min(targetScrollTop, maxScrollTop));
 
-		// 设置滚动位置并触发重绘
 		this.scrollTop = targetScrollTop;
 		this.resize(this); // 立即调用resize确保更新
 	}
 
-	// 键盘按下事件
 	keydown(event: any) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
@@ -1939,12 +1792,10 @@ try {
 					this.scrollTop += 20;
 					break;
 				case 'Home':
-					// Ctrl+Home会触发默认行为
 					event.preventDefault();
 					this.scroll(0, 0);
 					break;
 				case 'End':
-					// Ctrl+End会触发默认行为
 					event.preventDefault();
 					this.scroll(0, this.scrollHeight);
 					break;
@@ -2039,7 +1890,6 @@ try {
 				default:
 					if (CommandList.alphabetCode.test(event.code)) {
 						this.insert();
-						// 获取搜索框焦点可以捕获这次输入
 						CommandSuggestion.searcher.input.focus();
 					}
 					break;
@@ -2047,7 +1897,6 @@ try {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: any) {
 		if (this.dragging) {
 			return;
@@ -2122,7 +1971,6 @@ try {
 		}
 	}
 
-	// 指针弹起事件
 	pointerup(event: any) {
 		if (this.dragging) {
 			return;
@@ -2238,7 +2086,6 @@ try {
 							}
 						}
 					];
-					// 添加跳转到事件选项
 					if (sData === eData) {
 						const eventId = this.tryGetEventId(sData);
 						if (eventId) {
@@ -2286,7 +2133,6 @@ try {
 		}
 	}
 
-	// 鼠标双击事件
 	doubleclick(event: any) {
 		if (this.start !== null && event.target.tagName !== 'COMMAND-FOLD') {
 			const elements = this.elements;
@@ -2298,10 +2144,8 @@ try {
 		}
 	}
 
-	// 正则表达式 - 英文字母键码
 	static alphabetCode = /^Key[A-Z]$/;
 
-	// 窗口 - 指针弹起事件
 	static windowPointerup(this: CommandList, event: PointerEvent) {
 		const { dragging } = this;
 		if (dragging.relate(event)) {
@@ -2316,7 +2160,6 @@ try {
 		}
 	}
 
-	// 窗口 - 指针移动事件
 	static windowPointermove(this: CommandList, event: PointerEvent) {
 		const { dragging } = this;
 		if (dragging.relate(event)) {
@@ -2342,17 +2185,14 @@ try {
 		}
 	}
 
-	// 窗口 - 变量改变事件
 	static windowVariableChange(this: CommandList, event: Event) {
 		if (this.read()) {
 			this.scheduleCheckVariables();
 		}
 	}
 
-	// 高亮文本元素列表
 	static highlightedTexts = Array.empty;
 
-	// 高亮显示文本元素
 	static highlightTexts({ varSpace, varType, varKey }: any) {
 		switch (varType) {
 			case 'boolean':
@@ -2379,7 +2219,6 @@ try {
 		}
 	}
 
-	// 取消高亮显示文本元素
 	static unhighlightTexts() {
 		if (CommandList.highlightedTexts.length !== 0) {
 			for (const text of CommandList.highlightedTexts) {
@@ -2389,13 +2228,11 @@ try {
 		}
 	}
 
-	// 文本 - 指针进入事件
 	static textPointerenter(event: any) {
 		CommandList.unhighlightTexts();
 		CommandList.highlightTexts(this);
 	}
 
-	// 文本 - 指针离开事件
 	static textPointerleave(event: any) {
 		CommandList.unhighlightTexts();
 	}

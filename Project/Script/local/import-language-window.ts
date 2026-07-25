@@ -6,27 +6,19 @@ import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 import { Path } from '../util/config.ts';
 
-// ******************************** 导入语言包窗口 ********************************
-
 export const ImportLanguage = {
-	// properties
 	filePath: '',
-	// methods
 	initialize: null,
 	open: null,
 	importLanguagePack: null,
 	parseLanguagePack: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 ImportLanguage.initialize = function () {
-	// 侦听事件
 	$('#importLanguage-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 ImportLanguage.open = function () {
 	const dialogs = Editor.config.dialogs;
 	File.showOpenDialog({
@@ -40,7 +32,6 @@ ImportLanguage.open = function () {
 	}).then(({ filePaths }) => {
 		if (filePaths.length === 1) {
 			Window.open('importLanguage');
-			// 创建语言选项
 			const items = [];
 			for (const language of Data.config.localization.languages) {
 				items.push({
@@ -60,7 +51,6 @@ ImportLanguage.open = function () {
 	});
 };
 
-// 导出语言包
 ImportLanguage.importLanguagePack = function (language, string) {
 	const map = Data.localization.map;
 	for (const [id, text] of Object.entries(this.parseLanguagePack(string))) {
@@ -72,9 +62,7 @@ ImportLanguage.importLanguagePack = function (language, string) {
 	File.planToSave(Data.manifest.project.localization);
 };
 
-// 解析语言包
 ImportLanguage.parseLanguagePack = function (string) {
-	// 翻译后键名可能变成大写英文字母
 	const regexp = /\$([0-9a-fA-F]{16})\n([\s\S]*?)\n?(?=\n?\$[0-9a-fA-F]{16}|$)/g;
 	const map = {};
 	let match;
@@ -86,7 +74,6 @@ ImportLanguage.parseLanguagePack = function (string) {
 	return map;
 };
 
-// 确定按钮 - 鼠标点击事件
 ImportLanguage.confirm = function (event) {
 	const get = Local.createGetter('confirmation');
 	const filename = Path.basename(ImportLanguage.filePath);

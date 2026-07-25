@@ -1,10 +1,7 @@
 import { GL } from '../webgl/webgl-init.ts';
 import { Particle } from './particle-window.ts';
 
-// ******************************** 粒子元素类 ********************************
-
-// 粒子元素层数据对象（layer.data，与 particle-layer.ts 的 ParticleLayerData 共享）
-// 注：随机参数字段运行时是 [standard, deviation] 元组；纯值字段是 number
+// 粒子元素层数据对象（layer.data，与 particle-layer.ts 的 ParticleLayerData 共享） 注：随机参数字段运行时是 [standard, deviation] 元组；纯值字段是 number
 interface ParticleElementLayerData {
 	lifetime: number;
 	lifetimeDev: number;
@@ -55,7 +52,6 @@ interface ParticleElementLayerData {
 	[k: string]: any;
 }
 
-// 粒子元素层引用（运行时持 emitter/data/layer）
 interface ParticleElementLayer {
 	emitter: any;
 	data: ParticleElementLayerData;
@@ -106,8 +102,7 @@ Particle.Element = class ParticleElement {
 	spriteX: number;
 	spriteY: number;
 	opacity: number;
-	// color 是 Uint32Array(5)，但运行时额外挂载 .start/.end/.changed 字段（setStartColor/updateColor 用）
-	// 注：.start/.end 运行时挂的是 Uint8Array(4)（非 number[]）
+	// color 是 Uint32Array(5)，但运行时额外挂载 .start/.end/.changed 字段（setStartColor/updateColor 用） 注：.start/.end 运行时挂的是 Uint8Array(4)（非 number[]）
 	color: Uint32Array & {
 		start?: Uint8Array | number[];
 		end?: Uint8Array | number[];
@@ -167,7 +162,6 @@ Particle.Element = class ParticleElement {
 		this.initialize();
 	}
 
-	// 初始化
 	initialize() {
 		const { emitter } = this;
 		const {
@@ -182,7 +176,6 @@ Particle.Element = class ParticleElement {
 			sprite
 		} = this.data;
 
-		// 计算初始属性
 		this.elapsed = 0;
 		this.lifetime = lifetime + lifetimeDev * (Math.random() * 2 - 1);
 		this.fadeout = fadeout;
@@ -231,7 +224,6 @@ Particle.Element = class ParticleElement {
 		this.spriteElapsed = 0;
 		this.spriteCount = sprite.hframes * sprite.vframes;
 
-		// 设置初始精灵帧
 		switch (this.spriteMode) {
 			case 'random':
 				this.spriteFrame = Math.floor(Math.random() * this.spriteCount);
@@ -245,16 +237,12 @@ Particle.Element = class ParticleElement {
 				break;
 		}
 
-		// 设置初始位置
 		this.setStartPosition(movementAngle);
 
-		// 设置初始颜色
 		this.setStartColor();
 	}
 
-	// 更新数据
 	update(deltaTime: any) {
-		// 计算当前帧新的位置
 		this.elapsed += deltaTime;
 		this.scaleSpeed += this.scaleAccel * deltaTime;
 		this.scaleFactor += this.scaleSpeed * deltaTime;
@@ -267,7 +255,6 @@ Particle.Element = class ParticleElement {
 		this.x += this.movementSpeedX * deltaTime;
 		this.y += this.movementSpeedY * deltaTime;
 
-		// 计算水平旋转
 		this.hRotationExpansionSpeed += this.hRotationExpansionAccel * deltaTime;
 		this.hRotationRadius += this.hRotationExpansionSpeed * deltaTime;
 		this.hRotationAngularSpeed += this.hRotationAngularAccel * deltaTime;
@@ -280,7 +267,6 @@ Particle.Element = class ParticleElement {
 		this.hRotationOffsetX = hRotationOffsetX;
 		this.hRotationOffsetY = hRotationOffsetY;
 
-		// 计算精灵帧
 		switch (this.spriteMode) {
 			case 'random':
 				break;
@@ -303,14 +289,11 @@ Particle.Element = class ParticleElement {
 				break;
 		}
 
-		// 更新颜色
 		this.updateColor();
 
-		// 后期处理
 		return this.postProcessing();
 	}
 
-	// 绘制图像
 	draw(vi: any) {
 		const layer = this.layer;
 		const sw = layer.unitWidth;
@@ -364,7 +347,6 @@ Particle.Element = class ParticleElement {
 		colors[vi + 19] = color;
 	}
 
-	// 获取整数型颜色
 	getColorInt() {
 		const { color } = this;
 		if (color.changed) {
@@ -378,13 +360,11 @@ Particle.Element = class ParticleElement {
 		return color[4];
 	}
 
-	// 更新精灵帧
 	updateSpriteFrame() {
 		this.spriteX = this.spriteFrame % this.spriteHframes;
 		this.spriteY = Math.floor(this.spriteFrame / this.spriteHframes);
 	}
 
-	// 更新方法
 	updateMethods() {
 		const { area, color } = this.data;
 		// 给不同的发射区域设置特有的方法
@@ -431,7 +411,6 @@ Particle.Element = class ParticleElement {
 		}
 	}
 
-	// 变换初始位置
 	transformStartPosition() {
 		const { matrix } = this.emitter;
 		if (matrix !== null) {
@@ -447,7 +426,6 @@ Particle.Element = class ParticleElement {
 		}
 	}
 
-	// 获取区域位置
 	getAreaPosition() {
 		const array = ParticleElement.sharedFloat64Array;
 		const emitter = this.emitter;
@@ -461,7 +439,6 @@ Particle.Element = class ParticleElement {
 		return array;
 	}
 
-	// 设置初始位置 - 点
 	setStartPositionPoint() {
 		const { emitter } = this;
 		const pos = this.getAreaPosition();
@@ -470,7 +447,6 @@ Particle.Element = class ParticleElement {
 		this.transformStartPosition();
 	}
 
-	// 设置初始位置 - 矩形
 	setStartPositionRectangle() {
 		const { emitter } = this;
 		const { area } = this.data;
@@ -484,7 +460,6 @@ Particle.Element = class ParticleElement {
 		this.transformStartPosition();
 	}
 
-	// 设置初始位置 - 圆形
 	setStartPositionCircle() {
 		const { emitter } = this;
 		const { area } = this.data;
@@ -498,9 +473,7 @@ Particle.Element = class ParticleElement {
 		this.transformStartPosition();
 	}
 
-	// 设置初始位置 - 屏幕边缘
 	setStartPositionEdge(movementAngle: any) {
-		// 计算屏幕边缘的位置
 		const stage = ParticleElement.stage;
 		const scrollLeft = stage.scrollLeft;
 		const scrollTop = stage.scrollTop;
@@ -531,12 +504,10 @@ Particle.Element = class ParticleElement {
 
 	// 后期处理 - 通用
 	postProcessingCommon() {
-		// 消失
 		if (this.elapsed >= this.lifetime) {
 			return false;
 		}
 
-		// 淡出
 		if (this.elapsed > this.fadeoutTime) {
 			const elapsed = this.elapsed - this.fadeoutTime;
 			const time = elapsed / this.fadeout;
@@ -547,7 +518,6 @@ Particle.Element = class ParticleElement {
 
 	// 后期处理 - 屏幕边缘
 	postProcessingEdge() {
-		// 处于屏幕内
 		const stage = ParticleElement.stage;
 		const vertices = this.computeBoundingRectangle();
 		if (
@@ -559,7 +529,6 @@ Particle.Element = class ParticleElement {
 		) {
 			this.appeared = true;
 
-			// 淡出
 			if (this.elapsed > this.fadeoutTime) {
 				const elapsed = this.elapsed - this.fadeoutTime;
 				const time = elapsed / this.fadeout;
@@ -569,14 +538,12 @@ Particle.Element = class ParticleElement {
 			return;
 		}
 
-		// 处于屏幕外
 		if (this.appeared || this.elapsed > 500 || this.elapsed >= this.lifetime) {
 			this.appeared = false;
 			return false;
 		}
 	}
 
-	// 计算外接矩形
 	computeBoundingRectangle() {
 		const layer = this.layer;
 		const sw = layer.unitWidth;
@@ -613,7 +580,6 @@ Particle.Element = class ParticleElement {
 		return vertices;
 	}
 
-	// 设置初始颜色 - 固定
 	setStartColorFixed() {
 		const { rgba } = this.data.color;
 		const { color } = this;
@@ -624,7 +590,6 @@ Particle.Element = class ParticleElement {
 		color[3] = rgba[3];
 	}
 
-	// 设置初始颜色 - 随机
 	setStartColorRandom() {
 		const { min, max } = this.data.color;
 		const { color } = this;
@@ -635,7 +600,6 @@ Particle.Element = class ParticleElement {
 		color[3] = Math.randomBetween(min[3], max[3]);
 	}
 
-	// 设置初始颜色 - 过渡
 	setStartColorEasing() {
 		const { startMin, startMax, endMin, endMax } = this.data.color;
 		const { start, end } = this.color;
@@ -649,7 +613,6 @@ Particle.Element = class ParticleElement {
 		end[3] = Math.randomBetween(endMin[3], endMax[3]);
 	}
 
-	// 更新颜色 - 过渡
 	updateColorEasing() {
 		const { easing } = this.layer;
 		const { color } = this;
@@ -667,21 +630,17 @@ Particle.Element = class ParticleElement {
 		color[3] = clamp[3];
 	}
 
-	// 设置初始颜色 - 纹理
 	setStartColorTexture() {
 		const { color } = this;
 		color.changed = true;
 		color[3] = 255;
 	}
 
-	// 静态 - 元素舞台
 	static stage;
 
-	// 静态 - 公共属性
 	static sharedFloat64Array = new Float64Array(4);
 	static sharedClampedArray = new Uint8ClampedArray(4);
 
-	// 静态 - 生成随机参数
 	static getRandomParameter([standard, deviation]) {
 		return standard + deviation * (Math.random() * 2 - 1);
 	}

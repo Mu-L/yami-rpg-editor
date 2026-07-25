@@ -2,44 +2,34 @@
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 进度条页面 ********************************
-
 {
 	const UIProgressBar = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UIProgressBar.initialize = function () {
-		// 创建显示选项
 		$('#uiProgressBar-display').loadItems([
 			{ name: 'Stretch', value: 'stretch' },
 			{ name: 'Clip', value: 'clip' }
 		]);
 
-		// 设置显示关联元素
 		$('#uiProgressBar-display')
 			.enableHiddenMode()
 			.relate([{ case: 'clip', targets: [$('#uiProgressBar-clip')] }]);
 
-		// 创建类型选项
 		$('#uiProgressBar-type').loadItems([
 			{ name: 'Horizontal', value: 'horizontal' },
 			{ name: 'Vertical', value: 'vertical' },
 			{ name: 'Round', value: 'round' }
 		]);
 
-		// 设置类型关联元素
 		$('#uiProgressBar-type')
 			.enableHiddenMode()
 			.relate([
@@ -54,20 +44,17 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 创建混合模式选项
 		$('#uiProgressBar-blend').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Additive', value: 'additive' },
 			{ name: 'Subtract', value: 'subtract' }
 		]);
 
-		// 创建颜色模式选项
 		$('#uiProgressBar-colorMode').loadItems([
 			{ name: 'Texture Sampling', value: 'texture' },
 			{ name: 'Fixed', value: 'fixed' }
 		]);
 
-		// 设置颜色模式关联元素
 		$('#uiProgressBar-colorMode')
 			.enableHiddenMode()
 			.relate([
@@ -82,13 +69,11 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 同步滑动框和数字框的数值
 		$('#uiProgressBar-color-0-slider').synchronize($('#uiProgressBar-color-0'));
 		$('#uiProgressBar-color-1-slider').synchronize($('#uiProgressBar-color-1'));
 		$('#uiProgressBar-color-2-slider').synchronize($('#uiProgressBar-color-2'));
 		$('#uiProgressBar-color-3-slider').synchronize($('#uiProgressBar-color-3'));
 
-		// 侦听事件
 		const elements = $(`#uiProgressBar-image,
     #uiProgressBar-display, #uiProgressBar-clip,
     #uiProgressBar-type, #uiProgressBar-centerX, #uiProgressBar-centerY,
@@ -106,7 +91,6 @@ import { UI } from '../ui/ui-window.ts';
 		sliders.on('blur', Inspector.sliderBlur);
 	};
 
-	// 创建进度条
 	UIProgressBar.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -140,12 +124,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIProgressBar.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiProgressBar', node);
 			write('image');
 			write('display');
@@ -167,7 +149,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIProgressBar.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -177,7 +158,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIProgressBar.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -217,7 +197,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIProgressBar.paramInput = function (event) {
 		UIProgressBar.update(UIProgressBar.target, Inspector.getKey(this), this.read());
 	};

@@ -9,10 +9,7 @@ import { History } from '../tools/history.ts';
 import { Cursor } from '../tools/pointer-object.ts';
 import { ParamListHistory } from '../components/param-history.ts';
 
-// ******************************** 检查器 ********************************
-
 export const Inspector = {
-	// properties
 	manager: null,
 	type: null,
 	meta: null,
@@ -62,12 +59,10 @@ export const Inspector = {
 	animSoundLayer: null,
 	animSoundFrame: null,
 	particleLayer: null,
-	// methods
 	initialize: null,
 	open: null,
 	close: null,
 	getKey: null,
-	// events
 	inspectorResize: null,
 	managerKeydown: null,
 	scrollPointerdown: null,
@@ -75,13 +70,10 @@ export const Inspector = {
 	inputBlur: null,
 	sliderFocus: null,
 	sliderBlur: null,
-	// classes
 	ParamHistory: null
 };
 
-// 初始化
 Inspector.initialize = function () {
-	// 设置页面管理器
 	this.manager = $('#inspector-page-manager');
 	this.manager.focusing = null;
 	this.manager.oldValue = null;
@@ -91,7 +83,6 @@ Inspector.initialize = function () {
 
 	// this.manager.switch('fileTrigger')
 
-	// 设置历史操作处理器
 	History.processors['inspector-change'] = (operation, data) => {
 		const { editor, target, changes } = data;
 		for (const change of changes) {
@@ -159,11 +150,9 @@ Inspector.initialize = function () {
 		editor.owner.setTarget(target, meta);
 	};
 
-	// 侦听事件
 	$('#inspector').on('resize', this.inspectorResize);
 	this.manager.on('keydown', this.managerKeydown);
 
-	// 初始化子对象
 	this.fileScene.initialize();
 	this.fileUI.initialize();
 	this.fileAnimation.initialize();
@@ -209,7 +198,6 @@ Inspector.initialize = function () {
 	this.particleLayer.initialize();
 };
 
-// 打开
 Inspector.open = function (type, target, meta) {
 	if (this.manager.contains(document.activeElement)) {
 		document.activeElement.blur();
@@ -229,7 +217,6 @@ Inspector.open = function (type, target, meta) {
 	}
 };
 
-// 关闭
 Inspector.close = function (type) {
 	if (this.manager.contains(document.activeElement)) {
 		document.activeElement.blur();
@@ -245,7 +232,6 @@ Inspector.close = function (type) {
 	}
 };
 
-// 获取属性的键
 Inspector.getKey = function (element) {
 	let key = element.key;
 	if (key === undefined) {
@@ -256,7 +242,6 @@ Inspector.getKey = function (element) {
 	return key;
 };
 
-// 检查器 - 调整大小
 Inspector.inspectorResize = (function IIFE() {
 	const resize = new Event('resize');
 	return function (event) {
@@ -267,11 +252,9 @@ Inspector.inspectorResize = (function IIFE() {
 	};
 })();
 
-// 页面管理器 - 键盘按下事件
 Inspector.managerKeydown = function (event) {
 	const element = event.target;
 	switch (element.tagName) {
-		// 禁用组件的按键冒泡行为
 		case 'INPUT':
 		case 'TEXTAREA':
 			// 如果是滑动框类型则跳到default
@@ -313,7 +296,6 @@ Inspector.managerKeydown = function (event) {
 	}
 };
 
-// 滚动 - 指针按下事件
 Inspector.scrollPointerdown = function (event) {
 	if (this.dragging) {
 		return;
@@ -342,7 +324,6 @@ Inspector.scrollPointerdown = function (event) {
 	}
 };
 
-// 输入框 - 获得焦点事件
 Inspector.inputFocus = function (event) {
 	if (Window.activeElement === null) {
 		const { manager } = Inspector;
@@ -356,11 +337,9 @@ Inspector.inputFocus = function (event) {
 	}
 };
 
-// 输入框 - 失去焦点事件 - 生成器
 Inspector.inputBlur = function (editor, owner, callback = null) {
 	return function (event) {
 		if (Window.activeElement === null) {
-			// 鼠标点击DevTools后再点击其他地方可能额外触发一次blur事件
 			// 因此需要判断manager.focusing
 			const { manager } = Inspector;
 			if (manager.focusing === null) {
@@ -401,7 +380,6 @@ Inspector.inputBlur = function (editor, owner, callback = null) {
 	};
 };
 
-// 滑动框 - 获得焦点事件
 Inspector.sliderFocus = (function IIFE() {
 	const focus = new FocusEvent('focus');
 	return function (event) {
@@ -409,7 +387,6 @@ Inspector.sliderFocus = (function IIFE() {
 	};
 })();
 
-// 滑动框 - 失去焦点事件
 Inspector.sliderBlur = (function IIFE() {
 	const blur = new FocusEvent('blur');
 	return function (event) {
@@ -417,7 +394,6 @@ Inspector.sliderBlur = (function IIFE() {
 	};
 })();
 
-// 参数操作历史
 Inspector.ParamHistory = class ParamHistory {
 	editor: any;
 	owner: any;
@@ -429,10 +405,8 @@ Inspector.ParamHistory = class ParamHistory {
 		this.list = list;
 	}
 
-	// 重置历史
 	reset() {}
 
-	// 保存数据
 	save(data: any) {
 		const { target } = this.editor;
 		if (target !== null) {
@@ -456,19 +430,16 @@ Inspector.ParamHistory = class ParamHistory {
 		}
 	}
 
-	// 恢复数据
 	restore(operation: any) {
 		this.owner.history.restore(operation);
 	}
 
-	// 撤销条件判断
 	canUndo() {
 		const history = this.owner.history;
 		const data = history[history.index];
 		return data?.type.indexOf('inspector-param') === 0;
 	}
 
-	// 重做条件判断
 	canRedo() {
 		const history = this.owner.history;
 		const data = history[history.index + 1];

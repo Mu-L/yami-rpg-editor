@@ -6,9 +6,6 @@ import { TextSuggestion } from './text-tip.ts';
 import { SelectBox } from '../components/select-box.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 变量访问器窗口 ********************************
-
-// 变量访问器目标对象（由调用方传入，含 input/filter/dataValue 等）
 interface VariableGetterTarget {
 	filter: string;
 	dataValue: {
@@ -25,7 +22,6 @@ interface VariableGetterTarget {
 	isPluginInput?: boolean;
 }
 
-// 变量类型集合（all/object/object2/writable/deletable）
 type VarTypeItem = { name: string; value: string };
 type VarTypeSet = {
 	all: VarTypeItem[];
@@ -35,7 +31,6 @@ type VarTypeSet = {
 	deletable: VarTypeItem[];
 };
 
-// 递归状态条目（按窗口名隔离）
 interface VarGetterState {
 	target: VariableGetterTarget;
 	filter: string;
@@ -72,13 +67,11 @@ interface VariableGetterShape {
 }
 
 export const VariableGetter: VariableGetterShape = {
-	// properties
 	keyBox: $('#variableGetter-preset-key'),
 	target: null,
 	filter: null,
 	types: null,
 	_state: null,
-	// methods
 	initialize: null,
 	open: null,
 	_openCore: null,
@@ -87,7 +80,6 @@ export const VariableGetter: VariableGetterShape = {
 	checkDataForPlugin: null,
 	createDefaultForPlugin: null,
 	createVarListGenerator: null,
-	// events
 	typeWrite: null,
 	typeInput: null,
 	confirm: null,
@@ -95,9 +87,7 @@ export const VariableGetter: VariableGetterShape = {
 	_confirmCore: null
 };
 
-// 初始化
 VariableGetter.initialize = function (this: VariableGetterShape): void {
-	// 设置变量类型集合
 	const types = {
 		local: { name: 'Local', value: 'local' },
 		global: { name: 'Global', value: 'global' },
@@ -124,7 +114,6 @@ VariableGetter.initialize = function (this: VariableGetterShape): void {
 		deletable: deletableTypes
 	};
 
-	// 设置变量类型关联元素
 	const actor = $('#variableGetter-actor');
 	const skill = $('#variableGetter-skill');
 	const state = $('#variableGetter-state');
@@ -147,7 +136,6 @@ VariableGetter.initialize = function (this: VariableGetterShape): void {
 			{ case: 'element', targets: [element, presetKey] }
 		]);
 
-	// 变量类型 - 重写设置选项名字方法
 	$('#variableGetter-type').setItemNames = function (options) {
 		const backup = this.dataItems;
 		this.dataItems = allTypes;
@@ -175,7 +163,6 @@ VariableGetter.initialize = function (this: VariableGetterShape): void {
 	// 递归状态（按窗口名隔离，避免覆盖主窗口的 target/filter）
 	this._state = { variableGetter: null, variableGetter2: null };
 
-	// 侦听事件
 	$('#variableGetter-type').on('write', this.typeWrite);
 	$('#variableGetter-type').on('input', this.typeInput);
 	$('#variableGetter-confirm').on('click', this.confirm);
@@ -185,7 +172,6 @@ VariableGetter.initialize = function (this: VariableGetterShape): void {
 	);
 };
 
-// 打开窗口
 VariableGetter.open = function (this: VariableGetterShape, target: VariableGetterTarget): void {
 	const filter = target.filter;
 	// 若主窗口已打开，则叠加打开窗口2（避免递归冲突）
@@ -196,7 +182,6 @@ VariableGetter.open = function (this: VariableGetterShape, target: VariableGette
 	}
 };
 
-// 内部：按窗口前缀打开并填充
 VariableGetter._openCore = function (
 	this: VariableGetterShape,
 	target: VariableGetterTarget,
@@ -212,11 +197,9 @@ VariableGetter._openCore = function (
 		case 'boolean':
 		case 'number':
 		case 'string':
-			// 递归窗口仅支持 local/global/element
 			items = prefix === 'variableGetter2' ? types.object : types.all;
 			break;
 		case 'object':
-			// 打开元素访问器时则过滤掉元素属性选项
 			items = !Window.isWindowOpen('elementGetter') ? types.object : types.object2;
 			break;
 		case 'writable-boolean':
@@ -231,13 +214,11 @@ VariableGetter._openCore = function (
 	$(`#${prefix}-type`).loadItems(items);
 	$(`#${prefix}-global-key`).filter = filter.startsWith('writable-') ? filter.slice(9) : filter;
 
-	// 填充当前变量值
 	const variable = target.dataValue;
 	const type = variable.type;
 	const key = variable.key;
 	const write = getElementWriter(prefix);
 	if (prefix === 'variableGetter2') {
-		// 窗口2仅支持 local/global/element
 		let element = { type: 'trigger' };
 		let commonKey = '';
 		let globalKey = '';
@@ -327,12 +308,10 @@ VariableGetter._openCore = function (
 	Window.open(prefix);
 };
 
-// 判断变量是否为空
 VariableGetter.isNone = function (variable: { key: string }): boolean {
 	return variable.key === '';
 };
 
-// 加载预设属性键
 VariableGetter.loadPresetKeys = function (this: VariableGetterShape, group: string): void {
 	let type = undefined;
 	switch (this.filter) {
@@ -351,7 +330,6 @@ VariableGetter.loadPresetKeys = function (this: VariableGetterShape, group: stri
 	this.keyBox.loadItems(Attribute.getAttributeItems(group, type));
 };
 
-// 检查插件版本的变量访问器数据有效性
 VariableGetter.checkDataForPlugin = function (data: any): boolean {
 	if (data instanceof Object) {
 		return (data as { getter?: string }).getter === 'variable';
@@ -359,7 +337,6 @@ VariableGetter.checkDataForPlugin = function (data: any): boolean {
 	return false;
 };
 
-// 创建插件版本的默认变量访问器
 VariableGetter.createDefaultForPlugin = function (): {
 	getter: string;
 	type: string;
@@ -368,12 +345,10 @@ VariableGetter.createDefaultForPlugin = function (): {
 	return { getter: 'variable', type: 'local', key: '' };
 };
 
-// 创建本地变量列表生成器
 VariableGetter.createVarListGenerator = function (filterObject: VariableGetterShape): () => any[] {
 	return function (): any[] {
 		if (!EventEditor.commandList.read()) return [];
 
-		// 生成过滤字符串
 		const filter = filterObject.filter.includes('boolean')
 			? 'boolean'
 			: filterObject.filter.includes('number')
@@ -428,11 +403,9 @@ VariableGetter.createVarListGenerator = function (filterObject: VariableGetterSh
 		const activeNamespace = activeCommand ? getNamespaceRoot(activeCommand) : null;
 
 		return (list.varList ?? []).filter((item) => {
-			// 过滤类型不匹配的变量
 			if (filter !== 'any' && item.type !== 'any' && filter !== item.type) {
 				return false;
 			}
-			// 过滤作用域不匹配的变量
 			const itemCommand = item.command;
 			const itemNamespace = itemCommand ? getNamespaceRoot(itemCommand) : null;
 			return itemNamespace === activeNamespace;
@@ -440,7 +413,6 @@ VariableGetter.createVarListGenerator = function (filterObject: VariableGetterSh
 	};
 };
 
-// 类型写入事件
 VariableGetter.typeWrite = function (event: Event & { value: string }): void {
 	const type = event.value;
 	switch (type) {
@@ -455,7 +427,6 @@ VariableGetter.typeWrite = function (event: Event & { value: string }): void {
 	}
 };
 
-// 类型输入事件
 VariableGetter.typeInput = function (event: Event & { value: string }): void {
 	const type = event.value;
 	switch (type) {
@@ -465,12 +436,10 @@ VariableGetter.typeInput = function (event: Event & { value: string }): void {
 		case 'item':
 		case 'equipment':
 		case 'element': {
-			// 重新写入属性键
 			const { selectBox } = VariableGetter.keyBox;
 			const attrName = selectBox.textContent;
 			selectBox.write(selectBox.read());
 			if (selectBox.invalid) {
-				// 如果是无效数据，则写入同名属性或第一项作为默认值
 				const items = selectBox.dataItems;
 				let defValue = items[0]?.value;
 				for (const item of items) {
@@ -488,12 +457,10 @@ VariableGetter.typeInput = function (event: Event & { value: string }): void {
 	}
 };
 
-// 确定按钮 - 鼠标点击事件（主窗口）
 VariableGetter.confirm = function (this: VariableGetterShape, event: Event): void {
 	this._confirmCore!('variableGetter');
 }.bind(VariableGetter);
 
-// 确定按钮 - 鼠标点击事件（递归窗口2）
 VariableGetter.confirm2 = function (this: VariableGetterShape, event: Event): void {
 	this._confirmCore!('variableGetter2');
 }.bind(VariableGetter);
@@ -575,7 +542,6 @@ VariableGetter._confirmCore = function (this: VariableGetterShape, prefix: strin
 			break;
 		}
 	}
-	// 如果是插件输入框，额外附加一个属性
 	if (target.isPluginInput) {
 		getter = { getter: 'variable', ...getter };
 	}

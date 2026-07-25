@@ -1,5 +1,3 @@
-﻿// ******************************** 平面向量类 ********************************
-
 export class Vector {
 	x: number;
 	y: number;
@@ -8,13 +6,11 @@ export class Vector {
 		this.y = y;
 	}
 
-	// 读取长度
 	get length() {
 		const { x, y } = this;
 		return Math.sqrt(x * x + y * y);
 	}
 
-	// 写入长度
 	set length(value: any) {
 		const { length } = this;
 		if (length !== 0) {
@@ -24,26 +20,20 @@ export class Vector {
 		}
 	}
 
-	// 设置向量
 	set(x: any, y: any) {
 		this.x = x;
 		this.y = y;
 		return this;
 	}
 
-	// 添加向量
 	add(vector: any) {
 		this.x += vector.x;
 		this.y += vector.y;
 		return this;
 	}
 
-	// 叉乘
-	// cross(vector) {
-	//   return this.x * vector.y - this.y * vector.x
-	// }
+	// 叉乘 cross(vector) { return this.x * vector.y - this.y * vector.x }
 
-	// 求夹角余弦值
 	cos(vector: any) {
 		const a = this.x * vector.x + this.y * vector.y;
 		const b = Math.sqrt(this.x ** 2 + this.y ** 2);
@@ -51,19 +41,16 @@ export class Vector {
 		return a / (b * c);
 	}
 
-	// 求夹角正弦值
 	sin(vector: any) {
 		const cos = this.cos(vector);
 		return Math.sqrt(1 - cos ** 2);
 	}
 
-	// 归一化
 	normalize() {
 		this.length = 1;
 		return this;
 	}
 
-	// 创建平面向量实例数组
 	static instances = [
 		new Vector(),
 		new Vector(),

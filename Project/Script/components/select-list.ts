@@ -1,8 +1,6 @@
 import { Window } from '../tools/window-object.ts';
 import { CommonList } from './common-list.ts';
 
-// ******************************** 下拉列表 ********************************
-
 // 下拉列表的宿主元素（SelectBox 等）需提供的契约
 interface SelectTarget extends HTMLElement {
 	dataItems: Array<{ value: any; name: string; tip?: string }>;
@@ -31,7 +29,6 @@ export class SelectList extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.state = 'closed';
 		this.target = null;
 		this.elements = [] as SelectItemElement[] & {
@@ -55,16 +52,13 @@ export class SelectList extends HTMLElement {
 		this.windowBlur = this.windowBlur.bind(this);
 		this.listenDraggingScrollbarEvent();
 
-		// 侦听事件
 		this.on('scroll', this.resize);
 	}
 
-	// 读取数据
 	read(): any {
 		return (this.selection as SelectItemElement | null)?.dataValue;
 	}
 
-	// 写入数据
 	write(value: any): void {
 		const elements = this.elements;
 		const count = elements.count;
@@ -80,7 +74,6 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	// 选择项目
 	select(element: HTMLElement): void {
 		if (element instanceof HTMLElement && this.selection !== element) {
 			this.unselect();
@@ -89,7 +82,6 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	// 取消选择
 	unselect(): void {
 		if (this.selection) {
 			this.selection.removeClass('selected');
@@ -97,7 +89,6 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	// 重新选择
 	reselect(offset: number): void {
 		const elements = this.elements;
 		const selection = this.selection!;
@@ -107,31 +98,23 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	// 打开下拉列表
 	open(target: SelectTarget): void {
 		this.close();
 		this.state = 'open';
 
-		// 设置目标元素
 		this.target = target;
 
-		// 创建选项
 		this.createItems(target.dataItems);
 
-		// 设置位置
 		this.windowResize();
 
-		// 添加列表到文档树
 		document.body.appendChild(this);
 
-		// 重新调整
 		this.resize();
 
-		// 写入数据
 		this.write(target.dataValue);
 		this.scrollToSelection();
 
-		// 侦听事件
 		this.on('pointermove', this.pointermove);
 		window.on('keydown', this.windowKeydown, { capture: true });
 		window.on('pointerdown', this.windowPointerdown, { capture: true });
@@ -139,7 +122,6 @@ export class SelectList extends HTMLElement {
 		window.on('blur', this.windowBlur);
 	}
 
-	// 关闭下拉列表
 	close(): void {
 		if (this.state === 'closed') {
 			return;
@@ -150,7 +132,6 @@ export class SelectList extends HTMLElement {
 		this.clear();
 		document.body.removeChild(this);
 
-		// 取消侦听事件
 		this.off('pointermove', this.pointermove);
 		window.off('keydown', this.windowKeydown, { capture: true });
 		window.off('pointerdown', this.windowPointerdown, { capture: true });
@@ -158,20 +139,16 @@ export class SelectList extends HTMLElement {
 		window.off('blur', this.windowBlur);
 	}
 
-	// 重新调整
 	resize(): void {
 		CommonList.resize(this as unknown as CommonList);
 	}
 
-	// 更新头部和尾部元素
 	updateHeadAndFoot(): void {
 		CommonList.updateHeadAndFoot(this as unknown as CommonList);
 	}
 
-	// 在重新调整时更新
 	updateOnResize(): void {}
 
-	// 创建选项
 	createItems(items: Array<{ value: any; name: string; tip?: string }>): void {
 		const { elements } = this;
 		elements.start = -1;
@@ -187,11 +164,9 @@ export class SelectList extends HTMLElement {
 			elements[elements.count++] = li;
 		}
 
-		// 清除多余的元素
 		this.clearElements(elements.count);
 	}
 
-	// 向上翻页
 	pageUp(select: boolean): void {
 		const scrollLines = Math.floor(this.clientHeight / 20) - 1;
 		if (select) {
@@ -205,7 +180,6 @@ export class SelectList extends HTMLElement {
 		this.scrollBy(0, -scrollLines * 20);
 	}
 
-	// 向下翻页
 	pageDown(select: boolean): void {
 		const scrollLines = Math.floor(this.clientHeight / 20) - 1;
 		if (select) {
@@ -219,7 +193,6 @@ export class SelectList extends HTMLElement {
 		this.scrollBy(0, +scrollLines * 20);
 	}
 
-	// 获取选中项的元素索引
 	getElementIndexOfSelection(defIndex: number): number {
 		const selection = this.selection;
 		if (selection instanceof HTMLElement) {
@@ -228,7 +201,6 @@ export class SelectList extends HTMLElement {
 		return defIndex;
 	}
 
-	// 滚动到选中项
 	scrollToSelection(): void {
 		if ((this as any).hasScrollBar()) {
 			const elements = this.elements;
@@ -247,12 +219,10 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	// 清除元素
 	clearElements(start: number): void {
 		CommonList.clearElements(this as unknown as CommonList, start);
 	}
 
-	// 清除列表
 	clear(): this {
 		this.unselect();
 		this.textContent = '';
@@ -264,7 +234,6 @@ export class SelectList extends HTMLElement {
 		return this;
 	}
 
-	// 指针移动事件
 	pointermove(event: PointerEvent): void {
 		const element = (event.target as HTMLElement).seek('select-item') as SelectItemElement;
 		if (element.tagName === 'SELECT-ITEM' && !element.hasClass('selected')) {
@@ -272,7 +241,6 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 键盘按下事件
 	windowKeydown(event: KeyboardEvent): void {
 		event.preventDefault();
 		event.stopPropagation();
@@ -319,7 +287,6 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 指针按下事件
 	windowPointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0: {
@@ -351,7 +318,6 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 调整大小事件
 	windowResize(event?: Event): void {
 		const MAX_LINES = 30;
 		const rect = this.target!.rect();
@@ -372,7 +338,6 @@ export class SelectList extends HTMLElement {
 		this.style.zIndex = `${Window.frames.length + 1}`;
 	}
 
-	// 窗口 - 失去焦点事件
 	windowBlur(event: Event): void {
 		this.close();
 	}
@@ -380,8 +345,5 @@ export class SelectList extends HTMLElement {
 
 customElements.define('select-list', SelectList);
 
-// 创建选择列表实例
-// 注：Select 必须是真实的 SelectList 实例（继承其 windowPointerdown/windowKeydown/
-// resize/createItems 等所有类方法）。此前类型化时误改为简化对象字面量 {target,open,close}，
-// 导致所有 Select.windowPointerdown 等调用失效 —— 下拉列表点击行为全部断裂。
+// 注：Select 必须是真实的 SelectList 实例（继承其 windowPointerdown/windowKeydown/ resize/createItems 等所有类方法）。此前类型化时误改为简化对象字面量 {target,open,close}，导致所有 Select.windowPointerdown 等调用失效 —— 下拉列表点击行为全部断裂。
 export const Select = new SelectList();

@@ -3,14 +3,11 @@ import { File } from '../file/file-system-core.ts';
 import { Editor } from '../main/editor.ts';
 
 import { ipcRenderer } from 'electron';
-// ******************************** 日志窗口 ********************************
 
 export const Log = {
-	// properties
 	box: $('#log-message'),
 	list: [],
 	devmode: process.argv.includes('--debug-mode'),
-	// methods
 	initialize: null,
 	throw: null,
 	print: null,
@@ -19,24 +16,19 @@ export const Log = {
 	tick: null,
 	// runtime 挂载: main/initialize.ts 中挂载警告输出
 	warn: null as ((message: string, ...args: any[]) => void) | null,
-	// events
 	catchError: null,
 	catchRejection: null,
 	tscLog: null
 };
 
-// 初始化
 Log.initialize = function () {
-	// 定期检查
 	setInterval(this.tick, 1000);
 
-	// 侦听事件
 	window.on('error', this.catchError);
 	window.on('unhandledrejection', this.catchRejection);
 	ipcRenderer.on('tsc-log', this.tscLog);
 };
 
-// 抛出错误
 Log.throw = function (error) {
 	if (this.devmode) {
 		throw error;
@@ -45,7 +37,6 @@ Log.throw = function (error) {
 	}
 };
 
-// 输出消息
 Log.print = function (item) {
 	if (this.list.length < 50) {
 		this.list.push(item);
@@ -53,13 +44,11 @@ Log.print = function (item) {
 	}
 };
 
-// 清除消息
 Log.clear = function () {
 	this.list.length = 0;
 	this.update();
 };
 
-// 更新消息
 Log.update = function () {
 	const { box, list } = this;
 	box.clear();
@@ -86,7 +75,6 @@ Log.update = function () {
 	}
 };
 
-// 定期检查
 Log.tick = function () {
 	let changed = false;
 	const list = Log.list;
@@ -104,7 +92,6 @@ Log.tick = function () {
 	}
 };
 
-// 捕获同步错误事件
 Log.catchError = function (event) {
 	if (Editor.state === 'open') {
 		Log.print({
@@ -115,7 +102,6 @@ Log.catchError = function (event) {
 	}
 };
 
-// 捕获异步错误事件
 Log.catchRejection = function (event) {
 	if (Editor.state === 'open') {
 		Log.print({
@@ -126,10 +112,8 @@ Log.catchRejection = function (event) {
 	}
 };
 
-// TSC输出日志
 Log.tscLog = function (event, tscMessage) {
 	let duration = 6;
-	// 清除无效的终端输出格式字符
 	let message = tscMessage.replace('[2J[3J[H', '').trim();
 	if (message.includes('Starting')) {
 		Log.clear();

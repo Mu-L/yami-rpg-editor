@@ -1,7 +1,5 @@
 import { Timer } from '../util/timer.ts';
 
-// ******************************** 滚动条 ********************************
-
 // 滑块运行时挂载的缓存字段（避免每次读 DOM style）
 interface ScrollThumb extends HTMLElement {
 	left?: number;
@@ -32,7 +30,6 @@ export class ScrollBar extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.target = null;
 		this.type = null;
 		this.thumb = null;
@@ -42,11 +39,9 @@ export class ScrollBar extends HTMLElement {
 		this.windowPointerup = this.windowPointerup.bind(this);
 		this.windowPointermove = this.windowPointermove.bind(this);
 
-		// 侦听事件
 		this.on('pointerdown', this.pointerdown);
 	}
 
-	// 绑定目标元素
 	bind(target: HTMLElement, type: string): void {
 		this.appendChild((this.thumb = document.createElement('scroll-thumb')));
 		this.thumb.appendChild(document.createElement('scroll-thumb-inner'));
@@ -63,7 +58,6 @@ export class ScrollBar extends HTMLElement {
 		}
 	}
 
-	// 更新水平滚动条
 	updateHorizontalBar(): void {
 		const target = this.target!;
 		const cw = target.clientWidth;
@@ -79,7 +73,6 @@ export class ScrollBar extends HTMLElement {
 		}
 	}
 
-	// 更新垂直滚动条
 	updateVerticalBar(): void {
 		const target = this.target!;
 		const ch = target.clientHeight;
@@ -95,7 +88,6 @@ export class ScrollBar extends HTMLElement {
 		}
 	}
 
-	// 更新水平滑块
 	updateHorizontalThumb(left: number, width: number): void {
 		const thumb = this.thumb!;
 		if (thumb.left !== left) {
@@ -108,7 +100,6 @@ export class ScrollBar extends HTMLElement {
 		}
 	}
 
-	// 更新垂直滑块
 	updateVerticalThumb(top: number, height: number): void {
 		const thumb = this.thumb!;
 		if (thumb.top !== top) {
@@ -121,7 +112,6 @@ export class ScrollBar extends HTMLElement {
 		}
 	}
 
-	// 更新显示状态
 	updateDisplay(state: boolean): void {
 		if (this.visible !== state) {
 			this.visible = state;
@@ -136,7 +126,6 @@ export class ScrollBar extends HTMLElement {
 		}
 	}
 
-	// 滚动相对位置
 	scrollRelative(sign: number): void {
 		const { target } = this;
 		let { timer } = this;
@@ -249,7 +238,6 @@ export class ScrollBar extends HTMLElement {
 		timer.add();
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		if (this.dragging) {
 			return;
@@ -285,7 +273,6 @@ export class ScrollBar extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 指针弹起事件
 	windowPointerup(event: PointerEvent): void {
 		const { dragging } = this;
 		if (dragging!.relate(event)) {
@@ -301,7 +288,6 @@ export class ScrollBar extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 指针移动事件
 	windowPointermove(event: PointerEvent): void {
 		const { dragging } = this;
 		if (dragging!.relate(event)) {

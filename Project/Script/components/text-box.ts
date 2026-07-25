@@ -1,7 +1,5 @@
 ﻿import { TextHistory } from './text-history.ts';
 
-// ******************************** 文本框 ********************************
-
 export class TextBox extends HTMLElement {
 	input: HTMLInputElement;
 	focusEventEnabled: boolean;
@@ -14,23 +12,19 @@ export class TextBox extends HTMLElement {
 	constructor() {
 		super();
 
-		// 创建输入框
 		const input = document.createElement('input');
 		input.addClass('text-box-input');
 		input.type = 'text';
 		input.history = new TextHistory(input);
 
-		// 设置属性
 		this.input = input;
 		this.focusEventEnabled = false;
 		this.blurEventEnabled = false;
 
-		// 添加事件侦听器 - Mac
 		if (process.platform === 'darwin') {
 			input.on('keydown', TextBox.macInputKeydown);
 		}
 
-		// 添加合成事件
 		let isEditing = false;
 		input.addEventListener('compositionstart', () => {
 			isEditing = true;
@@ -55,25 +49,21 @@ export class TextBox extends HTMLElement {
 		);
 	}
 
-	// 自定义元素升级后（已连入文档）才允许操作子节点
 	connectedCallback() {
 		if (this._built) return;
 		this._built = true;
 		this.appendChild(this.input);
 	}
 
-	// 读取数据
 	read(): string {
 		return this.input.value;
 	}
 
-	// 写入数据
 	write(value: string): void {
 		this.input.value = value;
 		this.input.history.reset();
 	}
 
-	// 插入数据
 	insert(value: string): void {
 		this.input.dispatchEvent(
 			new InputEvent('beforeinput', {
@@ -85,42 +75,35 @@ export class TextBox extends HTMLElement {
 		document.execCommand('insertText', false, value);
 	}
 
-	// 启用元素
 	enable(): void {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
-	// 禁用元素
 	disable(): void {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
-	// 设置焦点
 	focus(): void {
 		super.focus();
 		this.input.focus();
 	}
 
-	// 获得焦点
 	getFocus(mode: string | null): HTMLInputElement {
 		return this.input.getFocus(mode);
 	}
 
-	// 设置占位符
 	setPlaceholder(placeholder: string): void {
 		this.input.placeholder = placeholder;
 	}
 
-	// 设置最大长度
 	setMaxLength(length: number): void {
 		this.input.maxLength = length;
 	}
 
-	// 调整输入框大小来适应内容
 	fitContent(): void {
 		const parent = this.parentNode as HTMLElement;
 		this.style.width = '0';
@@ -131,7 +114,6 @@ export class TextBox extends HTMLElement {
 		)}px`;
 	}
 
-	// 删除输入框内容
 	deleteInputContent(): void {
 		if (this.read() !== '') {
 			this.input.select();
@@ -145,17 +127,14 @@ export class TextBox extends HTMLElement {
 		}
 	}
 
-	// 添加关闭按钮
 	addCloseButton(): void {
 		return TextBox.addCloseButton(this);
 	}
 
-	// 添加键盘按下过滤器
 	addKeydownFilter(): void {
 		return TextBox.addKeydownFilter(this);
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -182,20 +161,16 @@ export class TextBox extends HTMLElement {
 		}
 	}
 
-	// 静态 - 添加关闭按钮
 	static addCloseButton = (function IIFE() {
-		// 重写写入方法
 		const write = function (this: TextBox, value: string): void {
 			TextBox.prototype.write.call(this, value);
 			updateCloseButton(this);
 		};
-		// 更新关闭按钮
 		const updateCloseButton = function (textBox: TextBox): void {
 			return textBox.read() !== ''
 				? (textBox.closeButton as HTMLElement).show()
 				: (textBox.closeButton as HTMLElement).hide();
 		};
-		// 键盘按下事件
 		const keydown = function (this: TextBox, event: KeyboardEvent): void {
 			switch (event.code) {
 				case 'Escape':
@@ -206,17 +181,13 @@ export class TextBox extends HTMLElement {
 					break;
 			}
 		};
-		// 输入事件
 		const input = function (this: TextBox, event: Event): void {
 			updateCloseButton(this);
 		};
-		// 关闭按钮 - 鼠标按下事件
 		const closeButtonPointerdown = function (event: PointerEvent): void {
-			// 阻止默认的失去焦点行为并停止传递事件
 			event.preventDefault();
 			event.stopPropagation();
 		};
-		// 关闭按钮 - 鼠标点击事件
 		const closeButtonClick = function (this: HTMLElement, event: Event): void {
 			(this.parentNode as TextBox).deleteInputContent();
 		};
@@ -233,7 +204,6 @@ export class TextBox extends HTMLElement {
 		};
 	})();
 
-	// 静态 - 添加键盘按下过滤器
 	static addKeydownFilter = (function IIFE() {
 		const keydown = function (event: KeyboardEvent): void {
 			if (event.altKey) {
@@ -255,8 +225,6 @@ export class TextBox extends HTMLElement {
 		};
 	})();
 
-	// 静态 - 输入框键盘按下事件
-	// Mac版不存在默认的复制/粘贴/剪切操作
 	static macInputKeydown(event: KeyboardEvent): void {
 		if (event.metaKey) {
 			switch (event.code) {

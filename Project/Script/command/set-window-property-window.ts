@@ -1,8 +1,6 @@
 ﻿import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 
-// ******************************** 设置窗口 - 属性窗口 ********************************
-
 export const WindowProperty = createPropertyWindow({
 	prefix: 'setWindow',
 	locale: 'command.setWindow',

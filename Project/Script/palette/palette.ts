@@ -15,10 +15,7 @@ import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 import { Timer } from '../util/timer.ts';
 
-// ******************************** 调色板 ********************************
-
 export const Palette = {
-	// properties
 	state: 'closed',
 	page: $('#fileTileset'),
 	head: $('#palette-head'),
@@ -66,7 +63,6 @@ export const Palette = {
 	centerY: null,
 	markCanvas: null,
 	tilesetMap: {},
-	// methods
 	initialize: null,
 	open: null,
 	close: null,
@@ -116,7 +112,6 @@ export const Palette = {
 	switchEdit: null,
 	saveToProject: null,
 	loadFromProject: null,
-	// events
 	windowResize: null,
 	themechange: null,
 	headPointerdown: null,
@@ -136,18 +131,13 @@ export const Palette = {
 	pointermove: null
 };
 
-// 初始化
 Palette.initialize = function () {
-	// 绑定滚动条
 	this.screen.addScrollbars();
 
-	// 创建画布上下文
 	this.context = this.canvas.getContext('2d', { desynchronized: true });
 
-	// 创建初始图块图像集合
 	this.images = {};
 
-	// 创建缩放计时器
 	this.zoomTimer = new Timer({
 		duration: 80,
 		update: (timer) => {
@@ -164,7 +154,6 @@ Palette.initialize = function () {
 		}
 	});
 
-	// 选框区域自定义组件 - 源选框和目标选框
 	const marquee = this.marquee;
 	const source: any = document.createElement('selection');
 	const destination: any = document.createElement('selection');
@@ -172,7 +161,6 @@ Palette.initialize = function () {
 	source.id = 'source-selection';
 	destination.id = 'destination-selection';
 
-	// 选框区域自定义方法 - 选择
 	marquee.customSelect = function (key, x, y) {
 		const selection = selections[key];
 		const scaleX = this.scaleX;
@@ -200,7 +188,6 @@ Palette.initialize = function () {
 		selections[key].remove();
 	};
 
-	// 选框区域自定义方法 - 转移自动图块
 	marquee.customShiftAutoTile = function () {
 		source.remove();
 		destination.remove();
@@ -243,7 +230,6 @@ Palette.initialize = function () {
 		}
 	};
 
-	// 侦听事件
 	window.on('themechange', this.themechange);
 	this.page.on('resize', this.windowResize);
 	$('#fileTileset-general-detail').on('toggle', this.windowResize);
@@ -258,14 +244,12 @@ Palette.initialize = function () {
 	this.marquee.on('pointerdown', this.marqueePointerdown);
 	this.marquee.on('doubleclick', this.marqueeDoubleclick);
 
-	// 初始化子对象
 	AutoTile.initialize();
 	FrameGenerator.initialize();
 	TileFrame.initialize();
 	TileNode.initialize();
 };
 
-// 打开图块组
 Palette.open = function (meta) {
 	if (!meta || meta === this.meta) {
 		return;
@@ -296,7 +280,6 @@ Palette.open = function (meta) {
 	}
 };
 
-// 关闭图块组
 Palette.close = function () {
 	if (this.state !== 'closed') {
 		this.state = 'closed';
@@ -309,7 +292,6 @@ Palette.close = function () {
 	}
 };
 
-// 挂起
 Palette.suspend = function () {
 	if (this.state === 'open') {
 		this.state = 'suspended';
@@ -317,7 +299,6 @@ Palette.suspend = function () {
 	}
 };
 
-// 继续
 Palette.resume = function () {
 	if (this.state === 'suspended') {
 		this.state = 'open';
@@ -326,7 +307,6 @@ Palette.resume = function () {
 	}
 };
 
-// 设置缩放
 Palette.setZoom = (function IIFE() {
 	const slider = $('#palette-zoom');
 	return function (zoom) {
@@ -366,13 +346,11 @@ Palette.setZoom = (function IIFE() {
 	};
 })();
 
-// 设置图块组图像
 Palette.setImage = function (image) {
 	this.tileset.image = image;
 	this.loadImages();
 };
 
-// 设置图块组大小
 Palette.setSize = function (width, height) {
 	const length = width * height;
 	const tileset = this.tileset;
@@ -433,7 +411,6 @@ Palette.setSize = function (width, height) {
 	this.requestRendering();
 };
 
-// 设置图块大小
 Palette.setTileSize = function (tileWidth, tileHeight) {
 	const tileset = this.tileset;
 	tileset.tileWidth = tileWidth;
@@ -443,7 +420,6 @@ Palette.setTileSize = function (tileWidth, tileHeight) {
 	this.requestRendering();
 };
 
-// 设置地形
 Palette.setTerrain = function (x, y, offset) {
 	const tileset = this.tileset;
 	const terrains = tileset.terrains;
@@ -455,7 +431,6 @@ Palette.setTerrain = function (x, y, offset) {
 	}
 };
 
-// 加载图块组图像
 Palette.loadImages = async function () {
 	const last = this.images;
 	const images = { '': null };
@@ -530,11 +505,9 @@ Palette.loadImages = async function () {
 	}
 };
 
-// 更新头部位置
 Palette.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -546,7 +519,6 @@ Palette.updateHead = function () {
 	}
 };
 
-// 调整大小
 Palette.resize = function () {
 	if (this.state === 'open') {
 		const tileset = this.tileset;
@@ -578,7 +550,6 @@ Palette.resize = function () {
 		this.paddingLeft = paddingLeft;
 		this.paddingTop = paddingTop;
 
-		// 调整选框
 		this.marquee.style.left = `${paddingLeft / dpr}px`;
 		this.marquee.style.top = `${paddingTop / dpr}px`;
 		this.marquee.style.width = `${innerWidth / dpr}px`;
@@ -587,7 +558,6 @@ Palette.resize = function () {
 		this.marquee.scaleY = scaledTileHeight / dpr;
 		this.marquee.visible && this.mode === 'normal' && this.marquee.select();
 
-		// 调整画布
 		const canvasWidth = Math.min(innerWidth, screenWidth);
 		const canvasHeight = Math.min(innerHeight, screenHeight);
 		this.canvas.style.left = `${paddingLeft / dpr}px`;
@@ -614,7 +584,6 @@ Palette.resize = function () {
 	}
 };
 
-// 获取图块坐标
 Palette.getTileCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
 	return function (event, clamp = false) {
@@ -635,7 +604,6 @@ Palette.getTileCoords = (function IIFE() {
 	};
 })();
 
-// 更新摄像机位置
 Palette.updateCamera = function (x = this.meta.x, y = this.meta.y) {
 	const dpr = window.devicePixelRatio;
 	const screen = this.screen;
@@ -651,8 +619,6 @@ Palette.updateCamera = function (x = this.meta.x, y = this.meta.y) {
 	screen.scrollTop = (scrollY - (this.screenHeight >> 1) + toleranceY) / dpr;
 };
 
-// 更新变换参数
-// 这里获取的是canvas的边框参数
 Palette.updateTransform = function () {
 	const dpr = window.devicePixelRatio;
 	const screen = this.screen;
@@ -672,9 +638,7 @@ Palette.updateTransform = function () {
 	Data.manifest.changed = true;
 };
 
-// 更新背景图像
-// 保持图像与网格背景的相对位置
-// 避免视觉干扰并且可以测量位置
+// 保持图像与网格背景的相对位置 避免视觉干扰并且可以测量位置
 Palette.updateBackground = function () {
 	const style = this.canvas.style;
 	const x = -this.screen.scrollLeft;
@@ -705,7 +669,6 @@ Palette.updateInfo = function (index = this.activeIndex) {
 	info.textContent = `${x},${y} tag:${tag}`;
 };
 
-// 创建标记画布
 Palette.createMarkCanvas = function () {
 	let canvas = this.markCanvas;
 	if (canvas === null) {
@@ -722,7 +685,6 @@ Palette.createMarkCanvas = function () {
 		canvas.font = font;
 		context.font = font;
 
-		// 计算优先级标记位置
 		let start = 0;
 		for (let i = 0; i < 10; i++) {
 			const text = i.toString();
@@ -733,7 +695,6 @@ Palette.createMarkCanvas = function () {
 			start += width;
 		}
 
-		// 计算添加标记位置
 		const width = Math.ceil(context.measureText('+').width);
 		const addStart = start;
 		positions.add = {
@@ -746,12 +707,9 @@ Palette.createMarkCanvas = function () {
 		canvas.entries.push({ text: '+', start: addStart, width });
 		canvas.totalWidth = start;
 
-		// 设置画布宽度并绘制内容
 		this.rebuildMarkCanvas(canvas);
 		this.markCanvas = canvas;
-		// canvas.style.display = 'block'
-		// canvas.style.position = 'fixed'
-		// document.body.appendChild(canvas)
+		// canvas.style.display = 'block' canvas.style.position = 'fixed' document.body.appendChild(canvas)
 	}
 	return canvas;
 };
@@ -796,10 +754,8 @@ Palette.ensureMarkPosition = function (canvas, text, key = text) {
 	return position;
 };
 
-// 绘制图块组
 Palette.drawTileset = function () {
 	if (this.body.clientWidth > 0 && this.canvas.width !== 0 && this.canvas.height !== 0) {
-		// 擦除画布
 		const context = this.context;
 		const sl = this.scrollLeft;
 		const st = this.scrollTop;
@@ -807,7 +763,6 @@ Palette.drawTileset = function () {
 		const sb = this.scrollBottom;
 		context.clearRect(sl, st, sr - sl, sb - st);
 
-		// 绘制图层
 		this.drawTiles();
 		this.drawTileGrid();
 		this.drawPriorities();
@@ -816,7 +771,6 @@ Palette.drawTileset = function () {
 	}
 };
 
-// 绘制图块
 Palette.drawTiles = function () {
 	const context = this.context;
 	const tileset = this.tileset;
@@ -905,7 +859,6 @@ Palette.drawTiles = function () {
 	}
 };
 
-// 绘制图块网格
 Palette.drawTileGrid = function () {
 	if (this.showGrid) {
 		const context = this.context;
@@ -934,7 +887,6 @@ Palette.drawTileGrid = function () {
 	}
 };
 
-// 绘制优先级
 Palette.drawPriorities = function () {
 	if (this.mode === 'priority') {
 		const context = this.context;
@@ -1015,7 +967,6 @@ Palette.drawPriorities = function () {
 	}
 };
 
-// 绘制标签
 Palette.drawTags = function () {
 	if (this.mode === 'tag') {
 		const context = this.context;
@@ -1098,7 +1049,6 @@ Palette.drawTags = function () {
 	}
 };
 
-// 绘制地形
 Palette.drawTerrains = function () {
 	if (this.mode === 'terrain') {
 		const context = this.context;
@@ -1135,7 +1085,6 @@ Palette.drawTerrains = function () {
 	}
 };
 
-// 编辑自动图块
 Palette.editAutoTile = function (index) {
 	if (this.tileset.type === 'auto') {
 		const tiles = this.tileset.tiles;
@@ -1147,7 +1096,6 @@ Palette.editAutoTile = function (index) {
 	}
 };
 
-// 复制自动图块
 Palette.copyAutoTile = function (index) {
 	if (this.tileset.type === 'auto') {
 		const tileset = this.tileset;
@@ -1164,7 +1112,6 @@ Palette.copyAutoTile = function (index) {
 	}
 };
 
-// 粘贴自动图块
 Palette.pasteAutoTile = function (index) {
 	if (this.tileset.type === 'auto') {
 		const tileset = this.tileset;
@@ -1182,7 +1129,6 @@ Palette.pasteAutoTile = function (index) {
 	}
 };
 
-// 删除自动图块
 Palette.deleteAutoTile = function (index) {
 	if (this.tileset.type === 'auto') {
 		const tileset = this.tileset;
@@ -1199,14 +1145,11 @@ Palette.deleteAutoTile = function (index) {
 	}
 };
 
-// 选择图块
 Palette.selectTiles = function (x, y, width, height) {
-	// 修正笔刷
 	if (Scene.brush === 'eraser') {
 		Scene.switchBrush('pencil');
 	}
 
-	// 设置图块参数
 	const tileset = this.tileset;
 	const sro = tileset.width;
 	const dTiles = Scene.createTiles(width, height);
@@ -1239,17 +1182,14 @@ Palette.selectTiles = function (x, y, width, height) {
 		}
 	}
 
-	// 设置相关属性
 	if (this.explicit) {
 		this.explicit = false;
 		this.marquee.removeClass('explicit');
 	}
 
-	// 设置场景选框的图块组映射表
 	Scene.marquee.tilesetMap = this.tilesetMap;
 	Scene.marquee.tilesetMap[1] = this.meta.guid;
 
-	// 更新场景选框
 	const marquee = Scene.marquee.key === 'tile' ? Scene.marquee : Scene.marquee.saveData.tile;
 	marquee.tiles = dTiles;
 	marquee.width = width;
@@ -1257,11 +1197,9 @@ Palette.selectTiles = function (x, y, width, height) {
 	marquee.offsetX = 0;
 	marquee.offsetY = 0;
 
-	// 引用自身作为标准图块
 	dTiles.standard = dTiles;
 };
 
-// 从场景中复制图块
 Palette.copyTilesFromScene = function (x, y, width, height) {
 	const sTiles = Scene.tilemap.tiles;
 	const sro = sTiles.rowOffset;
@@ -1272,20 +1210,16 @@ Palette.copyTilesFromScene = function (x, y, width, height) {
 	const ex = x + width;
 	const ey = y + height;
 
-	// 设置相关属性
 	if (this.explicit) {
 		this.explicit = false;
 		this.marquee.removeClass('explicit');
 	}
 
-	// 设置场景选框的图块组映射表
 	Scene.marquee.tilesetMap = Scene.tilemap.tilesetMap;
 
-	// 更新选框图块
 	const marquee = Scene.marquee.key === 'tile' ? Scene.marquee : Scene.marquee.saveData.tile;
 	marquee.tiles = dTiles;
 
-	// 设置图块属性
 	for (let y = by; y < ey; y++) {
 		for (let x = bx; x < ex; x++) {
 			const si = x + y * sro;
@@ -1297,7 +1231,6 @@ Palette.copyTilesFromScene = function (x, y, width, height) {
 	this.marquee.clear();
 };
 
-// 翻转选框图块
 Palette.flipTiles = function () {
 	const marquee = Scene.marquee;
 	if (Scene.state !== 'open' || Scene.dragging !== null || marquee.key !== 'tile') {
@@ -1331,15 +1264,13 @@ Palette.flipTiles = function () {
 		}
 	}
 	marquee.tiles = dTiles;
-	// 如果图块已经是标准化的
-	// 则引用自身作为标准图块
+	// 如果图块已经是标准化的 则引用自身作为标准图块
 	if (sTiles === sTiles.standard) {
 		const { tiles } = marquee;
 		tiles.standard = tiles;
 	}
 };
 
-// 打开选中的图块
 Palette.openSelection = function () {
 	const { tileset, marquee } = this;
 	if (tileset.type === 'auto' && marquee.visible) {
@@ -1356,7 +1287,6 @@ Palette.openSelection = function () {
 	}
 };
 
-// 编辑选中的图块
 Palette.editSelection = function () {
 	const { tileset, marquee } = this;
 	if (tileset.type === 'auto' && marquee.visible) {
@@ -1384,7 +1314,6 @@ Palette.editTagAt = function (x, y) {
 	});
 };
 
-// 滚动到选中位置
 Palette.scrollToSelection = function (shiftKey) {
 	const marquee = this.marquee;
 	if (marquee.visible) {
@@ -1424,24 +1353,20 @@ Palette.scrollToSelection = function (shiftKey) {
 	}
 };
 
-// 请求渲染
 Palette.requestRendering = function () {
 	if (this.state === 'open') {
 		Timer.appendUpdater('sharedRendering', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 Palette.renderingFunction = function () {
 	Palette.drawTileset();
 };
 
-// 停止渲染
 Palette.stopRendering = function () {
 	Timer.removeUpdater('sharedRendering', this.renderingFunction);
 };
 
-// 跳过滚动事件
 Palette.skipScrollEvent = (function IIFE() {
 	const screen = Palette.screen;
 	const restore = () => {
@@ -1455,7 +1380,6 @@ Palette.skipScrollEvent = (function IIFE() {
 	return () => {
 		if (Palette.scrollable) {
 			screen.off('scroll', Palette.screenUserscroll);
-			// 触发resize事件时需要延迟一帧恢复
 			// 在动画队列中调用此方法就不需要了
 			window.event?.type === 'resize'
 				? requestAnimationFrame(restoreDelay)
@@ -1464,7 +1388,6 @@ Palette.skipScrollEvent = (function IIFE() {
 	};
 })();
 
-// 开关滚动
 Palette.switchScroll = (function IIFE() {
 	const item = $('#palette-scroll');
 	return function (enabled = !this.scrollable) {
@@ -1483,7 +1406,6 @@ Palette.switchScroll = (function IIFE() {
 	};
 })();
 
-// 开关优先级
 Palette.switchPriority = (function IIFE() {
 	const itemPriority = $('#palette-priority');
 	const itemTag = $('#palette-tag');
@@ -1511,7 +1433,6 @@ Palette.switchPriority = (function IIFE() {
 	};
 })();
 
-// 开关标签
 Palette.switchTag = (function IIFE() {
 	const itemPriority = $('#palette-priority');
 	const itemTag = $('#palette-tag');
@@ -1539,7 +1460,6 @@ Palette.switchTag = (function IIFE() {
 	};
 })();
 
-// 开关地形
 Palette.switchTerrain = (function IIFE() {
 	const itemPriority = $('#palette-priority');
 	const itemTag = $('#palette-tag');
@@ -1567,7 +1487,6 @@ Palette.switchTerrain = (function IIFE() {
 	};
 })();
 
-// 开关编辑
 Palette.switchEdit = (function IIFE() {
 	const itemPriority = $('#palette-priority');
 	const itemTag = $('#palette-tag');
@@ -1595,7 +1514,6 @@ Palette.switchEdit = (function IIFE() {
 	};
 })();
 
-// 保存状态到项目文件
 Palette.saveToProject = function (project) {
 	const { palette } = project;
 	const zoom = this.zoom;
@@ -1604,15 +1522,12 @@ Palette.saveToProject = function (project) {
 	}
 };
 
-// 从项目文件中加载状态
 Palette.loadFromProject = function (project) {
 	const { palette } = project;
 	this.setZoom(palette.zoom);
 };
 
-// 窗口 - 调整大小事件
 Palette.windowResize = function (event) {
-	// 检查器页面不可见时挂起
 	if (this.body.clientWidth === 0) {
 		return this.suspend();
 	}
@@ -1628,7 +1543,6 @@ Palette.windowResize = function (event) {
 	}
 }.bind(Palette);
 
-// 主题改变事件
 Palette.themechange = function (event) {
 	switch (event.value) {
 		case 'light':
@@ -1641,7 +1555,6 @@ Palette.themechange = function (event) {
 	this.requestRendering();
 }.bind(Palette);
 
-// 头部 - 指针按下事件
 Palette.headPointerdown = function (event) {
 	if (!(event.target instanceof HTMLInputElement)) {
 		event.preventDefault();
@@ -1651,7 +1564,6 @@ Palette.headPointerdown = function (event) {
 	}
 };
 
-// 工具栏 - 指针按下事件
 Palette.toolbarPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -1680,21 +1592,17 @@ Palette.toolbarPointerdown = function (event) {
 	}
 };
 
-// 缩放 - 获得焦点事件
 Palette.zoomFocus = function (event) {
 	Palette.screen.focus();
 };
 
-// 缩放 - 输入事件
 Palette.zoomInput = function (event) {
 	Palette.setZoom(this.read());
 };
 
-// 屏幕 - 键盘按下事件
 Palette.screenKeydown = function (event) {
 	switch (event.code) {
 		case 'Space':
-			// 阻止默认的下滚行为
 			event.preventDefault();
 			break;
 	}
@@ -1724,7 +1632,6 @@ Palette.screenKeydown = function (event) {
 				let my = marquee.y;
 				let mw = marquee.width;
 				let mh = marquee.height;
-				// 调整选框大小
 				if (event.shiftKey) {
 					const ox = marquee.originX;
 					const oy = marquee.originY;
@@ -1770,7 +1677,6 @@ Palette.screenKeydown = function (event) {
 					}
 					return;
 				}
-				// 移动选框
 				let offsetX = 0;
 				let offsetY = 0;
 				switch (event.code) {
@@ -1815,7 +1721,6 @@ Palette.screenKeydown = function (event) {
 	}
 };
 
-// 屏幕 - 鼠标滚轮事件
 Palette.screenWheel = (function IIFE() {
 	let timerIsWorking = false;
 	const timer = new Timer({
@@ -1842,7 +1747,6 @@ Palette.screenWheel = (function IIFE() {
 	}.bind(Palette);
 })();
 
-// 屏幕 - 用户滚动事件
 Palette.screenUserscroll = function (event) {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
@@ -1854,14 +1758,12 @@ Palette.screenUserscroll = function (event) {
 	}
 }.bind(Palette);
 
-// 屏幕 - 失去焦点事件
 Palette.screenBlur = function (event) {
 	if (this.dragging) {
 		this.pointerup(this.dragging);
 	}
 }.bind(Palette);
 
-// 选框 - 指针按下事件
 Palette.marqueePointerdown = function (event) {
 	if (this.dragging) {
 		return;
@@ -1914,7 +1816,6 @@ Palette.marqueePointerdown = function (event) {
 						marquee.originX = x;
 						marquee.originY = y;
 					}
-					// 退出指定节点模式
 					if (this.explicit) {
 						this.explicit = false;
 						marquee.removeClass('explicit');
@@ -1964,8 +1865,7 @@ Palette.marqueePointerdown = function (event) {
 				}
 				case 'terrain':
 					this.setTerrain(x, y, -1);
-					// window.on('pointerup', this.pointerup)
-					// window.on('pointermove', this.pointermove)
+					// window.on('pointerup', this.pointerup) window.on('pointermove', this.pointermove)
 					break;
 				case 'edit': {
 					const tileset = this.tileset;
@@ -2068,7 +1968,6 @@ Palette.marqueePointerdown = function (event) {
 	}
 }.bind(Palette);
 
-// 选框 - 指针移动事件
 Palette.marqueePointermove = function (event) {
 	if (this.dragging === null) {
 		const { x, y } = this.getTileCoords(event, true);
@@ -2081,7 +1980,6 @@ Palette.marqueePointermove = function (event) {
 	}
 }.bind(Palette);
 
-// 选框 - 指针离开事件
 Palette.marqueePointerleave = function (event) {
 	if (this.activeIndex !== null) {
 		this.activeIndex = null;
@@ -2090,7 +1988,6 @@ Palette.marqueePointerleave = function (event) {
 	}
 }.bind(Palette);
 
-// 选框 - 鼠标双击事件
 Palette.marqueeDoubleclick = function (event) {
 	if (this.mode === 'tag') {
 		const { x, y } = this.getTileCoords(event, true);
@@ -2100,7 +1997,6 @@ Palette.marqueeDoubleclick = function (event) {
 	this.openSelection();
 }.bind(Palette);
 
-// 选框 - 菜单弹出事件
 Palette.marqueePopup = function (event) {
 	if (this.mode === 'edit' && this.tileset.type === 'auto') {
 		const { x, y } = this.getTileCoords(event, true);
@@ -2160,12 +2056,10 @@ Palette.marqueePopup = function (event) {
 	}
 };
 
-// 指针弹起事件
 Palette.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
-		// 打开窗口时触发的blur事件会导致再次执行pointerup
-		// 因此提前重置dragging来避免重复执行
+		// 打开窗口时触发的blur事件会导致再次执行pointerup 因此提前重置dragging来避免重复执行
 		this.dragging = null;
 		switch (dragging.mode) {
 			case 'select': {
@@ -2228,7 +2122,6 @@ Palette.pointerup = function (event) {
 	}
 }.bind(Palette);
 
-// 指针移动事件
 Palette.pointermove = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {

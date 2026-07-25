@@ -2,8 +2,6 @@ import { File } from '../file/file-system-core.ts';
 import { ImageTexture } from './image-texture.ts';
 import { GL } from './webgl-init.ts';
 
-// ******************************** 纹理管理器类 ********************************
-
 export class TextureManager {
 	gl: typeof GL;
 	map: Record<string, ImageTexture>;
@@ -16,11 +14,9 @@ export class TextureManager {
 		this.map = {};
 		this.images = {};
 		this.pointer = 0;
-		// count属性未使用，可在devTools中查看纹理数量
 		this.count = 0;
 	}
 
-	// 更新图像纹理
 	updateImage(guid: string): void {
 		const texture = this.images[guid];
 		if (texture === undefined) return;
@@ -49,10 +45,8 @@ export class TextureManager {
 		});
 	}
 
-	// 添加纹理
 	append(texture: any) {
 		if (texture.index === undefined) {
-			// 给纹理分配一个未使用的索引
 			let i = this.pointer;
 			const map = this.map;
 			while (map[i] !== undefined) {
@@ -65,7 +59,6 @@ export class TextureManager {
 		}
 	}
 
-	// 删除纹理
 	delete(texture: any) {
 		const i = texture.index;
 		const { gl, map } = this;
@@ -84,7 +77,6 @@ export class TextureManager {
 		}
 	}
 
-	// 清除所有纹理
 	clear() {
 		const { gl, map, images } = this;
 		for (const texture of Object.values<any>(map)) {
@@ -104,7 +96,6 @@ export class TextureManager {
 		}
 	}
 
-	// 替换纹理
 	replace(oldTex: any, newTex: any) {
 		newTex.index = oldTex.index;
 		if (this.map[oldTex.index]) {
@@ -117,7 +108,6 @@ export class TextureManager {
 		}
 	}
 
-	// 恢复纹理
 	restore() {
 		for (const texture of Object.values<any>(this.map)) {
 			if (texture.onRestore) {

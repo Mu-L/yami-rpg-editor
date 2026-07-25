@@ -3,23 +3,16 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { Enum } from '../enum/enum-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 装备访问器窗口 ********************************
-
 export const EquipmentGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
 	checkDataForPlugin: null,
 	createDefaultForPlugin: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 EquipmentGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#equipmentGetter-type').loadItems([
 		{ name: 'Event Trigger Equipment', value: 'trigger' },
 		{ name: 'Latest Equipment', value: 'latest' },
@@ -29,7 +22,6 @@ EquipmentGetter.initialize = function () {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置类型关联元素
 	$('#equipmentGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -44,15 +36,12 @@ EquipmentGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#equipmentGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#equipmentGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 EquipmentGetter.open = function (target) {
 	this.target = target;
 	Window.open('equipmentGetter');
-	// 加载快捷键选项
 	$('#equipmentGetter-slot').loadItems(Enum.getStringItems('equipment-slot'));
 
 	let actor = { type: 'trigger' };
@@ -85,7 +74,6 @@ EquipmentGetter.open = function (target) {
 	$('#equipmentGetter-type').getFocus();
 };
 
-// 检查插件版本的装备访问器数据有效性
 EquipmentGetter.checkDataForPlugin = function (data) {
 	if (data instanceof Object) {
 		return data.getter === 'equipment';
@@ -93,12 +81,10 @@ EquipmentGetter.checkDataForPlugin = function (data) {
 	return false;
 };
 
-// 创建插件版本的默认装备访问器
 EquipmentGetter.createDefaultForPlugin = function () {
 	return { getter: 'equipment', type: 'trigger' };
 };
 
-// 确定按钮 - 鼠标点击事件
 EquipmentGetter.confirm = function (event) {
 	const read = getElementReader('equipmentGetter');
 	const type = read('type');
@@ -136,7 +122,6 @@ EquipmentGetter.confirm = function (event) {
 			break;
 		}
 	}
-	// 如果是插件输入框，额外附加一个属性
 	if (this.target.isPluginInput) {
 		getter = { getter: 'equipment', ...getter };
 	}

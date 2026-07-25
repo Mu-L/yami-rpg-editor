@@ -46,14 +46,10 @@ import { Window } from '../tools/window-object.ts';
 import { Zoom } from '../tools/zoom-window.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// 初始化
 Editor.initialize = async function () {
-	// 关闭快捷键
 	this.switchHotkey(false);
 
-	// 加载配置数据
 	try {
-		// 提前初始化标题组件
 		Title.initialize();
 		const data = await window.config;
 		const code = JSON.stringify(data);
@@ -62,8 +58,6 @@ Editor.initialize = async function () {
 		Object.defineProperty(this.config, 'code', { value: code });
 		delete window.config;
 
-		// 初始化组件对象
-		// 单例通过 dependsOn 声明依赖关系，启动期按拓扑排序初始化
 		const initializedSet = new Set();
 		const singletonMap = {
 			Local,
@@ -113,7 +107,6 @@ Editor.initialize = async function () {
 		const initNames = Object.keys(singletonMap).filter(
 			(n) => typeof singletonMap[n].initialize === 'function'
 		);
-		// 拓扑排序
 		const graph = new Map(initNames.map((n) => [n, []]));
 		const inDegree = new Map(initNames.map((n) => [n, 0]));
 		for (const name of initNames) {
@@ -128,8 +121,7 @@ Editor.initialize = async function () {
 		while (queue.length) {
 			const node = queue.shift();
 			const singleton = singletonMap[node];
-			// 用 .call(singleton) 绑定 this，否则严格模式裸调 initialize() 时 this === undefined，
-			// 那些依赖 this.xxx 赋值的单例（如 Easing.initialize 设 this.startPoint）会炸
+			// 用 .call(singleton) 绑定 this，否则严格模式裸调 initialize() 时 this === undefined，那些依赖 this.xxx 赋值的单例（如 Easing.initialize 设 this.startPoint）会炸
 			singleton.initialize.call(singleton);
 			initializedSet.add(node);
 			for (const next of graph.get(node)) {
@@ -137,7 +129,6 @@ Editor.initialize = async function () {
 				if (inDegree.get(next) === 0) queue.push(next);
 			}
 		}
-		// 循环依赖兜底
 		for (const name of initNames) {
 			if (!initializedSet.has(name)) {
 				if (typeof Log !== 'undefined' && Log.warn) {
@@ -148,7 +139,6 @@ Editor.initialize = async function () {
 			}
 		}
 
-		// 加载配置文件
 		this.loadConfig();
 		Layout.manager.switch('home');
 	} catch (error: any) {

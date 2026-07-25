@@ -4,15 +4,11 @@ import { Menu } from '../components/menu-list.ts';
 import { Data } from '../data/data-object.ts';
 import { Local } from '../tools/localization.ts';
 
-// ******************************** 相关引用 ********************************
-
 export const Reference = {
-	// properties
 	keydownMap: new Map(),
 	keyupMap: new Map(),
 	pointerdownMap: new Map(),
 	pointermoveMap: new Map(),
-	// methods
 	initialize: null,
 	findAllGuids: null,
 	filterUselessComments: null,
@@ -24,7 +20,6 @@ export const Reference = {
 	openUnused: null,
 	openList: null,
 	update: null,
-	// events
 	windowClosed: null,
 	listSelect: null,
 	listPopup: null,
@@ -34,20 +29,14 @@ export const Reference = {
 	getPointermoveListener: null
 };
 
-// 初始化
 Reference.initialize = function () {
-	// 侦听事件
 	$('#reference').on('closed', this.windowClosed);
 	$('#reference-list').on('popup', this.listPopup);
 };
 
-// 查找全部GUID
 Reference.findAllGuids = function (targetGuid = '') {
-	// 已使用的GUID
 	const usedMap = {};
-	// 预设对象的GUID
 	const innerMap = {};
-	// 外部对象的GUID
 	const outerMap = {};
 	const guidInText = /<(?:ref|image|global|global:):([0-9a-f]{16})>/g;
 	const guidInJSON = /"([0-9a-f]{16})\\?"|<(?:ref|image|global|global:):([0-9a-f]{16})>/g;
@@ -638,7 +627,6 @@ Reference.findAllGuids = function (targetGuid = '') {
 	return { usedMap, innerMap, outerMap };
 };
 
-// 过滤无用的注释
 Reference.filterUselessComments = function (items) {
 	const list = [];
 	const length = items.length;
@@ -650,7 +638,6 @@ Reference.filterUselessComments = function (items) {
 	return list;
 };
 
-// 查找引用GUID的对象
 Reference.findRelated = function (guid) {
 	const items = [];
 	const { usedMap } = this.findAllGuids(guid);
@@ -674,13 +661,11 @@ Reference.findRelated = function (guid) {
 	return filtered;
 };
 
-// 打开引用GUID的对象
 Reference.openRelated = function (guid) {
 	Window.open('reference');
 	this.openList(this.findRelated(guid));
 };
 
-// 查找无效引用
 Reference.findInvalid = function () {
 	const items = [];
 	const { usedMap, innerMap, outerMap } = this.findAllGuids();
@@ -707,13 +692,11 @@ Reference.findInvalid = function () {
 	return filtered;
 };
 
-// 打开无效引用
 Reference.openInvalid = function (guid) {
 	Window.open('reference');
 	this.openList(this.findInvalid(guid));
 };
 
-// 查找未使用的对象
 Reference.findUnused = function () {
 	const items = [];
 	const { usedMap, outerMap } = this.findAllGuids();
@@ -733,30 +716,25 @@ Reference.findUnused = function () {
 	return filtered;
 };
 
-// 打开未使用的对象
 Reference.openUnused = function (guid) {
 	Window.open('reference');
 	this.openList(this.findUnused(guid));
 };
 
-// 显示窗口并打开列表
 Reference.openList = function (items) {
 	Window.open('reference');
 	Reference.update(items);
 };
 
-// 更新日志列表
 Reference.update = function (items) {
 	const list = $('#reference-list').reload();
 	for (const item of items) {
 		const li = document.createElement('common-item');
 		li.dataValue = item;
 		li.textContent = item.text;
-		// 注释
 		if (item.type === 'comment') {
 			li.addClass('reference-comment');
 		}
-		// 引用计数
 		if ('count' in item && item.count > 1) {
 			const counter = document.createElement('text');
 			counter.addClass('reference-count');
@@ -768,12 +746,10 @@ Reference.update = function (items) {
 	list.update();
 };
 
-// 窗口 - 已关闭事件
 Reference.windowClosed = function (event) {
 	$('#reference-list').clear();
 };
 
-// 列表 - 弹出菜单事件
 Reference.listPopup = function (event) {
 	const item = event.value;
 	if (item?.id) {
@@ -795,7 +771,6 @@ Reference.listPopup = function (event) {
 	}
 };
 
-// 获取键盘按下事件侦听器
 Reference.getKeydownListener = function (list, winId = '') {
 	let listener = this.keydownMap.get(list);
 	if (listener === undefined) {
@@ -816,7 +791,6 @@ Reference.getKeydownListener = function (list, winId = '') {
 	return listener;
 };
 
-// 获取键盘弹起事件侦听器
 Reference.getKeyupListener = function (list) {
 	let listener = this.keyupMap.get(list);
 	if (listener === undefined) {
@@ -835,12 +809,10 @@ Reference.getKeyupListener = function (list) {
 	return listener;
 };
 
-// 获取列表指针按下侦听器
 Reference.getPointerdownListener = function (list) {
 	let listener = this.pointerdownMap.get(list);
 	if (listener === undefined) {
 		listener = (event) => {
-			// 查找引用(必须是捕获阶段事件)
 			if (event.altKey && event.button === 0) {
 				const element = event.target;
 				if (element.tagName === 'NODE-ITEM') {
@@ -859,8 +831,6 @@ Reference.getPointerdownListener = function (list) {
 	return listener;
 };
 
-// 获取指针移动事件侦听器
-// ctrl组合快捷键导致blur无法触发按键弹起事件，补救方法
 Reference.getPointermoveListener = function (list) {
 	let listener = this.pointermoveMap.get(list);
 	if (listener === undefined) {

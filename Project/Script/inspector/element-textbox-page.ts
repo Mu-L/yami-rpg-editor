@@ -2,39 +2,30 @@
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 文本框页面 ********************************
-
 {
 	const UITextBox = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UITextBox.initialize = function () {
-		// 创建类型选项
 		$('#uiTextBox-type').loadItems([
 			{ name: 'Text', value: 'text' },
 			{ name: 'Number', value: 'number' }
 		]);
 
-		// 创建对齐方式选项
 		$('#uiTextBox-align').loadItems([
 			{ name: 'Left', value: 'left' },
 			{ name: 'Center', value: 'center' },
 			{ name: 'Right', value: 'right' }
 		]);
 
-		// 设置类型关联元素
 		$('#uiTextBox-type')
 			.enableHiddenMode()
 			.relate([
@@ -53,7 +44,6 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 侦听事件
 		const elements = $(`#uiTextBox-type, #uiTextBox-align, #uiTextBox-text,
     #uiTextBox-maxLength, #uiTextBox-number, #uiTextBox-min, #uiTextBox-max,
     #uiTextBox-decimals, #uiTextBox-padding, #uiTextBox-size, #uiTextBox-font,
@@ -63,7 +53,6 @@ import { UI } from '../ui/ui-window.ts';
 		elements.on('blur', Inspector.inputBlur(this, UI));
 	};
 
-	// 创建文本框
 	UITextBox.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -98,12 +87,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UITextBox.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiTextBox', node);
 			const number = $('#uiTextBox-number');
 			number.input.min = node.min;
@@ -127,7 +114,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UITextBox.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -137,7 +123,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UITextBox.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -186,7 +171,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UITextBox.paramInput = function (event) {
 		UITextBox.update(UITextBox.target, Inspector.getKey(this), this.read());
 	};

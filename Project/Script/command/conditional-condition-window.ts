@@ -8,9 +8,6 @@ import { Enum } from '../enum/enum-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 条件分支 - 条件窗口 ********************************
-
-// 条件目标对象（由调用方传入，含 save/dataValue 等）
 interface IfConditionTarget {
 	save: () => any;
 	dataValue?: any;
@@ -44,10 +41,8 @@ interface IfConditionShape {
 }
 
 export const IfCondition: IfConditionShape = {
-	// properties
 	type: 'condition',
 	target: null,
-	// methods
 	initialize: null,
 	parseBooleanOperation: null,
 	parseBooleanOperand: null,
@@ -68,13 +63,10 @@ export const IfCondition: IfConditionShape = {
 	parse: null,
 	open: null,
 	save: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 IfCondition.initialize = function () {
-	// 创建条件类型选项
 	$('#if-condition-type').loadItems([
 		{ name: 'Boolean', value: 'boolean' },
 		{ name: 'Number', value: 'number' },
@@ -89,7 +81,6 @@ IfCondition.initialize = function () {
 		{ name: 'Other', value: 'other' }
 	]);
 
-	// 设置条件类型关联元素
 	$('#if-condition-type')
 		.enableHiddenMode()
 		.relate([
@@ -152,7 +143,6 @@ IfCondition.initialize = function () {
 			{ case: 'other', targets: [$('#if-condition-other-key')] }
 		]);
 
-	// 设置类型写入事件，切换变量输入框的过滤器
 	$('#if-condition-type').on('write', (event) => {
 		let filter1 = 'all';
 		let filter2 = 'all';
@@ -178,20 +168,17 @@ IfCondition.initialize = function () {
 		$('#if-condition-operand-variable').filter = filter2;
 	});
 
-	// 创建布尔值操作选项
 	$('#if-condition-boolean-operation').loadItems([
 		{ name: '==', value: 'equal' },
 		{ name: '!=', value: 'unequal' }
 	]);
 
-	// 创建布尔值类型选项
 	$('#if-condition-boolean-operand-type').loadItems([
 		{ name: 'None', value: 'none' },
 		{ name: 'Constant', value: 'constant' },
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置布尔值类型关联元素
 	$('#if-condition-boolean-operand-type')
 		.enableHiddenMode()
 		.relate([
@@ -202,13 +189,11 @@ IfCondition.initialize = function () {
 			{ case: 'variable', targets: [$('#if-condition-operand-variable')] }
 		]);
 
-	// 创建布尔值常量选项
 	$('#if-condition-boolean-constant-value').loadItems([
 		{ name: 'False', value: false },
 		{ name: 'True', value: true }
 	]);
 
-	// 创建数值操作选项
 	$('#if-condition-number-operation').loadItems([
 		{ name: '==', value: 'equal' },
 		{ name: '!=', value: 'unequal' },
@@ -218,14 +203,12 @@ IfCondition.initialize = function () {
 		{ name: '<', value: 'less' }
 	]);
 
-	// 创建数值类型选项
 	$('#if-condition-number-operand-type').loadItems([
 		{ name: 'None', value: 'none' },
 		{ name: 'Constant', value: 'constant' },
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置数值类型关联元素
 	$('#if-condition-number-operand-type')
 		.enableHiddenMode()
 		.relate([
@@ -236,7 +219,6 @@ IfCondition.initialize = function () {
 			{ case: 'variable', targets: [$('#if-condition-operand-variable')] }
 		]);
 
-	// 创建字符串操作选项
 	$('#if-condition-string-operation').loadItems([
 		{ name: '==', value: 'equal' },
 		{ name: '!=', value: 'unequal' },
@@ -244,7 +226,6 @@ IfCondition.initialize = function () {
 		{ name: 'Exclude', value: 'exclude' }
 	]);
 
-	// 创建字符串类型选项
 	$('#if-condition-string-operand-type').loadItems([
 		{ name: 'None', value: 'none' },
 		{ name: 'Constant', value: 'constant' },
@@ -252,7 +233,6 @@ IfCondition.initialize = function () {
 		{ name: 'Enumeration', value: 'enum' }
 	]);
 
-	// 设置字符串类型关联元素
 	$('#if-condition-string-operand-type')
 		.enableHiddenMode()
 		.relate([
@@ -267,7 +247,6 @@ IfCondition.initialize = function () {
 			{ case: 'enum', targets: [$('#if-condition-string-enum-stringId')] }
 		]);
 
-	// 创建对象操作选项
 	$('#if-condition-object-operation').loadItems([
 		{ name: '==', value: 'equal' },
 		{ name: '!=', value: 'unequal' },
@@ -281,7 +260,6 @@ IfCondition.initialize = function () {
 		{ name: 'Is Element', value: 'is-element' }
 	]);
 
-	// 设置对象操作关联元素
 	$('#if-condition-object-operation')
 		.enableHiddenMode()
 		.relate([
@@ -291,7 +269,6 @@ IfCondition.initialize = function () {
 			}
 		]);
 
-	// 创建对象类型选项
 	$('#if-condition-object-operand-type').loadItems([
 		{ name: 'None', value: 'none' },
 		{ name: 'Actor', value: 'actor' },
@@ -305,7 +282,6 @@ IfCondition.initialize = function () {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置类型关联元素
 	$('#if-condition-object-operand-type')
 		.enableHiddenMode()
 		.relate([
@@ -323,7 +299,6 @@ IfCondition.initialize = function () {
 			{ case: 'variable', targets: [$('#if-condition-operand-variable')] }
 		]);
 
-	// 创建角色操作选项
 	$('#if-condition-actor-operation').loadItems([
 		{ name: 'Present and Active', value: 'present-active' },
 		{ name: 'Present', value: 'present' },
@@ -350,7 +325,6 @@ IfCondition.initialize = function () {
 		{ name: 'Is an Enemy of Team ...', value: 'is-team-enemy' }
 	]);
 
-	// 设置角色操作关联元素
 	$('#if-condition-actor-operation')
 		.enableHiddenMode()
 		.relate([
@@ -382,7 +356,6 @@ IfCondition.initialize = function () {
 			}
 		]);
 
-	// 创建元素操作选项
 	$('#if-condition-element-operation').loadItems([
 		{ name: 'Present', value: 'present' },
 		{ name: 'Absent', value: 'absent' },
@@ -395,7 +368,6 @@ IfCondition.initialize = function () {
 		{ name: 'Dialog Box - is Complete', value: 'dialogbox-is-complete' }
 	]);
 
-	// 创建键盘状态选项
 	$('#if-condition-keyboard-state').loadItems([
 		{ name: 'Just Pressed', value: 'just-pressed' },
 		{ name: 'Just Released', value: 'just-released' },
@@ -403,7 +375,6 @@ IfCondition.initialize = function () {
 		{ name: 'Released', value: 'released' }
 	]);
 
-	// 创建手柄状态选项
 	$('#if-condition-gamepad-state').loadItems([
 		{ name: 'Just Pressed', value: 'just-pressed' },
 		{ name: 'Just Released', value: 'just-released' },
@@ -411,7 +382,6 @@ IfCondition.initialize = function () {
 		{ name: 'Released', value: 'released' }
 	]);
 
-	// 创建鼠标按键选项
 	$('#if-condition-mouse-button').loadItems([
 		{ name: 'Left Button', value: 0 },
 		{ name: 'Middle Button', value: 1 },
@@ -420,7 +390,6 @@ IfCondition.initialize = function () {
 		{ name: 'Forward Button', value: 4 }
 	]);
 
-	// 创建鼠标状态选项
 	$('#if-condition-mouse-state').loadItems([
 		{ name: 'Just Pressed', value: 'just-pressed' },
 		{ name: 'Just Released', value: 'just-released' },
@@ -428,13 +397,11 @@ IfCondition.initialize = function () {
 		{ name: 'Released', value: 'released' }
 	]);
 
-	// 创建列表操作选项
 	$('#if-condition-list-operation').loadItems([
 		{ name: 'Include', value: 'include' },
 		{ name: 'Exclude', value: 'exclude' }
 	]);
 
-	// 创建其他条件选项
 	$('#if-condition-other-key').loadItems([
 		{ name: 'Mouse has entered the window', value: 'mouse-entered' },
 		{ name: 'Mouse has left the window', value: 'mouse-left' },
@@ -452,21 +419,17 @@ IfCondition.initialize = function () {
 		{ name: 'Running on a mobile platform', value: 'platform-mobile' }
 	]);
 
-	// 创建队伍选项 - 窗口打开事件
 	$('#if-condition').on('open', function (event) {
 		$('#if-condition-actor-teamId').loadItems(Data.createTeamItems());
 	});
 
-	// 清理内存 - 窗口已关闭事件
 	$('#if-condition').on('closed', function (event) {
 		$('#if-condition-actor-teamId').clear();
 	});
 
-	// 侦听事件
 	$('#if-condition-confirm').on('click', this.confirm);
 };
 
-// 解析布尔值操作
 IfCondition.parseBooleanOperation = function ({ operation }) {
 	const set = Command.setOperatorColor;
 	switch (operation) {
@@ -477,7 +440,6 @@ IfCondition.parseBooleanOperation = function ({ operation }) {
 	}
 };
 
-// 解析布尔值操作数
 IfCondition.parseBooleanOperand = function ({ operand }) {
 	switch (operand.type) {
 		case 'none':
@@ -489,7 +451,6 @@ IfCondition.parseBooleanOperand = function ({ operand }) {
 	}
 };
 
-// 解析数值操作
 IfCondition.parseNumberOperation = function ({ operation }) {
 	const set = Command.setOperatorColor;
 	switch (operation) {
@@ -508,7 +469,6 @@ IfCondition.parseNumberOperation = function ({ operation }) {
 	}
 };
 
-// 解析数值操作数
 IfCondition.parseNumberOperand = function ({ operand }) {
 	switch (operand.type) {
 		case 'none':
@@ -520,7 +480,6 @@ IfCondition.parseNumberOperand = function ({ operand }) {
 	}
 };
 
-// 解析字符串操作
 IfCondition.parseStringOperation = function ({ operation }) {
 	const set = Command.setOperatorColor;
 	switch (operation) {
@@ -533,7 +492,6 @@ IfCondition.parseStringOperation = function ({ operation }) {
 	}
 };
 
-// 解析字符串操作数
 IfCondition.parseStringOperand = function ({ operand }) {
 	switch (operand.type) {
 		case 'none':
@@ -547,7 +505,6 @@ IfCondition.parseStringOperand = function ({ operand }) {
 	}
 };
 
-// 解析对象操作
 IfCondition.parseObjectOperation = function ({ operation }) {
 	const set = Command.setOperatorColor;
 	switch (operation) {
@@ -560,7 +517,6 @@ IfCondition.parseObjectOperation = function ({ operation }) {
 	}
 };
 
-// 解析对象操作数
 IfCondition.parseObjectOperand = function ({ operand }) {
 	if (!operand) return '';
 	switch (operand.type) {
@@ -587,7 +543,6 @@ IfCondition.parseObjectOperand = function ({ operand }) {
 	}
 };
 
-// 解析角色操作
 IfCondition.parseActorOperation = function ({
 	operation,
 	itemId,
@@ -631,42 +586,34 @@ IfCondition.parseActorOperation = function ({
 	}
 };
 
-// 解析元素操作
 IfCondition.parseElementOperation = function ({ operation }) {
 	return Local.get('command.if.element.' + operation);
 };
 
-// 解析键盘按键状态
 IfCondition.parseKeyboardState = function (state) {
 	return Local.get('command.if.keyboard.' + state);
 };
 
-// 解析手柄按键状态
 IfCondition.parseGamepadState = function (state) {
 	return Local.get('command.if.gamepad.' + state);
 };
 
-// 解析鼠标按键
 IfCondition.parseMouseButton = function (button) {
 	return Local.get('command.if.mouse.button.' + button);
 };
 
-// 解析鼠标按键状态
 IfCondition.parseMouseState = function (state) {
 	return Local.get('command.if.mouse.' + state);
 };
 
-// 解析列表操作
 IfCondition.parseListOperation = function ({ operation }) {
 	return Local.get('command.if.list.' + operation);
 };
 
-// 解析其他
 IfCondition.parseOther = function ({ key }) {
 	return Local.get('command.if.other.' + key);
 };
 
-// 解析条件
 IfCondition.parse = function (condition, listData) {
 	let string;
 	switch (condition.type) {
@@ -695,7 +642,6 @@ IfCondition.parse = function (condition, listData) {
 			const variable = Command.parseVariable(condition.variable, 'object');
 			const operator = this.parseObjectOperation(condition);
 			const value = this.parseObjectOperand(condition);
-			// 如果value为空字符串，删除尾部空格
 			string = `${variable} ${operator} ${value}`.trim();
 			break;
 		}
@@ -750,7 +696,6 @@ IfCondition.parse = function (condition, listData) {
 	return string;
 };
 
-// 打开数据
 IfCondition.open = function (
 	condition = {
 		type: 'number',
@@ -759,7 +704,6 @@ IfCondition.open = function (
 		operand: { type: 'constant', value: 0 }
 	} as any
 ) {
-	// 加载快捷键选项
 	$('#if-condition-actor-shortcutKey').loadItems(Enum.getStringItems('shortcut-key'));
 	Window.open('if-condition');
 	const write = getElementWriter('if-condition');
@@ -922,7 +866,6 @@ IfCondition.open = function (
 	$('#if-condition-type').getFocus();
 };
 
-// 保存数据
 IfCondition.save = function () {
 	const read = getElementReader('if-condition');
 	const type = read('type');
@@ -1250,7 +1193,6 @@ IfCondition.save = function () {
 	return condition;
 };
 
-// 确定按钮 - 鼠标点击事件
 IfCondition.confirm = function (event) {
 	return IfCondition.target.save();
 };

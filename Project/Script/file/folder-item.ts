@@ -4,8 +4,6 @@ import { FileItem } from './file-item.ts';
 import { File } from './file-system-core.ts';
 import { FSP } from './file-system.ts';
 
-// ******************************** 文件夹项目 ********************************
-
 export class FolderItem {
 	name: string;
 	path: string;
@@ -25,7 +23,6 @@ export class FolderItem {
 		this.contexts = null;
 	}
 
-	// 获取上下文对象
 	getContext(key: string): any {
 		let contexts = this.contexts;
 		if (contexts === null) {
@@ -43,7 +40,6 @@ export class FolderItem {
 		return context;
 	}
 
-	// 更新目录
 	async update(context = { changed: false, promises: [] }) {
 		const bigint = FolderItem.bigint;
 		const path = File.path(this.path);
@@ -58,9 +54,7 @@ export class FolderItem {
 		return context;
 	}
 
-	// 读取目录
 	async readdir(context) {
-		// 创建旧的文件集合
 		const map = {};
 		const nodes = this.children;
 		if (nodes instanceof Array) {
@@ -71,7 +65,6 @@ export class FolderItem {
 			}
 		}
 
-		// 读取新的文件目录
 		const dir = this.path;
 		const path = File.path(dir);
 		const files = await FSP.readdir(path, { withFileTypes: true });
@@ -104,13 +97,10 @@ export class FolderItem {
 			}
 		}
 
-		// 获取未改变的项目
-		// 以及创建新的项目
 		const { extnameToTypeMap } = FolderItem;
 		for (let i = 0; i < length; i++) {
 			const promise = promises[i];
 			const response = await promise;
-			// 跳过文件夹Promise
 			if (promise?.path === undefined) {
 				continue;
 			}
@@ -135,7 +125,6 @@ export class FolderItem {
 					continue;
 				}
 			}
-			// 更新文件元数据版本，如果版本一致则已经被占用
 			if (item.meta.versionId !== Meta.versionId) {
 				item.meta.versionId = Meta.versionId;
 				children.push(item);
@@ -146,9 +135,7 @@ export class FolderItem {
 		this.subfolders = subfolders;
 	}
 
-	// 静态 - 扩展名 -> 类型映射表
 	static extnameToTypeMap = {
-		// 数据类型
 		'.actor': 'actor',
 		'.skill': 'skill',
 		'.trigger': 'trigger',
@@ -161,37 +148,29 @@ export class FolderItem {
 		'.ui': 'ui',
 		'.anim': 'animation',
 		'.particle': 'particle',
-		// 图像类型
 		'.png': 'image',
 		'.jpg': 'image',
 		'.jpeg': 'image',
 		'.cur': 'image',
 		'.webp': 'image',
-		// 音频类型
 		'.mp3': 'audio',
 		'.m4a': 'audio',
 		'.ogg': 'audio',
 		'.wav': 'audio',
 		'.flac': 'audio',
-		// 视频类型
 		'.mp4': 'video',
 		'.mkv': 'video',
 		'.webm': 'video',
-		// 脚本类型
 		'.js': 'script',
 		'.ts': 'script',
-		// 字体类型
 		'.ttf': 'font',
 		'.otf': 'font',
 		'.woff': 'font',
 		'.woff2': 'font'
 	};
 
-	// FSP.stat选项 - 64位整数
-	// 默认类型的stats因为精度问题可能产生相同的ino
 	static bigint = { bigint: true };
 
-	// 静态方法 - 创建项目
 	static async create(path) {
 		const name = Path.basename(path);
 		const item = new FolderItem(name, path, null);

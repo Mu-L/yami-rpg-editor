@@ -5,36 +5,27 @@ import { Inspector } from './inspector.ts';
 import { Palette } from '../palette/palette.ts';
 import { Scene } from '../scene/scene-window.ts';
 
-// ******************************** 文件 - 图块组页面 ********************************
-
 {
 	const FileTileset = {
-		// properties
 		target: null,
 		meta: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	FileTileset.initialize = function () {
-		// 侦听事件
 		$(`#fileTileset-image, #fileTileset-tileWidth, #fileTileset-tileHeight,
     #fileTileset-globalOffsetX, #fileTileset-globalOffsetY,
     #fileTileset-globalPriority`).on('input', this.paramInput);
 		$('#fileTileset-width, #fileTileset-height').on('change', this.paramInput);
 
-		// 初始化调色板
 		Palette.initialize();
 	};
 
-	// 创建图块组
 	FileTileset.create = function (type) {
 		switch (type) {
 			case 'normal':
@@ -70,17 +61,14 @@ import { Scene } from '../scene/scene-window.ts';
 		}
 	};
 
-	// 打开数据
 	FileTileset.open = function (tileset, meta) {
 		if (this.meta !== meta) {
 			this.target = tileset;
 			this.meta = meta;
 			Palette.open(meta);
 
-			// 允许页面内容溢出
 			Inspector.manager.addClass('overflow-visible');
 
-			// 显示或隐藏图像输入框
 			switch (tileset.type) {
 				case 'normal':
 					$('#fileTileset-image').enable();
@@ -90,7 +78,6 @@ import { Scene } from '../scene/scene-window.ts';
 					break;
 			}
 
-			// 写入数据
 			const write = getElementWriter('fileTileset', tileset);
 			write('image', tileset.image ?? '');
 			write('width');
@@ -103,7 +90,6 @@ import { Scene } from '../scene/scene-window.ts';
 		}
 	};
 
-	// 关闭数据
 	FileTileset.close = function () {
 		if (this.target) {
 			Inspector.manager.removeClass('overflow-visible');
@@ -114,7 +100,6 @@ import { Scene } from '../scene/scene-window.ts';
 		}
 	};
 
-	// 更新数据
 	FileTileset.update = function (tileset, key, value) {
 		File.planToSave(this.meta);
 		switch (key) {
@@ -154,7 +139,6 @@ import { Scene } from '../scene/scene-window.ts';
 		Scene.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	FileTileset.paramInput = function (event) {
 		FileTileset.update(FileTileset.target, Inspector.getKey(this), this.read());
 	};

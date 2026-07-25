@@ -1,10 +1,6 @@
 import { CommandSchema } from '../module/command/schema.ts';
 
-// ******************************** 指令对象 ********************************
-
-// Command 是中央属性袋：大量字段以 null 起步，由 command-parse / command-color /
-// command-custom / command-tip 等模块在加载后动态挂载。
-// 为避免在后续文件中赋值时类型报错，所有方法字段统一声明为可空函数类型。
+// Command 是中央属性袋：大量字段以 null 起步，由 command-parse / command-color / command-custom / command-tip 等模块在加载后动态挂载。为避免在后续文件中赋值时类型报错，所有方法字段统一声明为可空函数类型。
 
 type CommandMethod = ((...args: any[]) => any) | null;
 
@@ -99,7 +95,6 @@ export const Command: {
 	cases: Record<string, CommandSchema>;
 	custom: any;
 } = {
-	// properties
 	target: null,
 	id: null,
 	words: null,
@@ -115,7 +110,6 @@ export const Command: {
 	currentCommand: null,
 	// runtime 挂载: command-color.ts 中挂载类名染色函数
 	setClass: null,
-	// methods
 	initialize: null,
 	insert: null,
 	edit: null,
@@ -189,18 +183,12 @@ export const Command: {
 	setTooltip: null,
 	setInvalid: null,
 	forEachCommand: null,
-	// classes
 	WordList: null,
-	// objects
 	cases: {} as Record<string, CommandSchema>,
 	custom: null
 };
 
-// 委托到 CommandSchema 静态分发
-// 注：此前为避免循环依赖被注释，但这是运行时绑定的关键链路 ——
-//  CommandSchema.parse / .initAll 等通过此绑定挂载到 Command.parse / Command.words 等，
-//  注释掉会导致运行时 Command.parse is not a function / Command.words 为 null。
-//  循环依赖问题应通过 module-init.js 的加载顺序（head.html SOT）保证 schema.ts 先于此文件加载。
+// 注：此前为避免循环依赖被注释，但这是运行时绑定的关键链路 —— CommandSchema.parse / .initAll 等通过此绑定挂载到 Command.parse / Command.words 等，注释掉会导致运行时 Command.parse is not a function / Command.words 为 null。循环依赖问题应通过 module-init.js 的加载顺序（head.html SOT）保证 schema.ts 先于此文件加载。
 Command.initialize = CommandSchema.initAll;
 Command.insert = CommandSchema.insert;
 Command.open = CommandSchema.open;
@@ -208,5 +196,4 @@ Command.edit = CommandSchema.edit;
 Command.save = CommandSchema.save;
 Command.parse = CommandSchema.parse;
 
-// 显示文本
 // Command.cases.showText extracted -> module/command/showText.js

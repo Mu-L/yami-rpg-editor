@@ -4,40 +4,30 @@ import { AudioManager } from '../audio/audio-manager.ts';
 import { Browser } from '../browser/project-browser.ts';
 import { Inspector } from './inspector.ts';
 
-// ******************************** 文件 - 视频页面 ********************************
-
 {
 	const FileVideo = {
-		// properties
 		target: null,
 		meta: null,
 		symbol: null,
 		video: null,
-		// methods
 		initialize: null,
 		open: null,
 		close: null,
 		play: null,
-		// events
 		windowError: null
 	};
 
-	// 初始化
 	FileVideo.initialize = function () {
-		// 获取视频播放器
 		this.video = $('#fileVideo-video');
 
-		// 侦听事件
 		window.on('error', this.windowError);
 	};
 
-	// 打开数据
 	FileVideo.open = function (file, meta) {
 		if (this.target !== file) {
 			this.target = file;
 			this.meta = meta;
 
-			// 加载元数据
 			const elName = $('#fileVideo-name');
 			const elSize = $('#fileVideo-size');
 			const elDuration = $('#fileVideo-duration');
@@ -50,12 +40,10 @@ import { Inspector } from './inspector.ts';
 			elResolution.textContent = '';
 			elBitrate.textContent = '';
 
-			// 加载视频
 			const video = this.video;
 			const path = file.path;
 			video.src = File.route(path);
 
-			// 更新视频信息
 			const symbol = (this.symbol = Symbol());
 			new Promise((resolve) => {
 				video.on(
@@ -81,7 +69,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 关闭数据
 	FileVideo.close = function () {
 		if (this.target) {
 			Browser.unselect(this.meta);
@@ -92,7 +79,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 播放视频
 	FileVideo.play = function () {
 		if (this.target !== null) {
 			AudioManager.player.stop();
@@ -105,8 +91,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 窗口 - 错误事件
-	// 过滤视频窗口全屏切换时的报错事件
 	FileVideo.windowError = function (event) {
 		if (event.message === 'ResizeObserver loop limit exceeded') {
 			event.stopImmediatePropagation();

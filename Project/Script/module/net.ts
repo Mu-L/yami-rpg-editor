@@ -1,16 +1,10 @@
 import { fs } from './global.ts';
-// axios 是 Node 模块，浏览器 ESM 下裸 import 'axios' 解析不了；
-// Electron nodeIntegration:true 下用 window.__nodeRequire 桥调 Node require
+// axios 是 Node 模块，浏览器 ESM 下裸 import 'axios' 解析不了；Electron nodeIntegration:true 下用 window.__nodeRequire 桥调 Node require
 import axios from 'axios';
 export { axios };
 
-// dev 模式下 axios 跨域请求 GitHub raw + jsdelivr CDN 撞浏览器 CORS 政策；
-// vite.config.js server.proxy 配了 /github-raw/ → raw.githubusercontent.com 和
-// /jsdelivr/ → cdn.jsdelivr.net 代理，dev 模式把 https URL 改写成代理前缀避 CORS
-// prod 模式 Electron file:// 协议无 CORS 限制，原样透传
 const proxyRewrite = (url) => {
 	if (typeof url !== 'string' || !(import.meta as any).env?.DEV) return url;
-	// 加速节点前缀可能是 https://cdn.jsdelivr.net/gh/... 形式，先剥前缀取原始 GitHub URL
 	const rawMatch = url.match(/https:\/\/raw\.githubusercontent\.com(\/.*)$/);
 	if (rawMatch) return '/github-raw' + rawMatch[1];
 	const jsdelivrMatch = url.match(/https:\/\/cdn\.jsdelivr\.net(\/.*)$/);
@@ -18,7 +12,6 @@ const proxyRewrite = (url) => {
 	return url;
 };
 
-// 包一层 axios.get/post/axios 让 URL 走代理改写
 const _axiosGet = axios.get;
 const _axiosPost = axios.post;
 axios.get = (url, config) => _axiosGet.call(axios, proxyRewrite(url), config);
@@ -55,7 +48,6 @@ export const Net = new (class {
 				}
 			});
 
-			// 下载完成后从队列中移除
 			this.cancelQueue = this.cancelQueue.filter((item) => item !== source);
 
 			if (outputPath) {
@@ -67,7 +59,6 @@ export const Net = new (class {
 				return Buffer.from(arrayBuffer);
 			}
 		} catch (err) {
-			// 无论成功或失败都从队列中移除
 			this.cancelQueue = this.cancelQueue.filter((item) => item !== source);
 
 			if (axios.isCancel(err)) {
@@ -79,11 +70,10 @@ export const Net = new (class {
 		}
 	}
 
-	// 取消所有正在进行的下载
 	cancelAllDownloads() {
 		this.cancelQueue.forEach((source) => {
 			source.cancel('取消所有下载');
 		});
-		this.cancelQueue = []; // 清空队列
+		this.cancelQueue = [];
 	}
 })();

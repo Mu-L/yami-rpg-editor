@@ -1,9 +1,6 @@
-// ******************************** 事件目标方法 ********************************
-
 (() => {
 	let last: PointerEvent | null = null;
 
-	// 重写鼠标双击事件触发方式
 	const pointerdown = function (
 		this: { isInContent(event: PointerEvent): boolean },
 		event: PointerEvent & {
@@ -43,7 +40,6 @@
 		}
 	};
 
-	// 事件目标方法 - 添加事件
 	EventTarget.prototype.on = function (
 		this: EventTarget,
 		type: string,
@@ -61,7 +57,6 @@
 		}
 	};
 
-	// 事件目标方法 - 删除事件
 	EventTarget.prototype.off = function (type, listener, options?) {
 		switch (type) {
 			case 'doubleclick':
@@ -75,35 +70,8 @@
 	};
 })();
 
-// 创建作用域
-// namespace: {
-// const map = new Map()
-// const obs = new ResizeObserver(entries => {
-//   for (const entry of entries) {
-//     map.get(entry.target)(entry)
-//   }
-// })
+// namespace: { const map = new Map() const obs = new ResizeObserver(entries => { for (const entry of entries) { map.get(entry.target)(entry) } })
 
-// // 事件目标方法 - 开始观察指定元素
-// EventTarget.prototype.observe = function (type, callback) {
-//   switch (type) {
-//     case 'resize':
-//       if (!map.has(this)) {
-//         map.set(this, callback)
-//         obs.observe(this)
-//       }
-//       break
-//   }
-// }
+// // 事件目标方法 - 开始观察指定元素 EventTarget.prototype.observe = function (type, callback) { switch (type) { case 'resize': if (!map.has(this)) { map.set(this, callback) obs.observe(this) } break } }
 
-// // 事件目标方法 - 结束观察指定元素
-// EventTarget.prototype.unobserve = function (type) {
-//   switch (type) {
-//     case 'resize':
-//       if (map.delete(this)) {
-//         obs.unobserve(this)
-//       }
-//       break
-//   }
-// }
-// }
+// // 事件目标方法 - 结束观察指定元素 EventTarget.prototype.unobserve = function (type) { switch (type) { case 'resize': if (map.delete(this)) { obs.unobserve(this) } break } } }

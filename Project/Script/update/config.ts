@@ -2,16 +2,8 @@ import { Data } from '../data/data-object.ts';
 import { File } from '../file/file-system-core.ts';
 import { Updater } from './updater.ts';
 
-// 更新配置数据
 Updater.updateConfig = function (verNum) {
-	// 更新到1.0.14版本
 	// 修改font属性为text属性
-	// 添加text.wordWrap属性
-	// 更新到1.0.45版本
-	// 添加collision.trigger属性
-	// 更新到1.0.54版本
-	// 添加localization.languages属性
-	// 添加localization.default属性
 	if (verNum < Updater.getVersionNumber('1.0.54')) {
 		const sConfig = Data.config;
 		const dConfig = {};
@@ -49,34 +41,22 @@ Updater.updateConfig = function (verNum) {
 		Data.config = dConfig;
 		File.planToSave(Data.manifest.project.config);
 	}
-	// 更新到1.0.52版本
-	// 删除text.pixelated属性
-	// 删除text.threshold属性
 	if (verNum < Updater.getVersionNumber('1.0.52')) {
 		delete Data.config.text.pixelated;
 		delete Data.config.text.threshold;
 		File.planToSave(Data.manifest.project.config);
 	}
-	// 更新到1.0.68版本
-	// 删除collision.actor.ignoreTeamMember属性
 	if (verNum < Updater.getVersionNumber('1.0.68')) {
 		delete Data.config.collision.actor.ignoreTeamMember;
 		File.planToSave(Data.manifest.project.config);
 	}
-	// 更新到1.0.102版本
-	// 添加resolution.sceneScale属性
-	// 添加resolution.uiScale属性
-	// 添加resolution.highDefinition属性
 	if (verNum < Updater.getVersionNumber('1.0.102')) {
 		Data.config.resolution.sceneScale = 1;
 		Data.config.resolution.uiScale = 1;
 		Data.config.text.highDefinition = false;
 		File.planToSave(Data.manifest.project.config);
 	}
-	// 更新到1.0.115版本
-	// 删除text.wordWrap属性
 	// 修改localization.languages属性为对象
-	// 添加language.name|font|scale属性
 	if (verNum < Updater.getVersionNumber('1.0.115')) {
 		delete Data.config.text.wordWrap;
 		const { languages } = Data.config.localization;
@@ -91,16 +71,7 @@ Updater.updateConfig = function (verNum) {
 		}
 		File.planToSave(Data.manifest.project.config);
 	}
-	// 更新到1.0.122版本
-	// 添加deployed属性
 	// 修改window.display的值: 'window'->'windowed'
-	// 添加axis.up|down|left|right属性
-	// 删除actor.playerTeam|playerActor|partyMembers|partyInventory属性
-	// 添加webgl.desynchronized属性
-	// 删除script.language|outDir属性
-	// 添加script.autoCompile属性
-	// 添加save.location|subdirectory属性
-	// 删除event属性，修改对应的事件类型
 	if (verNum < Updater.getVersionNumber('1.0.122')) {
 		const { config, events } = Data;
 		if (config.deployed === undefined) {
@@ -152,10 +123,6 @@ Updater.updateConfig = function (verNum) {
 		}
 		File.planToSave(Data.manifest.project.config);
 	}
-	// 更新到1.0.127版本
-	// 添加webgl.textureMagFilter属性
-	// 添加webgl.textureMinFilter属性
-	// 添加preload属性
 	if (verNum < Updater.getVersionNumber('1.0.127')) {
 		const { config } = Data;
 		if (config.webgl.textureMagFilter === undefined) {

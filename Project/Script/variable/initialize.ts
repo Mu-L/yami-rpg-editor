@@ -3,10 +3,8 @@ import { Variable } from './variable.ts';
 import { Reference } from '../log/related-references.ts';
 import { History } from '../tools/history.ts';
 
-// 初始化
 Variable.initialize = function () {
-	// 必须等 #variable 与 #variable-list 同时就绪，否则 list 为 null 时
-	// 后续 list.on(...) 会崩（"Cannot read properties of null (reading 'on')"）
+	// 必须等 #variable 与 #variable-list 同时就绪，否则 list 为 null 时 后续 list.on(...) 会崩（"Cannot read properties of null (reading 'on')"）
 	if (!document.querySelector('#variable') || !document.querySelector('#variable-list')) {
 		console.warn(
 			'[Variable.initialize] #variable / #variable-list 尚未就绪，延迟到 DOMContentLoaded'
@@ -14,7 +12,6 @@ Variable.initialize = function () {
 		document.addEventListener('DOMContentLoaded', () => Variable.initialize(), { once: true });
 		return;
 	}
-	// 绑定变量列表
 	const { list } = this;
 	list.removable = true;
 	list.renamable = true;
@@ -26,13 +23,10 @@ Variable.initialize = function () {
 	list.creators.push(list.createNoteIcon);
 	list.creators.push(list.updateNoteIcon);
 
-	// 设置面板变量默认值
 	this.panel.variable = null;
 
-	// 设置列表搜索框按钮
 	this.searcher.addCloseButton();
 
-	// 设置历史操作处理器
 	History.processors['variable-list-operation'] = (operation, data) => {
 		const { response } = data;
 		list.restore(operation, response);
@@ -125,7 +119,6 @@ Variable.initialize = function () {
 		this.changed = true;
 	};
 
-	// 侦听事件
 	$('#variable').on('close', this.windowClose);
 	$('#variable').on('closed', this.windowClosed);
 	list.on('keydown', this.listKeydown);

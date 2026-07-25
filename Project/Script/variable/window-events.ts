@@ -4,7 +4,6 @@ import { Local } from '../tools/localization.ts';
 import { UndoManager } from '../tools/undo-manager.ts';
 import { Variable } from './variable.ts';
 
-// 窗口 - 关闭事件
 Variable.windowClose = function (event) {
 	this.list.saveScroll();
 	if (this.changed) {
@@ -30,7 +29,6 @@ Variable.windowClose = function (event) {
 	}
 }.bind(Variable);
 
-// 窗口 - 已关闭事件
 Variable.windowClosed = function (event) {
 	this.target = null;
 	this.data = null;

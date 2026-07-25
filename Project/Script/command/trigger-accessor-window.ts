@@ -2,37 +2,27 @@
 import { VariableGetter } from './variable-accessor-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 触发器访问器窗口 ********************************
-
 export const TriggerGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 TriggerGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#triggerGetter-type').loadItems([
 		{ name: 'Event Trigger', value: 'trigger' },
 		{ name: 'Latest Trigger', value: 'latest' },
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置关联元素
 	$('#triggerGetter-type')
 		.enableHiddenMode()
 		.relate([{ case: 'variable', targets: [$('#triggerGetter-variable')] }]);
 
-	// 侦听事件
 	$('#triggerGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 TriggerGetter.open = function (target) {
 	this.target = target;
 	Window.open('triggerGetter');
@@ -52,7 +42,6 @@ TriggerGetter.open = function (target) {
 	$('#triggerGetter-type').getFocus();
 };
 
-// 确定按钮 - 鼠标点击事件
 TriggerGetter.confirm = function (event) {
 	const read = getElementReader('triggerGetter');
 	const type = read('type');

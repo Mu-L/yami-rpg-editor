@@ -1,14 +1,10 @@
 ﻿import { Inspector } from './inspector.ts';
 
-// ******************************** 动画 - 关节层页面 ********************************
-
 {
 	const AnimJointLayer = {
-		// methods
 		create: null
 	};
 
-	// 创建关节层
 	AnimJointLayer.create = function () {
 		return {
 			class: 'joint',

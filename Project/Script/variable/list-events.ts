@@ -4,7 +4,6 @@ import { Reference } from '../log/related-references.ts';
 import { Local } from '../tools/localization.ts';
 import { Variable } from './variable.ts';
 
-// 列表 - 选择事件
 Variable.listSelect = function (event) {
 	const item = event.value;
 	return item.class !== 'folder'
@@ -12,7 +11,6 @@ Variable.listSelect = function (event) {
 		: Variable.closePropertyPanel();
 };
 
-// 列表 - 记录事件
 Variable.listRecord = function (event) {
 	Variable.changed = true;
 	const response = event.value;
@@ -35,7 +33,6 @@ Variable.listRecord = function (event) {
 	}
 };
 
-// 列表 - 菜单弹出事件
 Variable.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
@@ -137,7 +134,6 @@ Variable.listPopup = function (event) {
 	);
 };
 
-// 列表 - 打开事件
 Variable.listOpen = function (event) {
 	if (event.value.class !== 'folder' && Variable.target instanceof Object) {
 		Variable.target.getFocus?.();

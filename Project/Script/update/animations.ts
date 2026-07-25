@@ -3,12 +3,9 @@ import { File } from '../file/file-system-core.ts';
 import { Inspector } from '../inspector/inspector.ts';
 import { Updater } from './updater.ts';
 
-// 更新动画数据
 Updater.updateAnimations = function (verNum) {
-	// 更新到1.0.37版本：添加精灵帧anchorX, anchorY, pivotX, pivotY属性
 	if (verNum < Updater.getVersionNumber('1.0.37')) {
 		const keys = Object.keys(Inspector.animSpriteFrame.create());
-		// 更新图层中的精灵帧
 		const update = (layers) => {
 			for (const layer of layers) {
 				switch (layer.class) {
@@ -21,7 +18,6 @@ Updater.updateAnimations = function (verNum) {
 						for (let i = 0; i < length; i++) {
 							const sFrame = frames[i];
 							const dFrame = Inspector.animSpriteFrame.create();
-							// 默认锚点和轴点有可能被修改，还是重新设置一下
 							dFrame.anchorX = 0.5;
 							dFrame.anchorY = 0.5;
 							dFrame.pivotX = 0;
@@ -51,10 +47,8 @@ Updater.updateAnimations = function (verNum) {
 			File.planToSave(meta);
 		}
 	}
-	// 更新到1.0.139版本：添加粒子层order属性
 	if (verNum < Updater.getVersionNumber('1.0.139')) {
 		const keys = Object.keys(Inspector.animParticleLayer.create());
-		// 更新图层中的精灵帧
 		const update = (layers) => {
 			const length = layers.length;
 			for (let i = 0; i < length; i++) {

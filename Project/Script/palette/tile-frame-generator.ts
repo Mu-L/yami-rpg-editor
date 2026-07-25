@@ -1,44 +1,33 @@
 ﻿import { $ } from '../util/dom.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 图块帧生成器窗口 ********************************
-
 export const FrameGenerator = {
-	// properties
 	callback: null,
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	windowClosed: null,
 	confirm: null
 };
 
-// 初始化
 FrameGenerator.initialize = function () {
-	// 写入参数
 	$('#autoTile-generateFrames-strideX').write(0);
 	$('#autoTile-generateFrames-strideY').write(0);
 	$('#autoTile-generateFrames-count').write(1);
 
-	// 侦听事件
 	$('#autoTile-generateFrames').on('closed', this.windowClosed);
 	$('#autoTile-generateFrames-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 FrameGenerator.open = function (callback) {
 	this.callback = callback;
 	Window.open('autoTile-generateFrames');
 	$('#autoTile-generateFrames-strideX').getFocus('all');
 };
 
-// 窗口 - 已关闭事件
 FrameGenerator.windowClosed = function (event) {
 	this.callback = null;
 }.bind(FrameGenerator);
 
-// 确定按钮 - 鼠标点击事件
 FrameGenerator.confirm = function (event) {
 	const strideX = $('#autoTile-generateFrames-strideX').read();
 	const strideY = $('#autoTile-generateFrames-strideY').read();

@@ -1,9 +1,5 @@
-// ******************************** 数组静态方法 ********************************
-
-// 数组静态属性 - 空数组
 Array.empty = [];
 
-// 数组静态方法 - 减法
 Array.subtract = function <T>(a: T[], b: T[]): T[] {
 	const differences: T[] = [];
 	const length = a.length;
@@ -14,8 +10,6 @@ Array.subtract = function <T>(a: T[], b: T[]): T[] {
 	}
 	return differences;
 };
-
-// ******************************** 数组方法 ********************************
 
 // 数组方法 - 添加
 Object.defineProperty(Array.prototype, 'append', {

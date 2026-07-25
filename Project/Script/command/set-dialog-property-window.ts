@@ -4,8 +4,6 @@ import { Command } from './command-object.ts';
 import { Token } from './mark-string-manager.ts';
 import { Color } from '../tools/color-picker-window.ts';
 
-// ******************************** 设置对话框 - 属性窗口 ********************************
-
 const dialogEffectRelate = [
 	{
 		case: 'shadow',

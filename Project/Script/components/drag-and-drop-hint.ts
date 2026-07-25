@@ -1,5 +1,3 @@
-﻿// ******************************** 拖放提示 ********************************
-
 export class DragAndDropHint extends HTMLElement {
 	left: number;
 	top: number;
@@ -10,14 +8,12 @@ export class DragAndDropHint extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.left = 0;
 		this.top = 0;
 		this.width = 0;
 		this.height = 0;
 	}
 
-	// 测量位置
 	measure(item: HTMLElement): {
 		left: number;
 		top: number;
@@ -46,7 +42,6 @@ export class DragAndDropHint extends HTMLElement {
 		return { left, top, width, height };
 	}
 
-	// 向上移动
 	moveUp(): this {
 		if (!this.upper) {
 			this.upper = true;
@@ -55,7 +50,6 @@ export class DragAndDropHint extends HTMLElement {
 		return this;
 	}
 
-	// 向下移动
 	moveDown(): this {
 		if (this.upper) {
 			this.upper = false;
@@ -64,7 +58,6 @@ export class DragAndDropHint extends HTMLElement {
 		return this;
 	}
 
-	// 设置位置
 	set({
 		left,
 		top,

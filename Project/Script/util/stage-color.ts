@@ -1,8 +1,6 @@
 import { INTRGBA } from './color-utils.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 舞台颜色类 ********************************
-
 export class StageColor {
 	hex: string;
 	red: number;
@@ -16,12 +14,10 @@ export class StageColor {
 		this.onchange = onchange;
 	}
 
-	// 读取颜色
 	read() {
 		return this.hex;
 	}
 
-	// 输入颜色
 	input(hex: any) {
 		if (this.hex !== hex) {
 			this.hex = hex;
@@ -33,12 +29,10 @@ export class StageColor {
 		}
 	}
 
-	// 获取整数颜色
 	getINTRGBA() {
 		return INTRGBA(this.hex);
 	}
 
-	// 获取GL颜色
 	getGLRGBA() {
 		const sa = this.alpha;
 		const da = 1 - sa;
@@ -49,6 +43,5 @@ export class StageColor {
 		return rgba;
 	}
 
-	// 静态 - RGBA数组
 	static rgba = new Float64Array(4);
 }

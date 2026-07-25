@@ -1,7 +1,5 @@
 import { EventBus } from './eventbus.ts';
 
-/* 辅助线 */
-
 let _origUpdateCommandElement: any;
 // command-list 内 command-item 元素运行时挂载的扩展字段
 interface CommandItemElement extends HTMLElement {
@@ -11,8 +9,6 @@ interface CommandItemElement extends HTMLElement {
 	eventBinding?: boolean;
 }
 export function updateCommandElement(this: any, element: CommandItemElement): any {
-	// _origUpdateCommandElement 在 EventBus.once('editor_loaded') 回调里、
-	// prototype 被覆盖之前已捕获，此处直接调用即可
 	const ret = _origUpdateCommandElement.call(this, element);
 
 	element.querySelectorAll('command-mark-major').forEach((e) => {
@@ -23,13 +19,11 @@ export function updateCommandElement(this: any, element: CommandItemElement): an
 		e.remove();
 	});
 
-	// 创建前缀
 	let pre = document.createElement('command-mark-major');
 	pre.textContent = '';
 	element.insertBefore(pre, element.firstElementChild);
 	element.pre = pre;
 
-	//创建辅助线
 	element.lines = [];
 	for (let i = element.dataIndent; i >= 0; i--) {
 		let line = document.createElement('command-line');
@@ -38,7 +32,6 @@ export function updateCommandElement(this: any, element: CommandItemElement): an
 		element.lines[i] = line;
 	}
 
-	// 辅助线 hover 状态
 	const list = this.elements;
 	if (!element?.eventBinding) {
 		element.on('mouseenter', function () {
@@ -80,8 +73,7 @@ export function updateCommandElement(this: any, element: CommandItemElement): an
 EventBus.once('editor_loaded', () => {
 	const CL = customElements.get('command-list');
 	if (CL) {
-		// 必须在覆盖之前捕获原方法，否则新方法首次调用时取到的 prototype.updateCommandElement
-		// 已是新方法自己，_origUpdateCommandElement.call(this, ...) 会无限递归调自己
+		// 必须在覆盖之前捕获原方法，否则新方法首次调用时取到的 prototype.updateCommandElement 已是新方法自己，_origUpdateCommandElement.call(this, ...) 会无限递归调自己
 		_origUpdateCommandElement = CL.prototype.updateCommandElement;
 		CL.prototype.updateCommandElement = updateCommandElement;
 	}
@@ -93,13 +85,11 @@ export const commandList = document.querySelector('#event-commands');
 	return this.elements[this.active].pre.getBoundingClientRect();
 };
 
-/* 获取区域 */
 export function range(
 	elements: any,
 	start: number,
 	end: number = start
 ): { start: number; end: number; indent?: number } {
-	// 限制范围
 	const count = elements.count;
 	start = Math.clamp(start, 0, count - 1);
 	end = Math.clamp(end, 0, count - 1);

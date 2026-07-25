@@ -6,29 +6,22 @@ import { Inspector } from './inspector.ts';
 import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 文件 - 触发器页面 ********************************
-
 {
 	const FileTrigger = {
-		// properties
 		target: null,
 		meta: null,
 		motions: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		animationIdWrite: null,
 		paramInput: null,
 		listChange: null
 	};
 
-	// 初始化
 	FileTrigger.initialize = function () {
-		// 创建选择器选项
 		$('#fileTrigger-selector').loadItems([
 			{ name: 'Enemy', value: 'enemy' },
 			{ name: 'Friend', value: 'friend' },
@@ -38,20 +31,17 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 			{ name: 'Any', value: 'any' }
 		]);
 
-		// 创建墙体碰撞选项
 		$('#fileTrigger-onHitWalls').loadItems([
 			{ name: 'Penetrate', value: 'penetrate' },
 			{ name: 'Destroy', value: 'destroy' }
 		]);
 
-		// 创建角色碰撞选项
 		$('#fileTrigger-onHitActors').loadItems([
 			{ name: 'Penetrate', value: 'penetrate' },
 			{ name: 'Destroy', value: 'destroy' },
 			{ name: 'Destroy After Multiple Hits', value: 'penetrate-destroy' }
 		]);
 
-		// 设置角色碰撞关联元素
 		$('#fileTrigger-onHitActors')
 			.enableHiddenMode()
 			.relate([
@@ -61,14 +51,12 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 				}
 			]);
 
-		// 创建形状类型选项
 		$('#fileTrigger-shape-type').loadItems([
 			{ name: 'Rectangle', value: 'rectangle' },
 			{ name: 'Circle', value: 'circle' },
 			{ name: 'Sector', value: 'sector' }
 		]);
 
-		// 设置形状类型关联元素
 		$('#fileTrigger-shape-type')
 			.enableHiddenMode()
 			.relate([
@@ -87,34 +75,27 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 				}
 			]);
 
-		// 创建触发模式选项
 		$('#fileTrigger-hitMode').loadItems([
 			{ name: 'Once', value: 'once' },
 			{ name: 'Once On Overlap', value: 'once-on-overlap' },
 			{ name: 'Repeat', value: 'repeat' }
 		]);
 
-		// 设置触发模式关联元素
 		$('#fileTrigger-hitMode')
 			.enableHiddenMode()
 			.relate([{ case: 'repeat', targets: [$('#fileTrigger-hitInterval')] }]);
 
-		// 创建动画旋转选项
 		$('#fileTrigger-rotatable').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
 
-		// 绑定事件列表
 		$('#fileTrigger-events').bind(new EventListInterface(this));
 
-		// 绑定脚本列表
 		$('#fileTrigger-scripts').bind(new ScriptListInterface());
 
-		// 绑定脚本参数面板
 		$('#fileTrigger-parameter-pane').bind($('#fileTrigger-scripts'));
 
-		// 侦听事件
 		$('#fileTrigger-animationId').on('write', this.animationIdWrite);
 		$(`#fileTrigger-selector, #fileTrigger-onHitWalls, #fileTrigger-onHitActors, #fileTrigger-hitCount,
     #fileTrigger-shape-type, #fileTrigger-shape-width, #fileTrigger-shape-height,
@@ -127,7 +108,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		$('#fileTrigger-events, #fileTrigger-scripts').on('change', this.listChange);
 	};
 
-	// 创建技能
 	FileTrigger.create = function () {
 		return {
 			selector: 'enemy',
@@ -155,13 +135,11 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	FileTrigger.open = function (trigger, meta) {
 		if (this.meta !== meta) {
 			this.target = trigger;
 			this.meta = meta;
 
-			// 写入数据
 			const write = getElementWriter('fileTrigger', trigger);
 			const shape = trigger.shape;
 			write('selector');
@@ -191,7 +169,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	FileTrigger.close = function () {
 		if (this.target) {
 			Browser.unselect(this.meta);
@@ -204,7 +181,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	FileTrigger.update = function (trigger, key, value) {
 		File.planToSave(this.meta);
 		switch (key) {
@@ -280,19 +256,16 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 动画ID - 写入事件
 	FileTrigger.animationIdWrite = function (event) {
 		const elMotion = $('#fileTrigger-motion');
 		elMotion.loadItems(Animation.getMotionListItems(event.value));
 		elMotion.write(elMotion.read());
 	};
 
-	// 参数 - 输入事件
 	FileTrigger.paramInput = function (event) {
 		FileTrigger.update(FileTrigger.target, Inspector.getKey(this), this.read());
 	};
 
-	// 列表 - 改变事件
 	FileTrigger.listChange = function (event) {
 		File.planToSave(FileTrigger.meta);
 	};

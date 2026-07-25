@@ -1,8 +1,6 @@
 ﻿import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 
-// ******************************** 设置动画 - 属性窗口 ********************************
-
 export const AnimationProperty = createPropertyWindow({
 	prefix: 'setAnimation',
 	locale: 'command.setAnimation',

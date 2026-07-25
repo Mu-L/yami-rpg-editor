@@ -21,19 +21,15 @@ import { NewProject } from './new-project-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 标题栏对象 ********************************
-
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
 type TitleMethod = ((...args: any[]) => any) | null;
 
 interface TitleShape {
-	// properties
 	target: HTMLElement & { [k: string]: any };
 	tabBar: HTMLElement & { [k: string]: any };
 	theme: any | null;
 	maximized: boolean;
 	fullscreen: boolean;
-	// methods
 	initialize: (() => void) | null;
 	newProject: TitleMethod;
 	openProject: TitleMethod;
@@ -54,7 +50,6 @@ interface TitleShape {
 	loadFromConfig: TitleMethod;
 	saveToProject: TitleMethod;
 	loadFromProject: TitleMethod;
-	// events
 	windowBeforeClose: TitleMethod;
 	windowMaximize: TitleMethod;
 	windowUnmaximize: TitleMethod;
@@ -76,13 +71,11 @@ interface TitleShape {
 }
 
 export const Title: TitleShape = {
-	// properties
 	target: $('#title'),
 	tabBar: $('#title-tabBar'),
 	theme: null,
 	maximized: false,
 	fullscreen: false,
-	// methods
 	initialize: null,
 	newProject: null,
 	openProject: null,
@@ -103,7 +96,6 @@ export const Title: TitleShape = {
 	loadFromConfig: null,
 	saveToProject: null,
 	loadFromProject: null,
-	// events
 	windowBeforeClose: null,
 	windowMaximize: null,
 	windowUnmaximize: null,
@@ -124,9 +116,7 @@ export const Title: TitleShape = {
 	closeClick: null
 };
 
-// 初始化
 Title.initialize = function () {
-	// 设置按钮图标
 	ipcRenderer.invoke('update-max-min-icon').then((mode) => {
 		switch (mode) {
 			case 'maximize':
@@ -141,10 +131,8 @@ Title.initialize = function () {
 		}
 	});
 
-	// 创建用来刷新拖动区域的辅助元素
 	this.target.element = this.target.appendChild(document.createElement('div'));
 
-	// 设置标题栏为可拖动状态
 	this.pointerenter();
 
 	// 标签栏扩展方法 - 解析图标
@@ -166,7 +154,6 @@ Title.initialize = function () {
 		return (File as any).parseMetaName(meta);
 	};
 
-	// 侦听事件
 	window.on('drop', this.windowDrop);
 	window.on('dirchange', this.windowDirchange);
 	window.on('localize', this.windowLocalize);
@@ -180,28 +167,23 @@ Title.initialize = function () {
 	$('#title-maximize').on('click', this.maximizeClick);
 	$('#title-close').on('click', this.closeClick);
 
-	// 侦听应用窗口事件
 	ipcRenderer.on('before-close-window', this.windowBeforeClose);
 	ipcRenderer.on('maximize', this.windowMaximize);
 	ipcRenderer.on('unmaximize', this.windowUnmaximize);
 	ipcRenderer.on('enter-full-screen', this.windowEnterFullScreen);
 	ipcRenderer.on('leave-full-screen', this.windowLeaveFullScreen);
-	// 初始化子对象
 	NewProject.initialize();
 	Deployment.initialize();
 };
 
-// 新建项目
 Title.newProject = function () {
 	this.askWhetherToSave(() => {
 		NewProject.open();
 	});
 };
 
-// 打开项目
 Title.openProject = function () {
 	this.askWhetherToSave(() => {
-		// 其他
 		const dialogs = Editor.config.dialogs;
 		const location = Path.normalize(dialogs.open);
 		File.showOpenDialog({
@@ -220,7 +202,6 @@ Title.openProject = function () {
 	});
 };
 
-// 关闭项目
 Title.closeProject = function () {
 	this.askWhetherToSave(() => {
 		Editor.close();
@@ -231,14 +212,12 @@ Title.closeProject = function () {
 	});
 };
 
-// 部署项目
 Title.deployment = function () {
 	this.askWhetherToSave(() => {
 		Deployment.open();
 	});
 };
 
-// 添加最近的标签
 Title.addRecentTab = function (guid) {
 	const tabs = Editor.project.recentTabs;
 	if (tabs.remove(guid)) {
@@ -251,7 +230,6 @@ Title.addRecentTab = function (guid) {
 	}
 };
 
-// 获取关闭的标签元数据
 Title.getClosedTabMeta = function () {
 	const { recentTabs } = Editor.project;
 	outer: for (const guid of recentTabs) {
@@ -265,7 +243,6 @@ Title.getClosedTabMeta = function () {
 	return undefined;
 };
 
-// 打开标签
 Title.openTab = function (file) {
 	const { tabBar } = this;
 	const { meta, type } = file;
@@ -278,7 +255,6 @@ Title.openTab = function (file) {
 	tabBar.select(context);
 };
 
-// 重新打开关闭的标签
 Title.reopenClosedTab = function (meta) {
 	meta = meta ?? this.getClosedTabMeta();
 	if (meta) {
@@ -289,7 +265,6 @@ Title.reopenClosedTab = function (meta) {
 	}
 };
 
-// 询问是否保存
 Title.askWhetherToSave = function (callback) {
 	if (Data.manifest?.changes.length > 0) {
 		const get = Local.createGetter('confirmation');
@@ -321,7 +296,6 @@ Title.askWhetherToSave = function (callback) {
 	}
 };
 
-// 更新标题名称
 Title.updateTitleName = (function IIFE() {
 	const title = $('title')[0];
 	return function () {
@@ -333,7 +307,6 @@ Title.updateTitleName = (function IIFE() {
 	};
 })();
 
-// 更新 Body Class
 Title.updateBodyClass = function () {
 	if (this.maximized || this.fullscreen) {
 		document.body.addClass('maximized');
@@ -344,18 +317,14 @@ Title.updateBodyClass = function () {
 	}
 };
 
-// 更新应用区域
-// 应用拖拽区域无法自动更新
-// 需要通过开关元素的显示来手动刷新
+// 应用拖拽区域无法自动更新 需要通过开关元素的显示来手动刷新
 Title.updateAppRegion = function () {
 	const { target } = this;
 	target.element.show();
-	// 强制刷新样式
-	// target.element.css().display
+	// 强制刷新样式 target.element.css().display
 	setTimeout(() => target.element.hide());
 };
 
-// 切换主题
 Title.switchTheme = function (scheme) {
 	switch (scheme) {
 		case 'light':
@@ -371,7 +340,6 @@ Title.switchTheme = function (scheme) {
 	}
 };
 
-// 发送主题改变事件
 Title.dispatchThemechangeEvent = (function IIFE() {
 	const themechange = new Event('themechange');
 	return function (theme) {
@@ -381,42 +349,33 @@ Title.dispatchThemechangeEvent = (function IIFE() {
 	};
 })();
 
-// 播放游戏
 Title.playGame = async function () {
 	const element = $('#title-play');
 	if (Editor.state === 'open' && !element.hasClass('selected')) {
 		element.addClass('selected');
 
-		// 暂时失去输入框焦点来触发改变事件
 		const { activeElement } = document;
 		activeElement.blur();
 		activeElement.focus();
 
-		// 停止播放声音
 		AudioManager.player.stop();
 
-		// 保存数据文件
 		await File.save(false);
 
-		// 创建播放器窗口
 		ipcRenderer.send('create-player-window', File.root);
 
-		// 窗口关闭事件
 		ipcRenderer.once('player-window-closed', (event) => {
 			element.removeClass('selected');
 		});
 	}
 };
 
-// 保存状态到配置文件
 Title.saveToConfig = function (config) {
 	config.theme = this.theme;
 };
 
-// 从配置文件中加载状态
 Title.loadFromConfig = function (config) {
-	// theme 兜底：缺失或非法值时按当前 DOM 状态推断（html.dark 类 ⇒ dark，否则 light）
-	// 避免向下游派发 undefined 主题导致 webgl background[undefined] 解构炸
+	// theme 兜底：缺失或非法值时按当前 DOM 状态推断（html.dark 类 ⇒ dark，否则 light） 避免向下游派发 undefined 主题导致 webgl background[undefined] 解构炸
 	let { theme } = config;
 	if (theme !== 'light' && theme !== 'dark') {
 		theme = document.documentElement.hasClass('dark') ? 'dark' : 'light';
@@ -432,9 +391,7 @@ Title.loadFromConfig = function (config) {
 	this.dispatchThemechangeEvent(theme);
 };
 
-// 保存状态到项目文件
 Title.saveToProject = function (project) {
-	// 保存打开的标签集合
 	const items = this.tabBar.data;
 	const length = items.length;
 	const tabs = new Array(length);
@@ -443,16 +400,13 @@ Title.saveToProject = function (project) {
 	}
 	project.openTabs = tabs;
 
-	// 保存激活的标签
 	const tab = this.tabBar.read();
 	project.activeTab = tab?.meta.guid ?? '';
 };
 
-// 从项目文件中加载状态
 Title.loadFromProject = function (project) {
 	const { openTabs, activeTab } = project;
 
-	// 加载标签页
 	const dirItem = {
 		icon: '\uf07c',
 		name: Local.get('common.directory'),
@@ -490,7 +444,6 @@ Title.loadFromProject = function (project) {
 	tabBar.data = items;
 	tabBar.update();
 
-	// 加载打开的文件
 	if (activeTab) {
 		const elements = tabBar.childNodes;
 		for (const element of elements) {
@@ -507,10 +460,8 @@ Title.loadFromProject = function (project) {
 	Layout.manager.switch('directory');
 };
 
-// 窗口 - 关闭前事件
 Title.windowBeforeClose = function (event) {
 	if (Window.frames.length === 0) {
-		// 阻止关闭窗口
 		ipcRenderer.send('prevent-close-window');
 		Title.askWhetherToSave(() => {
 			Editor.quit();
@@ -518,31 +469,26 @@ Title.windowBeforeClose = function (event) {
 	}
 };
 
-// 窗口 - 最大化事件
 Title.windowMaximize = function (event) {
 	this.maximized = true;
 	this.updateBodyClass();
 }.bind(Title);
 
-// 窗口 - 退出最大化事件
 Title.windowUnmaximize = function (event) {
 	this.maximized = false;
 	this.updateBodyClass();
 }.bind(Title);
 
-// 窗口 - 进入全屏事件
 Title.windowEnterFullScreen = function (event) {
 	this.fullscreen = true;
 	this.updateBodyClass();
 }.bind(Title);
 
-// 窗口 - 退出全屏事件
 Title.windowLeaveFullScreen = function (event) {
 	this.fullscreen = false;
 	this.updateBodyClass();
 }.bind(Title);
 
-// 窗口 - 拖拽释放事件
 Title.windowDrop = function (event) {
 	if (Window.frames.length === 0) {
 		const { files } = event.dataTransfer;
@@ -556,7 +502,6 @@ Title.windowDrop = function (event) {
 	}
 }.bind(Title);
 
-// 窗口 - 目录改变事件
 Title.windowDirchange = function (event) {
 	const { tabBar } = Title;
 	for (const item of tabBar.data) {
@@ -571,7 +516,6 @@ Title.windowDirchange = function (event) {
 	}
 };
 
-// 窗口 - 本地化事件
 Title.windowLocalize = function (event) {
 	const text = Title.tabBar.dirItem?.tab?.text;
 	if (text instanceof HTMLElement) {
@@ -579,7 +523,6 @@ Title.windowLocalize = function (event) {
 	}
 };
 
-// 指针进入事件
 Title.pointerenter = function (event) {
 	const { target } = this;
 	if (!target.active) {
@@ -590,7 +533,6 @@ Title.pointerenter = function (event) {
 	}
 }.bind(Title);
 
-// 指针移动事件
 Title.pointermove = function (event) {
 	const { target } = this;
 	if (target.active) {
@@ -611,7 +553,6 @@ Title.pointermove = function (event) {
 	}
 }.bind(Title);
 
-// 标签栏 - 指针按下事件
 Title.tabBarPointerdown = function (event) {
 	switch (this.read()?.type) {
 		case 'scene':
@@ -628,7 +569,6 @@ Title.tabBarPointerdown = function (event) {
 	}
 };
 
-// 标签栏 - 选择事件
 Title.tabBarSelect = function (event) {
 	if (Layout.resizing) {
 		Layout.pointerup();
@@ -661,7 +601,6 @@ Title.tabBarSelect = function (event) {
 	}
 };
 
-// 标签栏 - 已关闭事件
 Title.tabBarClosed = function (event) {
 	const { closedItems, lastValue } = event;
 	for (const context of closedItems) {
@@ -695,7 +634,6 @@ Title.tabBarClosed = function (event) {
 	}
 };
 
-// 标签栏 - 菜单弹出事件
 Title.tabBarPopup = function (event) {
 	const item = event.value;
 	if (!item) return;
@@ -734,22 +672,18 @@ Title.tabBarPopup = function (event) {
 	);
 };
 
-// 播放按钮 - 鼠标点击事件
 Title.playClick = function (event) {
 	Title.playGame();
 };
 
-// 最小化按钮 - 鼠标点击事件
 Title.minimizeClick = function (event) {
 	ipcRenderer.send('minimize-window');
 };
 
-// 最大化按钮 - 鼠标点击事件
 Title.maximizeClick = function (event) {
 	ipcRenderer.send('maximize-window');
 };
 
-// 关闭按钮 - 鼠标点击事件
 Title.closeClick = function (event) {
 	Title.windowBeforeClose();
 };

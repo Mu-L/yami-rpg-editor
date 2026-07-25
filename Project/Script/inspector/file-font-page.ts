@@ -3,55 +3,43 @@ import { File } from '../file/file-system-core.ts';
 import { Browser } from '../browser/project-browser.ts';
 import { Inspector } from './inspector.ts';
 
-// ******************************** 文件 - 字体页面 ********************************
-
 {
 	const FileFont = {
-		// properties
 		target: null,
 		meta: null,
 		symbol: null,
 		font: null,
 		input: null,
 		previews: null,
-		// methods
 		initialize: null,
 		open: null,
 		close: null,
-		// events
 		windowResize: null,
 		textInput: null
 	};
 
-	// 初始化
 	FileFont.initialize = function () {
-		// 获取预览文本元素
 		this.previews = $('.fileFont-preview');
 
-		// 获取输入框并设置内容
 		this.input = $('#fileFont-content');
 		this.input.write('Yami RPG Editor');
 		this.textInput({ target: this.input.input });
 
-		// 侦听事件
 		$('#fileFont').on('resize', this.windowResize);
 		this.input.on('input', this.textInput);
 	};
 
-	// 打开数据
 	FileFont.open = function (file, meta) {
 		if (this.target !== file) {
 			this.target = file;
 			this.meta = meta;
 
-			// 加载元数据
 			const elName = $('#fileFont-name');
 			const elSize = $('#fileFont-size');
 			const size = Number(file.stats.size);
 			elName.textContent = file.basename + file.extname;
 			elSize.textContent = File.parseFileSize(size);
 
-			// 加载字体
 			const previews = this.previews;
 			const path = File.route(file.path);
 			const url = CSS.encodeURL(path);
@@ -76,7 +64,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 关闭数据
 	FileFont.close = function () {
 		if (this.target) {
 			if (this.font instanceof FontFace) {
@@ -90,7 +77,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 窗口 - 调整大小事件
 	FileFont.windowResize = function (event) {
 		const previews = FileFont.previews;
 		const dpr = window.devicePixelRatio;
@@ -100,7 +86,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 文本框 - 输入事件
 	FileFont.textInput = function (event) {
 		const text = event.target.value;
 		for (const element of FileFont.previews) {

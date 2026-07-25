@@ -1,8 +1,6 @@
 import { CustomBox } from './custom-box.ts';
 import { NumberBox } from './number-box.ts';
 
-// ******************************** 数字变量框 ********************************
-
 export class NumberVar extends HTMLElement {
 	mode: string;
 	numBox: HTMLElement & { [k: string]: any };
@@ -11,19 +9,16 @@ export class NumberVar extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.mode = null;
 		this.numBox = new NumberBox(this);
 		this.varBox = new CustomBox();
 		this.varBox.type = 'variable';
 		this.varBox.filter = 'number';
 
-		// 侦听事件
 		this.on('keydown', this.keydown);
 		this.on('pointerdown', this.pointerdown);
 	}
 
-	// 读取数据
 	read() {
 		switch (this.mode) {
 			case 'constant':
@@ -33,7 +28,6 @@ export class NumberVar extends HTMLElement {
 		}
 	}
 
-	// 写入数据
 	write(value: any) {
 		switch (typeof value) {
 			case 'number':
@@ -52,7 +46,6 @@ export class NumberVar extends HTMLElement {
 		}
 	}
 
-	// 切换模式
 	switch(mode?) {
 		const focus = !mode && !this.hasClass('disabled');
 		if (mode === undefined) {
@@ -90,7 +83,6 @@ export class NumberVar extends HTMLElement {
 		}
 	}
 
-	// 启用元素
 	enable() {
 		if (this.removeClass('disabled')) {
 			this.numBox.enable();
@@ -98,7 +90,6 @@ export class NumberVar extends HTMLElement {
 		}
 	}
 
-	// 禁用元素
 	disable() {
 		if (this.addClass('disabled')) {
 			this.numBox.disable();
@@ -106,7 +97,6 @@ export class NumberVar extends HTMLElement {
 		}
 	}
 
-	// 获得焦点
 	getFocus(mode: any) {
 		switch (this.mode) {
 			case 'constant':
@@ -116,19 +106,15 @@ export class NumberVar extends HTMLElement {
 		}
 	}
 
-	// 键盘按下事件
 	keydown(event: any) {
 		switch (event.code) {
 			case 'Slash':
-				// 切换输入框导致已侦听的事件失效
-				// 因此在这里阻止输入行为
 				event.preventDefault();
 				this.switch();
 				break;
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
@@ -146,10 +132,8 @@ export class NumberVar extends HTMLElement {
 		}
 	}
 
-	// 默认变量值
 	static defVar = { type: 'local', key: 'key' };
 
-	// 默认变量值 - 插件专用
 	static defVarForPlugin = { getter: 'variable', type: 'local', key: 'key' };
 }
 

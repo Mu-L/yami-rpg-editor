@@ -12,10 +12,7 @@ import { Local } from '../tools/localization.ts';
 import { UndoManager } from '../tools/undo-manager.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 枚举窗口 ********************************
-
 export const Enum = {
-	// properties
 	list: $('#enum-list'),
 	panel: $('#enum-properties-flex').hide(),
 	searcher: $('#enum-searcher'),
@@ -32,7 +29,6 @@ export const Enum = {
 	settingKeys: null,
 	history: null,
 	changed: false,
-	// methods
 	initialize: null,
 	open: null,
 	undo: null,
@@ -53,7 +49,6 @@ export const Enum = {
 	unpackEnumeration: null,
 	packEnumeration: null,
 	saveHistory: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	keydown: null,
@@ -73,7 +68,6 @@ export const Enum = {
 	apply: null
 };
 
-// list methods
 Enum.list.copy = null;
 Enum.list.paste = null;
 Enum.list.delete = null;
@@ -94,9 +88,7 @@ Enum.list.onCreate = null;
 Enum.list.onDelete = null;
 Enum.list.onResume = null;
 
-// 初始化
 Enum.initialize = function () {
-	// 绑定枚举列表
 	const { list } = this;
 	list.removable = true;
 	list.renamable = true;
@@ -109,13 +101,10 @@ Enum.initialize = function () {
 	list.creators.push(list.createNoteIcon);
 	list.creators.push(list.updateNoteIcon);
 
-	// 设置面板字符串默认值
 	this.panel.enumString = null;
 
-	// 设置列表搜索框按钮
 	this.searcher.addCloseButton();
 
-	// 设置历史操作处理器
 	History.processors['enum-list-operation'] = (operation, data) => {
 		const { response } = data;
 		list.restore(operation, response);
@@ -174,7 +163,6 @@ Enum.initialize = function () {
 		this.changed = true;
 	};
 
-	// 侦听事件
 	$('#enum').on('close', this.windowClose);
 	$('#enum').on('closed', this.windowClosed);
 	list.on('keydown', this.listKeydown);
@@ -198,7 +186,6 @@ Enum.initialize = function () {
 	$('#enum-apply').on('click', this.apply);
 };
 
-// 打开窗口
 Enum.open = function (target = null, mode = 'normal') {
 	this.mode = mode;
 	this.target = target;
@@ -208,7 +195,6 @@ Enum.open = function (target = null, mode = 'normal') {
 	this.unpackEnumeration();
 	Window.open('enum');
 
-	// 查询项目并更新列表
 	const list = this.list;
 	const item = !target ? undefined : this.getItemById(target.read());
 	if (item) {
@@ -221,35 +207,29 @@ Enum.open = function (target = null, mode = 'normal') {
 	} else {
 		list.update();
 		list.restoreScroll();
-		// 打开枚举输入框时默认选择第一项
 		if (target instanceof Object) {
 			list.select(list.data[0]);
 		}
 	}
 
-	// 列表获得焦点
 	list.getFocus();
 
-	// 侦听事件
 	window.on('keydown', this.keydown);
 	window.on('keydown', Reference.getKeydownListener(list, 'enum'));
 };
 
-// 撤销操作
 Enum.undo = function () {
 	if (this.history.canUndo()) {
 		this.history.restore('undo');
 	}
 };
 
-// 重做操作
 Enum.redo = function () {
 	if (this.history.canRedo()) {
 		this.history.restore('redo');
 	}
 };
 
-// 创建ID
 Enum.createId = function () {
 	let id;
 	do {
@@ -258,7 +238,6 @@ Enum.createId = function () {
 	return id;
 };
 
-// 注册枚举
 Enum.register = function (item) {
 	Enum.idMap[item.id] = true;
 	if (item.class === 'folder') {
@@ -268,7 +247,6 @@ Enum.register = function (item) {
 	}
 };
 
-// 取消注册枚举
 Enum.unregister = function (item) {
 	delete Enum.idMap[item.id];
 	if (item.class === 'folder') {
@@ -278,7 +256,6 @@ Enum.unregister = function (item) {
 	}
 };
 
-// 获取ID匹配的项目
 Enum.getItemById = (function IIFE() {
 	const find = (items, id) => {
 		const length = items.length;
@@ -301,7 +278,6 @@ Enum.getItemById = (function IIFE() {
 	};
 })();
 
-// 设置文件夹分组
 Enum.setFolderGroup = function (folder, newGroup) {
 	const oldGroup = folder.element.group;
 	if (oldGroup !== newGroup) {
@@ -317,37 +293,30 @@ Enum.setFolderGroup = function (folder, newGroup) {
 	}
 };
 
-// 获取枚举群组
 Enum.getGroup = function (groupKey) {
 	return Data.enumeration.context.getGroup(groupKey);
 };
 
-// 获取字符串
 Enum.getString = function (stringId) {
 	return Data.enumeration.context.getString(stringId);
 };
 
-// 获取群组字符串
 Enum.getGroupString = function (groupKey, stringId) {
 	return Data.enumeration.context.getGroupString(groupKey, stringId);
 };
 
-// 获取默认字符串ID
 Enum.getDefStringId = function (groupKey) {
 	return Data.enumeration.context.getDefStringId(groupKey);
 };
 
-// 获取枚举字符串选项列表
 Enum.getStringItems = function (groupKey, allowNone) {
 	return Data.enumeration.context.getStringItems(groupKey, allowNone);
 };
 
-// 获取合并的选项列表
 Enum.getMergedItems = function (headItems, groupKey, mergedKey) {
 	return Data.enumeration.context.getMergedItems(headItems, groupKey, mergedKey);
 };
 
-// 打开字符串面板
 Enum.openPropertyPanel = function (enumString) {
 	const panel = this.panel;
 	if (panel.enumString !== enumString) {
@@ -360,7 +329,6 @@ Enum.openPropertyPanel = function (enumString) {
 	}
 };
 
-// 关闭字符串面板
 Enum.closePropertyPanel = function () {
 	const panel = this.panel;
 	if (panel.enumString) {
@@ -369,9 +337,7 @@ Enum.closePropertyPanel = function () {
 	}
 };
 
-// 解包枚举数据
 Enum.unpackEnumeration = (function IIFE() {
-	// 使用引用文件夹类来保存展开状态
 	class ReferencedFolder {
 		data: any;
 		class: string;
@@ -386,12 +352,10 @@ Enum.unpackEnumeration = (function IIFE() {
 			this.children = clone(item.children);
 		}
 
-		// 读取展开状态
 		get expanded() {
 			return this.data.expanded;
 		}
 
-		// 写入展开状态
 		set expanded(value: any) {
 			this.data.expanded = value;
 			File.planToSave(Data.manifest.project.enumeration);
@@ -415,14 +379,12 @@ Enum.unpackEnumeration = (function IIFE() {
 		this.idMap = {};
 		this.data = clone(Data.enumeration.strings);
 		this.settings = Object.clone(Data.enumeration.settings);
-		// 创建特殊分组的键列表
 		if (!this.settingKeys) {
 			this.settingKeys = Object.keys(this.settings);
 		}
 	};
 })();
 
-// 打包枚举数据
 Enum.packEnumeration = (function IIFE() {
 	const clone = (items) => {
 		const length = items.length;
@@ -450,7 +412,6 @@ Enum.packEnumeration = (function IIFE() {
 	};
 })();
 
-// 保存操作历史
 Enum.saveHistory = function (item, key, value) {
 	const type = `enum-${key}-change`;
 	const history = this.history;
@@ -471,7 +432,6 @@ Enum.saveHistory = function (item, key, value) {
 	}
 };
 
-// 窗口 - 关闭事件
 Enum.windowClose = function (event) {
 	this.list.saveScroll();
 	if (this.changed) {
@@ -497,7 +457,6 @@ Enum.windowClose = function (event) {
 	}
 }.bind(Enum);
 
-// 窗口 - 已关闭事件
 Enum.windowClosed = function (event) {
 	this.data = null;
 	this.idMap = null;
@@ -512,10 +471,8 @@ Enum.windowClosed = function (event) {
 	window.off('keydown', Reference.getKeydownListener(this.list));
 }.bind(Enum);
 
-// 键盘按下事件
 Enum.keydown = Shortcuts.createUndoRedo(Enum);
 
-// 列表 - 键盘按下事件
 Enum.listKeydown = function (event) {
 	const item = this.read();
 	if (event.cmdOrCtrlKey) {
@@ -544,7 +501,6 @@ Enum.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 Enum.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0:
@@ -559,7 +515,6 @@ Enum.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 鼠标双击事件
 Enum.listDoubleclick = function (event) {
 	switch (Enum.mode) {
 		case 'group':
@@ -579,13 +534,11 @@ Enum.listDoubleclick = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 Enum.listSelect = function (event) {
 	const item = event.value;
 	return item.class !== 'folder' ? Enum.openPropertyPanel(item) : Enum.closePropertyPanel();
 };
 
-// 列表 - 记录事件
 Enum.listRecord = function (event) {
 	Enum.changed = true;
 	const response = event.value;
@@ -608,12 +561,10 @@ Enum.listRecord = function (event) {
 	}
 };
 
-// 列表 - 打开事件
 Enum.listOpen = function (event) {
 	Enum.listDoubleclick(event);
 };
 
-// 列表 - 菜单弹出事件
 Enum.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
@@ -742,7 +693,6 @@ Enum.listPopup = function (event) {
 	);
 };
 
-// 名字输入框 - 输入事件
 Enum.nameInput = function (event) {
 	const item = Enum.panel.enumString;
 	if (item.class !== 'folder') {
@@ -753,7 +703,6 @@ Enum.nameInput = function (event) {
 	}
 };
 
-// 值输入框 - 输入事件
 Enum.valueInput = function (event) {
 	const item = Enum.panel.enumString;
 	if (item.class !== 'folder') {
@@ -764,7 +713,6 @@ Enum.valueInput = function (event) {
 	}
 };
 
-// 备注输入框 - 输入事件
 Enum.noteInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const item = Enum.panel.enumString;
@@ -775,7 +723,6 @@ Enum.noteInput = function (event) {
 	}
 };
 
-// 面板 - 键盘按下事件
 Enum.panelKeydown = function (event) {
 	switch (event.target.tagName) {
 		case 'INPUT':
@@ -794,7 +741,6 @@ Enum.panelKeydown = function (event) {
 	}
 };
 
-// 搜索框 - 输入事件
 Enum.searcherInput = function (event) {
 	if (event.inputType === 'insertCompositionText') {
 		return;
@@ -803,7 +749,6 @@ Enum.searcherInput = function (event) {
 	Enum.list.searchNodesDebounced(text);
 };
 
-// 确定按钮 - 鼠标点击事件
 Enum.confirm = function (event) {
 	switch (this.mode) {
 		case 'normal':
@@ -831,16 +776,13 @@ Enum.confirm = function (event) {
 	Window.close('enum');
 }.bind(Enum);
 
-// 应用按钮 - 鼠标点击事件
 Enum.apply = function (event) {
 	if (this.changed) {
 		this.changed = false;
 
-		// 保存枚举数据
 		this.packEnumeration();
 		File.planToSave(Data.manifest.project.enumeration);
 
-		// 发送枚举改变事件
 		window.dispatchEvent(new Event('enumchange'));
 	}
 }.bind(Enum);
@@ -856,8 +798,7 @@ Enum.list.copy = function (item) {
 Enum.list.paste = function (dItem) {
 	const copy = (Clipboard as any).read('yami.data.enumeration');
 	if (copy) {
-		// 只有冲突时进行更换ID
-		// 支持跨项目复制保留ID
+		// 只有冲突时进行更换ID 支持跨项目复制保留ID
 		if (Enum.idMap[copy.id]) {
 			copy.id = Enum.createId();
 			copy.name += ' - Copy';
@@ -882,7 +823,6 @@ Enum.list.delete = function (item) {
 						const index = elements.indexOf(item.element);
 						this.deleteNode(item);
 						Enum.closePropertyPanel();
-						// 自动选择下一个列表项
 						const last = elements.count - 1;
 						const element = elements[Math.min(index, last)];
 						if (element instanceof HTMLElement) {

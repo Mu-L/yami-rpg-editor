@@ -5,47 +5,35 @@ import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 场景 - 粒子页面 ********************************
-
 {
 	const SceneParticle = {
-		// properties
 		owner: Scene,
 		target: null,
 		nameBox: $('#sceneParticle-name'),
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	SceneParticle.initialize = function () {
-		// 绑定条件列表
 		$('#sceneParticle-conditions').bind(new ConditionListInterface(this, Scene));
 
-		// 绑定事件列表
 		$('#sceneParticle-events').bind(new EventListInterface(this, Scene));
 
-		// 绑定脚本列表
 		$('#sceneParticle-scripts').bind(new ScriptListInterface(this, Scene));
 
-		// 绑定脚本参数面板
 		$('#sceneParticle-parameter-pane').bind($('#sceneParticle-scripts'));
 
-		// 同步滑动框和数字框的数值
 		$('#sceneParticle-angle-slider').synchronize($('#sceneParticle-angle'));
 		$('#sceneParticle-scale-slider').synchronize($('#sceneParticle-scale'));
 		$('#sceneParticle-speed-slider').synchronize($('#sceneParticle-speed'));
 		$('#sceneParticle-opacity-slider').synchronize($('#sceneParticle-opacity'));
 		$('#sceneParticle-priority-slider').synchronize($('#sceneParticle-priority'));
 
-		// 侦听事件
 		const elements = $(`#sceneParticle-name, #sceneParticle-particleId,
     #sceneParticle-x, #sceneParticle-y, #sceneParticle-angle,
     #sceneParticle-scale, #sceneParticle-speed, #sceneParticle-opacity, #sceneParticle-priority`);
@@ -63,7 +51,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建粒子
 	SceneParticle.create = function () {
 		return {
 			class: 'particle',
@@ -86,12 +73,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	SceneParticle.open = function (particle) {
 		if (this.target !== particle) {
 			this.target = particle;
 
-			// 写入数据
 			const write = getElementWriter('sceneParticle', particle);
 			write('name');
 			write('particleId');
@@ -108,7 +93,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	SceneParticle.close = function () {
 		if (this.target) {
 			Scene.list.unselect(this.target);
@@ -121,7 +105,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 写入数据
 	SceneParticle.write = function (options) {
 		if (options.x !== undefined) {
 			$('#sceneParticle-x').write(options.x);
@@ -131,7 +114,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	SceneParticle.update = function (particle, key, value) {
 		Scene.planToSave();
 		switch (key) {
@@ -155,10 +137,7 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 				if (particle[key] !== value) {
 					// const {x, y} = particle
 					particle[key] = value;
-					// particle.emitter?.shift(Scene.getConvertedCoords({
-					//   x: particle.x - x,
-					//   y: particle.y - y,
-					// }))
+					// particle.emitter?.shift(Scene.getConvertedCoords({ x: particle.x - x, y: particle.y - y, }))
 				}
 				break;
 			case 'angle':
@@ -197,7 +176,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	SceneParticle.paramInput = function (event) {
 		SceneParticle.update(SceneParticle.target, Inspector.getKey(this), this.read());
 	};

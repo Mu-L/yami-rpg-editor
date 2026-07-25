@@ -1,14 +1,11 @@
 ﻿import { Scene } from '../scene/scene-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 编解码器 ********************************
 // undefined按位运算等价于0，因此不会产生NaN
 
 export const Codec = {
-	// properties
 	textEncoder: new TextEncoder(),
 	textDecoder: new TextDecoder(),
-	// methods
 	encodeFile: null,
 	encodeScene: null,
 	decodeScene: null,
@@ -25,9 +22,7 @@ export const Codec = {
 	getTilemaps: null
 };
 
-// 编码文件
 Codec.encodeFile = function (buffer) {
-	// 如果是字符串，转换成缓冲区
 	if (typeof buffer === 'string') {
 		buffer = this.textEncoder.encode(buffer);
 	}
@@ -37,7 +32,6 @@ Codec.encodeFile = function (buffer) {
 	return buffer;
 };
 
-// 编码场景
 Codec.encodeScene = function (scene) {
 	const tilemaps = this.getTilemaps(scene);
 	for (const tilemap of tilemaps) {
@@ -50,7 +44,6 @@ Codec.encodeScene = function (scene) {
 	return scene;
 };
 
-// 解码场景
 Codec.decodeScene = function (scene) {
 	if (scene.terrainArray === undefined) {
 		const terrainArray = this.decodeTerrains(scene.terrains, scene.width, scene.height);
@@ -70,12 +63,10 @@ Codec.decodeScene = function (scene) {
 	return scene;
 };
 
-// 编码瓦片地图
 Codec.encodeTilemap = function (tilemap) {
 	if (tilemap.changed) {
 		tilemap.changed = false;
 		tilemap.code = Codec.encodeTiles(tilemap.tiles);
-		// 修剪图块组映射表
 		const flags = {};
 		const tilesetMap = tilemap.tilesetMap;
 		const indices = Object.keys(tilesetMap);
@@ -103,13 +94,11 @@ Codec.encodeTilemap = function (tilemap) {
 	}
 };
 
-// 解码瓦片地图
 Codec.decodeTilemap = function (tilemap) {
 	const tiles = Codec.decodeTiles(tilemap.code, tilemap.width, tilemap.height);
 	Object.defineProperty(tilemap, 'tiles', { writable: true, value: tiles });
 	Object.defineProperty(tilemap, 'changed', { writable: true, value: false });
 	Object.defineProperty(tilemap, 'reverseMap', { writable: true, value: {} });
-	// 构建图块组反向映射表
 	const { tilesetMap, reverseMap } = tilemap;
 	const entries = Object.entries(tilesetMap);
 	for (const [index, guid] of entries) {
@@ -118,7 +107,6 @@ Codec.decodeTilemap = function (tilemap) {
 	return tilemap;
 };
 
-// 编码图块
 Codec.encodeTiles = function (tiles) {
 	const { encodeClone } = this;
 	const TILES = tiles;
@@ -167,7 +155,6 @@ Codec.encodeTiles = function (tiles) {
 	return this.textDecoder.decode(new Uint8Array(BYTES.buffer, 0, Bi));
 };
 
-// 解码图块
 Codec.decodeTiles = function (code, width, height) {
 	const { decodeClone } = this;
 	const BYTES = this.textEncoder.encode(code);
@@ -225,7 +212,6 @@ Codec.decodeTiles = function (code, width, height) {
 	return TILES;
 };
 
-// 编码地形，最多可存放4位数据(目前仅使用了2位)
 Codec.encodeTerrains = function (terrains) {
 	const { encodeClone } = this;
 	const TERRAINS = terrains;
@@ -273,7 +259,6 @@ Codec.encodeTerrains = function (terrains) {
 	return this.textDecoder.decode(new Uint8Array(BYTES.buffer, 0, Bi));
 };
 
-// 解码地形
 Codec.decodeTerrains = function (code, width, height) {
 	const { decodeClone } = this;
 	const BYTES = this.textEncoder.encode(code);
@@ -326,7 +311,6 @@ Codec.decodeTerrains = function (code, width, height) {
 	return TERRAINS;
 };
 
-// 编码队伍数据
 Codec.encodeTeamData = function (data) {
 	const DATA = data;
 	const LENGTH = DATA.length;
@@ -347,7 +331,6 @@ Codec.encodeTeamData = function (data) {
 	return this.textDecoder.decode(new Uint8Array(BYTES.buffer, 0, Bi));
 };
 
-// 解码队伍数据
 Codec.decodeTeamData = function (code, length) {
 	const BYTES = this.textEncoder.encode(code);
 	const BYTES_LENGTH = BYTES.length;
@@ -376,7 +359,6 @@ Codec.decodeTeamData = function (code, length) {
 	return DATA;
 };
 
-// 编码克隆数据
 Codec.encodeClone = function (array, index, count) {
 	const bits = Math.ceil(Math.log2(count + 1));
 	const bytes = Math.ceil(bits / 5);
@@ -389,7 +371,6 @@ Codec.encodeClone = function (array, index, count) {
 	return index;
 };
 
-// 解码克隆数据
 Codec.decodeClone = (function IIFE() {
 	const response = { index: 0, count: 0 };
 	return (array, index) => {
@@ -405,7 +386,6 @@ Codec.decodeClone = (function IIFE() {
 	};
 })();
 
-// 获取所有瓦片地图
 Codec.getTilemaps = (function IIFE() {
 	const getTilemaps = (items, list) => {
 		for (const item of items) {
@@ -425,17 +405,4 @@ Codec.getTilemaps = (function IIFE() {
 	};
 })();
 
-// 文件解密函数
-// btoa(`new Function(\`
-// window.decrypt = buffer => {
-//   const array = new Uint8Array(buffer)
-//   for (let i = 0; i < 0x10; i++) {
-//     array[i] -= 0x80
-//   }
-//   return buffer
-// }
-// \`)()
-// new Function(\`
-// const {decrypt} = window
-// window.decrypt = buffer => decrypt(buffer)
-// \`)()`)
+// 文件解密函数 btoa(`new Function(\` window.decrypt = buffer => { const array = new Uint8Array(buffer) for (let i = 0; i < 0x10; i++) { array[i] -= 0x80 } return buffer } \`)() new Function(\` const {decrypt} = window window.decrypt = buffer => decrypt(buffer) \`)()`)

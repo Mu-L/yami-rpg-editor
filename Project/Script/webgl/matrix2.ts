@@ -1,5 +1,3 @@
-﻿// ******************************** 平面矩阵类 ********************************
-
 export class Matrix extends Float32Array {
 	constructor() {
 		super(9);
@@ -8,7 +6,6 @@ export class Matrix extends Float32Array {
 		this[8] = 1;
 	}
 
-	// 重置
 	reset(): this {
 		this[0] = 1;
 		this[1] = 0;
@@ -19,7 +16,6 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 设置矩阵
 	set(matrix: Matrix | number[] | Float32Array): this {
 		this[0] = matrix[0];
 		this[1] = matrix[1];
@@ -30,7 +26,6 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 设置参数
 	set6f(a: number, b: number, c: number, d: number, e: number, f: number): this {
 		this[0] = a;
 		this[1] = b;
@@ -41,7 +36,6 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 乘以矩阵
 	multiply(matrix: Matrix | number[] | Float32Array): this {
 		const A = this[0];
 		const B = this[1];
@@ -64,7 +58,6 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 旋转
 	rotate(angle: number): this {
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
@@ -79,7 +72,6 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 在指定点旋转
 	rotateAt(x: number, y: number, angle: number): this {
 		const cos = Math.cos(angle);
 		const sin = Math.sin(angle);
@@ -96,7 +88,6 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 缩放
 	scale(h: number, v: number): this {
 		this[0] *= h;
 		this[1] *= h;
@@ -105,7 +96,6 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 在指定点缩放
 	scaleAt(x: number, y: number, h: number, v: number): this {
 		const a = this[0];
 		const b = this[1];
@@ -120,14 +110,12 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 平移
 	translate(x: number, y: number): this {
 		this[6] += this[0] * x + this[3] * y;
 		this[7] += this[1] * x + this[4] * y;
 		return this;
 	}
 
-	// 在指定点倾斜
 	skewAt(x: number, y: number, h: number, v: number): this {
 		const a = this[0];
 		const b = this[1];
@@ -142,21 +130,18 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 水平镜像
 	mirrorh(): this {
 		this[0] = -this[0];
 		this[3] = -this[3];
 		return this;
 	}
 
-	// 垂直镜像
 	mirrorv(): this {
 		this[1] = -this[1];
 		this[4] = -this[4];
 		return this;
 	}
 
-	// 投影
 	project(flip: number, width: number, height: number): this {
 		this[0] = 2 / width;
 		this[1] = 0;
@@ -167,6 +152,5 @@ export class Matrix extends Float32Array {
 		return this;
 	}
 
-	// 静态 - 平面矩阵实例
 	static instance = new Matrix();
 }

@@ -6,55 +6,42 @@ import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 场景 - 动画页面 ********************************
-
 {
 	const SceneAnimation = {
-		// properties
 		owner: Scene,
 		target: null,
 		nameBox: $('#sceneAnimation-name'),
 		motions: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		animationIdWrite: null,
 		paramInput: null
 	};
 
-	// 初始化
 	SceneAnimation.initialize = function () {
-		// 创建动画旋转选项
 		$('#sceneAnimation-rotatable').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
 
-		// 绑定条件列表
 		$('#sceneAnimation-conditions').bind(new ConditionListInterface(this, Scene));
 
-		// 绑定事件列表
 		$('#sceneAnimation-events').bind(new EventListInterface(this, Scene));
 
-		// 绑定脚本列表
 		$('#sceneAnimation-scripts').bind(new ScriptListInterface(this, Scene));
 
-		// 绑定脚本参数面板
 		$('#sceneAnimation-parameter-pane').bind($('#sceneAnimation-scripts'));
 
-		// 同步滑动框和数字框的数值
 		$('#sceneAnimation-angle-slider').synchronize($('#sceneAnimation-angle'));
 		$('#sceneAnimation-scale-slider').synchronize($('#sceneAnimation-scale'));
 		$('#sceneAnimation-speed-slider').synchronize($('#sceneAnimation-speed'));
 		$('#sceneAnimation-opacity-slider').synchronize($('#sceneAnimation-opacity'));
 		$('#sceneAnimation-priority-slider').synchronize($('#sceneAnimation-priority'));
 
-		// 侦听事件
 		$('#sceneAnimation-animationId').on('write', this.animationIdWrite);
 		const elements = $(`#sceneAnimation-name, #sceneAnimation-animationId,
     #sceneAnimation-motion, #sceneAnimation-rotatable, #sceneAnimation-x, #sceneAnimation-y,
@@ -74,7 +61,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建动画
 	SceneAnimation.create = function () {
 		return {
 			class: 'animation',
@@ -99,12 +85,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	SceneAnimation.open = function (animation) {
 		if (this.target !== animation) {
 			this.target = animation;
 
-			// 写入数据
 			const write = getElementWriter('sceneAnimation', animation);
 			write('name');
 			write('animationId');
@@ -123,7 +107,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	SceneAnimation.close = function () {
 		if (this.target) {
 			Scene.list.unselect(this.target);
@@ -137,7 +120,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 写入数据
 	SceneAnimation.write = function (options) {
 		if (options.x !== undefined) {
 			$('#sceneAnimation-x').write(options.x);
@@ -150,7 +132,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	SceneAnimation.update = function (animation, key, value) {
 		Scene.planToSave();
 		switch (key) {
@@ -220,7 +201,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	// 动画ID - 写入事件
 	SceneAnimation.animationIdWrite = function (event) {
 		const elMotion = $('#sceneAnimation-motion');
 		const items = Animation.getMotionListItems(event.value);
@@ -228,7 +208,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		elMotion.write(elMotion.read() ?? items[0].value);
 	};
 
-	// 参数 - 输入事件
 	SceneAnimation.paramInput = function (event) {
 		SceneAnimation.update(SceneAnimation.target, Inspector.getKey(this), this.read());
 	};

@@ -1,18 +1,13 @@
-// ******************************** OS拖拽处理 ********************************
-
 {
-	// 拖拽状态
 	let dragging = false;
 	let osdragging = false;
 
-	// 拖拽开始事件 - 阻止拖拽元素
 	const dragstart = function (event: DragEvent): void {
 		dragging = true;
 		event.preventDefault();
 		window.on('pointerup', pointerup);
 	};
 
-	// 拖拽结束事件 - 比指针弹起事件优先执行
 	const dragend = function (event: DragEvent): void {
 		if (dragging) {
 			dragging = false;
@@ -20,7 +15,6 @@
 		}
 	};
 
-	// 指针弹起事件 - 拖拽被阻止时的备用方案
 	const pointerup = function (event: PointerEvent): void {
 		if (dragging) {
 			dragging = false;
@@ -28,7 +22,6 @@
 		}
 	};
 
-	// 拖拽进入事件
 	const dragenter = function (event: DragEvent): void {
 		if (!dragging && !osdragging && !event.relatedTarget) {
 			osdragging = true;
@@ -39,7 +32,6 @@
 		}
 	};
 
-	// 拖拽离开事件
 	const dragleave = function (event: DragEvent): void {
 		if (osdragging && !event.relatedTarget) {
 			osdragging = false;
@@ -50,13 +42,10 @@
 		}
 	};
 
-	// 拖拽悬停事件
 	const dragover = function (event: DragEvent): void {
 		event.preventDefault();
 	};
 
-	// 拖拽释放事件
-	// 停止冒泡会拦截该事件
 	const drop = function (event: DragEvent): void {
 		if (osdragging) {
 			osdragging = false;
@@ -67,7 +56,6 @@
 		}
 	};
 
-	// 初始化
 	window.on('dragstart', dragstart);
 	window.on('dragend', dragend);
 	window.on('dragenter', dragenter);

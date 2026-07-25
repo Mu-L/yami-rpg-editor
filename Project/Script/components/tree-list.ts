@@ -4,8 +4,6 @@ import { Menu } from './menu-list.ts';
 import { TextBox } from './text-box.ts';
 import { Timer } from '../util/timer.ts';
 
-// ******************************** 树状列表 ********************************
-
 export class TreeList extends HTMLElement {
 	display: string;
 	keyword: string | null;
@@ -40,7 +38,6 @@ export class TreeList extends HTMLElement {
 	constructor() {
 		super();
 
-		// 创建重命名计时器
 		const timer = new Timer({
 			duration: 500,
 			callback: (timer) => {
@@ -57,12 +54,10 @@ export class TreeList extends HTMLElement {
 			}
 		});
 
-		// 创建根节点
 		const root = Object.defineProperty({}, 'children', {
 			get: () => this.data
 		});
 
-		// 设置属性
 		this.tabIndex = 0;
 		this.display = 'normal';
 		this.keyword = null;
@@ -84,9 +79,7 @@ export class TreeList extends HTMLElement {
 		this.removable = false;
 		this.renamable = false;
 		this.foldable = true;
-		// 锁定目录的功能现在用不到
 		this.lockDirectory = false;
-		// 未实现多选功能
 		this.multipleSelect = false;
 		this.selectEventEnabled = false;
 		this.recordEventEnabled = false;
@@ -94,7 +87,6 @@ export class TreeList extends HTMLElement {
 		this.openEventEnabled = false;
 		this.updateEventEnabled = false;
 
-		// 侦听事件
 		this.on('scroll', this.resize);
 		this.on('keydown', this.keydown);
 		this.on('pointerdown', this.pointerdown);
@@ -105,18 +97,15 @@ export class TreeList extends HTMLElement {
 		this.on('change', this.dataChange);
 	}
 
-	// 绑定数据
 	bind(getter: any) {
 		return Object.defineProperty(this, 'data', { get: getter });
 	}
 
-	// 读取数据
 	read() {
 		const { selections } = this;
 		return selections.length === 1 ? selections[0] : null;
 	}
 
-	// 初始化
 	initialize() {
 		const { data } = this;
 		if (!data.initialized) {
@@ -128,16 +117,13 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 更新列表
 	update() {
 		const { elements } = this;
 		elements.start = -1;
 		elements.count = 0;
 
-		// 初始化数据
 		this.initialize();
 
-		// 创建列表项目
 		switch (this.display) {
 			case 'normal':
 				if (this.data) {
@@ -150,35 +136,28 @@ export class TreeList extends HTMLElement {
 				}
 		}
 
-		// 清除多余的元素
 		this.clearElements(elements.count);
 
-		// 发送更新事件
 		if (this.updateEventEnabled) {
 			this.dispatchUpdateEvent();
 		}
 
-		// 重新调整
 		this.resize();
 	}
 
-	// 刷新列表
 	refresh() {
 		this.deleteNodeElements(this.data);
 		this.update();
 	}
 
-	// 重新调整
 	resize() {
 		return CommonList.resize(this as unknown as CommonList);
 	}
 
-	// 更新头部和尾部元素
 	updateHeadAndFoot() {
 		return CommonList.updateHeadAndFoot(this as unknown as CommonList);
 	}
 
-	// 在重新调整时更新
 	updateOnResize(element: any) {
 		if (element.changed) {
 			element.changed = false;
@@ -186,7 +165,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 创建扁平排列的项目
 	createFlatItems(data: any) {
 		const elements = this.elements;
 		const length = data.length;
@@ -196,7 +174,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 创建缩进排列的项目
 	createIndentedItems(data: any, parent: any, indent: any) {
 		const elements = this.elements;
 		const length = data.length;
@@ -213,7 +190,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 搜索节点: regexp or string
 	searchNodes(keyword: any) {
 		const { data } = this;
 		if (!data) return;
@@ -236,13 +212,11 @@ export class TreeList extends HTMLElement {
 		this.update();
 	}
 
-	// 搜索节点(防抖入口): 供搜索框输入事件调用，避免每次按键都全量过滤大列表
-	// 注意: 数据变更后需要"即时"重过滤的内部调用仍应直接使用 searchNodes
+	// 搜索节点(防抖入口): 供搜索框输入事件调用，避免每次按键都全量过滤大列表 注意: 数据变更后需要"即时"重过滤的内部调用仍应直接使用 searchNodes
 	searchNodesDebounced(keyword: any) {
 		(this._searchNodesDebounced ??= debounce((kw) => this.searchNodes(kw), 150))(keyword);
 	}
 
-	// 搜索节点算法
 	searchNodesAlgorithm(data: any, keyword: any, list: any) {
 		const length = data.length;
 		for (let i = 0; i < length; i++) {
@@ -261,11 +235,9 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 创建节点元素
 	createNodeElement(item: any, indent: any) {
 		let element = item.element;
 		if (element === undefined) {
-			// 创建列表项
 			element = document.createElement('node-item');
 			element.item = item;
 			Object.defineProperty(item, 'element', {
@@ -273,7 +245,6 @@ export class TreeList extends HTMLElement {
 				value: element
 			});
 
-			// 激活选中状态
 			if (this.selections.includes(item)) {
 				element.addClass('selected');
 			}
@@ -283,11 +254,9 @@ export class TreeList extends HTMLElement {
 		return element;
 	}
 
-	// 更新节点元素
 	updateNodeElement(element: any) {
 		const { item } = element;
 		if (!element.textNode) {
-			// 创建折叠标记
 			let folderMark = null;
 			let markVisible = false;
 			let markIndent = this.foldable ? 16 : 0;
@@ -298,15 +267,12 @@ export class TreeList extends HTMLElement {
 				element.appendChild(folderMark);
 			}
 
-			// 创建节点图标
 			const nodeIcon = this.createIcon(item);
 			element.appendChild(nodeIcon);
 
-			// 创建文本节点
 			const textNode = this.createText(item);
 			element.appendChild(textNode);
 
-			// 设置元素属性
 			element.draggable = true;
 			element.expanded = false;
 			element.markVisible = markVisible;
@@ -316,21 +282,18 @@ export class TreeList extends HTMLElement {
 			element.nodeIcon = nodeIcon;
 			element.textNode = textNode;
 
-			// 调用组件创建器
 			for (const creator of this.creators) {
 				creator(item);
 			}
 		}
 
 		if (item.expanded !== undefined) {
-			// 开关折叠标记
 			const markVisible = item.children.length !== 0;
 			if (element.markVisible !== markVisible) {
 				element.markVisible = markVisible;
 				element.folderMark.style.visibility = markVisible ? 'inherit' : 'hidden';
 			}
 
-			// 设置折叠标记
 			const expanded = markVisible && item.expanded;
 			if (item.class === 'folder') {
 				if (element.expanded !== expanded) {
@@ -361,20 +324,17 @@ export class TreeList extends HTMLElement {
 			}
 		}
 
-		// 设置文本缩进
 		const textIndent = element.markIndent + element.indent * 12;
 		if (element.textIndent !== textIndent) {
 			element.textIndent = textIndent;
 			element.style.textIndent = `${textIndent}px`;
 		}
 
-		// 调用组件更新器
 		for (const updater of this.updaters) {
 			updater(item);
 		}
 	}
 
-	// 删除绑定的节点元素
 	deleteNodeElements(data: any) {
 		const length = data.length;
 		for (let i = 0; i < length; i++) {
@@ -389,7 +349,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 创建图标
 	createIcon(item: any) {
 		const icon = document.createElement('node-icon');
 		switch (item.class) {
@@ -403,17 +362,14 @@ export class TreeList extends HTMLElement {
 		return icon;
 	}
 
-	// 创建文本
 	createText(item: any) {
 		return document.createTextNode(this.parseName(item));
 	}
 
-	// 解析名称
 	parseName(item: any) {
 		return item.name;
 	}
 
-	// 更新项目名称
 	updateItemName(item: any) {
 		if (item?.element?.textNode) {
 			const element = item.element;
@@ -430,11 +386,9 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 获取属性匹配的项目
 	getItemByProperties(properties: any) {
 		const entries = Object.entries(properties);
 
-		// 递归查找
 		const find = (items) => {
 			const length = items.length;
 			for (let i = 0; i < length; i++) {
@@ -461,7 +415,6 @@ export class TreeList extends HTMLElement {
 		return find(this.data);
 	}
 
-	// 判断节点包含关系
 	contain(node: any, target: any) {
 		while (target instanceof Object) {
 			if (target === node) {
@@ -472,7 +425,6 @@ export class TreeList extends HTMLElement {
 		return false;
 	}
 
-	// 重命名节点
 	renameNode(item: any, newName: any) {
 		if (item) {
 			item.name = newName;
@@ -480,7 +432,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 重置节点名称
 	resetItemName(item: any) {
 		if (item) {
 			item.name = this.generateCopyName(item);
@@ -488,7 +439,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 生成独一无二的名称(副本)
 	generateUniqueName(item: any) {
 		const flags = {};
 		const items = item.parent.children;
@@ -504,7 +454,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 创建副本
 	duplicate(item: any) {
 		const copy = Object.clone(item);
 		copy.name = this.generateUniqueName(item);
@@ -517,7 +466,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 添加节点
 	addNodeTo(sItem: any, dItem: any, insertBefore: any = false) {
 		if (!sItem) {
 			return;
@@ -526,20 +474,16 @@ export class TreeList extends HTMLElement {
 		let dList;
 		let dIndex;
 
-		// 设置默认位置
 		const { data } = this;
 		if (!dItem) {
 			dItem = data;
 		}
-		// 添加到根目录
 		if (dItem === data) {
 			dList = data;
 			dIndex = dList.length;
-			// 添加到节点
 		} else if (dItem.children && !insertBefore) {
 			dList = dItem.children;
 			dIndex = dList.length;
-			// 插入到节点前
 		} else {
 			dList = dItem.parent.children;
 			if (dList instanceof Array) {
@@ -550,12 +494,10 @@ export class TreeList extends HTMLElement {
 			dList.splice(dIndex, 0, sItem);
 			this.unselect();
 
-			// 创建父对象引用属性
 			if (sItem.parent === undefined) {
 				TreeList.createParents([sItem], null);
 			}
 
-			// 展开所在目录
 			let item = dItem;
 			while (item.parent !== undefined) {
 				if (item.expanded === false) {
@@ -564,7 +506,6 @@ export class TreeList extends HTMLElement {
 				item = item.parent;
 			}
 
-			// 发送记录事件
 			if (this.recordEventEnabled) {
 				const record = new Event('record');
 				const response = {
@@ -577,7 +518,6 @@ export class TreeList extends HTMLElement {
 				this.dispatchEvent(record);
 			}
 
-			// 更新目录列表
 			!sItem.parent && this.onCreate?.(sItem);
 			this.update();
 			this.select(sItem);
@@ -586,14 +526,12 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 删除节点
 	deleteNode(item: any) {
 		const items = item.parent.children;
 		if (items instanceof Array) {
 			const index = items.indexOf(item);
 			items.splice(index, 1);
 
-			// 发送记录事件
 			if (this.recordEventEnabled) {
 				const record = new Event('record');
 				const response = {
@@ -606,7 +544,6 @@ export class TreeList extends HTMLElement {
 				this.dispatchEvent(record);
 			}
 
-			// 更新目录列表
 			this.unselectIn(item);
 			this.onDelete?.(item);
 			this.update();
@@ -614,7 +551,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 迁移项目
 	removeItemTo(sItem: any, dItem: any) {
 		if (sItem === dItem || (this.lockDirectory && dItem === this.root)) {
 			return;
@@ -634,7 +570,6 @@ export class TreeList extends HTMLElement {
 				dItem.expanded = true;
 			}
 
-			// 发送记录事件
 			if (this.recordEventEnabled) {
 				const record = new Event('record');
 				const response = {
@@ -653,7 +588,6 @@ export class TreeList extends HTMLElement {
 				this.dispatchEvent(record);
 			}
 
-			// 更新目录列表
 			this.insertPaddingAndClear();
 			this.update();
 			this.onRemove?.(sItem);
@@ -662,7 +596,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 迁移项目插入到目标前
 	removeItemToInsert(sItem: any, dItem: any) {
 		if (sItem === dItem || (this.lockDirectory && dItem.parent === this.root)) {
 			return;
@@ -680,7 +613,6 @@ export class TreeList extends HTMLElement {
 				return;
 			}
 
-			// 发送记录事件
 			if (this.recordEventEnabled) {
 				const record = new Event('record');
 				const response = {
@@ -699,7 +631,6 @@ export class TreeList extends HTMLElement {
 				this.dispatchEvent(record);
 			}
 
-			// 更新目录列表
 			this.insertPaddingAndClear();
 			this.update();
 			this.onRemove?.(sItem);
@@ -708,11 +639,7 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 恢复数据 - 遵循:
-	// 取消选择已删除数据 > 更新列表 > 选择新插入数据
-	// 的顺序来触发事件
 	restore(operation: any, response: any) {
-		// 处于搜索模式则清空搜索结果
 		// 避免重复更新和选项位置错乱
 		if (this.display === 'search') {
 			this.searchResults = Array.empty;
@@ -768,7 +695,6 @@ export class TreeList extends HTMLElement {
 					}
 				}
 
-				// 更新目录列表
 				this.update();
 				operation === 'undo' && this.select(item);
 				this.scrollToSelection();
@@ -801,7 +727,6 @@ export class TreeList extends HTMLElement {
 					}
 				}
 
-				// 更新目录列表
 				this.insertPaddingAndClear();
 				this.update();
 				this.select(item);
@@ -813,7 +738,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 打开项目
 	open(item: any) {
 		if (item && this.openEventEnabled) {
 			const open = new Event('open');
@@ -822,7 +746,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 选择项目
 	select(item: any) {
 		if (item instanceof Object && this.read() !== item) {
 			this.unselect();
@@ -846,7 +769,6 @@ export class TreeList extends HTMLElement {
 		this.selectEventEnabled = enabled;
 	}
 
-	// 取消选择
 	unselect(item?: any) {
 		let selections = Array.empty;
 		if (item === undefined) {
@@ -856,7 +778,6 @@ export class TreeList extends HTMLElement {
 			selections = [item];
 		}
 		if (selections.length !== 0) {
-			// 提高blur事件的触发优先级
 			TreeList.textBox.input.blur();
 			for (const item of selections) {
 				const { element } = item;
@@ -873,7 +794,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 取消范围内的选择 - 已修改未测试
 	unselectIn(item: any) {
 		const targets = [];
 		for (let target of this.selections) {
@@ -891,7 +811,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 选择相对位置的项目
 	selectRelative(direction: any) {
 		const elements = this.elements;
 		const count = elements.count;
@@ -923,7 +842,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 展开选中项
 	expandSelection() {
 		const item = this.read();
 		if (item !== null && item.expanded !== undefined && item.element !== undefined) {
@@ -933,7 +851,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 展开到选中项
 	expandToSelection(update = true) {
 		const item = this.read();
 		if (item !== null) {
@@ -941,7 +858,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 展开到指定项目
 	expandToItem(item, update = true) {
 		item = item.parent;
 		if (!item) return;
@@ -959,7 +875,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 滚动到选中项
 	scrollToSelection(mode = 'active') {
 		const selection = this.read();
 		if (selection && this.hasScrollBar()) {
@@ -992,7 +907,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 列表扩展方法 - 滚动到头部
 	scrollToHome() {
 		const element = this.elements[0];
 		if (element instanceof HTMLElement) {
@@ -1001,7 +915,6 @@ export class TreeList extends HTMLElement {
 		this.scroll(0, 0);
 	}
 
-	// 列表扩展方法 - 滚动到尾部
 	scrollToEnd() {
 		const elements = this.elements;
 		const index = elements.count - 1;
@@ -1012,7 +925,6 @@ export class TreeList extends HTMLElement {
 		this.scroll(0, this.scrollHeight);
 	}
 
-	// 列表扩展方法 - 向上翻页
 	pageUp(select: any) {
 		const scrollLines = Math.floor(this.clientHeight / 20) - 1;
 		if (select) {
@@ -1026,7 +938,6 @@ export class TreeList extends HTMLElement {
 		this.scrollBy(0, -scrollLines * 20);
 	}
 
-	// 列表扩展方法 - 向下翻页
 	pageDown(select: any) {
 		const scrollLines = Math.floor(this.clientHeight / 20) - 1;
 		if (select) {
@@ -1040,13 +951,11 @@ export class TreeList extends HTMLElement {
 		this.scrollBy(0, +scrollLines * 20);
 	}
 
-	// 列表扩展方法 - 获取选中项的元素索引
 	getElementIndexOfSelection(defIndex: any) {
 		const item = this.read();
 		return item ? this.elements.indexOf(item.element) : defIndex;
 	}
 
-	// 重命名
 	rename(item: any) {
 		if (this.renamable) {
 			const { element } = item;
@@ -1075,7 +984,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 取消重命名
 	cancelRenaming() {
 		const { timer } = this;
 		if (timer.target) {
@@ -1087,7 +995,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 插入填充元素并且清除其他元素
 	insertPaddingAndClear() {
 		const padding = TreeList.padding;
 		let count = this.elements.count;
@@ -1096,11 +1003,8 @@ export class TreeList extends HTMLElement {
 			padding.count = count;
 			padding.style.height = `${count * 20}px`;
 		}
-		// 临时插入填充元素用来保存垂直滚动位置
-		// 兼容列表不存在元素的情况
 		const head = this.childNodes[0];
 		this.insertBefore(padding, head);
-		// 清除其他元素
 		const { childNodes } = this;
 		const { length } = childNodes;
 		for (let i = length - 1; i > 0; i--) {
@@ -1108,12 +1012,10 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 清除元素
 	clearElements(start: any) {
 		return CommonList.clearElements(this as unknown as CommonList, start);
 	}
 
-	// 清除列表
 	clear() {
 		if (this.display === 'search') {
 			this.display = 'normal';
@@ -1130,7 +1032,6 @@ export class TreeList extends HTMLElement {
 		return this;
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -1159,7 +1060,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 键盘按下事件
 	keydown(event: any) {
 		if (!this.data) {
 			return;
@@ -1185,7 +1085,6 @@ export class TreeList extends HTMLElement {
 					const item = this.read();
 					if (item) {
 						// 阻止默认事件是因为：
-						// 插入全局变量标签时默认接着输入换行符
 						event.preventDefault();
 						event.stopPropagation();
 						this.open(item);
@@ -1222,9 +1121,7 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: any) {
-		// 拖拽列表项进行滚动时释放拖拽状态
 		// 可能在列表项动态刷新时不触发dragend事件
 		this.dragend();
 		this.cancelRenaming();
@@ -1232,7 +1129,6 @@ export class TreeList extends HTMLElement {
 			case 0: {
 				const element = event.target;
 				if (element.tagName === 'FOLDER-MARK') {
-					// 阻止拖拽开始事件
 					event.preventDefault();
 					const { item } = element.parentNode;
 					item.expanded = !item.expanded;
@@ -1264,7 +1160,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 指针弹起事件
 	pointerup(event: any) {
 		if (this.dragging || !this.data) {
 			return;
@@ -1298,7 +1193,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 鼠标双击事件
 	doubleclick(event: any) {
 		const element = event.target;
 		if (element.tagName === 'NODE-ITEM') {
@@ -1314,7 +1208,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 拖拽开始事件
 	dragstart(event: any) {
 		if (
 			this.removable &&
@@ -1339,7 +1232,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 拖拽结束事件
 	dragend(event?: any) {
 		if (this.dragging) {
 			this.removeClass('dragging');
@@ -1353,7 +1245,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 拖拽进入事件
 	dragenter(event: any) {
 		if (this.dragging) {
 			event.preventDefault();
@@ -1361,7 +1252,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 拖拽离开事件
 	dragleave(event: any) {
 		if (this.dragging && !this.contains(event.relatedTarget)) {
 			this.dragging.offsetY = -1;
@@ -1369,7 +1259,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 拖拽悬停事件
 	dragover(event: any) {
 		const { dragging } = this;
 		if (dragging) {
@@ -1380,7 +1269,6 @@ export class TreeList extends HTMLElement {
 			}
 			dragging.offsetY = event.offsetY;
 			const element = event.target.seek('node-item');
-			// hint在文件夹上拖拽滚动时可能溢出显示
 			const hint = dragging.hint.show();
 			if (element.tagName === 'NODE-ITEM') {
 				const sItem = dragging.target.item;
@@ -1452,7 +1340,6 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	// 拖拽释放事件
 	drop(event: any) {
 		const { dragging } = this;
 		if (!dragging) {
@@ -1488,18 +1375,15 @@ export class TreeList extends HTMLElement {
 			}
 		}
 
-		// 创建项目后不能触发拖拽结束事件
 		this.dragend();
 	}
 
-	// 数据改变事件
 	dataChange(event: any) {
 		if (this.display === 'search') {
 			this.searchNodes(this.keyword);
 		}
 	}
 
-	// 静态 - 列表填充元素
 	static padding = (function IIFE() {
 		const padding = document.createElement('box');
 		padding.style.display = 'block';
@@ -1507,7 +1391,6 @@ export class TreeList extends HTMLElement {
 		return padding;
 	})();
 
-	// 静态 - 创建节点父对象
 	static createParents = (function IIFE() {
 		const descriptor = {
 			configurable: true,
@@ -1533,7 +1416,6 @@ export class TreeList extends HTMLElement {
 		};
 	})();
 
-	// 静态 - 删除数据缓存
 	static deleteCaches = (function IIFE() {
 		const uninstall = (items) => {
 			for (const item of items) {
@@ -1550,13 +1432,11 @@ export class TreeList extends HTMLElement {
 		};
 	})();
 
-	// 静态 - 文本输入框
 	static textBox = (function IIFE() {
 		const textBox = new TextBox();
 		textBox.addClass('node-list-text-box');
 		textBox.input.addClass('node-list-text-box-input');
 
-		// 键盘按下事件
 		textBox.on('keydown', function (event) {
 			event.stopPropagation();
 			switch (event.code) {
@@ -1572,22 +1452,18 @@ export class TreeList extends HTMLElement {
 			}
 		});
 
-		// 输入事件
 		textBox.on('input', function (event) {
 			this.fitContent();
 		});
 
-		// 选择事件
 		textBox.on('select', function (event) {
 			event.stopPropagation();
 		});
 
-		// 改变事件
 		textBox.on('change', function (event) {
 			event.stopPropagation();
 		});
 
-		// 失去焦点事件
 		textBox.on('blur', function (event) {
 			const element = this.parentNode;
 			const list = element.parentNode;

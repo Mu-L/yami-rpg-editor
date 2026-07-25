@@ -10,32 +10,26 @@ import { Reference } from '../log/related-references.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 资源选择器 ********************************
-
 import '../components/file-browser.js';
 import { EventBus } from '../module/eventbus.ts';
 const Selector = $('#selector-browser');
 export { Selector };
-// properties
 Selector.target = null;
 Selector.allowNone = true;
 Selector.audioPlayed = false;
 Selector.lastDir = 'Assets';
 
-// 设置搜索框ID接入语言包（必须在 Local.update 之前完成，否则本地化找不到元素）
 // 自定义元素在 editor_loaded 后才升级，searcher 才存在，故延迟绑定
 EventBus.once('editor_loaded', () => {
 	if (Selector.head && Selector.head.searcher) {
 		Selector.head.searcher.id = 'selector-search';
 	}
 });
-// methods
 Selector.initialize = null;
 Selector.open = null;
 Selector.playAudio = null;
 Selector.saveToProject = null;
 Selector.loadFromProject = null;
-// events
 Selector.windowClosed = null;
 Selector.windowResize = null;
 Selector.searcherKeydown = null;
@@ -44,12 +38,10 @@ Selector.bodyOpen = null;
 Selector.bodyPopup = null;
 Selector.confirm = null;
 
-// 初始化
 Selector.initialize = function () {
 	// 因为不需要拖拽，覆盖body.activateFile事件
 	this.body.activateFile = this.body.select;
 
-	// 侦听事件
 	this.body.on('keydown', this.bodyKeydown);
 	this.body.on('open', this.bodyOpen);
 	this.body.on('popup', this.bodyPopup);
@@ -59,7 +51,6 @@ Selector.initialize = function () {
 	$('#selector-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 Selector.open = function (target, allowNone = true) {
 	this.target = target;
 	this.allowNone = allowNone;
@@ -81,7 +72,6 @@ Selector.open = function (target, allowNone = true) {
 	head.searcher.getFocus();
 };
 
-// 播放音频
 Selector.playAudio = function () {
 	const files = this.links.body.selections;
 	if (files.length === 1 && files[0].type === 'audio') {
@@ -91,21 +81,18 @@ Selector.playAudio = function () {
 	}
 };
 
-// 保存状态到项目文件
 Selector.saveToProject = function (project) {
 	const { selector } = project;
 	const { viewIndex } = this.body;
 	selector.view = viewIndex ?? selector.view;
 };
 
-// 从项目文件中加载状态
 Selector.loadFromProject = function (project) {
 	const { view } = project.selector;
 	this.directory = [Directory.assets];
 	this.body.setViewIndex(view);
 };
 
-// 窗口 - 已关闭事件
 Selector.windowClosed = function (event) {
 	const folder = Selector.nav.selections[0] ?? Selector.backupFolders[0];
 	Selector.lastDir = folder ? folder.path : 'Assets';
@@ -114,14 +101,12 @@ Selector.windowClosed = function (event) {
 	Selector.nav.clear();
 	Selector.head.address.clear();
 	Selector.body.clear();
-	// 停止播放预览中的声音
 	if (Selector.audioPlayed) {
 		Selector.audioPlayed = false;
 		AudioManager.player.stop();
 	}
 };
 
-// 窗口 - 调整大小事件
 Selector.windowResize = function (event) {
 	Selector.nav.resize();
 	Selector.body.computeGridProperties();
@@ -129,7 +114,6 @@ Selector.windowResize = function (event) {
 	Selector.body.updateContentSize();
 };
 
-// 搜索框 - 键盘按下事件
 Selector.searcherKeydown = function (event) {
 	if (event.cmdOrCtrlKey) {
 		return;
@@ -161,7 +145,6 @@ Selector.searcherKeydown = function (event) {
 	}
 };
 
-// 身体 - 键盘按下事件
 Selector.bodyKeydown = function (event) {
 	if (event.cmdOrCtrlKey) {
 		return;
@@ -177,12 +160,10 @@ Selector.bodyKeydown = function (event) {
 	}
 };
 
-// 身体 - 打开事件
 Selector.bodyOpen = function (event) {
 	return Selector.confirm(event);
 };
 
-// 身体 - 菜单弹出事件
 Selector.bodyPopup = function (event) {
 	const items = [];
 	const { target } = event.raw;
@@ -291,7 +272,6 @@ Selector.bodyPopup = function (event) {
 	}
 };
 
-// 确定按钮 - 鼠标点击事件
 Selector.confirm = function (event) {
 	if (Selector.dragging) {
 		return;

@@ -15,8 +15,6 @@ import { Local } from '../tools/localization.ts';
 import { Path } from '../util/config.ts';
 import { FileBrowserLinks } from '../types/file-browser-links.ts';
 
-// ******************************** 文件身体面板 ********************************
-
 export class FileBodyPane extends HTMLElement {
 	viewIndex: number | null;
 	viewMode: string | null;
@@ -53,7 +51,6 @@ export class FileBodyPane extends HTMLElement {
 	constructor() {
 		super();
 
-		// 创建重命名计时器
 		const timer = new Timer({
 			duration: 500,
 			callback: (timer: any) => {
@@ -72,7 +69,6 @@ export class FileBodyPane extends HTMLElement {
 			}
 		});
 
-		// 设置属性
 		this.viewIndex = null;
 		this.viewMode = null;
 		this.timer = timer;
@@ -96,7 +92,6 @@ export class FileBodyPane extends HTMLElement {
 		this.popupEventEnabled = false;
 		this.textBox = FileBodyPane.textBox;
 
-		// 设置内容元素属性访问器
 		const { elements } = this;
 		Object.defineProperty(this.content, 'countPerLine', {
 			get: function (this: any) {
@@ -106,7 +101,6 @@ export class FileBodyPane extends HTMLElement {
 			}
 		});
 
-		// 侦听事件
 		this.on('scroll', this.resize);
 		this.on('keydown', this.keydown);
 		this.on('pointerdown', this.pointerdown);
@@ -116,7 +110,6 @@ export class FileBodyPane extends HTMLElement {
 		window.on('keydown', this.windowKeydown);
 	}
 
-	// 设置视图索引
 	setViewIndex(viewIndex: number): void {
 		viewIndex = Math.clamp(viewIndex, 0, 4);
 		if (this.viewIndex !== viewIndex) {
@@ -127,7 +120,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 更新视图模式
 	updateViewMode(): void {
 		let viewMode: string | null = null;
 		switch (this.viewIndex) {
@@ -159,7 +151,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 获取文件
 	getFiles(): any[] {
 		const { browser, nav } = this.links;
 		const folders = nav.selections;
@@ -189,13 +180,11 @@ export class FileBodyPane extends HTMLElement {
 		return items;
 	}
 
-	// 更新文件
 	updateFiles(): void {
 		const { elements } = this;
 		elements.start = -1;
 		elements.count = 0;
 
-		// 创建列表项目
 		const { browser } = this.links;
 		switch (browser.display) {
 			case 'normal':
@@ -206,14 +195,11 @@ export class FileBodyPane extends HTMLElement {
 				break;
 		}
 
-		// 清除多余的元素
 		this.clearElements(elements.count);
 
-		// 重新调整
 		this.resize();
 	}
 
-	// 重新调整
 	resize(): void {
 		const ch = this.clientHeight;
 		const elements = this.elements;
@@ -241,7 +227,6 @@ export class FileBodyPane extends HTMLElement {
 					element.remove();
 				}
 			}
-			// 保证尾部元素已经被添加
 			const foot = elements[end - 1];
 			if (foot && !foot.parentNode) {
 				content.appendChild(foot);
@@ -256,7 +241,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 计算网格属性
 	computeGridProperties(): void {
 		this.content.count = -1;
 		switch (this.viewMode) {
@@ -273,7 +257,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 计算列表网格属性
 	computeListGridProperties(): void {
 		const { content } = this;
 		const WIDTH = 240;
@@ -299,7 +282,6 @@ export class FileBodyPane extends HTMLElement {
 		content.scrollCount = scrollCount;
 	}
 
-	// 计算平铺网格属性
 	computeTileGridProperties(width: number, height: number): void {
 		const { content } = this;
 		const PADDING = 4;
@@ -323,7 +305,6 @@ export class FileBodyPane extends HTMLElement {
 		content.scrollCount = scrollCount;
 	}
 
-	// 计算开始和结束索引
 	computeStartAndEnd(): Uint32Array {
 		const { range } = this.content;
 		const { count } = this.elements;
@@ -342,7 +323,6 @@ export class FileBodyPane extends HTMLElement {
 		return range;
 	}
 
-	// 更新内容元素的尺寸
 	updateContentSize(): void {
 		const { content } = this;
 		const { count } = this.elements;
@@ -361,7 +341,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 更新内容元素的偏移
 	updateContentOffset(): void {
 		const PADDING = 4;
 		const { start } = this.elements;
@@ -374,7 +353,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 重置内容元素的样式
 	resetContentStyle(): void {
 		this.content.count = -1;
 		const { style } = this.content;
@@ -390,7 +368,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 在重新调整时更新
 	updateOnResize(element: any): void {
 		if (element.changed) {
 			element.changed = false;
@@ -406,7 +383,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 创建扁平排列的项目
 	createFlatItems(dir: any[]): void {
 		Directory.sortFiles(dir);
 		const elements = this.elements;
@@ -424,12 +400,10 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 创建文件夹元素
 	createFolderElement(file: any): HTMLElement {
 		const context = file.getContext(this);
 		let element = context.element;
 		if (element === undefined) {
-			// 创建文件夹
 			element = document.createElement('file-body-item') as unknown as HTMLElement & {
 				file: any;
 				context: any;
@@ -439,7 +413,6 @@ export class FileBodyPane extends HTMLElement {
 			(element as HTMLElement & { file: any; context: any }).context = context;
 			context.element = element;
 
-			// 激活选中状态
 			const { selections } = this;
 			if (selections.length !== 0 && selections.includes(file)) {
 				(element as HTMLElement).addClass('selected');
@@ -449,32 +422,26 @@ export class FileBodyPane extends HTMLElement {
 		return element;
 	}
 
-	// 更新文件夹元素
 	updateFolderElement(element: any): void {
 		if (!element.nameBox) {
-			// 创建文件夹图标
 			const fileIcon = document.createElement('file-body-icon');
 			fileIcon.addClass('icon-folder');
 			element.appendChild(fileIcon);
 
-			// 创建名字输入框
 			const nameBox = document.createElement('file-body-name');
 			nameBox.textContent = element.file.name;
 			element.appendChild(nameBox);
 
-			// 设置元素属性
 			element.draggable = true;
 			element.fileIcon = fileIcon;
 			element.nameBox = nameBox;
 		}
 	}
 
-	// 创建文件元素
 	createFileElement(file: any): HTMLElement {
 		const context = file.getContext(this);
 		let element = context.element;
 		if (element === undefined) {
-			// 创建文件
 			element = document.createElement('file-body-item') as unknown as HTMLElement & {
 				file: any;
 				context: any;
@@ -489,37 +456,30 @@ export class FileBodyPane extends HTMLElement {
 		return element;
 	}
 
-	// 更新文件元素
 	updateFileElement(element: any): void {
 		const { file } = element;
 		if (!element.nameBox) {
-			// 创建文件图标
 			const fileIcon = this.createIcon(file);
 			element.appendChild(fileIcon);
 
-			// 创建名字输入框
 			const nameBox = document.createElement('file-body-name');
 			nameBox.textContent = file.basename;
 			element.appendChild(nameBox);
 
-			// 设置元素属性
 			element.draggable = true;
 			element.fileIcon = fileIcon;
 			element.nameBox = nameBox;
 
-			// 激活选中状态
 			const { selections } = this;
 			if (selections.length !== 0 && selections.includes(file)) {
 				element.addClass('selected');
 			}
 		}
-		// 当图像改变时更新图标
 		if (element.fileIcon.isImageChanged?.()) {
 			this.updateIcon(file);
 		}
 	}
 
-	// 创建图标
 	createIcon(file: any): HTMLElement {
 		const icon = document.createElement('file-body-icon');
 		switch (file.type) {
@@ -630,7 +590,6 @@ export class FileBodyPane extends HTMLElement {
 		return icon;
 	}
 
-	// 更新图标
 	updateIcon(file: any): void {
 		const { element } = file.getContext(this);
 		if (element?.fileIcon) {
@@ -640,7 +599,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 设置图标剪辑
 	setIconClip(
 		icon: HTMLElement,
 		path: string,
@@ -652,7 +610,6 @@ export class FileBodyPane extends HTMLElement {
 		(File as any)
 			.getImageResolution(path)
 			.then(({ width, height }: { width: number; height: number }) => {
-				// 当cw和ch为负数时为划分模式
 				if (cw < 0) {
 					cw = Math.floor(width / -cw);
 					ch = Math.floor(height / -ch);
@@ -691,15 +648,11 @@ export class FileBodyPane extends HTMLElement {
 			});
 	}
 
-	// 激活文件
 	activateFile(file: any): void {
 		if (file instanceof FolderItem) {
 			return this.select(file);
 		}
 		this.activeFile = file;
-		// 如果已激活文件未在选中列表中
-		// 暂时高亮已激活文件
-		// 取消对选中文件的高亮
 		if (!this.selections.includes(file)) {
 			const context = file.getContext(this);
 			context.element.addClass('selected');
@@ -718,12 +671,8 @@ export class FileBodyPane extends HTMLElement {
 		window.on('pointerup', pointerup, { once: true });
 	}
 
-	// 取消激活文件
 	deactivateFile(): void {
 		if (this.activeFile instanceof FileItem) {
-			// 如果已激活文件未在选中列表中
-			// 取消对已激活文件的高亮
-			// 恢复对选中文件的高亮
 			if (!this.selections.includes(this.activeFile)) {
 				const context = this.activeFile.getContext(this);
 				context.element.removeClass('selected');
@@ -736,7 +685,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 选择激活的文件
 	selectActiveFile(): void {
 		if (this.activeFile instanceof FileItem) {
 			if (!this.selections.includes(this.activeFile)) {
@@ -746,7 +694,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 选择文件
 	select(...files: any[]): void {
 		this.unselect();
 		this.selections = files;
@@ -761,7 +708,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 选择全部
 	selectAll(): void {
 		const { elements } = this;
 		const { count } = elements;
@@ -772,7 +718,6 @@ export class FileBodyPane extends HTMLElement {
 		this.select(...files);
 	}
 
-	// 取消选择
 	unselect(): void {
 		const files = this.selections;
 		if (files.length !== 0) {
@@ -793,7 +738,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 选择路径匹配的项目
 	selectByPath(path: string): void {
 		const { elements } = this;
 		const { count } = elements;
@@ -806,7 +750,6 @@ export class FileBodyPane extends HTMLElement {
 		this.unselect();
 	}
 
-	// 选择默认项目
 	selectDefault(): void {
 		const { elements } = this;
 		const { count } = elements;
@@ -820,7 +763,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 在网格列表中选择相对位置的项目
 	selectRelativeInGridMode(direction: 'prev' | 'next' | 'prev-line' | 'next-line'): void {
 		const { elements } = this;
 		const { count } = elements;
@@ -881,7 +823,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 在网格列表中滚动到选中项
 	scrollToSelectionInGridMode(mode: string = 'active'): void {
 		const { selections } = this;
 		if (selections.length === 1 && (this as any).hasScrollBar()) {
@@ -928,7 +869,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 获取目录名
 	getDirName(): string {
 		let dirname = '';
 		const files = this.selections;
@@ -953,7 +893,6 @@ export class FileBodyPane extends HTMLElement {
 		return dirname;
 	}
 
-	// 创建文件夹
 	createFolder(): void {
 		const dirname = this.getDirName();
 		if (dirname) {
@@ -975,7 +914,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 在资源管理器中显示
 	showInExplorer(): void {
 		let length = 0;
 		const elements = this.elements;
@@ -990,7 +928,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 打开文件位置
 	openFileLocation(file: any): void {
 		if (file) {
 			const folder = Directory.getFolder(file.path);
@@ -1002,7 +939,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 打开文件
 	openFile(file: any): void {
 		if (file instanceof FolderItem) {
 			const { nav } = this.links;
@@ -1016,7 +952,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 复制文件
 	copyFiles(cut: boolean = false): void {
 		const guids: string[] = [];
 		for (const file of this.selections) {
@@ -1030,7 +965,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 粘贴文件
 	pasteFiles(targetPath?: string): void {
 		const { browser, nav } = this.links;
 		if (!targetPath && nav.selections.length === 1) {
@@ -1060,14 +994,12 @@ export class FileBodyPane extends HTMLElement {
 						Directory.update();
 					});
 			}
-			// 剪切后擦除剪切板数据
 			if (copy.cut) {
 				(Clipboard as any).write('yami.no-files', null);
 			}
 		}
 	}
 
-	// 删除文件
 	deleteFiles(): void {
 		const files: any[] = [];
 		const { selections } = this;
@@ -1138,7 +1070,6 @@ export class FileBodyPane extends HTMLElement {
 		);
 	}
 
-	// 重命名
 	rename(file: any): void {
 		const { textBox } = FileBodyPane;
 		if (
@@ -1165,7 +1096,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 取消重命名
 	cancelRenaming(): void {
 		const { timer } = this;
 		if (timer.target) {
@@ -1177,7 +1107,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 导入文件
 	importFiles(): void {
 		const { nav } = this.links;
 		const folders = nav.selections;
@@ -1226,13 +1155,11 @@ export class FileBodyPane extends HTMLElement {
 			});
 	}
 
-	// 导出文件
 	exportFile(): void {
 		const files = this.selections;
 		const dialogs = Editor.config.dialogs;
 
 		if (files.length === 1 && files[0] instanceof FileItem) {
-			// 导出单个文件
 			const file = files[0];
 			const name = file.basename + file.extname;
 			(File as any)
@@ -1249,7 +1176,6 @@ export class FileBodyPane extends HTMLElement {
 					Directory.update();
 				});
 		} else {
-			// 导出文件夹或多个文件
 			(File as any)
 				.showOpenDialog({
 					defaultPath: Path.normalize(dialogs.export),
@@ -1272,9 +1198,7 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 清除元素
 	clearElements(start: number): void {
-		// 有条件地调整缓存大小
 		const { elements } = this;
 		if (elements.length > 256 && elements.length !== start) {
 			elements.length = start;
@@ -1285,7 +1209,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 清除列表
 	clear(): this {
 		this.unselect();
 		this.content.textContent = '';
@@ -1319,7 +1242,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	};
 
-	// 键盘按下事件
 	keydown(event: KeyboardEvent): void {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
@@ -1423,7 +1345,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		this.cancelRenaming();
 		switch (event.button) {
@@ -1554,7 +1475,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 指针弹起事件
 	pointerup(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
@@ -1576,21 +1496,18 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 鼠标双击事件
 	doubleclick(event: Event): void {
 		let element = event.target as HTMLElement;
 		if (element.tagName === 'FILE-BODY-ICON' || element.tagName === 'FILE-BODY-NAME') {
 			element = element.parentNode as HTMLElement;
 		}
 		if (element.tagName === 'FILE-BODY-ITEM') {
-			// 阻止打开文件夹时目标元素消失导致列表失去焦点
 			event.preventDefault();
 			this.cancelRenaming();
 			this.openFile((element as any).file);
 		}
 	}
 
-	// 鼠标滚轮事件
 	wheel(event: WheelEvent): void {
 		const { deltaY } = event;
 		if (deltaY !== 0) {
@@ -1606,7 +1523,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 键盘按下事件
 	static windowKeydown(this: FileBodyPane, event: KeyboardEvent): void {
 		if (event.altKey) {
 			switch (event.code) {
@@ -1624,7 +1540,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 键盘弹起事件
 	static windowKeyup(this: FileBodyPane, event: KeyboardEvent): void {
 		if (!event.altKey) {
 			switch (event.code) {
@@ -1637,7 +1552,6 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 指针移动事件
 	static windowPointermove(this: FileBodyPane, event: PointerEvent): void {
 		if (!event.altKey) {
 			(this as any).content.removeClass('alt');
@@ -1646,14 +1560,12 @@ export class FileBodyPane extends HTMLElement {
 		}
 	}
 
-	// 静态 - 创建文本输入框
 	static textBox = (function IIFE() {
 		const textBox = new TextBox();
 		textBox.setMaxLength(64);
 		textBox.addClass('file-body-text-box');
 		textBox.input.addClass('file-body-text-box-input');
 
-		// 键盘按下事件
 		textBox.on('keydown', function (this: TextBox, event: KeyboardEvent) {
 			event.stopPropagation();
 			switch (event.code) {
@@ -1669,7 +1581,6 @@ export class FileBodyPane extends HTMLElement {
 			}
 		});
 
-		// 输入前事件
 		textBox.on('beforeinput', function (event: any) {
 			if (event.inputType === 'insertText' && typeof event.data === 'string') {
 				const regexp = /[\\/:*?"<>|]/;
@@ -1680,19 +1591,16 @@ export class FileBodyPane extends HTMLElement {
 			}
 		});
 
-		// 输入事件
 		textBox.on('input', function (this: TextBox, event: Event) {
 			if (this.style.width !== '') {
 				this.fitContent();
 			}
 		});
 
-		// 选择事件
 		textBox.on('select', function (event: Event) {
 			event.stopPropagation();
 		});
 
-		// 失去焦点事件
 		textBox.on('blur', function (this: TextBox, event: Event) {
 			const item = this.parentNode as any;
 			const file = item.file;

@@ -3,7 +3,6 @@ import { Browser } from '../browser/project-browser.ts';
 import { FileItem } from '../file/file-item.ts';
 import { Scene } from './scene-window.ts';
 import { StageColor } from '../util/stage-color.ts';
-// 获取对象文件
 Scene.getObjectFile = function (sceneObject) {
 	switch (sceneObject?.class) {
 		case 'actor':
@@ -24,7 +23,6 @@ Scene.getObjectFile = function (sceneObject) {
 	}
 };
 
-// 打开文件位置
 Scene.openFileLocation = function (sceneObject) {
 	const file = Scene.getObjectFile(sceneObject);
 	if (file instanceof FileItem) {
@@ -34,17 +32,14 @@ Scene.openFileLocation = function (sceneObject) {
 	}
 };
 
-// 保存状态到配置文件
 Scene.saveToConfig = function (config) {
 	config.colors.sceneBackground = this.background.hex;
 };
 
-// 从配置文件中加载状态
 Scene.loadFromConfig = function (config) {
 	this.background = new StageColor(config.colors.sceneBackground, () => this.requestRendering());
 };
 
-// 保存状态到项目文件
 Scene.saveToProject = function (project) {
 	const { scene } = project;
 	this.closeTilemap();
@@ -56,7 +51,6 @@ Scene.saveToProject = function (project) {
 	scene.zoom = this.zoom ?? scene.zoom;
 };
 
-// 从项目文件中加载状态
 Scene.loadFromProject = function (project) {
 	const { scene } = project;
 	this.switchGrid(scene.grid);

@@ -3,27 +3,20 @@ import { Animation } from '../animation/animation-window.ts';
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 动画页面 ********************************
-
 {
 	const UIAnimation = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null,
 		animationIdWrite: null
 	};
 
-	// 初始化
 	UIAnimation.initialize = function () {
-		// 侦听事件
 		$('#uiAnimation-animation').on('write', this.animationIdWrite);
 		const elements = $(`#uiAnimation-animation, #uiAnimation-motion,
     #uiAnimation-autoplay, #uiAnimation-rotatable, #uiAnimation-angle,
@@ -33,7 +26,6 @@ import { UI } from '../ui/ui-window.ts';
 		elements.on('blur', Inspector.inputBlur(this, UI));
 	};
 
-	// 创建动画
 	UIAnimation.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -62,12 +54,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIAnimation.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiAnimation', node);
 			write('animation');
 			write('motion');
@@ -81,7 +71,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIAnimation.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -91,7 +80,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIAnimation.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -114,12 +102,10 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIAnimation.paramInput = function (event) {
 		UIAnimation.update(UIAnimation.target, Inspector.getKey(this), this.read());
 	};
 
-	// 动画ID - 写入事件
 	UIAnimation.animationIdWrite = function (event) {
 		const elMotion = $('#uiAnimation-motion');
 		elMotion.loadItems(Animation.getMotionListItems(event.value));

@@ -10,10 +10,7 @@ import { Reference } from '../log/related-references.ts';
 
 import { PluginManager } from '../plugin/plugin.ts';
 
-// ******************************** 数据对象 ********************************
-
 export const Data: any = {
-	// properties
 	manifest: null,
 	scenePresets: null,
 	uiPresets: null,
@@ -40,7 +37,6 @@ export const Data: any = {
 	animations: null,
 	particles: null,
 	tilesets: null,
-	// methods
 	loadAll: null,
 	loadMeta: null,
 	loadFile: null,
@@ -68,15 +64,11 @@ export const Data: any = {
 	loadScript: null
 };
 
-// 加载所有文件
 Data.loadAll = function () {
-	// 创建新的数据映射表
 	this.createDataMaps();
 
-	// 创建新的元数据清单
 	this.createManifest();
 
-	// 加载文件
 	return Promise.all([
 		this.loadMeta(),
 		this.loadFile('easings'),
@@ -100,7 +92,6 @@ Data.loadAll = function () {
 	});
 };
 
-// 加载元数据
 Data.loadMeta = function () {
 	const path = 'Data/manifest.json';
 	return File.get({
@@ -121,7 +112,6 @@ Data.loadMeta = function () {
 	);
 };
 
-// 加载文件
 Data.loadFile = function (filename) {
 	const path = `Data/${filename}.json`;
 	return File.get({
@@ -142,7 +132,6 @@ Data.loadFile = function (filename) {
 	});
 };
 
-// 加载场景
 Data.loadScene = function (guid) {
 	const { scenes } = this;
 	if (scenes[guid]) {
@@ -171,7 +160,6 @@ Data.loadScene = function (guid) {
 	});
 };
 
-// 关闭数据
 Data.close = function () {
 	this.manifest = null;
 	this.scenePresets = null;
@@ -199,7 +187,6 @@ Data.close = function () {
 	this.tilesets = null;
 };
 
-// 创建过渡选项
 Data.createEasingItems = function () {
 	let items = this.easings.items;
 	if (items === undefined) {
@@ -220,7 +207,6 @@ Data.createEasingItems = function () {
 	return items;
 };
 
-// 创建队伍选项
 Data.createTeamItems = function () {
 	let items = this.teams.list.items;
 	if (items === undefined) {
@@ -240,7 +226,6 @@ Data.createTeamItems = function () {
 	return items;
 };
 
-// 创建数据映射表
 Data.createDataMaps = function () {
 	this.scenePresets = {};
 	this.uiPresets = {};
@@ -259,7 +244,6 @@ Data.createDataMaps = function () {
 	this.tilesets = {};
 };
 
-// 创建GUID映射表
 Data.createGUIDMap = function (list) {
 	const map = {};
 	for (const item of list) {
@@ -271,7 +255,6 @@ Data.createGUIDMap = function (list) {
 	});
 };
 
-// 创建队伍映射表
 Data.createTeamMap = function () {
 	const map = {};
 	const teams = this.teams;
@@ -284,7 +267,6 @@ Data.createTeamMap = function () {
 	});
 };
 
-// 创建变量映射表
 Data.createVariableMap = (function IIFE() {
 	const set = (items, map) => {
 		for (const item of items) {
@@ -305,7 +287,6 @@ Data.createVariableMap = (function IIFE() {
 	};
 })();
 
-// 创建属性上下文对象
 Data.createAttributeContext = function () {
 	Object.defineProperty(this.attribute, 'context', {
 		configurable: true,
@@ -313,7 +294,6 @@ Data.createAttributeContext = function () {
 	});
 };
 
-// 创建枚举上下文对象
 Data.createEnumerationContext = function () {
 	Object.defineProperty(this.enumeration, 'context', {
 		configurable: true,
@@ -321,7 +301,6 @@ Data.createEnumerationContext = function () {
 	});
 };
 
-// 创建游戏本地化映射表
 Data.createLocalizationMap = function () {
 	const map = {};
 	const set = (items) => {
@@ -340,7 +319,6 @@ Data.createLocalizationMap = function () {
 	});
 };
 
-// 创建(可能)被引用的文件ID映射表
 Data.createReferencedFileIDMap = function () {
 	const usedMap = {};
 	const list = [
@@ -377,13 +355,11 @@ Data.createReferencedFileIDMap = function () {
 	while ((match = guid.exec(code))) {
 		markToMap(match[1]);
 	}
-	// 获取自动触发的事件
 	for (const event of Object.values(this.events) as any[]) {
 		if (event.type !== 'common') {
 			markToMap(event.guid);
 		}
 	}
-	// 获取脚本中可能引用的文件ID
 	const guidInScript = /"[0-9a-f]{16}"|'[0-9a-f]{16}'/g;
 	for (const meta of Object.values(this.scripts) as any[]) {
 		if (meta.guid in usedMap) {
@@ -396,7 +372,6 @@ Data.createReferencedFileIDMap = function () {
 	return usedMap;
 };
 
-// 生成变量枚举脚本
 Data.generateVariableEnumScript = function () {
 	const regexp = /^[\p{ID_Start}][\p{ID_Continue}]*$/u;
 	const spaces = / +/g;
@@ -411,7 +386,6 @@ Data.generateVariableEnumScript = function () {
 				set(item.children);
 				continue;
 			}
-			// 移除空格字符
 			let name = item.name;
 			if (name.indexOf(' ') !== -1) {
 				name = name.replace(spaces, '');
@@ -495,7 +469,6 @@ Data.generateVariableEnumScript = function () {
 	}
 };
 
-// 注册场景预设元素
 Data.registerScenePresets = function (sceneId) {
 	const scene = this.scenes[sceneId];
 	if (scene) {
@@ -513,7 +486,6 @@ Data.registerScenePresets = function (sceneId) {
 				if (node.class === 'folder') {
 					setMap(node.children);
 				} else {
-					// 如果存在该ID的元素，重新生成ID
 					if (scenePresets[node.presetId]) {
 						node.presetId = generatePresetId();
 						changed = true;
@@ -534,7 +506,6 @@ Data.registerScenePresets = function (sceneId) {
 	}
 };
 
-// 取消注册场景预设元素
 Data.unregisterScenePresets = function (sceneId) {
 	const scene = this.scenes[sceneId];
 	if (scene) {
@@ -554,7 +525,6 @@ Data.unregisterScenePresets = function (sceneId) {
 	}
 };
 
-// 注册界面预设元素
 Data.registerUiPresets = function (uiId) {
 	const ui = this.ui[uiId];
 	if (ui) {
@@ -569,7 +539,6 @@ Data.registerUiPresets = function (uiId) {
 		};
 		const setMap = (nodes) => {
 			for (const node of nodes) {
-				// 如果存在该ID的元素，重新生成ID
 				if (uiPresets[node.presetId]) {
 					node.presetId = generatePresetId();
 					changed = true;
@@ -592,7 +561,6 @@ Data.registerUiPresets = function (uiId) {
 	}
 };
 
-// 取消注册界面预设元素
 Data.unregisterUiPresets = function (uiId) {
 	const ui = this.ui[uiId];
 	if (ui) {
@@ -612,19 +580,16 @@ Data.unregisterUiPresets = function (uiId) {
 	}
 };
 
-// 创建元数据清单
 Data.createManifest = function () {
 	this.manifest = new Manifest();
 };
 
-// 保存元数据清单
 Data.saveManifest = function () {
 	const manifest = this.manifest;
 	if (manifest?.changed) {
 		manifest.changed = false;
 		const copy = Data.filterManifest(manifest);
-		// replacer 剥离运行期反引用（dataMap→Data、file→FileItem、
-		// group→manifest[key]、manifest→Data.manifest 等），避免循环
+		// replacer 剥离运行期反引用键（dataMap、file、group、manifest、code 等），避免循环
 		const json = JSON.stringify(copy, Data.jsonReplacer, 2);
 		const last = manifest.code;
 		if (json && json !== last) {
@@ -641,9 +606,7 @@ Data.saveManifest = function () {
 	return null;
 };
 
-// JSON.stringify replacer：丢弃运行期反引用键，阻断循环
-// 这些键指向运行期单例（Data / FileItem / Manifest 等），
-// 不属于 manifest.json 落盘内容
+// JSON.stringify replacer：丢弃 dataMap/file/group/manifest/code/meta/project/changes/metaList 运行期反引用键，阻断循环
 Data.jsonReplacer = function (key, value) {
 	switch (key) {
 		case 'dataMap':
@@ -660,17 +623,13 @@ Data.jsonReplacer = function (key, value) {
 	return value;
 };
 
-// 过滤元数据
 Data.filterManifest = function (manifest) {
-	// 浅拷贝顶层键
 	const copy: any = {};
 	for (const key of Object.keys(manifest)) {
 		copy[key] = manifest[key];
 	}
-	// 克隆 images/audio 以便原地改写 size，不污染原 manifest
 	copy.images = Object.clone(manifest.images);
 	copy.audio = Object.clone(manifest.audio);
-	// 把未使用的图像和音频文件大小设置为0
 	const { usedMap } = Reference.findAllGuids();
 	for (const list of [copy.images, copy.audio]) {
 		for (const meta of list) {
@@ -683,7 +642,6 @@ Data.filterManifest = function (manifest) {
 	return copy;
 };
 
-// 继承元数据
 Data.inheritMetaData = function () {
 	const manifest = this.manifest;
 	const last = manifest.last;
@@ -708,7 +666,6 @@ Data.inheritMetaData = function () {
 	delete manifest.last;
 };
 
-// 从元数据中解析GUID
 Data.parseGUID = (function IIFE() {
 	const regexp = /(?<=\.)[0-9a-f]{16}(?=\.\S+$)/;
 	return function (meta) {
@@ -717,7 +674,6 @@ Data.parseGUID = (function IIFE() {
 	};
 })();
 
-// 加载脚本
 Data.loadScript = async function (file) {
 	const meta = file.meta;
 	if (meta !== undefined) {

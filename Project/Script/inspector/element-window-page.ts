@@ -2,33 +2,25 @@
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 窗口页面 ********************************
-
 {
 	const UIWindow = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UIWindow.initialize = function () {
-		// 创建布局选项
 		$('#uiWindow-layout').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Horizontal Grid', value: 'horizontal-grid' },
 			{ name: 'Vertical Grid', value: 'vertical-grid' }
 		]);
 
-		// 设置布局关联元素
 		$('#uiWindow-layout')
 			.enableHiddenMode()
 			.relate([
@@ -51,13 +43,11 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 创建溢出选项
 		$('#uiWindow-overflow').loadItems([
 			{ name: 'Visible', value: 'visible' },
 			{ name: 'Hidden', value: 'hidden' }
 		]);
 
-		// 侦听事件
 		const elements = $(`#uiWindow-layout,
     #uiWindow-scrollX, #uiWindow-scrollY, #uiWindow-gridWidth,
     #uiWindow-gridHeight, #uiWindow-gridGapX, #uiWindow-gridGapY,
@@ -67,7 +57,6 @@ import { UI } from '../ui/ui-window.ts';
 		elements.on('blur', Inspector.inputBlur(this, UI));
 	};
 
-	// 创建窗口
 	UIWindow.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -98,12 +87,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIWindow.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiWindow', node);
 			write('layout');
 			write('scrollX');
@@ -119,7 +106,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIWindow.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -129,7 +115,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIWindow.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -152,8 +137,7 @@ import { UI } from '../ui/ui-window.ts';
 			case 'paddingY':
 				if (node[key] !== value) {
 					node[key] = value;
-					// element[key] = value
-					// element.resize()
+					// element[key] = value element.resize()
 					node.instances.setProperty(key, value);
 					node.instances.resize();
 				}
@@ -162,7 +146,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIWindow.paramInput = function (event) {
 		UIWindow.update(UIWindow.target, Inspector.getKey(this), this.read());
 	};

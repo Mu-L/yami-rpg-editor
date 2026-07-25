@@ -15,8 +15,7 @@ Variable.list.copy = function (item) {
 Variable.list.paste = function (dItem) {
 	const copy = (Clipboard as any).read('yami.data.variable');
 	if (copy) {
-		// 只有冲突时进行更换ID
-		// 支持跨项目复制保留ID
+		// 只有冲突时进行更换ID 支持跨项目复制保留ID
 		if (Variable.idMap[copy.id]) {
 			copy.id = Variable.createId();
 			copy.name += ' - Copy';
@@ -41,7 +40,6 @@ Variable.list.delete = function (item) {
 						const index = elements.indexOf(item.element);
 						this.deleteNode(item);
 						Variable.closePropertyPanel();
-						// 自动选择下一个列表项
 						const last = elements.count - 1;
 						const element = elements[Math.min(index, last)];
 						if (element instanceof HTMLElement) {

@@ -49,7 +49,6 @@ export const SearchString = new (class {
 			});
 	}
 	locationLine() {
-		// 滚动到指定行
 		const arr = this.lastArr;
 		if (arr.length == 0) return;
 		const index = this.index;
@@ -103,7 +102,6 @@ export const SearchString = new (class {
 	}
 	previous() {
 		if (this.lastArr.length == 0) return;
-		// 移除上一个高亮
 		this.clearCurrentHighlight();
 		this.index--;
 		if (this.index < 0) {
@@ -113,7 +111,6 @@ export const SearchString = new (class {
 	}
 	next() {
 		if (this.lastArr.length == 0) return;
-		// 移除上一个高亮
 		this.clearCurrentHighlight();
 		this.index++;
 		if (this.index >= this.lastArr.length) {

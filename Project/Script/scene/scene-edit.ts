@@ -3,7 +3,6 @@ import { GL } from '../webgl/webgl-init.ts';
 import { Palette } from '../palette/palette.ts';
 import { Scene } from './scene-window.ts';
 Scene.edit = function (x, y, width, height) {
-	// 使用笔刷来编辑图块
 	switch (this.brush) {
 		case 'eraser':
 		case 'pencil':
@@ -20,14 +19,11 @@ Scene.edit = function (x, y, width, height) {
 			break;
 	}
 
-	// 刷新画面
 	this.requestRendering();
 
-	// 计划保存
 	this.planToSave();
 };
 
-// 编辑图块 - 铅笔模式
 Scene.editInPencilMode = function (x, y, width, height) {
 	const context = this.tilemap ?? this;
 	const mapWidth = context.width;
@@ -38,7 +34,6 @@ Scene.editInPencilMode = function (x, y, width, height) {
 	const shiftKey = this.shiftKey || Palette.explicit;
 	const sTiles = this.marquee.getTiles(true);
 
-	// 设置图块
 	const bx = Math.max(x, 0);
 	const by = Math.max(y, 0);
 	const ex = Math.min(x + width, mapWidth);
@@ -53,7 +48,6 @@ Scene.editInPencilMode = function (x, y, width, height) {
 		}
 	}
 
-	// 更新目标图块以及相邻的帧索引
 	if (layer !== 'terrain' && !shiftKey) {
 		const bx = Math.max(x - 1, 0);
 		const by = Math.max(y - 1, 0);
@@ -67,7 +61,6 @@ Scene.editInPencilMode = function (x, y, width, height) {
 	}
 };
 
-// 编辑图块 - 矩形模式
 Scene.editInRectMode = function (x, y, width, height) {
 	const context = this.tilemap ?? this;
 	const mapWidth = context.width;
@@ -78,10 +71,8 @@ Scene.editInRectMode = function (x, y, width, height) {
 	const shiftKey = this.shiftKey || Palette.explicit;
 	const sTiles = this.marquee.getTiles(shiftKey);
 
-	// 撤销上一次的改动
 	this.restoreMapData();
 
-	// 设置图块
 	const bx = Math.max(x, 0);
 	const by = Math.max(y, 0);
 	const ex = Math.min(x + width, mapWidth);
@@ -96,7 +87,6 @@ Scene.editInRectMode = function (x, y, width, height) {
 		}
 	}
 
-	// 更新边缘图块的帧索引
 	if (layer !== 'terrain' && !shiftKey) {
 		const left = x + 1;
 		const top = y + 1;
@@ -116,7 +106,6 @@ Scene.editInRectMode = function (x, y, width, height) {
 	}
 };
 
-// 编辑图块 - 椭圆模式
 Scene.editInOvalMode = function (x, y, width, height) {
 	const context = this.tilemap ?? this;
 	const mapWidth = context.width;
@@ -127,10 +116,8 @@ Scene.editInOvalMode = function (x, y, width, height) {
 	const shiftKey = this.shiftKey || Palette.explicit;
 	const sTiles = this.marquee.getTiles(shiftKey);
 
-	// 撤销上一次的改动
 	this.restoreMapData();
 
-	// 设置图块
 	const rr = (Math.max(width, height) / 2 - 0.1) ** 2;
 	const scale = Math.max(width, height) / Math.min(width, height);
 	const ox = x + (width - 1) / 2;
@@ -171,7 +158,6 @@ Scene.editInOvalMode = function (x, y, width, height) {
 		}
 	}
 
-	// 选取边缘区域
 	if (layer !== 'terrain' && !shiftKey) {
 		const bx = Math.max(x, 0) - 1;
 		const by = Math.max(y, 0) - 1;
@@ -201,7 +187,6 @@ Scene.editInOvalMode = function (x, y, width, height) {
 			}
 		}
 
-		// 更新帧索引
 		for (let y = by; y < ey; y++) {
 			for (let x = bx; x < ex; x++) {
 				const i = x - bx + (y - by) * ovalWidth;
@@ -213,7 +198,6 @@ Scene.editInOvalMode = function (x, y, width, height) {
 	}
 };
 
-// 编辑图块 - 填充模式
 Scene.editInFillMode = function (x, y) {
 	let mapData, mapWidth, mapHeight, bitShift;
 	let shiftKey, sTiles;
@@ -240,13 +224,11 @@ Scene.editInFillMode = function (x, y) {
 	const poy = this.patternOriginY;
 	const flags = new Uint8Array(mapWidth * mapHeight);
 
-	// 脏矩形参数
 	let minX = x;
 	let minY = y;
 	let maxX = x;
 	let maxY = y;
 
-	// 初始堆栈和标记 - openset: 当前被填充图块坐标栈, closedset: 下一轮...
 	const { min, max } = Math;
 	const buffer = GL.arrays[1].uint16.buffer;
 	const sLength = min(mapWidth, mapHeight) * 4;
@@ -258,11 +240,9 @@ Scene.editInFillMode = function (x, y) {
 	openset[1] = y;
 	flags[x + y * mapWidth] = 1;
 
-	// 获取被填充的图块键值
 	const di = x + y * mapWidth;
 	const key = mapData[di] >> bitShift;
 
-	// 获取标记(-1: 场景外, 0: 未访问, 1: 可填充, 2: 内边缘, 3: 外边缘)
 	const getFlag = (x, y) => {
 		if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) {
 			minX = min(x, minX);
@@ -272,7 +252,6 @@ Scene.editInFillMode = function (x, y) {
 			return -1;
 		}
 
-		// 初次访问
 		const fi = x + y * mapWidth;
 		if (flags[fi] === 0) {
 			const di = x + y * mapWidth;
@@ -291,7 +270,6 @@ Scene.editInFillMode = function (x, y) {
 		return flags[fi];
 	};
 
-	// 处理开集数据
 	while (openlength > 0) {
 		for (let i = 0; i < openlength; i += 2) {
 			const x = openset[i];
@@ -321,7 +299,6 @@ Scene.editInFillMode = function (x, y) {
 		closedlength = 0;
 	}
 
-	// 修补图块填充边缘
 	if (layer !== 'terrain' && !shiftKey) {
 		const bx = max(minX, 0);
 		const by = max(minY, 0);
@@ -401,7 +378,6 @@ Scene.editInFillMode = function (x, y) {
 	}
 };
 
-// 设置图块
 Scene.setTile = function (sTiles, sx, sy, dx, dy) {
 	const sw = sTiles.width;
 	const sh = sTiles.height;
@@ -440,7 +416,6 @@ Scene.setTile = function (sTiles, sx, sy, dx, dy) {
 	}
 };
 
-// 设置图块帧索引
 Scene.setTileFrame = function (x, y) {
 	const tilemap = this.tilemap;
 	const width = tilemap.width;
@@ -513,7 +488,6 @@ Scene.setTileFrame = function (x, y) {
 	}
 };
 
-// 设置地形
 Scene.setTerrain = function (x, y) {
 	const terrain = this.marquee.terrain;
 	const terrains = this.terrains;
@@ -523,7 +497,6 @@ Scene.setTerrain = function (x, y) {
 	terrains[pi] = terrain;
 };
 
-// 创建图块集合
 Scene.createTiles = function (width, height) {
 	const tiles: any = new Uint32Array(width * height);
 	tiles.width = width;
@@ -532,7 +505,6 @@ Scene.createTiles = function (width, height) {
 	return tiles;
 };
 
-// 克隆图块集合
 Scene.cloneTiles = function (sTiles) {
 	const dTiles: any = new Uint32Array(sTiles);
 	dTiles.width = sTiles.width;
@@ -541,14 +513,12 @@ Scene.cloneTiles = function (sTiles) {
 	return dTiles;
 };
 
-// 创建地形
 Scene.createTerrains = function (width, height) {
 	const terrains: any = new Uint8Array(width * height);
 	terrains.rowOffset = width;
 	return terrains;
 };
 
-// 获取新的图块组映射表索引
 Scene.getNewTilesetIndex = function (tilesetMap) {
 	for (let i = 1; i < 256; i++) {
 		if (tilesetMap[i] === undefined) {

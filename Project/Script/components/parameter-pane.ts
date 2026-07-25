@@ -17,8 +17,6 @@ import { Local } from '../tools/localization.ts';
 import { Selection } from '../tools/text-capture.ts';
 import { measureText } from '../util/dom.ts';
 
-// ******************************** 脚本参数面板 ********************************
-
 export class ParameterPane extends HTMLElement {
 	scriptList: HTMLElement | null;
 	headPad: HTMLElement | null;
@@ -42,7 +40,6 @@ export class ParameterPane extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.scriptList = null;
 		this.headPad = null;
 		this.metas = [];
@@ -60,12 +57,10 @@ export class ParameterPane extends HTMLElement {
 		this.windowLocalize = ParameterPane.windowLocalize.bind(this);
 		this.scriptChange = ParameterPane.scriptChange.bind(this);
 
-		// 侦听事件
 		window.on('localize', this.windowLocalize);
 		this.on('change', this.componentChange);
 	}
 
-	// 绑定数据
 	bind(scriptList: HTMLElement): void {
 		this.scriptList = scriptList;
 		if (scriptList instanceof ParamList) {
@@ -85,7 +80,6 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	// 重新写入
 	rewrite(parameters: any, key: string): void {
 		for (const wrap of this.wraps) {
 			const script = wrap.box.data;
@@ -97,7 +91,6 @@ export class ParameterPane extends HTMLElement {
 					(
 						this.scriptList as (HTMLElement & { dispatchChangeEvent(): void }) | null
 					)?.dispatchChangeEvent();
-					// 更新参数可见性
 					if (input.branched) {
 						(PluginManager as any).reconstruct(script);
 						this.updateParamDisplay(wrap.box);
@@ -109,7 +102,6 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	// 更新
 	update(): void {
 		this.clear();
 		this.appendHeadPad();
@@ -275,7 +267,6 @@ export class ParameterPane extends HTMLElement {
 				box.data = script;
 				this.wraps.push(detailWrap);
 				// 主段（无 @group）与分组段外观一致，均为可折叠 detail-box：
-				// 主段显示本地化「参数」，分组段显示组名
 				if (summary instanceof DetailSummary) {
 					if (isMain) {
 						summary.textContent = Local.get('parameter.param');
@@ -291,25 +282,19 @@ export class ParameterPane extends HTMLElement {
 				this.appendChild(box);
 			}
 		}
-		// 脚本列表 - 发送改变事件
 		if (changed) {
 			(this.scriptList as any)?.dispatchChangeEvent();
 		}
-		// 发送更新事件
 		if (this.updateEventEnabled) {
 			this.dispatchUpdateEvent();
 		}
 		this.onResize?.();
-		// 侦听属性改变事件
 		window.on('script-change', this.scriptChange);
 	}
 
-	// 添加头部填充元素
 	appendHeadPad(): void {
 		let { headPad } = this;
 		if (headPad === null) {
-			// 用填充元素占据首元素的位置
-			// 从而改变首个summary的样式
 			headPad = document.createElement('empty');
 			headPad.style.display = 'none';
 			this.headPad = headPad;
@@ -317,7 +302,6 @@ export class ParameterPane extends HTMLElement {
 		this.appendChild(headPad);
 	}
 
-	// 创建细节框
 	createDetailBox(): any {
 		const { detailBoxes } = this;
 		let box: HTMLElement;
@@ -341,7 +325,6 @@ export class ParameterPane extends HTMLElement {
 		return wrap;
 	}
 
-	// 创建参数输入框
 	createParamInput(parameter: any): any {
 		const config = TypeRegistry.get(parameter.type);
 		if (config) {
@@ -350,18 +333,14 @@ export class ParameterPane extends HTMLElement {
 		return undefined;
 	}
 
-	// 更新参数输入框
 	updateParamInput(wrap: any, value: any): void {
 		// if (value === undefined) {
-		//   return
-		// }
 		switch (wrap.tag) {
 			case 'check-box':
 			case 'text-box':
 				wrap.input.read() !== value && wrap.input.write(value);
 				break;
 			case 'number-box':
-				// 读取值与内部值不一定相同
 				if (wrap.input.read() !== value) {
 					wrap.input.write(value);
 				} else {
@@ -382,7 +361,6 @@ export class ParameterPane extends HTMLElement {
 			case 'select-box':
 			case 'custom-box':
 				// 由于选择框和自定义框选项内容不固定
-				// 在数据值相等时还要更新一下显示信息
 				if (wrap.input.read() !== value) {
 					wrap.input.write(value);
 				} else {
@@ -397,7 +375,6 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	// 更新参数可见性
 	updateParamDisplay(detailBox: any): void {
 		const { states } = detailBox.meta.manager;
 		const mParams = detailBox.meta.parameters;
@@ -416,7 +393,6 @@ export class ParameterPane extends HTMLElement {
 					continue;
 			}
 		}
-		// 校验高亮
 		for (const wrap of detailBox.wrap.children) {
 			const key = wrap.input.key;
 			const param = paramMap[key];
@@ -435,7 +411,6 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	// 创建复选框
 	createCheckBox(): any {
 		const { checkBoxes } = this;
 		if (checkBoxes.length !== 0) {
@@ -450,7 +425,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input };
 	}
 
-	// 创建数字框
 	createNumberBox(): any {
 		const { numberBoxes } = this;
 		if (numberBoxes.length !== 0) {
@@ -462,7 +436,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input };
 	}
 
-	// 创建可变数字框
 	createNumberVar(): any {
 		const { numberVars } = this;
 		if (numberVars.length !== 0) {
@@ -474,7 +447,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input };
 	}
 
-	// 创建文本框
 	createTextBox(): any {
 		const { textBoxes } = this;
 		if (textBoxes.length !== 0) {
@@ -490,7 +462,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input };
 	}
 
-	// 创建选择框
 	createSelectBox(): any {
 		const { selectBoxes } = this;
 		if (selectBoxes.length !== 0) {
@@ -502,7 +473,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input };
 	}
 
-	// 创建按键框
 	createKeyboardBox(): any {
 		const { keyboardBoxes } = this;
 		if (keyboardBoxes.length !== 0) {
@@ -514,7 +484,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input };
 	}
 
-	// 创建颜色框
 	createColorBox(): any {
 		const { colorBoxes } = this;
 		if (colorBoxes.length !== 0) {
@@ -526,7 +495,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input };
 	}
 
-	// 创建自定义框
 	createCustomBox(): any {
 		const { customBoxes } = this;
 		if (customBoxes.length !== 0) {
@@ -538,7 +506,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input };
 	}
 
-	// 创建可重复参数组
 	createRepeatableGroup(parameter: any): any {
 		const template = parameter.repeatableGroup.parameters;
 		const tag = 'repeatable-group';
@@ -628,7 +595,6 @@ export class ParameterPane extends HTMLElement {
 		return { tag, label, input: container };
 	}
 
-	// 回收组件
 	recycle(wrap: any): void {
 		switch (wrap.tag) {
 			case 'detail-box': {
@@ -700,9 +666,7 @@ export class ParameterPane extends HTMLElement {
 				wrap.input.remove();
 				wrap.input.parameters = null;
 				wrap.input.key = null;
-				// 禁止获取焦点的自定义框可能正被打开
 				// 应该丢弃它避免接收过期的数据
-				// 此时父元素change事件发挥了作用
 				if (wrap.input.tabIndex === 0) {
 					this.customBoxes.push(wrap);
 				}
@@ -716,7 +680,6 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	// 清除内容
 	clear(): void {
 		this.metas = [];
 		const { wraps } = this;
@@ -733,7 +696,6 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	// 添加事件
 	on: (
 		type: string,
 		listener: (event: Event) => void,
@@ -745,7 +707,6 @@ export class ParameterPane extends HTMLElement {
 		}
 	};
 
-	// 组件 - 改变事件
 	componentChange(event: Event): void {
 		let element = event.target as any as HTMLElement;
 		if (element.tagName === 'INPUT') {
@@ -774,7 +735,6 @@ export class ParameterPane extends HTMLElement {
 		}
 		parameters[key] = (element as any).read();
 		(scriptList as any)?.dispatchChangeEvent(1);
-		// 更新参数可见性与校验状态
 		const grid = element.parentNode as HTMLElement;
 		const detail = grid.parentNode as any;
 		if (detail?.meta) {
@@ -814,12 +774,10 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 本地化事件
 	static windowLocalize(this: ParameterPane, event: Event): void {
 		for (const { langMap } of (this as any).metas) {
 			const oldMap = langMap.active;
 			const newMap = langMap.update().active;
-			// 更新语言包后如果发生变化则重载脚本组件
 			if (oldMap !== newMap) {
 				(this as any).update();
 				return;
@@ -827,7 +785,6 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	// 脚本元数据改变事件
 	static scriptChange(this: ParameterPane, event: any): void {
 		for (const meta of (this as any).metas) {
 			if (meta === event.changedMeta) {

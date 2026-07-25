@@ -3,21 +3,16 @@ import { Data } from '../data/data-object.ts';
 import { Window } from './window-object.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 预设元素窗口 ********************************
-
 export const PresetElement = {
-	// properties
 	ui: $('#presetElement-uiId'),
 	list: $('#presetElement-list'),
 	searcher: $('#presetElement-searcher'),
 	target: null,
 	nodes: null,
-	// methods
 	initialize: null,
 	open: null,
 	buildNodes: null,
 	getDefaultPresetId: null,
-	// events
 	windowClosed: null,
 	uiIdWrite: null,
 	listOpen: null,
@@ -26,18 +21,14 @@ export const PresetElement = {
 	confirm: null
 };
 
-// list methods
 PresetElement.list.createIcon = null;
 
-// 初始化
 PresetElement.initialize = function () {
-	// 绑定对象目录列表
 	this.list.bind(() => this.nodes);
 
 	// 列表 - 重写创建图标方法
 	this.list.createIcon = UI.list.createIcon;
 
-	// 侦听事件
 	this.ui.on('write', this.uiIdWrite);
 	this.list.on('open', this.listOpen);
 	this.searcher.on('keydown', this.searcherKeydown);
@@ -47,12 +38,10 @@ PresetElement.initialize = function () {
 	$('#presetElement-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 PresetElement.open = function (target) {
 	this.target = target;
 	Window.open('presetElement');
 
-	// 写入数据
 	const { ui, list } = this;
 	const presetId = target.read() || (UI.target?.presetId ?? '');
 	const uiId = Data.uiPresets[presetId]?.uiId ?? UI.meta?.guid ?? '';
@@ -88,19 +77,16 @@ PresetElement.buildNodes = (function IIFE() {
 	};
 })();
 
-// 获取默认的预设元素ID
 PresetElement.getDefaultPresetId = function () {
 	return UI.target?.presetId ?? '';
 };
 
-// 窗口 - 已关闭事件
 PresetElement.windowClosed = function (event) {
 	PresetElement.target = null;
 	PresetElement.nodes = null;
 	PresetElement.list.clear();
 };
 
-// 界面ID - 写入事件
 PresetElement.uiIdWrite = function (event) {
 	const ui = Data.ui[event.value];
 	const nodes = ui ? PresetElement.buildNodes(ui.nodes) : Array.empty;
@@ -114,12 +100,10 @@ PresetElement.uiIdWrite = function (event) {
 	}
 };
 
-// 列表 - 打开事件
 PresetElement.listOpen = function (event) {
 	PresetElement.confirm();
 };
 
-// 搜索框 - 键盘按下事件
 PresetElement.searcherKeydown = function (event) {
 	switch (event.code) {
 		case 'ArrowUp':
@@ -136,7 +120,6 @@ PresetElement.searcherKeydown = function (event) {
 	}
 };
 
-// 搜索框 - 输入事件
 PresetElement.searcherInput = function (event) {
 	if (event.inputType === 'insertCompositionText') {
 		return;
@@ -154,7 +137,6 @@ PresetElement.searcherInput = function (event) {
 	}
 };
 
-// 确定按钮 - 鼠标点击事件
 PresetElement.confirm = function (event) {
 	const uiId = this.ui.read();
 	if (!uiId) {

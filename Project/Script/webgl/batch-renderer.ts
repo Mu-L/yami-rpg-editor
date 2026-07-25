@@ -1,5 +1,3 @@
-﻿// ******************************** 批量渲染器 ********************************
-
 export class BatchRenderer {
 	response: Uint32Array;
 	// 以下字段在 constructor 内由词法 const 挂载（箭头函数闭包），统一用函数类型契约
@@ -12,7 +10,6 @@ export class BatchRenderer {
 	draw: () => void;
 
 	constructor(gl: any) {
-		// 初始化上下文
 		const vertices = gl.arrays[0].float32;
 		const texMap = gl.textureManager.map;
 		const texUnits = gl.maxTexUnits - 1;
@@ -28,17 +25,14 @@ export class BatchRenderer {
 		let blendMode = 'normal';
 		let program = null;
 
-		// 设置属性大小
 		const setAttrSize = (size) => {
 			attrSize = size;
 		};
 
-		// 获取结束索引
 		const getEndIndex = () => {
 			return endIndex;
 		};
 
-		// 设置混合模式
 		const setBlendMode = (blend) => {
 			if (blendMode !== blend) {
 				draw();
@@ -46,17 +40,14 @@ export class BatchRenderer {
 			}
 		};
 
-		// 绑定GL程序(中途切换程序可恢复)
 		const bindProgram = () => {
 			program = gl.program;
 		};
 
-		// 解除绑定GL程序
 		const unbindProgram = () => {
 			program = null;
 		};
 
-		// 推送绘制数据
 		const push = (texIndex) => {
 			let samplerIndex = samplers[texIndex];
 			if (samplerIndex === -1) {
@@ -83,7 +74,6 @@ export class BatchRenderer {
 			endIndex += 4;
 		};
 
-		// 绘制图像
 		const draw = () => {
 			if (endIndex !== 0) {
 				if (samplerLength !== 0) {
@@ -125,7 +115,6 @@ export class BatchRenderer {
 			}
 		};
 
-		// 设置属性
 		this.response = response;
 		this.setAttrSize = setAttrSize;
 		this.getEndIndex = getEndIndex;

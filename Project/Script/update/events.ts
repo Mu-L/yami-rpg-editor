@@ -4,9 +4,7 @@ import { File } from '../file/file-system-core.ts';
 import { Inspector } from '../inspector/inspector.ts';
 import { Updater } from './updater.ts';
 
-// 更新本地事件数据
 Updater.updateLocalEvents = function (verNum) {
-	// 更新到1.0.122版本：添加enabled属性
 	if (verNum < Updater.getVersionNumber('1.0.122')) {
 		const listMap = EventEditor.getAllLocalEvents();
 		for (const [guid, events] of Object.entries(listMap)) {
@@ -25,10 +23,7 @@ Updater.updateLocalEvents = function (verNum) {
 	}
 };
 
-// 更新全局事件数据
 Updater.updateGlobalEvents = function (verNum) {
-	// 更新到1.0.105版本：添加priority属性
-	// 更新到1.0.122版本：添加namespace|returnType|description|parameters属性
 	if (verNum < Updater.getVersionNumber('1.0.122')) {
 		const events = Data.events;
 		const keys = Object.keys(Inspector.fileEvent.create('global'));
@@ -55,10 +50,7 @@ Updater.updateGlobalEvents = function (verNum) {
 	}
 };
 
-// 更新单个全局事件数据
 Updater.updateGlobalEvent = function (meta) {
-	// 更新到1.0.105版本：添加priority属性
-	// 更新到1.0.122版本：添加namespace|returnType|description|parameters属性
 	const guid = meta.guid;
 	const sEvent = Data.events[guid];
 	if ('namespace' in sEvent || 'priority' in sEvent) return;

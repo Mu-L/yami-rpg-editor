@@ -1,8 +1,6 @@
 ﻿import { Timer } from '../util/timer.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 菜单列表 ********************************
-
 export class MenuList extends HTMLElement {
 	state: string;
 	callback: (() => void) | null;
@@ -32,7 +30,6 @@ export class MenuList extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.state = 'closed';
 		this.callback = null;
 		this.dataItems = null;
@@ -51,7 +48,6 @@ export class MenuList extends HTMLElement {
 		this.windowPointerout = MenuList.windowPointerout.bind(this);
 	}
 
-	// 弹出菜单
 	popup(options: any, items: any) {
 		this.close();
 		this.state = 'open';
@@ -75,7 +71,6 @@ export class MenuList extends HTMLElement {
 		this.style.top = `${Math.min(y + dpx, bottom)}px`;
 		this.style.zIndex = String(Window.frames.length + 1);
 
-		// 侦听事件
 		window.event?.stopPropagation();
 		window.on('blur', this.windowBlur);
 		window.on('pointerdown', this.windowPointerdown);
@@ -87,7 +82,6 @@ export class MenuList extends HTMLElement {
 		this.on('pointerenter', this.pointerenter);
 	}
 
-	// 计算菜单宽度
 	computeMenuWidth() {
 		let labelWidth = 0;
 		let acceleratorWidth = 0;
@@ -108,7 +102,6 @@ export class MenuList extends HTMLElement {
 		this.style.width = `${Math.max(width, this.minWidth)}px`;
 	}
 
-	// 关闭菜单
 	close() {
 		if (this.state === 'open') {
 			this.state = 'closed';
@@ -121,7 +114,6 @@ export class MenuList extends HTMLElement {
 			this.buttonPressed = false;
 			document.body.removeChild(this.clear());
 
-			// 取消侦听事件
 			window.off('blur', this.windowBlur);
 			window.off('pointerdown', this.windowPointerdown);
 			window.off('pointerup', this.windowPointerup);
@@ -133,40 +125,33 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 清除
 	clear() {
 		this.textContent = '';
 		return this;
 	}
 
-	// 创建项目
 	createItem(item: any) {
 		switch (item.type) {
 			case 'separator':
 				return document.createElement('menu-separator');
 			default: {
-				// 创建列表项
 				const li = document.createElement('menu-item');
 				li.dataValue = item;
 
-				// 禁用列表项
 				if (item.enabled === false) {
 					li.addClass('disabled');
 				}
 
-				// 创建勾选标记
 				if (item.checked === true) {
 					const mark = document.createElement('menu-checked');
 					mark.textContent = '✓';
 					li.appendChild(mark);
 				}
 
-				// 添加图标元素
 				if (item.icon !== undefined) {
 					li.appendChild(item.icon);
 				}
 
-				// 创建标签元素
 				if (item.label !== undefined) {
 					const label = document.createElement('menu-label');
 					label.textContent = item.label;
@@ -174,7 +159,6 @@ export class MenuList extends HTMLElement {
 					li.appendChild(label);
 				}
 
-				// 创建快捷键元素
 				if (item.accelerator !== undefined) {
 					const accelerator = document.createElement('menu-accelerator');
 					accelerator.textContent = item.accelerator;
@@ -182,12 +166,10 @@ export class MenuList extends HTMLElement {
 					li.appendChild(accelerator);
 				}
 
-				// 设置样式
 				if (item.style !== undefined) {
 					li.addClass(item.style);
 				}
 
-				// 创建子菜单标记
 				if (item.submenu !== undefined) {
 					const accelerator = document.createElement('menu-sub-mark');
 					accelerator.textContent = '>';
@@ -198,7 +180,6 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 选择选项
 	select(element: any) {
 		if (this.selection !== element) {
 			this.unselect();
@@ -207,7 +188,6 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 取消选择
 	unselect() {
 		if (this.selection) {
 			this.selection.removeClass('selected');
@@ -219,7 +199,6 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 重新选择
 	reselect(offset: any) {
 		const elements = [];
 		for (const child of this.childNodes) {
@@ -248,7 +227,6 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 弹出子菜单
 	popupSubmenu(delay: any) {
 		const element = this.selection;
 		if (element instanceof HTMLElement && element !== this.submenu?.parentMenuItem) {
@@ -292,7 +270,6 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 关闭子菜单
 	closeSubmenu(delay: any) {
 		const { submenu, selection } = this;
 		if (submenu?.parentMenuItem === selection) {
@@ -310,17 +287,14 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 指针进入事件
 	pointerenter(event: any) {
 		(this.parent as unknown as MenuList)?.select(this.parentMenuItem);
 	}
 
-	// 窗口 - 失去焦点事件
 	static windowBlur(this: MenuList, event: Event) {
 		this.close();
 	}
 
-	// 窗口 - 键盘按下事件
 	static windowKeydown(this: MenuList, event: KeyboardEvent) {
 		if (!this.submenu) {
 			event.preventDefault();
@@ -365,15 +339,9 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 键盘弹起事件
 	// static windowKeyup(event) {
-	//   event.preventDefault()
-	//   event.stopPropagation()
-	// }
 
-	// 窗口 - 指针按下事件
 	static windowPointerdown(this: MenuList, event: PointerEvent) {
-		// 阻止 activeElement blur 行为
 		const element = (event.target as HTMLElement).seek('menu-list');
 		if (
 			element instanceof MenuList ||
@@ -403,7 +371,6 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 指针弹起事件
 	static windowPointerup(this: MenuList, event: PointerEvent) {
 		switch (event.button) {
 			case 0: {
@@ -438,7 +405,6 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 指针进入事件
 	static windowPointerover(this: MenuList, event: PointerEvent) {
 		const element = event.target as HTMLElement;
 		if (
@@ -447,20 +413,17 @@ export class MenuList extends HTMLElement {
 			element.tagName === 'MENU-ITEM' &&
 			!element.hasClass('disabled')
 		) {
-			// 取消关闭子菜单的计时器
 			if (this.closeTimer && this.submenu?.parentMenuItem === element) {
 				this.closeTimer.remove();
 				this.closeTimer = null;
 			}
 			// 因为逆序更新计时器
-			// 弹出比关闭先执行
 			this.closeSubmenu(400);
 			this.select(element);
 			this.popupSubmenu(400);
 		}
 	}
 
-	// 窗口 - 指针离开事件
 	static windowPointerout(this: MenuList, event: PointerEvent) {
 		const element = event.target;
 		if (this.selection === element) {
@@ -474,5 +437,4 @@ export class MenuList extends HTMLElement {
 
 customElements.define('menu-list', MenuList);
 
-// 创建菜单列表实例
 export const Menu = new MenuList();

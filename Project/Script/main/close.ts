@@ -16,7 +16,6 @@ import { Window } from '../tools/window-object.ts';
 import { UI } from '../ui/ui-window.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// 关闭项目
 Editor.close = function (save = true) {
 	Layout.manager.switch(null);
 	if (this.state === 'open') {
@@ -45,7 +44,6 @@ Editor.close = function (save = true) {
 	}
 };
 
-// 退出应用
 Editor.quit = function () {
 	this.saveConfig();
 	this.saveProject();

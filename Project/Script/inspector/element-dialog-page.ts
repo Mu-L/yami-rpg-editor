@@ -2,26 +2,19 @@
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 对话框页面 ********************************
-
 {
 	const UIDialogBox = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UIDialogBox.initialize = function () {
-		// 创建字型选项
 		$('#uiDialogBox-typeface').loadItems([
 			{ name: 'Regular', value: 'regular' },
 			{ name: 'Bold', value: 'bold' },
@@ -29,7 +22,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Bold Italic', value: 'bold-italic' }
 		]);
 
-		// 创建文字效果类型选项
 		$('#uiDialogBox-effect-type').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Shadow', value: 'shadow' },
@@ -37,19 +29,16 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Outline', value: 'outline' }
 		]);
 
-		// 创建混合模式选项
 		$('#uiDialogBox-blend').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Additive', value: 'additive' },
 			{ name: 'Subtract', value: 'subtract' }
 		]);
 
-		// 同步滑动框和数字框的数值
 		$('#uiDialogBox-size-slider').synchronize($('#uiDialogBox-size'));
 		$('#uiDialogBox-lineSpacing-slider').synchronize($('#uiDialogBox-lineSpacing'));
 		$('#uiDialogBox-letterSpacing-slider').synchronize($('#uiDialogBox-letterSpacing'));
 
-		// 设置文字效果类型关联元素
 		$('#uiDialogBox-effect-type')
 			.enableHiddenMode()
 			.relate([
@@ -71,7 +60,6 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 侦听事件
 		const elements = $(`#uiDialogBox-content, #uiDialogBox-interval, #uiDialogBox-size,
     #uiDialogBox-lineSpacing, #uiDialogBox-letterSpacing, #uiDialogBox-color, #uiDialogBox-font,
     #uiDialogBox-typeface, #uiDialogBox-effect-type, #uiDialogBox-effect-shadowOffsetX, #uiDialogBox-effect-shadowOffsetY,
@@ -86,7 +74,6 @@ import { UI } from '../ui/ui-window.ts';
 		sliders.on('blur', Inspector.sliderBlur);
 	};
 
-	// 创建对话框
 	UIDialogBox.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -117,12 +104,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIDialogBox.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiDialogBox', node);
 			write('content');
 			write('interval');
@@ -142,7 +127,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIDialogBox.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -152,7 +136,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIDialogBox.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -227,7 +210,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIDialogBox.paramInput = function (event) {
 		UIDialogBox.update(UIDialogBox.target, Inspector.getKey(this), this.read());
 	};

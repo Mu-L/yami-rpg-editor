@@ -2,9 +2,6 @@ import { Scene } from './scene-window.ts';
 import { ImageTexture } from '../webgl/image-texture.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 视差图类 ********************************
-
-// 视差图数据对象（Data.parallaxes[i]）
 interface ParallaxData {
 	shiftSpeedX: number;
 	shiftSpeedY: number;
@@ -34,7 +31,6 @@ export class Parallax {
 		this.loadTexture();
 	}
 
-	// 更新数据
 	update(deltaTime: number): void {
 		const { shiftSpeedX, shiftSpeedY } = this.data;
 		if (shiftSpeedX !== 0 || shiftSpeedY !== 0) {
@@ -46,7 +42,6 @@ export class Parallax {
 		}
 	}
 
-	// 绘制图像
 	draw(id: string): void {
 		const texture = this.texture;
 		if (texture instanceof ImageTexture) {
@@ -123,7 +118,6 @@ export class Parallax {
 		}
 	}
 
-	// 绘制默认图像
 	drawDefaultImage() {
 		const parallax = this.data;
 		const width = 128 * parallax.scaleX * parallax.repeatX;
@@ -141,7 +135,6 @@ export class Parallax {
 		GL.fillRect(x, y, width, height, 0x80ffffff);
 	}
 
-	// 加载纹理
 	loadTexture() {
 		const guid = this.data.image;
 		if (guid) {
@@ -160,7 +153,6 @@ export class Parallax {
 		}
 	}
 
-	// 销毁
 	destroy() {
 		if (this.texture instanceof ImageTexture) {
 			this.texture.destroy();
@@ -168,6 +160,5 @@ export class Parallax {
 		this.texture = null;
 	}
 
-	// 静态 - 光线采样模式映射表
 	static lightSamplingModes = { raw: 0, global: 1, anchor: 2, ambient: 3 };
 }

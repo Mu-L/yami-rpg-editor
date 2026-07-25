@@ -3,10 +3,7 @@ import { FileItem } from '../file/file-item.ts';
 import { File } from '../file/file-system-core.ts';
 import { Updater } from '../update/updater.ts';
 
-// ******************************** 元数据类 ********************************
-
 export const Meta = (function IIFE() {
-	// 类型到分组名称映射表
 	const typeMapToGroupName = {
 		...FileItem.dataMapNames,
 		image: 'images',
@@ -32,11 +29,7 @@ export const Meta = (function IIFE() {
 	return class FileMeta {
 		path: string;
 		size: number;
-		// 以下字段用 `declare` 仅作类型声明，运行期完全由
-		// Object.defineProperties(this, descriptors) 定义为不可枚举属性。
-		// 切勿写成类字段（如 `file;` 或 `file = null`）——useDefineForClassFields:true
-		// 下 TS 会发射 `Object.defineProperty(this,'file',{enumerable:true,...})`，
-		// 使 JSON.stringify 看到 file -> FileItem.meta 循环引用。
+		// 以下字段用 `declare` 仅作类型声明，运行期完全由 Object.defineProperties(this, descriptors) 定义为不可枚举属性。切勿写成类字段（如 `file;` 或 `file = null`）——useDefineForClassFields:true 下 TS 会发射 `Object.defineProperty(this,'file',{enumerable:true,...})`，使 JSON.stringify 看到 file -> FileItem.meta 循环引用。
 		declare file: FileItem;
 		declare guid: string;
 		declare mtimeMs: number | null;
@@ -54,7 +47,6 @@ export const Meta = (function IIFE() {
 			this.path = path;
 			this.size = Number(file.stats.size);
 
-			// 特殊类型额外附加属性
 			switch (type) {
 				case 'scene':
 					this.x = 10;
@@ -70,7 +62,6 @@ export const Meta = (function IIFE() {
 					break;
 			}
 
-			// 加载数据文件
 			const name = FileItem.dataMapNames[type];
 			if (name !== undefined) {
 				dataMapDescriptor.value = Data[name];
@@ -79,7 +70,6 @@ export const Meta = (function IIFE() {
 				const promise = file.promise ?? Promise.resolve();
 				file.promise = promise
 					.then(async () => {
-						// 文件重命名后会改变元数据路径
 						loaderDescriptor.path = this.path;
 						const data = await File.get(loaderDescriptor);
 						if (data) {
@@ -104,7 +94,6 @@ export const Meta = (function IIFE() {
 					});
 			}
 
-			// 设置其他内容
 			const key = typeMapToGroupName[type];
 			if (key === undefined) {
 				throw new Error('Unknown meta type');
@@ -121,7 +110,6 @@ export const Meta = (function IIFE() {
 			Object.defineProperties(this, descriptors);
 		}
 
-		// 重定向
 		redirect(file: any) {
 			if (this.file.type === file.type) {
 				this.file = file;
@@ -143,7 +131,6 @@ export const Meta = (function IIFE() {
 			return false;
 		}
 
-		// 尝试修复因项目更新而丢失的GUID
 		tryFixGuid(data: any) {
 			if (data.guid === undefined) {
 			}
@@ -151,7 +138,6 @@ export const Meta = (function IIFE() {
 			Object.defineProperty(data, 'guid', guidDescriptor);
 		}
 
-		// 静态 - 版本ID
 		static versionId = 0;
 	};
 })();

@@ -1,7 +1,5 @@
 import { CustomBox } from './custom-box.ts';
 
-// ******************************** 文件变量框 ********************************
-
 export class FileVar extends HTMLElement {
 	mode: string;
 	strBox: HTMLElement & { [k: string]: any };
@@ -10,7 +8,6 @@ export class FileVar extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.mode = null;
 		this.fileBox = new CustomBox();
 		this.varBox = new CustomBox();
@@ -19,12 +16,10 @@ export class FileVar extends HTMLElement {
 		this.varBox.type = 'variable';
 		this.varBox.filter = 'string';
 
-		// 侦听事件
 		this.on('keydown', this.keydown);
 		this.on('pointerdown', this.pointerdown);
 	}
 
-	// 读取数据
 	read() {
 		switch (this.mode) {
 			case 'constant':
@@ -34,7 +29,6 @@ export class FileVar extends HTMLElement {
 		}
 	}
 
-	// 写入数据
 	write(value: any) {
 		switch (typeof value) {
 			case 'string':
@@ -50,7 +44,6 @@ export class FileVar extends HTMLElement {
 		}
 	}
 
-	// 切换模式
 	switch(mode?) {
 		const focus = !mode && !this.hasClass('disabled');
 		if (mode === undefined) {
@@ -87,7 +80,6 @@ export class FileVar extends HTMLElement {
 		}
 	}
 
-	// 启用元素
 	enable() {
 		if (this.removeClass('disabled')) {
 			this.fileBox.enable();
@@ -95,7 +87,6 @@ export class FileVar extends HTMLElement {
 		}
 	}
 
-	// 禁用元素
 	disable() {
 		if (this.addClass('disabled')) {
 			this.fileBox.disable();
@@ -103,7 +94,6 @@ export class FileVar extends HTMLElement {
 		}
 	}
 
-	// 获得焦点
 	getFocus(mode: any) {
 		switch (this.mode) {
 			case 'constant':
@@ -113,19 +103,15 @@ export class FileVar extends HTMLElement {
 		}
 	}
 
-	// 键盘按下事件
 	keydown(event: any) {
 		switch (event.code) {
 			case 'Slash':
-				// 切换输入框导致已侦听的事件失效
-				// 因此在这里阻止输入行为
 				event.preventDefault();
 				this.switch();
 				break;
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
@@ -143,7 +129,6 @@ export class FileVar extends HTMLElement {
 		}
 	}
 
-	// 默认变量值
 	static defVar = { type: 'local', key: 'key' };
 }
 

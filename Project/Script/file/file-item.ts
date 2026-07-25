@@ -9,8 +9,6 @@ import { Window } from '../tools/window-object.ts';
 import { Path } from '../util/config.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 文件项目 ********************************
-
 export class FileItem {
 	meta: any | null;
 	name: string;
@@ -39,10 +37,8 @@ export class FileItem {
 		this.stats = stats;
 		this.contexts = null;
 
-		// 创建元数据
 		this.createMeta(match?.[0]);
 
-		// 加载脚本
 		switch (type) {
 			case 'image':
 				GL.textureManager.updateImage(this.meta.guid);
@@ -53,7 +49,6 @@ export class FileItem {
 		}
 	}
 
-	// 读取数据
 	get data() {
 		const { meta } = this;
 		const { guid } = meta;
@@ -64,11 +59,9 @@ export class FileItem {
 		return undefined;
 	}
 
-	// 创建元数据
 	createMeta(guid: any) {
 		const stats = this.stats;
-		// 如果GUID不存在或冲突则新建GUID
-		// 如果GUID重复则不要修改避免丢失
+		// 如果GUID不存在或冲突则新建GUID 如果GUID重复则不要修改避免丢失
 		if (guid === undefined) {
 			do {
 				guid = GUID.generate64bit();
@@ -76,8 +69,7 @@ export class FileItem {
 			this.updateFileName(guid);
 		} else {
 			const meta = Data.manifest.guidMap[guid];
-			// 如果存在元数据并且并未被使用，则重定向或删除该元数据
-			// 如果存在元数据并且已经被使用，则文件GUID冲突
+			// 如果存在元数据并且并未被使用，则重定向或删除该元数据 如果存在元数据并且已经被使用，则文件GUID冲突
 			if (meta && meta.versionId !== Meta.versionId) {
 				if (meta.redirect(this)) {
 					this.meta = meta;
@@ -94,12 +86,10 @@ export class FileItem {
 		this.meta.mtimeMs = stats.mtimeMs;
 	}
 
-	// 更新文件名称
 	updateFileName(guid: any) {
 		const basename = this.basename;
 		const extname = this.extname;
-		// 如果代码被修改可能导致批量的错误命名结果
-		// 因此进行文件名组成部分类型检查
+		// 如果代码被修改可能导致批量的错误命名结果 因此进行文件名组成部分类型检查
 		if (
 			typeof guid !== 'string' ||
 			typeof basename !== 'string' ||
@@ -116,17 +106,14 @@ export class FileItem {
 			const promise = this.promise ?? Promise.resolve();
 			this.promise = promise.then(() => {
 				return FSP.rename(sPath, dPath).then(() => {
-					// console.log(this.name, this.path)
 					this.name = name;
 					this.path = path;
 					this.meta?.redirect(this);
-					// console.log(this.meta.path)
 				});
 			});
 		}
 	}
 
-	// 获取上下文对象
 	getContext(key: any) {
 		let contexts = this.contexts;
 		if (contexts === null) {
@@ -139,7 +126,6 @@ export class FileItem {
 		return context;
 	}
 
-	// 静态属性 - 数据映射表的名称
 	static dataMapNames = {
 		actor: 'actors',
 		skill: 'skills',
@@ -156,21 +142,16 @@ export class FileItem {
 		script: 'scripts'
 	};
 
-	// 静态属性 - GUID正则表达式
 	static guidRegExp = /(?<=\.)[0-9a-f]{16}$/;
 
-	// 静态属性 - GUID冲突路径列表
 	static guidConflictPaths = [];
 
-	// 静态属性 - 过大图像路径列表
 	static oversizeImagePaths = [];
 
-	// 静态方法 - 判断是不是数据文件
 	static isDataFile(file: any) {
 		return FileItem.dataMapNames[file.type] !== undefined;
 	}
 
-	// 静态方法 - 添加冲突路径
 	static addGuidConflictPaths(...paths) {
 		for (const path of paths) {
 			this.guidConflictPaths.append(path);
@@ -178,7 +159,6 @@ export class FileItem {
 		request(this.warnGuidConflicts);
 	}
 
-	// 静态方法 - 警告GUID冲突
 	static warnGuidConflicts() {
 		const warnings = [Local.get('confirmation.guidConflict')];
 		Window.confirm(
@@ -194,7 +174,6 @@ export class FileItem {
 		FileItem.guidConflictPaths.length = 0;
 	}
 
-	// 静态方法 - 添加过大图像路径
 	static addOversizeImagePaths(...paths) {
 		for (const path of paths) {
 			this.oversizeImagePaths.append(path);
@@ -202,7 +181,6 @@ export class FileItem {
 		request(this.warnOversizeImages);
 	}
 
-	// 静态方法 - 警告过大图像
 	static warnOversizeImages() {
 		const warnings = [Local.get('confirmation.oversizeImage').replace('<size>', GL.maxTexSize)];
 		Window.confirm(

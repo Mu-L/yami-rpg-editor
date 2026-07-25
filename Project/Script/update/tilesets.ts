@@ -2,9 +2,7 @@ import { Data } from '../data/data-object.ts';
 import { File } from '../file/file-system-core.ts';
 import { Updater } from './updater.ts';
 
-// 更新图块组数据
 Updater.updateTilesets = function (verNum) {
-	// 更新到1.0.60版本：添加terrains属性
 	if (verNum < Updater.getVersionNumber('1.0.60')) {
 		const tilesets = Data.tilesets;
 		for (const [guid, tileset] of Object.entries<any>(tilesets)) {
@@ -17,7 +15,6 @@ Updater.updateTilesets = function (verNum) {
 			File.planToSave(meta);
 		}
 	}
-	// 更新到1.0.85版本：添加tags属性
 	if (verNum < Updater.getVersionNumber('1.0.85')) {
 		const tilesets = Data.tilesets;
 		for (const [guid, tileset] of Object.entries<any>(tilesets)) {

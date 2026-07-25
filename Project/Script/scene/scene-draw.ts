@@ -57,7 +57,6 @@ Scene.drawScene = function () {
 	}
 };
 
-// 绘制背景
 Scene.drawBackgrounds = function () {
 	GL.clearColor(...this.background.getGLRGBA());
 	GL.clear(GL.COLOR_BUFFER_BIT);
@@ -81,7 +80,6 @@ Scene.drawBackgrounds = function () {
 	GL.alpha = 1;
 };
 
-// 绘制前景
 Scene.drawForegrounds = function () {
 	const activeId = this.activeTilemapId;
 	const foregrounds = this.foregrounds;
@@ -104,7 +102,6 @@ Scene.drawForegrounds = function () {
 	GL.alpha = 1;
 };
 
-// 更新动画
 Scene.updateAnimations = function (deltaTime) {
 	const lightmap = GL.reflectedLightMap;
 	const area = Data.config.animationArea;
@@ -159,7 +156,6 @@ Scene.updateAnimations = function (deltaTime) {
 	}
 };
 
-// 更新粒子
 Scene.updateParticles = function (deltaTime) {
 	if (this.showAnimation) {
 		const lightmap = GL.reflectedLightMap;
@@ -197,7 +193,6 @@ Scene.updateParticles = function (deltaTime) {
 	}
 };
 
-// 绘制瓦片地图
 Scene.drawTilemap = function (tilemap, id) {
 	let layer, opacity;
 	const activeId = this.activeTilemapId;
@@ -232,7 +227,6 @@ Scene.drawTilemap = function (tilemap, id) {
 	);
 };
 
-// 绘制图块预览
 Scene.drawTilePreview = function () {
 	const marquee = this.marquee;
 	if (marquee.visible && marquee.previewTiles) {
@@ -251,7 +245,6 @@ Scene.drawTilePreview = function () {
 	}
 };
 
-// 绘制图块层
 Scene.drawTileLayer = function (layer, light, blend, opacity, tilesetMap, tiles, ox, oy) {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
@@ -443,7 +436,6 @@ Scene.drawTileLayer = function (layer, light, blend, opacity, tilesetMap, tiles,
 	}
 };
 
-// 绘制网格层
 Scene.drawGridLayer = function () {
 	if (this.showGrid && this.width * this.height) {
 		const gl = GL;
@@ -500,7 +492,6 @@ Scene.drawGridLayer = function () {
 	}
 };
 
-// 绘制区域层
 Scene.drawRegionLayer = function () {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
@@ -555,14 +546,12 @@ Scene.drawRegionLayer = function () {
 		}
 	}
 
-	// 清除无效的可见区域
 	const count = list.count;
 	for (let i = li; i < count; i++) {
 		list[i] = undefined;
 	}
 	list.count = li;
 
-	// 绘制区域
 	if (vi !== 0) {
 		const program = gl.graphicProgram.use();
 		gl.matrix
@@ -576,7 +565,6 @@ Scene.drawRegionLayer = function () {
 	}
 };
 
-// 绘制区域边框
 Scene.drawRegionBorders = function () {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
@@ -619,7 +607,6 @@ Scene.drawRegionBorders = function () {
 		vertices[vi + 15] = dt;
 		vi += 16;
 	}
-	// 绘制开始位置边框
 	const { startPosition } = Data.config;
 	if (startPosition.sceneId === this.meta.guid) {
 		const dl = startPosition.x - 0.5 + ox;
@@ -658,14 +645,12 @@ Scene.drawRegionBorders = function () {
 	}
 };
 
-// 绘制对象层
 Scene.drawObjectLayer = function () {
 	const { max, min, floor, ceil, round } = Math;
 	const activeId = this.activeTilemapId;
 	const translucent = activeId !== -1 && activeId < 0x20000;
 	const animAlpha = translucent ? 0.25 : 1;
 
-	// 获取图块对象
 	const gl = GL;
 	const lightModeMap = this.showLight
 		? Animation.Player.lightSamplingModes
@@ -883,7 +868,6 @@ Scene.drawObjectLayer = function () {
 		}
 	}
 
-	// 获取角色和动画对象
 	const actors = this.actors;
 	const animations = this.animations;
 	const particles = this.particles;
@@ -937,7 +921,6 @@ Scene.drawObjectLayer = function () {
 		}
 	}
 
-	// 绘制图像
 	if (li !== 0) {
 		const vertices = gl.arrays[0].float32;
 		const attributes = gl.arrays[0].uint32;
@@ -1030,7 +1013,6 @@ Scene.drawObjectLayer = function () {
 	}
 };
 
-// 绘制直射光层
 Scene.drawDirectLightLayer = function () {
 	if (this.showLight) {
 		GL.matrix.reset();
@@ -1040,7 +1022,6 @@ Scene.drawDirectLightLayer = function () {
 	}
 };
 
-// 绘制名字层
 Scene.drawNameLayer = function () {
 	if (this.target?.name) {
 		const gl = GL;
@@ -1058,7 +1039,6 @@ Scene.drawNameLayer = function () {
 	}
 };
 
-// 绘制地形层
 Scene.drawTerrainLayer = function () {
 	const gl = GL;
 	const vertices = gl.arrays[0].float32;
@@ -1079,7 +1059,6 @@ Scene.drawTerrainLayer = function () {
 	let vi = 0;
 	let flag = false;
 
-	// 计算墙块顶点位置
 	for (let y = by; y < ey; y++) {
 		for (let x = bx; x < ex; x++) {
 			const i = x + y * tro;
@@ -1113,7 +1092,6 @@ Scene.drawTerrainLayer = function () {
 	}
 	const mi1 = vi;
 
-	// 计算水域顶点位置
 	for (let y = by; y < ey; y++) {
 		for (let x = bx; x < ex; x++) {
 			const i = x + y * tro;
@@ -1147,7 +1125,6 @@ Scene.drawTerrainLayer = function () {
 	}
 	const mi2 = vi;
 
-	// 计算墙块水平边缘顶点位置
 	const ox = 0.5 / this.scaleX / tw;
 	const oy = 0.5 / this.scaleY / th;
 	for (let y = by; y <= ey; y++) {
@@ -1180,7 +1157,6 @@ Scene.drawTerrainLayer = function () {
 		}
 	}
 
-	// 计算墙块垂直边缘顶点位置
 	for (let x = bx; x <= ex; x++) {
 		for (let y = by; y < ey; y++) {
 			const i = x + y * tro;
@@ -1212,7 +1188,6 @@ Scene.drawTerrainLayer = function () {
 	}
 	const mi3 = vi;
 
-	// 计算水域水平边缘顶点位置
 	for (let y = by; y <= ey; y++) {
 		for (let x = bx; x < ex; x++) {
 			const i = x + y * tro;
@@ -1243,7 +1218,6 @@ Scene.drawTerrainLayer = function () {
 		}
 	}
 
-	// 计算水域垂直边缘顶点位置
 	for (let x = bx; x <= ex; x++) {
 		for (let y = by; y < ey; y++) {
 			const i = x + y * tro;
@@ -1274,7 +1248,6 @@ Scene.drawTerrainLayer = function () {
 		}
 	}
 
-	// 绘制图像
 	if (vi !== 0) {
 		const program = gl.graphicProgram.use();
 		gl.matrix
@@ -1303,7 +1276,6 @@ Scene.drawTerrainLayer = function () {
 	}
 };
 
-// 绘制灯光纹理
 Scene.drawLightTextures = function () {
 	if (this.showLight) {
 		const gl = GL;
@@ -1391,7 +1363,6 @@ Scene.drawLightTextures = function () {
 		}
 		const count = qi0 + qi1 + qi2 + qi3;
 		if (count !== 0) {
-			// 排列光源索引
 			for (let i = 0; i < qi1; i++) {
 				queue[qi0 + i] = queue[i | 0x10000];
 			}
@@ -1403,7 +1374,6 @@ Scene.drawLightTextures = function () {
 			}
 		}
 		if (count !== 0) {
-			// 绘制反射光
 			const projMatrix = Matrix.instance
 				.project(gl.flip, sr - sl, sb - st)
 				.translate(-sl, -st)
@@ -1424,7 +1394,6 @@ Scene.drawLightTextures = function () {
 		gl.clearColor(directRed, directGreen, directBlue, 0);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		if (count !== 0) {
-			// 绘制直射光
 			const sl = this.scrollLeft;
 			const st = this.scrollTop;
 			const sr = this.scrollRight;
@@ -1443,7 +1412,6 @@ Scene.drawLightTextures = function () {
 	}
 };
 
-// 绘制图块选框
 Scene.drawTileMarquee = function () {
 	const marquee = this.marquee;
 	if (marquee.visible) {
@@ -1460,7 +1428,6 @@ Scene.drawTileMarquee = function () {
 		const sr = scroll.right;
 		const sb = scroll.bottom;
 
-		// 绘制选框
 		const dl = marquee.x;
 		const dt = marquee.y;
 		const dr = dl + marquee.width;
@@ -1597,7 +1564,6 @@ Scene.drawTileMarquee = function () {
 	}
 };
 
-// 绘制地形选框
 Scene.drawTerrainMarquee = function () {
 	const marquee = this.marquee;
 	if (marquee.visible) {
@@ -1648,7 +1614,6 @@ Scene.drawTerrainMarquee = function () {
 	}
 };
 
-// 绘制瓦片地图线框
 Scene.drawTilemapWireframe = function () {
 	if (this.target?.class === 'tilemap') {
 		const tilemap = this.target;
@@ -1682,7 +1647,6 @@ Scene.drawTilemapWireframe = function () {
 	}
 };
 
-// 绘制动画线框
 Scene.drawAnimationWireframe = function () {
 	switch (this.target?.class) {
 		case 'actor':
@@ -1714,7 +1678,6 @@ Scene.drawAnimationWireframe = function () {
 	}
 };
 
-// 绘制动画锚点
 Scene.drawAnimationAnchor = function () {
 	switch (this.target?.class) {
 		case 'actor': {
@@ -1729,7 +1692,6 @@ Scene.drawAnimationAnchor = function () {
 	}
 };
 
-// 绘制光源线框
 Scene.drawLightWireframe = function () {
 	if (this.target?.class === 'light') {
 		const light = this.target;
@@ -1779,7 +1741,6 @@ Scene.drawLightWireframe = function () {
 	}
 };
 
-// 绘制区域线框
 Scene.drawRegionWireframe = function () {
 	if (this.target?.class === 'region') {
 		const region = this.target;
@@ -1806,7 +1767,6 @@ Scene.drawRegionWireframe = function () {
 	}
 };
 
-// 绘制粒子发射器线框
 Scene.drawParticleEmitterWireframe = function () {
 	if (this.target?.class === 'particle') {
 		const particle = this.target;
@@ -1826,7 +1786,6 @@ Scene.drawParticleEmitterWireframe = function () {
 	}
 };
 
-// 绘制视差图线框
 Scene.drawParallaxWireframe = function () {
 	if (this.target?.class === 'parallax') {
 		const parallax = this.target;
@@ -1856,7 +1815,6 @@ Scene.drawParallaxWireframe = function () {
 	}
 };
 
-// 创建初始位置图像纹理
 Scene.createStartPositionTexture = function () {
 	let texture = this.startPositionTexture;
 	if (texture === null) {
@@ -1882,7 +1840,6 @@ Scene.createStartPositionTexture = function () {
 	return texture;
 };
 
-// 绘制初始位置
 Scene.drawStartPosition = function () {
 	const { startPosition } = Data.config;
 	if (startPosition.sceneId === this.meta.guid) {
@@ -1916,7 +1873,6 @@ Scene.drawStartPosition = function () {
 			vertices[14] = 1;
 			vertices[15] = 0;
 
-			// 绘制文本
 			gl.alpha = 0.5;
 			const texture = this.createStartPositionTexture();
 			const program = gl.imageProgram.use();

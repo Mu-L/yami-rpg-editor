@@ -7,28 +7,21 @@ import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 文件 - 场景页面 ********************************
-
 {
 	const FileScene = {
-		// properties
 		button: $('#scene-switch-settings'),
 		owner: null,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	FileScene.initialize = function () {
-		// 创建所有者代理
 		this.owner = {
 			setTarget: (target) => {
 				if (this.target !== target) {
@@ -43,22 +36,17 @@ import { GL } from '../webgl/webgl-init.ts';
 			}
 		};
 
-		// 同步滑动框和数字框的数值
 		$('#fileScene-ambient-red-slider').synchronize($('#fileScene-ambient-red'));
 		$('#fileScene-ambient-green-slider').synchronize($('#fileScene-ambient-green'));
 		$('#fileScene-ambient-blue-slider').synchronize($('#fileScene-ambient-blue'));
 		$('#fileScene-ambient-direct-slider').synchronize($('#fileScene-ambient-direct'));
 
-		// 绑定事件列表
 		$('#fileScene-events').bind(new EventListInterface(this, this.owner));
 
-		// 绑定脚本列表
 		$('#fileScene-scripts').bind(new ScriptListInterface(this, this.owner));
 
-		// 绑定脚本参数面板
 		$('#fileScene-parameter-pane').bind($('#fileScene-scripts'));
 
-		// 侦听事件
 		const elements = $(`#fileScene-tileWidth, #fileScene-tileHeight,
     #fileScene-ambient-red, #fileScene-ambient-green, #fileScene-ambient-blue, #fileScene-ambient-direct`);
 		const sliders = $(`#fileScene-ambient-red-slider, #fileScene-ambient-green-slider,
@@ -72,7 +60,6 @@ import { GL } from '../webgl/webgl-init.ts';
 		$('#fileScene-events, #fileScene-scripts').on('change', Scene.listChange);
 	};
 
-	// 创建场景
 	FileScene.create = function () {
 		const objects = [];
 		const filters = {};
@@ -119,15 +106,12 @@ import { GL } from '../webgl/webgl-init.ts';
 		);
 	};
 
-	// 打开数据
 	FileScene.open = function (scene) {
 		if (this.target !== scene) {
 			this.target = scene;
 
-			// 更新按钮样式
 			this.button.addClass('selected');
 
-			// 写入数据
 			const write = getElementWriter('fileScene', Scene);
 			write('width');
 			write('height');
@@ -142,12 +126,10 @@ import { GL } from '../webgl/webgl-init.ts';
 		}
 	};
 
-	// 关闭数据
 	FileScene.close = function () {
 		if (this.target) {
 			this.target = null;
 
-			// 更新按钮样式
 			this.button.removeClass('selected');
 			$('#fileScene-events').clear();
 			$('#fileScene-scripts').clear();
@@ -155,7 +137,6 @@ import { GL } from '../webgl/webgl-init.ts';
 		}
 	};
 
-	// 写入数据
 	FileScene.write = function (options) {
 		if (options.width !== undefined) {
 			$('#fileScene-width').write(options.width);
@@ -165,7 +146,6 @@ import { GL } from '../webgl/webgl-init.ts';
 		}
 	};
 
-	// 更新数据
 	FileScene.update = function (_, key, value) {
 		Scene.planToSave();
 		switch (key) {
@@ -205,7 +185,6 @@ import { GL } from '../webgl/webgl-init.ts';
 		}
 	};
 
-	// 参数 - 输入事件
 	FileScene.paramInput = function (event) {
 		FileScene.update(FileScene.target, Inspector.getKey(this), this.read());
 	};

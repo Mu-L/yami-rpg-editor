@@ -1,8 +1,6 @@
-// ******************************** Toast ********************************
 // 轻量用户可见提示，接入 reportError 派发的 'yami:error' 事件
 
 export class ToastManager extends HTMLElement {
-	// 显示一条提示
 	show(message: string, type: string = 'info', duration: number = 4000): HTMLDivElement {
 		const el = document.createElement('div');
 		el.className = `toast toast-${type}`;
@@ -16,7 +14,6 @@ export class ToastManager extends HTMLElement {
 		el.appendChild(text);
 		el.appendChild(close);
 		this.appendChild(el);
-		// 进场动画
 		requestAnimationFrame(() => el.classList.add('toast-show'));
 		if (duration > 0) {
 			(el as HTMLDivElement & { _timer: ReturnType<typeof setTimeout> })._timer = setTimeout(
@@ -27,7 +24,6 @@ export class ToastManager extends HTMLElement {
 		return el;
 	}
 
-	// 关闭一条提示
 	dismiss(el: HTMLElement | null): void {
 		if (!el || el.parentNode !== this) return;
 		clearTimeout((el as HTMLElement & { _timer: ReturnType<typeof setTimeout> })._timer);
@@ -39,7 +35,6 @@ export class ToastManager extends HTMLElement {
 
 customElements.define('toast-manager', ToastManager as CustomElementConstructor);
 
-// 全局便捷接口
 export const Toast = {
 	_manager(): ToastManager {
 		let m = document.querySelector('toast-manager');

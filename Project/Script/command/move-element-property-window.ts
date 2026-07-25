@@ -1,8 +1,6 @@
 ﻿import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 
-// ******************************** 移动元素 - 属性窗口 ********************************
-
 export const TransformProperty = createPropertyWindow({
 	prefix: 'moveElement',
 	locale: 'command.moveElement',

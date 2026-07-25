@@ -3,23 +3,16 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { Enum } from '../enum/enum-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 物品访问器窗口 ********************************
-
 export const ItemGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
 	checkDataForPlugin: null,
 	createDefaultForPlugin: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 ItemGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#itemGetter-type').loadItems([
 		{ name: 'Event Trigger Item', value: 'trigger' },
 		{ name: 'Latest Item', value: 'latest' },
@@ -28,7 +21,6 @@ ItemGetter.initialize = function () {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置类型关联元素
 	$('#itemGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -43,16 +35,13 @@ ItemGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#itemGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#itemGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 ItemGetter.open = function (target) {
 	this.target = target;
 	Window.open('itemGetter');
 
-	// 加载快捷键选项
 	$('#itemGetter-key').loadItems(Enum.getStringItems('shortcut-key'));
 
 	let actor = { type: 'trigger' };
@@ -84,7 +73,6 @@ ItemGetter.open = function (target) {
 	$('#itemGetter-type').getFocus();
 };
 
-// 检查插件版本的物品访问器数据有效性
 ItemGetter.checkDataForPlugin = function (data) {
 	if (data instanceof Object) {
 		return data.getter === 'item';
@@ -92,12 +80,10 @@ ItemGetter.checkDataForPlugin = function (data) {
 	return false;
 };
 
-// 创建插件版本的默认物品访问器
 ItemGetter.createDefaultForPlugin = function () {
 	return { getter: 'item', type: 'trigger' };
 };
 
-// 确定按钮 - 鼠标点击事件
 ItemGetter.confirm = function (event) {
 	const read = getElementReader('itemGetter');
 	const type = read('type');
@@ -134,7 +120,6 @@ ItemGetter.confirm = function (event) {
 			break;
 		}
 	}
-	// 如果是插件输入框，额外附加一个属性
 	if (this.target.isPluginInput) {
 		getter = { getter: 'item', ...getter };
 	}

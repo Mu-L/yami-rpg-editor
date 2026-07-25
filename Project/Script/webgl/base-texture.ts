@@ -1,7 +1,5 @@
 ﻿import { GL } from './webgl-init.ts';
 
-// ******************************** 基础纹理类 ********************************
-
 export class BaseTexture {
 	glTexture: WebGLTexture | null;
 	width: number;
@@ -17,7 +15,6 @@ export class BaseTexture {
 		this.format = GL.RGBA;
 	}
 
-	// 恢复普通纹理
 	restoreNormalTexture(): void {
 		this.glTexture = GL.createTexture();
 		const { format, width, height } = this;
@@ -29,7 +26,6 @@ export class BaseTexture {
 		GL.texImage2D(GL.TEXTURE_2D, 0, format, width, height, 0, format, GL.UNSIGNED_BYTE, null);
 	}
 
-	// 恢复图像纹理
 	restoreImageTexture(): void {
 		this.glTexture = GL.createTexture();
 		const { width, height } = this;
@@ -51,13 +47,8 @@ export class BaseTexture {
 		);
 	}
 
-	/**
-	 * 基础纹理方法 - 设置加载回调
-	 * @param {string} type 回调事件类型
-	 * @param {function} callback 回调函数
-	 */
+	// 基础纹理方法 - 设置加载回调 @param {string} type 回调事件类型 @param {function} callback 回调函数
 	on(type: any, callback: any) {
-		// 如果已加载完成，立即执行回调
 		let cache = this[BaseTexture.CALLBACK];
 		if (cache === type) {
 			callback(this);
@@ -73,14 +64,10 @@ export class BaseTexture {
 		}
 	}
 
-	/**
-	 * 基础纹理方法 - 执行加载回调
-	 * @param {string} type 回调事件类型
-	 */
+	// 基础纹理方法 - 执行加载回调 @param {string} type 回调事件类型
 	reply(type: any) {
 		const cache = this[BaseTexture.CALLBACK];
 		if (typeof cache === 'object') {
-			// 调用所有的纹理加载回调
 			for (const callback of cache[type]) {
 				callback(this);
 			}

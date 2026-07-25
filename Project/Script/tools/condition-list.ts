@@ -7,8 +7,6 @@ import { IListInterface } from '../types/list-interface.ts';
 import { Local } from './localization.ts';
 import { Window } from './window-object.ts';
 
-// ******************************** 条件列表接口类 ********************************
-
 export class ConditionListInterface implements IListInterface {
 	target: HTMLElement | null;
 	type: string;
@@ -21,19 +19,16 @@ export class ConditionListInterface implements IListInterface {
 		this.owner = owner ?? null;
 	}
 
-	// 初始化
 	initialize(list: HTMLElement): void {
 		this.target = null;
 		this.type = 'condition';
 
-		// 创建参数历史操作
 		const { editor, owner } = this;
 		if (editor && owner) {
 			this.history = new Inspector.ParamHistory(editor, owner, list);
 		}
 	}
 
-	// 解析变量
 	parseVariable(condition: any): any {
 		switch (condition.type) {
 			case 'global-boolean':
@@ -47,7 +42,6 @@ export class ConditionListInterface implements IListInterface {
 		}
 	}
 
-	// 解析项目
 	parse(condition: any) {
 		const variable = this.parseVariable(condition);
 		switch (condition.type) {
@@ -78,9 +72,7 @@ export class ConditionListInterface implements IListInterface {
 		}
 	}
 
-	// 更新
 	update(list: any) {
-		// 更新宿主项目的条件图标
 		const item = this.editor?.target;
 		if (item?.conditions === list.read()) {
 			const element = item.element;
@@ -91,7 +83,6 @@ export class ConditionListInterface implements IListInterface {
 		}
 	}
 
-	// 打开窗口
 	open(
 		condition = {
 			type: 'global-boolean',
@@ -137,7 +128,6 @@ export class ConditionListInterface implements IListInterface {
 		$('#condition-type').getFocus();
 	}
 
-	// 保存数据
 	save() {
 		const read = getElementReader('condition');
 		const type = read('type');
@@ -146,7 +136,6 @@ export class ConditionListInterface implements IListInterface {
 		let operation;
 		let value;
 		let condition;
-		// 读取变量键
 		switch (varScope) {
 			case 'global':
 				key = read('key');
@@ -155,7 +144,6 @@ export class ConditionListInterface implements IListInterface {
 				}
 				break;
 		}
-		// 读取操作和变量值
 		switch (varType) {
 			case 'boolean':
 				operation = read('boolean-operation');
@@ -170,7 +158,6 @@ export class ConditionListInterface implements IListInterface {
 				value = read('string-value');
 				break;
 		}
-		// 生成条件
 		switch (varScope) {
 			case 'global':
 				condition = { type, key, operation, value };
@@ -183,12 +170,9 @@ export class ConditionListInterface implements IListInterface {
 		return condition;
 	}
 
-	// 静态 - 正在编辑中的数据所在的列表
 	static target = null;
 
-	// 静态 - 初始化
 	static initialize() {
-		// 创建条件类型选项
 		$('#condition-type').loadItems([
 			{ name: 'Global - Boolean', value: 'global-boolean' },
 			{ name: 'Global - Number', value: 'global-number' },
@@ -198,7 +182,6 @@ export class ConditionListInterface implements IListInterface {
 			{ name: 'Self - String', value: 'self-string' }
 		]);
 
-		// 设置条件类型关联元素
 		$('#condition-type')
 			.enableHiddenMode()
 			.relate([
@@ -240,19 +223,16 @@ export class ConditionListInterface implements IListInterface {
 				}
 			]);
 
-		// 创建布尔值操作选项
 		$('#condition-boolean-operation').loadItems([
 			{ name: '==', value: 'equal' },
 			{ name: '!=', value: 'unequal' }
 		]);
 
-		// 创建布尔值常量选项
 		$('#condition-boolean-value').loadItems([
 			{ name: 'False', value: false },
 			{ name: 'True', value: true }
 		]);
 
-		// 创建数值操作选项
 		$('#condition-number-operation').loadItems([
 			{ name: '==', value: 'equal' },
 			{ name: '!=', value: 'unequal' },
@@ -262,7 +242,6 @@ export class ConditionListInterface implements IListInterface {
 			{ name: '<', value: 'less' }
 		]);
 
-		// 创建字符串操作选项
 		$('#condition-string-operation').loadItems([
 			{ name: '==', value: 'equal' },
 			{ name: '!=', value: 'unequal' }
@@ -275,7 +254,6 @@ export class ConditionListInterface implements IListInterface {
 				case 'global-boolean':
 				case 'global-number':
 				case 'global-string':
-					// 设置全局变量类型过滤器
 					$('#condition-key').filter = type.slice(7);
 					break;
 			}

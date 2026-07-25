@@ -8,8 +8,6 @@ import { Menu } from './menu-list.ts';
 import { WindowFrame } from './window-frame.ts';
 import { Local } from '../tools/localization.ts';
 
-// ******************************** 参数列表 ********************************
-
 export class ParamList extends HTMLElement {
 	object: any;
 	type: string | null;
@@ -42,7 +40,6 @@ export class ParamList extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.tabIndex = 0;
 		this.object = null;
 		this.type = null;
@@ -70,7 +67,6 @@ export class ParamList extends HTMLElement {
 		this.windowPointermove = ParamList.windowPointermove.bind(this);
 		this.listenDraggingScrollbarEvent();
 
-		// 侦听事件
 		this.on('scroll', this.resize);
 		this.on('focus', this.listFocus);
 		this.on('blur', this.listBlur);
@@ -80,13 +76,11 @@ export class ParamList extends HTMLElement {
 		this.on('doubleclick', this.doubleclick);
 	}
 
-	// 获取内部高度
 	get innerHeight(): number {
 		// 避免细节框折叠时无法更新列表项(假设细节框列表都是弹性的)
 		return this.flexible ? this.height : super.innerHeight;
 	}
 
-	// 读取上边距
 	get paddingTop(): number {
 		let pt = this._paddingTop;
 		if (pt === undefined) {
@@ -95,7 +89,6 @@ export class ParamList extends HTMLElement {
 		return pt;
 	}
 
-	// 绑定数据
 	bind(object: any): this {
 		object.initialize(this);
 		object.initialize = Function.empty as any;
@@ -105,12 +98,10 @@ export class ParamList extends HTMLElement {
 		return this;
 	}
 
-	// 读取数据
 	read(): any[] | null {
 		return this.data;
 	}
 
-	// 写入数据
 	write(data: any[]): void {
 		if (this.flexible) {
 			this.autoSwitch = true;
@@ -120,17 +111,13 @@ export class ParamList extends HTMLElement {
 		this.history.reset();
 	}
 
-	// 更新列表
 	update(): void {
-		// 检查器的参数列表在历史操作
-		// 刷新列表时可能没有加载数据
 		const { data } = this;
 		if (!data) return;
 		const { elements } = this;
 		elements.start = -1;
 		elements.count = 0;
 
-		// 创建列表项目
 		const object = this.object;
 		const length = data.length;
 		for (let i = 0; i < length; i++) {
@@ -160,7 +147,6 @@ export class ParamList extends HTMLElement {
 						continue;
 					}
 
-					// 创建文本 0
 					const [result0, result1] = result;
 					if (result0 instanceof HTMLElement) {
 						li.appendChild(result0);
@@ -179,7 +165,6 @@ export class ParamList extends HTMLElement {
 						li.appendChild(text0);
 					}
 
-					// 创建文本 1
 					if (result1 instanceof HTMLElement) {
 						li.appendChild(result1);
 					} else if (result1 instanceof Object) {
@@ -201,7 +186,6 @@ export class ParamList extends HTMLElement {
 			}
 		}
 
-		// 创建空项目
 		const li = document.createElement('param-item') as any;
 		const unit = length === 1 ? 'item' : 'items';
 		li.addClass('weak');
@@ -210,25 +194,19 @@ export class ParamList extends HTMLElement {
 		li.textContent = `${length} ${unit}`;
 		elements[elements.count++] = li;
 
-		// 清除多余的元素
 		this.clearElements(elements.count);
 
-		// 更新弹性高度
 		this.updateFlexibleHeight();
 
-		// 发送更新事件
 		object.update?.(this);
 
-		// 重新调整
 		this.resize();
 	}
 
-	// 重新调整
 	resize(): void {
 		CommonList.resize(this as unknown as CommonList);
 	}
 
-	// 更新弹性高度
 	updateFlexibleHeight(): void {
 		if (this.flexible) {
 			const count = this.elements.count;
@@ -237,7 +215,6 @@ export class ParamList extends HTMLElement {
 				this.height = height;
 				this.style.height = `${height}px`;
 			}
-			// 自动开关细节框(一次)
 			if (this.autoSwitch) {
 				this.autoSwitch = false;
 				const detailBox = this.parentNode;
@@ -252,21 +229,17 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 更新头部和尾部元素
 	updateHeadAndFoot(): void {
 		CommonList.updateHeadAndFoot(this as unknown as CommonList);
 	}
 
-	// 在重新调整时更新
 	updateOnResize(): void {}
 
-	// 选择项目
 	select(start: number, end: number = start): void {
 		if (start > end) {
 			[start, end] = [end, start];
 		}
 
-		// 限制范围
 		const elements = this.elements;
 		const count = elements.count;
 		start = Math.clamp(start, 0, count - 1);
@@ -281,20 +254,16 @@ export class ParamList extends HTMLElement {
 			}
 		}
 
-		// 取消选择
 		this.unselect();
 
-		// 更新属性
 		this.start = start;
 		this.end = end;
 		this.origin = start;
 		this.active = start;
 
-		// 选择目标
 		this.reselect();
 	}
 
-	// 选择多个项目
 	selectMultiple(active: number): void {
 		const origin = this.origin!;
 		this.select(origin, active);
@@ -302,13 +271,11 @@ export class ParamList extends HTMLElement {
 		this.active = Math.clamp(active, this.start!, this.end!);
 	}
 
-	// 选择全部项目
 	selectAll(): void {
 		this.select(0, Infinity);
 		this.active = this.end;
 	}
 
-	// 取消选择
 	unselect(): void {
 		if (this.start !== null) {
 			const { selections } = this;
@@ -324,7 +291,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 重新选择
 	reselect(): void {
 		if (this.focusing && this.start !== null) {
 			const { selections } = this;
@@ -341,7 +307,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 向上选择项目
 	selectUp(): void {
 		if (this.start !== null) {
 			let index = this.start;
@@ -353,7 +318,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 向下选择项目
 	selectDown(): void {
 		if (this.start !== null) {
 			let index = this.end!;
@@ -365,7 +329,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 向上选择多个项目
 	selectMultipleUp(): void {
 		if (this.start !== null) {
 			const i = this.active! - 1;
@@ -376,7 +339,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 向下选择多个项目
 	selectMultipleDown(): void {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -390,7 +352,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 滚动到选中项
 	scrollToSelection(): void {
 		if (this.start !== null) {
 			const scrollTop = Math.clamp(
@@ -404,7 +365,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 插入项目
 	insert(): void {
 		if (this.start !== null) {
 			this.inserting = true;
@@ -413,7 +373,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 编辑项目
 	edit(): void {
 		if (this.start !== null) {
 			const elements = this.elements;
@@ -434,7 +393,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 开关项目
 	toggle(): void {
 		if (this.togglable && this.start !== null) {
 			let method = 'disable';
@@ -481,21 +439,18 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 启用项目
 	enableItems(items: any[]): void {
 		for (const item of items) {
 			item.enabled = true;
 		}
 	}
 
-	// 禁用项目
 	disableItems(items: any[]): void {
 		for (const item of items) {
 			item.enabled = false;
 		}
 	}
 
-	// 复制项目
 	copy(): void {
 		if (this.start !== null) {
 			const data = this.data!;
@@ -508,7 +463,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 粘贴项目
 	paste(): void {
 		if (this.start !== null) {
 			const copies = (Clipboard as any).read(this.type);
@@ -531,7 +485,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 删除项目
 	delete(): void {
 		if (this.start !== null) {
 			const data = this.data!;
@@ -554,21 +507,18 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 撤销操作
 	undo(): void {
 		if (!this.dragging && this.history.canUndo()) {
 			this.history.restore('undo');
 		}
 	}
 
-	// 重做操作
 	redo(): void {
 		if (!this.dragging && this.history.canRedo()) {
 			this.history.restore('redo');
 		}
 	}
 
-	// 保存数据
 	save(): void {
 		const item = this.object.save();
 		if (item === undefined) {
@@ -607,12 +557,10 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 清除元素
 	clearElements(start: number): void {
 		CommonList.clearElements(this as unknown as CommonList, start);
 	}
 
-	// 清除列表
 	clear(): this {
 		this.unselect();
 		this.textContent = '';
@@ -628,7 +576,6 @@ export class ParamList extends HTMLElement {
 		return this;
 	}
 
-	// 获得焦点事件
 	listFocus(event: Event): void {
 		if (!this.focusing) {
 			this.focusing = true;
@@ -636,7 +583,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 失去焦点事件
 	listBlur(event: Event): void {
 		if (this.dragging) {
 			this.windowPointerup(this.dragging);
@@ -657,7 +603,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 键盘按下事件
 	keydown(event: KeyboardEvent): void {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
@@ -691,8 +636,6 @@ export class ParamList extends HTMLElement {
 				default:
 					return;
 			}
-			// 位于主界面的组件可能发生快捷键冲突
-			// 因此阻止有效按键冒泡(Ctrl + Z|Y)
 			event.stopImmediatePropagation();
 		} else {
 			switch (event.code) {
@@ -732,7 +675,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		if (this.dragging) {
 			return;
@@ -794,7 +736,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 指针弹起事件
 	pointerup(event: PointerEvent): void {
 		if (this.dragging) {
 			return;
@@ -912,14 +853,12 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 鼠标双击事件
 	doubleclick(event: Event): void {
 		if (this.start === this.end) {
 			this.edit();
 		}
 	}
 
-	// 窗口 - 指针弹起事件
 	static windowPointerup(this: ParamList, event: PointerEvent): void {
 		const self = this as any;
 		const { dragging } = self;
@@ -935,7 +874,6 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	// 窗口 - 指针移动事件
 	static windowPointermove(this: ParamList, event: PointerEvent): void {
 		const self = this as any;
 		const { dragging } = self;

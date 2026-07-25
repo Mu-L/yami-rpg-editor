@@ -7,9 +7,6 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 匹配 - 条件窗口 ********************************
-
-// 匹配条件对象（由调用方传入 / save 返回）
 interface SwitchConditionData {
 	type:
 		| 'none'
@@ -30,7 +27,6 @@ interface SwitchConditionData {
 	variable?: { type: string; key: string };
 }
 
-// 调用方目标对象（含 save 方法）
 interface SwitchConditionTarget {
 	save: () => SwitchConditionData;
 }
@@ -45,20 +41,15 @@ interface SwitchConditionShape {
 }
 
 export const SwitchCondition: SwitchConditionShape = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	parse: null,
 	open: null,
 	save: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 SwitchCondition.initialize = function (): void {
-	// 创建条件类型选项
 	($('#switch-condition-type') as any).loadItems([
 		{ name: 'None', value: 'none' },
 		{ name: 'Boolean', value: 'boolean' },
@@ -72,7 +63,6 @@ SwitchCondition.initialize = function (): void {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置条件类型关联元素
 	($('#switch-condition-type') as any).enableHiddenMode().relate([
 		{
 			case: 'boolean',
@@ -100,13 +90,11 @@ SwitchCondition.initialize = function (): void {
 		}
 	]);
 
-	// 创建布尔值常量选项
 	($('#switch-condition-boolean-value') as any).loadItems([
 		{ name: 'False', value: false },
 		{ name: 'True', value: true }
 	]);
 
-	// 创建鼠标按键选项
 	($('#switch-condition-mouse-button') as any).loadItems([
 		{ name: 'Left Button', value: 0 },
 		{ name: 'Middle Button', value: 1 },
@@ -115,11 +103,9 @@ SwitchCondition.initialize = function (): void {
 		{ name: 'Forward Button', value: 4 }
 	]);
 
-	// 侦听事件
 	($('#switch-condition-confirm') as HTMLElement).on('click', this.confirm!);
 };
 
-// 解析条件
 SwitchCondition.parse = function (condition: SwitchConditionData, listData?: boolean): string {
 	let string: string;
 	switch (condition.type) {
@@ -169,7 +155,6 @@ SwitchCondition.parse = function (condition: SwitchConditionData, listData?: boo
 	return string;
 };
 
-// 打开数据
 SwitchCondition.open = function (
 	condition: SwitchConditionData = { type: 'number', value: 0 }
 ): void {
@@ -228,7 +213,6 @@ SwitchCondition.open = function (
 	($('#switch-condition-type') as HTMLElement & { getFocus(): void }).getFocus();
 };
 
-// 保存数据
 SwitchCondition.save = function (): SwitchConditionData {
 	const read = getElementReader('switch-condition');
 	const type = read('type') as SwitchConditionData['type'];
@@ -325,7 +309,6 @@ SwitchCondition.save = function (): SwitchConditionData {
 	return condition!;
 };
 
-// 确定按钮 - 鼠标点击事件
 SwitchCondition.confirm = function (event: Event): SwitchConditionData {
 	return SwitchCondition.target!.save();
 };

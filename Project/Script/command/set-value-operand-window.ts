@@ -7,9 +7,6 @@ import { Enum } from '../enum/enum-window.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 设置数值 - 操作数窗口 ********************************
-
-// 操作数目标对象（由调用方传入，含 save/dataValue 等）
 interface NumberOperandTarget {
 	start: number;
 	save: () => any;
@@ -33,9 +30,7 @@ interface NumberOperandShape {
 }
 
 export const NumberOperand: NumberOperandShape = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	parseMathMethod: null,
 	parseStringMethod: null,
@@ -46,13 +41,10 @@ export const NumberOperand: NumberOperandShape = {
 	parse: null,
 	open: null,
 	save: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 NumberOperand.initialize = function () {
-	// 创建头部操作选项
 	$('#setNumber-operation').loadItems([
 		{ name: 'Set', value: 'set' },
 		{ name: 'Add', value: 'add' },
@@ -62,7 +54,6 @@ NumberOperand.initialize = function () {
 		{ name: 'Mod', value: 'mod' }
 	]);
 
-	// 创建操作选项
 	$('#setNumber-operand-operation').loadItems([
 		{ name: 'Add', value: 'add' },
 		{ name: 'Sub', value: 'sub' },
@@ -76,7 +67,6 @@ NumberOperand.initialize = function () {
 		{ name: '(Mod)', value: 'mod()' }
 	]);
 
-	// 创建类型选项
 	$('#setNumber-operand-type').loadItems([
 		{ name: 'Constant', value: 'constant' },
 		{ name: 'Variable', value: 'variable' },
@@ -90,7 +80,6 @@ NumberOperand.initialize = function () {
 		{ name: 'Other', value: 'other' }
 	]);
 
-	// 设置类型关联元素
 	$('#setNumber-operand-type')
 		.enableHiddenMode()
 		.relate([
@@ -136,7 +125,6 @@ NumberOperand.initialize = function () {
 			{ case: 'other', targets: [$('#setNumber-operand-other-data')] }
 		]);
 
-	// 设置类型写入事件，切换变量输入框的过滤器
 	$('#setNumber-operand-type').on('write', (event) => {
 		let filter = 'all';
 		switch (event.value) {
@@ -155,7 +143,6 @@ NumberOperand.initialize = function () {
 		$('#setNumber-operand-common-variable').filter = filter;
 	});
 
-	// 创建数学方法选项
 	$('#setNumber-operand-math-method').loadItems([
 		{ name: 'Round', value: 'round' },
 		{ name: 'Floor', value: 'floor' },
@@ -173,7 +160,6 @@ NumberOperand.initialize = function () {
 		{ name: 'Relative Angle', value: 'relative-angle' }
 	]);
 
-	// 设置数学方法关联元素
 	$('#setNumber-operand-math-method')
 		.enableHiddenMode()
 		.relate([
@@ -201,14 +187,12 @@ NumberOperand.initialize = function () {
 			}
 		]);
 
-	// 创建字符串方法选项
 	$('#setNumber-operand-string-method').loadItems([
 		{ name: 'Get Length', value: 'length' },
 		{ name: 'Parse Number', value: 'parse' },
 		{ name: 'Get Index of Substring', value: 'search' }
 	]);
 
-	// 设置字符串方法关联元素
 	$('#setNumber-operand-string-method')
 		.enableHiddenMode()
 		.relate([
@@ -225,7 +209,6 @@ NumberOperand.initialize = function () {
 			}
 		]);
 
-	// 创建对象属性选项
 	$('#setNumber-operand-object-property').loadItems([
 		{ name: 'Actor - X', value: 'actor-x' },
 		{ name: 'Actor - Y', value: 'actor-y' },
@@ -283,7 +266,6 @@ NumberOperand.initialize = function () {
 		{ name: 'List - Length', value: 'list-length' }
 	]);
 
-	// 设置对象属性关联元素
 	$('#setNumber-operand-object-property')
 		.enableHiddenMode()
 		.relate([
@@ -372,7 +354,6 @@ NumberOperand.initialize = function () {
 			}
 		]);
 
-	// 创建元素属性选项
 	$('#setNumber-operand-element-property').loadItems([
 		{ name: 'Element - X', value: 'element-x' },
 		{ name: 'Element - Y', value: 'element-y' },
@@ -414,7 +395,6 @@ NumberOperand.initialize = function () {
 		{ name: 'Dialog Box - Print End Y', value: 'dialogBox-printEndY' }
 	]);
 
-	// 创建其他数据选项
 	$('#setNumber-operand-other-data').loadItems([
 		{ name: 'Event Trigger Mouse Button', value: 'trigger-button' },
 		{ name: 'Event Trigger Wheel Delta Y', value: 'trigger-wheel-y' },
@@ -472,7 +452,6 @@ NumberOperand.initialize = function () {
 		}
 	]);
 
-	// 设置其他数据关联元素
 	$('#setNumber-operand-other-data')
 		.enableHiddenMode()
 		.relate([
@@ -493,22 +472,18 @@ NumberOperand.initialize = function () {
 			}
 		]);
 
-	// 创建队伍选项 - 窗口打开事件
 	$('#setNumber-operand').on('open', (event) => {
 		$('#setNumber-operand-other-teamId').loadItems(Data.createTeamItems());
 	});
 
-	// 清理内存 - 窗口已关闭事件
 	$('#setNumber-operand').on('closed', (event) => {
 		$('#setNumber-operand-other-teamId').clear();
 		$('#setNumber-operation').restore();
 	});
 
-	// 侦听事件
 	$('#setNumber-operand-confirm').on('click', this.confirm);
 };
 
-// 解析数学方法
 NumberOperand.parseMathMethod = function (operand) {
 	const method = operand.method;
 	const label = Local.get('command.setNumber.math.' + method);
@@ -551,7 +526,6 @@ NumberOperand.parseMathMethod = function (operand) {
 	}
 };
 
-// 解析字符串方法
 NumberOperand.parseStringMethod = function (operand) {
 	const method = operand.method;
 	const methodName = Local.get('command.setNumber.string.' + method);
@@ -571,7 +545,6 @@ NumberOperand.parseStringMethod = function (operand) {
 	}
 };
 
-// 解析对象属性
 NumberOperand.parseObjectProperty = function (operand) {
 	const property = Local.get('command.setNumber.object.' + operand.property);
 	switch (operand.property) {
@@ -665,14 +638,12 @@ NumberOperand.parseObjectProperty = function (operand) {
 	}
 };
 
-// 解析元素属性
 NumberOperand.parseElementProperty = function (operand) {
 	const element = Command.parseElement(operand.element);
 	const property = Local.get('command.setNumber.element.' + operand.property);
 	return element + Token(' -> ') + property.replace('.', Token('.'));
 };
 
-// 解析其他数据
 NumberOperand.parseOther = function (operand) {
 	const label = Local.get('command.setNumber.other.' + operand.data);
 	switch (operand.data) {
@@ -701,7 +672,6 @@ NumberOperand.parseOther = function (operand) {
 	}
 };
 
-// 解析操作数
 NumberOperand.parseOperand = function (operand) {
 	switch (operand.type) {
 		case 'constant':
@@ -727,7 +697,6 @@ NumberOperand.parseOperand = function (operand) {
 	}
 };
 
-// 解析项目
 NumberOperand.parse = function (operand, data, index) {
 	let operation;
 	let operator;
@@ -785,7 +754,6 @@ NumberOperand.parse = function (operand, data, index) {
 	return operator + operandName;
 };
 
-// 打开数据
 NumberOperand.open = function (
 	operand = {
 		operation: 'add',
@@ -795,7 +763,6 @@ NumberOperand.open = function (
 ) {
 	Window.open('setNumber-operand');
 
-	// 切换操作选择框
 	if (this.target.start === 0) {
 		$('#setNumber-operation').save();
 		$('#setNumber-operation').show();
@@ -807,10 +774,8 @@ NumberOperand.open = function (
 		$('#setNumber-operand-operation').getFocus();
 	}
 
-	// 加载冷却键选项
 	$('#setNumber-operand-cooldown-key').loadItems(Enum.getStringItems('cooldown-key'));
 
-	// 写入数据
 	const write = getElementWriter('setNumber-operand');
 	let constantValue = 0;
 	let mathMethod = 'round';
@@ -932,7 +897,6 @@ NumberOperand.open = function (
 	write('other-teamId', otherTeamId);
 };
 
-// 保存数据
 NumberOperand.save = function () {
 	const read = getElementReader('setNumber-operand');
 	const operation = read('operation');
@@ -1200,7 +1164,6 @@ NumberOperand.save = function () {
 	return operand;
 };
 
-// 确定按钮 - 鼠标点击事件
 NumberOperand.confirm = function (event) {
 	return NumberOperand.target.save();
 };

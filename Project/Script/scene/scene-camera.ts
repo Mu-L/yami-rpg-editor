@@ -42,7 +42,6 @@ Scene.setZoom = (function IIFE() {
 	};
 })();
 
-// 设置场景大小
 Scene.setSize = function (width, height) {
 	if (this.width === width && this.height === height) {
 		return;
@@ -56,7 +55,6 @@ Scene.setSize = function (width, height) {
 		height: this.height,
 		terrains: this.terrains
 	});
-	// 调整地形
 	const dTerrains = this.createTerrains(width, height);
 	const dro = dTerrains.rowOffset;
 	const sTerrains = this.terrains;
@@ -77,7 +75,6 @@ Scene.setSize = function (width, height) {
 	this.requestRendering();
 };
 
-// 设置图块大小
 Scene.setTileSize = function (tileWidth, tileHeight) {
 	this.tileWidth = tileWidth;
 	this.tileHeight = tileHeight;
@@ -85,7 +82,6 @@ Scene.setTileSize = function (tileWidth, tileHeight) {
 	this.requestRendering();
 };
 
-// 设置瓦片地图大小
 Scene.setTilemapSize = function (tilemap, width, height) {
 	if (tilemap.width === width && tilemap.height === height) {
 		return;
@@ -99,7 +95,6 @@ Scene.setTilemapSize = function (tilemap, width, height) {
 		tiles: tilemap.tiles,
 		tilesetMap: tilemap.tilesetMap
 	});
-	// 调整图块
 	const dTiles = this.createTiles(width, height);
 	const dro = dTiles.rowOffset;
 	const sTiles = tilemap.tiles;
@@ -120,7 +115,6 @@ Scene.setTilemapSize = function (tilemap, width, height) {
 	this.marquee.resize();
 };
 
-// 调整大小
 Scene.resize = function () {
 	if (this.state === 'open' && this.screen.clientWidth !== 0) {
 		const scale = this.scale;
@@ -164,7 +158,6 @@ Scene.resize = function () {
 	}
 };
 
-// 获取图块坐标
 Scene.getTileCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
 	return function (event, integer = false) {
@@ -191,10 +184,8 @@ Scene.getTileCoords = (function IIFE() {
 	};
 })();
 
-// 获取转换的坐标
 Scene.getConvertedCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
-	// 返回可独立调用的箭头函数
 	return (tile) => {
 		point.x = tile.x * Scene.tileWidth;
 		point.y = tile.y * Scene.tileHeight;
@@ -202,7 +193,6 @@ Scene.getConvertedCoords = (function IIFE() {
 	};
 })();
 
-// 获取视差图锚点
 Scene.getParallaxAnchor = (function IIFE() {
 	const point = { x: 0, y: 0 };
 	return function (parallax, tiled = false) {
@@ -227,7 +217,6 @@ Scene.getParallaxAnchor = (function IIFE() {
 	};
 })();
 
-// 获取网格上下文对象
 Scene.getGridContext = (function IIFE() {
 	const context = { width: 0, height: 0, offsetX: 0, offsetY: 0 };
 	return function () {
@@ -256,8 +245,7 @@ Scene.getGridContext = (function IIFE() {
 	};
 })();
 
-// 光栅化滚动位置 - 对齐到像素
-// 避免瓦片地图视差模式下图块|网格|选框位置不同步的现象
+// 光栅化滚动位置 - 对齐到像素 避免瓦片地图视差模式下图块|网格|选框位置不同步的现象
 Scene.rasterizeScrollPosition = (function IIFE() {
 	const scroll = { left: 0, top: 0, right: 0, bottom: 0 };
 	return function (ox, oy) {
@@ -275,7 +263,6 @@ Scene.rasterizeScrollPosition = (function IIFE() {
 	};
 })();
 
-// 更新光影纹理参数
 Scene.updateLightTexParameters = function () {
 	const light = Data.config.lightArea;
 	const texture = GL.reflectedLightMap;
@@ -308,7 +295,6 @@ Scene.updateLightTexParameters = function () {
 	}
 };
 
-// 更新摄像机位置
 Scene.updateCamera = function (x = this.meta.x, y = this.meta.y) {
 	const dpr = window.devicePixelRatio;
 	const screen = this.screen;
@@ -324,7 +310,6 @@ Scene.updateCamera = function (x = this.meta.x, y = this.meta.y) {
 	screen.scrollTop = (scrollY - (GL.height >> 1) + toleranceY) / dpr;
 };
 
-// 更新变换参数
 Scene.updateTransform = function () {
 	const dpr = window.devicePixelRatio;
 	const screen = this.screen;

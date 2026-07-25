@@ -1,8 +1,6 @@
 ﻿import { Inspector } from '../inspector/inspector.ts';
 import { UI } from './ui-window.ts';
 
-// ******************************** 按钮元素 ********************************
-
 UI.Button = class ButtonElement extends UI.Element {
 	state: string;
 	shadowImage: any;
@@ -47,12 +45,10 @@ UI.Button = class ButtonElement extends UI.Element {
 		this.activeTint = data.activeTint;
 	}
 
-	// 读取图像内边距
 	get imagePadding() {
 		return this._imagePadding;
 	}
 
-	// 写入图像内边距
 	set imagePadding(value: any) {
 		if (this._imagePadding !== value) {
 			this._imagePadding = value;
@@ -64,12 +60,10 @@ UI.Button = class ButtonElement extends UI.Element {
 		}
 	}
 
-	// 读取文本内边距
 	get textPadding() {
 		return this._textPadding;
 	}
 
-	// 写入文本内边距
 	set textPadding(value: any) {
 		if (this._textPadding !== value) {
 			this._textPadding = value;
@@ -81,62 +75,50 @@ UI.Button = class ButtonElement extends UI.Element {
 		}
 	}
 
-	// 读取图像
 	get image() {
 		return this.shadowImage.image;
 	}
 
-	// 写入图像
 	set image(value: any) {
 		this.shadowImage.image = value;
 	}
 
-	// 读取显示模式
 	get display() {
 		return this.shadowImage.display;
 	}
 
-	// 写入显示模式
 	set display(value: any) {
 		this.shadowImage.display = value;
 	}
 
-	// 读取翻转模式
 	get flip() {
 		return this.shadowImage.flip;
 	}
 
-	// 写入翻转模式
 	set flip(value: any) {
 		this.shadowImage.flip = value;
 	}
 
-	// 读取裁剪区域
 	get clip() {
 		return this.shadowImage.clip;
 	}
 
-	// 写入裁剪区域
 	set clip(value: any) {
 		this.shadowImage.clip = value;
 	}
 
-	// 读取图像切片边距
 	get border() {
 		return this.shadowImage.border;
 	}
 
-	// 写入图像切片边距
 	set border(value: any) {
 		this.shadowImage.border = value;
 	}
 
-	// 读取图像不透明度
 	get imageOpacity() {
 		return this.shadowImage.transform.opacity;
 	}
 
-	// 写入图像不透明度
 	set imageOpacity(value: any) {
 		this.shadowImage.transform.opacity = value;
 		if (this.connected) {
@@ -144,117 +126,94 @@ UI.Button = class ButtonElement extends UI.Element {
 		}
 	}
 
-	// 读取文本内容
 	get content() {
 		return this.shadowText.content;
 	}
 
-	// 写入文本内容
 	set content(value: any) {
 		this.shadowText.content = value;
 	}
 
-	// 读取字体大小
 	get size() {
 		return this.shadowText.size;
 	}
 
-	// 写入字体大小
 	set size(value: any) {
 		this.shadowText.size = value;
 	}
 
-	// 读取字体
 	get font() {
 		return this.shadowText.font;
 	}
 
-	// 写入字体
 	set font(value: any) {
 		this.shadowText.font = value;
 	}
 
-	// 读取方向
 	get direction() {
 		return this.shadowText.direction;
 	}
 
-	// 写入方向
 	set direction(value: any) {
 		this.shadowText.direction = value;
 	}
 
-	// 读取水平对齐
 	get horizontalAlign() {
 		return this.shadowText.horizontalAlign;
 	}
 
-	// 写入水平对齐
 	set horizontalAlign(value: any) {
 		this.shadowText.horizontalAlign = value;
 	}
 
-	// 读取垂直对齐
 	get verticalAlign() {
 		return this.shadowText.verticalAlign;
 	}
 
-	// 写入垂直对齐
 	set verticalAlign(value: any) {
 		this.shadowText.verticalAlign = value;
 	}
 
-	// 读取行间距
 	get lineSpacing() {
 		return this.shadowText.lineSpacing;
 	}
 
-	// 写入行间距
 	set lineSpacing(value: any) {
 		this.shadowText.lineSpacing = value;
 	}
 
-	// 读取字间距
 	get letterSpacing() {
 		return this.shadowText.letterSpacing;
 	}
 
-	// 写入字间距
 	set letterSpacing(value: any) {
 		this.shadowText.letterSpacing = value;
 	}
 
-	// 读取颜色
 	get color() {
 		return this.shadowText.color;
 	}
 
-	// 写入颜色
 	set color(value: any) {
 		this.shadowText.color = value;
 	}
 
-	// 读取字型
 	get typeface() {
 		return this.shadowText.typeface;
 	}
 
-	// 写入字型
 	set typeface(value: any) {
 		this.shadowText.typeface = value;
 	}
 
-	// 读取文字效果
 	get textEffect() {
 		return this.shadowText.effect;
 	}
 
-	// 写入文字效果
 	set textEffect(value: any) {
 		this.shadowText.effect = value;
 	}
 
-	// 创建影子图像元素
 	createShadowImage(data: any) {
 		const image = data.normalImage;
 		const clip = data.normalClip;
@@ -266,7 +225,6 @@ UI.Button = class ButtonElement extends UI.Element {
 		return element;
 	}
 
-	// 创建影子文本元素
 	createShadowText(data: any) {
 		const color = data.normalColor;
 		const effect = data.textEffect;
@@ -277,7 +235,6 @@ UI.Button = class ButtonElement extends UI.Element {
 		return element;
 	}
 
-	// 创建影子变换对象
 	createShadowTransform() {
 		const transform = Inspector.uiElement.createTransform();
 		transform.anchorX = 0.5;
@@ -289,17 +246,14 @@ UI.Button = class ButtonElement extends UI.Element {
 		return transform;
 	}
 
-	// 更新文本内容
 	updateTextContent() {
 		this.shadowText.updateTextContent();
 	}
 
-	// 更新打印机
 	updatePrinter() {
 		this.shadowText.updatePrinter();
 	}
 
-	// 更新图像
 	updateImage() {
 		let state;
 		if (UI.dragging?.node === this.node) {
@@ -313,7 +267,6 @@ UI.Button = class ButtonElement extends UI.Element {
 			this.state = state;
 			switch (state) {
 				case 'normal':
-					// 正常状态
 					this.image = this.normalImage;
 					this.color = this.normalColor;
 					this.clip = this.normalClip;
@@ -329,7 +282,6 @@ UI.Button = class ButtonElement extends UI.Element {
 					}
 					break;
 				case 'hover':
-					// 鼠标悬停状态
 					this.image = this.hoverImage || this.normalImage;
 					this.color = this.hoverColor || this.normalColor;
 					this.clip = (this.hoverImage && this.hoverClip) || this.normalClip;
@@ -346,7 +298,6 @@ UI.Button = class ButtonElement extends UI.Element {
 					}
 					break;
 				case 'active':
-					// 鼠标按下状态
 					this.image = this.activeImage || this.hoverImage || this.normalImage;
 					this.color = this.activeColor || this.hoverColor || this.normalColor;
 					this.clip =
@@ -371,30 +322,24 @@ UI.Button = class ButtonElement extends UI.Element {
 		}
 	}
 
-	// 绘制图像
 	draw() {
 		if (this.visible === false) {
 			return this.drawChildren();
 		}
 
-		// 更新图像
 		this.updateImage();
 
-		// 绘制图像(不存在图片时跳过)
 		if (this.image) {
 			this.shadowImage.visible = this.visible;
 			this.shadowImage.draw();
 		}
 
-		// 绘制文本
 		this.shadowText.visible = this.visible;
 		this.shadowText.draw();
 
-		// 绘制子元素
 		this.drawChildren();
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -405,7 +350,6 @@ UI.Button = class ButtonElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.shadowImage.destroy();

@@ -4,9 +4,6 @@ import { Easing } from '../data/transition-window.ts';
 import { Particle } from './particle-window.ts';
 import { ImageTexture } from '../webgl/image-texture.ts';
 
-// ******************************** 粒子图层类 ********************************
-
-// 粒子层数据对象（emitter.data.layers[i]）
 interface ParticleLayerData {
 	interval: number;
 	delay: number;
@@ -55,17 +52,13 @@ Particle.Layer = class ParticleLayer {
 		this.reserves = [] as unknown as ParticleElement[] & { count: number };
 		this.reserves.count = 0;
 
-		// 更新发射数量
 		this.updateCount();
 
-		// 更新过渡映射表
 		this.updateEasing();
 
-		// 加载纹理
 		this.loadTexture();
 	}
 
-	// 发射粒子
 	emitParticles(deltaTime: any) {
 		let stocks = this.stocks;
 		if (stocks === 0) return;
@@ -83,7 +76,6 @@ Particle.Layer = class ParticleLayer {
 			const reserves = this.reserves;
 			let rCount = reserves.count;
 			spawn: {
-				// 重用旧的粒子
 				while (rCount > 0) {
 					const element = reserves[--rCount];
 					elements[eCount++] = element;
@@ -95,7 +87,6 @@ Particle.Layer = class ParticleLayer {
 						break spawn;
 					}
 				}
-				// 创建新的粒子
 				for (let i = this.capacity; i < maximum; i++) {
 					elements[eCount++] = new Particle.Element(this);
 					this.capacity = i + 1;
@@ -112,7 +103,6 @@ Particle.Layer = class ParticleLayer {
 		}
 	}
 
-	// 更新粒子
 	updateParticles(deltaTime: any) {
 		const elements = this.elements;
 		const eCount = elements.count;
@@ -124,12 +114,10 @@ Particle.Layer = class ParticleLayer {
 		for (let i = 0; i < eCount; i++) {
 			const element = elements[i];
 			switch (element.update(deltaTime)) {
-				// 回收粒子
 				case false:
 					reserves[rCount + offset] = element;
 					offset++;
 					continue;
-				// 重新排序
 				default:
 					if (offset !== 0) {
 						elements[i - offset] = element;
@@ -138,15 +126,13 @@ Particle.Layer = class ParticleLayer {
 			}
 		}
 		if (offset !== 0) {
-			// 为了通知动画舞台继续更新画面
-			// 这里不对返回的粒子数量做更新(零粒子数停止播放)
+			// 为了通知动画舞台继续更新画面 这里不对返回的粒子数量做更新(零粒子数停止播放)
 			elements.count = eCount - offset;
 			reserves.count = rCount + offset;
 		}
 		return eCount;
 	}
 
-	// 绘制粒子
 	draw(opacity = 1) {
 		const gl = GL;
 		const data = this.data;
@@ -203,7 +189,6 @@ Particle.Layer = class ParticleLayer {
 			}
 		}
 
-		// 绘制元素
 		if (vi !== 0) {
 			gl.alpha = this.emitter.opacity * opacity;
 			gl.blend = data.blend;
@@ -234,13 +219,11 @@ Particle.Layer = class ParticleLayer {
 			gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STREAM_DRAW, 0, vi);
 			gl.bindTexture(gl.TEXTURE_2D, texture.base.glTexture);
 			gl.drawElements(gl.TRIANGLES, (vi / 20) * 6, gl.UNSIGNED_INT, 0);
-			// 重置混合模式
 			gl.alpha = 1;
 			gl.blend = 'normal';
 		}
 	}
 
-	// 加载粒子纹理
 	loadTexture() {
 		const guid = this.data.image;
 		const texture = this.texture;
@@ -278,7 +261,6 @@ Particle.Layer = class ParticleLayer {
 		this.draw = Function.empty;
 	}
 
-	// 计算粒子元素大小
 	calculateElementSize() {
 		const { data, texture } = this;
 		if (!texture) return;
@@ -288,7 +270,6 @@ Particle.Layer = class ParticleLayer {
 		this.unitHeight = Math.floor(texture.height / data.sprite.vframes);
 	}
 
-	// 调整元素索引
 	resizeElementIndices() {
 		const sprite = this.data.sprite;
 		const hframes = sprite.hframes;
@@ -302,7 +283,6 @@ Particle.Layer = class ParticleLayer {
 		}
 	}
 
-	// 更新发射数量
 	updateCount() {
 		let { count } = this.data;
 		if (count === 0) {
@@ -312,7 +292,6 @@ Particle.Layer = class ParticleLayer {
 		this.stocks = count;
 	}
 
-	// 更新过渡映射表
 	updateEasing() {
 		const { color } = this.data;
 		if (color.mode === 'easing') {
@@ -320,7 +299,6 @@ Particle.Layer = class ParticleLayer {
 		}
 	}
 
-	// 更新元素方法
 	updateElementMethods() {
 		this.clear();
 		const reserves = this.reserves;
@@ -330,7 +308,6 @@ Particle.Layer = class ParticleLayer {
 		}
 	}
 
-	// 清除粒子元素
 	clear() {
 		const elements = this.elements;
 		const reserves = this.reserves;
@@ -345,7 +322,6 @@ Particle.Layer = class ParticleLayer {
 		this.stocks = this.count;
 	}
 
-	// 销毁资源
 	destroy() {
 		if (this.texture instanceof ImageTexture) {
 			this.texture.destroy();
@@ -353,20 +329,16 @@ Particle.Layer = class ParticleLayer {
 		}
 	}
 
-	// 静态 - 共享数组缓存
 	static _sharedUint32A;
 	static _sharedUint32B;
 
-	// 静态 - 同时存在的最大粒子数量
 	static maximum = 1000;
 
-	// 静态 - 图层数组
 	static layers = new Uint32Array(0x40000);
 
 	// 静态 - 零值数组(用完后要确保所有值归零)
 	static zeros = new Uint32Array(0x40000);
 
-	// 静态 - 共享数组
 	static get sharedUint32A() {
 		if (!this._sharedUint32A) {
 			this._sharedUint32A = new Uint32Array(
@@ -388,6 +360,5 @@ Particle.Layer = class ParticleLayer {
 		return this._sharedUint32B;
 	}
 
-	// 静态 - 光照采样模式映射表
 	static lightSamplingModes = { raw: 0, global: 1, ambient: 2 };
 };

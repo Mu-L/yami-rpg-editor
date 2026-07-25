@@ -3,28 +3,20 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetElement } from '../tools/preset-element-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 祖先元素访问器窗口 ********************************
-
 export const AncestorGetter = {
-	// properties
 	target: null,
 	dependsOn: ['ElementGetter'],
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 AncestorGetter.initialize = function () {
-	// 创建访问器类型选项
 	const inclusions = new Set(['trigger', 'latest', 'by-id', 'variable']);
 	$('#ancestorGetter-type').loadItems(
 		$('#elementGetter-type').dataItems.filter((a) => inclusions.has(a.value))
 	);
 
-	// 设置关联元素
 	$('#ancestorGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -32,11 +24,9 @@ AncestorGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#ancestorGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#ancestorGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 AncestorGetter.open = function (target) {
 	this.target = target;
 	Window.open('ancestorGetter');
@@ -61,7 +51,6 @@ AncestorGetter.open = function (target) {
 	$('#ancestorGetter-type').getFocus();
 };
 
-// 确定按钮 - 鼠标点击事件
 AncestorGetter.confirm = function (event) {
 	const read = getElementReader('ancestorGetter');
 	const type = read('type');

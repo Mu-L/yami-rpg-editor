@@ -1,6 +1,3 @@
-// ******************************** 数学方法 ********************************
-
-// 限定取值范围 - 范围不正确时返回较大的数(minimum)
 Math.clamp = (function IIFE() {
 	const { max, min } = Math;
 	return (number: number, minimum: number, maximum: number): number => {
@@ -8,7 +5,6 @@ Math.clamp = (function IIFE() {
 	};
 })();
 
-// 四舍五入到指定小数位
 Math.roundTo = (function IIFE() {
 	const { round } = Math;
 	return (number: number, decimalPlaces: number): number => {
@@ -17,8 +13,6 @@ Math.roundTo = (function IIFE() {
 	};
 })();
 
-// 返回两点距离
-// 比 Math.hypot() 快很多
 Math.dist = (function IIFE() {
 	const { sqrt } = Math;
 	return (x1: number, y1: number, x2: number, y2: number): number => {
@@ -26,7 +20,6 @@ Math.dist = (function IIFE() {
 	};
 })();
 
-// 计算指定范围的随机值
 Math.randomBetween = (function IIFE() {
 	const { random } = Math;
 	return (value1: number, value2: number): number => {
@@ -34,7 +27,6 @@ Math.randomBetween = (function IIFE() {
 	};
 })();
 
-// 角度转弧度
 Math.radians = (function IIFE() {
 	const factor = Math.PI / 180;
 	return (degrees: number): number => {
@@ -42,7 +34,6 @@ Math.radians = (function IIFE() {
 	};
 })();
 
-// 弧度转角度
 Math.degrees = (function IIFE() {
 	const factor = 180 / Math.PI;
 	return (radians: number): number => {
@@ -50,12 +41,10 @@ Math.degrees = (function IIFE() {
 	};
 })();
 
-// 角度取余数 [0, 360)
 Math.modDegrees = (degrees: number, period = 360): number => {
 	return degrees >= 0 ? degrees % period : ((degrees % period) + period) % period;
 };
 
-// 弧度取余数 [0, 2π)
 Math.modRadians = (function IIFE() {
 	const PI2 = Math.PI * 2;
 	return (radians: number, period = PI2): number => {

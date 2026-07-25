@@ -10,7 +10,6 @@ export const IndexBind = {
 	initialize() {
 		this.target = null;
 		this.type = 'get-object-index';
-		// 侦听事件
 		$('#ObjectProperty-index-confirm').on('click', this.confirm);
 	},
 	parse(item: any) {
@@ -28,7 +27,6 @@ export const IndexBind = {
 	save() {
 		const read = getElementReader('ObjectProperty-index');
 		const data = { text: read('name') };
-		// 清空输入框
 		$('#ObjectProperty-index-name').write('');
 		Window.close('ObjectProperty-index');
 		return data;
@@ -38,7 +36,6 @@ export const IndexBind = {
 	}
 };
 
-// 获取对象属性
 Command.cases.getObjectProperty = new CommandSchema({
 	name: 'getObjectProperty',
 	onInitialize() {
@@ -91,7 +88,6 @@ Command.cases.getObjectProperty = new CommandSchema({
 	}
 });
 
-// 设置对象属性
 Command.cases.setObjectProperty = new CommandSchema({
 	name: 'setObjectProperty',
 	onInitialize() {

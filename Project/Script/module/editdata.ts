@@ -29,7 +29,6 @@ export const EditDataInstance = new (class {
 		});
 		$('#edit-data-confirm').on('click', this.save.bind(this));
 
-		// 窗口关闭事件
 		this.editorParent.on('close', (event) => {
 			if (this.changed) {
 				event.preventDefault();
@@ -57,7 +56,6 @@ export const EditDataInstance = new (class {
 			}
 		});
 
-		// 键盘按下事件
 		this.editorParent.on('keydown', (event) => {
 			if (event.target.hasClass('inputarea')) {
 				switch (event.code) {
@@ -134,40 +132,32 @@ export const EditDataInstance = new (class {
 		let hasChanges = false;
 
 		if (Array.isArray(this.currentContent)) {
-			// 批量修改
 			for (const ind in this.currentContent) {
 				const { node, value } = this.currentContent[ind];
-				if (!(ind in parse)) continue; // 索引不存在
+				if (!(ind in parse)) continue;
 				const changeContent = parse[ind];
-				if (JSON.stringify(value) === JSON.stringify(changeContent)) continue; // 内容没修改
+				if (JSON.stringify(value) === JSON.stringify(changeContent)) continue;
 
-				// 直接修改 dataList 中的数据
 				const list = node.dataList;
 				const dataIndex = node.dataIndex;
 
-				// 删除旧对象的 buffer（在替换之前）
 				if (list[dataIndex].buffer !== undefined) {
 					delete list[dataIndex].buffer;
 				}
 
-				// 替换数据
 				list[dataIndex] = changeContent;
 				hasChanges = true;
 			}
 		} else if (JSON.stringify(this.currentContent.value) !== JSON.stringify(parse)) {
-			// 单个修改
 			const node = this.currentContent.node;
 
-			// 直接修改 dataList 中的数据
 			const list = node.dataList;
 			const dataIndex = node.dataIndex;
 
-			// 删除旧对象的 buffer（在替换之前）
 			if (list[dataIndex].buffer !== undefined) {
 				delete list[dataIndex].buffer;
 			}
 
-			// 替换数据
 			list[dataIndex] = parse;
 			hasChanges = true;
 		}
@@ -177,7 +167,6 @@ export const EditDataInstance = new (class {
 			this.eventListDom.dispatchEvent(new Event('change', { bubbles: true }));
 		}
 
-		// 更新显示
 		this.eventListDom.update();
 		this.eventListDom.select(originalStart, originalEnd);
 
@@ -213,7 +202,6 @@ export const EditDataInstance = new (class {
 			this.isCreated = true;
 			const { theme } = Title;
 			(Command.cases as any).script.createTheme(theme);
-			// 假设monaco对象已加载完毕
 			this.editor = monaco.editor.create(this.editorDom, {
 				language: 'json',
 				theme: theme,
@@ -255,7 +243,6 @@ export const EditDataInstance = new (class {
 				setTimeout(() => this.focus());
 			};
 
-			// 侦听键盘按下事件
 			this.editor.onKeyDown((event) => {
 				event = event.browserEvent;
 				if (event.ctrlKey) {
@@ -269,7 +256,6 @@ export const EditDataInstance = new (class {
 				}
 			});
 
-			// 侦听内容改变事件
 			this.editor.onDidChangeModelContent((event) => {
 				if (event.isFlush) return;
 				if (event.isUndoing || event.isRedoing) {
@@ -303,10 +289,9 @@ export const EditDataInstance = new (class {
 				value: {
 					id: sData.id,
 					params: sData.params,
-					commands: sData.commands // 添加commands属性
+					commands: sData.commands
 				}
 			};
-			// 单个
 			this.model.setValue(JSON.stringify(this.currentContent.value, null, 2));
 		} else {
 			const value = [];
@@ -320,13 +305,12 @@ export const EditDataInstance = new (class {
 						value: {
 							id: eData.id,
 							params: eData.params,
-							commands: eData.commands // 添加commands属性
+							commands: eData.commands
 						}
 					});
 				if (elem.mark === 'header') includeArr.push(eData); // 将buffer也存储，这样能保证有唯一性
 			}
 			this.currentContent = value;
-			// 多个
 			this.model.setValue(
 				JSON.stringify(
 					value.map((v) => v.value),

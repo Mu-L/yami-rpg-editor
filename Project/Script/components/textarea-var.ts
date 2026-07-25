@@ -1,8 +1,6 @@
 import { CustomBox } from './custom-box.ts';
 import { TextArea } from './text-area.ts';
 
-// ******************************** 字符串变量框 ********************************
-
 export class TextAreaVar extends HTMLElement {
 	mode: string;
 	strBox: HTMLElement & { [k: string]: any };
@@ -11,25 +9,21 @@ export class TextAreaVar extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.mode = null;
 		this.strBox = new TextArea();
 		this.varBox = new CustomBox();
 		this.varBox.type = 'variable';
 		this.varBox.filter = 'string';
 
-		// 继承menu属性
 		const menu = this.getAttribute('menu');
 		if (menu) {
 			this.strBox.setAttribute('menu', menu);
 		}
 
-		// 侦听事件
 		this.on('keydown', this.keydown);
 		this.on('pointerdown', this.pointerdown);
 	}
 
-	// 读取数据
 	read() {
 		switch (this.mode) {
 			case 'constant':
@@ -39,7 +33,6 @@ export class TextAreaVar extends HTMLElement {
 		}
 	}
 
-	// 写入数据
 	write(value: any) {
 		switch (typeof value) {
 			case 'string':
@@ -55,7 +48,6 @@ export class TextAreaVar extends HTMLElement {
 		}
 	}
 
-	// 切换模式
 	switch(mode?) {
 		const focus = !mode && !this.hasClass('disabled');
 		if (mode === undefined) {
@@ -93,7 +85,6 @@ export class TextAreaVar extends HTMLElement {
 		}
 	}
 
-	// 启用元素
 	enable() {
 		if (this.removeClass('disabled')) {
 			this.strBox.enable();
@@ -101,7 +92,6 @@ export class TextAreaVar extends HTMLElement {
 		}
 	}
 
-	// 禁用元素
 	disable() {
 		if (this.addClass('disabled')) {
 			this.strBox.disable();
@@ -109,7 +99,6 @@ export class TextAreaVar extends HTMLElement {
 		}
 	}
 
-	// 获得焦点
 	getFocus(mode: any) {
 		switch (this.mode) {
 			case 'constant':
@@ -119,13 +108,10 @@ export class TextAreaVar extends HTMLElement {
 		}
 	}
 
-	// 键盘按下事件
 	keydown(event: any) {
 		if (event.cmdOrCtrlKey || event.altKey) {
 			switch (event.code) {
 				case 'Slash':
-					// 切换输入框导致已侦听的事件失效
-					// 因此在这里阻止输入行为
 					event.preventDefault();
 					this.switch();
 					break;
@@ -133,7 +119,6 @@ export class TextAreaVar extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
@@ -145,7 +130,6 @@ export class TextAreaVar extends HTMLElement {
 		}
 	}
 
-	// 默认变量值
 	static defVar = { type: 'local', key: 'key' };
 }
 

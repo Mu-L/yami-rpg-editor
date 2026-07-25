@@ -2,9 +2,7 @@ import { Data } from '../data/data-object.ts';
 import { File } from '../file/file-system-core.ts';
 import { Variable } from './variable.ts';
 
-// 解包变量数据
 Variable.unpackVariables = (function IIFE() {
-	// 使用引用文件夹类来保存展开状态
 	class ReferencedFolder {
 		data: any;
 		class: string;
@@ -17,12 +15,10 @@ Variable.unpackVariables = (function IIFE() {
 			this.children = clone(item.children);
 		}
 
-		// 读取展开状态
 		get expanded() {
 			return this.data.expanded;
 		}
 
-		// 写入展开状态
 		set expanded(value: any) {
 			this.data.expanded = value;
 			File.planToSave(Data.manifest.project.variables);
@@ -48,7 +44,6 @@ Variable.unpackVariables = (function IIFE() {
 	};
 })();
 
-// 打包变量数据
 Variable.packVariables = (function IIFE() {
 	const clone = (items) => {
 		const length = items.length;

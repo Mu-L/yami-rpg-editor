@@ -15,10 +15,9 @@ const _modulePath =
 		: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 const __dirname =
 	_moduleURL.protocol === 'file:'
-		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+		? Path.dirname(Path.dirname(_modulePath))
 		: Path.resolve(process.cwd(), 'Project');
 
-// 更新增量改动
 Updater.updateIncrementalChanges = function (version) {
 	const verNum = Updater.getVersionNumber(version);
 	const dstProjectDir = Path.dirname(Editor.config.project);
@@ -31,7 +30,6 @@ Updater.updateIncrementalChanges = function (version) {
 	const copyedFiles = {};
 	let isBackupFolderCreated = false;
 
-	// 更新程序集合
 	const updater = new (class VersionUpdater {
 		showMessage() {
 			if (messages.length !== 0) {
@@ -69,7 +67,6 @@ Updater.updateIncrementalChanges = function (version) {
 			}
 		}
 
-		// 复制文件
 		copyFile(srcPath: any, dstPath: any) {
 			if (copyedFiles[dstPath]) {
 				return;
@@ -89,7 +86,6 @@ Updater.updateIncrementalChanges = function (version) {
 			}
 		}
 
-		// 复制文件
 		copyFiles(...fileNames) {
 			for (const fileName of fileNames) {
 				const srcFilePath = Path.resolve(srcProjectDir, fileName);
@@ -98,7 +94,6 @@ Updater.updateIncrementalChanges = function (version) {
 			}
 		}
 
-		// 复制脚本文件
 		copyScripts(...fileNames) {
 			for (const fileName of fileNames) {
 				const srcScriptPath = Path.resolve(srcScriptDir, fileName);
@@ -107,7 +102,6 @@ Updater.updateIncrementalChanges = function (version) {
 			}
 		}
 
-		// 复制插件文件
 		copyPlugins(...filters) {
 			const guidRegExp = /(?<=\.)[0-9a-f]{16}(?=\.\w+$)/;
 			const files = FS.readdirSync(srcPluginDir, { withFileTypes: true });
@@ -116,7 +110,6 @@ Updater.updateIncrementalChanges = function (version) {
 				if (filters.length === 0 || filters.includes(guid)) {
 					const meta = Data.manifest.guidMap[guid];
 					if (meta) {
-						// 如果当前项目版本小于插件项目版本，则更新
 						const sPath = Path.resolve(srcPluginDir, file.name);
 						const dPath = File.path(meta.path);
 						this.copyFile(sPath, dPath);

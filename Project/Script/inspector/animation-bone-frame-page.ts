@@ -3,27 +3,20 @@ import { Animation } from '../animation/animation-window.ts';
 import { Curve } from '../animation/curve-window.ts';
 import { Inspector } from './inspector.ts';
 
-// ******************************** 动画 - 关节帧页面 ********************************
-
 {
 	const AnimJointFrame = {
-		// properties
 		motion: null,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	AnimJointFrame.initialize = function () {
-		// 侦听事件
 		const elements = $(`#animJointFrame-x, #animJointFrame-y, #animJointFrame-rotation,
     #animJointFrame-scaleX, #animJointFrame-scaleY, #animJointFrame-opacity`);
 		elements.on('input', this.paramInput);
@@ -38,29 +31,26 @@ import { Inspector } from './inspector.ts';
 		);
 	};
 
-	// 创建关键帧
 	AnimJointFrame.create = function () {
 		return {
-			start: 0, // 帧起始位置
-			end: 1, // 帧结束位置
-			easingId: '', // 过渡方式
-			x: 0, // 位移X
-			y: 0, // 位移Y
-			rotation: 0, // 旋转角度
-			scaleX: 1, // 缩放X
-			scaleY: 1, // 缩放Y
-			opacity: 1 // 不透明度
+			start: 0,
+			end: 1,
+			easingId: '',
+			x: 0,
+			y: 0,
+			rotation: 0,
+			scaleX: 1,
+			scaleY: 1,
+			opacity: 1
 		};
 	};
 
-	// 打开数据
 	AnimJointFrame.open = function (frame) {
 		if (this.target !== frame) {
 			this.target = frame;
 			this.motion = Animation.motion;
 			Curve.load(frame);
 
-			// 写入数据
 			const write = getElementWriter('animJointFrame', frame);
 			write('x');
 			write('y');
@@ -71,7 +61,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 关闭数据
 	AnimJointFrame.close = function () {
 		if (this.target) {
 			Animation.unselectMarquee(this.target);
@@ -81,7 +70,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 写入数据
 	AnimJointFrame.write = function (options) {
 		if (options.x !== undefined) {
 			$('#animJointFrame-x').write(options.x);
@@ -100,7 +88,6 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	// 更新数据
 	AnimJointFrame.update = function (frame, key, value) {
 		Animation.planToSave();
 		switch (key) {
@@ -119,7 +106,6 @@ import { Inspector } from './inspector.ts';
 		Animation.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	AnimJointFrame.paramInput = function (event) {
 		AnimJointFrame.update(AnimJointFrame.target, Inspector.getKey(this), this.read());
 	};

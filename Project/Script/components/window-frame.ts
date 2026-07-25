@@ -2,8 +2,6 @@
 import { Layout } from '../layout/layout.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 窗口框架 ********************************
-
 export class WindowFrame extends HTMLElement {
 	enableAmbient: boolean;
 	activeElement: HTMLElement | null;
@@ -19,7 +17,6 @@ export class WindowFrame extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.enableAmbient = true;
 		this.activeElement = null;
 		this.focusableElements = null;
@@ -32,18 +29,13 @@ export class WindowFrame extends HTMLElement {
 		this.unmaximizeEventEnabled = false;
 	}
 
-	// 打开窗口
 	open(): void {
 		if (Window.frames.append(this)) {
 			Window.ambient.update();
 			this.addClass('open');
 			this.computePosition();
 			this.style.zIndex = String(Window.frames.length);
-			// 始终 dispatch 'open' 事件：旧版依赖 openEventEnabled 标志（由 on('open') 设置），
-			// 但 settingconfig.ts 等模块在 constructor 期绑定事件时，#setting 元素可能尚未
-			// 升级为 WindowFrame 实例（customElements 升级异步），会调到 EventTarget.prototype.on
-			// 的 default 分支（addEventListener），openEventEnabled 未被置 true，dispatch 被跳过，
-			// 导致窗口值加载回调不执行。始终 dispatch 可绕过升级时序问题。
+			// 始终 dispatch 'open' 事件：旧版依赖 openEventEnabled 标志（由 on('open') 设置），但 settingconfig.ts 等模块在 constructor 期绑定事件时，#setting 元素可能尚未 升级为 WindowFrame 实例（customElements 升级异步），会调到 EventTarget.prototype.on 的 default 分支（addEventListener），openEventEnabled 未被置 true，dispatch 被跳过，导致窗口值加载回调不执行。始终 dispatch 可绕过升级时序问题。
 			this.dispatchEvent(new Event('open'));
 			if (this.resizeEventEnabled && this.hasClass('maximized')) {
 				this.dispatchEvent(new Event('resize'));
@@ -52,7 +44,6 @@ export class WindowFrame extends HTMLElement {
 		}
 	}
 
-	// 关闭窗口
 	close(): boolean {
 		if (
 			this.closeEventEnabled &&
@@ -82,7 +73,6 @@ export class WindowFrame extends HTMLElement {
 		return false;
 	}
 
-	// 最大化窗口
 	maximize(): void {
 		if (this.addClass('maximized')) {
 			this.style.left = '0';
@@ -97,7 +87,6 @@ export class WindowFrame extends HTMLElement {
 		}
 	}
 
-	// 取消最大化窗口
 	unmaximize(): void {
 		if (this.removeClass('maximized')) {
 			this.computePosition();
@@ -111,7 +100,6 @@ export class WindowFrame extends HTMLElement {
 		}
 	}
 
-	// 获得焦点
 	focus(): void {
 		if (this.removeClass('blur')) {
 			this.removeClass('translucent');
@@ -129,7 +117,6 @@ export class WindowFrame extends HTMLElement {
 		}
 	}
 
-	// 失去焦点
 	blur(): void {
 		if (this.addClass('blur')) {
 			if (!this.hasClass('opaque') && !this.hasClass('maximized')) {
@@ -148,7 +135,6 @@ export class WindowFrame extends HTMLElement {
 		}
 	}
 
-	// 计算位置
 	computePosition(): void {
 		const mode = this.getAttribute('mode');
 		switch (mode ?? Window.positionMode) {
@@ -169,7 +155,6 @@ export class WindowFrame extends HTMLElement {
 		}
 	}
 
-	// 居中位置
 	center(): void {
 		const rect = this.rect();
 		const x = CSS.rasterize((window.innerWidth - rect.width) / 2);
@@ -177,7 +162,6 @@ export class WindowFrame extends HTMLElement {
 		this.setPosition(x, y, rect);
 	}
 
-	// 绝对位置
 	absolute(left: number, top: number): void {
 		const rect = this.rect();
 		const x = CSS.rasterize(left);
@@ -185,7 +169,6 @@ export class WindowFrame extends HTMLElement {
 		this.setPosition(x, y, rect);
 	}
 
-	// 堆叠位置
 	overlap(parent: WindowFrame): void {
 		const rect = this.rect();
 		const { left, top } = parent.style;
@@ -194,7 +177,6 @@ export class WindowFrame extends HTMLElement {
 		this.setPosition(x, y, rect);
 	}
 
-	// 设置位置
 	setPosition(x: number, y: number, rect: DOMRect): void {
 		// 应用窗口带边框需要减去1px的margin
 		if (document.body.hasClass('border')) {
@@ -208,7 +190,6 @@ export class WindowFrame extends HTMLElement {
 		this.style.top = `${Math.clamp(y, 0, yMax)}px`;
 	}
 
-	// 设置标题
 	setTitle(text: string): void {
 		const titleBar = this.firstElementChild;
 		if (titleBar instanceof TitleBar) {
@@ -221,7 +202,6 @@ export class WindowFrame extends HTMLElement {
 		}
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,

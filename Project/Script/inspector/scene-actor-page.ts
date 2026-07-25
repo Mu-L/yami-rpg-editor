@@ -6,52 +6,39 @@ import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 场景 - 角色页面 ********************************
-
 {
 	const SceneActor = {
-		// properties
 		owner: Scene,
 		target: null,
 		nameBox: $('#sceneActor-name'),
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		datachange: null,
 		paramInput: null,
 		typeWrite: null
 	};
 
-	// 初始化
 	SceneActor.initialize = function () {
-		// 创建类型选项
 		$('#sceneActor-type').loadItems([
 			{ name: 'Local Actor', value: 'local' },
 			{ name: 'Global Actor', value: 'global' }
 		]);
 
-		// 绑定条件列表
 		$('#sceneActor-conditions').bind(new ConditionListInterface(this, Scene));
 
-		// 绑定事件列表
 		$('#sceneActor-events').bind(new EventListInterface(this, Scene));
 
-		// 绑定脚本列表
 		$('#sceneActor-scripts').bind(new ScriptListInterface(this, Scene));
 
-		// 绑定脚本参数面板
 		$('#sceneActor-parameter-pane').bind($('#sceneActor-scripts'));
 
-		// 同步滑动框和数字框的数值
 		$('#sceneActor-angle-slider').synchronize($('#sceneActor-angle'));
 		$('#sceneActor-scale-slider').synchronize($('#sceneActor-scale'));
 
-		// 侦听事件
 		window.on('datachange', this.datachange);
 		const elements =
 			$(`#sceneActor-name, #sceneActor-type, #sceneActor-actorId, #sceneActor-teamId,
@@ -69,7 +56,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建角色
 	SceneActor.create = function () {
 		return {
 			class: 'actor',
@@ -91,16 +77,13 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	SceneActor.open = function (actor) {
 		if (this.target !== actor) {
 			this.target = actor;
 
-			// 创建队伍选项
 			const elTeamId = $('#sceneActor-teamId');
 			elTeamId.loadItems(Data.createTeamItems());
 
-			// 写入数据
 			const write = getElementWriter('sceneActor', actor);
 			write('name');
 			write('type');
@@ -116,7 +99,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	SceneActor.close = function () {
 		if (this.target) {
 			Scene.list.unselect(this.target);
@@ -129,7 +111,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 写入数据
 	SceneActor.write = function (options) {
 		if (options.x !== undefined) {
 			$('#sceneActor-x').write(options.x);
@@ -142,7 +123,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	SceneActor.update = function (actor, key, value) {
 		Scene.planToSave();
 		switch (key) {
@@ -193,7 +173,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	// 数据改变事件
 	SceneActor.datachange = function (event) {
 		if (this.target && event.key === 'teams') {
 			const elTeamId = $('#sceneActor-teamId');
@@ -204,12 +183,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	}.bind(SceneActor);
 
-	// 参数 - 输入事件
 	SceneActor.paramInput = function (event) {
 		SceneActor.update(SceneActor.target, Inspector.getKey(this), this.read());
 	};
 
-	// 类型 - 写入事件
 	SceneActor.typeWrite = function (event) {
 		switch (event.value) {
 			case 'local':

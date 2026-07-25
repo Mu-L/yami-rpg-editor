@@ -5,40 +5,31 @@ import '../util/node-list.js';
 
 import { Cursor } from '../tools/pointer-object.ts';
 
-// ******************************** 元素方法 ********************************
-
-// 元素方法 - 读取数据
 HTMLElement.prototype.read = function (this: HTMLElement): any {
 	return this.dataValue;
 };
 
-// 元素方法 - 写入数据
 HTMLElement.prototype.write = function (this: HTMLElement, value: any): void {
 	this.dataValue = value;
 };
 
-// 元素方法 - 清除子元素
 HTMLElement.prototype.clear = function (this: HTMLElement): HTMLElement {
 	this.textContent = '';
 	return this;
 };
 
-// 元素方法 - 启用元素
 HTMLElement.prototype.enable = function (this: HTMLElement): void {
 	this.removeClass('disabled');
 };
 
-// 元素方法 - 禁用元素
 HTMLElement.prototype.disable = function (this: HTMLElement): void {
 	this.addClass('disabled');
 };
 
-// 元素方法 - 检查类名
 HTMLElement.prototype.hasClass = function (this: HTMLElement, className: string): boolean {
 	return this.classList.contains(className);
 };
 
-// 元素方法 - 添加类名
 HTMLElement.prototype.addClass = function (this: HTMLElement, className: string): boolean {
 	if (!this.classList.contains(className)) {
 		this.classList.add(className);
@@ -47,7 +38,6 @@ HTMLElement.prototype.addClass = function (this: HTMLElement, className: string)
 	return false;
 };
 
-// 元素方法 - 删除 Class
 HTMLElement.prototype.removeClass = function (this: HTMLElement, className: string): boolean {
 	if (this.classList.contains(className)) {
 		this.classList.remove(className);
@@ -56,7 +46,6 @@ HTMLElement.prototype.removeClass = function (this: HTMLElement, className: stri
 	return false;
 };
 
-// 元素方法 - 往上搜索目标元素
 HTMLElement.prototype.seek = function (
 	this: HTMLElement,
 	tagName: string,
@@ -76,43 +65,36 @@ HTMLElement.prototype.seek = function (
 	return element;
 };
 
-// 元素方法 - 返回计算后的 CSS 对象
 (HTMLElement.prototype as any).css = function (this: HTMLElement): CSSStyleDeclaration {
 	return getComputedStyle(this);
 };
 
-// 元素方法 - 返回边框矩形对象
 HTMLElement.prototype.rect = function (this: HTMLElement): DOMRect {
 	return this.getBoundingClientRect();
 };
 
-// 元素方法 - 隐藏
 HTMLElement.prototype.hide = function (this: HTMLElement): HTMLElement {
 	this.addClass('hidden');
 	return this;
 };
 
-// 元素方法 - 显示
 HTMLElement.prototype.show = function (this: HTMLElement): HTMLElement {
 	this.removeClass('hidden');
 	return this;
 };
 
-// 元素方法 - 隐藏子元素
 HTMLElement.prototype.hideChildNodes = function (this: HTMLElement): void {
 	for (const childNode of this.childNodes) {
 		(childNode as HTMLElement).hide();
 	}
 };
 
-// 元素方法 - 显示子元素
 HTMLElement.prototype.showChildNodes = function (this: HTMLElement): void {
 	for (const childNode of this.childNodes) {
 		(childNode as HTMLElement).show();
 	}
 };
 
-// 元素方法 - 获得焦点
 // 异步执行可以避免与指针按下行为起冲突
 HTMLElement.prototype.getFocus = function (this: any, mode: string | null = null): void {
 	setTimeout(() => {
@@ -135,7 +117,6 @@ HTMLElement.prototype.getFocus = function (this: any, mode: string | null = null
 	});
 };
 
-// 元素方法 - 设置工具提示
 HTMLElement.prototype.setTooltip = (function IIFE() {
 	const tooltip = $('#tooltip');
 	const capture = { capture: true };
@@ -156,7 +137,6 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 					window.off('pointerdown', close, capture);
 					return;
 				}
-				// 添加快捷键信息
 				const hotkey = target?.getAttribute('hotkey');
 				if (hotkey) {
 					if (tip.includes('\n')) {
@@ -180,7 +160,6 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 		}
 	});
 
-	// 关闭
 	const close = function (): void {
 		switch (state) {
 			case 'waiting':
@@ -195,9 +174,7 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 		}
 	};
 
-	// 指针移动事件
 	const pointermove = function (this: HTMLElement, event: PointerEvent): void {
-		// 两个重叠元素时执行最上层的那个
 		if (timeStamp === event.timeStamp) {
 			return;
 		}
@@ -233,7 +210,6 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 		}
 	};
 
-	// 指针离开事件
 	const pointerleave = function (this: HTMLElement, event: PointerEvent): void {
 		if (
 			!(event.relatedTarget instanceof HTMLElement && tooltip.contains(event.relatedTarget))
@@ -267,7 +243,6 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 	};
 })();
 
-// 元素方法 - 添加滚动条
 HTMLElement.prototype.addScrollbars = function () {
 	const hBar = document.createElement('scroll-bar');
 	const vBar = document.createElement('scroll-bar');
@@ -286,7 +261,6 @@ HTMLElement.prototype.addScrollbars = function () {
 	hBar.bind(this, 'horizontal');
 	vBar.bind(this, 'vertical');
 
-	// 鼠标滚轮事件
 	const wheel = (event: WheelEvent) => {
 		this.dispatchEvent(new WheelEvent('wheel', event));
 	};
@@ -294,26 +268,19 @@ HTMLElement.prototype.addScrollbars = function () {
 	vBar.on('wheel', wheel);
 	corner.on('wheel', wheel);
 
-	// 用户滚动事件
-	// 使用自定义的userscroll代替内置的scroll有以下原因:
-	// scroll是异步的，触发时机是在Promise后Animation前
-	// 如果在Animation中滚动会推迟到下一帧触发事件
-	// userscroll由于手动调用可以避免不需要触发的情况
+	// 使用自定义的userscroll代替内置的scroll有以下原因: scroll是异步的，触发时机是在Promise后Animation前 如果在Animation中滚动会推迟到下一帧触发事件 userscroll由于手动调用可以避免不需要触发的情况
 	const userscroll = new Event('userscroll');
 
-	// 添加方法 - 开始滚动
 	this.beginScrolling = function () {
 		hBar.addClass('dragging');
 		vBar.addClass('dragging');
 	};
 
-	// 添加方法 - 结束滚动
 	this.endScrolling = function () {
 		hBar.removeClass('dragging');
 		vBar.removeClass('dragging');
 	};
 
-	// 添加方法 - 设置滚动条位置
 	this.setScroll = function (left: number, top: number) {
 		const sl = this.scrollLeft;
 		const st = this.scrollTop;
@@ -323,7 +290,6 @@ HTMLElement.prototype.addScrollbars = function () {
 		}
 	};
 
-	// 添加方法 - 设置滚动条左侧位置
 	this.setScrollLeft = function (left: number) {
 		const sl = this.scrollLeft;
 		this.scrollLeft = left;
@@ -332,7 +298,6 @@ HTMLElement.prototype.addScrollbars = function () {
 		}
 	};
 
-	// 添加方法 - 设置滚动条顶部位置
 	this.setScrollTop = function (top: number) {
 		const st = this.scrollTop;
 		this.scrollTop = top;
@@ -341,7 +306,6 @@ HTMLElement.prototype.addScrollbars = function () {
 		}
 	};
 
-	// 添加方法 - 更新滚动条
 	let withCorner = false;
 	this.updateScrollbars = function () {
 		if (this.clientWidth < this.scrollWidth && this.clientHeight < this.scrollHeight) {
@@ -364,12 +328,9 @@ HTMLElement.prototype.addScrollbars = function () {
 	};
 };
 
-// 元素方法 - 添加设置滚动方法
 HTMLElement.prototype.addSetScrollMethod = function () {
-	// 用户滚动事件
 	const userscroll = new Event('userscroll');
 
-	// 添加方法 - 设置滚动条位置
 	this.setScroll = function (left: number, top: number) {
 		const sl = this.scrollLeft;
 		const st = this.scrollTop;
@@ -380,14 +341,10 @@ HTMLElement.prototype.addSetScrollMethod = function () {
 	};
 };
 
-// 元素方法 - 检查是否出现滚动条
-// 缩放率不是 100% 有可能出现
-// clientWidth > scrollWidth
 HTMLElement.prototype.hasScrollBar = function (): boolean {
 	return this.clientWidth < this.scrollWidth || this.clientHeight < this.scrollHeight;
 };
 
-// 元素方法 - 判断事件坐标在内容区域上
 HTMLElement.prototype.isInContent = function (event: MouseEvent): boolean {
 	const coords = event.getRelativeCoords(this);
 	const x = coords.x - this.scrollLeft;
@@ -395,7 +352,6 @@ HTMLElement.prototype.isInContent = function (event: MouseEvent): boolean {
 	return x >= 0 && x < this.clientWidth && y >= 0 && y < this.clientHeight;
 };
 
-// 元素方法 - 发送改变事件
 HTMLElement.prototype.dispatchChangeEvent = (function IIFE() {
 	const changes = [
 		new Event('change', { bubbles: true }),
@@ -406,7 +362,6 @@ HTMLElement.prototype.dispatchChangeEvent = (function IIFE() {
 	};
 })();
 
-// 元素方法 - 发送调整事件
 HTMLElement.prototype.dispatchResizeEvent = (function IIFE() {
 	const resize = new Event('resize');
 	return function () {
@@ -414,7 +369,6 @@ HTMLElement.prototype.dispatchResizeEvent = (function IIFE() {
 	};
 })();
 
-// 元素方法 - 发送更新事件
 HTMLElement.prototype.dispatchUpdateEvent = (function IIFE() {
 	const update = new Event('update');
 	return function () {
@@ -422,9 +376,7 @@ HTMLElement.prototype.dispatchUpdateEvent = (function IIFE() {
 	};
 })();
 
-// 元素方法 - 侦听拖拽滚动条事件
 (HTMLElement.prototype as any).listenDraggingScrollbarEvent = (function IIFE() {
-	// 默认指针按下事件
 	const defaultPointerdown = function (event) {
 		if (this.dragging) {
 			return;
@@ -446,7 +398,6 @@ HTMLElement.prototype.dispatchUpdateEvent = (function IIFE() {
 		}
 	};
 
-	// 指针弹起事件
 	const pointerup = function (event) {
 		const { dragging } = this;
 		if (dragging.relate(event)) {
@@ -461,7 +412,6 @@ HTMLElement.prototype.dispatchUpdateEvent = (function IIFE() {
 		}
 	};
 
-	// 指针移动事件
 	const pointermove = function (event) {
 		const { dragging } = this;
 		if (dragging.relate(event)) {

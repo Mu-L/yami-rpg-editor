@@ -7,9 +7,6 @@ import { TextureManager } from './texture-manager.ts';
 import { Texture } from './texture.ts';
 import { GL } from './webgl-init.ts';
 
-// ******************************** WebGL方法 ********************************
-
-// WebGL上下文方法 - 恢复上下文
 GL.restore = function () {
 	const { ambient } = this;
 	this.textureManager.restore();
@@ -18,9 +15,7 @@ GL.restore = function () {
 	this.updateLightTexSize();
 };
 
-// WebGL上下文方法 - 初始化
 GL.initialize = function () {
-	// 设置初始属性
 	this.flip = this.flip ?? -1;
 	this.alpha = this.alpha ?? 1;
 	this.blend = this.blend ?? 'normal';
@@ -32,20 +27,15 @@ GL.initialize = function () {
 	this.masking = false;
 	this.depthTest = false;
 
-	// 创建环境光对象
 	this.ambient = { red: -1, green: -1, blue: -1 };
 
-	// 创建纹理管理器
 	this.textureManager = this.textureManager ?? new TextureManager();
 
-	// 最大纹理尺寸(PC: 16384, Mobile: 4096，超过会出错)
-	// 如果需要兼容移动设备，使用4096x4096分辨率以内的图像文件
+	// 最大纹理尺寸(PC: 16384, Mobile: 4096，超过会出错) 如果需要兼容移动设备，使用4096x4096分辨率以内的图像文件
 	this.maxTexSize = this.getParameter(this.MAX_TEXTURE_SIZE);
 
-	// 设置最大纹理数量(通常是16)
 	this.maxTexUnits = this.getParameter(this.MAX_TEXTURE_IMAGE_UNITS);
 
-	// 创建反射光纹理
 	this.reflectedLightMap =
 		this.reflectedLightMap ??
 		new Texture({
@@ -59,7 +49,6 @@ GL.initialize = function () {
 	this.bindTexture(this.TEXTURE_2D, this.reflectedLightMap.base.glTexture);
 	this.activeTexture(this.TEXTURE0);
 
-	// 创建直射光纹理
 	this.directLightMap =
 		this.directLightMap ??
 		new Texture({
@@ -70,22 +59,17 @@ GL.initialize = function () {
 	this.directLightMap.base.protected = true;
 	this.directLightMap.fbo = this.createTextureFBO(this.directLightMap);
 
-	// 创建模板纹理
 	this.stencilTexture = this.stencilTexture ?? new Texture({ format: this.ALPHA });
 	this.stencilTexture.base.protected = true;
 
-	// 创建遮罩纹理
 	this.maskTexture = this.maskTexture ?? new Texture({ format: this.RGBA });
 	this.maskTexture.base.protected = true;
 	this.maskTexture.fbo = this.createTextureFBO(this.maskTexture);
 
-	// 创建图层数组
 	this.layers = this.layers ?? new Uint32Array(0x40000);
 
-	// 创建零值数组
 	this.zeros = this.zeros ?? new Uint32Array(0x40000);
 
-	// 创建类型化数组
 	const size = 512 * 512;
 	if (!this.arrays) {
 		const buffer1 = new ArrayBuffer(size * 96);
@@ -114,13 +98,10 @@ GL.initialize = function () {
 		};
 	}
 
-	// 创建帧缓冲区
 	this.frameBuffer = this.createFramebuffer();
 
-	// 创建顶点缓冲区
 	this.vertexBuffer = this.createBuffer();
 
-	// 创建索引缓冲区
 	const indices = this.arrays[0].uint32;
 	for (let i = 0; i < size; i++) {
 		const ei = i * 6;
@@ -137,16 +118,12 @@ GL.initialize = function () {
 	this.bufferData(this.ELEMENT_ARRAY_BUFFER, indices, this.STATIC_DRAW, 0, size * 6);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, null);
 
-	// 创建更新混合模式方法(闭包)
 	this.updateBlending = this.createBlendingUpdater();
 
-	// 创建批量渲染器
 	this.batchRenderer = new BatchRenderer(this);
 
-	// 创建2D上下文对象
 	this.context2d = this.context2d ?? this.createContext2D();
 
-	// 创建程序对象
 	this.imageProgram = this.createImageProgram();
 	this.tileProgram = this.createTileProgram();
 	this.textProgram = this.createTextProgram();
@@ -157,7 +134,6 @@ GL.initialize = function () {
 	this.dashedLineProgram = this.createDashedLineProgram();
 };
 
-// WebGL上下文方法 - 创建程序对象
 GL.createProgramWithShaders = function (vshader, fshader) {
 	const vertexShader = this.loadShader(this.VERTEX_SHADER, vshader);
 	const fragmentShader = this.loadShader(this.FRAGMENT_SHADER, fshader);
@@ -185,7 +161,6 @@ GL.createProgramWithShaders = function (vshader, fshader) {
 	return program;
 };
 
-// WebGL上下文方法 - 加载着色器
 GL.loadShader = function (type, source) {
 	const shader = this.createShader(type);
 	if (!shader) {
@@ -204,7 +179,6 @@ GL.loadShader = function (type, source) {
 	return shader;
 };
 
-// WebGL上下文方法 - 创建图像程序
 GL.createImageProgram = function () {
 	const program = this.createProgramWithShaders(
 		`
@@ -301,7 +275,6 @@ GL.createImageProgram = function () {
 	);
 	this.useProgram(program);
 
-	// 顶点着色器属性
 	const a_Position = this.getAttribLocation(program, 'a_Position');
 	const a_TexCoord = this.getAttribLocation(program, 'a_TexCoord');
 	const u_Flip = this.getUniformLocation(program, 'u_Flip');
@@ -312,7 +285,6 @@ GL.createImageProgram = function () {
 	const u_LightTexSize = this.getUniformLocation(program, 'u_LightTexSize');
 	this.uniform1i(this.getUniformLocation(program, 'u_LightSampler'), this.maxTexUnits - 1);
 
-	// 片元着色器属性
 	const u_Viewport = this.getUniformLocation(program, 'u_Viewport');
 	const u_Masking = this.getUniformLocation(program, 'u_Masking');
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
@@ -322,7 +294,6 @@ GL.createImageProgram = function () {
 	const u_Repeat = this.getUniformLocation(program, 'u_Repeat');
 	const u_MaskSampler = this.getUniformLocation(program, 'u_MaskSampler');
 
-	// 创建顶点数组对象
 	const vao = this.createVertexArray();
 	this.bindVertexArray(vao);
 	this.enableVertexAttribArray(a_Position);
@@ -332,7 +303,6 @@ GL.createImageProgram = function () {
 	this.vertexAttribPointer(a_TexCoord, 2, this.FLOAT, false, 16, 8);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
 
-	// 使用程序对象
 	const use = () => {
 		if (this.program !== program) {
 			this.program = program;
@@ -351,7 +321,6 @@ GL.createImageProgram = function () {
 		return program;
 	};
 
-	// 保存程序对象
 	program.use = use;
 	program.vao = vao;
 	program.alpha = 0;
@@ -373,7 +342,6 @@ GL.createImageProgram = function () {
 	return program;
 };
 
-// WebGL上下文方法 - 创建图块程序
 GL.createTileProgram = function () {
 	const program = this.createProgramWithShaders(
 		`
@@ -453,7 +421,6 @@ GL.createTileProgram = function () {
 	);
 	this.useProgram(program);
 
-	// 顶点着色器属性
 	const a_Position = this.getAttribLocation(program, 'a_Position');
 	const a_TexCoord = this.getAttribLocation(program, 'a_TexCoord');
 	const a_TexIndex = this.getAttribLocation(program, 'a_TexIndex');
@@ -464,7 +431,6 @@ GL.createTileProgram = function () {
 	const u_LightTexSize = this.getUniformLocation(program, 'u_LightTexSize');
 	this.uniform1i(this.getUniformLocation(program, 'u_LightSampler'), this.maxTexUnits - 1);
 
-	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
 	const u_TintMode = this.getUniformLocation(program, 'u_TintMode');
 	const u_Tint = this.getUniformLocation(program, 'u_Tint');
@@ -474,7 +440,6 @@ GL.createTileProgram = function () {
 		u_Samplers.push(this.getUniformLocation(program, `u_Samplers[${i}]`));
 	}
 
-	// 创建顶点数组对象
 	const vao = this.createVertexArray();
 	this.bindVertexArray(vao);
 	this.enableVertexAttribArray(a_Position);
@@ -486,7 +451,6 @@ GL.createTileProgram = function () {
 	this.vertexAttribPointer(a_TexIndex, 1, this.FLOAT, false, 20, 16);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
 
-	// 使用程序对象
 	const use = () => {
 		if (this.program !== program) {
 			this.program = program;
@@ -503,7 +467,6 @@ GL.createTileProgram = function () {
 		return program;
 	};
 
-	// 保存程序对象
 	program.use = use;
 	program.vao = vao;
 	program.flip = null;
@@ -522,7 +485,6 @@ GL.createTileProgram = function () {
 	return program;
 };
 
-// WebGL上下文方法 - 创建文字程序
 GL.createTextProgram = function () {
 	const program = this.createProgramWithShaders(
 		`
@@ -557,15 +519,12 @@ GL.createTextProgram = function () {
 	);
 	this.useProgram(program);
 
-	// 顶点着色器属性
 	const a_Position = this.getAttribLocation(program, 'a_Position');
 	const a_TexCoord = this.getAttribLocation(program, 'a_TexCoord');
 	const a_TextColor = this.getAttribLocation(program, 'a_TextColor');
 
-	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
 
-	// 创建顶点数组对象
 	const vao = this.createVertexArray();
 	this.bindVertexArray(vao);
 	this.enableVertexAttribArray(a_Position);
@@ -577,7 +536,6 @@ GL.createTextProgram = function () {
 	this.vertexAttribPointer(a_TextColor, 4, this.UNSIGNED_BYTE, true, 20, 16);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
 
-	// 使用程序对象
 	const use = () => {
 		if (this.program !== program) {
 			this.program = program;
@@ -591,7 +549,6 @@ GL.createTextProgram = function () {
 		return program;
 	};
 
-	// 保存程序对象
 	program.use = use;
 	program.vao = vao;
 	program.alpha = 0;
@@ -601,7 +558,6 @@ GL.createTextProgram = function () {
 	return program;
 };
 
-// WebGL上下文方法 - 创建精灵程序
 GL.createSpriteProgram = function () {
 	const program = this.createProgramWithShaders(
 		`
@@ -687,7 +643,6 @@ GL.createSpriteProgram = function () {
 	);
 	this.useProgram(program);
 
-	// 顶点着色器属性
 	const a_Position = this.getAttribLocation(program, 'a_Position');
 	const a_TexCoord = this.getAttribLocation(program, 'a_TexCoord');
 	const a_TexParam = this.getAttribLocation(program, 'a_TexParam');
@@ -698,7 +653,6 @@ GL.createSpriteProgram = function () {
 	const u_LightTexSize = this.getUniformLocation(program, 'u_LightTexSize');
 	this.uniform1i(this.getUniformLocation(program, 'u_LightSampler'), this.maxTexUnits - 1);
 
-	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
 	const u_Tint = this.getUniformLocation(program, 'u_Tint');
 	const u_SamplerLength = this.maxTexUnits - 1;
@@ -707,7 +661,6 @@ GL.createSpriteProgram = function () {
 		u_Samplers.push(this.getUniformLocation(program, `u_Samplers[${i}]`));
 	}
 
-	// 创建顶点数组对象
 	const vao = this.createVertexArray();
 	this.bindVertexArray(vao);
 	this.enableVertexAttribArray(a_Position);
@@ -723,7 +676,6 @@ GL.createSpriteProgram = function () {
 	this.vertexAttribPointer(a_LightCoord, 2, this.UNSIGNED_SHORT, true, 32, 28);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
 
-	// 使用程序对象
 	const use = () => {
 		if (this.program !== program) {
 			this.program = program;
@@ -740,7 +692,6 @@ GL.createSpriteProgram = function () {
 		return program;
 	};
 
-	// 保存程序对象
 	program.use = use;
 	program.vao = vao;
 	program.flip = null;
@@ -758,7 +709,6 @@ GL.createSpriteProgram = function () {
 	return program;
 };
 
-// WebGL上下文方法 - 创建粒子程序
 GL.createParticleProgram = function () {
 	const program = this.createProgramWithShaders(
 		`
@@ -837,7 +787,6 @@ GL.createParticleProgram = function () {
 	);
 	this.useProgram(program);
 
-	// 顶点着色器属性
 	const a_Position = this.getAttribLocation(program, 'a_Position');
 	const a_TexCoord = this.getAttribLocation(program, 'a_TexCoord');
 	const u_Flip = this.getUniformLocation(program, 'u_Flip');
@@ -848,12 +797,10 @@ GL.createParticleProgram = function () {
 	const u_LightTexSize = this.getUniformLocation(program, 'u_LightTexSize');
 	this.uniform1i(this.getUniformLocation(program, 'u_LightSampler'), this.maxTexUnits - 1);
 
-	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
 	const u_Mode = this.getUniformLocation(program, 'u_Mode');
 	const u_Tint = this.getUniformLocation(program, 'u_Tint');
 
-	// 创建顶点数组对象
 	const vao = this.createVertexArray();
 	this.bindVertexArray(vao);
 	this.enableVertexAttribArray(a_Position);
@@ -865,7 +812,6 @@ GL.createParticleProgram = function () {
 	this.vertexAttribPointer(a_Color, 4, this.UNSIGNED_BYTE, true, 20, 16);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
 
-	// 使用程序对象
 	const use = () => {
 		if (this.program !== program) {
 			this.program = program;
@@ -883,7 +829,6 @@ GL.createParticleProgram = function () {
 		return program;
 	};
 
-	// 保存程序对象
 	program.use = use;
 	program.vao = vao;
 	program.alpha = 0;
@@ -899,7 +844,6 @@ GL.createParticleProgram = function () {
 	return program;
 };
 
-// WebGL上下文方法 - 创建光源程序
 GL.createLightProgram = function () {
 	const program = this.createProgramWithShaders(
 		`
@@ -953,16 +897,13 @@ GL.createLightProgram = function () {
 	);
 	this.useProgram(program);
 
-	// 顶点着色器属性
 	const a_Position = this.getAttribLocation(program, 'a_Position');
 	const a_LightCoord = this.getAttribLocation(program, 'a_LightCoord');
 	const u_Matrix = this.getUniformLocation(program, 'u_Matrix');
 
-	// 片元着色器属性
 	const u_LightMode = this.getUniformLocation(program, 'u_LightMode');
 	const u_LightColor = this.getUniformLocation(program, 'u_LightColor');
 
-	// 创建顶点数组对象
 	const vao = this.createVertexArray();
 	this.bindVertexArray(vao);
 	this.enableVertexAttribArray(a_Position);
@@ -971,7 +912,6 @@ GL.createLightProgram = function () {
 	this.vertexAttribPointer(a_Position, 2, this.FLOAT, false, 16, 0);
 	this.vertexAttribPointer(a_LightCoord, 2, this.FLOAT, false, 16, 8);
 
-	// 使用程序对象
 	const use = () => {
 		if (this.program !== program) {
 			this.program = program;
@@ -981,7 +921,6 @@ GL.createLightProgram = function () {
 		return program;
 	};
 
-	// 保存程序对象
 	program.use = use;
 	program.vao = vao;
 	program.a_Position = a_Position;
@@ -992,7 +931,6 @@ GL.createLightProgram = function () {
 	return program;
 };
 
-// WebGL上下文方法 - 创建图形程序
 GL.createGraphicProgram = function () {
 	const program = this.createProgramWithShaders(
 		`
@@ -1019,15 +957,12 @@ GL.createGraphicProgram = function () {
 	);
 	this.useProgram(program);
 
-	// 顶点着色器属性
 	const a_Position = this.getAttribLocation(program, 'a_Position');
 	const a_Color = this.getAttribLocation(program, 'a_Color');
 	const u_Matrix = this.getUniformLocation(program, 'u_Matrix');
 
-	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
 
-	// 创建顶点数组对象
 	const vao = this.createVertexArray();
 	this.bindVertexArray(vao);
 	this.enableVertexAttribArray(a_Position);
@@ -1037,9 +972,7 @@ GL.createGraphicProgram = function () {
 	this.vertexAttribPointer(a_Color, 4, this.UNSIGNED_BYTE, true, 12, 8);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
 
-	// 创建顶点数组对象 - 属性[10]
-	// 注意：未启用的属性不能初始化赋值一次
-	// 因为：gl.vertexAttrib1f方法会影响到其他program
+	// 注意：未启用的属性不能初始化赋值一次 因为：gl.vertexAttrib1f方法会影响到其他program
 	vao.a10 = this.createVertexArray();
 	this.bindVertexArray(vao.a10);
 	this.enableVertexAttribArray(a_Position);
@@ -1047,7 +980,6 @@ GL.createGraphicProgram = function () {
 	this.vertexAttribPointer(a_Position, 2, this.FLOAT, false, 0, 0);
 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
 
-	// 使用程序对象
 	const use = () => {
 		if (this.program !== program) {
 			this.program = program;
@@ -1061,7 +993,6 @@ GL.createGraphicProgram = function () {
 		return program;
 	};
 
-	// 保存程序对象
 	program.use = use;
 	program.vao = vao;
 	program.alpha = 0;
@@ -1071,7 +1002,6 @@ GL.createGraphicProgram = function () {
 	return program;
 };
 
-// WebGL上下文方法 - 创建虚线程序
 GL.createDashedLineProgram = function () {
 	const program = this.createProgramWithShaders(
 		`
@@ -1101,16 +1031,13 @@ GL.createDashedLineProgram = function () {
 	);
 	this.useProgram(program);
 
-	// 顶点着色器属性
 	const a_Position = this.getAttribLocation(program, 'a_Position');
 	const a_Distance = this.getAttribLocation(program, 'a_Distance');
 	const u_Matrix = this.getUniformLocation(program, 'u_Matrix');
 
-	// 片元着色器属性
 	const u_Alpha = this.getUniformLocation(program, 'u_Alpha');
 	const u_Color = this.getUniformLocation(program, 'u_Color');
 
-	// 创建顶点数组对象
 	const vao = this.createVertexArray();
 	this.bindVertexArray(vao);
 	this.enableVertexAttribArray(a_Position);
@@ -1119,7 +1046,6 @@ GL.createDashedLineProgram = function () {
 	this.vertexAttribPointer(a_Position, 2, this.FLOAT, false, 12, 0);
 	this.vertexAttribPointer(a_Distance, 1, this.FLOAT, false, 12, 8);
 
-	// 使用程序对象
 	const use = () => {
 		if (this.program !== program) {
 			this.program = program;
@@ -1133,7 +1059,6 @@ GL.createDashedLineProgram = function () {
 		return program;
 	};
 
-	// 保存程序对象
 	program.use = use;
 	program.vao = vao;
 	program.alpha = 0;
@@ -1144,14 +1069,12 @@ GL.createDashedLineProgram = function () {
 	return program;
 };
 
-// WebGL上下文方法 - 重置状态
 GL.reset = function () {
 	this.blend = 'normal';
 	this.alpha = 1;
 	this.matrix.reset();
 };
 
-// WebGL上下文方法 - 更新遮罩模式
 GL.updateMasking = function () {
 	if (this.program.masking !== this.masking) {
 		this.program.masking = this.masking;
@@ -1174,51 +1097,40 @@ GL.updateMasking = function () {
 	}
 };
 
-// WebGL上下文方法 - 创建混合模式更新器
 GL.createBlendingUpdater = function () {
-	// 开启混合功能
 	this.enable(this.BLEND);
 
-	// 更新器映射表(启用混合时)
 	const A = {
-		// 正常模式
 		normal: () => {
 			this.blendEquation(this.FUNC_ADD);
 			this.blendFuncSeparate(this.SRC_ALPHA, this.ONE_MINUS_SRC_ALPHA, this.ONE, this.ZERO);
 		},
-		// 滤色模式
 		screen: () => {
 			this.blendEquation(this.FUNC_ADD);
 			this.blendFunc(this.ONE, this.ONE_MINUS_SRC_COLOR);
 		},
-		// 加法模式
 		additive: () => {
 			this.blendEquation(this.FUNC_ADD);
 			this.blendFuncSeparate(this.SRC_ALPHA, this.DST_ALPHA, this.ONE, this.ZERO);
 		},
-		// 减法模式
 		subtract: () => {
 			this.blendEquation(this.FUNC_REVERSE_SUBTRACT);
 			this.blendFuncSeparate(this.SRC_ALPHA, this.DST_ALPHA, this.ONE, this.ZERO);
 		},
-		// 最大值模式
 		max: () => {
 			this.blendEquation(this.MAX);
 		},
-		// 复制模式
 		copy: () => {
 			this.disable(this.BLEND);
 			updaters = B;
 		}
 	};
 
-	// 从复制模式切换到其他模式
 	const resume = () => {
 		(updaters = A)[blend]();
 		this.enable(this.BLEND);
 	};
 
-	// 更新器映射表(禁用混合时)
 	const B = {
 		normal: resume,
 		screen: resume,
@@ -1230,7 +1142,6 @@ GL.createBlendingUpdater = function () {
 
 	let updaters = A;
 	let blend = '';
-	// 返回更新混合模式方法
 	return () => {
 		if (blend !== this.blend) {
 			updaters[(blend = this.blend)]();
@@ -1238,7 +1149,6 @@ GL.createBlendingUpdater = function () {
 	};
 };
 
-// WebGL上下文方法 - 设置环境光
 GL.setAmbientLight = function ({ red, green, blue }) {
 	const ambient = this.ambient;
 	if (ambient.red !== red || ambient.green !== green || ambient.blue !== blue) {
@@ -1257,7 +1167,6 @@ GL.setAmbientLight = function ({ red, green, blue }) {
 	}
 };
 
-// WebGL上下文方法 - 调整光影纹理
 GL.resizeLightMap = function () {
 	const width = this.width;
 	const height = this.height;
@@ -1267,7 +1176,6 @@ GL.resizeLightMap = function () {
 		texture.innerHeight = height;
 		if (texture.paddingLeft === undefined) {
 			const { lightArea } = Data.config;
-			// 计算光影纹理最大扩张值(4倍)
 			// 避免频繁调整纹理尺寸
 			texture.paddingLeft = Math.min(lightArea.expansionLeft * 4, 1024);
 			texture.paddingTop = Math.min(lightArea.expansionTop * 4, 1024);
@@ -1288,7 +1196,6 @@ GL.resizeLightMap = function () {
 	}
 };
 
-// WebGL上下文方法 - 更新光照纹理大小
 GL.updateLightTexSize = function () {
 	const texture = this.reflectedLightMap;
 	if (texture.width === 0) return;
@@ -1311,8 +1218,7 @@ GL.updateLightTexSize = function () {
 	this.useProgram(program);
 };
 
-// WebGL上下文方法 - 更新采样器数量
-// 避免chrome 69未绑定纹理警告
+// WebGL上下文方法 - 更新采样器数量 避免chrome 69未绑定纹理警告
 GL.updateSamplerNum = function (samplerNum) {
 	const program = this.program;
 	const lastNum = program.samplerNum;
@@ -1331,28 +1237,24 @@ GL.updateSamplerNum = function (samplerNum) {
 	}
 };
 
-// WebGL上下文方法 - 绑定帧缓冲对象
 GL.bindFBO = function (fbo) {
 	this.binding = fbo;
 	this.flip = 1;
 	this.bindFramebuffer(this.FRAMEBUFFER, fbo);
 };
 
-// WebGL上下文方法 - 解除帧缓冲对象的绑定
 GL.unbindFBO = function () {
 	this.binding = null;
 	this.flip = -1;
 	this.bindFramebuffer(this.FRAMEBUFFER, null);
 };
 
-// 设置视口大小
 GL.setViewport = function (x, y, width, height) {
 	this.width = width;
 	this.height = height;
 	this.viewport(x, y, width, height);
 };
 
-// 重置视口大小
 GL.resetViewport = function () {
 	const width = this.drawingBufferWidth;
 	const height = this.drawingBufferHeight;
@@ -1361,7 +1263,6 @@ GL.resetViewport = function () {
 	this.viewport(0, 0, width, height);
 };
 
-// WebGL上下文方法 - 调整画布大小
 GL.resize = function (width, height) {
 	const canvas = this.canvas;
 	if (canvas.width !== width) {
@@ -1379,7 +1280,6 @@ GL.resize = function (width, height) {
 	}
 };
 
-// WebGL上下文方法 - 绘制图像
 GL.drawImage = (function drawImage() {
 	const defTint = new Uint8Array(4);
 	return function (texture, dx, dy, dw, dh, tint = defTint) {
@@ -1395,12 +1295,10 @@ GL.drawImage = (function drawImage() {
 		const tw = base.width;
 		const th = base.height;
 
-		// 计算变换矩阵
 		const matrix = Matrix.instance
 			.project(this.flip, this.width, this.height)
 			.multiply(this.matrix);
 
-		// 计算顶点数据
 		const dl = dx + 0.004;
 		const dt = dy + 0.004;
 		const dr = dl + dw;
@@ -1426,13 +1324,11 @@ GL.drawImage = (function drawImage() {
 		vertices[14] = sr;
 		vertices[15] = st;
 
-		// 色调归一化
 		const red = tint[0] / 255;
 		const green = tint[1] / 255;
 		const blue = tint[2] / 255;
 		const gray = tint[3] / 255;
 
-		// 绘制图像
 		this.bindVertexArray(program.vao);
 		this.uniformMatrix3fv(program.u_Matrix, false, matrix);
 		this.uniform1i(program.u_LightMode, 0);
@@ -1444,7 +1340,6 @@ GL.drawImage = (function drawImage() {
 	};
 })();
 
-// WebGL上下文方法 - 绘制指定颜色的图像
 GL.drawImageWithColor = function (texture, dx, dy, dw, dh, color) {
 	if (!texture.complete) return;
 
@@ -1458,12 +1353,10 @@ GL.drawImageWithColor = function (texture, dx, dy, dw, dh, color) {
 	const tw = base.width;
 	const th = base.height;
 
-	// 计算变换矩阵
 	const matrix = Matrix.instance
 		.project(this.flip, this.width, this.height)
 		.multiply(this.matrix);
 
-	// 计算顶点数据
 	const dl = dx + 0.004;
 	const dt = dy + 0.004;
 	const dr = dl + dw;
@@ -1489,13 +1382,11 @@ GL.drawImageWithColor = function (texture, dx, dy, dw, dh, color) {
 	vertices[14] = sr;
 	vertices[15] = st;
 
-	// 色调归一化
 	const red = (color & 0xff) / 255;
 	const green = ((color >> 8) & 0xff) / 255;
 	const blue = ((color >> 16) & 0xff) / 255;
 	const gray = ((color >> 24) & 0xff) / 255;
 
-	// 绘制图像
 	this.bindVertexArray(program.vao);
 	this.uniformMatrix3fv(program.u_Matrix, false, matrix);
 	this.uniform1i(program.u_LightMode, 0);
@@ -1506,17 +1397,14 @@ GL.drawImageWithColor = function (texture, dx, dy, dw, dh, color) {
 	this.drawArrays(this.TRIANGLE_FAN, 0, 4);
 };
 
-// WebGL上下文方法 - 绘制切片图像
 GL.drawSliceImage = function (texture, dx, dy, dw, dh, clip, border, tint) {
 	if (!texture.complete) return;
 
-	// 计算变换矩阵
 	const matrix = Matrix.instance
 		.project(this.flip, this.width, this.height)
 		.multiply(this.matrix)
 		.translate(dx + 0.004, dy + 0.004);
 
-	// 更新切片数据
 	const { sliceClip } = texture;
 	if (
 		texture.sliceWidth !== dw ||
@@ -1530,13 +1418,11 @@ GL.drawSliceImage = function (texture, dx, dy, dw, dh, clip, border, tint) {
 		texture.updateSliceData(dw, dh, clip, border);
 	}
 
-	// 计算颜色
 	const red = tint[0] / 255;
 	const green = tint[1] / 255;
 	const blue = tint[2] / 255;
 	const gray = tint[3] / 255;
 
-	// 绘制图像
 	const program = this.imageProgram.use();
 	const vertices = texture.sliceVertices;
 	const thresholds = texture.sliceThresholds;
@@ -1549,7 +1435,6 @@ GL.drawSliceImage = function (texture, dx, dy, dw, dh, clip, border, tint) {
 	this.bufferData(this.ARRAY_BUFFER, vertices, this.STREAM_DRAW, 0, count * 16);
 	this.bindTexture(this.TEXTURE_2D, texture.base.glTexture);
 
-	// 绑定纹理并绘制图像
 	for (let i = 0; i < count; i++) {
 		const ti = i * 4;
 		const x = thresholds[ti];
@@ -1561,18 +1446,15 @@ GL.drawSliceImage = function (texture, dx, dy, dw, dh, clip, border, tint) {
 	}
 };
 
-// WebGL上下文方法 - 填充矩形
 GL.fillRect = function (dx, dy, dw, dh, color) {
 	const program = this.graphicProgram.use();
 	const vertices = this.arrays[0].float32;
 	const colors = this.arrays[0].uint32;
 
-	// 计算变换矩阵
 	const matrix = Matrix.instance
 		.project(this.flip, this.width, this.height)
 		.multiply(this.matrix);
 
-	// 计算顶点数据
 	const dl = dx;
 	const dt = dy;
 	const dr = dx + dw;
@@ -1590,14 +1472,12 @@ GL.fillRect = function (dx, dy, dw, dh, color) {
 	vertices[10] = dt;
 	colors[11] = color;
 
-	// 绘制图像
 	this.bindVertexArray(program.vao);
 	this.uniformMatrix3fv(program.u_Matrix, false, matrix);
 	this.bufferData(this.ARRAY_BUFFER, vertices, this.STREAM_DRAW, 0, 12);
 	this.drawArrays(this.TRIANGLE_FAN, 0, 4);
 };
 
-// WebGL上下文方法 - 创建2D上下文对象(绘制文字专用画布)
 GL.createContext2D = function () {
 	const canvas = document.createElement('canvas');
 	canvas.width = 0;
@@ -1605,7 +1485,6 @@ GL.createContext2D = function () {
 	return canvas.getContext('2d');
 };
 
-// WebGL上下文方法 - 填充描边文字
 GL.fillTextWithOutline = (function fillTextWithOutline() {
 	const offsets = [
 		{ ox: -1, oy: 0, rgba: 0 },
@@ -1686,7 +1565,6 @@ GL.fillTextWithOutline = (function fillTextWithOutline() {
 	};
 })();
 
-// WebGL上下文方法 - 创建普通纹理
 GL.createNormalTexture = function (options: any = {}) {
 	const magFilter = options.magFilter ?? this.NEAREST;
 	const minFilter = options.minFilter ?? this.LINEAR;
@@ -1703,7 +1581,6 @@ GL.createNormalTexture = function (options: any = {}) {
 	return texture;
 };
 
-// WebGL上下文方法 - 创建图像纹理
 GL.createImageTexture = function (image, options: any = {}) {
 	const magFilter = options.magFilter ?? this.NEAREST;
 	const minFilter = options.minFilter ?? this.LINEAR;
@@ -1756,12 +1633,10 @@ GL.createImageTexture = function (image, options: any = {}) {
 	return texture;
 };
 
-// WebGL上下文方法 - 创建纹理帧缓冲对象
 GL.createTextureFBO = function (texture) {
 	const fbo = this.createFramebuffer();
 	this.bindFramebuffer(this.FRAMEBUFFER, fbo);
 
-	// 绑定纹理到颜色缓冲区
 	this.framebufferTexture2D(
 		this.FRAMEBUFFER,
 		this.COLOR_ATTACHMENT0,
@@ -1770,7 +1645,6 @@ GL.createTextureFBO = function (texture) {
 		0
 	);
 
-	// 创建深度模板缓冲区
 	const depthStencilBuffer = this.createRenderbuffer();
 	this.bindRenderbuffer(this.RENDERBUFFER, depthStencilBuffer);
 	this.framebufferRenderbuffer(
@@ -1789,11 +1663,9 @@ GL.createTextureFBO = function (texture) {
 	this.bindFramebuffer(this.FRAMEBUFFER, null);
 	texture.depthStencilBuffer = depthStencilBuffer;
 
-	// 重写纹理方法 - 调整大小
 	texture.resize = (width, height) => {
 		Texture.prototype.resize.call(texture, width, height);
 
-		// 调整深度模板缓冲区大小
 		this.bindRenderbuffer(this.RENDERBUFFER, depthStencilBuffer);
 		this.renderbufferStorage(this.RENDERBUFFER, this.DEPTH_STENCIL, width, height);
 		this.bindRenderbuffer(this.RENDERBUFFER, null);
@@ -1802,11 +1674,9 @@ GL.createTextureFBO = function (texture) {
 	return fbo;
 };
 
-// 扩展方法 - 调整画布大小
 CanvasRenderingContext2D.prototype.resize = function (width, height) {
 	const canvas = this.canvas;
 	if (canvas.width === width && canvas.height === height) {
-		// 宽高不变时重置画布
 		canvas.width = width;
 	} else {
 		// 尽量少的画布缓冲区重置次数
@@ -1819,8 +1689,5 @@ CanvasRenderingContext2D.prototype.resize = function (width, height) {
 	}
 };
 
-// 初始化WebGL上下文
-// 必须立即调用（不能延到 requestAnimationFrame）：Printer.initialize 等启动期同步代码
-// 会裸取 GL.arrays[1].uint32 / GL.textureManager.images，若 initialize 没跑过会炸
-// undefined。webgl-init.js 的 IIFE 已在模块求值期就绪 GL 上下文，此处立即初始化属性安全
+// 初始化WebGL上下文 必须立即调用（不能延到 requestAnimationFrame）：Printer.initialize 等启动期同步代码 会裸取 GL.arrays[1].uint32 / GL.textureManager.images，若 initialize 没跑过会炸 undefined。webgl-init.js 的 IIFE 已在模块求值期就绪 GL 上下文，此处立即初始化属性安全
 GL.initialize();

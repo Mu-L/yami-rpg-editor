@@ -9,9 +9,6 @@ import { Layout } from '../layout/layout.ts';
 import { PluginManager } from '../plugin/plugin.ts';
 import { Local } from '../tools/localization.ts';
 
-// ******************************** 自定义指令 ********************************
-
-// 自定义指令参数项（脚本中声明的参数）
 interface CustomParameter {
 	type: string;
 	key: string;
@@ -19,7 +16,6 @@ interface CustomParameter {
 	dataItems?: Array<{ name: string }>;
 }
 
-// 自定义指令折叠节点（commands.json 中 folder 节点）
 interface CustomFolder {
 	class: 'folder';
 	value: string;
@@ -27,7 +23,6 @@ interface CustomFolder {
 	children: CustomCommandItem[] | null;
 }
 
-// 自定义指令列表项
 interface CustomCommandItem {
 	class: 'custom';
 	value: string;
@@ -37,7 +32,6 @@ interface CustomCommandItem {
 	unspacedName?: string;
 }
 
-// 重构后的脚本对象
 interface ScriptObject {
 	id: string;
 	parameters: Record<string, any> | null;
@@ -81,16 +75,13 @@ Command.custom = {
 	parameterPane: $('#scriptCommand-parameter-pane') as ParameterPane,
 	parameterGrid: $('#scriptCommand-parameter-grid') as HTMLElement,
 
-	// 初始化
 	initialize: function (): void {
 		window.on('localize', this.windowLocalize);
 		($('#scriptCommand-confirm') as HTMLElement).on('click', this.save);
 
-		// 参数面板 - 设置获取数据方法
 		const scriptList: ScriptObject[] = [this.loadedScript];
 		this.parameterPane.getData = () => scriptList;
 
-		// 参数面板 - 调整大小时回调
 		const grid = this.parameterGrid;
 		this.parameterPane.onResize = () => {
 			const height = grid.clientHeight;
@@ -99,7 +90,6 @@ Command.custom = {
 			this.windowFrame.absolute(this.windowX, this.windowY);
 		};
 
-		// 参数面板 - 重新创建细节框方法
 		const box = $('#scriptCommand-parameter-detail') as HTMLElement & {
 			wrap: { box: HTMLElement; grid: HTMLElement; children: any[] };
 			meta: any;
@@ -115,7 +105,6 @@ Command.custom = {
 			return wrap;
 		};
 
-		// 参数面板 - 重写清除内容方法
 		const parameterPane = this.parameterPane;
 		this.parameterPane.clear = function (this: ParameterPane): void {
 			this.metas = [];
@@ -134,16 +123,13 @@ Command.custom = {
 			window.off('script-change', this.scriptChange);
 		};
 
-		// 窗口 - 已关闭事件
 		this.windowFrame.on('closed', (event: Event) => {
 			this.loadedScript.parameters = null;
 			this.parameterPane.clear();
 		});
 	},
 
-	// 解析自定义指令
 	parse: function (id: string, parameters: Record<string, any>): any[] {
-		// 如果不存在脚本，则返回ID名称
 		const meta = Data.scripts[id];
 		const name = this.commandNameMap![id];
 		if (meta === undefined || name === undefined) {
@@ -151,20 +137,16 @@ Command.custom = {
 			const cmdId = Command.parseUnlinkedId!(id);
 			return [{ color: 'invalid' }, { text: `${label}: ${cmdId}` }];
 		}
-		// 重构脚本参数
 		const script = this.parsingScript;
 		script.id = id;
 		script.parameters = parameters;
 		PluginManager.reconstruct(script);
-		// 获取重构后的参数
 		parameters = script.parameters!;
 		script.parameters = null;
-		// 如果不带参数，直接返回指令名称
 		const mParameters = meta.parameters as CustomParameter[];
 		if (mParameters.length === 0) {
 			return [{ color: 'custom' }, { text: name }];
 		}
-		// 获取指令参数
 		const words = Command.words as WordListInstance;
 		const states = meta.manager.states;
 		for (const parameter of mParameters) {
@@ -290,7 +272,6 @@ Command.custom = {
 		return [{ color: 'custom' }, { text: name + Token(': ') }, { text: words.join() }];
 	},
 
-	// 加载自定义指令
 	load: function (id: string, parameters: Record<string, any>): void {
 		this.loadedScript.id = id;
 		this.loadedScript.parameters = Object.clone(parameters);
@@ -302,12 +283,10 @@ Command.custom = {
 		this.windowFrame.setTitle(this.commandNameMap![id]);
 	},
 
-	// 保存参数
 	save: function (): void {
 		Command.save!(Command.custom.loadedScript.parameters ?? {});
 	},
 
-	// 加载指令列表
 	loadCommandList: async function (): Promise<void> {
 		if (!Data.commands) return;
 		const { list } = CommandSuggestion;
@@ -354,7 +333,6 @@ Command.custom = {
 		TreeList.createParents(commands, this.customFolder);
 	},
 
-	// 窗口 - 本地化事件
 	windowLocalize: function (event: Event): void {
 		if (Command.custom.commandNameMap) {
 			Command.custom.loadCommandList();

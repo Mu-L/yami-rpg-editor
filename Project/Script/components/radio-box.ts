@@ -1,7 +1,5 @@
 ﻿import { RadioProxy } from './radio-proxy.ts';
 
-// ******************************** 单选框 ********************************
-
 export class RadioBox extends HTMLElement {
 	proxy: RadioProxy;
 	dataValue: number | string | boolean;
@@ -9,7 +7,6 @@ export class RadioBox extends HTMLElement {
 	constructor() {
 		super();
 
-		// 获取集合节点
 		let proxy = RadioProxy.map[this.name];
 		if (proxy === undefined) {
 			proxy = document.createElement('radio-proxy') as RadioProxy;
@@ -29,30 +26,25 @@ export class RadioBox extends HTMLElement {
 					? true
 					: string;
 
-		// 设置属性
 		this.proxy = proxy;
 		this.dataValue = value;
 
-		// 侦听事件
 		this.on('keydown', this.keydown);
 
-		// 差异化处理
 		switch (this.hasClass('standard')) {
 			case true: {
-				// 标准单选框
 				const mark = document.createElement('radio-mark');
 				this.tabIndex = 0;
 				this.insertBefore(mark, this.childNodes[0]);
 				this.on('click', this.mouseclick);
 				break;
 			}
-			case false: // 自定义单选框
+			case false:
 				this.on('pointerdown', this.pointerdown);
 				break;
 		}
 	}
 
-	// 键盘按下事件
 	keydown(event: KeyboardEvent): void {
 		switch (event.code) {
 			case 'Enter':
@@ -65,7 +57,6 @@ export class RadioBox extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
@@ -84,7 +75,6 @@ export class RadioBox extends HTMLElement {
 		}
 	}
 
-	// 鼠标点击事件
 	mouseclick(event: Event): void {
 		if (!this.hasClass('selected')) {
 			this.proxy.input(this.dataValue);

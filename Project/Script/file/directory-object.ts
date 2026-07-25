@@ -10,8 +10,6 @@ import { Log } from '../log/log-window.ts';
 import { Editor } from '../main/editor.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 目录对象 ********************************
-
 type DirectoryMethod = (...args: any[]) => any;
 
 export const Directory: {
@@ -38,13 +36,11 @@ export const Directory: {
 	createInoMap: DirectoryMethod | null;
 	windowFocus: DirectoryMethod | null;
 } = {
-	// properties
 	inoMap: {},
 	assets: null,
 	symbol: null,
 	reading: false,
 	updating: null,
-	// methods
 	initialize: null,
 	read: null,
 	close: null,
@@ -61,17 +57,13 @@ export const Directory: {
 	copyFiles: null,
 	sortFiles: null,
 	createInoMap: null,
-	// events
 	windowFocus: null
 };
 
-// 初始化
 Directory.initialize = function () {
-	// 侦听事件
 	window.on('focus', this.windowFocus);
 };
 
-// 读取目录
 Directory.read = function () {
 	const symbol = (this.symbol = Symbol());
 	this.reading = true;
@@ -113,15 +105,12 @@ Directory.read = function () {
 	});
 };
 
-// 关闭目录
 Directory.close = function () {
 	this.inoMap = {};
 	this.assets = null;
 	this.symbol = null;
 };
 
-// 更新目录
-// 利用Node.js监听目录似乎有更好的方法(Watch)
 Directory.update = function () {
 	if (this.reading) {
 		return Promise.resolve().then(() => false);
@@ -161,7 +150,6 @@ Directory.update = function () {
 	return this.updating;
 };
 
-// 获取文件夹
 Directory.getFolder = function (path) {
 	const nodes = path.split('/');
 	const length = nodes.length;
@@ -181,7 +169,6 @@ Directory.getFolder = function (path) {
 	return target;
 };
 
-// 获取文件
 Directory.getFile = function (path) {
 	const dirname = Path.dirname(path);
 	const folder = this.getFolder(dirname);
@@ -195,7 +182,6 @@ Directory.getFile = function (path) {
 	return undefined;
 };
 
-// 读取目录
 Directory.readdir = (function IIFE() {
 	const options = { withFileTypes: true };
 	const read = (dirPath, dir) => {
@@ -239,7 +225,6 @@ Directory.readdir = (function IIFE() {
 					dir.push({ name, path });
 				}
 			} catch (error: any) {
-				// 拖拽在外部被删除的文件会抛出此错误
 				console.log(error);
 			}
 		}
@@ -248,7 +233,6 @@ Directory.readdir = (function IIFE() {
 	};
 })();
 
-// 搜索文件
 Directory.searchFiles = (function IIFE() {
 	const search = (filters, keyword, items, list) => {
 		const length = items.length;
@@ -270,7 +254,6 @@ Directory.searchFiles = (function IIFE() {
 	};
 })();
 
-// 判断是否存在文件
 Directory.existFiles = (function IIFE() {
 	const check = async (dirPath, dir) => {
 		const promises = [];
@@ -293,7 +276,6 @@ Directory.existFiles = (function IIFE() {
 	};
 })();
 
-// 过滤文件
 Directory.filterFiles = (function IIFE() {
 	const sorter = (a, b) => {
 		if (a instanceof FileItem) {
@@ -331,7 +313,6 @@ Directory.filterFiles = (function IIFE() {
 	};
 })();
 
-// 删除文件
 Directory.deleteFiles = (function IIFE() {
 	const { invoke } = ipcRenderer;
 	const trash = async (files) => {
@@ -350,7 +331,6 @@ Directory.deleteFiles = (function IIFE() {
 	};
 })();
 
-// 移动文件
 Directory.moveFiles = (function IIFE() {
 	const move = async (dirPath, dir, existings) => {
 		const promises = [];
@@ -359,13 +339,6 @@ Directory.moveFiles = (function IIFE() {
 			if (!existings[path]) {
 				existings[path] = true;
 				promises.push(FSP.rename(file.path, path));
-				// if (file.children?.length) {
-				//   promises.push(move(
-				//     path,
-				//     file.children,
-				//     existings,
-				//   ))
-				// }
 			}
 		}
 		if (promises.length !== 0) {
@@ -377,7 +350,6 @@ Directory.moveFiles = (function IIFE() {
 	};
 })();
 
-// 保存文件
 Directory.saveFiles = (function IIFE() {
 	const save = async (files, changes, metaset) => {
 		const promises = [];
@@ -408,7 +380,6 @@ Directory.saveFiles = (function IIFE() {
 	};
 })();
 
-// 复制文件
 Directory.copyFiles = (function IIFE() {
 	const copy = async (dirPath, dir, suffix, existings) => {
 		const promises = [];
@@ -416,8 +387,7 @@ Directory.copyFiles = (function IIFE() {
 			const name = File.filterGUID(file.name);
 			const ext = Path.extname(name);
 			const base = Path.basename(name, ext);
-			// 这里必须加上Copy标记来避免混淆
-			// 否则可能会破坏对原始文件的引用
+			// 这里必须加上Copy标记来避免混淆 否则可能会破坏对原始文件的引用
 			let path = `${dirPath}/${base}${suffix}${ext}`;
 			let existed = existings[path];
 			existings[path] = true;
@@ -457,12 +427,10 @@ Directory.copyFiles = (function IIFE() {
 	};
 })();
 
-// 排序文件列表
 Directory.sortFiles = (function IIFE() {
 	const sorter = (a, b) => {
 		if (a instanceof FileItem) {
 			if (b instanceof FileItem) {
-				// 优先比较基本名称，相同时再比较扩展名称
 				const r1 = a.basename.localeCompare(b.basename);
 				if (r1 !== 0) return r1;
 				const r2 = a.extname.localeCompare(b.extname);
@@ -489,7 +457,6 @@ Directory.sortFiles = (function IIFE() {
 	};
 })();
 
-// 创建文件INO映射表
 // 注意：使用PS等工具可能造成文件INO变化
 Directory.createInoMap = (function IIFE() {
 	const register = (map, item) => {
@@ -510,10 +477,7 @@ Directory.createInoMap = (function IIFE() {
 	};
 })();
 
-// 窗口 - 获得焦点事件
+// 当外部正在重命名文件时点击编辑器窗口 会因为异步保存文件名而无法及时读取到 因此延时更新目录
 Directory.windowFocus = function (event) {
-	// 当外部正在重命名文件时点击编辑器窗口
-	// 会因为异步保存文件名而无法及时读取到
-	// 因此延时更新目录
 	setTimeout(() => Directory.update(), 100);
 };

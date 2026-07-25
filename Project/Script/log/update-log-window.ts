@@ -2,15 +2,11 @@
 import { Window } from '../tools/window-object.ts';
 import { Updater } from '../update/updater.ts';
 
-// ******************************** 更新日志窗口 ********************************
-
 export const UpdateLog = {
-	// properties
 	content: $('#update-log-content'),
 	currentMode: null,
 	internalItems: null,
 	communityItems: null,
-	// methods
 	open: null,
 	update: null,
 	initialize: null,
@@ -18,17 +14,13 @@ export const UpdateLog = {
 	loadCommunityReleases: null,
 	displayDonationList: null,
 	parseCommunityReleases: null,
-	// events
 	windowClosed: null
 };
 
-// 初始化
 UpdateLog.initialize = function () {
-	// 侦听事件
 	$('#update-log').on('closed', this.windowClosed);
 };
 
-// 打开窗口
 UpdateLog.open = function (items = null) {
 	if (items instanceof Array) {
 		Window.open('update-log');
@@ -38,7 +30,6 @@ UpdateLog.open = function (items = null) {
 	}
 };
 
-// 更新内容
 UpdateLog.update = function (items) {
 	this.content.clear();
 	for (const item of items) {
@@ -63,7 +54,6 @@ UpdateLog.update = function (items) {
 	}
 };
 
-// 窗口 - 已关闭事件
 UpdateLog.windowClosed = function () {
 	UpdateLog.content.clear();
 };

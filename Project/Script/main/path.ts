@@ -1,17 +1,13 @@
 import { Path } from '../util/config.ts';
 import { Editor } from './editor.ts';
 
-// 更新路径
 Editor.updatePath = function (path) {
 	const { config } = this;
 
-	// 设置打开的项目路径
 	config.project = path;
 
-	// 设置打开对话框路径
 	config.dialogs.open = Path.dirname(path);
 
-	// 设置最近的项目路径
 	const items = config.recent;
 	const date = Date.now();
 	const item = items.find((a) => a.path === path);

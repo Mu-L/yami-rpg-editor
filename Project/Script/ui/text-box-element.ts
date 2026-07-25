@@ -4,8 +4,6 @@ import { UI } from './ui-window.ts';
 import { Texture } from '../webgl/texture.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 文本框元素 ********************************
-
 UI.TextBox = class TextBoxElement extends UI.Element {
 	focusing: boolean;
 	texture: Texture | null;
@@ -68,12 +66,10 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		this.printer = null;
 	}
 
-	// 读取类型
 	get type() {
 		return this._type;
 	}
 
-	// 写入类型
 	set type(value: any) {
 		if (this._type !== value) {
 			this._type = value;
@@ -88,12 +84,10 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 读取对齐方式
 	get align() {
 		return this._align;
 	}
 
-	// 写入对齐方式
 	set align(value: any) {
 		this._align = value;
 		if (this.connected) {
@@ -101,12 +95,10 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 读取内边距
 	get padding() {
 		return this._padding;
 	}
 
-	// 写入内边距
 	set padding(value: any) {
 		if (this._padding !== value) {
 			this._padding = value;
@@ -116,12 +108,10 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 读取字体大小
 	get size() {
 		return this._size;
 	}
 
-	// 写入字体大小
 	set size(value: any) {
 		if (this._size !== value) {
 			this._size = value;
@@ -132,12 +122,10 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 读取字体
 	get font() {
 		return this._font;
 	}
 
-	// 写入字体
 	set font(value: any) {
 		if (this._font !== value) {
 			this._font = value;
@@ -148,12 +136,10 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 读取颜色
 	get color() {
 		return this._color;
 	}
 
-	// 写入颜色
 	set color(value: any) {
 		if (this._color !== value) {
 			this._color = value;
@@ -161,12 +147,10 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 读取选中颜色
 	get selectionColor() {
 		return this._selectionColor;
 	}
 
-	// 写入选中颜色
 	set selectionColor(value: any) {
 		if (this._selectionColor !== value) {
 			this._selectionColor = value;
@@ -174,12 +158,10 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 读取选中背景颜色
 	get selectionBgColor() {
 		return this._selectionBgColor;
 	}
 
-	// 写入选中背景颜色
 	set selectionBgColor(value: any) {
 		if (this._selectionBgColor !== value) {
 			this._selectionBgColor = value;
@@ -187,9 +169,7 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 更新数据
 	update() {
-		// 打印文本
 		let printer = this.printer;
 		if (printer === null) {
 			const texture = new Texture();
@@ -207,15 +187,12 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 更新打印机
 	updatePrinter() {
 		const { printer } = this;
 		if (printer) {
-			// 重置打印机
 			if (printer.content) {
 				printer.reset();
 			}
-			// 打印文本
 			printer.draw(this.content);
 			if (this.connected) {
 				this.calculateTextPosition();
@@ -223,32 +200,26 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 绘制图像
 	draw() {
 		if (this.visible === false) {
 			return this.drawChildren();
 		}
 
-		// 更新数据
 		this.update();
 
-		// 设置上下文属性
 		GL.alpha = this.opacity;
 		GL.blend = 'normal';
 		GL.matrix.set(UI.matrix).multiply(this.matrix);
 
-		// 绘制文字纹理
 		const { scale } = Printer;
 		const { texture } = this;
 		if (texture !== null) {
 			if (UI.hover === this.node) {
-				// 绘制选中背景
 				const dx = this.textX;
 				const dy = this.selectionY;
 				const dw = this.selectionWidth;
 				const dh = this.selectionHeight;
 				GL.fillRect(dx, dy, dw, dh, this._selectionBgColorInt);
-				// 绘制普通文本
 				const sy = this.textShiftY;
 				const sw = Math.min(this.textWidth, this.innerWidth);
 				const sh = this.innerHeight;
@@ -262,7 +233,6 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 					this._selectionColorInt
 				);
 			} else {
-				// 绘制普通文本
 				if (this.content) {
 					const sy = this.textShiftY;
 					const sw = Math.min(this.textWidth, this.innerWidth);
@@ -273,11 +243,9 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 			}
 		}
 
-		// 绘制子元素
 		this.drawChildren();
 	}
 
-	// 调整大小
 	resize() {
 		if (this.parent instanceof UI.Window) {
 			return this.parent.requestResizing();
@@ -287,7 +255,6 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		this.resizeChildren();
 	}
 
-	// 计算文本位置
 	calculateTextPosition() {
 		if (this.texture) {
 			const scale = Printer.scale;
@@ -318,7 +285,6 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 					}
 					break;
 			}
-			// 绘制文本时像素对齐
 			const scaleX = Math.max(this.transform.scaleX, 1);
 			const scaleY = Math.max(this.transform.scaleY, 1);
 			this.textX = Math.round(this.textX * scaleX) / scaleX;
@@ -326,7 +292,6 @@ UI.TextBox = class TextBoxElement extends UI.Element {
 		}
 	}
 
-	// 销毁元素
 	destroy() {
 		super.destroy();
 		this.texture?.destroy();

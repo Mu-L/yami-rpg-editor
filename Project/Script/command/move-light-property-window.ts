@@ -1,8 +1,6 @@
 ﻿import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 
-// ******************************** 移动光源 - 属性窗口 ********************************
-
 export const LightProperty = createPropertyWindow({
 	prefix: 'moveLight',
 	locale: 'command.moveLight',

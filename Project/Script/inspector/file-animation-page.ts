@@ -5,25 +5,19 @@ import { GUID } from '../file/guid.ts';
 import { Inspector } from './inspector.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 文件 - 动画页面 ********************************
-
 {
 	const FileAnimation = {
-		// properties
 		button: $('#animation-switch-settings'),
 		owner: null,
 		target: null,
 		sprites: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null
 	};
 
-	// 初始化
 	FileAnimation.initialize = function () {
-		// 创建所有者代理
 		this.owner = {
 			setTarget: (target) => {
 				if (this.target !== target) {
@@ -38,14 +32,11 @@ import { Window } from '../tools/window-object.ts';
 			}
 		};
 
-		// 绑定精灵图列表
 		$('#fileAnimation-sprites').bind(this.sprites);
 
-		// 侦听事件
 		$('#fileAnimation-sprites').on('change', Animation.listChange);
 	};
 
-	// 创建动画
 	FileAnimation.create = function () {
 		return {
 			sprites: [],
@@ -53,41 +44,33 @@ import { Window } from '../tools/window-object.ts';
 		};
 	};
 
-	// 打开数据
 	FileAnimation.open = function (animation) {
 		if (this.target !== animation) {
 			this.target = animation;
 
-			// 更新按钮样式
 			this.button.addClass('selected');
 
-			// 写入数据
 			const write = getElementWriter('fileAnimation', animation);
 			write('sprites');
 		}
 	};
 
-	// 关闭数据
 	FileAnimation.close = function () {
 		if (this.target) {
 			this.target = null;
 
-			// 更新按钮样式
 			this.button.removeClass('selected');
 		}
 	};
 
-	// 精灵图列表接口
 	FileAnimation.sprites = {
 		list: null,
 		spriteId: '',
 		initialize: function (list) {
 			$('#fileAnimation-sprite-confirm').on('click', () => list.save());
 
-			// 引用列表元素
 			this.list = list;
 
-			// 创建参数历史操作
 			this.history = new Inspector.ParamHistory(FileAnimation, FileAnimation.owner, list);
 
 			// 重载动画纹理 - 改变事件

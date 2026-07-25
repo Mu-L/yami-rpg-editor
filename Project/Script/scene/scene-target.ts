@@ -22,7 +22,6 @@ Scene.setTarget = function (target) {
 	}
 };
 
-// 打开瓦片地图
 Scene.openTilemap = function (tilemap) {
 	if (tilemap instanceof Object && this.tilemap !== tilemap) {
 		this.closeTilemap(false);
@@ -38,7 +37,6 @@ Scene.openTilemap = function (tilemap) {
 	}
 };
 
-// 关闭瓦片地图
 Scene.closeTilemap = function (back = true) {
 	if (this.tilemap !== null) {
 		this.tilemap.element?.removeClass('highlight');
@@ -53,7 +51,6 @@ Scene.closeTilemap = function (back = true) {
 	}
 };
 
-// 计算激活的瓦片地图ID
 Scene.computeActiveTilemapId = function () {
 	const { tilemap } = this;
 	switch (tilemap?.layer) {
@@ -72,7 +69,6 @@ Scene.computeActiveTilemapId = function () {
 	}
 };
 
-// 显示目标对象
 Scene.revealTarget = (function IIFE() {
 	const timer = new Timer({
 		duration: 200,
@@ -123,7 +119,6 @@ Scene.revealTarget = (function IIFE() {
 	};
 })();
 
-// 转移目标对象
 Scene.shiftTarget = function (x, y) {
 	const target = this.target;
 	const map = this.inspectorTypeMap;
@@ -158,7 +153,6 @@ Scene.shiftTarget = function (x, y) {
 	}
 };
 
-// 重定向目标对象
 Scene.redirectTarget = function (angle) {
 	const target = this.target;
 	const map = this.inspectorTypeMap;
@@ -193,7 +187,6 @@ Scene.redirectTarget = function (angle) {
 	}
 };
 
-// 更新目标对象
 Scene.updateTarget = function () {
 	let item = this.list.read();
 	if (item?.class === 'folder') {
@@ -204,7 +197,6 @@ Scene.updateTarget = function () {
 	}
 };
 
-// 更新目标对象信息
 Scene.updateTargetInfo = function () {
 	if (this.layer === 'object') {
 		switch (this.target?.class) {
@@ -245,7 +237,6 @@ Scene.updateTargetInfo = function () {
 	}
 };
 
-// 更新目标对象列表项
 Scene.updateTargetItem = function () {
 	const { target } = this;
 	if (target !== null) {
@@ -260,7 +251,6 @@ Scene.updateTargetItem = function () {
 	}
 };
 
-// 更新目标对象编辑器
 Scene.updateTargetEditor = function () {
 	const target = this.target;
 	const map = this.inspectorTypeMap;

@@ -1,7 +1,5 @@
 ﻿import './element-methods.js';
 
-// ******************************** 普通列表 ********************************
-
 export class CommonList extends HTMLElement {
 	elements: any[] & {
 		versionId: number;
@@ -19,7 +17,6 @@ export class CommonList extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.tabIndex = 0;
 		this.elements = [] as unknown as any[] & {
 			versionId: number;
@@ -41,19 +38,16 @@ export class CommonList extends HTMLElement {
 		this.popupEventEnabled = false;
 		this.listenDraggingScrollbarEvent();
 
-		// 侦听事件
 		this.on('scroll', this.onScroll);
 		this.on('keydown', this.keydown);
 		this.on('pointerdown', this.pointerdown);
 		this.on('pointerup', this.pointerup);
 	}
 
-	// 读取数据
 	read(): any {
 		return this.selection?.dataValue;
 	}
 
-	// 写入数据
 	write(value: any): void {
 		const elements = this.elements;
 		const count = elements.count;
@@ -78,7 +72,6 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 重新装填
 	reload(): this {
 		const { elements } = this;
 		elements.start = -1;
@@ -86,35 +79,27 @@ export class CommonList extends HTMLElement {
 		return this;
 	}
 
-	// 添加元素
 	appendElement(element: HTMLElement): void {
 		const { elements } = this;
 		elements[elements.count++] = element;
 	}
 
-	// 更新列表
 	update(): void {
-		// 清除多余的元素
 		this.clearElements(this.elements.count);
 
-		// 重新调整
 		this.resize();
 	}
 
-	// 重新调整
 	resize(): void {
 		CommonList.resize(this);
 	}
 
-	// 更新头部和尾部元素
 	updateHeadAndFoot(): void {
 		CommonList.updateHeadAndFoot(this);
 	}
 
-	// 在重新调整时更新
 	updateOnResize(_element?: HTMLElement): void {}
 
-	// 选择项目
 	select(element: HTMLElement): void {
 		if (element instanceof HTMLElement && this.selection !== element) {
 			this.write((element as HTMLElement & { dataValue: any }).dataValue);
@@ -126,7 +111,6 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 取消选择
 	unselect(): void {
 		if (this.selection) {
 			this.selection.removeClass('selected');
@@ -134,7 +118,6 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 滚动到项目
 	scrollToItem(index: number): void {
 		const scrollTop = Math.clamp(
 			this.scrollTop,
@@ -146,7 +129,6 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 选择相对位置的项目
 	selectRelative(direction: 'up' | 'down'): void {
 		const elements = this.elements;
 		const count = elements.count;
@@ -177,12 +159,10 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 清除元素
 	clearElements(start: number): void {
 		CommonList.clearElements(this, start);
 	}
 
-	// 清除列表
 	clear(): this {
 		this.unselect();
 		this.textContent = '';
@@ -194,7 +174,6 @@ export class CommonList extends HTMLElement {
 		return this;
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -214,13 +193,11 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 滚动事件
 	onScroll(event: Event): void {
 		// 可调用重写的resize
 		this.resize();
 	}
 
-	// 键盘按下事件
 	keydown(event: KeyboardEvent): void {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
@@ -250,7 +227,6 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0:
@@ -264,7 +240,6 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 指针弹起事件
 	pointerup(event: PointerEvent): void {
 		switch (event.button) {
 			case 2:
@@ -288,7 +263,6 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	// 静态 - 重新调整
 	static resize = (self: CommonList): void => {
 		const st = self.scrollTop;
 		const ch = self.innerHeight;
@@ -324,7 +298,6 @@ export class CommonList extends HTMLElement {
 					element.remove();
 				}
 			}
-			// 保证尾部元素已经被添加
 			if (!elements.foot.parentNode) {
 				self.appendChild(elements.foot);
 			}
@@ -338,7 +311,6 @@ export class CommonList extends HTMLElement {
 		}
 	};
 
-	// 静态 - 更新头部和尾部元素
 	static updateHeadAndFoot = (self: CommonList): void => {
 		const { elements } = self;
 		if (elements.head) {
@@ -349,7 +321,6 @@ export class CommonList extends HTMLElement {
 			elements.foot.style.marginBottom = '';
 			elements.foot = null;
 		}
-		// 设置头部和尾部元素的外边距
 		const { count, start, end } = elements;
 		if (count !== 0) {
 			const pad = (self as HTMLElement & { padded?: boolean }).padded ? 1 : 0;
@@ -362,7 +333,6 @@ export class CommonList extends HTMLElement {
 		}
 	};
 
-	// 静态 - 清除元素
 	static clearElements(self: CommonList, start: number): void {
 		let i = start;
 		const { elements } = self;

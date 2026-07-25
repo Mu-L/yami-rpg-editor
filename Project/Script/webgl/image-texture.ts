@@ -2,8 +2,6 @@
 import { BaseTexture } from './base-texture.ts';
 import { Texture } from './texture.ts';
 
-// ******************************** 图像纹理类 ********************************
-
 export class ImageTexture extends Texture {
 	declare reply: (type: string) => void;
 	// 运行时从 this.base 挂载到自身（texture-manager.ts 直接 texture.image/texture.glTexture 访问）
@@ -22,7 +20,6 @@ export class ImageTexture extends Texture {
 	constructor(image: any, options: any = {}) {
 		super(options);
 
-		// 设置属性
 		const texture = GL.createImageTexture(image, options);
 		this.complete = false;
 		this.base = texture;
@@ -32,7 +29,6 @@ export class ImageTexture extends Texture {
 		this.width = 0;
 		this.height = 0;
 
-		// 设置异步加载回调
 		texture.on('load', () => {
 			if (this.base === texture) {
 				this.complete = true;
@@ -47,7 +43,6 @@ export class ImageTexture extends Texture {
 		});
 	}
 
-	// 更新切片数据
 	updateSliceData(width: any, height: any, clip: any, border: any) {
 		if (!this.complete) return;
 		const { min, max } = Math;
@@ -74,12 +69,10 @@ export class ImageTexture extends Texture {
 		}
 
 		if (!this.sliceClip) {
-			// 首次调用时创建相关数组
 			this.sliceClip = new Uint32Array(4);
 			this.sliceVertices = new Float32Array(9 * 16);
 			this.sliceThresholds = new Float32Array(9 * 4);
 
-			// 绘制切片图像需要使用临近采样
 			const { gl } = this;
 			this.base.magFilter = gl.NEAREST;
 			this.base.minFilter = gl.NEAREST;
@@ -94,7 +87,6 @@ export class ImageTexture extends Texture {
 		let vi = 0;
 		let ti = 0;
 
-		// 设置顶点数据
 		const setVertices = (sx, sy, sw, sh, dx, dy, dw, dh) => {
 			if (sw * sh * dw * dh === 0) return;
 			const dl = dx;
@@ -129,7 +121,6 @@ export class ImageTexture extends Texture {
 			ti += 4;
 		};
 
-		// 创建顶点数据
 		const BW = B + W;
 		const BH = B + H;
 		const lw = l + w;
@@ -150,7 +141,6 @@ export class ImageTexture extends Texture {
 		this.sliceCount = vi / 16;
 	}
 
-	// 销毁
 	destroy() {
 		if (this.base) {
 			this.complete = false;
@@ -162,8 +152,6 @@ export class ImageTexture extends Texture {
 	}
 }
 
-// 设置加载回调
 ImageTexture.prototype.on = BaseTexture.prototype.on;
 
-// 执行加载回调
 ImageTexture.prototype.reply = BaseTexture.prototype.reply;

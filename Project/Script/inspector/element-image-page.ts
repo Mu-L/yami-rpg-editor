@@ -2,26 +2,19 @@
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 图像页面 ********************************
-
 {
 	const UIImage = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UIImage.initialize = function () {
-		// 创建显示选项
 		$('#uiImage-display').loadItems([
 			{ name: 'Stretch', value: 'stretch' },
 			{ name: 'Tile', value: 'tile' },
@@ -29,7 +22,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Slice', value: 'slice' }
 		]);
 
-		// 设置显示模式关联元素
 		$('#uiImage-display')
 			.enableHiddenMode()
 			.relate([
@@ -47,7 +39,6 @@ import { UI } from '../ui/ui-window.ts';
 				}
 			]);
 
-		// 创建翻转选项
 		$('#uiImage-flip').loadItems([
 			{ name: 'None', value: 'none' },
 			{ name: 'Horizontal', value: 'horizontal' },
@@ -55,7 +46,6 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Both', value: 'both' }
 		]);
 
-		// 创建混合模式选项
 		$('#uiImage-blend').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Additive', value: 'additive' },
@@ -63,13 +53,11 @@ import { UI } from '../ui/ui-window.ts';
 			{ name: 'Mask', value: 'mask' }
 		]);
 
-		// 同步滑动框和数字框的数值
 		$('#uiImage-tint-0-slider').synchronize($('#uiImage-tint-0'));
 		$('#uiImage-tint-1-slider').synchronize($('#uiImage-tint-1'));
 		$('#uiImage-tint-2-slider').synchronize($('#uiImage-tint-2'));
 		$('#uiImage-tint-3-slider').synchronize($('#uiImage-tint-3'));
 
-		// 侦听事件
 		const elements = $(`#uiImage-image,
     #uiImage-display, #uiImage-flip, #uiImage-blend,
     #uiImage-shiftX, #uiImage-shiftY, #uiImage-clip, #uiImage-border,
@@ -84,7 +72,6 @@ import { UI } from '../ui/ui-window.ts';
 		sliders.on('blur', Inspector.sliderBlur);
 	};
 
-	// 创建图像
 	UIImage.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -114,12 +101,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIImage.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiImage', node);
 			write('image');
 			write('display');
@@ -137,7 +122,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIImage.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -147,7 +131,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIImage.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -183,7 +166,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIImage.paramInput = function (event) {
 		UIImage.update(UIImage.target, Inspector.getKey(this), this.read());
 	};

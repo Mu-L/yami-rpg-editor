@@ -1,4 +1,3 @@
-// ******************************** Empty State ********************************
 // 列表/面板为空时的占位提示（通过 message / icon 属性配置）
 
 export class EmptyState extends HTMLElement {
@@ -50,7 +49,6 @@ export class EmptyState extends HTMLElement {
 		return d.innerHTML;
 	}
 
-	// 设置提示文案
 	setMessage(msg: string): void {
 		this.setAttribute('message', msg);
 	}

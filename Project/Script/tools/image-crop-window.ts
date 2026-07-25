@@ -5,10 +5,7 @@ import { Cursor } from './pointer-object.ts';
 import { Window } from './window-object.ts';
 import { Path } from '../util/config.ts';
 
-// ******************************** 图像剪辑窗口 ********************************
-
 export const ImageClip = {
-	// properties
 	window: $('#imageClip'),
 	screen: $('#imageClip-screen'),
 	image: $('#imageClip-image').hide(),
@@ -16,7 +13,6 @@ export const ImageClip = {
 	target: null,
 	symbol: null,
 	dragging: null,
-	// methods
 	initialize: null,
 	open: null,
 	loadImage: null,
@@ -26,7 +22,6 @@ export const ImageClip = {
 	shiftMarquee: null,
 	scrollToMarquee: null,
 	startDragging: null,
-	// events
 	dprchange: null,
 	windowClosed: null,
 	windowResize: null,
@@ -39,9 +34,7 @@ export const ImageClip = {
 	confirm: null
 };
 
-// 初始化
 ImageClip.initialize = function () {
-	// 侦听事件
 	window.on('dprchange', this.dprchange);
 	this.window.on('closed', this.windowClosed);
 	this.window.on('resize', this.windowResize);
@@ -55,12 +48,10 @@ ImageClip.initialize = function () {
 	$('#imageClip-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 ImageClip.open = async function (target) {
 	this.target = target;
 	Window.open('imageClip');
 
-	// 写入数据
 	const write = getElementWriter('imageClip');
 	const [x, y, width, height] = target.read();
 	write('x', x);
@@ -68,15 +59,12 @@ ImageClip.open = async function (target) {
 	write('width', width);
 	write('height', height);
 
-	// 加载图像
 	this.loadImage();
 };
 
-// 加载图像
 ImageClip.loadImage = function () {
 	this.window.setTitle('');
 
-	// 这里假设图像输入框就在剪辑输入框前面第二个位置
 	const id = this.target.getAttribute('image');
 	const guid = $('#' + id).read();
 	const path = File.getPath(guid);
@@ -84,7 +72,6 @@ ImageClip.loadImage = function () {
 		const image = this.image;
 		image.src = File.route(path);
 
-		// 更新图像和信息
 		const symbol = (this.symbol = Symbol());
 		new Promise((resolve) => {
 			const intervalIndex = setInterval(() => {
@@ -112,14 +99,11 @@ ImageClip.loadImage = function () {
 	}
 };
 
-// 更新图像
 ImageClip.updateImage = function () {
-	// 隐藏内部元素避免滚动条意外出现
 	const screen = this.screen;
 	const image = this.image.hide();
 	const marquee = this.marquee.hide();
 
-	// 计算图像的居中位置
 	const dpr = window.devicePixelRatio;
 	const width = image.naturalWidth;
 	const height = image.naturalHeight;
@@ -139,7 +123,6 @@ ImageClip.updateImage = function () {
 	marquee.show();
 };
 
-// 更新标题
 ImageClip.updateTitle = function (path, image) {
 	let info;
 	if (path && image) {
@@ -154,7 +137,6 @@ ImageClip.updateTitle = function (path, image) {
 	this.window.setTitle(info);
 };
 
-// 更新选框
 ImageClip.updateMarquee = function () {
 	const read = getElementReader('imageClip');
 	const x = read('x');
@@ -164,7 +146,6 @@ ImageClip.updateMarquee = function () {
 	this.marquee.select(x, y, width, height);
 };
 
-// 移动选框
 ImageClip.shiftMarquee = function (ox, oy) {
 	const image = this.image;
 	const iw = image.naturalWidth;
@@ -184,7 +165,6 @@ ImageClip.shiftMarquee = function (ox, oy) {
 	this.scrollToMarquee('active');
 };
 
-// 滚动到选框位置
 ImageClip.scrollToMarquee = function (mode) {
 	const screen = this.screen;
 	const marquee = this.marquee;
@@ -217,7 +197,6 @@ ImageClip.scrollToMarquee = function (mode) {
 	}
 };
 
-// 开始拖拽
 ImageClip.startDragging = function (event) {
 	Cursor.open('cursor-grab');
 	this.dragging = event;
@@ -228,7 +207,6 @@ ImageClip.startDragging = function (event) {
 	window.on('pointermove', this.pointermove);
 };
 
-// 设备像素比改变事件
 ImageClip.dprchange = function (event) {
 	if (!this.image.hasClass('hidden')) {
 		this.updateImage();
@@ -236,7 +214,6 @@ ImageClip.dprchange = function (event) {
 	}
 }.bind(ImageClip);
 
-// 窗口 - 已关闭事件
 ImageClip.windowClosed = function (event) {
 	if (this.dragging) {
 		this.pointerup(this.dragging);
@@ -248,14 +225,12 @@ ImageClip.windowClosed = function (event) {
 	this.marquee.hide();
 }.bind(ImageClip);
 
-// 窗口 - 调整大小事件
 ImageClip.windowResize = function (event) {
 	if (!this.image.hasClass('hidden')) {
 		this.updateImage();
 	}
 }.bind(ImageClip);
 
-// 屏幕 - 键盘按下事件
 ImageClip.screenKeydown = function (event) {
 	if (this.dragging) {
 		return;
@@ -286,7 +261,6 @@ ImageClip.screenKeydown = function (event) {
 	}
 }.bind(ImageClip);
 
-// 选框区域 - 指针按下事件
 ImageClip.marqueePointerdown = function (event) {
 	if (this.dragging) {
 		return;
@@ -317,14 +291,12 @@ ImageClip.marqueePointerdown = function (event) {
 	}
 }.bind(ImageClip);
 
-// 选框区域 - 鼠标双击事件
 ImageClip.marqueeDoubleclick = function (event) {
 	if (!event.altKey) {
 		this.confirm(event);
 	}
 }.bind(ImageClip);
 
-// 指针弹起事件
 ImageClip.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
@@ -339,7 +311,6 @@ ImageClip.pointerup = function (event) {
 	}
 }.bind(ImageClip);
 
-// 指针移动事件
 ImageClip.pointermove = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
@@ -352,12 +323,10 @@ ImageClip.pointermove = function (event) {
 	}
 }.bind(ImageClip);
 
-// 选取矩形 - 参数输入事件
 ImageClip.paramInput = function (event) {
 	ImageClip.updateMarquee();
 };
 
-// 确定按钮 - 鼠标点击事件
 ImageClip.confirm = function (event) {
 	const read = getElementReader('imageClip');
 	this.target.input([read('x'), read('y'), read('width'), read('height')]);

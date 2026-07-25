@@ -4,9 +4,6 @@ import { Token } from './mark-string-manager.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 属性窗口工厂 ********************************
-
-// 属性键配置项
 interface PropertyKeyConfig {
 	name: string;
 	value: string;
@@ -16,10 +13,8 @@ interface PropertyKeyConfig {
 	targets?: string[];
 }
 
-// parsers 闭包签名：(value, get, name) => string
 type ParserFn = (value: any, get: (key: string) => string, name: string) => string;
 
-// 属性窗口工厂配置
 interface PropertyWindowConfig {
 	prefix: string;
 	locale: string;

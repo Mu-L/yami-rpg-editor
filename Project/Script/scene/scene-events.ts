@@ -14,14 +14,12 @@ import { Scene } from './scene-window.ts';
 import { Title } from '../title/title-bar.ts';
 import { Local } from '../tools/localization.ts';
 import { Cursor } from '../tools/pointer-object.ts';
-// WebGL - 上下文恢复事件
 Scene.webglRestored = function (event) {
 	if (Scene.state === 'open') {
 		Scene.requestRendering();
 	}
 };
 
-// 窗口 - 调整大小事件
 Scene.windowResize = function (event) {
 	this.updateHead();
 	if (this.state === 'open') {
@@ -30,19 +28,16 @@ Scene.windowResize = function (event) {
 	}
 }.bind(Scene);
 
-// 主题改变事件
 Scene.themechange = function (event) {
 	this.requestRendering();
 }.bind(Scene);
 
-// 设备像素比改变事件
 Scene.dprchange = function (event) {
 	if (this.state === 'open') {
 		this.updateFont();
 	}
 }.bind(Scene);
 
-// 数据改变事件
 Scene.datachange = function (event) {
 	if (this.state === 'open') {
 		switch (event.key) {
@@ -57,7 +52,6 @@ Scene.datachange = function (event) {
 	}
 }.bind(Scene);
 
-// 键盘按下事件
 Scene.keydown = function (event) {
 	if (Scene.state === 'open' && Scene.dragging === null) {
 		if (event.cmdOrCtrlKey) {
@@ -116,7 +110,6 @@ Scene.keydown = function (event) {
 	}
 };
 
-// 头部 - 指针按下事件
 Scene.headPointerdown = function (event) {
 	if (!(event.target instanceof HTMLInputElement)) {
 		event.preventDefault();
@@ -126,7 +119,6 @@ Scene.headPointerdown = function (event) {
 	}
 };
 
-// 开关 - 指针按下事件
 Scene.switchPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -148,7 +140,6 @@ Scene.switchPointerdown = function (event) {
 	}
 };
 
-// 图层 - 指针按下事件
 Scene.layerPointerdown = function (event) {
 	switch (event.button) {
 		case 0:
@@ -171,7 +162,6 @@ Scene.layerPointerdown = function (event) {
 	}
 };
 
-// 笔刷 - 指针按下事件
 Scene.brushPointerdown = function (event) {
 	switch (event.button) {
 		case 0:
@@ -185,17 +175,14 @@ Scene.brushPointerdown = function (event) {
 	}
 };
 
-// 缩放 - 获得焦点事件
 Scene.zoomFocus = function (event) {
 	Scene.screen.focus();
 };
 
-// 缩放 - 输入事件
 Scene.zoomInput = function (event) {
 	Scene.setZoom(this.read());
 };
 
-// 屏幕 - 键盘按下事件
 Scene.screenKeydown = function (event) {
 	if (this.state === 'open' && (this.dragging === null || event.code === 'ShiftLeft')) {
 		if (event.cmdOrCtrlKey) {
@@ -245,7 +232,6 @@ Scene.screenKeydown = function (event) {
 		} else {
 			switch (event.code) {
 				case 'ShiftLeft':
-					// 切换到初始图块帧
 					if (!this.shiftKey) {
 						this.shiftKey = true;
 						if (this.dragging) {
@@ -387,7 +373,6 @@ Scene.screenKeydown = function (event) {
 	}
 }.bind(Scene);
 
-// Shift键弹起事件
 Scene.shiftKeyup = function (event) {
 	if (!this.shiftKey) {
 		return;
@@ -417,7 +402,6 @@ Scene.shiftKeyup = function (event) {
 	}
 }.bind(Scene);
 
-// 位移键弹起事件
 Scene.translationKeyup = function (event) {
 	if (this.translationKey === 0b0000) {
 		return;
@@ -447,7 +431,6 @@ Scene.translationKeyup = function (event) {
 	}
 }.bind(Scene);
 
-// 屏幕 - 鼠标滚轮事件
 Scene.screenWheel = function (event) {
 	if (this.state === 'open' && this.dragging === null) {
 		event.preventDefault();
@@ -458,7 +441,6 @@ Scene.screenWheel = function (event) {
 	}
 }.bind(Scene);
 
-// 屏幕 - 用户滚动事件
 Scene.screenUserscroll = function (event) {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
@@ -470,7 +452,6 @@ Scene.screenUserscroll = function (event) {
 	}
 }.bind(Scene);
 
-// 屏幕 - 失去焦点事件
 Scene.screenBlur = function (event) {
 	this.shiftKeyup();
 	this.translationKeyup();
@@ -478,7 +459,6 @@ Scene.screenBlur = function (event) {
 	// this.marqueePointerleave()
 }.bind(Scene);
 
-// 屏幕 - 拖拽进入事件
 Scene.screenDragenter = function (event) {
 	const file = Browser.body.activeFile;
 	switch (file?.type) {
@@ -490,14 +470,12 @@ Scene.screenDragenter = function (event) {
 	}
 };
 
-// 屏幕 - 拖拽离开事件
 Scene.screenDragleave = function (event) {
 	if (!this.contains(event.relatedTarget)) {
 		Scene.deletePreviewObject();
 	}
 };
 
-// 屏幕 - 拖拽悬停事件
 Scene.screenDragover = function (event) {
 	if (Scene.previewObject) {
 		event.dataTransfer.dropEffect = 'move';
@@ -517,7 +495,6 @@ Scene.screenDragover = function (event) {
 	}
 };
 
-// 屏幕 - 拖拽施放事件
 Scene.screenDrop = function (event) {
 	if (Scene.previewObject) {
 		const kind = Scene.previewObject.class;
@@ -530,7 +507,6 @@ Scene.screenDrop = function (event) {
 	}
 };
 
-// 选框 - 指针按下事件
 Scene.marqueePointerdown = function (event) {
 	if (this.dragging) {
 		return;
@@ -706,7 +682,6 @@ Scene.marqueePointerdown = function (event) {
 	}
 }.bind(Scene);
 
-// 选框 - 指针移动事件
 Scene.marqueePointermove = function (event) {
 	const marquee = this.marquee;
 	if (!this.dragging) {
@@ -749,7 +724,6 @@ Scene.marqueePointermove = function (event) {
 	}
 }.bind(Scene);
 
-// 选框 - 指针离开事件
 Scene.marqueePointerleave = function (event) {
 	if (this.marquee.pointerevent !== null) {
 		this.marquee.pointerevent = null;
@@ -759,7 +733,6 @@ Scene.marqueePointerleave = function (event) {
 	}
 }.bind(Scene);
 
-// 选框 - 鼠标双击事件
 Scene.marqueeDoubleclick = function (event) {
 	switch (this.layer) {
 		case 'object':
@@ -787,7 +760,6 @@ Scene.marqueeDoubleclick = function (event) {
 	}
 }.bind(Scene);
 
-// 指针弹起事件
 Scene.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging === null) {
@@ -862,7 +834,6 @@ Scene.pointerup = function (event) {
 	}
 }.bind(Scene);
 
-// 指针移动事件
 Scene.pointermove = function (event) {
 	const { dragging, marquee } = this;
 	if (dragging.relate(event)) {
@@ -883,7 +854,6 @@ Scene.pointermove = function (event) {
 					const gapX = Math.abs(mx - marquee.x);
 					const gapY = Math.abs(my - marquee.y);
 
-					// 绘制补间图块
 					if ((gapX > 1 && mw < 9) || (gapY > 1 && mh < 9)) {
 						const length = Math.max(gapX, gapY);
 						const actorOffsetX = (mx - marquee.x) / length;
@@ -1053,7 +1023,6 @@ Scene.pointermove = function (event) {
 	}
 }.bind(Scene);
 
-// 菜单 - 弹出事件
 Scene.menuPopup = function (event) {
 	const { x, y } = this.getTileCoords(event, true);
 	const isInScene = x >= 0 && x < this.width && y >= 0 && y < this.height;
@@ -1185,7 +1154,6 @@ Scene.menuPopup = function (event) {
 		switch (target?.class) {
 			case 'actor':
 			case 'animation': {
-				// 添加编辑动画选项
 				const id = target.animationId ?? target.data?.animationId;
 				const meta = Data.manifest.guidMap[id];
 				menuItems.push({
@@ -1201,7 +1169,6 @@ Scene.menuPopup = function (event) {
 				break;
 			}
 			case 'particle': {
-				// 添加编辑粒子选项
 				const id = target.particleId;
 				const meta = Data.manifest.guidMap[id];
 				menuItems.push({
@@ -1217,7 +1184,6 @@ Scene.menuPopup = function (event) {
 				break;
 			}
 		}
-		// 添加在项目中查找选项
 		const file = Scene.getObjectFile(target);
 		if (file !== undefined) {
 			menuItems.push({
@@ -1234,7 +1200,6 @@ Scene.menuPopup = function (event) {
 			Math.floor(startPosition.x) === x &&
 			Math.floor(startPosition.y) === y
 		) {
-			// 添加重置初始位置选项
 			menuItems.push({
 				label: get('resetStartPosition'),
 				click: () => {
@@ -1246,7 +1211,6 @@ Scene.menuPopup = function (event) {
 				}
 			});
 		} else {
-			// 添加设置初始位置选项
 			menuItems.push({
 				label: get('setStartPosition'),
 				click: () => {
@@ -1269,7 +1233,6 @@ Scene.menuPopup = function (event) {
 	}
 };
 
-// 搜索框 - 输入事件
 Scene.searcherInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const text = this.input.value;
@@ -1277,7 +1240,6 @@ Scene.searcherInput = function (event) {
 	}
 };
 
-// 列表 - 键盘按下事件
 Scene.listKeydown = function (event) {
 	if (!this.data) {
 		return;
@@ -1322,7 +1284,6 @@ Scene.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 Scene.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -1374,7 +1335,6 @@ Scene.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 Scene.listSelect = function (event) {
 	const item = event.value;
 	switch (item.class) {
@@ -1382,8 +1342,7 @@ Scene.listSelect = function (event) {
 			Scene.setTarget(null);
 			break;
 		case 'tilemap':
-			// 正在编辑图块时直接打开瓦片地图
-			// 图块组关闭时打开瓦片地图检查器
+			// 正在编辑图块时直接打开瓦片地图 图块组关闭时打开瓦片地图检查器
 			if (Scene.tilemap) {
 				if (Palette.state === 'closed') {
 					Scene.setTarget(item);
@@ -1399,7 +1358,6 @@ Scene.listSelect = function (event) {
 	}
 };
 
-// 列表 - 记录事件
 Scene.listRecord = function (event) {
 	const response = event.value;
 	switch (response.type) {
@@ -1448,7 +1406,6 @@ Scene.listRecord = function (event) {
 	}
 };
 
-// 列表 - 菜单弹出事件
 Scene.listPopup = function (event) {
 	const item = event.value;
 	const menuItems: any[] = [];
@@ -1574,7 +1531,6 @@ Scene.listPopup = function (event) {
 				{
 					label: get('create.tilemap'),
 					click: () => {
-						// 关闭图块组检查器
 						Inspector.fileTileset.close();
 						this.addNodeTo(
 							Inspector.sceneTilemap.create(Scene.width, Scene.height),
@@ -1662,7 +1618,6 @@ Scene.listPopup = function (event) {
 			}
 		});
 	}
-	// 添加在项目中查找选项
 	const file = Scene.getObjectFile(item);
 	if (file !== undefined) {
 		menuItems.push({
@@ -1712,7 +1667,6 @@ Scene.listPopup = function (event) {
 	);
 };
 
-// 列表 - 打开事件
 Scene.listOpen = function (event) {
 	const item = event.value;
 	switch (item.class) {
@@ -1730,7 +1684,6 @@ Scene.listOpen = function (event) {
 	}
 };
 
-// 列表 - 重命名事件
 Scene.listRename = function (response) {
 	const target = response.item;
 	switch (target.class) {
@@ -1766,12 +1719,10 @@ Scene.listRename = function (response) {
 	}
 };
 
-// 列表 - 改变事件
 Scene.listChange = function (event) {
 	Scene.planToSave();
 };
 
-// 列表页面 - 调整大小事件
 Scene.listPageResize = function (event) {
 	Scene.list.updateHead();
 	Scene.list.resize();

@@ -1,7 +1,5 @@
 ﻿import { Scene } from './scene-window.ts';
 
-// ******************************** 坐标点类 ********************************
-
 Scene.Point = class Point {
 	x: number;
 	y: number;
@@ -11,7 +9,6 @@ Scene.Point = class Point {
 		this.y = 0;
 	}
 
-	// 设置
 	set(x: any, y: any) {
 		this.x = x;
 		this.y = y;

@@ -1,5 +1,3 @@
-﻿// ******************************** 指令操作历史 ********************************
-
 import { ICapacityHistory } from '../types/history.ts';
 
 export class CommandHistory implements ICapacityHistory {
@@ -26,7 +24,6 @@ export class CommandHistory implements ICapacityHistory {
 		this.lastState = 0;
 	}
 
-	// 重置历史
 	reset() {
 		if (this.stack.length !== 0) {
 			this.stack = [];
@@ -34,16 +31,13 @@ export class CommandHistory implements ICapacityHistory {
 		}
 	}
 
-	// 保存数据
 	save(data: any) {
-		// 删除多余的栈
 		const stack = this.stack;
 		const length = this.index + 1;
 		if (length < stack.length) {
 			stack.length = length;
 		}
 
-		// 堆栈上限
 		if (stack.length < this.capacity) {
 			this.index++;
 			stack.push(data);
@@ -52,11 +46,9 @@ export class CommandHistory implements ICapacityHistory {
 			stack.push(data);
 		}
 
-		// 更新版本ID
 		this.versionId++;
 	}
 
-	// 恢复数据
 	restore(operation: any) {
 		const index =
 			operation === 'undo' ? this.index : operation === 'redo' ? this.index + 1 : null;
@@ -160,7 +152,6 @@ export class CommandHistory implements ICapacityHistory {
 			list.scrollToSelection('restore');
 			list.dispatchChangeEvent();
 
-			// 改变指针
 			switch (operation) {
 				case 'undo':
 					this.index--;
@@ -174,16 +165,13 @@ export class CommandHistory implements ICapacityHistory {
 		}
 	}
 
-	// 保存状态
 	saveState() {
 		this.lastState = this.versionId;
 	}
 
-	// 恢复状态
 	restoreState() {
 		let steps = this.lastState - this.versionId;
 		if (Math.abs(steps) <= this.capacity) {
-			// 禁用不必要的列表方法
 			const list = this.list;
 			list.update = Function.empty;
 			list.select = Function.empty;
@@ -204,12 +192,10 @@ export class CommandHistory implements ICapacityHistory {
 		return false;
 	}
 
-	// 撤销条件判断
 	canUndo() {
 		return this.index >= 0;
 	}
 
-	// 重做条件判断
 	canRedo() {
 		return this.index + 1 < this.stack.length;
 	}

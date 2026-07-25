@@ -10,10 +10,7 @@ import { Local } from './localization.ts';
 import { Window } from './window-object.ts';
 import { Variable } from '../variable/variable.ts';
 
-// ******************************** 选取文本 ********************************
-
 export const Selection = {
-	// properties
 	target: null,
 	inserting: false,
 	context: null,
@@ -23,7 +20,6 @@ export const Selection = {
 		dynamicGlobal: /<global::([0-9a-f]{16})?>/,
 		ref: /<ref:([0-9a-f]{16})?>/
 	},
-	// methods
 	initialize: null,
 	saveContext: null,
 	restoreContext: null,
@@ -32,12 +28,10 @@ export const Selection = {
 	insert: null,
 	edit: null,
 	wrap: null,
-	// events
 	inputKeydown: null,
 	inputKeyup: null,
 	inputPointerdown: null,
 	inputPointerup: null,
-	// objects
 	color: null,
 	font: null,
 	italic: null,
@@ -52,9 +46,7 @@ export const Selection = {
 	localization: null
 };
 
-// 初始化
 Selection.initialize = function () {
-	// 侦听事件
 	$('#font-confirm').on('click', this.font.confirm);
 	$('#fontSize-confirm').on('click', this.fontSize.confirm);
 	$('#textPosition-confirm').on('click', this.textPosition.confirm);
@@ -62,37 +54,31 @@ Selection.initialize = function () {
 	$('#insertImage-confirm').on('click', this.image.confirm);
 	$('#localVariable-confirm').on('click', this.localVariable.confirm);
 
-	// 侦听文本框事件
 	const exclusions = {
 		'color-hex': true,
 		'command-searcher': true
 	};
 
-	// 侦听文本框事件
 	for (const textbox of $('text-box')) {
 		if (!exclusions[textbox.id]) {
 			this.addEventListeners(textbox.input);
 		}
 	}
 
-	// 侦听文本区域变量事件
 	for (const textbox of $('text-area-var')) {
 		this.addEventListeners(textbox.strBox);
 	}
 
-	// 侦听文本区域事件
 	for (const textarea of $('textarea')) {
 		this.addEventListeners(textarea);
 	}
 
-	// 初始化子对象
 	this.textPosition.initialize();
 	this.textEffect.initialize();
 	this.image.initialize();
 	this.localVariable.initialize();
 };
 
-// 保存上下文
 Selection.saveContext = function () {
 	this.context = {
 		target: this.target,
@@ -100,7 +86,6 @@ Selection.saveContext = function () {
 	};
 };
 
-// 恢复上下文
 Selection.restoreContext = function () {
 	if (this.context) {
 		this.target = this.context.target;
@@ -108,7 +93,6 @@ Selection.restoreContext = function () {
 	}
 };
 
-// 添加事件侦听器
 Selection.addEventListeners = function (element) {
 	element.on('keydown', this.inputKeydown);
 	element.on('keyup', this.inputKeyup);
@@ -116,17 +100,14 @@ Selection.addEventListeners = function (element) {
 	element.on('pointerup', this.inputPointerup);
 };
 
-// 匹配标签
 Selection.match = function () {
 	const target = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
 	if (typeof target.selectionStart !== 'number') {
 		return;
 	}
 
-	// 设置目标
 	this.target = target;
 
-	// 开始匹配
 	const text = target.value;
 	const selectionStart = target.selectionStart;
 	const selectionEnd = target.selectionEnd;
@@ -275,7 +256,6 @@ Selection.match = function () {
 	}
 };
 
-// 插入标签
 Selection.insert = function (tag) {
 	const target = document.activeElement as HTMLInputElement | HTMLTextAreaElement;
 	if (typeof target.selectionStart === 'number') {
@@ -285,7 +265,6 @@ Selection.insert = function (tag) {
 	}
 };
 
-// 编辑标签
 Selection.edit = function () {
 	const match = this.match();
 	if (match) {
@@ -295,7 +274,6 @@ Selection.edit = function () {
 	}
 };
 
-// 包装选中文本
 Selection.wrap = function ({ prefix, suffix }) {
 	const input = this.target;
 	const start = input.selectionStart;
@@ -318,7 +296,6 @@ Selection.wrap = function ({ prefix, suffix }) {
 	}
 };
 
-// 输入框 - 键盘按下事件
 Selection.inputKeydown = function (event) {
 	if (event.altKey) {
 		switch (event.code) {
@@ -329,7 +306,6 @@ Selection.inputKeydown = function (event) {
 	}
 }.bind(Selection);
 
-// 输入框 - 键盘弹起事件
 Selection.inputKeyup = function (event) {
 	if (event.altKey) {
 		switch (event.code) {
@@ -340,7 +316,6 @@ Selection.inputKeyup = function (event) {
 	}
 }.bind(Selection);
 
-// 输入框 - 指针按下事件
 Selection.inputPointerdown = function (event) {
 	switch (event.button) {
 		case 2:
@@ -349,7 +324,6 @@ Selection.inputPointerdown = function (event) {
 	}
 }.bind(Selection);
 
-// 输入框 - 指针弹起事件
 Selection.inputPointerup = function (event) {
 	switch (event.button) {
 		case 2:
@@ -545,7 +519,6 @@ Selection.inputPointerup = function (event) {
 	}
 }.bind(Selection);
 
-// 颜色
 Selection.color = {
 	open: function ({ color = '000000ff' } = {}) {
 		this.proxy.color = color;
@@ -568,7 +541,6 @@ Selection.color = {
 	}
 };
 
-// 字体
 Selection.font = {
 	open: function ({ font = 'sans-serif' } = {}) {
 		Window.open('font');
@@ -588,7 +560,6 @@ Selection.font = {
 	}
 };
 
-// 倾斜
 Selection.italic = {
 	open: function () {
 		Selection.wrap({
@@ -598,7 +569,6 @@ Selection.italic = {
 	}
 };
 
-// 加粗
 Selection.bold = {
 	open: function () {
 		Selection.wrap({
@@ -608,7 +578,6 @@ Selection.bold = {
 	}
 };
 
-// 字体大小
 Selection.fontSize = {
 	open: function ({ size = 12 } = {}) {
 		Window.open('fontSize');
@@ -625,15 +594,12 @@ Selection.fontSize = {
 	}
 };
 
-// 文字位置
 Selection.textPosition = {
 	initialize: function () {
-		// 创建坐标轴选项
 		$('#textPosition-axis').loadItems([
 			{ name: 'X', value: 'x' },
 			{ name: 'Y', value: 'y' }
 		]);
-		// 创建操作选项
 		$('#textPosition-operation').loadItems([
 			{ name: 'Set', value: 'set' },
 			{ name: 'Add', value: 'add' }
@@ -666,16 +632,13 @@ Selection.textPosition = {
 	}
 };
 
-// 文字效果
 Selection.textEffect = {
 	initialize: function () {
-		// 创建文字效果类型选项
 		$('#textEffect-type').loadItems([
 			{ name: 'Shadow', value: 'shadow' },
 			{ name: 'Stroke', value: 'stroke' },
 			{ name: 'Outline', value: 'outline' }
 		]);
-		// 设置文字效果类型关联元素
 		$('#textEffect-type')
 			.enableHiddenMode()
 			.relate([
@@ -736,17 +699,14 @@ Selection.textEffect = {
 	}
 };
 
-// 插入图像
 Selection.image = {
 	initialize: function () {
-		// 创建插入图像模式选项
 		$('#insertImage-mode').loadItems([
 			{ name: 'Image', value: 'image' },
 			{ name: 'Image - Size', value: 'image-size' },
 			{ name: 'Image - Clip', value: 'image-clip' },
 			{ name: 'Image - Clip - Size', value: 'image-clip-size' }
 		]);
-		// 设置插入图像模式关联元素
 		$('#insertImage-mode')
 			.enableHiddenMode()
 			.relate([
@@ -824,7 +784,6 @@ Selection.image = {
 	}
 };
 
-// 本地变量
 Selection.localVariable = {
 	filter: 'all',
 	initialize: function () {
@@ -848,7 +807,6 @@ Selection.localVariable = {
 	}
 };
 
-// 全局变量
 Selection.globalVariable = {
 	open: function ({ key = '' } = {}) {
 		this.proxy.key = key;
@@ -874,7 +832,6 @@ Selection.globalVariable = {
 	}
 };
 
-// 动态全局变量
 Selection.dynamicGlobalVariable = {
 	open: function ({ key = '' } = {}) {
 		this.proxy.key = key;
@@ -900,7 +857,6 @@ Selection.dynamicGlobalVariable = {
 	}
 };
 
-// 本地化文本
 Selection.localization = {
 	open: function ({ key = '' } = {}) {
 		this.proxy.key = key;

@@ -1,8 +1,6 @@
 ﻿import { SelectBox } from './select-box.ts';
 import { CustomBox } from './custom-box.ts';
 
-// ******************************** 选择变量框 ********************************
-
 export class SelectVar extends HTMLElement {
 	mode: string;
 	selectBox: HTMLElement & { [k: string]: any };
@@ -11,19 +9,16 @@ export class SelectVar extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.mode = null;
 		this.selectBox = new SelectBox();
 		this.varBox = new CustomBox();
 		this.varBox.type = 'variable';
 		this.varBox.filter = 'all';
 
-		// 侦听事件
 		this.on('keydown', this.keydown);
 		this.on('pointerdown', this.pointerdown);
 	}
 
-	// 读取数据
 	read() {
 		switch (this.mode) {
 			case 'constant':
@@ -33,7 +28,6 @@ export class SelectVar extends HTMLElement {
 		}
 	}
 
-	// 写入数据
 	write(value: any) {
 		switch (typeof value) {
 			case 'string':
@@ -49,7 +43,6 @@ export class SelectVar extends HTMLElement {
 		}
 	}
 
-	// 切换模式
 	switch(mode?) {
 		const focus = !mode && !this.hasClass('disabled');
 		if (mode === undefined) {
@@ -86,7 +79,6 @@ export class SelectVar extends HTMLElement {
 		}
 	}
 
-	// 启用元素
 	enable() {
 		if (this.removeClass('disabled')) {
 			this.selectBox.enable();
@@ -94,7 +86,6 @@ export class SelectVar extends HTMLElement {
 		}
 	}
 
-	// 禁用元素
 	disable() {
 		if (this.addClass('disabled')) {
 			this.selectBox.disable();
@@ -102,12 +93,10 @@ export class SelectVar extends HTMLElement {
 		}
 	}
 
-	// 加载选项
 	loadItems(items: any) {
 		this.selectBox.loadItems(items);
 	}
 
-	// 获得焦点
 	getFocus(mode: any) {
 		switch (this.mode) {
 			case 'constant':
@@ -117,24 +106,19 @@ export class SelectVar extends HTMLElement {
 		}
 	}
 
-	// 清除选项
 	clear() {
 		this.selectBox.clear();
 	}
 
-	// 键盘按下事件
 	keydown(event: any) {
 		switch (event.code) {
 			case 'Slash':
-				// 切换输入框导致已侦听的事件失效
-				// 因此在这里阻止输入行为
 				event.preventDefault();
 				this.switch();
 				break;
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: any) {
 		switch (event.button) {
 			case 0:
@@ -152,7 +136,6 @@ export class SelectVar extends HTMLElement {
 		}
 	}
 
-	// 默认变量值
 	static defVar = { type: 'local', key: 'key' };
 }
 

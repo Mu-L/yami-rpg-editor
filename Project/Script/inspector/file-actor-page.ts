@@ -13,81 +13,62 @@ import { AttributeListInterface } from '../tools/property-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 文件 - 角色页面 ********************************
-
 {
 	const FileActor = {
-		// properties
 		target: null,
 		meta: null,
 		sprites: null,
 		skills: null,
 		equipments: null,
 		inventory: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		animationIdWrite: null,
 		paramInput: null,
 		listChange: null
 	};
 
-	// 初始化
 	FileActor.initialize = function () {
-		// 创建动画旋转选项
 		$('#fileActor-rotatable').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
 
-		// 创建通行选项
 		$('#fileActor-passage').loadItems([
 			{ name: 'Land', value: 'land' },
 			{ name: 'Water', value: 'water' },
 			{ name: 'Unrestricted', value: 'unrestricted' }
 		]);
 
-		// 创建碰撞形状选项
 		$('#fileActor-shape').loadItems([
 			{ name: 'Square', value: 'square' },
 			{ name: 'Circle', value: 'circle' }
 		]);
 
-		// 创建不可推动选项
 		$('#fileActor-immovable').loadItems([
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
 
-		// 绑定属性列表
 		$('#fileActor-attributes').bind(new AttributeListInterface());
 
-		// 绑定精灵图列表
 		$('#fileActor-sprites').bind(this.sprites);
 
-		// 绑定技能列表
 		$('#fileActor-skills').bind(this.skills);
 
-		// 绑定装备列表
 		$('#fileActor-equipments').bind(this.equipments);
 
-		// 绑定库存列表
 		$('#fileActor-inventory').bind(this.inventory);
 
-		// 绑定事件列表
 		$('#fileActor-events').bind(new EventListInterface(this));
 
-		// 绑定脚本列表
 		$('#fileActor-scripts').bind(new ScriptListInterface());
 
-		// 绑定脚本参数面板
 		$('#fileActor-parameter-pane').bind($('#fileActor-scripts'));
 
-		// 侦听事件
 		$('#fileActor-animationId').on('write', this.animationIdWrite);
 		$(`#fileActor-portrait, #fileActor-clip, #fileActor-animationId, #fileActor-idleMotion,
     #fileActor-moveMotion, #fileActor-rotatable, #fileActor-passage, #fileActor-speed,
@@ -98,7 +79,6 @@ import { Window } from '../tools/window-object.ts';
   `).on('change', this.listChange);
 	};
 
-	// 创建角色
 	FileActor.create = function () {
 		return {
 			portrait: '',
@@ -126,13 +106,11 @@ import { Window } from '../tools/window-object.ts';
 		};
 	};
 
-	// 打开数据
 	FileActor.open = function (actor, meta) {
 		if (this.meta !== meta) {
 			this.target = actor;
 			this.meta = meta;
 
-			// 写入数据
 			const write = getElementWriter('fileActor', actor);
 			write('portrait');
 			write('clip');
@@ -159,7 +137,6 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 关闭数据
 	FileActor.close = function () {
 		if (this.target) {
 			Browser.unselect(this.meta);
@@ -176,7 +153,6 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 更新数据
 	FileActor.update = function (actor, key, value) {
 		File.planToSave(this.meta);
 		switch (key) {
@@ -271,7 +247,6 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 动画ID - 写入事件
 	FileActor.animationIdWrite = function (event) {
 		const elIdleMotion = $('#fileActor-idleMotion');
 		const elMoveMotion = $('#fileActor-moveMotion');
@@ -282,17 +257,14 @@ import { Window } from '../tools/window-object.ts';
 		elMoveMotion.write2(elMoveMotion.read());
 	};
 
-	// 参数 - 输入事件
 	FileActor.paramInput = function (event) {
 		FileActor.update(FileActor.target, Inspector.getKey(this), this.read());
 	};
 
-	// 列表 - 改变事件
 	FileActor.listChange = function (event) {
 		File.planToSave(FileActor.meta);
 	};
 
-	// 精灵图列表接口
 	FileActor.sprites = {
 		initialize: function (list) {
 			$('#fileActor-sprite-confirm').on('click', () => list.save());
@@ -349,7 +321,6 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 技能列表接口
 	FileActor.skills = {
 		initialize: function (list) {
 			$('#fileActor-skill-confirm').on('click', () => list.save());
@@ -395,7 +366,6 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 装备列表接口
 	FileActor.equipments = {
 		initialize: function (list) {
 			$('#fileActor-equipment-confirm').on('click', () => list.save());
@@ -444,19 +414,16 @@ import { Window } from '../tools/window-object.ts';
 		}
 	};
 
-	// 库存列表接口
 	FileActor.inventory = {
 		initialize: function (list) {
 			$('#fileActor-inventory-confirm').on('click', () => list.save());
 
-			// 创建库存货物类型选项
 			$('#fileActor-inventory-type').loadItems([
 				{ name: 'Item', value: 'item' },
 				{ name: 'Equipment', value: 'equipment' },
 				{ name: 'Money', value: 'money' }
 			]);
 
-			// 设置库存货物类型关联元素
 			$('#fileActor-inventory-type')
 				.enableHiddenMode()
 				.relate([

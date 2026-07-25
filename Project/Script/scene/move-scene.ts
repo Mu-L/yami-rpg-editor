@@ -1,27 +1,19 @@
 ﻿import { $ } from '../util/dom.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 移动场景 ********************************
-
 export const SceneShift = {
-	// properties
 	callback: null,
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	windowClosed: null,
 	confirm: null
 };
 
-// 初始化
 SceneShift.initialize = function () {
-	// 侦听事件
 	$('#scene-shift').on('closed', this.windowClosed);
 	$('#scene-shift-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 SceneShift.open = function (callback) {
 	this.callback = callback;
 	Window.open('scene-shift');
@@ -30,12 +22,10 @@ SceneShift.open = function (callback) {
 	$('#scene-shift-x').getFocus('all');
 };
 
-// 窗口 - 已关闭事件
 SceneShift.windowClosed = function (event) {
 	SceneShift.callback = null;
 };
 
-// 确定按钮 - 鼠标点击事件
 SceneShift.confirm = function (event) {
 	const x = $('#scene-shift-x').read();
 	const y = $('#scene-shift-y').read();

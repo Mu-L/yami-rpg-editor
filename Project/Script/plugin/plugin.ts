@@ -22,10 +22,7 @@ import { Local } from '../tools/localization.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 插件窗口 ********************************
-
 export const PluginManager = {
-	// properties
 	list: $('#plugin-list'),
 	overviewPane: $('#plugin-overview-detail').hide(),
 	overview: $('#plugin-overview'),
@@ -35,7 +32,6 @@ export const PluginManager = {
 	symbol: null,
 	detailed: false,
 	changed: false,
-	// methods
 	initialize: null,
 	open: null,
 	load: null,
@@ -49,7 +45,6 @@ export const PluginManager = {
 	reconstruct: null,
 	saveToProject: null,
 	loadFromProject: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	keydown: null,
@@ -68,7 +63,6 @@ export const PluginManager = {
 	checkValidate: null
 };
 
-// list methods
 PluginManager.list.insert = null;
 PluginManager.list.toggle = null;
 PluginManager.list.copy = null;
@@ -82,13 +76,9 @@ PluginManager.list.updateTextNode = null;
 PluginManager.list.updateToggleStyle = null;
 PluginManager.list.createEditIcon = null;
 
-// pane methods
-// 注意：不再重写 ParameterPane.createDetailBox / clear，
-// 因为它们在 ParameterPane.initialize 中被重写
+// pane methods 注意：不再重写 ParameterPane.createDetailBox / clear，因为它们在 ParameterPane.initialize 中被重写
 
-// 初始化
 PluginManager.initialize = function () {
-	// 绑定插件列表
 	const { list } = this;
 	list.removable = true;
 	list.bind(() => this.data);
@@ -97,10 +87,8 @@ PluginManager.initialize = function () {
 	list.updaters.push(list.updateTextNode);
 	list.creators.push(list.createEditIcon);
 
-	// 绑定脚本参数面板
 	this.parameterPane.bind(list);
 
-	// 侦听事件
 	$('#plugin').on('close', this.windowClose);
 	$('#plugin').on('closed', this.windowClosed);
 	list.on('keydown', this.listKeydown);
@@ -116,26 +104,20 @@ PluginManager.initialize = function () {
 	$('#plugin-apply').on('click', this.apply);
 };
 
-// 打开窗口
 PluginManager.open = function () {
 	Window.open('plugin');
 
-	// 创建数据副本
 	this.data = Object.clone(Data.plugins);
 
-	// 更新列表项目
 	this.list.restoreSelection();
 
-	// 列表获得焦点
 	this.list.getFocus();
 
-	// 侦听事件
 	window.on('keydown', this.keydown);
 	window.on('pointerdown', this.pointerdown);
 	window.on('script-change', this.scriptChange);
 };
 
-// 加载插件
 PluginManager.load = async function (item) {
 	const symbol = (this.symbol = Symbol());
 	const meta = await Data.scripts[item.id];
@@ -147,7 +129,6 @@ PluginManager.load = async function (item) {
 	}
 };
 
-// 卸载插件
 PluginManager.unload = function () {
 	this.meta = null;
 	this.symbol = null;
@@ -157,7 +138,6 @@ PluginManager.unload = function () {
 	this.parameterPane.clear();
 };
 
-// 加载概述内容
 PluginManager.loadOverview = function () {
 	const { meta, detailed } = this;
 	if (!meta) return;
@@ -169,7 +149,6 @@ PluginManager.loadOverview = function () {
 	this.overviewPane.show();
 };
 
-// 创建概述内容
 PluginManager.createOverview = function (meta, detailed) {
 	const elements = [];
 	const get = Local.createGetter('plugin');
@@ -241,7 +220,6 @@ PluginManager.createOverview = function (meta, detailed) {
 			elements.push(warn);
 		}
 	}
-	// 显示更多信息
 	if (detailed) {
 		const { parameters } = meta;
 		const { states } = meta.manager;
@@ -361,7 +339,6 @@ PluginManager.createOverview = function (meta, detailed) {
 	return elements;
 };
 
-// 创建数据
 PluginManager.createData = function (id) {
 	return {
 		id: id ?? '',
@@ -370,10 +347,8 @@ PluginManager.createData = function (id) {
 	};
 };
 
-// 获取ID匹配的数据
 PluginManager.getItemById = Easing.getItemById;
 
-// 切换概述模式
 PluginManager.switchOverviewMode = function () {
 	if (this.meta) {
 		this.detailed = !this.detailed;
@@ -381,10 +356,7 @@ PluginManager.switchOverviewMode = function () {
 	}
 };
 
-// 解析插件元数据
 PluginManager.parseMeta = (function IIFE() {
-	// 正则表达式[\s\S]等于[^]
-	// 但是monaco中没有使用[^]
 	const event = new Event('script-change');
 	const selector = /\/\*\s*@plugin\s[\s\S]+?(?=\*\/)/;
 	const statement = /@([a-z\-[\]]+)([\s\S]*?)(?=\s@|$)/g;
@@ -441,8 +413,6 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 	};
 	const parseNumber = (string) => {
-		// 直接用isNaN很不靠谱
-		// isNaN('') returns false
 		const number = parseFloat(string);
 		if (!isNaN(number)) {
 			return number;
@@ -959,7 +929,6 @@ PluginManager.parseMeta = (function IIFE() {
 		currentGroup = null;
 	};
 
-	// 选项管理器类
 	class OptionManager extends Array {
 		wraps: any;
 		states: any;
@@ -969,7 +938,6 @@ PluginManager.parseMeta = (function IIFE() {
 			this.states = {};
 		}
 
-		// 添加条件
 		append({ key, values }) {
 			const { wraps, states } = this;
 			const pKey = parameter.key;
@@ -993,7 +961,6 @@ PluginManager.parseMeta = (function IIFE() {
 			return true;
 		}
 
-		// 排序
 		sort() {
 			for (let { owner } of this) {
 				let priority = 0;
@@ -1005,7 +972,6 @@ PluginManager.parseMeta = (function IIFE() {
 			return super.sort(OptionManager.sorter);
 		}
 
-		// 更新数据
 		update(parameters: any) {
 			const { states } = this;
 			for (const wrap of this) {
@@ -1013,11 +979,9 @@ PluginManager.parseMeta = (function IIFE() {
 			}
 		}
 
-		// 静态 - 排序器
 		static sorter = (a, b) => b.priority - a.priority;
 	}
 
-	// 条件包装类
 	class ConditionWrap {
 		owner: any;
 		map: any;
@@ -1029,7 +993,6 @@ PluginManager.parseMeta = (function IIFE() {
 			Object.defineProperty(owner, 'wrap', { value: this });
 		}
 
-		// 设置关联属性
 		relate(values: any) {
 			const { owner } = this;
 			if (parameter.type === 'option') {
@@ -1051,7 +1014,6 @@ PluginManager.parseMeta = (function IIFE() {
 			}
 		}
 
-		// 切换选项
 		switch(states: any, parameters: any) {
 			let active;
 			const { owner, map } = this;
@@ -1073,7 +1035,6 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 	}
 
-	// 语言映射表类
 	class LanguageMap {
 		language: string;
 		active: any;
@@ -1084,7 +1045,6 @@ PluginManager.parseMeta = (function IIFE() {
 			this.packs = [];
 		}
 
-		// 更新语言
 		update() {
 			if (this.language !== Local.language) {
 				this.language = Local.language;
@@ -1108,7 +1068,6 @@ PluginManager.parseMeta = (function IIFE() {
 					}
 				}
 				if (active) {
-					// 惰性解析语言包
 					this.parse(active);
 					this.active = active.map;
 				}
@@ -1116,7 +1075,6 @@ PluginManager.parseMeta = (function IIFE() {
 			return this;
 		}
 
-		// 解析映射表
 		parse(pack: any) {
 			const code = pack.code;
 			if (code !== undefined) {
@@ -1140,7 +1098,6 @@ PluginManager.parseMeta = (function IIFE() {
 			}
 		}
 
-		// 获取内容
 		get(key: any) {
 			if (key && key[0] === '#') {
 				return this.active[key] ?? key;
@@ -1148,7 +1105,6 @@ PluginManager.parseMeta = (function IIFE() {
 			return key;
 		}
 
-		// 添加映射表
 		append(pack: any) {
 			const { name } = pack;
 			const { packs } = this;
@@ -1161,7 +1117,6 @@ PluginManager.parseMeta = (function IIFE() {
 		}
 	}
 
-	// 元数据处理器映射表
 	const processors = {
 		plugin: setPlugin,
 		author: setAuthor,
@@ -1225,7 +1180,6 @@ PluginManager.parseMeta = (function IIFE() {
 		'group[]': setGroupRepeatable
 	};
 
-	// 共享变量
 	let overview = null;
 	let parameters = null;
 	let paramMap = null;
@@ -1236,7 +1190,6 @@ PluginManager.parseMeta = (function IIFE() {
 	let content = '';
 	let currentGroup = null;
 
-	// 返回函数
 	return function (meta, code) {
 		overview = { requires: [] };
 		parameters = [];
@@ -1260,7 +1213,6 @@ PluginManager.parseMeta = (function IIFE() {
 			}
 		}
 
-		// 设置元数据
 		const updating = !!meta.overview;
 		meta.parameters = parameters;
 		Data.manifest.changed = true;
@@ -1279,7 +1231,6 @@ PluginManager.parseMeta = (function IIFE() {
 			}
 		});
 
-		// 重置共享变量
 		overview = null;
 		parameters = null;
 		paramMap = null;
@@ -1289,7 +1240,6 @@ PluginManager.parseMeta = (function IIFE() {
 		type = '';
 		content = '';
 
-		// 发送脚本改变事件
 		if (updating) {
 			(event as any).changedMeta = meta;
 			window.dispatchEvent(event);
@@ -1297,7 +1247,6 @@ PluginManager.parseMeta = (function IIFE() {
 	};
 })();
 
-// 重构插件属性
 PluginManager.reconstruct = (function IIFE() {
 	const guidRegExp = /^[0-9a-f]{16}$/;
 	const colorRegExp = /^[0-9a-f]{8}$/;
@@ -1523,9 +1472,7 @@ PluginManager.reconstruct = (function IIFE() {
 		if (mParameters === undefined) {
 			return false;
 		}
-		// 更新选项管理器
 		meta.manager.update(parameters);
-		// 检查脚本参数的有效性
 		let reconstruct = false;
 		const length = mParameters.length;
 		if (length !== oEntries.length) {
@@ -1540,7 +1487,6 @@ PluginManager.reconstruct = (function IIFE() {
 				}
 			}
 		}
-		// 重构脚本参数
 		if (reconstruct) {
 			const newParameters = {};
 			for (const mParam of mParameters) {
@@ -1556,7 +1502,6 @@ PluginManager.reconstruct = (function IIFE() {
 	};
 })();
 
-// 校验参数值（公共方法，供 UI 层调用）
 PluginManager.checkValidate = function (parameter, value) {
 	if (!parameter.validate) return true;
 	const v = parameter.validate;
@@ -1569,19 +1514,16 @@ PluginManager.checkValidate = function (parameter, value) {
 	return true;
 };
 
-// 保存状态到项目文件
 PluginManager.saveToProject = function (project) {
 	const { plugin } = project;
 	plugin.detailed = this.detailed;
 };
 
-// 从项目文件中加载状态
 PluginManager.loadFromProject = function (project) {
 	const { plugin } = project;
 	this.detailed = plugin.detailed;
 };
 
-// 窗口 - 关闭事件
 PluginManager.windowClose = function (event) {
 	if (this.changed) {
 		event.preventDefault();
@@ -1606,7 +1548,6 @@ PluginManager.windowClose = function (event) {
 	}
 }.bind(PluginManager);
 
-// 窗口 - 已关闭事件
 PluginManager.windowClosed = function (event) {
 	this.list.saveSelection();
 	this.data = null;
@@ -1616,7 +1557,6 @@ PluginManager.windowClosed = function (event) {
 	window.off('script-change', this.scriptChange);
 }.bind(PluginManager);
 
-// 键盘按下事件
 PluginManager.keydown = function (event) {
 	if (event.cmdOrCtrlKey) {
 		switch (event.code) {
@@ -1627,24 +1567,20 @@ PluginManager.keydown = function (event) {
 	}
 };
 
-// 指针按下事件
 PluginManager.pointerdown = function (event) {
-	// 阻止鼠标在窗口外部双击会选中概述内容的行为
-	// 并且调用失去焦点方法避免阻止后失效
+	// 阻止鼠标在窗口外部双击会选中概述内容的行为 并且调用失去焦点方法避免阻止后失效
 	if (event.target === document.documentElement) {
 		event.preventDefault();
 		document.activeElement.blur();
 	}
 };
 
-// 脚本元数据改变事件
 PluginManager.scriptChange = function (event) {
 	if (PluginManager.meta === event.changedMeta) {
 		PluginManager.loadOverview();
 	}
 };
 
-// 列表 - 键盘按下事件
 PluginManager.listKeydown = function (event) {
 	const item = this.read();
 	if (event.cmdOrCtrlKey) {
@@ -1673,7 +1609,6 @@ PluginManager.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 PluginManager.listSelect = function (event) {
 	PluginManager.load(event.value);
 };
@@ -1683,12 +1618,10 @@ PluginManager.listUnselect = function (event) {
 	PluginManager.unload();
 };
 
-// 列表 - 改变事件
 PluginManager.listChange = function (event) {
 	PluginManager.changed = true;
 };
 
-// 列表 - 菜单弹出事件
 PluginManager.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
@@ -1752,12 +1685,10 @@ PluginManager.listPopup = function (event) {
 	);
 };
 
-// 列表 - 打开事件
 PluginManager.listOpen = function (event) {
 	this.edit(event.value);
 };
 
-// 概述 - 指针按下事件
 PluginManager.overviewPointerdown = (function IIFE() {
 	const once = { once: true };
 	const pointerup = (event) => {
@@ -1789,7 +1720,6 @@ PluginManager.overviewPointerdown = (function IIFE() {
 	};
 })();
 
-// 参数面板 - 更新事件
 PluginManager.parameterPaneUpdate = function (event) {
 	if (this.wraps.length !== 0) {
 		this.show();
@@ -1798,18 +1728,15 @@ PluginManager.parameterPaneUpdate = function (event) {
 	}
 };
 
-// 确定按钮 - 鼠标点击事件
 PluginManager.confirm = function (event) {
 	this.apply();
 	Window.close('plugin');
 }.bind(PluginManager);
 
-// 应用按钮 - 鼠标点击事件
 PluginManager.apply = function (event) {
 	if (this.changed) {
 		this.changed = false;
 
-		// 保存变量数据
 		let plugins = this.data;
 		if (event instanceof Event) {
 			plugins = Object.clone(plugins);
@@ -1834,7 +1761,6 @@ PluginManager.list.edit = function (item) {
 					PluginManager.changed = true;
 					PluginManager.parameterPane.update();
 				}
-				// 可能修改了文件名
 				this.update();
 			}
 		},
@@ -1959,6 +1885,4 @@ PluginManager.list.createEditIcon = function (item) {
 	item.element.appendChild(box);
 };
 
-// 注意：不再重写 ParameterPane.createDetailBox / clear，
-// 以保留参数面板按 @group 分组的多 detail-box 渲染能力
-// （原生 ParameterPane 已支持，见 components/parameter-pane.js）
+// 注意：不再重写 ParameterPane.createDetailBox / clear，以保留参数面板按 @group 分组的多 detail-box 渲染能力 （原生 ParameterPane 已支持，见 components/parameter-pane.js）

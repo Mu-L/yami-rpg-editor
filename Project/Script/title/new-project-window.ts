@@ -12,19 +12,14 @@ import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 import { Path } from '../util/config.ts';
 
-// ******************************** 新建项目窗口 ********************************
-
-// 新建项目窗口状态
 type NewProjectState = 'passed' | 'open' | 'closed';
 
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
 type NewProjectMethod = ((...args: any[]) => any) | null;
 
 interface NewProjectShape {
-	// properties
 	state: NewProjectState;
 	timer: any | null;
-	// methods
 	initialize: (() => void) | null;
 	open: NewProjectMethod;
 	check: NewProjectMethod;
@@ -32,7 +27,6 @@ interface NewProjectShape {
 	copyFilesTo: NewProjectMethod;
 	writeData: NewProjectMethod;
 	getNewFolder: NewProjectMethod;
-	// events
 	templateInput: NewProjectMethod;
 	folderBeforeinput: NewProjectMethod;
 	folderInput: NewProjectMethod;
@@ -42,10 +36,8 @@ interface NewProjectShape {
 }
 
 export const NewProject: NewProjectShape = {
-	// properties
 	state: 'passed',
 	timer: null,
-	// methods
 	initialize: null,
 	open: null,
 	check: null,
@@ -53,7 +45,6 @@ export const NewProject: NewProjectShape = {
 	copyFilesTo: null,
 	writeData: null,
 	getNewFolder: null,
-	// events
 	templateInput: null,
 	folderBeforeinput: null,
 	folderInput: null,
@@ -62,16 +53,13 @@ export const NewProject: NewProjectShape = {
 	confirm: null
 };
 
-// 初始化
 NewProject.initialize = function () {
-	// 创建模板选项
 	$('#newProject-template').loadItems([
 		{ name: 'ARPG - English', value: 'arpg-ts-english' },
 		{ name: 'ARPG - 简体中文', value: 'arpg-ts-chinese' },
 		{ name: 'Minimized Current Project', value: 'minimized-project' }
 	]);
 
-	// 侦听事件
 	$('#newProject-template').on('input', this.templateInput);
 	$('#newProject-folder').on('beforeinput', this.folderBeforeinput, {
 		capture: true
@@ -82,7 +70,6 @@ NewProject.initialize = function () {
 	$('#newProject-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 NewProject.open = function () {
 	Window.open('newProject');
 	const write = getElementWriter('newProject');
@@ -106,7 +93,6 @@ NewProject.open = function () {
 	this.check();
 };
 
-// 检查路径
 NewProject.check = function () {
 	const folder = $('#newProject-folder').read();
 	const location = $('#newProject-location').read();
@@ -127,7 +113,6 @@ NewProject.check = function () {
 			this.state = 'passed';
 			$('#newProject-warning').textContent = '';
 		}
-		// 如果选择最小化当前项目，并且没有打开项目，则禁用
 		const template = $('#newProject-template').read();
 		if (template === 'minimized-project' && Editor.state === 'closed') {
 			$('#newProject-confirm').disable();
@@ -137,7 +122,6 @@ NewProject.check = function () {
 	}
 };
 
-// 读取文件列表
 NewProject.readFileList = (function IIFE() {
 	const options = { withFileTypes: true };
 	const read = (dirname, idFilter, path, list) => {
@@ -155,8 +139,7 @@ NewProject.readFileList = (function IIFE() {
 					});
 					promises.push(read(dirname, idFilter, newPath, list));
 				} else {
-					// 如果存在ID过滤器，文件名中包括了ID
-					// 但是未在ID过滤器中找到，则判定为多余文件，跳过
+					// 如果存在ID过滤器，文件名中包括了ID 但是未在ID过滤器中找到，则判定为多余文件，跳过
 					if (idFilter) {
 						const guid = File.parseGUID(file.name);
 						if (guid && !idFilter[guid]) continue;
@@ -177,7 +160,6 @@ NewProject.readFileList = (function IIFE() {
 	};
 })();
 
-// 复制文件到指定目录
 NewProject.copyFilesTo = function (sPath, dPath, idFilter) {
 	Window.open('copyProgress');
 	const progressBar = $('#copyProgress-bar');
@@ -195,11 +177,9 @@ NewProject.copyFilesTo = function (sPath, dPath, idFilter) {
 			const path = item.path;
 			switch (item.folder) {
 				case true:
-					// 创建文件夹(同步)
 					FS.mkdirSync(dPath + '/' + path);
 					continue;
 				default:
-					// 复制文件
 					promises.push(
 						FSP.copyFile(sPath + '/' + path, dPath + '/' + path).then(() => {
 							count++;
@@ -222,7 +202,6 @@ NewProject.copyFilesTo = function (sPath, dPath, idFilter) {
 	});
 };
 
-// 写入数据
 NewProject.writeData = function (dirPath) {
 	const path = `${dirPath}/data/config.json`;
 	return FSP.readFile(path, 'utf8').then((data) => {
@@ -234,7 +213,6 @@ NewProject.writeData = function (dirPath) {
 	});
 };
 
-// 获取新的文件夹名称
 NewProject.getNewFolder = function (location) {
 	for (let i = 1; true; i++) {
 		const folder = `Project${i}`;
@@ -244,12 +222,10 @@ NewProject.getNewFolder = function (location) {
 	}
 };
 
-// 模板 - 输入事件
 NewProject.templateInput = function (event) {
 	NewProject.check();
 };
 
-// 文件夹输入框 - 输入前事件
 NewProject.folderBeforeinput = function (event) {
 	if (event.inputType === 'insertText' && typeof event.data === 'string') {
 		const regexp = /[\\/:*?"<>|"]/;
@@ -260,7 +236,6 @@ NewProject.folderBeforeinput = function (event) {
 	}
 };
 
-// 文件夹输入框 - 输入事件
 NewProject.folderInput = function (event) {
 	const regexp = /[\\/:*?"<>|"]/g;
 	const oldName = this.read();
@@ -271,12 +246,10 @@ NewProject.folderInput = function (event) {
 	NewProject.check();
 };
 
-// 位置输入框 - 输入事件
 NewProject.locationInput = function (event) {
 	NewProject.check();
 };
 
-// 选择按钮 - 鼠标点击事件
 NewProject.chooseClick = function (event) {
 	const input = $('#newProject-location');
 	File.showOpenDialog({
@@ -290,7 +263,6 @@ NewProject.chooseClick = function (event) {
 	});
 };
 
-// 确定按钮 - 鼠标点击事件
 NewProject.confirm = function (event) {
 	const template = $('#newProject-template').read();
 	const location = $('#newProject-location').read();

@@ -1,21 +1,14 @@
 ﻿import { $, getElementReader } from '../util/dom.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 角度访问器窗口 ********************************
-
 export const AngleGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 AngleGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#angleGetter-type').loadItems([
 		{ name: 'Towards Position', value: 'position' },
 		{ name: 'Absolute Angle', value: 'absolute' },
@@ -24,7 +17,6 @@ AngleGetter.initialize = function () {
 		{ name: 'Random Angle', value: 'random' }
 	]);
 
-	// 设置关联元素
 	$('#angleGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -38,11 +30,9 @@ AngleGetter.initialize = function () {
 			}
 		]);
 
-	// 侦听事件
 	$('#angleGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 AngleGetter.open = function (target) {
 	this.target = target;
 	Window.open('angleGetter');
@@ -68,7 +58,6 @@ AngleGetter.open = function (target) {
 	$('#angleGetter-type').getFocus();
 };
 
-// 确定按钮 - 鼠标点击事件
 AngleGetter.confirm = function (event) {
 	const read = getElementReader('angleGetter');
 	const type = read('type');

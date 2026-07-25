@@ -2,16 +2,12 @@ import { $, getElementReader } from '../util/dom.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 位置访问器窗口 ********************************
-
-// 位置访问器目标对象（由调用方传入）
 interface PositionGetterTarget {
 	dataValue: PositionData;
 	input: (getter: any) => void;
 	isPluginInput?: boolean;
 }
 
-// 位置数据对象（switch 各 type 含不同字段）
 interface PositionData {
 	type: 'absolute' | 'relative' | 'actor' | 'trigger' | 'light' | 'region' | 'object' | 'mouse';
 	x?: number;
@@ -34,20 +30,15 @@ interface PositionGetterShape {
 }
 
 export const PositionGetter: PositionGetterShape = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
 	checkDataForPlugin: null,
 	createDefaultForPlugin: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 PositionGetter.initialize = function (): void {
-	// 创建类型选项
 	($('#positionGetter-type') as any).loadItems([
 		{ name: 'Absolute Coordinates', value: 'absolute' },
 		{ name: 'Relative Coordinates', value: 'relative' },
@@ -59,7 +50,6 @@ PositionGetter.initialize = function (): void {
 		{ name: 'Position of Mouse', value: 'mouse' }
 	]);
 
-	// 设置类型关联元素
 	($('#positionGetter-type') as any).enableHiddenMode().relate([
 		{
 			case: 'absolute',
@@ -79,7 +69,6 @@ PositionGetter.initialize = function (): void {
 		{ case: 'object', targets: [$('#positionGetter-objectId')] }
 	]);
 
-	// 创建区域模式选项
 	($('#positionGetter-region-mode') as any).loadItems([
 		{ name: 'Center', value: 'center' },
 		{ name: 'Random', value: 'random' },
@@ -88,11 +77,9 @@ PositionGetter.initialize = function (): void {
 		{ name: 'Random - Wall', value: 'random-wall' }
 	]);
 
-	// 侦听事件
 	($('#positionGetter-confirm') as HTMLElement).on('click', this.confirm!);
 };
 
-// 打开窗口
 PositionGetter.open = function (this: PositionGetterShape, target: PositionGetterTarget): void {
 	this.target = target;
 	Window.open('positionGetter');
@@ -148,7 +135,6 @@ PositionGetter.open = function (this: PositionGetterShape, target: PositionGette
 	($('#positionGetter-type') as HTMLElement & { getFocus(): void }).getFocus();
 };
 
-// 检查插件版本的位置访问器数据有效性
 PositionGetter.checkDataForPlugin = function (data: any): boolean {
 	if (data instanceof Object) {
 		return (data as { getter?: string }).getter === 'position';
@@ -156,7 +142,6 @@ PositionGetter.checkDataForPlugin = function (data: any): boolean {
 	return false;
 };
 
-// 创建插件版本的默认位置访问器
 PositionGetter.createDefaultForPlugin = function (): {
 	getter: string;
 	type: string;
@@ -166,7 +151,6 @@ PositionGetter.createDefaultForPlugin = function (): {
 	return { getter: 'position', type: 'absolute', x: 0, y: 0 };
 };
 
-// 确定按钮 - 鼠标点击事件
 PositionGetter.confirm = function (this: PositionGetterShape, event: Event): void {
 	const read = getElementReader('positionGetter');
 	const type = read('type');
@@ -221,7 +205,6 @@ PositionGetter.confirm = function (this: PositionGetterShape, event: Event): voi
 			getter = { type };
 			break;
 	}
-	// 如果是插件输入框，额外附加一个属性
 	if (this.target!.isPluginInput) {
 		getter = { getter: 'position', ...getter };
 	}

@@ -1,7 +1,5 @@
 ﻿import { UI } from './ui-window.ts';
 
-// ******************************** 对话框元素 ********************************
-
 UI.DialogBox = class DialogBoxElement extends UI.Text {
 	constructor(data: any) {
 		super({

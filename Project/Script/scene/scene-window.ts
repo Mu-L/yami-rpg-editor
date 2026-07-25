@@ -20,9 +20,6 @@ import { UndoManager } from '../tools/undo-manager.ts';
 import { Matrix } from '../webgl/matrix2.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 场景窗口 ********************************
-
-// 场景窗口状态
 type SceneState = 'closed' | 'open';
 
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
@@ -63,15 +60,13 @@ interface SceneListExtensions {
 }
 
 interface SceneShape {
-	// properties
 	state: SceneState;
 	page: HTMLElement;
 	head: HTMLElement & { width?: number };
 	body: HTMLElement & { hide(): HTMLElement; show(): HTMLElement };
 	info: HTMLElement;
 	screen: HTMLElement;
-	// marquee 运行时挂载 .resize()/.terrain/.previewTiles/.pointerevent/.save/.switch/.select/.getTiles 等大量扩展
-	// 用 [ k: string ]: any 索引签名兜底所有运行时挂载字段，避免穷举
+	// marquee 运行时挂载 .resize()/.terrain/.previewTiles/.pointerevent/.save/.switch/.select/.getTiles 等大量扩展 用 [ k: string ]: any 索引签名兜底所有运行时挂载字段，避免穷举
 	marquee: HTMLElement & { resize(): void; [k: string]: any };
 	// searcher 运行时挂载 .deleteInputContent/.input 等扩展（scene-list.ts:97 调用）
 	searcher: HTMLElement & { [k: string]: any };
@@ -81,7 +76,6 @@ interface SceneShape {
 }
 
 export const Scene: SceneShape = {
-	// properties
 	state: 'closed',
 	page: $('#scene'),
 	head: $('#scene-head'),
@@ -91,7 +85,6 @@ export const Scene: SceneShape = {
 	marquee: $('#scene-marquee'),
 	searcher: $('#scene-searcher'),
 	list: $('#scene-list'),
-	// editor properties
 	dragging: null,
 	tilemap: null,
 	target: null,
@@ -145,7 +138,6 @@ export const Scene: SceneShape = {
 	activeTilemapId: null,
 	sharedPoint: null,
 	previewObject: null,
-	// scene properties
 	context: null,
 	meta: null,
 	width: null,
@@ -168,7 +160,6 @@ export const Scene: SceneShape = {
 	backgrounds: null,
 	foregrounds: null,
 	doodads: null,
-	// methods
 	initialize: null,
 	open: null,
 	load: null,
@@ -314,7 +305,6 @@ export const Scene: SceneShape = {
 	loadFromConfig: null,
 	saveToProject: null,
 	loadFromProject: null,
-	// events
 	webglRestored: null,
 	windowResize: null,
 	themechange: null,
@@ -354,12 +344,10 @@ export const Scene: SceneShape = {
 	listRename: null,
 	listChange: null,
 	listPageResize: null,
-	// classes
 	Textures: null,
 	Point: null
 };
 
-// marquee properties
 Scene.marquee.key = null;
 Scene.marquee.offsetX = null;
 Scene.marquee.offsetY = null;
@@ -368,7 +356,6 @@ Scene.marquee.tiles = null;
 Scene.marquee.terrain = null;
 Scene.marquee.previewTiles = false;
 Scene.marquee.pointerevent = null;
-// marquee methods
 Scene.marquee.save = null;
 Scene.marquee.switch = null;
 Scene.marquee.resize = null;
@@ -380,10 +367,8 @@ Scene.marquee.selectInCopyMode = null;
 Scene.marquee.selectInObjectMode = null;
 Scene.marquee.getTiles = null;
 
-// list properties
 Scene.list.page = $('#scene-object');
 Scene.list.head = $('#scene-list-head');
-// list methods
 Scene.list.copy = null;
 Scene.list.paste = null;
 Scene.list.duplicate = null;
@@ -416,12 +401,9 @@ Scene.list.onRemove = null;
 Scene.list.onDelete = null;
 Scene.list.onResume = null;
 
-// 初始化
 Scene.initialize = function () {
-	// 绑定滚动条
 	this.screen.addScrollbars();
 
-	// 创建位移计时器
 	this.translationTimer = new Timer({
 		duration: Infinity,
 		update: (timer) => {
@@ -461,7 +443,6 @@ Scene.initialize = function () {
 		}
 	});
 
-	// 创建缩放计时器
 	this.zoomTimer = new Timer({
 		duration: 80,
 		update: (timer) => {
@@ -478,7 +459,6 @@ Scene.initialize = function () {
 		}
 	});
 
-	// 设置选框
 	this.marquee.key = 'tile';
 	this.marquee.x = 0;
 	this.marquee.y = 0;
@@ -501,13 +481,10 @@ Scene.initialize = function () {
 	this.marquee.borderColorRect = [1, 1, 1, 1];
 	this.marquee.backgroundColorInvalid = [192 / 255, 0, 0, 0.2];
 
-	// 设置舞台边距
 	this.padding = 800;
 
-	// 创建变换矩阵
 	this.matrix = new Matrix();
 
-	// 设置检查器类型映射表
 	this.inspectorTypeMap = {
 		actor: 'sceneActor',
 		region: 'sceneRegion',
@@ -518,21 +495,18 @@ Scene.initialize = function () {
 		tilemap: 'sceneTilemap'
 	};
 
-	// 瓦片地图光线采样模式映射表
 	this.tilemapLightSamplingModes = {
 		raw: 0,
 		global: 1,
 		ambient: 2
 	};
 
-	// 缺省光线采样模式映射表
 	this.defaultLightSamplingModes = {
 		raw: 0,
 		global: 0,
 		anchor: 0
 	};
 
-	// 混合模式映射表
 	this.blendModeMap = {
 		0: 'normal',
 		1: 'additive',
@@ -542,14 +516,11 @@ Scene.initialize = function () {
 		subtract: 2
 	};
 
-	// 设置共享坐标点
 	this.sharedPoint = new Scene.Point();
 
-	// 设置列表搜索框按钮和过滤器
 	this.searcher.addCloseButton();
 	this.searcher.addKeydownFilter();
 
-	// 绑定对象目录列表
 	const { list } = this;
 	list.removable = true;
 	list.renamable = true;
@@ -567,7 +538,6 @@ Scene.initialize = function () {
 	list.creators.push(list.createLockIcon);
 	list.updaters.push(list.updateLockIcon);
 
-	// 设置历史操作处理器
 	History.processors['scene-folder-rename'] = (operation, data) => {
 		const { response } = data;
 		list.restore(operation, response);
@@ -754,7 +724,6 @@ Scene.initialize = function () {
 		Scene.planToSave();
 	};
 
-	// 侦听事件
 	window.on('themechange', this.themechange);
 	window.on('dprchange', this.dprchange);
 	window.on('datachange', this.datachange);
@@ -794,13 +763,11 @@ Scene.initialize = function () {
 	list.on('change', this.listChange);
 	list.page.on('resize', this.listPageResize);
 
-	// 初始化子对象
 	ObjectFolder.initialize();
 	SceneShift.initialize();
 	TilemapShortcuts.initialize();
 };
 
-// 打开场景
 Scene.open = function (context) {
 	if (this.context === context) {
 		return;
@@ -811,15 +778,12 @@ Scene.open = function (context) {
 	this.context = context;
 	this.meta = meta;
 
-	// 设置粒子元素舞台
 	Particle.Element.stage = this;
 
-	// 恢复场景状态
 	if (context.scene) {
 		this.state = 'open';
 		this.load(context);
 		this.body.show();
-		// 切换页面时因为关闭状态而阻挡resize
 		// 因此在这里调用resize
 		this.resize();
 		this.requestAnimation();
@@ -827,10 +791,8 @@ Scene.open = function (context) {
 		return;
 	}
 
-	// 首次加载场景
 	const scene = Data.scenes[meta.guid];
 	if (scene) {
-		// 解码场景
 		context.scene = Codec.decodeScene(scene);
 		this.state = 'loading';
 		this.load(context);
@@ -849,20 +811,16 @@ Scene.open = function (context) {
 	}
 };
 
-// 加载场景
 Scene.load = function (context) {
 	const firstLoad = !context.editor;
 	if (firstLoad) {
-		// 创建瓦片地图和快捷方式列表
 		const tilemaps = [] as any;
 		tilemaps.shortcuts = new TilemapShortcuts(tilemaps);
 
-		// 创建区域和可见对象列表
 		const regions = [] as any;
 		regions.visibleList = [];
 		regions.visibleList.count = 0;
 
-		// 设置上下文
 		context.changed = false;
 		context.editor = {
 			target: null,
@@ -887,7 +845,6 @@ Scene.load = function (context) {
 	}
 	const { scene, editor } = context;
 
-	// 加载场景属性
 	this.width = scene.width;
 	this.height = scene.height;
 	this.tileWidth = scene.tileWidth;
@@ -898,7 +855,6 @@ Scene.load = function (context) {
 	this.scripts = scene.scripts;
 	this.objects = scene.objects;
 
-	// 加载编辑器属性
 	this.history = editor.history;
 	this.textures = editor.textures;
 	this.tilemaps = editor.tilemaps;
@@ -916,47 +872,35 @@ Scene.load = function (context) {
 	this.animationInterval = editor.animationInterval;
 	this.updateAnimationInterval();
 
-	// 更新字体
 	this.updateFont();
 
-	// 初始化
 	if (firstLoad) {
-		// 加载对象
 		this.loadObjects();
 
-		// 加载图块纹理
 		this.loadTextures();
 	}
 
-	// 加载所有上下文
 	this.loadAllContexts();
 
-	// 更新列表
 	this.list.update();
 	// this.list.scrollTop = editor.listScrollTop
 
-	// 更新瓦片地图快捷栏
 	this.tilemaps.shortcuts.update();
 
-	// 设置目标对象
 	this.setTarget(editor.target);
 
-	// 打开瓦片地图对象
 	if (editor.tilemap) {
 		this.openTilemap(editor.tilemap);
 	}
 
-	// 设置环境光
 	GL.setAmbientLight(this.ambient);
 	UndoManager.setActive(Scene);
 };
 
-// 保存场景
 Scene.save = function () {
 	if (this.state === 'open') {
 		const { scene, editor } = this.context;
 
-		// 保存场景属性
 		scene.width = this.width;
 		scene.height = this.height;
 		scene.tileWidth = this.tileWidth;
@@ -967,7 +911,6 @@ Scene.save = function () {
 		scene.scripts = this.scripts;
 		scene.objects = this.objects;
 
-		// 保存编辑器属性
 		editor.target = this.target;
 		editor.tilemap = this.tilemap;
 		editor.history = this.history;
@@ -987,7 +930,6 @@ Scene.save = function () {
 		editor.animationInterval = this.animationInterval;
 		// editor.listScrollTop = this.list.scrollTop
 
-		// 重新编码场景数据
 		if (this.context.changed) {
 			this.context.changed = false;
 			Data.scenes[this.meta.guid] = Codec.encodeScene(scene);
@@ -995,14 +937,12 @@ Scene.save = function () {
 	}
 };
 
-// 关闭场景
 Scene.close = function () {
 	if (this.state !== 'closed') {
 		this.screen.blur();
 		this.closeTilemap();
 		this.setTarget(null);
 		this.deletePreviewObject();
-		// 关闭检查器
 		if (Inspector.type === 'fileScene') {
 			Inspector.close();
 		}
@@ -1042,7 +982,6 @@ Scene.close = function () {
 	}
 };
 
-// 销毁场景
 Scene.destroy = function (context) {
 	const { editor } = context;
 	if (!editor) return;
@@ -1075,7 +1014,6 @@ Scene.destroy = function (context) {
 	}
 };
 
-// 移动瓦片地图
 Scene.shiftTilemap = function (tilemap, offsetX, offsetY) {
 	const width = tilemap.width;
 	const height = tilemap.height;
@@ -1100,7 +1038,6 @@ Scene.shiftTilemap = function (tilemap, offsetX, offsetY) {
 	this.requestRendering();
 };
 
-// 移动地形
 Scene.shiftTerrains = function (offsetX, offsetY) {
 	const width = this.width;
 	const height = this.height;
@@ -1125,7 +1062,6 @@ Scene.shiftTerrains = function (offsetX, offsetY) {
 	this.requestRendering();
 };
 
-// 移动对象
 Scene.shiftObjects = function (changes) {
 	const { targets, posX, posY } = changes;
 	const length = targets.length;
@@ -1141,7 +1077,6 @@ Scene.shiftObjects = function (changes) {
 	this.requestRendering();
 };
 
-// 计算对象移动
 Scene.computeObjectShifting = function (ox, oy) {
 	const MIN = -128;
 	const MAX = 640;
@@ -1177,7 +1112,6 @@ Scene.computeObjectShifting = function (ox, oy) {
 	return { targets, posX, posY };
 };
 
-// 获取默认对象文件夹
 Scene.getDefaultObjectFolder = function (kind) {
 	const name = Editor.project.scene.defaultFolders[kind];
 	return !name
@@ -1188,14 +1122,12 @@ Scene.getDefaultObjectFolder = function (kind) {
 			});
 };
 
-// 复制对象
 Scene.copy = function () {
 	if (this.state === 'open' && this.target !== null) {
 		this.list.copy(this.target);
 	}
 };
 
-// 粘贴对象
 Scene.paste = function (x, y) {
 	if (this.state === 'open' && this.dragging === null) {
 		if (x === undefined) {
@@ -1219,14 +1151,12 @@ Scene.paste = function (x, y) {
 	}
 };
 
-// 副本
 Scene.duplicate = function () {
 	if (this.target) {
 		this.list.duplicate(this.target);
 	}
 };
 
-// 创建对象
 Scene.create = function (kind, x, y) {
 	const dItem = this.getDefaultObjectFolder(kind);
 	const map = this.inspectorTypeMap;
@@ -1238,33 +1168,28 @@ Scene.create = function (kind, x, y) {
 	this.list.addNodeTo(object, dItem);
 };
 
-// 删除对象
 Scene.delete = function () {
 	if (this.state === 'open' && this.target !== null && this.dragging === null) {
 		this.list.delete(this.target);
 	}
 };
 
-// 开关对象
 Scene.toggle = function () {
 	this.list.toggle(this.target);
 };
 
-// 撤销操作
 Scene.undo = function () {
 	if (this.state === 'open' && !this.dragging && this.history.canUndo()) {
 		this.history.restore('undo');
 	}
 };
 
-// 重做操作
 Scene.redo = function () {
 	if (this.state === 'open' && !this.dragging && this.history.canRedo()) {
 		this.history.restore('redo');
 	}
 };
 
-// 更新动画播放间隔
 Scene.updateAnimationInterval = function () {
 	const { animationInterval } = Data.config.scene;
 	if (this.animationInterval !== animationInterval) {
@@ -1277,7 +1202,6 @@ Scene.updateAnimationInterval = function () {
 	}
 };
 
-// 更新光照区域扩充
 Scene.updateLightAreaExpansion = function (last) {
 	if (this.showLight) {
 		const light = Data.config.lightArea;
@@ -1297,7 +1221,6 @@ Scene.updateLightAreaExpansion = function (last) {
 	}
 };
 
-// 更新角色队伍
 Scene.updateActorTeams = function () {
 	const list = this.list;
 	for (const actor of this.actors) {
@@ -1305,11 +1228,9 @@ Scene.updateActorTeams = function () {
 	}
 };
 
-// 更新头部位置
 Scene.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -1318,7 +1239,6 @@ Scene.updateHead = function () {
 			head.left = left;
 			head.style.left = `${left}px`;
 		}
-		// 调整居中组件的位置
 		const width = nRect.right - iRect.right;
 		if (head.width !== width) {
 			head.width = width;
@@ -1335,7 +1255,6 @@ Scene.updateHead = function () {
 	}
 };
 
-// 注册预设对象
 Scene.registerPreset = (function IIFE() {
 	const generatePresetId = () => {
 		const { scenePresets } = Data;
@@ -1366,7 +1285,6 @@ Scene.registerPreset = (function IIFE() {
 	};
 })();
 
-// 取消注册预设对象
 Scene.unregisterPreset = function (node) {
 	delete Data.scenePresets[node.presetId];
 	if (node.children instanceof Array) {
@@ -1376,7 +1294,6 @@ Scene.unregisterPreset = function (node) {
 	}
 };
 
-// 排序图层
 Scene.sortLayers = (function IIFE() {
 	const sorter = (a, b) => a.order - b.order;
 	return function () {
@@ -1386,15 +1303,11 @@ Scene.sortLayers = (function IIFE() {
 	};
 })();
 
-// 计划保存场景
 Scene.planToSave = function () {
 	File.planToSave(this.meta);
 	this.context.changed = true;
 };
 
-// 计划保存地形数据
 Scene.planToSaveTerrains = function () {
 	this.context.scene.terrainChanged = true;
 };
-
-// 绘制场景

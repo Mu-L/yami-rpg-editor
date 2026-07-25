@@ -3,23 +3,16 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { Enum } from '../enum/enum-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 技能访问器窗口 ********************************
-
 export const SkillGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
 	checkDataForPlugin: null,
 	createDefaultForPlugin: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 SkillGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#skillGetter-type').loadItems([
 		{ name: 'Event Trigger Skill', value: 'trigger' },
 		{ name: 'Latest Skill', value: 'latest' },
@@ -28,7 +21,6 @@ SkillGetter.initialize = function () {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置关联元素
 	$('#skillGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -43,16 +35,13 @@ SkillGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#skillGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#skillGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 SkillGetter.open = function (target) {
 	this.target = target;
 	Window.open('skillGetter');
 
-	// 加载快捷键选项
 	$('#skillGetter-key').loadItems(Enum.getStringItems('shortcut-key'));
 
 	let actor = { type: 'trigger' };
@@ -84,7 +73,6 @@ SkillGetter.open = function (target) {
 	$('#skillGetter-type').getFocus();
 };
 
-// 检查插件版本的技能访问器数据有效性
 SkillGetter.checkDataForPlugin = function (data) {
 	if (data instanceof Object) {
 		return data.getter === 'skill';
@@ -92,12 +80,10 @@ SkillGetter.checkDataForPlugin = function (data) {
 	return false;
 };
 
-// 创建插件版本的默认技能访问器
 SkillGetter.createDefaultForPlugin = function () {
 	return { getter: 'skill', type: 'trigger' };
 };
 
-// 确定按钮 - 鼠标点击事件
 SkillGetter.confirm = function (event) {
 	const read = getElementReader('skillGetter');
 	const type = read('type');
@@ -134,7 +120,6 @@ SkillGetter.confirm = function (event) {
 			break;
 		}
 	}
-	// 如果是插件输入框，额外附加一个属性
 	if (this.target.isPluginInput) {
 		getter = { getter: 'skill', ...getter };
 	}

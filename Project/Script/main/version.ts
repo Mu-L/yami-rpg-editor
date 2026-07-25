@@ -3,7 +3,6 @@ import { Directory } from '../file/directory-object.ts';
 import { Editor } from './editor.ts';
 import { Updater } from '../update/updater.ts';
 
-// 检查编辑器更新
 Editor.checkForEditorUpdates = function () {
 	const ver1 = Editor.config.version;
 	const ver2 = Updater.latestEditorVersion;
@@ -15,7 +14,6 @@ Editor.checkForEditorUpdates = function () {
 	}
 };
 
-// 检查项目更新
 Editor.checkForProjectUpdates = async function () {
 	const ver1 = Editor.project.version;
 	const ver2 = Updater.latestProjectVersion;
@@ -41,17 +39,14 @@ Editor.checkForProjectUpdates = async function () {
 		Updater.updateTeams(verNum1);
 		Updater.updateToLatest(ver1);
 
-		// 保存已修改的文件
 		await File.save(false);
 		Editor.project.version = ver2;
 
-		// 更新脚本等文件
 		Directory.update();
 		console.log('项目升级完毕!');
 	}
 };
 
-// 判断项目版本是否受编辑器支持
 Editor.isProjectVersionSupported = function () {
 	const ver1 = Editor.project.version;
 	const ver2 = Updater.latestProjectVersion;

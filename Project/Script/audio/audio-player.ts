@@ -2,8 +2,6 @@ import { File } from '../file/file-system-core.ts';
 import { AudioManager } from './audio-manager.ts';
 import { Reverb } from './reverb.ts';
 
-// ******************************** 音频播放器类 ********************************
-
 export class AudioPlayer {
 	// HTMLAudioElement 运行时挂载 .path 字段（play/stop 读写）
 	audio: HTMLAudioElement & { path: string };
@@ -19,12 +17,10 @@ export class AudioPlayer {
 		this.reverb = null;
 		this.audio.path = '';
 
-		// 连接节点
 		this.source.connect(this.panner);
 		this.panner.connect(AudioManager.analyser);
 	}
 
-	// 播放
 	play(path: string): void {
 		if (path) {
 			const audio = this.audio;
@@ -38,7 +34,6 @@ export class AudioPlayer {
 		}
 	}
 
-	// 停止
 	stop(): void {
 		const audio = this.audio;
 		if (audio.path) {
@@ -48,17 +43,14 @@ export class AudioPlayer {
 		}
 	}
 
-	// 设置音量
 	setVolume(volume: number): void {
 		this.audio.volume = Math.clamp(volume, 0, 1);
 	}
 
-	// 设置声像
 	setPan(pan: number): void {
 		this.panner.pan.value = Math.clamp(pan, -1, 1);
 	}
 
-	// 设置混响
 	setReverb(dry: any, wet: any) {
 		if (this.reverb === null && !(dry === 1 && wet === 0)) {
 			new Reverb(this);
@@ -68,7 +60,6 @@ export class AudioPlayer {
 		}
 	}
 
-	// 获取参数
 	getParams() {
 		return {
 			volume: Math.roundTo(this.audio.volume, 2),

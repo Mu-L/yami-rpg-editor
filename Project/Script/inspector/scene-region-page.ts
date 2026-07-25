@@ -5,40 +5,29 @@ import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 场景 - 区域页面 ********************************
-
 {
 	const SceneRegion = {
-		// properties
 		owner: Scene,
 		target: null,
 		nameBox: $('#sceneRegion-name'),
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	SceneRegion.initialize = function () {
-		// 绑定条件列表
 		$('#sceneRegion-conditions').bind(new ConditionListInterface(this, Scene));
 
-		// 绑定事件列表
 		$('#sceneRegion-events').bind(new EventListInterface(this, Scene));
 
-		// 绑定脚本列表
 		$('#sceneRegion-scripts').bind(new ScriptListInterface(this, Scene));
 
-		// 绑定脚本参数面板
 		$('#sceneRegion-parameter-pane').bind($('#sceneRegion-scripts'));
 
-		// 侦听事件
 		const elements = $(`#sceneRegion-name, #sceneRegion-color,
     #sceneRegion-x, #sceneRegion-y, #sceneRegion-width, #sceneRegion-height`);
 		elements.on('input', this.paramInput);
@@ -50,7 +39,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建区域
 	SceneRegion.create = function () {
 		return {
 			class: 'region',
@@ -70,12 +58,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	SceneRegion.open = function (region) {
 		if (this.target !== region) {
 			this.target = region;
 
-			// 写入数据
 			const write = getElementWriter('sceneRegion', region);
 			write('name');
 			write('color');
@@ -89,7 +75,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	SceneRegion.close = function () {
 		if (this.target) {
 			Scene.list.unselect(this.target);
@@ -102,7 +87,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 写入数据
 	SceneRegion.write = function (options) {
 		if (options.x !== undefined) {
 			$('#sceneRegion-x').write(options.x);
@@ -112,7 +96,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	SceneRegion.update = function (region, key, value) {
 		Scene.planToSave();
 		switch (key) {
@@ -141,7 +124,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	SceneRegion.paramInput = function (event) {
 		SceneRegion.update(SceneRegion.target, Inspector.getKey(this), this.read());
 	};

@@ -2,23 +2,16 @@
 import { Editor } from '../main/editor.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 默认对象文件夹 ********************************
-
 export const ObjectFolder = {
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 ObjectFolder.initialize = function () {
-	// 侦听事件
 	$('#object-folder-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 ObjectFolder.open = function () {
 	Window.open('object-folder');
 	const data = Editor.project.scene.defaultFolders;
@@ -32,7 +25,6 @@ ObjectFolder.open = function () {
 	write('parallax');
 };
 
-// 确定按钮 - 鼠标点击事件
 ObjectFolder.confirm = function (event) {
 	const read = getElementReader('object-folder');
 	Editor.project.scene.defaultFolders = {

@@ -10,7 +10,6 @@ export const RequestkeyValueBind = {
 	initialize() {
 		this.target = null;
 		this.type = 'request-header';
-		// 侦听事件
 		$('#request-keyValue-confirm').on('click', this.confirm);
 	},
 	parse(i: any) {
@@ -33,7 +32,6 @@ export const RequestkeyValueBind = {
 		const data = { key: read('key'), value: read('value') };
 		const headers = this.target.read();
 		if (headers.some((item) => item.key === data.key)) {
-			// 覆盖重复的键值
 			headers.splice(
 				headers.findIndex((item) => item.key === data.key),
 				1,

@@ -21,24 +21,19 @@ const _modulePath =
 		: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 const __dirname =
 	_moduleURL.protocol === 'file:'
-		? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+		? Path.dirname(Path.dirname(_modulePath))
 		: Path.resolve(process.cwd(), 'Project');
 
-// ******************************** 部署项目窗口 ********************************
-
-// 部署项目窗口状态
 type DeploymentState = 'passed' | 'open' | 'closed';
 
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
 type DeploymentMethod = ((...args: any[]) => any) | null;
 
 interface DeploymentShape {
-	// properties
 	state: DeploymentState;
 	gamedir: string;
 	timer: any | null;
 	compress: boolean;
-	// methods
 	initialize: (() => void) | null;
 	open: DeploymentMethod;
 	check: DeploymentMethod;
@@ -47,7 +42,6 @@ interface DeploymentShape {
 	readTsOutDir: DeploymentMethod;
 	copyFilesTo: DeploymentMethod;
 	compressJavaScript: DeploymentMethod;
-	// events
 	platformInput: DeploymentMethod;
 	folderBeforeinput: DeploymentMethod;
 	folderInput: DeploymentMethod;
@@ -57,12 +51,10 @@ interface DeploymentShape {
 }
 
 export const Deployment: DeploymentShape = {
-	// properties
 	state: 'passed',
 	gamedir: '',
 	timer: null,
 	compress: false,
-	// methods
 	initialize: null,
 	open: null,
 	check: null,
@@ -71,7 +63,6 @@ export const Deployment: DeploymentShape = {
 	readTsOutDir: null,
 	copyFilesTo: null,
 	compressJavaScript: null,
-	// events
 	platformInput: null,
 	folderBeforeinput: null,
 	folderInput: null,
@@ -80,16 +71,13 @@ export const Deployment: DeploymentShape = {
 	confirm: null
 };
 
-// 初始化
 Deployment.initialize = function () {
-	// 创建平台选项
 	$('#deployment-platform').loadItems([
 		{ name: 'Windows x64', value: 'windows-x64' },
 		{ name: 'MacOS Universal', value: 'mac-universal' },
 		{ name: 'Web / Android / iOS', value: 'web' }
 	]);
 
-	// 侦听事件
 	$('#deployment-platform').on('input', this.platformInput);
 	$('#deployment-folder').on('beforeinput', this.folderBeforeinput, {
 		capture: true
@@ -103,7 +91,6 @@ Deployment.initialize = function () {
 	});
 };
 
-// 打开窗口
 Deployment.open = function () {
 	Window.open('deployment');
 	const write = getElementWriter('deployment');
@@ -116,7 +103,6 @@ Deployment.open = function () {
 	this.check();
 };
 
-// 检查路径
 Deployment.check = function () {
 	let folder = $('#deployment-folder').read();
 	const location = $('#deployment-location').read();
@@ -145,7 +131,6 @@ Deployment.check = function () {
 	}
 };
 
-// 读取外壳文件列表
 Deployment.readShellList = (function IIFE() {
 	let root;
 	const options = { withFileTypes: true };
@@ -186,17 +171,13 @@ Deployment.readShellList = (function IIFE() {
 	};
 })();
 
-// 读取文件列表
 Deployment.readFileList = async function (platform) {
-	// 暂时设置为强制加密
 	const encrypt = true;
-	// 读取TSCONFIG的输出目录
 	const tsOutDir = Deployment.readTsOutDir();
 	if (!tsOutDir) {
 		throw new Error('Unable to get "outDir" from "tsconfig.json".');
 	}
 	let fileList;
-	// 读取外壳文件列表
 	switch (platform) {
 		case 'windows-x64':
 			fileList = await this.readShellList(Path.resolve(TemplatesPath, 'electron-win-x64'));
@@ -213,7 +194,6 @@ Deployment.readFileList = async function (platform) {
 			this.gamedir = '';
 			break;
 	}
-	// 添加文件夹列表
 	fileList.push(
 		{
 			folder: true,
@@ -237,7 +217,6 @@ Deployment.readFileList = async function (platform) {
 		}
 	);
 	const fileIdMap = await Data.createReferencedFileIDMap();
-	// 打包初始化加载的数据
 	const manifest = {
 		ui: {},
 		scenes: {},
@@ -272,18 +251,15 @@ Deployment.readFileList = async function (platform) {
 		const sGroup = Data[key];
 		const dGroup = manifest[key];
 		for (const guid of Object.keys(sGroup)) {
-			// 排除未用到的文件
 			if (!fileIdMap[guid]) continue;
 			dGroup[guid] = sGroup[guid];
 		}
 	}
-	// 获取技能|物品|装备的文件名(用来游戏中排序)
 	const guidAndExt = /\.[0-9a-f]{16}\.\S+$/;
 	for (const key of ['skills', 'items', 'equipments']) {
 		const dataGroup = Data[key];
 		const manifestGroup = manifest[key];
 		for (const { guid, path } of Data.manifest[key]) {
-			// 排除未用到的文件
 			if (!fileIdMap[guid]) continue;
 			const data = dataGroup[guid];
 			if (data !== undefined) {
@@ -294,10 +270,8 @@ Deployment.readFileList = async function (platform) {
 			}
 		}
 	}
-	// 复制配置文件，设置为已部署
 	const config = Object.clone(Data.config);
 	config.deployed = true;
-	// 添加数据文件列表
 	fileList.push(
 		{
 			data: manifest,
@@ -344,7 +318,6 @@ Deployment.readFileList = async function (platform) {
 			path: 'Data/commands.json'
 		}
 	);
-	// 添加 Module 文件
 	fileList.push(
 		{
 			path: 'Module/axios.min.js'
@@ -353,7 +326,6 @@ Deployment.readFileList = async function (platform) {
 			path: 'Module/exceljs.min.js'
 		}
 	);
-	// 添加基础文件列表
 	fileList.push(
 		{ path: 'index.html' },
 		{ path: 'Icon/icon.png', encrypt: false },
@@ -382,10 +354,8 @@ Deployment.readFileList = async function (platform) {
 		{ path: `${tsOutDir}Script/yami.js` },
 		{ path: `${tsOutDir}Script/main.js` }
 	);
-	// 重定向脚本文件列表
 	const tsExtname = /\.ts$/;
 	for (let { guid, path, parameters } of Data.manifest.script) {
-		// 排除未用到的文件
 		if (!fileIdMap[guid]) continue;
 		// 重新映射TS脚本到输出目录的JS脚本
 		if (tsExtname.test(path)) {
@@ -401,13 +371,11 @@ Deployment.readFileList = async function (platform) {
 			newPath: newPath
 		});
 	}
-	// 重定向其他文件列表
 	const fontNameRegexp = /([^/]+)\.\S+\.\S+$/;
 	for (const key of ['images', 'audio', 'videos', 'fonts', 'others']) {
 		const sMetaList = Data.manifest[key];
 		const dMetaList = manifest[key];
 		for (const { guid, path, size } of sMetaList) {
-			// 排除未用到的文件
 			if (!fileIdMap[guid]) continue;
 			const extname =
 				encrypt && key === 'images'
@@ -436,7 +404,6 @@ Deployment.readFileList = async function (platform) {
 	return fileList;
 };
 
-// 读取TS输出目录
 Deployment.readTsOutDir = function () {
 	const ts = FS.readFileSync(File.path('tsconfig.json'), 'utf8');
 	const match = ts.match(/"outDir"\s*:\s*"(.*?)"/);
@@ -450,7 +417,6 @@ Deployment.readTsOutDir = function () {
 	return outDir;
 };
 
-// 复制文件到指定目录
 Deployment.copyFilesTo = function (dirPath) {
 	Window.open('copyProgress');
 	const platform = $('#deployment-platform').read();
@@ -474,12 +440,10 @@ Deployment.copyFilesTo = function (dirPath) {
 			const dstPath = dPath + gamedir + newPath;
 			switch (item.folder) {
 				case true:
-					// 创建文件夹(同步)
 					FS.mkdirSync(dstPath, { recursive: true });
 					continue;
 				default:
 					if (item.data) {
-						// 写入数据到文件
 						const json = JSON.stringify(item.data);
 						promises.push(
 							FSP.writeFile(dstPath, json).then(() => {
@@ -521,7 +485,6 @@ Deployment.copyFilesTo = function (dirPath) {
 								}
 								continue;
 						}
-						// 复制文件
 						promises.push(
 							FSP.copyFile(srcPath, dstPath).then(() => {
 								count++;
@@ -545,7 +508,6 @@ Deployment.copyFilesTo = function (dirPath) {
 	});
 };
 
-// 压缩JavaScript文件
 Deployment.compressJavaScript = function (srcPath, dstPath) {
 	let uglifyJS;
 	try {
@@ -565,16 +527,16 @@ Deployment.compressJavaScript = function (srcPath, dstPath) {
 				try {
 					const result = uglifyJS.minify(code, {
 						mangle: {
-							toplevel: false, // 混淆顶层变量
-							eval: true, // 混淆eval中的变量
+							toplevel: false,
+							eval: true,
 							keep_fnames: false // 不保留函数名
 						},
 						compress: {
-							sequences: true, // 合并多个语句
+							sequences: true,
 							properties: true, // 优化属性访问
 							booleans: true, // 优化布尔表达式
 							if_return: true, // 优化if/return
-							join_vars: true // 合并变量声明
+							join_vars: true
 						},
 						output: {
 							beautify: false
@@ -595,12 +557,10 @@ Deployment.compressJavaScript = function (srcPath, dstPath) {
 	});
 };
 
-// 平台 - 输入事件
 Deployment.platformInput = function (event) {
 	Deployment.check();
 };
 
-// 文件夹输入框 - 输入前事件
 Deployment.folderBeforeinput = function (event) {
 	if (event.inputType === 'insertText' && typeof event.data === 'string') {
 		const regexp = /[\\/:*?"<>|"]/;
@@ -611,7 +571,6 @@ Deployment.folderBeforeinput = function (event) {
 	}
 };
 
-// 文件夹输入框 - 输入事件
 Deployment.folderInput = function (event) {
 	const regexp = /[\\/:*?"<>|"]/g;
 	const oldName = this.read();
@@ -622,12 +581,10 @@ Deployment.folderInput = function (event) {
 	Deployment.check();
 };
 
-// 位置输入框 - 输入事件
 Deployment.locationInput = function (event) {
 	Deployment.check();
 };
 
-// 选择按钮 - 鼠标点击事件
 Deployment.chooseClick = function (event) {
 	const input = $('#deployment-location');
 	File.showOpenDialog({
@@ -641,7 +598,6 @@ Deployment.chooseClick = function (event) {
 	});
 };
 
-// 确定按钮 - 鼠标点击事件
 Deployment.confirm = function (event) {
 	const platform = $('#deployment-platform').read();
 	const location = $('#deployment-location').read();

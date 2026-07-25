@@ -1,5 +1,3 @@
-﻿// ******************************** 操作历史类 ********************************
-
 import { IArrayHistory } from '../types/history.ts';
 
 export class History extends Array implements IArrayHistory {
@@ -16,7 +14,6 @@ export class History extends Array implements IArrayHistory {
 		this.onRestore = null;
 	}
 
-	// 重置记录
 	reset(): void {
 		if (this.length !== 0) {
 			this.length = 0;
@@ -24,15 +21,12 @@ export class History extends Array implements IArrayHistory {
 		}
 	}
 
-	// 保存数据
 	save(data: any): void {
-		// 删除多余的栈
 		const length = this.index + 1;
 		if (length < this.length) {
 			this.length = length;
 		}
 
-		// 堆栈上限判断
 		if (this.length < this.capacity) {
 			this.index++;
 			this.push(data);
@@ -41,11 +35,9 @@ export class History extends Array implements IArrayHistory {
 			this.push(data);
 		}
 
-		// 回调自定义方法
 		this.onSave?.(data);
 	}
 
-	// 恢复数据
 	restore(operation: any) {
 		const index =
 			operation === 'undo' ? this.index : operation === 'redo' ? this.index + 1 : null;
@@ -57,7 +49,6 @@ export class History extends Array implements IArrayHistory {
 			if (processor) {
 				processor(operation, data);
 
-				// 改变指针
 				switch (operation) {
 					case 'undo':
 						this.index--;
@@ -67,23 +58,19 @@ export class History extends Array implements IArrayHistory {
 						break;
 				}
 
-				// 回调自定义方法
 				this.onRestore?.(data);
 			}
 		}
 	}
 
-	// 撤销条件判断
 	canUndo() {
 		return this !== null && this.index >= 0;
 	}
 
-	// 重做条件判断
 	canRedo() {
 		return this !== null && this.index + 1 < this.length;
 	}
 
-	// 操作历史处理器集合
 	static processors = {};
 }
 

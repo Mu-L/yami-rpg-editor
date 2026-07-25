@@ -9,8 +9,6 @@ import { Local } from '../tools/localization.ts';
 import { Path } from '../util/config.ts';
 import { FileBrowserLinks } from '../types/file-browser-links.ts';
 
-// ******************************** 文件浏览框 ********************************
-
 export class FileBrowser extends HTMLElement {
 	display: 'normal' | 'search';
 	directory: string | null;
@@ -46,7 +44,6 @@ export class FileBrowser extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
 		this.display = 'normal';
 		this.directory = null;
 		this.dragging = null;
@@ -55,7 +52,6 @@ export class FileBrowser extends HTMLElement {
 		this.backupFolders = [];
 		this.searchResults = [];
 
-		// 侦听事件
 		this.on('pointerdown', this.pointerdown);
 		this.on('dragstart', this.dragstart);
 		this.on('dragend', this.dragend);
@@ -64,13 +60,11 @@ export class FileBrowser extends HTMLElement {
 		window.on('dirchange', this.dirchange.bind(this));
 	}
 
-	// 更新目录列表
 	update(): void {
 		this.body.updateFiles();
 		(this.head as any).updateAddress();
 	}
 
-	// 搜索文件: regexp or string
 	searchFiles(keyword: RegExp | string): void {
 		const { nav } = this;
 		if (keyword instanceof RegExp || keyword.length !== 0) {
@@ -101,7 +95,6 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 恢复显示模式
 	restoreDisplay(): void {
 		switch (this.display) {
 			case 'normal':
@@ -115,7 +108,6 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 返回上一级目录
 	backToParentFolder(): boolean {
 		switch (this.display) {
 			case 'normal': {
@@ -141,7 +133,6 @@ export class FileBrowser extends HTMLElement {
 		return false;
 	}
 
-	// 目录改变事件
 	dirchange(event: Event): void {
 		switch (this.display) {
 			case 'normal':
@@ -175,7 +166,6 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 关闭
 	close(): void {
 		if (this.directory) {
 			this.directory = null;
@@ -186,7 +176,6 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 获取活动页面
 	getActivePage(event: Event): HTMLElement | null {
 		const { nav, body } = this;
 		return (nav as any).contains(event.target as Node)
@@ -196,7 +185,6 @@ export class FileBrowser extends HTMLElement {
 				: null;
 	}
 
-	// 获取绝对路径列表
 	getFilePaths(files: FileItem[]): {
 		relativePaths: string[];
 		absolutePaths: string[];
@@ -206,9 +194,7 @@ export class FileBrowser extends HTMLElement {
 		return { relativePaths, absolutePaths };
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
-		// 如果丢失dragend事件，手动结束
 		switch ((this.dragging as any)?.mode) {
 			case 'drag':
 				this.dragend();
@@ -219,7 +205,6 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 拖拽开始事件
 	dragstart(event: DragEvent): void {
 		const page = this.getActivePage(event) as any;
 		if (page && !this.dragging) {
@@ -243,7 +228,6 @@ export class FileBrowser extends HTMLElement {
 				(event as any).filePaths = relativePaths;
 				(event as any).promise = (Directory as any).readdir(absolutePaths);
 				(event as any).promise.then((dir: any[]) => {
-					// 若文件已删除则结束拖拽
 					if (dir.length === 0) {
 						this.dragend();
 					}
@@ -265,14 +249,12 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 拖拽结束事件
 	dragend(event?: DragEvent): void {
 		if (this.dragging) {
 			const { dropTarget, page } = this.dragging as any;
 			if (dropTarget instanceof HTMLElement) {
 				dropTarget.removeClass('drop-target');
 			}
-			// 取消激活文件
 			if ((this.dragging as any).dragLeaved) {
 				page.deactivateFile?.();
 			} else {
@@ -286,20 +268,17 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 拖拽离开事件
 	dragleave(event: DragEvent): void {
 		const { dragging } = this;
 		if ((dragging as any)?.dropTarget && !this.contains(event.relatedTarget as Node)) {
 			(dragging as any).dropTarget.removeClass('drop-target');
 			(dragging as any).dropTarget = null;
-			// 排除drop时触发的dragleave事件
 			if (event.relatedTarget) {
 				(dragging as any).dragLeaved = true;
 			}
 		}
 	}
 
-	// 拖拽悬停事件
 	dragover(event: DragEvent): void {
 		const { dragging } = this;
 		if (dragging) {
@@ -375,7 +354,6 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 拖拽释放事件
 	drop(event: DragEvent): void {
 		const { dragging } = this;
 		if (dragging) {
@@ -385,7 +363,6 @@ export class FileBrowser extends HTMLElement {
 			const dropName = Path.basename(dropPath);
 			const get = (Local as any).createGetter('menuFileOnDrop');
 
-			// 创建菜单选项
 			const menuItems: any[] = [];
 			switch ((dragging as any).dropMode) {
 				case 'move':
@@ -418,7 +395,6 @@ export class FileBrowser extends HTMLElement {
 					break;
 			}
 
-			// 弹出菜单
 			(Menu as any).popup(
 				{
 					x: event.clientX,
@@ -427,12 +403,10 @@ export class FileBrowser extends HTMLElement {
 				menuItems
 			);
 
-			// 创建项目后不能触发拖拽结束事件
 			this.dragend();
 		}
 	}
 
-	// 操作系统 - 拖拽开始事件
 	osDragstart(event: DragEvent): void {
 		if (!this.dragging) {
 			this.dragging = event;
@@ -446,7 +420,6 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 操作系统 - 拖拽结束事件
 	osDragend(event?: DragEvent): void {
 		if (this.dragging) {
 			const { dropTarget } = this.dragging as any;
@@ -461,12 +434,10 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 操作系统 - 拖拽离开事件
 	osDragleave(event: DragEvent): void {
 		return this.dragleave(event);
 	}
 
-	// 操作系统 - 拖拽悬停事件
 	osDragover(event: DragEvent): void {
 		const { dragging } = this;
 		if (dragging) {
@@ -507,7 +478,6 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	// 操作系统 - 拖拽释放事件
 	osDrop(event: DragEvent): void {
 		const { files } = (event as any).dataTransfer;
 		if (files.length === 0) {

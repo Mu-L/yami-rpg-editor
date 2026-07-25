@@ -2,33 +2,25 @@ import { $, getElementWriter } from '../util/dom.ts';
 import { Inspector } from './inspector.ts';
 import { UI } from '../ui/ui-window.ts';
 
-// ******************************** 元素 - 引用页面 ********************************
-
 {
 	const UIReference = {
-		// properties
 		owner: UI,
 		target: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	UIReference.initialize = function () {
-		// 侦听事件
 		const elements = $('#uiReference-prefabId, #uiReference-synchronous');
 		elements.on('input', this.paramInput);
 		elements.on('focus', Inspector.inputFocus);
 		elements.on('blur', Inspector.inputBlur(this, UI));
 	};
 
-	// 创建引用
 	UIReference.create = function () {
 		const transform = Inspector.uiElement.createTransform();
 		transform.width = 100;
@@ -50,12 +42,10 @@ import { UI } from '../ui/ui-window.ts';
 		};
 	};
 
-	// 打开数据
 	UIReference.open = function (node) {
 		if (this.target !== node) {
 			this.target = node;
 
-			// 写入数据
 			const write = getElementWriter('uiReference', node);
 			write('prefabId');
 			write('synchronous');
@@ -63,7 +53,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 关闭数据
 	UIReference.close = function () {
 		if (this.target) {
 			UI.list.unselect(this.target);
@@ -73,7 +62,6 @@ import { UI } from '../ui/ui-window.ts';
 		}
 	};
 
-	// 更新数据
 	UIReference.update = function (node, key, value) {
 		UI.planToSave();
 		// const element = node.instance
@@ -100,7 +88,6 @@ import { UI } from '../ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	UIReference.paramInput = function (event) {
 		UIReference.update(UIReference.target, Inspector.getKey(this), this.read());
 	};

@@ -4,8 +4,6 @@ import { TextHistory } from './text-history.ts';
 import { Timer } from '../util/timer.ts';
 import { TextBox } from './text-box.ts';
 
-// ******************************** 文本区域 ********************************
-
 export class TextArea extends HTMLElement {
 	input: HTMLElement;
 	focusEventEnabled: boolean;
@@ -14,7 +12,6 @@ export class TextArea extends HTMLElement {
 	constructor() {
 		super();
 
-		// 创建输入框
 		const input = document.createElement('textarea');
 		input.history = new TextHistory(input);
 		input.on('keydown', this.inputKeydown);
@@ -22,29 +19,24 @@ export class TextArea extends HTMLElement {
 		input.listenDraggingScrollbarEvent();
 		this.appendChild(input);
 
-		// 设置属性
 		this.input = input;
 		this.focusEventEnabled = false;
 		this.blurEventEnabled = false;
 
-		// 添加事件侦听器 - Mac
 		if (process.platform === 'darwin') {
 			input.on('keydown', TextBox.macInputKeydown);
 		}
 	}
 
-	// 读取数据
 	read(): string {
 		return this.input.value;
 	}
 
-	// 写入数据
 	write(value: string): void {
 		this.input.value = value;
 		this.input.history.reset();
 	}
 
-	// 插入数据
 	insert(value: string): void {
 		this.input.dispatchEvent(
 			new InputEvent('beforeinput', {
@@ -56,26 +48,22 @@ export class TextArea extends HTMLElement {
 		document.execCommand('insertText', false, value);
 	}
 
-	// 启用元素
 	enable() {
 		if (this.removeClass('disabled')) {
 			this.showChildNodes();
 		}
 	}
 
-	// 禁用元素
 	disable() {
 		if (this.addClass('disabled')) {
 			this.hideChildNodes();
 		}
 	}
 
-	// 获得焦点
 	getFocus(mode: any) {
 		return this.input.getFocus(mode);
 	}
 
-	// 输入框 - 键盘按下事件
 	inputKeydown(event: any) {
 		switch (event.code) {
 			case 'Enter':
@@ -85,9 +73,6 @@ export class TextArea extends HTMLElement {
 				}
 				break;
 		}
-		// 文本区域有内边距时滚动条行为有缺陷
-		// 在输入时临时改变内边距
-		// 让滚动条滑动到正确的位置
 		if (!TextArea.target) {
 			TextArea.target = this;
 			TextArea.timer.add();
@@ -95,7 +80,6 @@ export class TextArea extends HTMLElement {
 		}
 	}
 
-	// 输入框 - 输入事件
 	inputInput(event: any) {
 		if (!TextArea.target) {
 			TextArea.target = this;
@@ -104,7 +88,6 @@ export class TextArea extends HTMLElement {
 		}
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -131,10 +114,8 @@ export class TextArea extends HTMLElement {
 		}
 	}
 
-	// 静态 - 文本区域目标元素
 	static target = null;
 
-	// 静态 - 文本区域计时器
 	static timer = new Timer({
 		duration: 0,
 		callback: (timer) => {

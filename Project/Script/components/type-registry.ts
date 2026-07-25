@@ -2,9 +2,7 @@ import { Data } from '../data/data-object.ts';
 import { Attribute } from '../attribute/attribute-window.ts';
 import { Enum } from '../enum/enum-window.ts';
 
-// ******************************** 类型注册表 ********************************
-
-/** 参数面板契约（create 形参 pane 的 9 个工厂方法） */
+// 参数面板契约（create 形参 pane 的 9 个工厂方法）
 type Pane = HTMLElement & {
 	createCheckBox(): any;
 	createColorBox(): any;
@@ -17,7 +15,7 @@ type Pane = HTMLElement & {
 	createTextBox(): any;
 };
 
-/** 参数契约（create 形参 param 的 7 个属性） */
+// 参数契约（create 形参 param 的 7 个属性）
 type Param = {
 	dataItems?: any[];
 	decimals?: number;
@@ -49,7 +47,6 @@ export const TypeRegistry: {
 	}
 };
 
-// 基础类型
 TypeRegistry.register('boolean', {
 	component: 'check-box',
 	create(pane: Pane) {

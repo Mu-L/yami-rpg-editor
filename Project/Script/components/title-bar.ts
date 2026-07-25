@@ -1,23 +1,18 @@
 ﻿import { Window } from '../tools/window-object.ts';
 
-// ******************************** 标题栏 ********************************
-
 export class TitleBar extends HTMLElement {
 	dragging: PointerEvent | null;
 
 	constructor() {
 		super();
 
-		// 设置属性
 		this.dragging = null;
 
-		// 侦听事件
 		this.on('pointerdown', this.pointerdown);
 		this.on('click', this.mouseclick);
 		this.on('doubleclick', this.doubleclick);
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		if (this.dragging) {
 			return;
@@ -41,7 +36,6 @@ export class TitleBar extends HTMLElement {
 							let right = window.innerWidth - width;
 							let bottom = window.innerHeight - height;
 							if (document.body.hasClass('border')) {
-								// left和top的偏移由css:margin来填充
 								const dpx = 1 / window.devicePixelRatio;
 								right -= dpx * 2;
 								bottom -= dpx * 2;
@@ -73,7 +67,6 @@ export class TitleBar extends HTMLElement {
 		}
 	}
 
-	// 鼠标点击事件
 	mouseclick(event: Event): void {
 		const target = event.target as HTMLElement;
 		switch (target.tagName) {
@@ -101,7 +94,6 @@ export class TitleBar extends HTMLElement {
 		}
 	}
 
-	// 鼠标双击事件
 	doubleclick(event: Event): void {
 		const target = event.target as HTMLElement;
 		if (target instanceof TitleBar && target.querySelector('maximize')) {

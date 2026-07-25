@@ -2,8 +2,6 @@
 import { createPropertyWindow } from './property-window-factory.ts';
 import { Command } from './command-object.ts';
 
-// ******************************** 设置图像 - 属性窗口 ********************************
-
 export const ImageProperty = createPropertyWindow({
 	prefix: 'setImage',
 	locale: 'command.setImage',

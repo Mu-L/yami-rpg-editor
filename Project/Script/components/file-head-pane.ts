@@ -3,8 +3,6 @@ import { Menu } from './menu-list.ts';
 import { TextBox } from './text-box.ts';
 import { FolderItem } from '../file/folder-item.ts';
 
-// ******************************** 文件头部面板 ********************************
-
 export class FileHeadPane extends HTMLElement {
 	address: HTMLElement & { [k: string]: any };
 	searcher: HTMLElement & { [k: string]: any };
@@ -15,17 +13,13 @@ export class FileHeadPane extends HTMLElement {
 	constructor() {
 		super();
 
-		// 设置属性
-		// 注意：自定义元素 constructor 期间禁止设置反射 attribute（addClass / name / hotkey 等会
-		// 反射为 DOM attribute，触发 "The result must not have attributes"）。
-		// 仅创建元素实例与赋值实例字段；属性赋值推迟到 connectedCallback。
+		// 注意：自定义元素 constructor 期间禁止设置反射 attribute（addClass / name / hotkey 等会 反射为 DOM attribute，触发 "The result must not have attributes"）。仅创建元素实例与赋值实例字段；属性赋值推迟到 connectedCallback。
 		this.address = document.createElement('file-head-address');
 		this.back = document.createElement('item');
 		this.back.textContent = '\uf0a8';
 		this.searcher = new TextBox();
 		this.view = new SliderBox();
 
-		// 侦听事件
 		this.on('pointerdown', this.pointerdown);
 		this.address.on('pointerdown', this.addressPointerdown);
 		this.back.on('click', this.backButtonClick);
@@ -35,12 +29,10 @@ export class FileHeadPane extends HTMLElement {
 		this.view.on('input', this.viewInput);
 	}
 
-	// 自定义元素升级后（已连入文档）才允许设置属性
 	connectedCallback() {
 		if (this._built) return;
 		this._built = true;
-		// 同步 appendChild 子元素：升级时序中 Local.update 会调 getElementsByName('back'/'view'/'search')
-		// 找子元素赋本地化，异步 setTimeout 会导致 Local.update 扑空报 'key is invalid'
+		// 同步 appendChild 子元素：升级时序中 Local.update 会调 getElementsByName('back'/'view'/'search') 找子元素赋本地化，异步 setTimeout 会导致 Local.update 扑空报 'key is invalid'
 		if (this.childElementCount === 0) {
 			this.appendChild(this.address);
 			this.appendChild(this.back);
@@ -61,7 +53,6 @@ export class FileHeadPane extends HTMLElement {
 		this.view.setAttribute('hotkey', 'Ctrl+Wheel');
 	}
 
-	// 更新地址
 	updateAddress() {
 		const { browser, nav, body } = this.links;
 		const folders = nav.selections;
@@ -116,7 +107,6 @@ export class FileHeadPane extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: any) {
 		if (!(event.target instanceof HTMLInputElement)) {
 			event.preventDefault();
@@ -127,7 +117,6 @@ export class FileHeadPane extends HTMLElement {
 		}
 	}
 
-	// 地址栏 - 指针按下事件
 	addressPointerdown(event: PointerEvent) {
 		switch (event.button) {
 			case 0: {
@@ -207,14 +196,12 @@ export class FileHeadPane extends HTMLElement {
 		}
 	}
 
-	// 返回按钮 - 鼠标点击事件
 	backButtonClick(event: any) {
 		const head = this.parentNode;
 		const { browser } = head.links;
 		browser.backToParentFolder();
 	}
 
-	// 搜索框 - 输入事件
 	searcherInput(event: any) {
 		if (event.inputType !== 'insertCompositionText') {
 			const head = this.parentNode;
@@ -223,13 +210,11 @@ export class FileHeadPane extends HTMLElement {
 		}
 	}
 
-	// 视图模式 - 获得焦点事件
 	viewFocus(event: any) {
 		const head = this.parentNode;
 		head.links.body.content.focus();
 	}
 
-	// 视图模式 - 输入事件
 	viewInput(event: any) {
 		const head = this.parentNode;
 		head.links.body.setViewIndex(this.read());

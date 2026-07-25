@@ -1,6 +1,3 @@
-﻿// ******************************** 元素访问器 ********************************
-
-// 元素访问器 - 名称
 Object.defineProperty(HTMLElement.prototype, 'name', {
 	get: function (this: HTMLElement): string | null {
 		return this.getAttribute('name');
@@ -10,7 +7,6 @@ Object.defineProperty(HTMLElement.prototype, 'name', {
 	}
 });
 
-// 元素访问器 - 内部高度
 Object.defineProperty(HTMLElement.prototype, 'innerHeight', {
 	get: function (this: HTMLElement): number {
 		let padding = this._paddingTop;

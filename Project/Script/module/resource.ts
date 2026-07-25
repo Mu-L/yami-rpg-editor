@@ -76,14 +76,12 @@ export const Resources = new (class {
 	}
 
 	async initialize() {
-		// 更新本地化
 		$('#resource-check-version').textContent = Local.get('confirmation.resource-check-version');
 		$('#resource-open-dir').textContent = Local.get('confirmation.resource-open-dir');
 
 		$('#resource-check-version').on('click', () => this.checkVersion());
 		$('#resource-open-dir').on('click', () => ipcRenderer.send('open-path', GlobalPath));
 
-		// 更新节点信息
 		void this.updateNodeInfo();
 	}
 
@@ -121,9 +119,7 @@ export const Resources = new (class {
 		return { nodeName, nodeUrl };
 	}
 
-	// 获得最新版本编辑器远程公告
 	async getRemoteAnnouncement() {
-		// 加载社区版公告
 		try {
 			const response = await fetch(
 				'https://api.github.com/repos/Open-Yami-Community/yami-rpg-editor/releases'
@@ -137,44 +133,35 @@ export const Resources = new (class {
 		}
 	}
 
-	// 获取第一个公告
 	getFirstAnnouncementContent(text: any) {
 		if (!text) return '';
 
-		// 按换行符分割文本
 		const lines = text.split('\n');
 		const contentLines = [];
 		let foundFirstDate = false;
 
-		// 正则表达式匹配日期格式：YYYY-MM-DD
 		const dateRegex = /^\s*\d{4}-\d{2}-\d{2}/;
 
 		for (const line of lines) {
-			// 检查当前行是否是日期行
 			const isDateLine = dateRegex.test(line);
 
 			if (isDateLine) {
 				if (!foundFirstDate) {
-					// 找到第一个日期行，标记开始记录内容
 					foundFirstDate = true;
-					continue; // 跳过日期行本身
+					continue;
 				} else {
-					// 找到第二个日期行，停止记录
 					break;
 				}
 			}
 
-			// 如果已经找到了第一个日期行，且当前行不是日期行，则收集内容
 			if (foundFirstDate) {
 				contentLines.push(line);
 			}
 		}
 
-		// 将收集到的行合并，并去除首尾空白
 		return contentLines.join('\n').trim();
 	}
 
-	// 测试节点 ping
 	async pingNode(url) {
 		if (!url) return -1;
 
@@ -196,33 +183,29 @@ export const Resources = new (class {
 		}
 	}
 
-	// 更新节点信息显示
 	async updateNodeInfo() {
 		const { nodeName, nodeUrl } = this.getCurrentNodeInfo();
 		const get = Local.createGetter('confirmation');
 
-		// 更新节点名称
 		const nodeLabel = get('resource-current-node-label') || '当前节点';
 		this.currentNodeText.textContent = `${nodeLabel}: ${nodeName}`;
 		this.currentNodeText.style.display = 'block';
 		this.currentNodeText.style.visibility = 'visible';
 
-		// 显示测试中
 		const testingLabel = get('resource-node-ping-testing') || '测试中';
 		this.nodePingText.textContent = `Ping: ${testingLabel}...`;
 		this.nodePingText.style.color = '#888';
 		this.nodePingText.style.display = 'block';
 		this.nodePingText.style.visibility = 'visible';
 
-		// 测试 ping
 		const ping = await this.pingNode(nodeUrl);
 
 		if (ping >= 0) {
-			let color = '#4caf50'; // 绿色
+			let color = '#4caf50';
 			if (ping > 1000) {
-				color = '#f44336'; // 红色
+				color = '#f44336';
 			} else if (ping > 500) {
-				color = '#ff9800'; // 橙色
+				color = '#ff9800';
 			}
 
 			this.nodePingText.textContent = `Ping: ${ping}ms`;
@@ -230,13 +213,11 @@ export const Resources = new (class {
 		} else {
 			const failedLabel = get('resource-node-ping-failed') || '失败';
 			this.nodePingText.textContent = `Ping: ${failedLabel}`;
-			this.nodePingText.style.color = '#f44336'; // 红色
+			this.nodePingText.style.color = '#f44336';
 		}
 	}
 
-	/**
-    @description 0 版本一致 | 1 v1版本大 | -1 v2版本大
-	*/
+	/** @description 0 版本一致 | 1 v1版本大 | -1 v2版本大 */
 	compareVersions(v1, v2) {
 		const normalize = (version) => version.replace(/^v/, '');
 
@@ -259,14 +240,12 @@ export const Resources = new (class {
 		return 0;
 	}
 
-	// 下载远程资源信息
 	async downloadNetMeta() {
 		await this.updateFastGithubArray().then((data) => {
 			this._fastGithubArray = data;
 		});
 		const json = `${this.fastGithubPrefix}Open-Yami-Community/yami-rpg-editor/refs/heads/main/pack.json`;
-		// .catch 返 { data: [] } 而非 undefined——下游 netMeta.data 链兜底，
-		// 避 GitHub raw 偶发 502 Bad Gateway 时 checkVersion 裸取 .data/.version 炸
+		// .catch 返 { data: [] } 避 GitHub raw 偶发 502 时裸取 .data 炸
 		return await Net.get(json, {
 			headers: {
 				type: 'application/json'
@@ -286,7 +265,6 @@ export const Resources = new (class {
 		);
 	}
 
-	// 格式化文件大小
 	formatFileSize(bytes: any) {
 		if (bytes < 1024) {
 			return `${bytes} B`;
@@ -299,7 +277,6 @@ export const Resources = new (class {
 		}
 	}
 
-	// 获取文件大小
 	async getFileSize(resourceName) {
 		try {
 			const url = `https://github.com/Open-Yami-Community/yami-rpg-editor/releases/download/win/${resourceName}_pack.zip`;
@@ -321,7 +298,6 @@ export const Resources = new (class {
 		}
 	}
 
-	// 读取本地 tempalte.json
 	readTemplate() {
 		const tempPath = Path.resolve(TemplatesPath, 'template.json');
 		if (!fs.existsSync(tempPath)) {
@@ -331,7 +307,6 @@ export const Resources = new (class {
 		return JSON.parse(fs.readFileSync(tempPath));
 	}
 
-	// 写入本地 tempalte.json
 	writeTemplate(val: any) {
 		const tempPath = Path.resolve(TemplatesPath, 'template.json');
 		fs.writeFileSync(tempPath, JSON.stringify(val));
@@ -354,7 +329,6 @@ export const Resources = new (class {
 		let text = '';
 		let isUpdate = false;
 		if (CommunityVersion !== version) {
-			// 需要更新(Editor)
 			text = `编辑器 ${CommunityVersion} -> ${version}`;
 			isUpdate = true;
 		}
@@ -376,7 +350,7 @@ export const Resources = new (class {
 
 	async checkVersion() {
 		let isReOpen = false;
-		setPackMeta(this.readTemplate()); // 读取本地模板信息
+		setPackMeta(this.readTemplate());
 		// downloadNetMeta 失败兜底空响应
 		const netMeta = await this.downloadNetMeta();
 		const jsonParse = netMeta?.data ?? [];
@@ -414,10 +388,10 @@ export const Resources = new (class {
 	}
 
 	temp(val: any) {
-		const value = val.replace(/[.]/g, '_'); // dom id 不能特殊字符
+		const value = val.replace(/[.]/g, '_');
 		const targetPath = Path.resolve(TemplatesPath, `${val}_pack.zip`);
 		const _check = () => {
-			setNoResourceObj(isNoResource()); // 更新最新数据
+			setNoResourceObj(isNoResource());
 			if ((NoResourceObj as any)[val].check) {
 				button.disable();
 				buttonDelete.enable();
@@ -472,7 +446,6 @@ export const Resources = new (class {
 
 		button.textContent = Local.get('confirmation.resource-download');
 
-		// 获取文件大小
 		this.getFileSize(val)
 			.then((size) => {
 				const get = Local.createGetter('confirmation');
@@ -489,16 +462,13 @@ export const Resources = new (class {
 				sizeText.textContent = `${sizeLabel}: ${get('resource-size-unknown') || '未知'}`;
 			});
 
-		// 下载状态管理
 		let cancelDownload = null;
 		let isDownloading = false;
 		let isDecompressing = false;
 		let lastLoaded = 0;
 		let lastTime = Date.now();
 
-		// 绑定下载
 		button.on('click', () => {
-			// 防止重复点击
 			if (isDownloading || isDecompressing) return;
 			const url = `https://github.com/Open-Yami-Community/yami-rpg-editor/releases/download/win/${val}_pack.zip`;
 			const downloadurl = `${this.fastGithubPrefix}${url}`;
@@ -509,7 +479,6 @@ export const Resources = new (class {
 			pauseButton.textContent = Local.get('confirmation.resource-pause') || '暂停';
 			progressContainer.style.display = 'flex';
 
-			// 重置进度
 			progressBar.style.width = '0%';
 			progressText.textContent = '0%';
 			speedText.textContent = Local.get('confirmation.resource-speed') || '速度: 0 KB/s';
@@ -527,18 +496,15 @@ export const Resources = new (class {
 
 					const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
 
-					// 更新进度条和百分比
 					progressBar.style.width = `${percent}%`;
 					progressText.textContent = `${percent}%`;
 
-					// 计算速度
 					const now = Date.now();
-					const timeDiff = (now - lastTime) / 1000; // 秒
+					const timeDiff = (now - lastTime) / 1000;
 					const loadedDiff = progressEvent.loaded - lastLoaded;
 
 					if (timeDiff > 0.5) {
-						// 每0.5秒更新一次速度
-						const speed = loadedDiff / timeDiff; // 字节/秒
+						const speed = loadedDiff / timeDiff;
 						let speedText_str = '';
 
 						if (speed < 1024) {
@@ -563,7 +529,6 @@ export const Resources = new (class {
 					progressContainer.style.display = 'none';
 					pauseButton.style.display = 'none';
 
-					// 开始解压
 					button.textContent = Local.get('confirmation.resource-decompression');
 					button.disable();
 					progressContainer.style.display = 'flex';
@@ -578,13 +543,11 @@ export const Resources = new (class {
 						}
 					})
 						.then(async () => {
-							// 更新template.json本地版本号
 							const remoteData = (await this.downloadNetMeta()).data;
 							const j = this.readTemplate();
 							j[val] = remoteData.find((v) => val === v.path)?.version ?? '1.0.0';
 							this.writeTemplate(j);
-							// 下载完成，也解压完成
-							setPackMeta(this.readTemplate()); // 重新读取本地模板信息
+							setPackMeta(this.readTemplate());
 							isDecompressing = false;
 							_check();
 							button.textContent = Local.get('confirmation.resource-download');
@@ -593,7 +556,6 @@ export const Resources = new (class {
 								'linear-gradient(90deg, #4caf50, #66bb6a)';
 						})
 						.catch((e) => {
-							// 解压失败
 							isDecompressing = false;
 							button.enable();
 							progressContainer.style.display = 'none';
@@ -624,12 +586,9 @@ export const Resources = new (class {
 				});
 		});
 
-		// 绑定暂停
 		pauseButton.on('click', () => {
-			// 防止重复点击
 			if (!isDownloading) return;
 
-			// 取消下载
 			if (cancelDownload) {
 				cancelDownload();
 				cancelDownload = null;
@@ -651,7 +610,6 @@ export const Resources = new (class {
 		_check();
 	}
 
-	// 加载列表
 	load() {
 		setNoResourceObj(isNoResource());
 		this.content.innerHTML = '';
@@ -663,7 +621,7 @@ export const Resources = new (class {
 
 	async open() {
 		Window.open('resource');
-		this.updateNodeInfo(); // 更新节点信息
+		this.updateNodeInfo();
 		this.load();
 	}
 })();

@@ -13,10 +13,7 @@ import { UndoManager } from '../tools/undo-manager.ts';
 import { Window } from '../tools/window-object.ts';
 import { RadioProxy } from '../components/radio-proxy.ts';
 
-// ******************************** 属性窗口 ********************************
-
 export const Attribute = {
-	// properties
 	list: $('#attribute-list'),
 	panel: $('#attribute-properties-flex').hide(),
 	searcher: $('#attribute-searcher'),
@@ -36,7 +33,6 @@ export const Attribute = {
 	settingKeys: null,
 	history: null,
 	changed: false,
-	// methods
 	initialize: null,
 	open: null,
 	undo: null,
@@ -56,7 +52,6 @@ export const Attribute = {
 	unpackAttribute: null,
 	packAttribute: null,
 	saveHistory: null,
-	// events
 	windowClose: null,
 	windowClosed: null,
 	keydown: null,
@@ -79,7 +74,6 @@ export const Attribute = {
 	apply: null
 };
 
-// list methods
 Attribute.list.copy = null;
 Attribute.list.paste = null;
 Attribute.list.delete = null;
@@ -101,8 +95,7 @@ Attribute.list.onCreate = null;
 Attribute.list.onDelete = null;
 Attribute.list.onResume = null;
 
-// attribute-type 是一组 <radio-box name="attribute-type">，共享逻辑控件由
-// RadioBox 升级时塞入 RadioProxy.map，故 inputs.type 不能顶层求值，改为惰性 getter
+// attribute-type 是一组 <radio-box name="attribute-type">，共享逻辑控件由 RadioBox 升级时塞入 RadioProxy.map，故 inputs.type 不能顶层求值，改为惰性 getter
 Object.defineProperty(Attribute.inputs, 'type', {
 	get() {
 		return RadioProxy.map['attribute-type'];
@@ -111,9 +104,7 @@ Object.defineProperty(Attribute.inputs, 'type', {
 	configurable: true
 });
 
-// 初始化
 Attribute.initialize = function () {
-	// 绑定属性列表
 	const { list } = this;
 	list.removable = true;
 	list.renamable = true;
@@ -126,13 +117,10 @@ Attribute.initialize = function () {
 	list.creators.push(list.createNoteIcon);
 	list.creators.push(list.updateNoteIcon);
 
-	// 设置面板属性默认值
 	this.panel.attribute = null;
 
-	// 设置列表搜索框按钮
 	this.searcher.addCloseButton();
 
-	// 设置历史操作处理器
 	History.processors['attribute-list-operation'] = (operation, data) => {
 		const { response } = data;
 		list.restore(operation, response);
@@ -218,7 +206,6 @@ Attribute.initialize = function () {
 		this.changed = true;
 	};
 
-	// 侦听事件
 	$('#attribute').on('close', this.windowClose);
 	$('#attribute').on('closed', this.windowClosed);
 	list.on('keydown', this.listKeydown);
@@ -245,7 +232,6 @@ Attribute.initialize = function () {
 	$('#attribute-apply').on('click', this.apply);
 };
 
-// 打开窗口
 Attribute.open = function (target = null, mode = 'normal') {
 	this.mode = mode;
 	this.target = target;
@@ -255,7 +241,6 @@ Attribute.open = function (target = null, mode = 'normal') {
 	this.unpackAttribute();
 	Window.open('attribute');
 
-	// 查询项目并更新列表
 	const list = this.list;
 	const item = !target ? undefined : this.getItemById(target.read());
 	if (item) {
@@ -268,35 +253,29 @@ Attribute.open = function (target = null, mode = 'normal') {
 	} else {
 		list.update();
 		list.restoreScroll();
-		// 打开枚举输入框时默认选择第一项
 		if (target instanceof Object) {
 			list.select(list.data[0]);
 		}
 	}
 
-	// 列表获得焦点
 	list.getFocus();
 
-	// 侦听事件
 	window.on('keydown', this.keydown);
 	window.on('keydown', Reference.getKeydownListener(list, 'attribute'));
 };
 
-// 撤销操作
 Attribute.undo = function () {
 	if (this.history.canUndo()) {
 		this.history.restore('undo');
 	}
 };
 
-// 重做操作
 Attribute.redo = function () {
 	if (this.history.canRedo()) {
 		this.history.restore('redo');
 	}
 };
 
-// 创建ID
 Attribute.createId = function () {
 	let id;
 	do {
@@ -305,7 +284,6 @@ Attribute.createId = function () {
 	return id;
 };
 
-// 注册属性
 Attribute.register = function (item) {
 	Attribute.idMap[item.id] = true;
 	if (item.class === 'folder') {
@@ -315,7 +293,6 @@ Attribute.register = function (item) {
 	}
 };
 
-// 取消注册属性
 Attribute.unregister = function (item) {
 	delete Attribute.idMap[item.id];
 	if (item.class === 'folder') {
@@ -325,7 +302,6 @@ Attribute.unregister = function (item) {
 	}
 };
 
-// 获取ID匹配的项目
 Attribute.getItemById = (function IIFE() {
 	const find = (items, id) => {
 		const length = items.length;
@@ -348,7 +324,6 @@ Attribute.getItemById = (function IIFE() {
 	};
 })();
 
-// 设置文件夹分组
 Attribute.setFolderGroup = function (folder, newGroup) {
 	const oldGroup = folder.element.group;
 	if (oldGroup !== newGroup) {
@@ -364,32 +339,26 @@ Attribute.setFolderGroup = function (folder, newGroup) {
 	}
 };
 
-// 获取属性群组
 Attribute.getGroup = function (groupKey) {
 	return Data.attribute.context.getGroup(groupKey);
 };
 
-// 获取属性
 Attribute.getAttribute = function (attrId) {
 	return Data.attribute.context.getAttribute(attrId);
 };
 
-// 获取群组属性
 Attribute.getGroupAttribute = function (groupKey, attrId) {
 	return Data.attribute.context.getGroupAttribute(groupKey, attrId);
 };
 
-// 获取默认属性ID
 Attribute.getDefAttributeId = function (groupKey, type) {
 	return Data.attribute.context.getDefAttributeId(groupKey, type);
 };
 
-// 获取属性选项列表
 Attribute.getAttributeItems = function (groupKey, attrType, allowNone) {
 	return Data.attribute.context.getAttributeItems(groupKey, attrType, allowNone);
 };
 
-// 打开属性面板
 Attribute.openPropertyPanel = function (attribute) {
 	const panel = this.panel;
 	if (panel.attribute !== attribute) {
@@ -404,7 +373,6 @@ Attribute.openPropertyPanel = function (attribute) {
 	}
 };
 
-// 关闭属性面板
 Attribute.closePropertyPanel = function () {
 	const panel = this.panel;
 	if (panel.attribute) {
@@ -413,9 +381,7 @@ Attribute.closePropertyPanel = function () {
 	}
 };
 
-// 解包属性数据
 Attribute.unpackAttribute = (function IIFE() {
-	// 使用引用文件夹类来保存展开状态
 	class ReferencedFolder {
 		data: any;
 		class: string;
@@ -430,12 +396,10 @@ Attribute.unpackAttribute = (function IIFE() {
 			this.children = clone(item.children);
 		}
 
-		// 读取展开状态
 		get expanded() {
 			return this.data.expanded;
 		}
 
-		// 写入展开状态
 		set expanded(value: any) {
 			this.data.expanded = value;
 			File.planToSave(Data.manifest.project.attribute);
@@ -459,14 +423,12 @@ Attribute.unpackAttribute = (function IIFE() {
 		this.idMap = {};
 		this.data = clone(Data.attribute.keys);
 		this.settings = Object.clone(Data.attribute.settings);
-		// 创建特殊分组的键列表
 		if (!this.settingKeys) {
 			this.settingKeys = Object.keys(this.settings);
 		}
 	};
 })();
 
-// 打包属性数据
 Attribute.packAttribute = (function IIFE() {
 	const clone = (items) => {
 		const length = items.length;
@@ -475,7 +437,6 @@ Attribute.packAttribute = (function IIFE() {
 			const item = items[i];
 			if (item.class !== 'folder') {
 				const copy = Object.clone(item);
-				// 删除无效的枚举ID
 				if (copy.enum !== '' && copy.type !== 'enum') {
 					copy.enum = '';
 				}
@@ -499,7 +460,6 @@ Attribute.packAttribute = (function IIFE() {
 	};
 })();
 
-// 保存操作历史
 Attribute.saveHistory = function (item, key, value) {
 	const type = `attribute-${key}-change`;
 	const history = this.history;
@@ -520,7 +480,6 @@ Attribute.saveHistory = function (item, key, value) {
 	}
 };
 
-// 窗口 - 关闭事件
 Attribute.windowClose = function (event) {
 	this.list.saveScroll();
 	if (this.changed) {
@@ -546,7 +505,6 @@ Attribute.windowClose = function (event) {
 	}
 }.bind(Attribute);
 
-// 窗口 - 已关闭事件
 Attribute.windowClosed = function (event) {
 	this.data = null;
 	this.idMap = null;
@@ -560,10 +518,8 @@ Attribute.windowClosed = function (event) {
 	window.off('keydown', Reference.getKeydownListener(this.list));
 }.bind(Attribute);
 
-// 键盘按下事件
 Attribute.keydown = Shortcuts.createUndoRedo(Attribute);
 
-// 列表 - 键盘按下事件
 Attribute.listKeydown = function (event) {
 	const item = this.read();
 	if (event.cmdOrCtrlKey) {
@@ -592,7 +548,6 @@ Attribute.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 Attribute.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0:
@@ -607,7 +562,6 @@ Attribute.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 鼠标双击事件
 Attribute.listDoubleclick = function (event) {
 	switch (Attribute.mode) {
 		case 'group':
@@ -627,7 +581,6 @@ Attribute.listDoubleclick = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 Attribute.listSelect = function (event) {
 	const item = event.value;
 	return item.class !== 'folder'
@@ -635,7 +588,6 @@ Attribute.listSelect = function (event) {
 		: Attribute.closePropertyPanel();
 };
 
-// 列表 - 记录事件
 Attribute.listRecord = function (event) {
 	Attribute.changed = true;
 	const response = event.value;
@@ -658,12 +610,10 @@ Attribute.listRecord = function (event) {
 	}
 };
 
-// 列表 - 打开事件
 Attribute.listOpen = function (event) {
 	Attribute.listDoubleclick(event);
 };
 
-// 列表 - 菜单弹出事件
 Attribute.listPopup = function (event) {
 	const item = event.value;
 	const selected = !!item;
@@ -792,7 +742,6 @@ Attribute.listPopup = function (event) {
 	);
 };
 
-// 名字输入框 - 输入事件
 Attribute.nameInput = function (event) {
 	const item = Attribute.panel.attribute;
 	if (item.class !== 'folder') {
@@ -803,7 +752,6 @@ Attribute.nameInput = function (event) {
 	}
 };
 
-// 键输入框 - 输入事件
 Attribute.keyInput = function (event) {
 	const item = Attribute.panel.attribute;
 	if (item.class !== 'folder') {
@@ -814,7 +762,6 @@ Attribute.keyInput = function (event) {
 	}
 };
 
-// 类型输入框 - 写入事件
 Attribute.typeWrite = function (event) {
 	const { style } = Attribute.inputs.enumBox;
 	switch (event.value) {
@@ -830,7 +777,6 @@ Attribute.typeWrite = function (event) {
 	}
 };
 
-// 类型输入框 - 输入事件
 Attribute.typeInput = function (event) {
 	const item = Attribute.panel.attribute;
 	Attribute.saveHistory(item, 'type', item.type);
@@ -839,7 +785,6 @@ Attribute.typeInput = function (event) {
 	Attribute.changed = true;
 };
 
-// 枚举输入框 - 输入事件
 Attribute.enumInput = function (event) {
 	const item = Attribute.panel.attribute;
 	Attribute.saveHistory(item, 'enum', item.enum);
@@ -847,7 +792,6 @@ Attribute.enumInput = function (event) {
 	Attribute.changed = true;
 };
 
-// 备注输入框 - 输入事件
 Attribute.noteInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const item = Attribute.panel.attribute;
@@ -858,7 +802,6 @@ Attribute.noteInput = function (event) {
 	}
 };
 
-// 面板 - 键盘按下事件
 Attribute.panelKeydown = function (event) {
 	switch (event.target.tagName) {
 		case 'INPUT':
@@ -877,7 +820,6 @@ Attribute.panelKeydown = function (event) {
 	}
 };
 
-// 搜索框 - 输入事件
 Attribute.searcherInput = function (event) {
 	if (event.inputType === 'insertCompositionText') {
 		return;
@@ -886,7 +828,6 @@ Attribute.searcherInput = function (event) {
 	Attribute.list.searchNodesDebounced(text);
 };
 
-// 确定按钮 - 鼠标点击事件
 Attribute.confirm = function (event) {
 	switch (this.mode) {
 		case 'normal':
@@ -914,16 +855,13 @@ Attribute.confirm = function (event) {
 	Window.close('attribute');
 }.bind(Attribute);
 
-// 应用按钮 - 鼠标点击事件
 Attribute.apply = function (event) {
 	if (this.changed) {
 		this.changed = false;
 
-		// 保存属性数据
 		this.packAttribute();
 		File.planToSave(Data.manifest.project.attribute);
 
-		// 发送属性改变事件
 		window.dispatchEvent(new Event('attributechange'));
 	}
 }.bind(Attribute);
@@ -939,8 +877,7 @@ Attribute.list.copy = function (item) {
 Attribute.list.paste = function (dItem) {
 	const copy = (Clipboard as any).read('yami.data.attribute');
 	if (copy) {
-		// 只有冲突时进行更换ID
-		// 支持跨项目复制保留ID
+		// 只有冲突时进行更换ID 支持跨项目复制保留ID
 		if (Attribute.idMap[copy.id]) {
 			copy.id = Attribute.createId();
 			copy.name += ' - Copy';
@@ -965,7 +902,6 @@ Attribute.list.delete = function (item) {
 						const index = elements.indexOf(item.element);
 						this.deleteNode(item);
 						Attribute.closePropertyPanel();
-						// 自动选择下一个列表项
 						const last = elements.count - 1;
 						const element = elements[Math.min(index, last)];
 						if (element instanceof HTMLElement) {

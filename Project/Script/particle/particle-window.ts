@@ -21,16 +21,12 @@ import { ImageTexture } from '../webgl/image-texture.ts';
 import { Matrix } from '../webgl/matrix2.ts';
 import { GL } from '../webgl/webgl-init.ts';
 
-// ******************************** 粒子窗口 ********************************
-
-// 粒子窗口状态
 type ParticleState = 'closed' | 'open';
 
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
 type ParticleMethod = ((...args: any[]) => any) | null;
 
 interface ParticleShape {
-	// properties
 	state: ParticleState;
 	page: HTMLElement;
 	head: HTMLElement;
@@ -56,7 +52,6 @@ interface ParticleShape {
 		unselect: ((...args: any[]) => any) | null;
 		updateItemName: ((...args: any[]) => any) | null;
 	};
-	// editor properties
 	dragging: any | null;
 	target: any | null;
 	paused: boolean;
@@ -86,15 +81,12 @@ interface ParticleShape {
 	centerOffsetX: any | null;
 	centerOffsetY: any | null;
 	padding: any | null;
-	// particle properties
 	context: any | null;
 	meta: any | null;
 	layers: any[] | null;
 	emitter: any | null;
-	// methods
 	initialize: (() => void) | null;
 	open: ParticleMethod;
-	// load(context) 运行时有参数 —— 不能用无参 ParticleMethod 契约
 	load: ((context?: any) => void) | null;
 	save: ParticleMethod;
 	close: (() => void) | null;
@@ -139,8 +131,6 @@ interface ParticleShape {
 	loadFromConfig: ParticleMethod;
 	saveToProject: ParticleMethod;
 	loadFromProject: ParticleMethod;
-	// load(context) 运行时有参数 —— 不能签为无参 (() => void) | null
-	// events
 	webglRestored: ParticleMethod;
 	windowResize: ParticleMethod;
 	themechange: ParticleMethod;
@@ -175,7 +165,6 @@ interface ParticleShape {
 }
 
 export const Particle: ParticleShape = {
-	// properties
 	state: 'closed',
 	page: $('#particle'),
 	head: $('#particle-head'),
@@ -184,7 +173,6 @@ export const Particle: ParticleShape = {
 	screen: $('#particle-screen'),
 	marquee: $('#particle-marquee'),
 	list: $('#particle-list'),
-	// editor properties
 	dragging: null,
 	target: null,
 	paused: false,
@@ -214,12 +202,10 @@ export const Particle: ParticleShape = {
 	centerOffsetX: null,
 	centerOffsetY: null,
 	padding: null,
-	// particle properties
 	context: null,
 	meta: null,
 	layers: null,
 	emitter: null,
-	// methods
 	initialize: null,
 	open: null,
 	load: null,
@@ -265,7 +251,6 @@ export const Particle: ParticleShape = {
 	loadFromConfig: null,
 	saveToProject: null,
 	loadFromProject: null,
-	// events
 	webglRestored: null,
 	windowResize: null,
 	themechange: null,
@@ -293,13 +278,11 @@ export const Particle: ParticleShape = {
 	listRecord: null,
 	listPopup: null,
 	listChange: null,
-	// classes
 	Emitter: null,
 	Layer: null,
 	Element: null
 };
 
-// list methods
 Particle.list.create = null;
 Particle.list.copy = null;
 Particle.list.paste = null;
@@ -317,12 +300,9 @@ Particle.list.onRemove = null;
 Particle.list.onDelete = null;
 Particle.list.onResume = null;
 
-// 初始化
 Particle.initialize = function () {
-	// 添加设置滚动方法
 	this.screen.addSetScrollMethod();
 
-	// 创建位移计时器
 	this.translationTimer = new Timer({
 		duration: Infinity,
 		update: (timer) => {
@@ -359,7 +339,6 @@ Particle.initialize = function () {
 		}
 	});
 
-	// 创建缩放计时器
 	this.zoomTimer = new Timer({
 		duration: 80,
 		update: (timer) => {
@@ -376,13 +355,10 @@ Particle.initialize = function () {
 		}
 	});
 
-	// 设置舞台边距
 	this.padding = 800;
 
-	// 创建变换矩阵
 	this.matrix = new Matrix();
 
-	// 绑定图层目录列表
 	const { list } = this;
 	list.removable = true;
 	list.renamable = true;
@@ -390,7 +366,6 @@ Particle.initialize = function () {
 	list.creators.push(list.createVisibilityIcon);
 	list.updaters.push(list.updateVisibilityIcon);
 
-	// 设置历史操作处理器
 	History.processors['particle-layer-create'] =
 		History.processors['particle-layer-delete'] =
 		History.processors['particle-layer-remove'] =
@@ -405,7 +380,6 @@ Particle.initialize = function () {
 		Particle.planToSave();
 	};
 
-	// 侦听事件
 	window.on('themechange', this.themechange);
 	window.on('datachange', this.datachange);
 	window.on('keydown', this.keydown);
@@ -432,7 +406,6 @@ Particle.initialize = function () {
 	this.list.on('change', this.listChange);
 };
 
-// 打开粒子动画
 Particle.open = function (context) {
 	if (this.context === context) {
 		return;
@@ -440,10 +413,8 @@ Particle.open = function (context) {
 	this.save();
 	this.close();
 
-	// 设置粒子元素舞台
 	Particle.Element.stage = this;
 
-	// 首次加载粒子动画
 	const { meta } = context;
 	if (!context.particle) {
 		context.particle = Data.particles[meta.guid];
@@ -472,7 +443,6 @@ Particle.open = function (context) {
 	}
 };
 
-// 加载数据
 Particle.load = function (context) {
 	if (!context.editor) {
 		context.editor = {
@@ -486,39 +456,30 @@ Particle.load = function (context) {
 	}
 	const { particle, editor } = context;
 
-	// 加载粒子属性
 	this.layers = particle.layers;
 
-	// 加载编辑器属性
 	this.emitter = editor.emitter;
 	this.history = editor.history;
 	this.centerX = editor.centerX;
 	this.centerY = editor.centerY;
 
-	// 开关暂停状态
 	this.switchPause(editor.paused);
 
-	// 更新列表
 	this.list.update();
 
-	// 更新过渡映射表
 	this.emitter.updateEasing();
 
-	// 计算发射器外部矩形
 	this.computeOuterRect();
 
-	// 设置目标对象
 	this.setTarget(editor.target);
 
 	UndoManager.setActive(Particle);
 };
 
-// 保存数据
 Particle.save = function () {
 	if (this.state === 'open') {
 		const { editor } = this.context;
 
-		// 保存编辑器属性
 		editor.target = this.target;
 		editor.emitter = this.emitter;
 		editor.history = this.history;
@@ -528,7 +489,6 @@ Particle.save = function () {
 	}
 };
 
-// 关闭粒子动画
 Particle.close = function () {
 	if (this.state !== 'closed') {
 		this.screen.blur();
@@ -546,40 +506,33 @@ Particle.close = function () {
 	}
 };
 
-// 销毁粒子动画
 Particle.destroy = function (context) {
 	if (!context.editor) return;
 	if (this.context === context) {
 		this.save();
 		this.close();
 	}
-	// 销毁粒子发射器
 	context.editor.emitter.destroy();
-	// 销毁绑定的元素
 	TreeList.deleteCaches(context.particle.layers);
 };
 
-// 重新启动
 Particle.restart = function () {
 	this.emitter.clear();
 	this.requestRendering();
 };
 
-// 撤销操作
 Particle.undo = function () {
 	if (this.state === 'open' && !this.dragging && this.history.canUndo()) {
 		this.history.restore('undo');
 	}
 };
 
-// 重做操作
 Particle.redo = function () {
 	if (this.state === 'open' && !this.dragging && this.history.canRedo()) {
 		this.history.restore('redo');
 	}
 };
 
-// 设置速度
 Particle.setSpeed = (function IIFE() {
 	const numberBox = $('#particle-speed');
 	return function (speed) {
@@ -588,7 +541,6 @@ Particle.setSpeed = (function IIFE() {
 	};
 })();
 
-// 设置缩放
 Particle.setZoom = (function IIFE() {
 	const slider = $('#particle-zoom');
 	return function (zoom) {
@@ -628,7 +580,6 @@ Particle.setZoom = (function IIFE() {
 	};
 })();
 
-// 设置目标对象
 Particle.setTarget = function (target) {
 	if (this.target !== target) {
 		this.target = target;
@@ -642,7 +593,6 @@ Particle.setTarget = function (target) {
 	}
 };
 
-// 更新目标对象
 Particle.updateTarget = function () {
 	const item = this.list.read();
 	if (item !== this.target) {
@@ -650,7 +600,6 @@ Particle.updateTarget = function () {
 	}
 };
 
-// 更新目标对象列表项
 Particle.updateTargetItem = function () {
 	const { target } = this;
 	if (target !== null) {
@@ -664,7 +613,6 @@ Particle.updateTargetItem = function () {
 	}
 };
 
-// 更新粒子信息
 Particle.updateParticleInfo = function () {
 	const { emitter, info } = this;
 	const words = Command.words;
@@ -679,11 +627,9 @@ Particle.updateParticleInfo = function () {
 	}
 };
 
-// 更新头部位置
 Particle.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -692,7 +638,6 @@ Particle.updateHead = function () {
 			head.left = left;
 			head.style.left = `${left}px`;
 		}
-		// 调整居中组件的位置
 		const width = nRect.right - iRect.right;
 		if (head.width !== width) {
 			head.width = width;
@@ -709,7 +654,6 @@ Particle.updateHead = function () {
 	}
 };
 
-// 调整大小
 Particle.resize = function () {
 	if (this.state === 'open' && this.screen.clientWidth !== 0) {
 		const scale = this.scale;
@@ -737,7 +681,6 @@ Particle.resize = function () {
 	}
 };
 
-// 获取指针坐标
 Particle.getPointerCoords = (function IIFE() {
 	const point = { x: 0, y: 0 };
 	return function (event) {
@@ -749,7 +692,6 @@ Particle.getPointerCoords = (function IIFE() {
 	};
 })();
 
-// 更新摄像机位置
 Particle.updateCamera = function (x = this.centerX, y = this.centerY) {
 	const screen = this.screen;
 	const dpr = window.devicePixelRatio;
@@ -764,7 +706,6 @@ Particle.updateCamera = function (x = this.centerX, y = this.centerY) {
 	screen.scrollTop = (scrollY - (GL.height >> 1) + toleranceForDPR) / dpr;
 };
 
-// 更新变换参数
 Particle.updateTransform = function () {
 	const screen = this.screen;
 	const dpr = window.devicePixelRatio;
@@ -786,26 +727,22 @@ Particle.updateTransform = function () {
 	this.centerY = Math.roundTo((scrollY - this.outerHeight / 2) / this.scaleY, 4);
 };
 
-// 更新元素
 Particle.updateElements = function (deltaTime) {
 	this.emitter.update(deltaTime * this.speed);
 };
 
-// 绘制元素
 Particle.drawElements = function () {
 	for (const layer of this.emitter.layers) {
 		if (!layer.data.hidden) layer.draw();
 	}
 };
 
-// 绘制背景
 Particle.drawBackground = function () {
 	const gl = GL;
 	gl.clearColor(...this.background.getGLRGBA());
 	gl.clear(gl.COLOR_BUFFER_BIT);
 };
 
-// 绘制坐标轴
 Particle.drawCoordinateAxes = function () {
 	if (this.showAxes) {
 		const gl = GL;
@@ -854,7 +791,6 @@ Particle.drawCoordinateAxes = function () {
 	}
 };
 
-// 绘制发射器线框
 Particle.drawEmitterWireframe = function () {
 	let color;
 	const emitter = this.emitter;
@@ -898,7 +834,6 @@ Particle.drawEmitterWireframe = function () {
 	gl.drawArrays(gl.LINE_LOOP, 0, 4);
 };
 
-// 绘制发射器锚点
 Particle.drawEmitterAnchor = function () {
 	const emitter = this.emitter;
 	if (!emitter.selected) return;
@@ -938,7 +873,6 @@ Particle.drawEmitterAnchor = function () {
 	gl.drawArrays(gl.LINES, 0, 4);
 };
 
-// 绘制区域线框
 Particle.drawAreaWireframe = function () {
 	if (!this.showWireframe || !this.target) return;
 	let vi = 0;
@@ -996,7 +930,6 @@ Particle.drawAreaWireframe = function () {
 	}
 };
 
-// 绘制元素线框
 Particle.drawElementWireframes = function () {
 	if (!this.showWireframe) return;
 	const gl = GL;
@@ -1088,7 +1021,6 @@ Particle.drawElementWireframes = function () {
 	}
 };
 
-// 绘制元素锚点
 Particle.drawElementAnchors = function () {
 	if (!this.showAnchor) return;
 	const gl = GL;
@@ -1150,7 +1082,6 @@ Particle.drawElementAnchors = function () {
 	}
 };
 
-// 计算发射器外部矩形
 Particle.computeOuterRect = function () {
 	const emitter = this.emitter;
 	const sx = emitter.startX;
@@ -1165,7 +1096,6 @@ Particle.computeOuterRect = function () {
 	}
 };
 
-// 选择发射器
 Particle.selectEmitter = function (x, y) {
 	const emitter = this.emitter;
 	if (
@@ -1179,14 +1109,12 @@ Particle.selectEmitter = function (x, y) {
 	return false;
 };
 
-// 请求更新动画
 Particle.requestAnimation = function () {
 	if (this.state === 'open' && !this.paused) {
 		Timer.appendUpdater('stageAnimation', this.updateAnimation);
 	}
 };
 
-// 更新动画帧
 Particle.updateAnimation = function (deltaTime) {
 	Particle.updateElements(deltaTime);
 	Particle.updateParticleInfo();
@@ -1195,19 +1123,16 @@ Particle.updateAnimation = function (deltaTime) {
 	}
 };
 
-// 停止更新动画
 Particle.stopAnimation = function () {
 	Timer.removeUpdater('stageAnimation', this.updateAnimation);
 };
 
-// 请求渲染
 Particle.requestRendering = function () {
 	if (this.state === 'open') {
 		Timer.appendUpdater('stageRendering', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 Particle.renderingFunction = function () {
 	if (GL.width * GL.height !== 0) {
 		Particle.drawBackground();
@@ -1221,12 +1146,10 @@ Particle.renderingFunction = function () {
 	}
 };
 
-// 停止渲染
 Particle.stopRendering = function () {
 	Timer.removeUpdater('stageRendering', this.renderingFunction);
 };
 
-// 开关线框
 Particle.switchWireframe = (function IIFE() {
 	const item = $('#particle-view-wireframe');
 	return function (enabled = !this.showWireframe) {
@@ -1240,7 +1163,6 @@ Particle.switchWireframe = (function IIFE() {
 	};
 })();
 
-// 开关锚点
 Particle.switchAnchor = (function IIFE() {
 	const item = $('#particle-view-anchor');
 	return function (enabled = !this.showAnchor) {
@@ -1254,7 +1176,6 @@ Particle.switchAnchor = (function IIFE() {
 	};
 })();
 
-// 开关暂停状态
 Particle.switchPause = (function IIFE() {
 	const item = $('#particle-control-pause');
 	return function (enabled = !this.paused) {
@@ -1269,24 +1190,20 @@ Particle.switchPause = (function IIFE() {
 	};
 })();
 
-// 计划保存
 Particle.planToSave = function () {
 	File.planToSave(this.meta);
 };
 
-// 保存状态到配置文件
 Particle.saveToConfig = function (config) {
 	config.colors.particleBackground = this.background.hex;
 };
 
-// 从配置文件中加载状态
 Particle.loadFromConfig = function (config) {
 	this.background = new StageColor(config.colors.particleBackground, () =>
 		this.requestRendering()
 	);
 };
 
-// 保存状态到项目文件
 Particle.saveToProject = function (project) {
 	const { particle } = project;
 	particle.wireframe = this.showWireframe ?? particle.wireframe;
@@ -1295,7 +1212,6 @@ Particle.saveToProject = function (project) {
 	particle.zoom = this.zoom ?? particle.zoom;
 };
 
-// 从项目文件中加载状态
 Particle.loadFromProject = function (project) {
 	const { particle } = project;
 	this.switchWireframe(particle.wireframe);
@@ -1304,14 +1220,12 @@ Particle.loadFromProject = function (project) {
 	this.setZoom(particle.zoom);
 };
 
-// WebGL - 上下文恢复事件
 Particle.webglRestored = function (event) {
 	if (Particle.state === 'open') {
 		Particle.requestRendering();
 	}
 };
 
-// 窗口 - 调整大小事件
 Particle.windowResize = function (event) {
 	this.updateHead();
 	if (this.state === 'open') {
@@ -1321,19 +1235,16 @@ Particle.windowResize = function (event) {
 	}
 }.bind(Particle);
 
-// 主题改变事件
 Particle.themechange = function (event) {
 	this.requestRendering();
 }.bind(Particle);
 
-// 数据改变事件
 Particle.datachange = function (event) {
 	if (Particle.state === 'open' && event.key === 'easings') {
 		Particle.emitter.updateEasing();
 	}
 };
 
-// 键盘按下事件
 Particle.keydown = function (event) {
 	if (Particle.state === 'open' && Particle.dragging === null) {
 		if (event.cmdOrCtrlKey) {
@@ -1359,7 +1270,6 @@ Particle.keydown = function (event) {
 	}
 };
 
-// 重启键弹起事件
 Particle.restartKeyup = function (event) {
 	if (!Particle.restartKey) {
 		return;
@@ -1377,7 +1287,6 @@ Particle.restartKeyup = function (event) {
 	}
 };
 
-// 头部 - 指针按下事件
 Particle.headPointerdown = function (event) {
 	if (!(event.target instanceof HTMLInputElement)) {
 		event.preventDefault();
@@ -1387,7 +1296,6 @@ Particle.headPointerdown = function (event) {
 	}
 };
 
-// 视图 - 指针按下事件
 Particle.viewPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -1405,7 +1313,6 @@ Particle.viewPointerdown = function (event) {
 	}
 };
 
-// 控制 - 指针按下事件
 Particle.controlPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -1423,22 +1330,18 @@ Particle.controlPointerdown = function (event) {
 	}
 };
 
-// 速度 - 输入事件
 Particle.speedInput = function (event) {
 	Particle.speed = this.read();
 };
 
-// 缩放 - 获得焦点事件
 Particle.zoomFocus = function (event) {
 	Particle.screen.focus();
 };
 
-// 缩放 - 输入事件
 Particle.zoomInput = function (event) {
 	Particle.setZoom(this.read());
 };
 
-// 屏幕 - 键盘按下事件
 Particle.screenKeydown = function (event) {
 	if (this.state === 'open' && this.dragging === null) {
 		if (event.cmdOrCtrlKey) {
@@ -1464,7 +1367,6 @@ Particle.screenKeydown = function (event) {
 	}
 }.bind(Particle);
 
-// 屏幕 - 鼠标滚轮事件
 Particle.screenWheel = function (event) {
 	if (this.state === 'open' && this.dragging === null) {
 		event.preventDefault();
@@ -1475,7 +1377,6 @@ Particle.screenWheel = function (event) {
 	}
 }.bind(Particle);
 
-// 屏幕 - 用户滚动事件
 Particle.screenUserscroll = function (event) {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
@@ -1485,14 +1386,11 @@ Particle.screenUserscroll = function (event) {
 	}
 }.bind(Particle);
 
-// 屏幕 - 失去焦点事件
 Particle.screenBlur = function (event) {
-	// this.translationKeyup()
-	// this.pointerup()
+	// this.translationKeyup() this.pointerup()
 	this.marqueePointerleave();
 }.bind(Particle);
 
-// 选框 - 指针按下事件
 Particle.marqueePointerdown = function (event) {
 	if (this.dragging) {
 		return;
@@ -1529,7 +1427,6 @@ Particle.marqueePointerdown = function (event) {
 	}
 }.bind(Particle);
 
-// 选框 - 指针移动事件
 Particle.marqueePointermove = function (event) {
 	if (!this.dragging) {
 		this.marquee.pointerevent = event;
@@ -1542,11 +1439,9 @@ Particle.marqueePointermove = function (event) {
 	}
 }.bind(Particle);
 
-// 选框 - 指针离开事件
 Particle.marqueePointerleave = function (event) {
 	if (this.marquee.pointerevent) {
 		this.marquee.pointerevent = null;
-		// 删除粒子时this.emitter为null
 		if (this.emitter?.active) {
 			this.emitter.active = false;
 			this.requestRendering();
@@ -1554,7 +1449,6 @@ Particle.marqueePointerleave = function (event) {
 	}
 }.bind(Particle);
 
-// 指针弹起事件
 Particle.pointerup = function (event) {
 	const { dragging } = Particle;
 	if (dragging === null) {
@@ -1577,7 +1471,6 @@ Particle.pointerup = function (event) {
 	}
 };
 
-// 指针移动事件
 Particle.pointermove = function (event) {
 	const { dragging } = Particle;
 	if (dragging.relate(event)) {
@@ -1618,7 +1511,6 @@ Particle.pointermove = function (event) {
 	}
 };
 
-// 列表 - 键盘按下事件
 Particle.listKeydown = function (event) {
 	if (!this.data) {
 		return;
@@ -1649,7 +1541,6 @@ Particle.listKeydown = function (event) {
 	}
 };
 
-// 列表 - 指针按下事件
 Particle.listPointerdown = function (event) {
 	switch (event.button) {
 		case 0: {
@@ -1676,12 +1567,10 @@ Particle.listPointerdown = function (event) {
 	}
 };
 
-// 列表 - 选择事件
 Particle.listSelect = function (event) {
 	Particle.setTarget(event.value);
 };
 
-// 列表 - 记录事件
 Particle.listRecord = function (event) {
 	const response = event.value;
 	switch (response.type) {
@@ -1727,7 +1616,6 @@ Particle.listRecord = function (event) {
 	}
 };
 
-// 列表 - 弹出事件
 Particle.listPopup = function (event) {
 	const item = event.value;
 	const get = Local.createGetter('menuParticleList');
@@ -1806,7 +1694,6 @@ Particle.listPopup = function (event) {
 	);
 };
 
-// 列表 - 改变事件
 Particle.listChange = function (event) {
 	Particle.planToSave();
 };

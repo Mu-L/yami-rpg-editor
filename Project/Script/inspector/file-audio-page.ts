@@ -5,11 +5,8 @@ import { File } from '../file/file-system-core.ts';
 import { Inspector } from './inspector.ts';
 import { Timer } from '../util/timer.ts';
 
-// ******************************** 文件 - 音频页面 ********************************
-
 {
 	const FileAudio = {
-		// properties
 		target: null,
 		meta: null,
 		symbol: null,
@@ -26,7 +23,6 @@ import { Timer } from '../util/timer.ts';
 		intensities: null,
 		rotation: null,
 		lineColor: null,
-		// methods
 		initialize: null,
 		open: null,
 		close: null,
@@ -39,7 +35,6 @@ import { Timer } from '../util/timer.ts';
 		requestAnimation: null,
 		updateAnimation: null,
 		stopAnimation: null,
-		// events
 		themechange: null,
 		windowResize: null,
 		paramInput: null,
@@ -48,27 +43,20 @@ import { Timer } from '../util/timer.ts';
 		progressPointerleave: null
 	};
 
-	// 初始化
 	FileAudio.initialize = function () {
-		// 获取画布上下文对象
 		this.context = this.canvas.getContext('2d', { desynchronized: true });
 
-		// 设置音频分析器
 		const analyser = AudioManager.analyser;
 		analyser.fftSize = 512;
 		analyser.smoothingTimeConstant = 0;
 
-		// 创建数据数组
 		this.dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-		// 创建间隔数组
 		this.intervals = new Float64Array(64);
 
-		// 创建强度数组
 		this.intensities = new Float64Array(64);
 		this.intensities.index = 0;
 
-		// 侦听事件
 		window.on('themechange', this.themechange);
 		$('#fileAudio').on('resize', this.windowResize);
 		$('#fileAudio-frequency-detail').on('toggle', this.windowResize);
@@ -81,13 +69,11 @@ import { Timer } from '../util/timer.ts';
 		this.progress.on('pointerleave', this.progressPointerleave);
 	};
 
-	// 打开数据
 	FileAudio.open = function (file, meta) {
 		if (this.target !== file) {
 			this.target = file;
 			this.meta = meta;
 
-			// 加载元数据
 			const elName = $('#fileAudio-name');
 			const elSize = $('#fileAudio-size');
 			const elDuration = $('#fileAudio-duration');
@@ -98,20 +84,16 @@ import { Timer } from '../util/timer.ts';
 			elDuration.textContent = '';
 			elBitrate.textContent = '';
 
-			// 加载混合器参数
 			this.writeParams(AudioManager.player.getParams());
 
-			// 加载音频
 			const audio = AudioManager.player.audio;
 			const path = file.path;
 			if (audio.path !== path) {
 				audio.path = path;
 				audio.src = File.route(path);
 
-				// 加载波形图
 				this.progress.removeClass('visible');
-				// 保留对返回的原始promise的引用
-				// 以便可以取消解码音频数据的操作
+				// 保留对返回的原始promise的引用 以便可以取消解码音频数据的操作
 				const promise = (this.promise = AudioManager.getWaveform(meta.guid));
 				promise.then((url) => {
 					if (this.promise === promise) {
@@ -122,11 +104,9 @@ import { Timer } from '../util/timer.ts';
 				});
 			}
 
-			// 请求绘制分析器动画
 			this.updateCanvas();
 			this.requestAnimation();
 
-			// 更新音频信息
 			const symbol = (this.symbol = Symbol());
 			new Promise<void>((resolve) => {
 				if (isNaN(audio.duration)) {
@@ -152,7 +132,6 @@ import { Timer } from '../util/timer.ts';
 		}
 	};
 
-	// 关闭数据
 	FileAudio.close = function () {
 		if (this.target) {
 			if (this.promise) {
@@ -167,7 +146,6 @@ import { Timer } from '../util/timer.ts';
 		}
 	};
 
-	// 播放音频
 	FileAudio.play = function () {
 		if (this.target !== null) {
 			const { audio } = AudioManager.player;
@@ -179,7 +157,6 @@ import { Timer } from '../util/timer.ts';
 		}
 	};
 
-	// 写入参数
 	FileAudio.writeParams = function (params) {
 		$('#fileAudio-volume').write(params.volume);
 		$('#fileAudio-pan').write(params.pan);
@@ -188,14 +165,12 @@ import { Timer } from '../util/timer.ts';
 		this.updateParamInfos(params);
 	};
 
-	// 更新参数
 	FileAudio.updateParams = function (params) {
 		AudioManager.player.setVolume(params.volume);
 		AudioManager.player.setPan(params.pan);
 		AudioManager.player.setReverb(params.dry, params.wet);
 	};
 
-	// 更新参数信息
 	FileAudio.updateParamInfos = function (params) {
 		$('#fileAudio-volume-info').textContent = `${params.volume * 100}%`;
 		$('#fileAudio-pan-info').textContent = `${params.pan * 100}%`;
@@ -203,7 +178,6 @@ import { Timer } from '../util/timer.ts';
 		$('#fileAudio-wet-info').textContent = `${params.wet * 100}%`;
 	};
 
-	// 更新画布
 	FileAudio.updateCanvas = function () {
 		const manager = Inspector.manager;
 		const canvas = this.canvas;
@@ -235,7 +209,6 @@ import { Timer } from '../util/timer.ts';
 		}
 	};
 
-	// 格式化时间
 	FileAudio.formatTime = function (time) {
 		const pad = Number.padZero;
 		const length = Math.floor(time);
@@ -247,16 +220,13 @@ import { Timer } from '../util/timer.ts';
 			: `${minutes}:${pad(seconds, 60)}`;
 	};
 
-	// 请求动画
 	FileAudio.requestAnimation = function () {
 		if (this.target !== null) {
 			Timer.appendUpdater('sharedAnimation', this.updateAnimation);
 		}
 	};
 
-	// 更新动画帧
 	FileAudio.updateAnimation = function (deltaTime) {
-		// 更新播放进度
 		const audio = AudioManager.player.audio;
 		const currentTime = audio.currentTime;
 		const duration = audio.duration || Infinity;
@@ -269,7 +239,6 @@ import { Timer } from '../util/timer.ts';
 			progressFiller.style.width = `${pp}%`;
 		}
 
-		// 更新当前时间
 		const time = FileAudio.formatTime(currentTime);
 		const currentTimeInfo = FileAudio.currentTimeInfo;
 		if (currentTimeInfo.textContent !== time) {
@@ -283,8 +252,6 @@ import { Timer } from '../util/timer.ts';
 		if (width * height === 0) {
 			return;
 		}
-		// 计算当前帧的强度以及平均值
-		// 单独提前计算可以减少延时
 		const analyser = AudioManager.analyser;
 		const array = FileAudio.dataArray;
 		const aLength = array.length;
@@ -327,7 +294,6 @@ import { Timer } from '../util/timer.ts';
 		}
 		intensityAverage /= intensityCount;
 
-		// 绘制频率
 		const centerX = height / 2;
 		const centerY = height / 2;
 		const size = height * (0.8 + intensityAverage * 0.2);
@@ -383,16 +349,13 @@ import { Timer } from '../util/timer.ts';
 		context.globalAlpha = 0.25;
 		context.stroke();
 
-		// 更新旋转角度
 		FileAudio.rotation -= (Math.PI * deltaTime) / 15000;
 	};
 
-	// 停止更新动画
 	FileAudio.stopAnimation = function () {
 		Timer.removeUpdater('sharedAnimation', this.updateAnimation);
 	};
 
-	// 主题改变事件
 	FileAudio.themechange = function (event) {
 		switch (event.value) {
 			case 'light':
@@ -404,14 +367,12 @@ import { Timer } from '../util/timer.ts';
 		}
 	}.bind(FileAudio);
 
-	// 窗口 - 调整大小事件
 	FileAudio.windowResize = function (event) {
 		if (FileAudio.target !== null && FileAudio.symbol === null) {
 			FileAudio.updateCanvas();
 		}
 	};
 
-	// 参数 - 输入事件
 	FileAudio.paramInput = function (event) {
 		const read = getElementReader('fileAudio');
 		const params = {
@@ -424,7 +385,6 @@ import { Timer } from '../util/timer.ts';
 		this.updateParamInfos(params);
 	}.bind(FileAudio);
 
-	// 进度条 - 指针按下事件
 	FileAudio.progressPointerdown = function (event) {
 		switch (event.button) {
 			case 0: {
@@ -438,7 +398,6 @@ import { Timer } from '../util/timer.ts';
 		}
 	};
 
-	// 进度条 - 指针移动事件
 	FileAudio.progressPointermove = function (event) {
 		const { pointer, pointerTimeInfo } = FileAudio;
 		const { duration } = AudioManager.player.audio;
@@ -458,7 +417,6 @@ import { Timer } from '../util/timer.ts';
 		}
 	};
 
-	// 进度条 - 指针离开事件
 	FileAudio.progressPointerleave = function (event) {
 		const { pointer, pointerTimeInfo } = FileAudio;
 		if (pointer.time !== -1) {

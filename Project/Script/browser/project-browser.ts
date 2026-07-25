@@ -19,15 +19,11 @@ import { Local } from '../tools/localization.ts';
 import { ctrl } from '../util/event-accessors.ts';
 import child_process from 'node:child_process';
 
-// ******************************** 项目浏览器 ********************************
-
 import '../components/file-browser.js';
 const Browser = $('#project-browser');
 export { Browser };
-// properties
 Browser.page = $('#project');
 Browser.searcher = null;
-// methods
 Browser.initialize = null;
 Browser.unselect = null;
 Browser.updateHead = null;
@@ -37,7 +33,6 @@ Browser.createScript = null;
 Browser.updateNavVisibility = null;
 Browser.saveToProject = null;
 Browser.loadFromProject = null;
-// events
 Browser.pageResize = null;
 Browser.bodyKeydown = null;
 Browser.bodyOpen = null;
@@ -45,13 +40,10 @@ Browser.bodySelect = null;
 Browser.bodyUnselect = null;
 Browser.bodyPopup = null;
 
-// 初始化
 Browser.initialize = function () {
-	// 获取搜索框并添加按键过滤器
 	this.searcher = this.links.head.searcher;
 	this.searcher.addKeydownFilter();
 
-	// 侦听事件
 	this.page.on('resize', this.pageResize);
 	this.body.on('keydown', this.bodyKeydown);
 	this.body.on('open', this.bodyOpen);
@@ -60,7 +52,6 @@ Browser.initialize = function () {
 	this.body.on('popup', this.bodyPopup);
 };
 
-// 取消选择元数据匹配的项目
 Browser.unselect = function (meta) {
 	const body = this.body;
 	const files = body.selections;
@@ -69,11 +60,9 @@ Browser.unselect = function (meta) {
 	}
 };
 
-// 更新头部位置
 Browser.updateHead = function () {
 	const { page, head } = this;
 	if (page.hasClass('visible')) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -91,7 +80,6 @@ Browser.updateHead = function () {
 	}
 };
 
-// 打开脚本文件
 Browser.openScript = function (filePath) {
 	const { mode, path } = Editor.config.scriptEditor;
 	switch (mode) {
@@ -107,7 +95,6 @@ Browser.openScript = function (filePath) {
 	}
 };
 
-// 创建文件
 Browser.createFile = function (filename, data) {
 	let guid;
 	do {
@@ -143,7 +130,6 @@ Browser.createFile = function (filename, data) {
 		});
 };
 
-// 创建脚本文件
 Browser.createScript = function (filename) {
 	let guid;
 	do {
@@ -179,7 +165,6 @@ Browser.createScript = function (filename) {
 		});
 };
 
-// 更新左侧栏的可见性
 Browser.updateNavVisibility = function () {
 	if (this.page.hasClass('visible')) {
 		if (Browser.clientWidth >= 500) {
@@ -192,7 +177,6 @@ Browser.updateNavVisibility = function () {
 	}
 };
 
-// 保存状态到项目文件
 Browser.saveToProject = function (project) {
 	const { browser } = project;
 	const { viewIndex } = this.body;
@@ -205,7 +189,6 @@ Browser.saveToProject = function (project) {
 	}
 };
 
-// 从项目文件中加载状态
 Browser.loadFromProject = function (project) {
 	const { view, folders } = project.browser;
 	const selections = [];
@@ -220,7 +203,6 @@ Browser.loadFromProject = function (project) {
 	this.nav.load(...selections);
 };
 
-// 页面 - 调整大小事件
 Browser.pageResize = function (event) {
 	Browser.updateNavVisibility();
 	Browser.updateHead();
@@ -230,7 +212,6 @@ Browser.pageResize = function (event) {
 	Browser.body.updateContentSize();
 };
 
-// 身体 - 键盘按下事件
 Browser.bodyKeydown = function (event) {
 	if (event.cmdOrCtrlKey) {
 		switch (event.code) {
@@ -250,7 +231,6 @@ Browser.bodyKeydown = function (event) {
 	}
 };
 
-// 身体 - 打开文件
 Browser.bodyOpen = function (event) {
 	const file = event.value;
 	switch (file.type) {
@@ -282,7 +262,6 @@ Browser.bodyOpen = function (event) {
 	}
 };
 
-// 身体 - 选择事件
 Browser.bodySelect = function (event) {
 	const files = event.value;
 	if (files.length === 1 && files[0] instanceof FileItem) {
@@ -354,7 +333,6 @@ Browser.bodyUnselect = function (event) {
 	}
 };
 
-// 身体 - 菜单弹出事件
 Browser.bodyPopup = function (event) {
 	const items = [];
 	const { target } = event.raw;
@@ -410,7 +388,6 @@ Browser.bodyPopup = function (event) {
 			if (single && selections[0] instanceof FolderItem) {
 				creatable = true;
 			}
-			// 如果选中的文件列表中不包含文件夹，则可以复制
 			let copyable = true;
 			for (const file of selections) {
 				if (file instanceof FolderItem) {

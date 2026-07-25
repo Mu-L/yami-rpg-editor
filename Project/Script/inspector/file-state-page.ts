@@ -6,39 +6,28 @@ import { EventListInterface } from '../tools/event-list.ts';
 import { AttributeListInterface } from '../tools/property-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 文件 - 状态页面 ********************************
-
 {
 	const FileState = {
-		// properties
 		target: null,
 		meta: null,
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null,
 		listChange: null
 	};
 
-	// 初始化
 	FileState.initialize = function () {
-		// 绑定属性列表
 		$('#fileState-attributes').bind(new AttributeListInterface());
 
-		// 绑定事件列表
 		$('#fileState-events').bind(new EventListInterface(this));
 
-		// 绑定脚本列表
 		$('#fileState-scripts').bind(new ScriptListInterface());
 
-		// 绑定脚本参数面板
 		$('#fileState-parameter-pane').bind($('#fileState-scripts'));
 
-		// 侦听事件
 		$('#fileState-icon, #fileState-clip, #fileState-inherit').on('input', this.paramInput);
 		$('#fileState-attributes, #fileState-events, #fileState-scripts').on(
 			'change',
@@ -46,7 +35,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建状态
 	FileState.create = function () {
 		return {
 			icon: '',
@@ -58,13 +46,11 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		};
 	};
 
-	// 打开数据
 	FileState.open = function (state, meta) {
 		if (this.meta !== meta) {
 			this.target = state;
 			this.meta = meta;
 
-			// 写入数据
 			const write = getElementWriter('fileState', state);
 			write('icon');
 			write('clip');
@@ -75,7 +61,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	FileState.close = function () {
 		if (this.target) {
 			Browser.unselect(this.meta);
@@ -88,7 +73,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	FileState.update = function (state, key, value) {
 		File.planToSave(this.meta);
 		switch (key) {
@@ -107,12 +91,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 参数 - 输入事件
 	FileState.paramInput = function (event) {
 		FileState.update(FileState.target, Inspector.getKey(this), this.read());
 	};
 
-	// 列表 - 改变事件
 	FileState.listChange = function (event) {
 		File.planToSave(FileState.meta);
 	};

@@ -1,14 +1,10 @@
 import { Particle } from './particle-window.ts';
 
-// ******************************** 粒子发射器类 ********************************
-
-// 发射器数据对象（Data.scene.emitters[i]）
 interface ParticleEmitterData {
 	layers: ParticleLayerData[];
 	[k: string]: any;
 }
 
-// 粒子层数据对象（emitter.data.layers[i]）
 interface ParticleLayerData {
 	area: {
 		type: 'edge' | 'point' | 'rectangle' | 'circle';
@@ -21,7 +17,6 @@ interface ParticleLayerData {
 	[k: string]: any;
 }
 
-// 外部矩形计算结果
 interface OuterRect {
 	left: number;
 	top: number;
@@ -73,7 +68,6 @@ Particle.Emitter = class ParticleEmitter {
 		this.layers = dLayers;
 	}
 
-	// 计算发射器外部矩形
 	calculateOuterRect(): OuterRect {
 		let L = Infinity;
 		let T = Infinity;
@@ -130,7 +124,6 @@ Particle.Emitter = class ParticleEmitter {
 		};
 	}
 
-	// 获取图层
 	getLayer(layerData: ParticleLayerData): any | undefined {
 		for (const layer of this.layers) {
 			if (layer.data === layerData) {
@@ -139,7 +132,6 @@ Particle.Emitter = class ParticleEmitter {
 		}
 	}
 
-	// 更新图层
 	updateLayers(): void {
 		const map = new Map();
 		for (const layer of this.layers) {
@@ -155,27 +147,23 @@ Particle.Emitter = class ParticleEmitter {
 			else dLayer = new Particle.Layer(this, sLayer);
 			dLayers[i] = dLayer;
 		}
-		// 销毁已经不存在的图层
 		for (const entries of map) {
 			entries[1].destroy();
 		}
 		this.layers = dLayers;
 	}
 
-	// 更新数据
 	update(deltaTime: number): void {
 		this.emitParticles(deltaTime);
 		this.updateParticles(deltaTime);
 	}
 
-	// 发射粒子
 	emitParticles(deltaTime: number): void {
 		for (const layer of this.layers) {
 			layer.emitParticles(deltaTime);
 		}
 	}
 
-	// 更新粒子
 	updateParticles(deltaTime: number): number {
 		let count = 0;
 		for (const layer of this.layers) {
@@ -184,21 +172,18 @@ Particle.Emitter = class ParticleEmitter {
 		return count;
 	}
 
-	// 绘制粒子
 	draw(opacity: number): void {
 		for (const layer of this.layers) {
 			layer.draw(opacity);
 		}
 	}
 
-	// 更新过渡映射表
 	updateEasing(): void {
 		for (const layer of this.layers) {
 			layer.updateEasing();
 		}
 	}
 
-	// 判断是否为空
 	isEmpty(): boolean {
 		for (const { elements } of this.layers) {
 			if (elements.count !== 0) {
@@ -208,14 +193,12 @@ Particle.Emitter = class ParticleEmitter {
 		return true;
 	}
 
-	// 清除粒子元素
 	clear(): void {
 		for (const layer of this.layers) {
 			layer.clear();
 		}
 	}
 
-	// 销毁资源
 	destroy(): void {
 		for (const layer of this.layers) {
 			layer.destroy();

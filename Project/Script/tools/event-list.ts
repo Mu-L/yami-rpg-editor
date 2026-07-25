@@ -6,7 +6,6 @@ import { Inspector } from '../inspector/inspector.ts';
 import { Local } from './localization.ts';
 
 import { IListInterface } from '../types/list-interface.ts';
-// ******************************** 事件列表接口类 ********************************
 
 export class EventListInterface implements IListInterface {
 	target: HTMLElement | null;
@@ -24,7 +23,6 @@ export class EventListInterface implements IListInterface {
 		this.owner = owner ?? null;
 	}
 
-	// 初始化
 	initialize(list: any): void {
 		list.togglable = true;
 		this.filter = list.getAttribute('filter');
@@ -41,20 +39,17 @@ export class EventListInterface implements IListInterface {
 			}
 		};
 
-		// 创建参数历史操作
 		const { editor, owner } = this;
 		if (editor && owner) {
 			this.history = new Inspector.ParamHistory(editor, owner, list);
 			this.history.save = EventListInterface.historySave;
 		}
 
-		// 侦听事件
 		window.on('localize', (event) => {
 			if (list.data) list.update();
 		});
 	}
 
-	// 解析
 	parse(event: any) {
 		const { type } = event;
 		if (EventListInterface.guidRegExp.test(type)) {
@@ -73,9 +68,7 @@ export class EventListInterface implements IListInterface {
 		};
 	}
 
-	// 更新
 	update(list: any) {
-		// 更新事件项目的有效性
 		const elements = list.elements;
 		const items = list.read();
 		const length = items.length;
@@ -91,7 +84,6 @@ export class EventListInterface implements IListInterface {
 			}
 		}
 
-		// 更新宿主项目的事件图标
 		const item = this.editor?.target;
 		if (item?.events === list.read()) {
 			const element = item.element;
@@ -102,7 +94,6 @@ export class EventListInterface implements IListInterface {
 		}
 	}
 
-	// 打开
 	open(event: any) {
 		const filter = this.filter;
 		let callback = this.editCallback;
@@ -114,7 +105,6 @@ export class EventListInterface implements IListInterface {
 		}
 		const target = this.editor.target;
 		if (target.guid) {
-			// 对象文件
 			const id = target.guid;
 			const fileName = Data.manifest.guidMap[id]?.file.basename;
 			this.eventItem = EventEditor.openLocalEvent(
@@ -125,7 +115,6 @@ export class EventListInterface implements IListInterface {
 				callback
 			);
 		} else if (target.presetId) {
-			// 场景或界面的预设对象
 			const id = target.presetId;
 			const preset = Data.scenePresets[id] ?? Data.uiPresets[id];
 			if (preset) {
@@ -143,15 +132,12 @@ export class EventListInterface implements IListInterface {
 		}
 	}
 
-	// 保存
 	save() {
 		return EventEditor.save(this.eventItem);
 	}
 
-	// 自定义事件类型ID正则表达式
 	static guidRegExp = /^[0-9a-f]{16}$/;
 
-	// 重写历史操作保存数据方法
 	static historySave(data: any) {
 		Inspector.ParamHistory.prototype.save.call(this, data);
 		if (data.type === 'inspector-param-replace') {

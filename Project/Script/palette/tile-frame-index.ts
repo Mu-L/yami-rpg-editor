@@ -4,10 +4,7 @@ import { AutoTile } from './auto-tile.ts';
 import { Palette } from './palette.ts';
 import { Cursor } from '../tools/pointer-object.ts';
 
-// ******************************** 图块帧索引窗口 ********************************
-
 export const TileFrame = {
-	// properties
 	window: $('#autoTile-frameIndex'),
 	screen: $('#autoTile-frameIndex-screen'),
 	clip: $('#autoTile-frameIndex-image-clip'),
@@ -18,13 +15,11 @@ export const TileFrame = {
 	dragging: null,
 	hframes: null,
 	vframes: null,
-	// methods
 	initialize: null,
 	open: null,
 	selectTileFrame: null,
 	scrollToSelection: null,
 	getDevicePixelClientBoxSize: null,
-	// events
 	dprchange: null,
 	windowClosed: null,
 	keydown: null,
@@ -35,9 +30,7 @@ export const TileFrame = {
 	pointermove: null
 };
 
-// 初始化
 TileFrame.initialize = function () {
-	// 侦听事件
 	window.on('dprchange', this.dprchange);
 	this.window.on('closed', this.windowClosed);
 	this.marquee.on('pointerdown', this.marqueePointerdown);
@@ -45,7 +38,6 @@ TileFrame.initialize = function () {
 	this.marquee.on('pointerleave', this.marqueePointerleave);
 };
 
-// 打开
 TileFrame.open = function () {
 	const MAX_CONTENT_WIDTH = 1180;
 	const MAX_CONTENT_HEIGHT = 696;
@@ -90,7 +82,6 @@ TileFrame.open = function () {
 		screen.style.overflowY = 'hidden';
 	}
 
-	// 计算窗口属性
 	contentWidth = Math.clamp(contentWidth, MIN_CONTENT_WIDTH, MAX_CONTENT_WIDTH);
 	contentHeight = Math.clamp(contentHeight, MIN_CONTENT_HEIGHT, MAX_CONTENT_HEIGHT);
 	windowFrame.style.width = `${contentWidth}px`;
@@ -98,7 +89,6 @@ TileFrame.open = function () {
 	window.on('keydown', this.keydown);
 	Window.open('autoTile-frameIndex');
 
-	// 设置图像剪辑
 	const screenBox = this.getDevicePixelClientBoxSize(screen);
 	const screenWidth = screenBox.width;
 	const screenHeight = screenBox.height;
@@ -109,18 +99,15 @@ TileFrame.open = function () {
 	clip.style.width = `${innerWidth / dpr}px`;
 	clip.style.height = `${innerHeight / dpr}px`;
 
-	// 设置遮罩
 	const offsetWidth = offsetX * tileWidth;
 	const offsetHeight = offsetY * tileHeight;
 	mask.style.borderLeftWidth = `${offsetWidth / dpr}px`;
 	mask.style.borderTopWidth = `${offsetHeight / dpr}px`;
 
-	// 设置图像
 	image.src = sprite.src;
 	image.style.width = `${sprite.naturalWidth / dpr}px`;
 	image.style.height = `${sprite.naturalHeight / dpr}px`;
 
-	// 设置选框
 	marquee.style.left = `${left}px`;
 	marquee.style.top = `${top}px`;
 	marquee.style.width = `${innerWidth / dpr}px`;
@@ -129,14 +116,12 @@ TileFrame.open = function () {
 	marquee.scaleY = tileHeight / dpr;
 	marquee.select(hindex, vindex, 1, 1);
 
-	// 跳转到选框位置
 	const x = (hindex + 0.5) * tileWidth;
 	const y = (vindex + 0.5) * tileHeight;
 	screen.scrollLeft = Math.round(x - screenWidth / 2) / dpr;
 	screen.scrollTop = Math.round(y - screenHeight / 2) / dpr;
 };
 
-// 选择动画帧
 TileFrame.selectTileFrame = function () {
 	let { x, y } = this.marquee;
 	x -= AutoTile.offsetX;
@@ -150,7 +135,6 @@ TileFrame.selectTileFrame = function () {
 	}
 };
 
-// 滚动到选中位置
 TileFrame.scrollToSelection = function () {
 	const marquee = this.marquee;
 	if (marquee.visible) {
@@ -173,7 +157,6 @@ TileFrame.scrollToSelection = function () {
 	}
 };
 
-// 获取设备像素客户框大小
 TileFrame.getDevicePixelClientBoxSize = function (element) {
 	const rect = element.rect();
 	const css = element.css();
@@ -197,7 +180,6 @@ TileFrame.getDevicePixelClientBoxSize = function (element) {
 	return { width, height };
 };
 
-// 设备像素比改变事件
 TileFrame.dprchange = function (event) {
 	if (this.hframes !== null) {
 		const marquee = this.marquee;
@@ -207,7 +189,6 @@ TileFrame.dprchange = function (event) {
 	}
 }.bind(TileFrame);
 
-// 窗口 - 已关闭事件
 TileFrame.windowClosed = function (event) {
 	this.hframes = null;
 	this.vframes = null;
@@ -218,7 +199,6 @@ TileFrame.windowClosed = function (event) {
 	window.off('keydown', this.keydown);
 }.bind(TileFrame);
 
-// 键盘按下事件
 TileFrame.keydown = function (event) {
 	event.preventDefault();
 	if (this.dragging) {
@@ -261,7 +241,6 @@ TileFrame.keydown = function (event) {
 	}
 }.bind(TileFrame);
 
-// 选框区域 - 指针按下事件
 TileFrame.marqueePointerdown = function (event) {
 	if (this.dragging) {
 		return;
@@ -302,7 +281,6 @@ TileFrame.marqueePointerdown = function (event) {
 	}
 }.bind(TileFrame);
 
-// 选框区域 - 指针移动事件
 TileFrame.marqueePointermove = function (event) {
 	const info = this.info;
 	const marquee = this.marquee;
@@ -316,7 +294,6 @@ TileFrame.marqueePointermove = function (event) {
 	}
 }.bind(TileFrame);
 
-// 选框区域 - 指针离开事件
 TileFrame.marqueePointerleave = function (event) {
 	const info = this.info;
 	info.x = -1;
@@ -324,7 +301,6 @@ TileFrame.marqueePointerleave = function (event) {
 	info.textContent = '';
 }.bind(TileFrame);
 
-// 指针弹起事件
 TileFrame.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
@@ -351,7 +327,6 @@ TileFrame.pointerup = function (event) {
 	}
 }.bind(TileFrame);
 
-// 指针移动事件
 TileFrame.pointermove = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {

@@ -1,7 +1,5 @@
 ﻿import { Timer } from '../util/timer.ts';
 
-// ******************************** 历史操作计时器 ********************************
-
 export const HistoryTimer = new Timer({
 	duration: 2000,
 	callback: (timer) => {
@@ -13,10 +11,8 @@ export const HistoryTimer = new Timer({
 	start: (type: string) => void;
 };
 
-// 初始状态
 HistoryTimer.complete = true;
 
-// 开始计时
 HistoryTimer.start = function (type: string): void {
 	if (this.complete) {
 		this.complete = false;
@@ -26,7 +22,6 @@ HistoryTimer.start = function (type: string): void {
 	this.elapsed = 0;
 };
 
-// 完成计时
 HistoryTimer.finish = function (): void {
 	if (!this.complete) {
 		this.complete = true;

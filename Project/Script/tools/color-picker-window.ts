@@ -7,17 +7,13 @@ import { Local } from './localization.ts';
 import { Rename } from './rename-window.ts';
 import { Window } from './window-object.ts';
 
-// ******************************** 拾色器窗口 ********************************
-
 export const Color = {
-	// properties
 	target: null,
 	dragging: null,
 	paletteX: null,
 	paletteY: null,
 	pillarY: null,
 	indexEnabled: null,
-	// methods
 	initialize: null,
 	open: null,
 	drawPalette: null,
@@ -34,7 +30,6 @@ export const Color = {
 	readRGBAFromInputs: null,
 	loadIndexedColors: null,
 	simplifyHexColor: null,
-	// events
 	windowClosed: null,
 	palettePointerdown: null,
 	pillarPointerdown: null,
@@ -48,15 +43,11 @@ export const Color = {
 	confirm: null
 };
 
-// 初始化
 Color.initialize = function () {
-	// 设置十六进制的最大长度
 	$('#color-hex').setMaxLength(8);
 
-	// 设置颜色索引单选框为可取消
 	$('#color-index').cancelable = true;
 
-	// 侦听事件
 	$('#color').on('closed', this.windowClosed);
 	$('#color-palette-frame').on('pointerdown', this.palettePointerdown);
 	$('#color-pillar-frame').on('pointerdown', this.pillarPointerdown);
@@ -68,7 +59,6 @@ Color.initialize = function () {
 	$('#color-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 Color.open = function (target, indexEnabled = false) {
 	this.target = target;
 	this.indexEnabled = indexEnabled;
@@ -92,13 +82,11 @@ Color.open = function (target, indexEnabled = false) {
 	$('#color-hex').getFocus('all');
 };
 
-// 绘制调色板
 Color.drawPalette = function () {
 	const canvas = $('#color-palette-canvas');
 	if (!canvas.initialized) {
 		canvas.initialized = true;
 
-		// 绘制水平渐变色带
 		const context = canvas.getContext('2d');
 		const gradient = context.createLinearGradient(0.5, 0, 255.5, 0);
 		gradient.addColorStop(0, '#ff0000');
@@ -111,7 +99,6 @@ Color.drawPalette = function () {
 		context.fillStyle = gradient;
 		context.fillRect(0, 0, 256, 194);
 
-		// 绘制7根纯色线条
 		context.fillStyle = '#ff0000';
 		context.fillRect(0, 0, 1, 194);
 		context.fillStyle = '#ffff00';
@@ -127,7 +114,6 @@ Color.drawPalette = function () {
 		context.fillStyle = '#ff0000';
 		context.fillRect(255, 0, 1, 194);
 
-		// 绘制垂直渐变色带
 		const upperGradient = context.createLinearGradient(0, 0.5, 0, 96.5);
 		upperGradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
 		upperGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
@@ -139,12 +125,10 @@ Color.drawPalette = function () {
 		context.fillStyle = lowerGradient;
 		context.fillRect(0, 97, 256, 97);
 
-		// 设置指针初始位置
 		this.setPaletteCursor(0, 193);
 	}
 };
 
-// 绘制色柱
 Color.drawPillar = function ([r, g, b]) {
 	const canvas = $('#color-pillar-canvas');
 	const context = canvas.getContext('2d');
@@ -155,12 +139,10 @@ Color.drawPillar = function ([r, g, b]) {
 	context.fillRect(0, 0, 20, 256);
 };
 
-// 绘制查看器
 Color.drawViewer = function ([r, g, b, a]) {
 	$('#color-viewer').style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
 };
 
-// 设置调色板指针
 Color.setPaletteCursor = function (x, y) {
 	const cursor = $('#color-palette-cursor');
 	this.paletteX = x;
@@ -169,14 +151,12 @@ Color.setPaletteCursor = function (x, y) {
 	cursor.style.top = `${y - 5}px`;
 };
 
-// 设置色柱指针
 Color.setPillarCursor = function (y) {
 	const cursor = $('#color-pillar-cursor');
 	this.pillarY = y;
 	cursor.style.top = `${y}px`;
 };
 
-// 从调色板中获取颜色分量
 Color.getRGBFromPalette = function () {
 	const x = Math.round(this.paletteX);
 	const y = Math.round(this.paletteY);
@@ -186,7 +166,6 @@ Color.getRGBFromPalette = function () {
 	return [r, g, b];
 };
 
-// 从色柱中获取颜色分量
 Color.getRGBFromPillar = function () {
 	const y = Math.round(this.pillarY);
 	const canvas = $('#color-pillar-canvas');
@@ -195,7 +174,6 @@ Color.getRGBFromPillar = function () {
 	return [r, g, b];
 };
 
-// 从十六进制中获取颜色分量
 Color.getRGBAFromHex = function (hex) {
 	const r = parseInt(hex.slice(0, 2) || '00', 16);
 	const g = parseInt(hex.slice(2, 4) || '00', 16);
@@ -204,7 +182,6 @@ Color.getRGBAFromHex = function (hex) {
 	return [r, g, b, a];
 };
 
-// 从颜色分量中获取十六进制
 Color.getHexFromRGBA = function (rgba) {
 	const r = rgba[0].toString(16).padStart(2, '0');
 	const g = rgba[1].toString(16).padStart(2, '0');
@@ -213,13 +190,11 @@ Color.getHexFromRGBA = function (rgba) {
 	return `${r}${g}${b}${a}`;
 };
 
-// 从颜色分量中获取 CSS 颜色
 Color.getCSSColorFromRGBA = function (rgba) {
 	const [r, g, b, a] = rgba;
 	return `rgba(${r}, ${g}, ${b}, ${a / 255})`;
 };
 
-// 写入颜色分量到输入框
 Color.writeRGBAToInputs = function ([r, g, b, a]) {
 	const write = getElementWriter('color');
 	const hex = this.getHexFromRGBA([r, g, b, a]);
@@ -230,7 +205,6 @@ Color.writeRGBAToInputs = function ([r, g, b, a]) {
 	write('a', a);
 };
 
-// 读取颜色分量从输入框
 Color.readRGBAFromInputs = function () {
 	const read = getElementReader('color');
 	const r = read('r');
@@ -240,7 +214,6 @@ Color.readRGBAFromInputs = function () {
 	return [r, g, b, a];
 };
 
-// 加载索引颜色
 Color.loadIndexedColors = function () {
 	const radios = document.getElementsByName('color-index');
 	const colors = Data.config.indexedColors;
@@ -255,7 +228,6 @@ Color.loadIndexedColors = function () {
 	}
 };
 
-// 简化十六进制颜色代码
 Color.simplifyHexColor = (function IIFE() {
 	const regexp = /^([0-9a-f]{6})ff$/i;
 	return function (hex) {
@@ -263,7 +235,6 @@ Color.simplifyHexColor = (function IIFE() {
 	};
 })();
 
-// 窗口 - 已关闭事件
 Color.windowClosed = function (event) {
 	$('#color-index').reset();
 	if (this.dragging) {
@@ -271,7 +242,6 @@ Color.windowClosed = function (event) {
 	}
 }.bind(Color);
 
-// 调色板 - 指针按下事件
 Color.palettePointerdown = function (event) {
 	switch (event.button) {
 		case 0:
@@ -301,7 +271,6 @@ Color.palettePointerdown = function (event) {
 	}
 }.bind(Color);
 
-// 色柱 - 指针按下事件
 Color.pillarPointerdown = function (event) {
 	switch (event.button) {
 		case 0:
@@ -328,7 +297,6 @@ Color.pillarPointerdown = function (event) {
 	}
 }.bind(Color);
 
-// 索引颜色 - 输入事件
 Color.indexedColorInput = function (event) {
 	const index = event.value;
 	const hex = Data.config.indexedColors[index].code;
@@ -342,7 +310,6 @@ Color.indexedColorInput = function (event) {
 	}
 }.bind(Color);
 
-// 索引颜色 - 指针按下事件
 Color.indexedColorPointerdown = function (event) {
 	switch (event.button) {
 		case 2: {
@@ -387,7 +354,6 @@ Color.indexedColorPointerdown = function (event) {
 	}
 }.bind(Color);
 
-// 指针弹起事件
 Color.pointerup = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
@@ -397,7 +363,6 @@ Color.pointerup = function (event) {
 	}
 }.bind(Color);
 
-// 指针移动事件
 Color.pointermove = function (event) {
 	const { dragging } = this;
 	if (dragging.relate(event)) {
@@ -410,7 +375,6 @@ Color.pointermove = function (event) {
 	}
 }.bind(Color);
 
-// 十六进制 - 输入前事件
 Color.hexBeforeinput = function (event) {
 	if (event.inputType === 'insertText' && typeof event.data === 'string') {
 		const regexp = /[^0-9a-f]/i;
@@ -421,7 +385,6 @@ Color.hexBeforeinput = function (event) {
 	}
 };
 
-// 十六进制 - 输入事件
 Color.hexInput = function (event) {
 	const read = getElementReader('color');
 	const write = getElementWriter('color');
@@ -441,7 +404,6 @@ Color.hexInput = function (event) {
 	$('#color-index').reset();
 }.bind(Color);
 
-// 颜色分量 - 输入事件
 Color.rgbaInput = function (event) {
 	const read = getElementReader('color');
 	const write = getElementWriter('color');
@@ -457,7 +419,6 @@ Color.rgbaInput = function (event) {
 	$('#color-index').reset();
 }.bind(Color);
 
-// 保存颜色 - 鼠标点击事件
 Color.confirm = function (event) {
 	const index = $('#color-index').read();
 	if (this.indexEnabled && index !== null) {

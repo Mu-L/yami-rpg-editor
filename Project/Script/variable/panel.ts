@@ -1,7 +1,6 @@
 import { $ } from '../util/dom.ts';
 import { Variable } from './variable.ts';
 
-// 打开属性面板
 Variable.openPropertyPanel = function (variable) {
 	const panel = this.panel;
 	if (panel.variable !== variable) {
@@ -20,7 +19,6 @@ Variable.openPropertyPanel = function (variable) {
 	}
 };
 
-// 关闭属性面板
 Variable.closePropertyPanel = function () {
 	const panel = this.panel;
 	if (panel.variable) {
@@ -29,7 +27,6 @@ Variable.closePropertyPanel = function () {
 	}
 };
 
-// 名字输入框 - 输入事件
 Variable.nameInput = function (event) {
 	const item = Variable.panel.variable;
 	if (item.class !== 'folder') {
@@ -40,7 +37,6 @@ Variable.nameInput = function (event) {
 	}
 };
 
-// 分类输入框 - 写入事件
 Variable.sortWrite = function (event) {
 	switch (event.value) {
 		case 0:
@@ -53,7 +49,6 @@ Variable.sortWrite = function (event) {
 	}
 };
 
-// 分类输入框 - 输入事件
 Variable.sortInput = function (event) {
 	const item = Variable.panel.variable;
 	const sort = event.value;
@@ -73,7 +68,6 @@ Variable.sortInput = function (event) {
 	Variable.changed = true;
 };
 
-// 类型输入框 - 写入事件
 Variable.typeWrite = function (event) {
 	const { style } = Variable.inputs.value;
 	Variable.manager.switch(event.value);
@@ -89,7 +83,6 @@ Variable.typeWrite = function (event) {
 	}
 };
 
-// 类型输入框 - 输入事件
 Variable.typeInput = function (event) {
 	const item = Variable.panel.variable;
 	const type = event.value;
@@ -109,7 +102,6 @@ Variable.typeInput = function (event) {
 	Variable.changed = true;
 };
 
-// 初始值输入框 - 输入事件
 Variable.valueInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const item = Variable.panel.variable;
@@ -120,7 +112,6 @@ Variable.valueInput = function (event) {
 	}
 };
 
-// 备注输入框 - 输入事件
 Variable.noteInput = function (event) {
 	if (event.inputType !== 'insertCompositionText') {
 		const item = Variable.panel.variable;

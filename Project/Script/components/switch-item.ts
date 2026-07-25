@@ -1,5 +1,3 @@
-﻿// ******************************** 开关选项 ********************************
-
 export class SwitchItem extends HTMLElement {
 	dataValue: number;
 	class: string;
@@ -11,34 +9,28 @@ export class SwitchItem extends HTMLElement {
 
 		const length = Math.clamp(parseInt(this.getAttribute('length') ?? ''), 1, 4);
 
-		// 设置属性
 		this.dataValue = 0;
 		this.class = '';
 		this.length = length;
 		this.inputEventEnabled = false;
 
-		// 侦听事件
 		this.on('pointerdown', this.pointerdown);
 	}
 
-	// 读取数据
 	read(): number {
 		return this.dataValue;
 	}
 
-	// 写入数据
 	write(value: number): void {
 		this.dataValue = value;
 		this.update();
 	}
 
-	// 更新样式
 	update(): void {
 		this.removeClass(this.class);
 		this.addClass((this.class = SwitchItem.classes[this.dataValue]));
 	}
 
-	// 添加事件
 	on(
 		type: string,
 		listener: (event: any) => void,
@@ -52,7 +44,6 @@ export class SwitchItem extends HTMLElement {
 		}
 	}
 
-	// 指针按下事件
 	pointerdown(event: PointerEvent): void {
 		switch (event.button) {
 			case 0: {
@@ -67,7 +58,6 @@ export class SwitchItem extends HTMLElement {
 		}
 	}
 
-	// 静态 - 类型列表
 	static classes = ['zero', 'one', 'two', 'three'];
 }
 

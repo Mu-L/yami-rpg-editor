@@ -3,36 +3,27 @@ import { Command } from './command-object.ts';
 import { IfCondition } from './conditional-condition-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 条件分支 - 分支窗口 ********************************
-
 export const IfBranch = {
-	// properties
 	target: null,
 	commands: null,
-	// methods
 	initialize: null,
 	parse: null,
 	open: null,
 	save: null,
-	// events
 	windowClosed: null,
 	confirm: null
 };
 
-// 初始化
 IfBranch.initialize = function () {
-	// 创建模式选项
 	$('#if-branch-mode').loadItems([
 		{ name: 'Meet All', value: 'all' },
 		{ name: 'Meet Any', value: 'any' }
 	]);
 
-	// 侦听事件
 	$('#if-branch').on('closed', this.windowClosed);
 	$('#if-branch-confirm').on('click', this.confirm);
 };
 
-// 解析项目
 IfBranch.parse = function (branch, listData) {
 	const words = Command.words;
 	let joint;
@@ -54,7 +45,6 @@ IfBranch.parse = function (branch, listData) {
 	return string;
 };
 
-// 打开数据
 IfBranch.open = function (branch) {
 	if (this.target.inserting) {
 		IfCondition.target = this.target;
@@ -68,7 +58,6 @@ IfBranch.open = function (branch) {
 	}
 };
 
-// 保存数据
 IfBranch.save = function () {
 	if (this.target.inserting) {
 		const condition = IfCondition.save();
@@ -91,13 +80,11 @@ IfBranch.save = function () {
 	}
 };
 
-// 窗口 - 已关闭事件
 IfBranch.windowClosed = function (event) {
 	IfBranch.commands = null;
 	$('#if-branch-conditions').clear();
 };
 
-// 确定按钮 - 鼠标点击事件
 IfBranch.confirm = function (event) {
 	return IfBranch.target.save();
 };

@@ -1,7 +1,6 @@
 import { Variable } from './variable.ts';
 import { GUID } from '../file/guid.ts';
 
-// 创建ID
 Variable.createId = function () {
 	let id;
 	do {
@@ -10,7 +9,6 @@ Variable.createId = function () {
 	return id;
 };
 
-// 注册变量
 Variable.register = function (item) {
 	if (item.class === 'folder') {
 		for (const child of item.children) {
@@ -21,7 +19,6 @@ Variable.register = function (item) {
 	}
 };
 
-// 取消注册变量
 Variable.unregister = function (item) {
 	if (item.class === 'folder') {
 		for (const child of item.children) {
@@ -32,7 +29,6 @@ Variable.unregister = function (item) {
 	}
 };
 
-// 获取ID匹配的变量
 Variable.getVariableById = (function IIFE() {
 	const find = (items, id) => {
 		const length = items.length;

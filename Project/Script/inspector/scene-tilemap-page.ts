@@ -7,38 +7,30 @@ import { ConditionListInterface } from '../tools/condition-list.ts';
 import { EventListInterface } from '../tools/event-list.ts';
 import { ScriptListInterface } from '../tools/script-list.ts';
 
-// ******************************** 场景 - 瓦片地图页面 ********************************
-
 {
 	const SceneTilemap = {
-		// properties
 		owner: Scene,
 		target: null,
 		nameBox: $('#sceneTilemap-name'),
 		lightBox: $('#sceneTilemap-light'),
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		write: null,
 		update: null,
-		// events
 		layerWrite: null,
 		layerInput: null,
 		paramInput: null
 	};
 
-	// 初始化
 	SceneTilemap.initialize = function () {
-		// 创建图层选项
 		$('#sceneTilemap-layer').loadItems([
 			{ name: 'Background', value: 'background' },
 			{ name: 'Foreground', value: 'foreground' },
 			{ name: 'Object', value: 'object' }
 		]);
 
-		// 创建光线采样选项
 		const items = {
 			raw: { name: 'Raw', value: 'raw' },
 			global: { name: 'Global Sampling', value: 'global' },
@@ -62,26 +54,20 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 			}
 		};
 
-		// 创建混合模式选项
 		$('#sceneTilemap-blend').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Additive', value: 'additive' },
 			{ name: 'Subtract', value: 'subtract' }
 		]);
 
-		// 绑定条件列表
 		$('#sceneTilemap-conditions').bind(new ConditionListInterface(this, Scene));
 
-		// 绑定事件列表
 		$('#sceneTilemap-events').bind(new EventListInterface(this, Scene));
 
-		// 绑定脚本列表
 		$('#sceneTilemap-scripts').bind(new ScriptListInterface(this, Scene));
 
-		// 绑定脚本参数面板
 		$('#sceneTilemap-parameter-pane').bind($('#sceneTilemap-scripts'));
 
-		// 侦听事件
 		const elements = $(`#sceneTilemap-name, #sceneTilemap-layer, #sceneTilemap-order,
     #sceneTilemap-light, #sceneTilemap-blend, #sceneTilemap-x, #sceneTilemap-y,
     #sceneTilemap-anchorX, #sceneTilemap-anchorY, #sceneTilemap-offsetX, #sceneTilemap-offsetY,
@@ -98,7 +84,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		);
 	};
 
-	// 创建瓦片地图
 	SceneTilemap.create = function (width = 4, height = 4) {
 		const tiles = Scene.createTiles(width, height);
 		return Codec.decodeTilemap({
@@ -132,12 +117,10 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		});
 	};
 
-	// 打开数据
 	SceneTilemap.open = function (tilemap) {
 		if (this.target !== tilemap) {
 			this.target = tilemap;
 
-			// 写入数据
 			const write = getElementWriter('sceneTilemap', tilemap);
 			write('name');
 			write('layer');
@@ -161,7 +144,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 关闭数据
 	SceneTilemap.close = function () {
 		if (this.target) {
 			Scene.list.unselect(this.target);
@@ -174,7 +156,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 写入数据
 	SceneTilemap.write = function (options) {
 		if (options.x !== undefined) {
 			$('#sceneTilemap-x').write(options.x);
@@ -190,7 +171,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 更新数据
 	SceneTilemap.update = function (tilemap, key, value) {
 		Scene.planToSave();
 		switch (key) {
@@ -237,7 +217,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	// 图层 - 写入事件
 	SceneTilemap.layerWrite = function (event) {
 		const lightBox = SceneTilemap.lightBox;
 		const type = event.value === 'object' ? 'sprite' : 'tile';
@@ -247,7 +226,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 图层 - 输入事件
 	SceneTilemap.layerInput = function (event) {
 		if (Inspector.manager.focusing === this) {
 			const lightBox = SceneTilemap.lightBox;
@@ -268,7 +246,6 @@ import { ScriptListInterface } from '../tools/script-list.ts';
 		}
 	};
 
-	// 参数 - 输入事件
 	SceneTilemap.paramInput = function (event) {
 		SceneTilemap.update(SceneTilemap.target, Inspector.getKey(this), this.read());
 	};

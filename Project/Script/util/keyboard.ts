@@ -1,5 +1,3 @@
-// ******************************** 禁用撤销和重做 ********************************
-
 window.on(
 	'keydown',
 	function (event: KeyboardEvent) {
@@ -10,8 +8,7 @@ window.on(
 					event.preventDefault();
 					break;
 				case 'KeyA':
-					// 当存在css(user-select: text)元素时
-					// 全选将选中该元素和文本框在内的所有文本块
+					// 当存在css(user-select: text)元素时 全选将选中该元素和文本框在内的所有文本块
 					if (
 						document.activeElement instanceof HTMLInputElement ||
 						document.activeElement instanceof HTMLTextAreaElement
@@ -23,7 +20,6 @@ window.on(
 					break;
 			}
 		}
-		// 监听空格键的按下状态
 		switch (event.code) {
 			case 'Space':
 				Event.prototype.spaceKey = true;
@@ -36,7 +32,6 @@ window.on(
 window.on(
 	'keyup',
 	function (event: KeyboardEvent) {
-		// 监听空格键的弹起状态
 		switch (event.code) {
 			case 'Space':
 				Event.prototype.spaceKey = false;

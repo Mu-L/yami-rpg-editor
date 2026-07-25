@@ -18,9 +18,11 @@ export const SettingConfig = new (class {
 		return path.join(GlobalPath, 'yami-config.json');
 	}
 	constructor() {
-		// 启动期即从磁盘载入完整 config，避免下游裸取 config.github.* 时撞默认空 {} 的问题
+		// 启动期即从磁盘载入完整 config，避免下游裸取 config.github.* 等字段时
+		// 撞 config 还是默认空 {} 的问题（load() 为纯同步 fs 操作，无 DOM 依赖）
 		this.load();
-		// 传 this.open 引用等 'open' 事件触发时才跑，避免加 () 立即调用时 Local 尚在 TDZ
+		// 传 this.open 引用（不加 ()），等 'open' 事件触发时才跑；
+		// 若加 () 立即调用，update() 内用 Local 时 localization.js 可能还在求值 TDZ
 		$('#setting').on('open', this.open.bind(this));
 		$('#setting-confirm').on('click', () => {
 			Window.close('setting');
@@ -34,33 +36,33 @@ export const SettingConfig = new (class {
 				auto: false
 			},
 			apkbuild: {
-				apkPath: '@/app-release.apk',
-				outputDir: '$/decompiled',
-				newApkPath: '$/app-release-re.apk',
-				apktoolPath: '@/apktool.jar'
+				apkPath: '@/app-release.apk', // 原始APK路径
+				outputDir: '$/decompiled', // 反编译输出目录
+				newApkPath: '$/app-release-re.apk', // 新APK输出路径
+				apktoolPath: '@/apktool.jar' // apktool.jar路径
 			},
 			signed: {
 				isSign: true,
-				jksPath: '@/release.jks',
-				keyStorePassword: '123456',
-				keyAlias: 'xuran',
-				keyPassword: '123456',
-				apksignerPath: '@/apksigner.bat',
+				jksPath: '@/release.jks', // JKS密钥库路径
+				keyStorePassword: '123456', // 密钥库密码
+				keyAlias: 'xuran', // 密钥别名
+				keyPassword: '123456', // 密钥密码
+				apksignerPath: '@/apksigner.bat', // apksigner路径
 				zipalignPath: '@/zipalign.exe',
-				signedApkPath: '$/app-debug-signed.apk'
+				signedApkPath: '$/app-debug-signed.apk' // 签名后APK路径
 			},
 			other: {
-				copyAsTextKeepEmptyLine: true,
-				browserSearchHistoryLimit: 9
+				copyAsTextKeepEmptyLine: true, // 复制到文本 是否保留空行
+				browserSearchHistoryLimit: 9 // 项目浏览器搜索历史显示数量
 			},
 			recent: {
-				statsMode: 'count'
+				statsMode: 'count' // 最近项目统计方式: count(只统计数量) 或 size(计算大小)
 			},
 			github: {
-				accelerationNode: 'auto'
+				accelerationNode: 'auto' // GitHub加速节点: auto, node..., none
 			},
 			update: {
-				checkOnStart: true
+				checkOnStart: true // 启动时是否检测更新
 			}
 		};
 	}
@@ -75,8 +77,10 @@ export const SettingConfig = new (class {
 				SettingConfig.config[summary][name] = e.target.value;
 			else SettingConfig.config[summary][name] = e.value;
 		};
+		// 本地服务
 		$('#setting-server-port').on('input', (e) => InputEvent(e, 'server', 'port'));
 		$('#setting-server-auto').on('input', (e) => InputEvent(e, 'server', 'auto'));
+		// 反编译
 		$('#setting-apkbuild-outputDir').on('input', (e) => InputEvent(e, 'apkbuild', 'outputDir'));
 		$('#setting-apkbuild-outputDir').on('mouseenter', (e) =>
 			$('#setting-apkbuild-outputDir').setTooltip(
@@ -99,6 +103,7 @@ export const SettingConfig = new (class {
 				ApkBuilder.processPathOnly(SettingConfig.config.apkbuild.apktoolPath)
 			)
 		);
+		// 签名
 		$('#setting-signed-jksPath').on('input', (e) => InputEvent(e, 'signed', 'jksPath'));
 		$('#setting-signed-jksPath').on('mouseenter', (e) =>
 			$('#setting-signed-jksPath').setTooltip(
@@ -159,8 +164,12 @@ export const SettingConfig = new (class {
 			return;
 		}
 		this.config = JSON.parse(nodeFs.readFileSync(this.configPath, 'utf-8'));
-		// 兜底：旧 yami-config.json 中某字段可能为 null（用户手动改或旧版写入），Reflect.has(null) 会抛错中断 load()
+		// 比对，如果有新增字段，则合并
 		const patch = (_p_obj, _t_obj) => {
+			// 兜底：旧 yami-config.json 中某字段可能为 null（用户手动改或旧版写入），
+			// Reflect.has(null, key) 会抛错中断 load()，导致 this.config 保留初始值、
+			// update() 中 this.config.server.port 裸取报错，setting 窗口值全空。
+			// 这里把 null 子段兜底为 {} 再递归合并。
 			if (_t_obj === null || typeof _t_obj !== 'object') {
 				_t_obj = {};
 			}
@@ -175,7 +184,8 @@ export const SettingConfig = new (class {
 			return _t_obj;
 		};
 		this.config = patch(this.defaultConfig, this.config);
-		// 兜底：旧 yami-config.json 可能缺子段，patch() 对已存在但缺子字段的补不全，Object.assign 强合
+		// 兜底：旧 yami-config.json 可能缺 server/other/recent/apkbuild/signed/github
+		// 子段或子字段，patch() 对已存在但缺子字段的补不全，这里用 Object.assign 强合
 		for (const key of Object.keys(this.defaultConfig)) {
 			this.config[key] ??= {};
 			for (const sub of Object.keys(this.defaultConfig[key])) {
@@ -240,6 +250,7 @@ export const SettingConfig = new (class {
 		$('#setting-other-browserSearchHistoryLimit').loadItems(browserSearchHistoryLimitItems);
 		$('#setting-recent-statsMode').loadItems(recentStatsModeItems);
 
+		// 设置本地化文本
 		$('#setting-title-recent').textContent = get('setting-title-recent') || 'Recent Projects';
 		$('#setting-recent-statsMode-label').textContent =
 			get('setting-recent-statsMode-label') || 'Stats Mode';
@@ -247,6 +258,7 @@ export const SettingConfig = new (class {
 		$('#setting-update-checkOnStart-label').textContent =
 			get('setting-update-checkOnStart-label') || 'Check for updates on startup';
 
+		// 监听本地化事件，更新文本
 		window.on('localize', () => {
 			const get = Local.createGetter('confirmation');
 			$('#setting-title-recent').textContent =
@@ -257,6 +269,7 @@ export const SettingConfig = new (class {
 			$('#setting-update-checkOnStart-label').textContent =
 				get('setting-update-checkOnStart-label') || 'Check for updates on startup';
 
+			// 更新下拉选项
 			const recentStatsModeItems = [
 				{
 					name: get('recent-statsMode-count') || 'Count Only',
@@ -306,11 +319,17 @@ export const SettingConfig = new (class {
 			);
 		}
 		nodeFs.writeFileSync(this.configPath, JSON.stringify(this.config), 'utf-8');
+		// 应用配置
 		this.apply();
 	}
 	apply() {
+		// server
 		if (WebServer.port !== this.config.server.port) {
 			WebServer.port = this.config.server.port;
 		}
 	}
 })();
+
+// 全局绑定：供尚未迁移的文件裸用 window.SettingConfig
+
+// ESM 迁移兼容：恢复全局绑定（供尚未迁移的文件裸用）

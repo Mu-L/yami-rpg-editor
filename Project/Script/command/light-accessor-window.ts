@@ -3,21 +3,14 @@ import { VariableGetter } from './variable-accessor-window.ts';
 import { PresetObject } from '../tools/scene-preset-window.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 光源访问器窗口 ********************************
-
 export const LightGetter = {
-	// properties
 	target: null,
-	// methods
 	initialize: null,
 	open: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 LightGetter.initialize = function () {
-	// 创建访问器类型选项
 	$('#lightGetter-type').loadItems([
 		{ name: 'Event Trigger Light', value: 'trigger' },
 		{ name: 'Latest Light', value: 'latest' },
@@ -25,7 +18,6 @@ LightGetter.initialize = function () {
 		{ name: 'Variable', value: 'variable' }
 	]);
 
-	// 设置关联元素
 	$('#lightGetter-type')
 		.enableHiddenMode()
 		.relate([
@@ -33,11 +25,9 @@ LightGetter.initialize = function () {
 			{ case: 'variable', targets: [$('#lightGetter-variable')] }
 		]);
 
-	// 侦听事件
 	$('#lightGetter-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 LightGetter.open = function (target) {
 	this.target = target;
 	Window.open('lightGetter');
@@ -62,7 +52,6 @@ LightGetter.open = function (target) {
 	$('#lightGetter-type').getFocus();
 };
 
-// 确定按钮 - 鼠标点击事件
 LightGetter.confirm = function (event) {
 	const read = getElementReader('lightGetter');
 	const type = read('type');

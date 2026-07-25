@@ -1,5 +1,3 @@
-// ******************************** 事件访问器 ********************************
-
 Object.defineProperties(Event.prototype, {
 	dragKey: {
 		get: function () {
@@ -28,7 +26,6 @@ Object.defineProperties(Event.prototype, {
 	}
 });
 
-// 获取Ctrl组合键名称
 export const ctrl =
 	process.platform === 'darwin'
 		? function (keyName: string): string {

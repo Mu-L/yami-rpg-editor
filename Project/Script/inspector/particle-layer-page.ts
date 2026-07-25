@@ -3,27 +3,20 @@ import { Data } from '../data/data-object.ts';
 import { Inspector } from './inspector.ts';
 import { Particle } from '../particle/particle-window.ts';
 
-// ******************************** 粒子 - 图层页面 ********************************
-
 {
 	const ParticleLayer = {
-		// properties
 		owner: Particle,
 		target: null,
 		nameBox: $('#particleLayer-name'),
-		// methods
 		initialize: null,
 		create: null,
 		open: null,
 		close: null,
 		update: null,
-		// events
 		paramInput: null
 	};
 
-	// 初始化
 	ParticleLayer.initialize = function () {
-		// 创建发射区域类型选项
 		$('#particleLayer-area-type').loadItems([
 			{ name: 'Point', value: 'point' },
 			{ name: 'Rectangle', value: 'rectangle' },
@@ -31,7 +24,6 @@ import { Particle } from '../particle/particle-window.ts';
 			{ name: 'Screen Edge', value: 'edge' }
 		]);
 
-		// 设置发射区域类型关联元素
 		$('#particleLayer-area-type')
 			.enableHiddenMode()
 			.relate([
@@ -58,35 +50,30 @@ import { Particle } from '../particle/particle-window.ts';
 				}
 			]);
 
-		// 创建混合模式选项
 		$('#particleLayer-blend').loadItems([
 			{ name: 'Normal', value: 'normal' },
 			{ name: 'Additive', value: 'additive' },
 			{ name: 'Subtract', value: 'subtract' }
 		]);
 
-		// 创建光线采样选项
 		$('#particleLayer-light').loadItems([
 			{ name: 'Raw', value: 'raw' },
 			{ name: 'Global Sampling', value: 'global' },
 			{ name: 'Ambient Light', value: 'ambient' }
 		]);
 
-		// 创建排序模式选项
 		$('#particleLayer-sort').loadItems([
 			{ name: 'Youngest in Front', value: 'youngest-in-front' },
 			{ name: 'Oldest in Front', value: 'oldest-in-front' },
 			{ name: 'By Scale Factor', value: 'by-scale-factor' }
 		]);
 
-		// 创建精灵模式选项
 		$('#particleLayer-sprite-mode').loadItems([
 			{ name: 'Random', value: 'random' },
 			{ name: 'Animation', value: 'animation' },
 			{ name: 'Animation(Loop)', value: 'animation-loop' }
 		]);
 
-		// 设置精灵模式关联元素
 		$('#particleLayer-sprite-mode')
 			.enableHiddenMode()
 			.relate([
@@ -96,7 +83,6 @@ import { Particle } from '../particle/particle-window.ts';
 				}
 			]);
 
-		// 创建颜色模式选项
 		$('#particleLayer-color-mode').loadItems([
 			{ name: 'Fixed', value: 'fixed' },
 			{ name: 'Random', value: 'random' },
@@ -104,7 +90,6 @@ import { Particle } from '../particle/particle-window.ts';
 			{ name: 'Texture Sampling', value: 'texture' }
 		]);
 
-		// 设置颜色模式关联元素
 		$('#particleLayer-color-mode')
 			.enableHiddenMode()
 			.relate([
@@ -137,13 +122,11 @@ import { Particle } from '../particle/particle-window.ts';
 				}
 			]);
 
-		// 同步滑动框和数字框的数值
 		$('#particleLayer-color-tint-0-slider').synchronize($('#particleLayer-color-tint-0'));
 		$('#particleLayer-color-tint-1-slider').synchronize($('#particleLayer-color-tint-1'));
 		$('#particleLayer-color-tint-2-slider').synchronize($('#particleLayer-color-tint-2'));
 		$('#particleLayer-color-tint-3-slider').synchronize($('#particleLayer-color-tint-3'));
 
-		// 侦听事件
 		const elements = $(`#particleLayer-name,
     #particleLayer-area-type, #particleLayer-area-x, #particleLayer-area-y,
     #particleLayer-area-width, #particleLayer-area-height, #particleLayer-area-radius,
@@ -200,7 +183,6 @@ import { Particle } from '../particle/particle-window.ts';
 		sliders.on('blur', Inspector.sliderBlur);
 	};
 
-	// 创建粒子图层
 	ParticleLayer.create = function () {
 		return {
 			class: 'particle',
@@ -265,15 +247,12 @@ import { Particle } from '../particle/particle-window.ts';
 		};
 	};
 
-	// 打开数据
 	ParticleLayer.open = function (layer) {
 		if (this.target !== layer) {
 			this.target = layer;
 
-			// 创建过渡方式选项
 			$('#particleLayer-color-easingId').loadItems(Data.createEasingItems());
 
-			// 写入数据
 			const write = getElementWriter('particleLayer', layer);
 			const { area, color } = layer;
 			const { rgba, min, max, easingId, startMin, startMax, endMin, endMax, tint } = color;
@@ -375,7 +354,6 @@ import { Particle } from '../particle/particle-window.ts';
 		}
 	};
 
-	// 关闭数据
 	ParticleLayer.close = function () {
 		if (this.target) {
 			Particle.list.unselect(this.target);
@@ -384,7 +362,6 @@ import { Particle } from '../particle/particle-window.ts';
 		}
 	};
 
-	// 更新数据
 	ParticleLayer.update = function (layer, key, value) {
 		const layerInstance = Particle.emitter.getLayer(layer);
 		Particle.planToSave();
@@ -682,7 +659,6 @@ import { Particle } from '../particle/particle-window.ts';
 		Particle.requestRendering();
 	};
 
-	// 参数 - 输入事件
 	ParticleLayer.paramInput = function (event) {
 		ParticleLayer.update(ParticleLayer.target, Inspector.getKey(this), this.read());
 	};

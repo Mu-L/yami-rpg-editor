@@ -9,10 +9,7 @@ import { FSP } from '../file/file-system.ts';
 import { Log } from '../log/log-window.ts';
 import { Editor } from '../main/editor.ts';
 
-// ******************************** 本地化对象 ********************************
-
 export const Local = {
-	// properties
 	active: null,
 	dirname: '',
 	language: null,
@@ -21,7 +18,6 @@ export const Local = {
 	saveItems: {},
 	saveTagExp: /^#(\S+)$/,
 	titleTagExp: /\$([\S ]+)(?=\n|$)/g,
-	// methods
 	initialize: null,
 	update: null,
 	readLanguageList: null,
@@ -34,13 +30,10 @@ export const Local = {
 	showInExplorer: null
 };
 
-// 初始化
 Local.initialize = function () {
-	// 设置确定按钮的快捷键
 	for (const button of document.getElementsByName('confirm')) {
 		button.setAttribute('hotkey', 'Ctrl+Enter');
 	}
-	// 设置取消按钮的快捷键
 	for (const button of document.getElementsByName('cancel')) {
 		button.setAttribute('hotkey', 'Escape');
 	}
@@ -52,10 +45,9 @@ Local.initialize = function () {
 			: Path.resolve(process.cwd(), 'Project', _moduleURL.pathname.split('/').pop());
 	const _moduleDir =
 		_moduleURL.protocol === 'file:'
-			? Path.dirname(Path.dirname(_modulePath)) // dist/assets/x.js → dist/
+			? Path.dirname(Path.dirname(_modulePath))
 			: Path.resolve(process.cwd(), 'Project');
 	this.dirname = Path.resolve(_moduleDir, 'Locales');
-	// 读取语言包后显示菜单栏
 	this.readLanguageList()
 		.then(() => {
 			return this.setLanguage(Editor.config.language);
@@ -65,7 +57,6 @@ Local.initialize = function () {
 		});
 };
 
-// 读取语言列表
 Local.readLanguageList = function () {
 	const languages = (this.languages = []);
 	return FSP.readdir(this.dirname, { withFileTypes: true })
@@ -104,7 +95,6 @@ Local.readLanguageList = function () {
 		});
 };
 
-// 设置语言
 Local.setLanguage = async function (language) {
 	Editor.config.language = language;
 	if (language === '') {
@@ -149,9 +139,7 @@ Local.setLanguage = async function (language) {
 	}
 };
 
-// 更新数据
 Local.update = (function IIFE() {
-	// 延时100ms可以输出所有错误并触发系统音效
 	const throwError = (message) => {
 		if (Log.devmode) {
 			setTimeout(() => {
@@ -193,7 +181,6 @@ Local.update = (function IIFE() {
 	};
 })();
 
-// 设置属性
 Local.setProperties = (function IIFE() {
 	const setProperty = (map, path, value) => {
 		map[path] = value;
@@ -213,7 +200,6 @@ Local.setProperties = (function IIFE() {
 	};
 })();
 
-// 设置元素
 Local.setElement = (function IIFE() {
 	const throwError = (element, message) => {
 		if (Log.devmode) {
@@ -272,7 +258,6 @@ Local.setElement = (function IIFE() {
 	};
 })();
 
-// 解析工具提示
 Local.parseTip = function (tip, title) {
 	const match = this.saveTagExp.exec(tip);
 	let string = match ? this.saveItems[match[1]].tip : tip;
@@ -282,13 +267,11 @@ Local.parseTip = function (tip, title) {
 	return string.replace(this.titleTagExp, '<b>$1</b>');
 };
 
-// 创建访问器
 Local.createGetter = function (path) {
 	const prefix = path + '.';
 	return (key) => this.get(prefix + key);
 };
 
-// 获取属性
 Local.get = function (key) {
 	const property = this.properties[key];
 	if (property === undefined) {
@@ -302,7 +285,6 @@ Local.get = function (key) {
 	return property;
 };
 
-// 返回在资源管理器中显示的字符串
 Local.showInExplorer = function () {
 	switch (process.platform) {
 		case 'win32':

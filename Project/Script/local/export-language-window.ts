@@ -7,29 +7,21 @@ import { FSP } from '../file/file-system.ts';
 import { Local } from '../tools/localization.ts';
 import { Window } from '../tools/window-object.ts';
 
-// ******************************** 导出语言包窗口 ********************************
-
 export const ExportLanguage = {
-	// methods
 	initialize: null,
 	open: null,
 	exportLanguagePack: null,
 	stringifyLanguagePack: null,
-	// events
 	confirm: null
 };
 
-// 初始化
 ExportLanguage.initialize = function () {
-	// 侦听事件
 	$('#exportLanguage-confirm').on('click', this.confirm);
 };
 
-// 打开窗口
 ExportLanguage.open = function () {
 	Window.open('exportLanguage');
 
-	// 创建语言选项
 	const items = [];
 	const none = { name: Local.get('common.none'), value: '' };
 	for (const language of Data.config.localization.languages) {
@@ -44,10 +36,8 @@ ExportLanguage.open = function () {
 	$('#exportLanguage-second').writeDefault();
 };
 
-// 导出语言包
 ExportLanguage.exportLanguagePack = function (first, second) {
 	const pack = {};
-	// 加载文本到映射表
 	const loadText = (items) => {
 		for (const item of items) {
 			if (item.class === 'folder') {
@@ -62,7 +52,6 @@ ExportLanguage.exportLanguagePack = function (first, second) {
 	return this.stringifyLanguagePack(pack);
 };
 
-// 字符串化语言包
 ExportLanguage.stringifyLanguagePack = function (map) {
 	const entries = Object.entries(map);
 	const length = entries.length;
@@ -74,7 +63,6 @@ ExportLanguage.stringifyLanguagePack = function (map) {
 	return strings.join('\n\n');
 };
 
-// 确定按钮 - 鼠标点击事件
 ExportLanguage.confirm = function (event) {
 	Window.close('exportLanguage');
 	const dialogs = Editor.config.dialogs;

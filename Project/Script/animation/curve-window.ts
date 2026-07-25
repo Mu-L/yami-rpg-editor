@@ -5,9 +5,6 @@ import { Data } from '../data/data-object.ts';
 import { Easing } from '../data/transition-window.ts';
 import { Layout } from '../layout/layout.ts';
 
-// ******************************** 曲线窗口 ********************************
-
-// 曲线窗口状态
 type CurveState = 'closed' | 'open';
 
 type CurveMethod = ((...args: any[]) => any) | null;
@@ -52,7 +49,6 @@ interface CurveShape {
 }
 
 export const Curve: CurveShape = {
-	// properties
 	state: 'closed',
 	page: $('#animation-easing').hide(),
 	head: $('#animation-easing-head'),
@@ -61,7 +57,6 @@ export const Curve: CurveShape = {
 	target: null,
 	index: null,
 	curveMap: null,
-	// methods
 	initialize: null,
 	open: null,
 	load: null,
@@ -76,7 +71,6 @@ export const Curve: CurveShape = {
 	requestRendering: null,
 	renderingFunction: null,
 	stopRendering: null,
-	// events
 	windowResize: null,
 	themechange: null,
 	datachange: null,
@@ -85,12 +79,9 @@ export const Curve: CurveShape = {
 	settingsPointerdown: null
 };
 
-// 初始化
 Curve.initialize = function () {
-	// 创建映射表
 	this.curveMap = new Easing.CurveMap();
 
-	// 创建默认过渡选项
 	this.list.defaultItem = { name: 'No Easing', value: '' };
 
 	// 过渡方式 - 重写设置选项名字方法
@@ -106,7 +97,6 @@ Curve.initialize = function () {
 		}
 	};
 
-	// 侦听事件
 	window.on('themechange', this.themechange);
 	window.on('datachange', this.datachange);
 	this.page.on('resize', this.windowResize);
@@ -115,7 +105,6 @@ Curve.initialize = function () {
 	$('#animation-easing-settings').on('pointerdown', this.settingsPointerdown);
 };
 
-// 打开窗口
 Curve.open = function () {
 	if (this.state === 'closed') {
 		this.state = 'open';
@@ -125,7 +114,6 @@ Curve.open = function () {
 	}
 };
 
-// 读取数据
 Curve.load = function (frame) {
 	if (this.target !== frame) {
 		this.target = frame;
@@ -140,7 +128,6 @@ Curve.load = function (frame) {
 	}
 };
 
-// 关闭窗口
 Curve.close = function () {
 	if (this.state !== 'closed') {
 		this.state = 'closed';
@@ -149,7 +136,6 @@ Curve.close = function () {
 	}
 };
 
-// 挂起
 Curve.suspend = function () {
 	if (this.state === 'open') {
 		this.state = 'suspended';
@@ -157,7 +143,6 @@ Curve.suspend = function () {
 	}
 };
 
-// 继续
 Curve.resume = function () {
 	if (this.state === 'suspended') {
 		this.state = 'open';
@@ -166,11 +151,9 @@ Curve.resume = function () {
 	}
 };
 
-// 更新头部位置
 Curve.updateHead = function () {
 	const { page, head } = this;
 	if (page.clientWidth !== 0) {
-		// 调整左边位置
 		const { nav } = Layout.getGroupOfElement(head);
 		const nRect = nav.rect();
 		const iRect = nav.lastChild.rect();
@@ -182,7 +165,6 @@ Curve.updateHead = function () {
 	}
 };
 
-// 更新过渡选项
 Curve.updateEasingOptions = function () {
 	const { list } = this;
 	const { easings } = Data;
@@ -194,7 +176,6 @@ Curve.updateEasingOptions = function () {
 	}
 };
 
-// 更新时间轴
 Curve.updateTimeline = function (target) {
 	const easing = !!target.easingId;
 	const { key } = target;
@@ -208,14 +189,12 @@ Curve.updateTimeline = function (target) {
 	}
 };
 
-// 调整大小
 Curve.resize = function () {
 	if (this.state === 'open') {
 		const screenBox = CSS.getDevicePixelContentBoxSize(this.page);
 		const screenWidth = screenBox.width;
 		const screenHeight = screenBox.height;
 
-		// 调整画布
 		if (this.canvas.width !== screenWidth || this.canvas.height !== screenHeight) {
 			this.canvas.width = screenWidth;
 			this.canvas.height = screenHeight;
@@ -223,7 +202,6 @@ Curve.resize = function () {
 	}
 };
 
-// 绘制曲线
 Curve.drawCurve = function () {
 	const canvas = this.canvas;
 	const width = canvas.width;
@@ -238,7 +216,6 @@ Curve.drawCurve = function () {
 	const originY = centerY + spacing * 5;
 	const fullSize = spacing * 10;
 
-	// 擦除画布
 	let { context } = canvas;
 	if (!context) {
 		context = canvas.context = canvas.getContext('2d', {
@@ -247,7 +224,6 @@ Curve.drawCurve = function () {
 	}
 	context.clearRect(0, 0, width, height);
 
-	// 绘制虚线网格
 	context.strokeStyle = canvas.gridColor;
 	context.setLineDash([1]);
 	for (let y = originY % spacing; y < height; y += spacing) {
@@ -263,7 +239,6 @@ Curve.drawCurve = function () {
 		context.stroke();
 	}
 
-	// 绘制辅助线
 	context.strokeStyle = canvas.axisColor;
 	context.beginPath();
 	context.moveTo(originX, originY - fullSize + 0.5);
@@ -271,7 +246,6 @@ Curve.drawCurve = function () {
 	context.lineTo(originX + fullSize + 0.5, originY);
 	context.stroke();
 
-	// 绘制坐标轴
 	context.strokeStyle = canvas.axisColor;
 	context.setLineDash([]);
 	context.beginPath();
@@ -281,7 +255,6 @@ Curve.drawCurve = function () {
 	context.lineTo(originX + 0.5, height);
 	context.stroke();
 
-	// 绘制坐标轴文本
 	context.textBaseline = 'top';
 	context.font = '12px Arial';
 	context.fillStyle = canvas.textColor;
@@ -291,7 +264,6 @@ Curve.drawCurve = function () {
 	context.fillText('PROGRESSION', 4, -12);
 	context.setTransform(1, 0, 0, 1, 0, 0);
 
-	// 绘制曲线
 	switch (this.index) {
 		case null:
 			break;
@@ -325,26 +297,21 @@ Curve.drawCurve = function () {
 	}
 };
 
-// 请求渲染
 Curve.requestRendering = function () {
 	if (this.state === 'open') {
 		Timer.appendUpdater('sharedRendering2', this.renderingFunction);
 	}
 };
 
-// 渲染函数
 Curve.renderingFunction = function () {
 	Curve.drawCurve();
 };
 
-// 停止渲染
 Curve.stopRendering = function () {
 	Timer.removeUpdater('sharedRendering2', this.renderingFunction);
 };
 
-// 窗口 - 调整大小事件
 Curve.windowResize = function (event) {
-	// 检查器页面不可见时挂起
 	if (this.page.clientWidth === 0) {
 		return this.suspend();
 	}
@@ -360,7 +327,6 @@ Curve.windowResize = function (event) {
 	}
 }.bind(Curve);
 
-// 主题改变事件
 Curve.themechange = function (event) {
 	const { canvas } = this;
 	switch (event.value) {
@@ -380,7 +346,6 @@ Curve.themechange = function (event) {
 	this.requestRendering();
 }.bind(Curve);
 
-// 数据改变事件
 Curve.datachange = function (event) {
 	if (Curve.state === 'open' && event.key === 'easings') {
 		Curve.updateEasingOptions();
@@ -392,13 +357,11 @@ Curve.datachange = function (event) {
 	}
 };
 
-// 曲线列表 - 写入事件
 Curve.easingIdWrite = function (event) {
 	const id = event.value;
 	if (Curve.index !== id) {
 		Curve.index = id;
 		Curve.requestRendering();
-		// 更新曲线映射表
 		if (id !== '') {
 			const easing = Data.easings.map[id];
 			const points = easing?.points ?? [
@@ -411,7 +374,6 @@ Curve.easingIdWrite = function (event) {
 	}
 };
 
-// 曲线列表 - 输入事件
 Curve.easingIdInput = function (event) {
 	Animation.planToSave();
 	Animation.history.save({
@@ -425,7 +387,6 @@ Curve.easingIdInput = function (event) {
 	Curve.updateTimeline(Curve.target);
 };
 
-// 设置按钮 - 指针按下事件
 Curve.settingsPointerdown = function () {
 	Easing.open();
 };
