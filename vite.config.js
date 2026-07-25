@@ -21,7 +21,7 @@ const copyDirRecursive = (src, dest) => {
 // 将 Project/ 下需原样输出的静态资源复制到 dist/
 const copyStaticAssets = (outDir) => {
 	const root = resolve(__dirname, 'Project');
-	const staticDirs = ['Locales', 'Fonts', 'Images', 'Templates', 'Apk'];
+	const staticDirs = ['Locales', 'Fonts', 'Images', 'Apk'];
 	const staticFiles = ['default.json', 'commands.json', 'Script/module/packmeta.json'];
 	// 创建module目录
 	mkdirSync(join(outDir, 'Script/module'), { recursive: true });
@@ -41,7 +41,7 @@ export default defineConfig({
 	build: {
 		outDir: resolve(__dirname, 'dist'),
 		emptyOutDir: true,
-		rollupOptions: {
+		rolldownOptions: {
 			input: resolve(__dirname, 'Project/index.html'),
 			external: [
 				'electron',
@@ -62,7 +62,7 @@ export default defineConfig({
 				assetFileNames: 'assets/[name]-[hash][extname]'
 			}
 		},
-		minify: false,
+		minify: true,
 		sourcemap: true
 	},
 

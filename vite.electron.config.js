@@ -9,7 +9,7 @@ export default defineConfig({
 	build: {
 		outDir: 'dist-electron',
 		emptyOutDir: true,
-		rollupOptions: {
+		rolldownOptions: {
 			input: {
 				main: resolve(__dirname, 'main/main.ts'),
 				apk: resolve(__dirname, 'main/apk.ts')
@@ -46,7 +46,7 @@ export default defineConfig({
 				'sharp'
 			]
 		},
-		minify: false,
+		minify: true,
 		sourcemap: true,
 		chunkSizeWarningLimit: 2000
 	},

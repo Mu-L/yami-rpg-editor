@@ -29,7 +29,6 @@
 	"include": ["Project/Script/**/*.ts", "main/**/*.ts", "Project/global.d.ts"],
 	"exclude": [
 		"Project/Templates/**",
-		"Project/Script/vs/**",
 		"node_modules/**",
 		"dist/**",
 		"dist-electron/**",
