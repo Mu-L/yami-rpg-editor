@@ -478,7 +478,7 @@ import '../module/resource.js';
 import '../module/net.js';
 import '../module/global.js';
 import '../module/searchstring.js';
-import '../module/settingconfig.js';
+import '../module/settingconfig';
 import '../module/browserSearchHistory.js';
 import '../module/webserver.js';
 import '../module/apkbuilder.js';

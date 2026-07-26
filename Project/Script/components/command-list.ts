@@ -1,4 +1,4 @@
-import { SettingConfig } from '@/module/settingconfig.ts';
+import { SettingConfig } from '@/module/settingconfig';
 import { getVariable } from '@/util/safe.ts';
 import { CommandHistory } from './command-history.ts';
 import { ctrl } from '@/util/event-accessors.ts';

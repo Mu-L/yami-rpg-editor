@@ -15,6 +15,8 @@ export const Local = {
 	language: null,
 	languages: null,
 	properties: {},
+	// 保存最近一次 update() 的 components 表，供延迟创建的元素（如动态渲染的设置项）按 id 取回 label/tip/content
+	components: {} as Record<string, any>,
 	saveItems: {},
 	saveTagExp: /^#(\S+)$/,
 	titleTagExp: /\$([\S ]+)(?=\n|$)/g,
@@ -149,6 +151,7 @@ Local.update = (function IIFE() {
 	};
 	return function (data) {
 		this.setProperties(data.properties);
+		this.components = data.components ?? {};
 		const setElement = this.setElement;
 		const entries = Object.entries(data.components);
 		const length = entries.length;

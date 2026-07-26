@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { GlobalPath, Path } from '@/util/config.ts';
-import { SettingConfig } from './settingconfig.ts';
+import { SettingConfig } from './settingconfig';
 import { $ } from '@/util/dom.ts';
 import { Window } from '@/tools/window-object.ts';
 import { Net, axios } from './net.ts';

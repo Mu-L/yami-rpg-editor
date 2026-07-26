@@ -1,4 +1,4 @@
-import { SettingConfig } from '@/module/settingconfig.ts';
+import { SettingConfig } from '@/module/settingconfig';
 import { $ } from '@/util/dom.ts';
 import { Path } from '@/util/config.ts';
 import { File } from '@/file/file-system-core.ts';

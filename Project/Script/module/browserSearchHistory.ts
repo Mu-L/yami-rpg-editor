@@ -1,4 +1,4 @@
-import { SettingConfig } from './settingconfig.ts';
+import { SettingConfig } from './settingconfig';
 import { Browser } from '@/browser/project-browser.ts';
 export const BrowserSearchHistory: any = {
 	histories: [],

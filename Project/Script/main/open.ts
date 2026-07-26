@@ -1,4 +1,4 @@
-import { SettingConfig } from '@/module/settingconfig.ts';
+import { SettingConfig } from '@/module/settingconfig';
 import { Path } from '@/util/config.ts';
 import { Animation } from '@/animation/animation-window.ts';
 import { Command } from '@/command/command-object.ts';

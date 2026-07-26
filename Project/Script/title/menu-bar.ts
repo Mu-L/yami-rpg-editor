@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { SettingConfig } from '@/module/settingconfig.ts';
+import { SettingConfig } from '@/module/settingconfig';
 import { $ } from '@/util/dom.ts';
 import { Path } from '@/util/config.ts';
 import { Animation } from '@/animation/animation-window.ts';

@@ -11,7 +11,7 @@ import { Editor } from '@/main/editor.ts';
 import { EditDataInstance } from './editdata.ts';
 import { EventBus } from './eventbus.ts';
 import { Resources } from './resource.ts';
-import { SettingConfig } from './settingconfig.ts';
+import { SettingConfig } from './settingconfig';
 import { AutoTile } from '@/palette/auto-tile.ts';
 import { Scene } from '@/scene/scene-window.ts';
 import { NewProject } from '@/title/new-project-window.ts';
