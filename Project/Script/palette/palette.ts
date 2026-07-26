@@ -356,8 +356,8 @@ Palette.setSize = function (width, height) {
 	const tileset = this.tileset;
 	switch (tileset.type) {
 		case 'normal': {
-			const dPriorities = new Array(length).fill(0);
-			const dTerrains = new Array(length).fill(0);
+			const dPriorities = Array(length).fill(0);
+			const dTerrains = Array(length).fill(0);
 			const dro = width;
 			const sPriorities = tileset.priorities;
 			const sTerrains = tileset.terrains;
@@ -379,9 +379,9 @@ Palette.setSize = function (width, height) {
 			break;
 		}
 		case 'auto': {
-			const dTiles = new Array(length).fill(0);
-			const dPriorities = new Array(length).fill(0);
-			const dTerrains = new Array(length).fill(0);
+			const dTiles = Array(length).fill(0);
+			const dPriorities = Array(length).fill(0);
+			const dTerrains = Array(length).fill(0);
 			const dro = width;
 			const sTiles = tileset.tiles;
 			const sPriorities = tileset.priorities;
@@ -556,7 +556,9 @@ Palette.resize = function () {
 		this.marquee.style.height = `${innerHeight / dpr}px`;
 		this.marquee.scaleX = scaledTileWidth / dpr;
 		this.marquee.scaleY = scaledTileHeight / dpr;
-		this.marquee.visible && this.mode === 'normal' && this.marquee.select();
+		if (this.marquee.visible && this.mode === 'normal') {
+			this.marquee.select();
+		}
 
 		const canvasWidth = Math.min(innerWidth, screenWidth);
 		const canvasHeight = Math.min(innerHeight, screenHeight);
@@ -1381,9 +1383,11 @@ Palette.skipScrollEvent = (function IIFE() {
 		if (Palette.scrollable) {
 			screen.off('scroll', Palette.screenUserscroll);
 			// 在动画队列中调用此方法就不需要了
-			window.event?.type === 'resize'
-				? requestAnimationFrame(restoreDelay)
-				: requestAnimationFrame(restore);
+			if (window.event?.type === 'resize') {
+				requestAnimationFrame(restoreDelay);
+			} else {
+				requestAnimationFrame(restore);
+			}
 		}
 	};
 })();
@@ -1414,13 +1418,17 @@ Palette.switchPriority = (function IIFE() {
 	return function (enabled = this.mode !== 'priority') {
 		if (enabled) {
 			itemPriority.addClass('selected');
-			this.marquee.visible && this.marquee.selection.hide();
+			if (this.marquee.visible) {
+				this.marquee.selection.hide();
+			}
 			this.marquee.off('doubleclick', this.marqueeDoubleclick);
 			this.marquee.on('pointermove', this.marqueePointermove);
 			this.marquee.on('pointerleave', this.marqueePointerleave);
 		} else {
 			itemPriority.removeClass('selected');
-			this.marquee.visible && this.marquee.selection.show();
+			if (this.marquee.visible) {
+				this.marquee.selection.show();
+			}
 			this.marquee.off('pointermove', this.marqueePointermove);
 			this.marquee.off('pointerleave', this.marqueePointerleave);
 			this.marquee.on('doubleclick', this.marqueeDoubleclick);
@@ -1441,13 +1449,17 @@ Palette.switchTag = (function IIFE() {
 	return function (enabled = this.mode !== 'tag') {
 		if (enabled) {
 			itemTag.addClass('selected');
-			this.marquee.visible && this.marquee.selection.hide();
+			if (this.marquee.visible) {
+				this.marquee.selection.hide();
+			}
 			this.marquee.on('doubleclick', this.marqueeDoubleclick);
 			this.marquee.on('pointermove', this.marqueePointermove);
 			this.marquee.on('pointerleave', this.marqueePointerleave);
 		} else {
 			itemTag.removeClass('selected');
-			this.marquee.visible && this.marquee.selection.show();
+			if (this.marquee.visible) {
+				this.marquee.selection.show();
+			}
 			this.marquee.off('pointermove', this.marqueePointermove);
 			this.marquee.off('pointerleave', this.marqueePointerleave);
 			this.marquee.on('doubleclick', this.marqueeDoubleclick);
@@ -1468,13 +1480,17 @@ Palette.switchTerrain = (function IIFE() {
 	return function (enabled = this.mode !== 'terrain') {
 		if (enabled) {
 			itemTerrain.addClass('selected');
-			this.marquee.visible && this.marquee.selection.hide();
+			if (this.marquee.visible) {
+				this.marquee.selection.hide();
+			}
 			this.marquee.off('doubleclick', this.marqueeDoubleclick);
 			this.marquee.on('pointermove', this.marqueePointermove);
 			this.marquee.on('pointerleave', this.marqueePointerleave);
 		} else {
 			itemTerrain.removeClass('selected');
-			this.marquee.visible && this.marquee.selection.show();
+			if (this.marquee.visible) {
+				this.marquee.selection.show();
+			}
 			this.marquee.off('pointermove', this.marqueePointermove);
 			this.marquee.off('pointerleave', this.marqueePointerleave);
 			this.marquee.on('doubleclick', this.marqueeDoubleclick);
@@ -1495,13 +1511,17 @@ Palette.switchEdit = (function IIFE() {
 	return function (enabled = this.mode !== 'edit') {
 		if (enabled) {
 			itemEdit.addClass('selected');
-			this.marquee.visible && this.marquee.selection.hide();
+			if (this.marquee.visible) {
+				this.marquee.selection.hide();
+			}
 			this.marquee.off('doubleclick', this.marqueeDoubleclick);
 			this.marquee.on('pointermove', this.marqueePointermove);
 			this.marquee.on('pointerleave', this.marqueePointerleave);
 		} else {
 			itemEdit.removeClass('selected');
-			this.marquee.visible && this.marquee.selection.show();
+			if (this.marquee.visible) {
+				this.marquee.selection.show();
+			}
 			this.marquee.off('pointermove', this.marqueePointermove);
 			this.marquee.off('pointerleave', this.marqueePointerleave);
 			this.marquee.on('doubleclick', this.marqueeDoubleclick);
@@ -1527,7 +1547,7 @@ Palette.loadFromProject = function (project) {
 	this.setZoom(palette.zoom);
 };
 
-Palette.windowResize = function (event) {
+Palette.windowResize = function () {
 	if (this.body.clientWidth === 0) {
 		return this.suspend();
 	}
@@ -1592,11 +1612,11 @@ Palette.toolbarPointerdown = function (event) {
 	}
 };
 
-Palette.zoomFocus = function (event) {
+Palette.zoomFocus = function () {
 	Palette.screen.focus();
 };
 
-Palette.zoomInput = function (event) {
+Palette.zoomInput = function () {
 	Palette.setZoom(this.read());
 };
 
@@ -1725,7 +1745,7 @@ Palette.screenWheel = (function IIFE() {
 	let timerIsWorking = false;
 	const timer = new Timer({
 		duration: 400,
-		callback: (timer) => {
+		callback: () => {
 			timerIsWorking = false;
 			Palette.screen.endScrolling();
 		}
@@ -1747,7 +1767,7 @@ Palette.screenWheel = (function IIFE() {
 	}.bind(Palette);
 })();
 
-Palette.screenUserscroll = function (event) {
+Palette.screenUserscroll = function () {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
 		this.screen.rawScrollTop = this.screen.scrollTop;
@@ -1758,7 +1778,7 @@ Palette.screenUserscroll = function (event) {
 	}
 }.bind(Palette);
 
-Palette.screenBlur = function (event) {
+Palette.screenBlur = function () {
 	if (this.dragging) {
 		this.pointerup(this.dragging);
 	}
@@ -1980,7 +2000,7 @@ Palette.marqueePointermove = function (event) {
 	}
 }.bind(Palette);
 
-Palette.marqueePointerleave = function (event) {
+Palette.marqueePointerleave = function () {
 	if (this.activeIndex !== null) {
 		this.activeIndex = null;
 		this.updateInfo(null);
@@ -2170,9 +2190,12 @@ Palette.pointermove = function (event) {
 				const { x, y } = this.getTileCoords(event);
 				const active = sx === x && sy === y;
 				if (dragging.active !== active) {
-					(dragging.active = active)
-						? this.marquee.customSelect('source')
-						: this.marquee.customUnselect('source');
+					dragging.active = active;
+					if (active) {
+						this.marquee.customSelect('source');
+					} else {
+						this.marquee.customUnselect('source');
+					}
 				}
 				break;
 			}

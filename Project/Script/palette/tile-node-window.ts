@@ -231,7 +231,7 @@ TileNode.getDevicePixelClientBoxSize = function (element) {
 	return { width, height };
 };
 
-TileNode.dprchange = function (event) {
+TileNode.dprchange = function () {
 	if (this.nodes !== null) {
 		const marquee = this.marquee;
 		const { x, y, width, height } = marquee;
@@ -240,7 +240,7 @@ TileNode.dprchange = function (event) {
 	}
 }.bind(TileNode);
 
-TileNode.windowClosed = function (event) {
+TileNode.windowClosed = function () {
 	this.nodes = null;
 	this.image = null;
 	this.canvas.width = 0;
@@ -313,7 +313,7 @@ TileNode.keydown = function (event) {
 	}
 }.bind(TileNode);
 
-TileNode.screenScroll = function (event) {
+TileNode.screenScroll = function () {
 	this.updateTransform();
 	this.updateBackground();
 	this.requestRendering();

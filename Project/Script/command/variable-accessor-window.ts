@@ -457,11 +457,11 @@ VariableGetter.typeInput = function (event: Event & { value: string }): void {
 	}
 };
 
-VariableGetter.confirm = function (this: VariableGetterShape, event: Event): void {
+VariableGetter.confirm = function (this: VariableGetterShape): void {
 	this._confirmCore!('variableGetter');
 }.bind(VariableGetter);
 
-VariableGetter.confirm2 = function (this: VariableGetterShape, event: Event): void {
+VariableGetter.confirm2 = function (this: VariableGetterShape): void {
 	this._confirmCore!('variableGetter2');
 }.bind(VariableGetter);
 

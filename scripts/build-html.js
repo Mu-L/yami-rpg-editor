@@ -39,8 +39,6 @@ function transformHead(headHtml) {
 	const lines = headHtml.split('\n');
 	const out = [];
 	let skipUntilClose = false;
-	let scriptIsScript = false; // 多行 <script> 标签是否属于 src="Script/" 类
-
 	for (const line of lines) {
 		const trimmed = line.trim();
 

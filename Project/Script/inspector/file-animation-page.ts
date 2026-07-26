@@ -74,7 +74,7 @@ import { Window } from '@/tools/window-object.ts';
 			this.history = new Inspector.ParamHistory(FileAnimation, FileAnimation.owner, list);
 
 			// 重载动画纹理 - 改变事件
-			list.on('change', (event) => {
+			list.on('change', () => {
 				if (Animation.sprites) {
 					if (Animation.sprites.listItems) {
 						Animation.sprites.listItems = undefined;

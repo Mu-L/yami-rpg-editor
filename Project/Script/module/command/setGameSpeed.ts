@@ -19,10 +19,10 @@ Command.cases.setGameSpeed = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#setGameSpeed').on('open', function (event) {
+		$('#setGameSpeed').on('open', function () {
 			$('#setGameSpeed-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#setGameSpeed').on('closed', function (event) {
+		$('#setGameSpeed').on('closed', function () {
 			$('#setGameSpeed-easingId').clear();
 		});
 	},

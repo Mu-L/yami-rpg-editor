@@ -209,7 +209,7 @@ UI.Window = class WindowElement extends UI.Element {
 		this._calculateScrollArea();
 	}
 
-	requestResizing = ((IIFE) => {
+	requestResizing = (() => {
 		const timer = new Timer({
 			duration: 0,
 			callback: () => this.resize()

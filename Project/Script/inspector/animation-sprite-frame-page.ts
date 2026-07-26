@@ -167,7 +167,7 @@ import { Sprite } from '@/sprite/sprite.ts';
 		Animation.requestRendering();
 	};
 
-	AnimSpriteFrame.paramInput = function (event) {
+	AnimSpriteFrame.paramInput = function () {
 		AnimSpriteFrame.update(AnimSpriteFrame.target, Inspector.getKey(this), this.read());
 	};
 

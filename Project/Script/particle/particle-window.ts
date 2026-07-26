@@ -305,7 +305,7 @@ Particle.initialize = function () {
 
 	this.translationTimer = new Timer({
 		duration: Infinity,
-		update: (timer) => {
+		update: () => {
 			if (this.state === 'open' && this.dragging === null) {
 				const key = this.translationKey;
 				const step = (Timer.deltaTime * 1.5) / this.scale;
@@ -341,7 +341,7 @@ Particle.initialize = function () {
 
 	this.zoomTimer = new Timer({
 		duration: 80,
-		update: (timer) => {
+		update: () => {
 			if (this.state === 'open') {
 				const { elapsed, duration, start, end } = timer;
 				const time = elapsed / duration;
@@ -1220,13 +1220,13 @@ Particle.loadFromProject = function (project) {
 	this.setZoom(particle.zoom);
 };
 
-Particle.webglRestored = function (event) {
+Particle.webglRestored = function () {
 	if (Particle.state === 'open') {
 		Particle.requestRendering();
 	}
 };
 
-Particle.windowResize = function (event) {
+Particle.windowResize = function () {
 	this.updateHead();
 	if (this.state === 'open') {
 		this.resize();
@@ -1235,7 +1235,7 @@ Particle.windowResize = function (event) {
 	}
 }.bind(Particle);
 
-Particle.themechange = function (event) {
+Particle.themechange = function () {
 	this.requestRendering();
 }.bind(Particle);
 
@@ -1330,15 +1330,15 @@ Particle.controlPointerdown = function (event) {
 	}
 };
 
-Particle.speedInput = function (event) {
+Particle.speedInput = function () {
 	Particle.speed = this.read();
 };
 
-Particle.zoomFocus = function (event) {
+Particle.zoomFocus = function () {
 	Particle.screen.focus();
 };
 
-Particle.zoomInput = function (event) {
+Particle.zoomInput = function () {
 	Particle.setZoom(this.read());
 };
 
@@ -1377,7 +1377,7 @@ Particle.screenWheel = function (event) {
 	}
 }.bind(Particle);
 
-Particle.screenUserscroll = function (event) {
+Particle.screenUserscroll = function () {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
 		this.screen.rawScrollTop = this.screen.scrollTop;
@@ -1386,7 +1386,7 @@ Particle.screenUserscroll = function (event) {
 	}
 }.bind(Particle);
 
-Particle.screenBlur = function (event) {
+Particle.screenBlur = function () {
 	// this.translationKeyup() this.pointerup()
 	this.marqueePointerleave();
 }.bind(Particle);
@@ -1439,7 +1439,7 @@ Particle.marqueePointermove = function (event) {
 	}
 }.bind(Particle);
 
-Particle.marqueePointerleave = function (event) {
+Particle.marqueePointerleave = function () {
 	if (this.marquee.pointerevent) {
 		this.marquee.pointerevent = null;
 		if (this.emitter?.active) {
@@ -1694,7 +1694,7 @@ Particle.listPopup = function (event) {
 	);
 };
 
-Particle.listChange = function (event) {
+Particle.listChange = function () {
 	Particle.planToSave();
 };
 

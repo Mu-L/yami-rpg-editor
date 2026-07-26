@@ -80,7 +80,7 @@ export class TextArea extends HTMLElement {
 		}
 	}
 
-	inputInput(event: any) {
+	inputInput() {
 		if (!TextArea.target) {
 			TextArea.target = this;
 			TextArea.timer.add();
@@ -98,7 +98,7 @@ export class TextArea extends HTMLElement {
 			case 'focus':
 				if (!this.focusEventEnabled) {
 					this.focusEventEnabled = true;
-					this.input.on('focus', (event) => {
+					this.input.on('focus', () => {
 						this.dispatchEvent(new FocusEvent('focus'));
 					});
 				}
@@ -106,7 +106,7 @@ export class TextArea extends HTMLElement {
 			case 'blur':
 				if (!this.blurEventEnabled) {
 					this.blurEventEnabled = true;
-					this.input.on('blur', (event) => {
+					this.input.on('blur', () => {
 						this.dispatchEvent(new FocusEvent('blur'));
 					});
 				}
@@ -118,7 +118,7 @@ export class TextArea extends HTMLElement {
 
 	static timer = new Timer({
 		duration: 0,
-		callback: (timer) => {
+		callback: () => {
 			TextArea.target.removeClass('inputting');
 			TextArea.target = null;
 		}

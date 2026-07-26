@@ -60,16 +60,16 @@ ArrayList.windowClose = function (event) {
 	}
 }.bind(ArrayList);
 
-ArrayList.windowClosed = function (event) {
+ArrayList.windowClosed = function () {
 	ArrayList.target = null;
 	ArrayList.list.clear();
 };
 
-ArrayList.listChange = function (event) {
+ArrayList.listChange = function () {
 	ArrayList.changed = true;
 };
 
-ArrayList.confirm = function (event) {
+ArrayList.confirm = function () {
 	this.changed = false;
 	this.target.input(this.list.read());
 	Window.close('arrayList');

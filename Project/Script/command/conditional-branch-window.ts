@@ -80,11 +80,11 @@ IfBranch.save = function () {
 	}
 };
 
-IfBranch.windowClosed = function (event) {
+IfBranch.windowClosed = function () {
 	IfBranch.commands = null;
 	$('#if-branch-conditions').clear();
 };
 
-IfBranch.confirm = function (event) {
+IfBranch.confirm = function () {
 	return IfBranch.target.save();
 };

@@ -689,7 +689,7 @@ Data.loadScript = async function (file) {
 				PluginManager.parseMeta(meta, code);
 				return (scripts[guid] = meta);
 			})
-			.catch((error) => {
+			.catch(() => {
 				delete scripts[guid];
 			});
 	}

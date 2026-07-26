@@ -671,11 +671,11 @@ Layout.loadFromConfig = function (config) {
 	this.layout = config.layout;
 };
 
-Layout.windowResize = function (event) {
+Layout.windowResize = function () {
 	Layout.updateGroups();
 };
 
-Layout.windowLocalize = function (event) {
+Layout.windowLocalize = function () {
 	if (Layout.manager.active !== null) {
 		for (const group of Layout.getKeyGroups()) {
 			group.manager.active.dispatchResizeEvent();
@@ -844,7 +844,7 @@ Layout.navDragstart = function (event) {
 	}
 };
 
-Layout.navDragend = function (event) {
+Layout.navDragend = function () {
 	const { dragging } = Layout;
 	if (dragging) {
 		window.off('dragenter', Layout.navDragover);
@@ -1042,7 +1042,7 @@ Layout.navDrop = function (event) {
 	}
 };
 
-Layout.regionDragleave = function (event) {
+Layout.regionDragleave = function () {
 	const { dragging } = Layout;
 	if (dragging && dragging.location && dragging.location.trigger === this) {
 		Layout.updateHint(null);

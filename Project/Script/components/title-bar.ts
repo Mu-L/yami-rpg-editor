@@ -51,7 +51,7 @@ export class TitleBar extends HTMLElement {
 							cancel();
 						}
 					};
-					const cancel = (event?: Event) => {
+					const cancel = () => {
 						this.dragging = null;
 						window.off('pointermove', pointermove);
 						window.off('pointerup', pointerup);

@@ -88,7 +88,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UIReference.paramInput = function (event) {
+	UIReference.paramInput = function () {
 		UIReference.update(UIReference.target, Inspector.getKey(this), this.read());
 	};
 

@@ -659,7 +659,7 @@ import { Particle } from '@/particle/particle-window.ts';
 		Particle.requestRendering();
 	};
 
-	ParticleLayer.paramInput = function (event) {
+	ParticleLayer.paramInput = function () {
 		ParticleLayer.update(ParticleLayer.target, Inspector.getKey(this), this.read());
 	};
 

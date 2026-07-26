@@ -9,10 +9,10 @@ Command.cases.createActor = new CommandSchema({
 	name: 'createActor',
 	onInitialize() {
 		$('#createActor-confirm').on('click', () => this.save());
-		$('#createActor').on('open', function (event) {
+		$('#createActor').on('open', function () {
 			$('#createActor-teamId').loadItems(Data.createTeamItems());
 		});
-		$('#createActor').on('closed', function (event) {
+		$('#createActor').on('closed', function () {
 			$('#createActor-teamId').clear();
 		});
 	},

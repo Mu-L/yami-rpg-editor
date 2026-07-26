@@ -720,7 +720,7 @@ Easing.windowClose = function (event) {
 	}
 };
 
-Easing.windowClosed = function (event) {
+Easing.windowClosed = function () {
 	this.list.saveSelection();
 	this.curve.blur();
 	this.timer.remove();
@@ -734,7 +734,7 @@ Easing.windowClosed = function (event) {
 	this.stopRendering();
 }.bind(Easing);
 
-Easing.dprchange = function (event) {
+Easing.dprchange = function () {
 	if (this.data !== null) {
 		this.updateCanvases();
 		this.requestRendering();
@@ -764,7 +764,7 @@ Easing.themechange = function (event) {
 	this.requestRendering();
 }.bind(Easing);
 
-Easing.dataChange = function (event) {
+Easing.dataChange = function () {
 	this.changed = true;
 }.bind(Easing);
 
@@ -863,7 +863,7 @@ Easing.listPopup = function (event) {
 	);
 };
 
-Easing.modeSelect = function (event) {
+Easing.modeSelect = function () {
 	this.updatePoints();
 	const points = this.points;
 	const easingMap = this.easingMap;
@@ -929,7 +929,7 @@ Easing.modeSelect = function (event) {
 	this.requestRendering();
 }.bind(Easing);
 
-Easing.pointInput = function (event) {
+Easing.pointInput = function () {
 	const key = Inspector.getKey(this);
 	const value = this.read();
 	const keys = key.split('-');
@@ -1036,7 +1036,7 @@ Easing.curveWheel = function (event) {
 	}
 }.bind(Easing);
 
-Easing.curveBlur = function (event) {
+Easing.curveBlur = function () {
 	this.pointerup();
 	if (this.activePoint !== null) {
 		this.activePoint = null;
@@ -1081,11 +1081,11 @@ Easing.pointermove = function (event) {
 	}
 }.bind(Easing);
 
-Easing.reverseInput = function (event) {
+Easing.reverseInput = function () {
 	Easing.reverse = this.read();
 };
 
-Easing.durationInput = function (event) {
+Easing.durationInput = function () {
 	Easing.duration = this.read();
 	const timer = Easing.timer;
 	if (timer.state === 'playing') {
@@ -1095,7 +1095,7 @@ Easing.durationInput = function (event) {
 	}
 };
 
-Easing.delayInput = function (event) {
+Easing.delayInput = function () {
 	Easing.delay = this.read();
 	const timer = Easing.timer;
 	if (timer.state === 'waiting') {
@@ -1105,7 +1105,7 @@ Easing.delayInput = function (event) {
 	}
 };
 
-Easing.confirm = function (event) {
+Easing.confirm = function () {
 	if (this.changed) {
 		this.changed = false;
 		this.clear();

@@ -220,7 +220,11 @@ Variable.list.updateNoteIcon = function (item) {
 		const annotated = item.note !== '';
 		if (element.annotated !== annotated) {
 			element.annotated = annotated;
-			annotated ? element.noteIcon.show() : element.noteIcon.hide();
+			if (annotated) {
+				element.noteIcon.show();
+			} else {
+				element.noteIcon.hide();
+			}
 		}
 	}
 };

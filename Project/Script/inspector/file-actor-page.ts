@@ -257,11 +257,11 @@ import { Window } from '@/tools/window-object.ts';
 		elMoveMotion.write2(elMoveMotion.read());
 	};
 
-	FileActor.paramInput = function (event) {
+	FileActor.paramInput = function () {
 		FileActor.update(FileActor.target, Inspector.getKey(this), this.read());
 	};
 
-	FileActor.listChange = function (event) {
+	FileActor.listChange = function () {
 		File.planToSave(FileActor.meta);
 	};
 
@@ -270,7 +270,7 @@ import { Window } from '@/tools/window-object.ts';
 			$('#fileActor-sprite-confirm').on('click', () => list.save());
 
 			// 重载场景角色动画 - 改变事件
-			list.on('change', (event) => {
+			list.on('change', () => {
 				const guid = FileActor.meta.guid;
 				if (Scene.actors instanceof Array) {
 					for (const actor of Scene.actors) {

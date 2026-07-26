@@ -152,6 +152,7 @@ export class ScrollBar extends HTMLElement {
 									(offset < 0 && clientX < left) ||
 									(offset > 0 && clientX > right)
 								) {
+									/* 出界：继续循环 */
 								} else {
 									break;
 								}
@@ -163,6 +164,7 @@ export class ScrollBar extends HTMLElement {
 									(offset < 0 && clientY < top) ||
 									(offset > 0 && clientY > bottom)
 								) {
+									/* 出界：继续循环 */
 								} else {
 									break;
 								}

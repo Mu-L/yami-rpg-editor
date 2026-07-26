@@ -19,10 +19,10 @@ Command.cases.setZoomFactor = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#setZoomFactor').on('open', function (event) {
+		$('#setZoomFactor').on('open', function () {
 			$('#setZoomFactor-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#setZoomFactor').on('closed', function (event) {
+		$('#setZoomFactor').on('closed', function () {
 			$('#setZoomFactor-easingId').clear();
 		});
 	},

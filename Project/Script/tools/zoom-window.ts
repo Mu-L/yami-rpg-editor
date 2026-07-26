@@ -24,7 +24,7 @@ Zoom.getFactor = function () {
 	return webFrame.getZoomFactor();
 };
 
-Zoom.confirm = function (event) {
+Zoom.confirm = function () {
 	Window.close('zoom');
 	webFrame.setZoomFactor((Editor.config.zoom = $('#zoom-factor').read()));
 };

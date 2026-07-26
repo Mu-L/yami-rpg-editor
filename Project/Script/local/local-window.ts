@@ -304,7 +304,7 @@ Localization.unpackLocalization = (function IIFE() {
 	}
 	const clone = (items) => {
 		const length = items.length;
-		const copies = new Array(length);
+		const copies = Array(length);
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
 			if (item.class !== 'folder') {
@@ -326,7 +326,7 @@ Localization.unpackLocalization = (function IIFE() {
 Localization.packLocalization = (function IIFE() {
 	const clone = (items) => {
 		const length = items.length;
-		const copies = new Array(length);
+		const copies = Array(length);
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
 			if (item.class !== 'folder') {
@@ -379,7 +379,7 @@ Localization.windowClose = function (event) {
 	}
 }.bind(Localization);
 
-Localization.windowClosed = function (event) {
+Localization.windowClosed = function () {
 	this.data = null;
 	this.idMap = null;
 	this.inputs = null;
@@ -548,7 +548,7 @@ Localization.listPopup = function (event) {
 			label: `ID: ${item.id}`,
 			style: 'id',
 			click: () => {
-				navigator.clipboard.writeText(item.id);
+				void navigator.clipboard.writeText(item.id);
 			}
 		});
 		items.push({
@@ -619,7 +619,7 @@ Localization.searcherInput = function (event) {
 	Localization.list.searchNodesDebounced(text);
 };
 
-Localization.confirm = function (event) {
+Localization.confirm = function () {
 	if (this.target) {
 		const item = this.list.read();
 		if (item?.id === undefined) {
@@ -634,7 +634,7 @@ Localization.confirm = function (event) {
 	Window.close('localization');
 }.bind(Localization);
 
-Localization.apply = function (event) {
+Localization.apply = function () {
 	if (this.changed) {
 		this.changed = false;
 
@@ -656,8 +656,8 @@ Localization.fromExcel = async function (event) {
 	Localization.apply();
 }.bind(Localization);
 
-Localization.toExcel = function (event) {
-	ipcRenderer.invoke('to-excel', {
+Localization.toExcel = function () {
+	void ipcRenderer.invoke('to-excel', {
 		langs: this.languages,
 		list: Data.localization.list
 	});

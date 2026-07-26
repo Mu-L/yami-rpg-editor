@@ -396,7 +396,7 @@ export class TabBar extends HTMLElement {
 		}
 	}
 
-	dragend(event?: DragEvent): void {
+	dragend(): void {
 		if (this.dragging) {
 			this.removeClass('dragging');
 			this.parentNode!.removeChild(this.dragging.hint);

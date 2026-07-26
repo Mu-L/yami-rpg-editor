@@ -46,4 +46,14 @@ export class MultipleAudioPlayer {
 		}
 		return undefined;
 	}
+
+	// 停止所有正在播放的音效：暂停并归还池中，复用 getAudio 内 onStop 的回收逻辑
+	stop(): void {
+		while (this.audios.length > 0) {
+			const audio = this.audios[0];
+			audio.pause();
+			audio.currentTime = 0;
+			audio.onStop();
+		}
+	}
 }

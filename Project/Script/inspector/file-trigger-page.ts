@@ -262,11 +262,11 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		elMotion.write(elMotion.read());
 	};
 
-	FileTrigger.paramInput = function (event) {
+	FileTrigger.paramInput = function () {
 		FileTrigger.update(FileTrigger.target, Inspector.getKey(this), this.read());
 	};
 
-	FileTrigger.listChange = function (event) {
+	FileTrigger.listChange = function () {
 		File.planToSave(FileTrigger.meta);
 	};
 

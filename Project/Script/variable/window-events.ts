@@ -29,7 +29,7 @@ Variable.windowClose = function (event) {
 	}
 }.bind(Variable);
 
-Variable.windowClosed = function (event) {
+Variable.windowClosed = function () {
 	this.target = null;
 	this.data = null;
 	this.idMap = null;

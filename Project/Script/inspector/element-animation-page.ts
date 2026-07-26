@@ -102,7 +102,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UIAnimation.paramInput = function (event) {
+	UIAnimation.paramInput = function () {
 		UIAnimation.update(UIAnimation.target, Inspector.getKey(this), this.read());
 	};
 

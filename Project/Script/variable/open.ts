@@ -50,7 +50,7 @@ Variable.redo = function () {
 	}
 };
 
-Variable.confirm = function (event) {
+Variable.confirm = function () {
 	const target = this.target;
 	if (target instanceof Object) {
 		const variable = this.panel.variable;
@@ -76,7 +76,7 @@ Variable.confirm = function (event) {
 	Window.close('variable');
 }.bind(Variable);
 
-Variable.apply = function (event) {
+Variable.apply = function () {
 	if (this.changed) {
 		this.changed = false;
 

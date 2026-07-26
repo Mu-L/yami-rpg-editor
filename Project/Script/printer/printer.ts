@@ -583,7 +583,9 @@ export class Printer {
 				case '-':
 				case '\n':
 				case '<':
-					while (++i < length && content[i] === char) {}
+					while (++i < length && content[i] === char) {
+						/* skip consecutive delimiters */
+					}
 					wrapEnd = i;
 					break outer;
 			}
@@ -986,7 +988,7 @@ export class Printer {
 
 		this.commandCount = 0;
 		this.commandMaximum = 100;
-		this.commands = new Array(this.commandMaximum);
+		this.commands = Array(this.commandMaximum);
 
 		this.drawingMethods = {
 			none: 'drawText',
@@ -1058,12 +1060,12 @@ export class Printer {
 									).name = name;
 								}
 							},
-							(error) => {
+							() => {
 								importing.remove(name);
 							}
 						);
 					},
-					(error) => {
+					() => {
 						importing.remove(name);
 					}
 				)
@@ -1175,11 +1177,13 @@ export class Printer {
 
 	static restoreTexture(base: any) {
 		base.restoreNormalTexture();
-		Promise.resolve().then(() => {
-			const { content } = base.printer;
-			base.printer.reset();
-			base.printer.draw(content);
-		});
+		Promise.resolve()
+			.then(() => {
+				const { content } = base.printer;
+				base.printer.reset();
+				base.printer.draw(content);
+			})
+			.catch(() => {});
 	}
 
 	static drawText(context: any, command: any, text: any) {
@@ -1254,10 +1258,12 @@ export class Printer {
 			const path = File.getPath(guid);
 			const name = path.match(/([^/]+)\.\S+\.\S+$/)?.[1];
 			if (name) {
-				this.importFonts([guid]).then(() => {
-					this.font = `${name}, ${fontFamily}`;
-					UI.updateElementFont();
-				});
+				this.importFonts([guid])
+					.then(() => {
+						this.font = `${name}, ${fontFamily}`;
+						UI.updateElementFont();
+					})
+					.catch(() => {});
 			}
 		}
 	}
@@ -1299,7 +1305,7 @@ export class Printer {
 			if ((Printer.imported as unknown as { signature: string }).signature !== signature) {
 				(Printer.imported as unknown as { signature: string }).signature = signature;
 				Printer.clearFonts();
-				Printer.importFonts(importedFonts);
+				void Printer.importFonts(importedFonts);
 			}
 
 			const { highDefinition } = Data.config.text;

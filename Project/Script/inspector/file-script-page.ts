@@ -60,7 +60,7 @@ export default class Plugin {
 		}
 	};
 
-	FileScript.windowLocalize = function (event) {
+	FileScript.windowLocalize = function () {
 		if (FileScript.target) {
 			const { target, meta } = FileScript;
 			FileScript.target = null;

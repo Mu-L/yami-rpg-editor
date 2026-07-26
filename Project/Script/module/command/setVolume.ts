@@ -26,10 +26,10 @@ Command.cases.setVolume = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#setVolume').on('open', function (event) {
+		$('#setVolume').on('open', function () {
 			$('#setVolume-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#setVolume').on('closed', function (event) {
+		$('#setVolume').on('closed', function () {
 			$('#setVolume-easingId').clear();
 		});
 	},

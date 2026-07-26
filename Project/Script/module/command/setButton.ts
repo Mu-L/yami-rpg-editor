@@ -14,7 +14,7 @@ Command.cases.setButton = new CommandSchema({
 	onInitialize() {
 		$('#setButton-confirm').on('click', () => this.save());
 		$('#setButton-properties').bind(ButtonProperty);
-		$('#setButton').on('closed', (event) => {
+		$('#setButton').on('closed', () => {
 			$('#setButton-properties').clear();
 		});
 	},

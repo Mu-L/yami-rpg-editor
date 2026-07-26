@@ -133,7 +133,7 @@ export const EditDataInstance = new (class {
 		let hasChanges = false;
 
 		if (Array.isArray(this.currentContent)) {
-			for (const ind in this.currentContent) {
+			for (let ind = 0; ind < this.currentContent.length; ind++) {
 				const { node, value } = this.currentContent[ind];
 				if (!(ind in parse)) continue;
 				const changeContent = parse[ind];
@@ -181,14 +181,14 @@ export const EditDataInstance = new (class {
 		text.textContent = code;
 		options.theme = Title.theme;
 		(this as any).createTheme(Title.theme);
-		monaco.editor.colorizeElement(text, options);
+		void monaco.editor.colorizeElement(text, options);
 		let index = setInterval(() => {
 			if (text.children.length !== 0) {
 				clearInterval(index);
 				const nodes = text.childNodes;
 				const nLength = nodes.length;
 				const sLength = nLength >> 1;
-				const spans = new Array(sLength);
+				const spans = Array(sLength);
 				for (let i = 0; i < nLength; i += 2) {
 					spans[i >> 1] = nodes[i];
 				}

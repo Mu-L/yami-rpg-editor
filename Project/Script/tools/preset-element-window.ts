@@ -59,7 +59,7 @@ PresetElement.open = function (target) {
 PresetElement.buildNodes = (function IIFE() {
 	const build = (nodes) => {
 		const length = nodes.length;
-		const list = new Array(length);
+		const list = Array(length);
 		for (let i = 0; i < length; i++) {
 			const node = nodes[i];
 			list[i] = {
@@ -81,7 +81,7 @@ PresetElement.getDefaultPresetId = function () {
 	return UI.target?.presetId ?? '';
 };
 
-PresetElement.windowClosed = function (event) {
+PresetElement.windowClosed = function () {
 	PresetElement.target = null;
 	PresetElement.nodes = null;
 	PresetElement.list.clear();
@@ -100,7 +100,7 @@ PresetElement.uiIdWrite = function (event) {
 	}
 };
 
-PresetElement.listOpen = function (event) {
+PresetElement.listOpen = function () {
 	PresetElement.confirm();
 };
 
@@ -137,7 +137,7 @@ PresetElement.searcherInput = function (event) {
 	}
 };
 
-PresetElement.confirm = function (event) {
+PresetElement.confirm = function () {
 	const uiId = this.ui.read();
 	if (!uiId) {
 		return this.ui.getFocus();

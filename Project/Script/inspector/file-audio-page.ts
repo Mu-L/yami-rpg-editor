@@ -120,15 +120,17 @@ import { Timer } from '@/util/timer.ts';
 				} else {
 					resolve();
 				}
-			}).then(() => {
-				if (this.symbol === symbol) {
-					this.symbol = null;
-					const duration = audio.duration;
-					const bitrate = Math.round(size / 128 / duration);
-					elDuration.textContent = this.formatTime(duration);
-					elBitrate.textContent = `${bitrate}Kbps`;
-				}
-			});
+			})
+				.then(() => {
+					if (this.symbol === symbol) {
+						this.symbol = null;
+						const duration = audio.duration;
+						const bitrate = Math.round(size / 128 / duration);
+						elDuration.textContent = this.formatTime(duration);
+						elBitrate.textContent = `${bitrate}Kbps`;
+					}
+				})
+				.catch(() => {});
 		}
 	};
 
@@ -367,13 +369,13 @@ import { Timer } from '@/util/timer.ts';
 		}
 	}.bind(FileAudio);
 
-	FileAudio.windowResize = function (event) {
+	FileAudio.windowResize = function () {
 		if (FileAudio.target !== null && FileAudio.symbol === null) {
 			FileAudio.updateCanvas();
 		}
 	};
 
-	FileAudio.paramInput = function (event) {
+	FileAudio.paramInput = function () {
 		const read = getElementReader('fileAudio');
 		const params = {
 			volume: read('volume'),
@@ -417,7 +419,7 @@ import { Timer } from '@/util/timer.ts';
 		}
 	};
 
-	FileAudio.progressPointerleave = function (event) {
+	FileAudio.progressPointerleave = function () {
 		const { pointer, pointerTimeInfo } = FileAudio;
 		if (pointer.time !== -1) {
 			pointer.time = -1;

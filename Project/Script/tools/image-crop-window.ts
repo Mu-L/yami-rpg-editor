@@ -73,7 +73,7 @@ ImageClip.loadImage = function () {
 		image.src = File.route(path);
 
 		const symbol = (this.symbol = Symbol());
-		new Promise((resolve) => {
+		void new Promise((resolve) => {
 			const intervalIndex = setInterval(() => {
 				if (image.naturalWidth !== 0) {
 					if (this.symbol === symbol) {
@@ -207,14 +207,14 @@ ImageClip.startDragging = function (event) {
 	window.on('pointermove', this.pointermove);
 };
 
-ImageClip.dprchange = function (event) {
+ImageClip.dprchange = function () {
 	if (!this.image.hasClass('hidden')) {
 		this.updateImage();
 		this.updateMarquee();
 	}
 }.bind(ImageClip);
 
-ImageClip.windowClosed = function (event) {
+ImageClip.windowClosed = function () {
 	if (this.dragging) {
 		this.pointerup(this.dragging);
 	}
@@ -225,7 +225,7 @@ ImageClip.windowClosed = function (event) {
 	this.marquee.hide();
 }.bind(ImageClip);
 
-ImageClip.windowResize = function (event) {
+ImageClip.windowResize = function () {
 	if (!this.image.hasClass('hidden')) {
 		this.updateImage();
 	}
@@ -323,11 +323,11 @@ ImageClip.pointermove = function (event) {
 	}
 }.bind(ImageClip);
 
-ImageClip.paramInput = function (event) {
+ImageClip.paramInput = function () {
 	ImageClip.updateMarquee();
 };
 
-ImageClip.confirm = function (event) {
+ImageClip.confirm = function () {
 	const read = getElementReader('imageClip');
 	this.target.input([read('x'), read('y'), read('width'), read('height')]);
 	Window.close('imageClip');

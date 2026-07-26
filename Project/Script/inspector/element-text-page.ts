@@ -271,7 +271,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UIText.paramInput = function (event) {
+	UIText.paramInput = function () {
 		UIText.update(UIText.target, Inspector.getKey(this), this.read());
 	};
 

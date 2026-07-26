@@ -22,11 +22,11 @@ SetQuantity.open = function (quantity, maximum, callback) {
 	$('#setQuantity-quantity').getFocus('all');
 };
 
-SetQuantity.windowClosed = function (event) {
+SetQuantity.windowClosed = function () {
 	this.callback = null;
 }.bind(SetQuantity);
 
-SetQuantity.confirm = function (event) {
+SetQuantity.confirm = function () {
 	this.callback($('#setQuantity-quantity').read());
 	Window.close('setQuantity');
 }.bind(SetQuantity);

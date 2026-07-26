@@ -80,10 +80,10 @@ Command.cases.setObjectAnimation = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#setObjectAnimation').on('open', function (event) {
+		$('#setObjectAnimation').on('open', function () {
 			$('#setObjectAnimation-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#setObjectAnimation').on('closed', function (event) {
+		$('#setObjectAnimation').on('closed', function () {
 			$('#setObjectAnimation-easingId').clear();
 		});
 	},

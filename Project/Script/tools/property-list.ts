@@ -189,7 +189,7 @@ export class AttributeListInterface implements IListInterface {
 		]);
 
 		$('#object-attribute-key').on('write', this.keyWrite);
-		$('#object-attribute-confirm').on('click', (event) => {
+		$('#object-attribute-confirm').on('click', () => {
 			AttributeListInterface.target.save();
 		});
 	}

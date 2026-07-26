@@ -71,7 +71,7 @@ Team.initialize = function () {
 	$('#team-confirm').on('click', this.confirm);
 };
 
-Team.open = function (data) {
+Team.open = function () {
 	Window.open('team');
 
 	this.unpackTeams();
@@ -116,7 +116,7 @@ Team.unpackTeams = function () {
 	const length = items.length;
 	const sRelations = Codec.decodeTeamData(Data.teams.relations, length);
 	const sCollisions = Codec.decodeTeamData(Data.teams.collisions, length);
-	const copies = new Array(length);
+	const copies = Array(length);
 	const a = length * 2;
 	for (let i = 0; i < length; i++) {
 		const item = items[i];
@@ -149,7 +149,7 @@ Team.unpackTeams = function () {
 Team.packTeams = function () {
 	const items = this.data;
 	const length = items.length;
-	const copies = new Array(length);
+	const copies = Array(length);
 	const dRelations = GL.arrays[0].uint8;
 	const dCollisions = GL.arrays[1].uint8;
 	let ri = 0;
@@ -198,7 +198,7 @@ Team.windowClose = function (event) {
 	}
 };
 
-Team.windowClosed = function (event) {
+Team.windowClosed = function () {
 	this.data = null;
 	this.list.clear();
 }.bind(Team);
@@ -271,7 +271,7 @@ Team.listPointerdown = function (event) {
 	}
 };
 
-Team.listSelect = function (event) {
+Team.listSelect = function () {
 	for (const team of this.data) {
 		const element = team.element;
 		if (element !== undefined) {
@@ -283,7 +283,7 @@ Team.listSelect = function (event) {
 	}
 };
 
-Team.listChange = function (event) {
+Team.listChange = function () {
 	Team.changed = true;
 };
 
@@ -345,7 +345,7 @@ Team.listPopup = function (event) {
 	);
 };
 
-Team.confirm = function (event) {
+Team.confirm = function () {
 	if (this.changed) {
 		this.changed = false;
 		this.packTeams();

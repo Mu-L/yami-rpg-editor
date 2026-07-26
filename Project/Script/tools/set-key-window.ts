@@ -21,11 +21,11 @@ SetKey.open = function (key, callback) {
 	$('#setKey-key').getFocus('all');
 };
 
-SetKey.windowClosed = function (event) {
+SetKey.windowClosed = function () {
 	this.callback = null;
 }.bind(SetKey);
 
-SetKey.confirm = function (event) {
+SetKey.confirm = function () {
 	this.callback($('#setKey-key').read());
 	Window.close('setKey');
 }.bind(SetKey);

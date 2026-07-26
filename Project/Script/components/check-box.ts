@@ -34,7 +34,11 @@ export class CheckBox extends HTMLElement {
 
 	write(value: boolean): void {
 		this.dataValue = !!value;
-		this.dataValue ? this.addClass('selected') : this.removeClass('selected');
+		if (this.dataValue) {
+			this.addClass('selected');
+		} else {
+			this.removeClass('selected');
+		}
 		if (!this.hasClass('disabled')) {
 			this.toggleRelatedElements();
 		}
@@ -126,7 +130,7 @@ export class CheckBox extends HTMLElement {
 		}
 	}
 
-	mouseclick(event: Event): void {
+	mouseclick(): void {
 		this.input(!this.read());
 	}
 }

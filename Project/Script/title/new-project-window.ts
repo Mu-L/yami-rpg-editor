@@ -192,7 +192,7 @@ NewProject.copyFilesTo = function (sPath, dPath, idFilter) {
 		}
 		this.timer = new Timer({
 			duration: Infinity,
-			update: (timer) => {
+			update: () => {
 				const percent = Math.round((count / total) * 100);
 				progressBar.style.width = `${percent}%`;
 				progressInfo.textContent = info;
@@ -214,6 +214,7 @@ NewProject.writeData = function (dirPath) {
 };
 
 NewProject.getNewFolder = function (location) {
+	// eslint-disable-next-line eslint/no-constant-condition
 	for (let i = 1; true; i++) {
 		const folder = `Project${i}`;
 		if (!FS.existsSync(Path.resolve(location, folder))) {
@@ -222,7 +223,7 @@ NewProject.getNewFolder = function (location) {
 	}
 };
 
-NewProject.templateInput = function (event) {
+NewProject.templateInput = function () {
 	NewProject.check();
 };
 
@@ -236,7 +237,7 @@ NewProject.folderBeforeinput = function (event) {
 	}
 };
 
-NewProject.folderInput = function (event) {
+NewProject.folderInput = function () {
 	const regexp = /[\\/:*?"<>|"]/g;
 	const oldName = this.read();
 	const newName = oldName.replace(regexp, '');
@@ -246,11 +247,11 @@ NewProject.folderInput = function (event) {
 	NewProject.check();
 };
 
-NewProject.locationInput = function (event) {
+NewProject.locationInput = function () {
 	NewProject.check();
 };
 
-NewProject.chooseClick = function (event) {
+NewProject.chooseClick = function () {
 	const input = $('#newProject-location');
 	File.showOpenDialog({
 		defaultPath: input.read(),
@@ -263,7 +264,7 @@ NewProject.chooseClick = function (event) {
 	});
 };
 
-NewProject.confirm = function (event) {
+NewProject.confirm = function () {
 	const template = $('#newProject-template').read();
 	const location = $('#newProject-location').read();
 	const folder = $('#newProject-folder').read();
@@ -274,13 +275,13 @@ NewProject.confirm = function (event) {
 	const dPath = Path.resolve(location, folder);
 	Window.close('newProject');
 	FSP.mkdir(dPath, { recursive: true })
-		.then((done) => {
+		.then(() => {
 			return template === 'minimized-project' ? Data.createReferencedFileIDMap() : undefined;
 		})
 		.then((idFilter) => {
 			return NewProject.copyFilesTo(sPath, dPath, idFilter);
 		})
-		.then((done) => {
+		.then(() => {
 			return NewProject.writeData(dPath);
 		})
 		.finally(() => {

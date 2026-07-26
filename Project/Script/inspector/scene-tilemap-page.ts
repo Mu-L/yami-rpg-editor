@@ -226,7 +226,7 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		}
 	};
 
-	SceneTilemap.layerInput = function (event) {
+	SceneTilemap.layerInput = function () {
 		if (Inspector.manager.focusing === this) {
 			const lightBox = SceneTilemap.lightBox;
 			const value = lightBox.read();
@@ -246,7 +246,7 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		}
 	};
 
-	SceneTilemap.paramInput = function (event) {
+	SceneTilemap.paramInput = function () {
 		SceneTilemap.update(SceneTilemap.target, Inspector.getKey(this), this.read());
 	};
 

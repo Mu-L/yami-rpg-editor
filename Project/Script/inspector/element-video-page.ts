@@ -105,7 +105,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UIVideo.paramInput = function (event) {
+	UIVideo.paramInput = function () {
 		UIVideo.update(UIVideo.target, Inspector.getKey(this), this.read());
 	};
 

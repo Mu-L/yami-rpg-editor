@@ -318,7 +318,7 @@ export class SelectList extends HTMLElement {
 		}
 	}
 
-	windowResize(event?: Event): void {
+	windowResize(): void {
 		const MAX_LINES = 30;
 		const rect = this.target!.rect();
 		const rl = rect.left;
@@ -338,7 +338,7 @@ export class SelectList extends HTMLElement {
 		this.style.zIndex = `${Window.frames.length + 1}`;
 	}
 
-	windowBlur(event: Event): void {
+	windowBlur(): void {
 		this.close();
 	}
 }

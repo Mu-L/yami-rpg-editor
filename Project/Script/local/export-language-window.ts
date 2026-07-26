@@ -55,15 +55,16 @@ ExportLanguage.exportLanguagePack = function (first, second) {
 ExportLanguage.stringifyLanguagePack = function (map) {
 	const entries = Object.entries(map);
 	const length = entries.length;
-	const strings = new Array(length);
+	const strings = Array(length);
 	for (let i = 0; i < length; i++) {
 		const [id, text] = entries[i];
-		strings[i] = '$' + id + '\n' + text;
+		const textStr = typeof text === 'string' ? text : JSON.stringify(text);
+		strings[i] = '$' + id + '\n' + textStr;
 	}
 	return strings.join('\n\n');
 };
 
-ExportLanguage.confirm = function (event) {
+ExportLanguage.confirm = function () {
 	Window.close('exportLanguage');
 	const dialogs = Editor.config.dialogs;
 	const first = $('#exportLanguage-first').read();

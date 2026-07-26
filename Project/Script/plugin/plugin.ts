@@ -866,7 +866,7 @@ PluginManager.parseMeta = (function IIFE() {
 						} else {
 							validate.pattern = new RegExp(val);
 						}
-					} catch (e) {}
+					} catch {}
 					break;
 				}
 				case 'notEmpty':
@@ -1009,7 +1009,11 @@ PluginManager.parseMeta = (function IIFE() {
 			const { options } = owner;
 			for (const value of values) {
 				if (options.includes(value)) {
-					map[value] === undefined ? (map[value] = [key]) : map[value].append(key);
+					if (map[value] === undefined) {
+						map[value] = [key];
+					} else {
+						map[value].append(key);
+					}
 				}
 			}
 		}
@@ -1092,7 +1096,7 @@ PluginManager.parseMeta = (function IIFE() {
 						// 避免循环继承报错
 						try {
 							Object.setPrototypeOf(map, pack.map);
-						} catch (error: any) {}
+						} catch {}
 					}
 				}
 			}
@@ -1548,7 +1552,7 @@ PluginManager.windowClose = function (event) {
 	}
 }.bind(PluginManager);
 
-PluginManager.windowClosed = function (event) {
+PluginManager.windowClosed = function () {
 	this.list.saveSelection();
 	this.data = null;
 	this.list.clear();
@@ -1614,11 +1618,11 @@ PluginManager.listSelect = function (event) {
 };
 
 // 列表 - 取消选择事件
-PluginManager.listUnselect = function (event) {
+PluginManager.listUnselect = function () {
 	PluginManager.unload();
 };
 
-PluginManager.listChange = function (event) {
+PluginManager.listChange = function () {
 	PluginManager.changed = true;
 };
 
@@ -1720,7 +1724,7 @@ PluginManager.overviewPointerdown = (function IIFE() {
 	};
 })();
 
-PluginManager.parameterPaneUpdate = function (event) {
+PluginManager.parameterPaneUpdate = function () {
 	if (this.wraps.length !== 0) {
 		this.show();
 	} else {
@@ -1728,7 +1732,7 @@ PluginManager.parameterPaneUpdate = function (event) {
 	}
 };
 
-PluginManager.confirm = function (event) {
+PluginManager.confirm = function () {
 	this.apply();
 	Window.close('plugin');
 }.bind(PluginManager);

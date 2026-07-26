@@ -107,16 +107,16 @@ export function setNoResourceObj(value) {
 }
 
 window.addEventListener('localize', () => {
-	Resources.initialize();
+	void Resources.initialize();
 	if (!NoResourceObj['arpg-ts-english'].check && !NoResourceObj['arpg-ts-chinese'].check) {
-		Resources.open();
-		Resources.checkEditorVersion();
+		void Resources.open();
+		void Resources.checkEditorVersion();
 		if (SettingConfig.config?.update?.checkOnStart !== false) {
-			Resources.checkVersion();
+			void Resources.checkVersion();
 		}
 	} else {
 		if (SettingConfig.config?.update?.checkOnStart !== false) {
-			Resources.checkVersion();
+			void Resources.checkVersion();
 		}
 	}
 	Resources.loaded = true;
@@ -527,7 +527,7 @@ UpdateLog.displayDonationList = function () {
 		link.textContent = donor.name;
 		link.addEventListener('click', (e) => {
 			e.preventDefault();
-			shell.openExternal(donor.link);
+			void shell.openExternal(donor.link);
 		});
 		donorItem.appendChild(link);
 		donorItem.append(`: ￥${donor.amount.toFixed(2)}`);

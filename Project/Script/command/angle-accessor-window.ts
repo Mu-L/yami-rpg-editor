@@ -58,7 +58,7 @@ AngleGetter.open = function (target) {
 	$('#angleGetter-type').getFocus();
 };
 
-AngleGetter.confirm = function (event) {
+AngleGetter.confirm = function () {
 	const read = getElementReader('angleGetter');
 	const type = read('type');
 	let getter;

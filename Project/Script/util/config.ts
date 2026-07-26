@@ -35,7 +35,7 @@ export const GlobalPath = Path.resolve(GlobalPathForDir, ConfigDir);
 					};
 					return ipcRenderer
 						.invoke('get-dir-path', 'documents')
-						.catch((error) => 'C:')
+						.catch(() => 'C:')
 						.then((docPath) => {
 							for (const key of Object.keys(config.dialogs)) {
 								config.dialogs[key] = (Path as any).slash(docPath);

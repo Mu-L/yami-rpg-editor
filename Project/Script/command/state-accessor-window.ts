@@ -70,7 +70,7 @@ StateGetter.createDefaultForPlugin = function () {
 	return { getter: 'state', type: 'trigger' };
 };
 
-StateGetter.confirm = function (event) {
+StateGetter.confirm = function () {
 	const read = getElementReader('stateGetter');
 	const type = read('type');
 	let getter;

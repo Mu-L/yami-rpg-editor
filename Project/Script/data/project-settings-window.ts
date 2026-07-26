@@ -231,7 +231,7 @@ Project.windowClose = function (event) {
 	}
 };
 
-Project.windowClosed = function (event) {
+Project.windowClosed = function () {
 	Project.data = null;
 };
 
@@ -249,11 +249,11 @@ Project.projectChange = function (event) {
 	}
 };
 
-Project.dataChange = function (event) {
+Project.dataChange = function () {
 	this.changed = true;
 }.bind(Project);
 
-Project.paramInput = function (event) {
+Project.paramInput = function () {
 	const key = Inspector.getKey(this);
 	const value = this.read();
 	const keys = key.split('-');
@@ -277,7 +277,7 @@ Project.paramInput = function (event) {
 	local.languages = languages;
 };
 
-Project.confirm = function (event) {
+Project.confirm = function () {
 	if (this.changed) {
 		this.changed = false;
 		this.filterDuplicateLanguages();

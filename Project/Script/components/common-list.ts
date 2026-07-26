@@ -193,7 +193,7 @@ export class CommonList extends HTMLElement {
 		}
 	}
 
-	onScroll(event: Event): void {
+	onScroll(): void {
 		// 可调用重写的resize
 		this.resize();
 	}

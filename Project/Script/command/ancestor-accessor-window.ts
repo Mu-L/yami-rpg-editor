@@ -51,7 +51,7 @@ AncestorGetter.open = function (target) {
 	$('#ancestorGetter-type').getFocus();
 };
 
-AncestorGetter.confirm = function (event) {
+AncestorGetter.confirm = function () {
 	const read = getElementReader('ancestorGetter');
 	const type = read('type');
 	let getter;

@@ -151,7 +151,7 @@ PositionGetter.createDefaultForPlugin = function (): {
 	return { getter: 'position', type: 'absolute', x: 0, y: 0 };
 };
 
-PositionGetter.confirm = function (this: PositionGetterShape, event: Event): void {
+PositionGetter.confirm = function (this: PositionGetterShape): void {
 	const read = getElementReader('positionGetter');
 	const type = read('type');
 	let getter: any;

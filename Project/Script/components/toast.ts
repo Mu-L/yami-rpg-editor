@@ -66,7 +66,7 @@ window.addEventListener(
 		if (typeof detail === 'string') {
 			Toast.error(detail);
 		} else {
-			Toast.error(detail.message || String(detail));
+			Toast.error(detail.message || JSON.stringify(detail));
 		}
 	}
 );

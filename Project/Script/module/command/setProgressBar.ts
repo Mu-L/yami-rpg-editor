@@ -10,7 +10,7 @@ Command.cases.setProgressBar = new CommandSchema({
 	onInitialize() {
 		$('#setProgressBar-confirm').on('click', () => this.save());
 		$('#setProgressBar-properties').bind(ProgressBarProperty);
-		$('#setProgressBar').on('closed', (event) => {
+		$('#setProgressBar').on('closed', () => {
 			$('#setProgressBar-properties').clear();
 		});
 	},

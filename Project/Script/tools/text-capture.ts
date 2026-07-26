@@ -327,7 +327,7 @@ Selection.inputPointerdown = function (event) {
 Selection.inputPointerup = function (event) {
 	switch (event.button) {
 		case 2:
-			navigator.clipboard.readText().then((clipText) => {
+			void navigator.clipboard.readText().then((clipText) => {
 				const element = event.target;
 				if (document.activeElement === element) {
 					const start = element.selectionStart;
@@ -547,7 +547,7 @@ Selection.font = {
 		$('#font-font').write(font);
 		$('#font-font').getFocus('all');
 	},
-	confirm: function (event) {
+	confirm: function () {
 		const font = $('#font-font').read();
 		if (!font) {
 			return $('#font-font').getFocus('all');
@@ -584,7 +584,7 @@ Selection.fontSize = {
 		$('#fontSize-size').write(size);
 		$('#fontSize-size').getFocus('all');
 	},
-	confirm: function (event) {
+	confirm: function () {
 		const size = $('#fontSize-size').read();
 		Selection.wrap({
 			prefix: `<size:${size}>`,
@@ -611,7 +611,7 @@ Selection.textPosition = {
 		$('#textPosition-operation').write(operation);
 		$('#textPosition-value').write(value);
 	},
-	confirm: function (event) {
+	confirm: function () {
 		const axis = $('#textPosition-axis').read();
 		const operation = $('#textPosition-operation').read();
 		const value = $('#textPosition-value').read();
@@ -671,7 +671,7 @@ Selection.textEffect = {
 		$('#textEffect-strokeWidth').write(strokeWidth);
 		$('#textEffect-color').write(color);
 	},
-	confirm: function (event) {
+	confirm: function () {
 		const type = $('#textEffect-type').read();
 		const color = Color.simplifyHexColor($('#textEffect-color').read());
 		let string;
@@ -748,7 +748,7 @@ Selection.image = {
 		$('#insertImage-width').write(width);
 		$('#insertImage-height').write(height);
 	},
-	confirm: function (event) {
+	confirm: function () {
 		const mode = $('#insertImage-mode').read();
 		const image = $('#insertImage-image').read();
 		if (image === '') return $('#insertImage-image').getFocus();
@@ -794,7 +794,7 @@ Selection.localVariable = {
 		$('#localVariable-key').write(key);
 		$('#localVariable-key').getFocus('all');
 	},
-	confirm: function (event) {
+	confirm: function () {
 		const key = $('#localVariable-key').read();
 		if (!key) {
 			return $('#localVariable-key').getFocus('all');

@@ -85,7 +85,7 @@ ActorGetter.createDefaultForPlugin = function () {
 	return { getter: 'actor', type: 'trigger' };
 };
 
-ActorGetter.confirm = function (event) {
+ActorGetter.confirm = function () {
 	const read = getElementReader('actorGetter');
 	const type = read('type');
 	let getter;

@@ -446,6 +446,7 @@ export class TreeList extends HTMLElement {
 			flags[item.name] = true;
 		}
 		const name = item.name.replace(/\s\d+$/, '');
+		// eslint-disable-next-line eslint/no-constant-condition
 		for (let i = 1; true; i++) {
 			const newName = `${name} ${i}`;
 			if (!flags[newName]) {
@@ -518,7 +519,7 @@ export class TreeList extends HTMLElement {
 				this.dispatchEvent(record);
 			}
 
-			!sItem.parent && this.onCreate?.(sItem);
+			if (!sItem.parent) this.onCreate?.(sItem);
 			this.update();
 			this.select(sItem);
 			this.scrollToSelection();
@@ -696,7 +697,7 @@ export class TreeList extends HTMLElement {
 				}
 
 				this.update();
-				operation === 'undo' && this.select(item);
+				if (operation === 'undo') this.select(item);
 				this.scrollToSelection();
 				this.dispatchChangeEvent();
 				break;
@@ -1232,7 +1233,7 @@ export class TreeList extends HTMLElement {
 		}
 	}
 
-	dragend(event?: any) {
+	dragend() {
 		if (this.dragging) {
 			this.removeClass('dragging');
 			this.dragging.hint.target?.removeClass('hint');
@@ -1378,7 +1379,7 @@ export class TreeList extends HTMLElement {
 		this.dragend();
 	}
 
-	dataChange(event: any) {
+	dataChange() {
 		if (this.display === 'search') {
 			this.searchNodes(this.keyword);
 		}
@@ -1452,7 +1453,7 @@ export class TreeList extends HTMLElement {
 			}
 		});
 
-		textBox.on('input', function (event) {
+		textBox.on('input', function () {
 			this.fitContent();
 		});
 
@@ -1464,7 +1465,7 @@ export class TreeList extends HTMLElement {
 			event.stopPropagation();
 		});
 
-		textBox.on('blur', function (event) {
+		textBox.on('blur', function () {
 			const element = this.parentNode;
 			const list = element.parentNode;
 			const item = element.item;

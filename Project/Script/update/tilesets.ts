@@ -11,7 +11,7 @@ Updater.updateTilesets = function (verNum) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
 			const length = tileset.width * tileset.height;
-			tileset.terrains = new Array(length).fill(0);
+			tileset.terrains = Array(length).fill(0);
 			File.planToSave(meta);
 		}
 	}
@@ -23,7 +23,7 @@ Updater.updateTilesets = function (verNum) {
 				throw new Error(`Missing metadata: ${guid}`);
 			}
 			const length = tileset.width * tileset.height;
-			tileset.tags = new Array(length).fill(0);
+			tileset.tags = Array(length).fill(0);
 			File.planToSave(meta);
 		}
 	}

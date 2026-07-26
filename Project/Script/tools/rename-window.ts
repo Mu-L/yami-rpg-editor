@@ -21,11 +21,11 @@ Rename.open = function (name, callback) {
 	$('#rename-name').getFocus('all');
 };
 
-Rename.windowClosed = function (event) {
+Rename.windowClosed = function () {
 	this.callback = null;
 }.bind(Rename);
 
-Rename.confirm = function (event) {
+Rename.confirm = function () {
 	this.callback($('#rename-name').read());
 	Window.close('rename');
 }.bind(Rename);

@@ -13,10 +13,10 @@ Command.cases.changeActorTeam = new CommandSchema({
 	],
 	onInitialize() {
 		$('#changeActorTeam-confirm').on('click', () => this.save());
-		$('#changeActorTeam').on('open', function (event) {
+		$('#changeActorTeam').on('open', function () {
 			$('#changeActorTeam-teamId').loadItems(Data.createTeamItems());
 		});
-		$('#changeActorTeam').on('closed', function (event) {
+		$('#changeActorTeam').on('closed', function () {
 			$('#changeActorTeam-teamId').clear();
 		});
 	},

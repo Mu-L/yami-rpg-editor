@@ -131,7 +131,7 @@ import { Window } from '@/tools/window-object.ts';
 		}
 	};
 
-	FileEvent.paramInput = function (event) {
+	FileEvent.paramInput = function () {
 		FileEvent.update(FileEvent.target, Inspector.getKey(this), this.read());
 	};
 
@@ -176,7 +176,7 @@ import { Window } from '@/tools/window-object.ts';
 		}
 	};
 
-	FileEvent.listChange = function (event) {
+	FileEvent.listChange = function () {
 		File.planToSave(FileEvent.meta);
 	};
 
@@ -199,7 +199,7 @@ import { Window } from '@/tools/window-object.ts';
 				{ name: 'Element', value: 'element' }
 			]);
 		},
-		parse: function ({ type, key, note }) {
+		parse: function ({ type, key }) {
 			return [{ content: key }, { content: Local.get('eventParameterTypes.' + type) }];
 		},
 		open: function ({ type = 'number', key = '', note = '' } = {}) {

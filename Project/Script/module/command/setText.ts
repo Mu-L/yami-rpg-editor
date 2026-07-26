@@ -14,7 +14,7 @@ Command.cases.setText = new CommandSchema({
 	onInitialize() {
 		$('#setText-confirm').on('click', () => this.save());
 		$('#setText-properties').bind(TextProperty);
-		$('#setText').on('closed', (event) => {
+		$('#setText').on('closed', () => {
 			$('#setText-properties').clear();
 		});
 	},

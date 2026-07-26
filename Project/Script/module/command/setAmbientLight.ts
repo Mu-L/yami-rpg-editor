@@ -21,10 +21,10 @@ Command.cases.setAmbientLight = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#setAmbientLight').on('open', function (event) {
+		$('#setAmbientLight').on('open', function () {
 			$('#setAmbientLight-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#setAmbientLight').on('closed', function (event) {
+		$('#setAmbientLight').on('closed', function () {
 			$('#setAmbientLight-easingId').clear();
 		});
 	},

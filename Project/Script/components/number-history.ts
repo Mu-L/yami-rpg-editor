@@ -62,7 +62,7 @@ export class NumberHistory implements IEditableHistory {
 			NumberHistory.restoring = true;
 			input.select();
 			document.execCommand('insertText', false, value);
-			operation === 'undo' && input.select();
+			if (operation === 'undo') input.select();
 			NumberHistory.restoring = false;
 			HistoryTimer.finish();
 
@@ -90,11 +90,11 @@ export class NumberHistory implements IEditableHistory {
 			switch (event.code) {
 				case 'KeyZ':
 					if (!event.macRedoKey) {
-						this.history.canUndo() && this.history.restore('undo');
+						if (this.history.canUndo()) this.history.restore('undo');
 						break;
 					}
 				case 'KeyY':
-					this.history.canRedo() && this.history.restore('redo');
+					if (this.history.canRedo()) this.history.restore('redo');
 					break;
 			}
 		}
@@ -134,7 +134,7 @@ export class NumberHistory implements IEditableHistory {
 		}
 	}
 
-	inputBlur(event: any) {
+	inputBlur() {
 		HistoryTimer.finish();
 	}
 }

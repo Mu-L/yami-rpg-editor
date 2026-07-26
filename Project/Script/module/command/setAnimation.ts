@@ -14,7 +14,7 @@ Command.cases.setAnimation = new CommandSchema({
 	onInitialize() {
 		$('#setAnimation-confirm').on('click', () => this.save());
 		$('#setAnimation-properties').bind(AnimationProperty);
-		$('#setAnimation').on('closed', (event) => {
+		$('#setAnimation').on('closed', () => {
 			$('#setAnimation-properties').clear();
 		});
 	},

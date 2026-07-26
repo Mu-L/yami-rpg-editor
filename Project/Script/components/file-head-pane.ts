@@ -152,7 +152,7 @@ export class FileHeadPane extends HTMLElement {
 										const { folders, target } = element;
 										const rect = element.rect();
 										const length = Math.min(folders.length, MAX_MENU_ITEMS);
-										const menuItems = new Array(length);
+										const menuItems = Array(length);
 										const click = function () {
 											nav.load(this.folder);
 											nav.scrollToSelection('middle');
@@ -196,7 +196,7 @@ export class FileHeadPane extends HTMLElement {
 		}
 	}
 
-	backButtonClick(event: any) {
+	backButtonClick() {
 		const head = this.parentNode;
 		const { browser } = head.links;
 		browser.backToParentFolder();
@@ -210,12 +210,12 @@ export class FileHeadPane extends HTMLElement {
 		}
 	}
 
-	viewFocus(event: any) {
+	viewFocus() {
 		const head = this.parentNode;
 		head.links.body.content.focus();
 	}
 
-	viewInput(event: any) {
+	viewInput() {
 		const head = this.parentNode;
 		head.links.body.setViewIndex(this.read());
 	}

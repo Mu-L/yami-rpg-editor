@@ -210,7 +210,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UIDialogBox.paramInput = function (event) {
+	UIDialogBox.paramInput = function () {
 		UIDialogBox.update(UIDialogBox.target, Inspector.getKey(this), this.read());
 	};
 

@@ -338,7 +338,7 @@ export class ParameterPane extends HTMLElement {
 		switch (wrap.tag) {
 			case 'check-box':
 			case 'text-box':
-				wrap.input.read() !== value && wrap.input.write(value);
+				if (wrap.input.read() !== value) wrap.input.write(value);
 				break;
 			case 'number-box':
 				if (wrap.input.read() !== value) {
@@ -356,7 +356,7 @@ export class ParameterPane extends HTMLElement {
 				break;
 			case 'keyboard-box':
 			case 'color-box':
-				wrap.input.read() !== value && wrap.input.write(value);
+				if (wrap.input.read() !== value) wrap.input.write(value);
 				break;
 			case 'select-box':
 			case 'custom-box':
@@ -522,6 +522,7 @@ export class ParameterPane extends HTMLElement {
 		(container as any).setTooltip = () => {};
 		(container as any).parameters = null;
 		(container as any).key = null;
+		// eslint-disable-next-line typescript/no-this-alias
 		const pane = this;
 		(container as any).read = function () {
 			const result: any[] = [];
@@ -774,7 +775,7 @@ export class ParameterPane extends HTMLElement {
 		}
 	}
 
-	static windowLocalize(this: ParameterPane, event: Event): void {
+	static windowLocalize(this: ParameterPane): void {
 		for (const { langMap } of (this as any).metas) {
 			const oldMap = langMap.active;
 			const newMap = langMap.update().active;

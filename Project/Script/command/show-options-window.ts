@@ -40,10 +40,10 @@ Choices.save = function () {
 	return { content, commands };
 };
 
-Choices.windowClosed = function (event) {
+Choices.windowClosed = function () {
 	Choices.commands = null;
 };
 
-Choices.confirm = function (event) {
+Choices.confirm = function () {
 	return Choices.target.save();
 };

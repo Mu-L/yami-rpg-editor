@@ -22,7 +22,7 @@ export const Log = {
 };
 
 Log.initialize = function () {
-	setInterval(this.tick, 1000);
+	setInterval(() => this.tick(), 1000);
 
 	window.on('error', this.catchError);
 	window.on('unhandledrejection', this.catchRejection);

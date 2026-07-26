@@ -13,10 +13,10 @@ Command.cases.createGlobalActor = new CommandSchema({
 	],
 	onInitialize() {
 		$('#createGlobalActor-confirm').on('click', () => this.save());
-		$('#createGlobalActor').on('open', function (event) {
+		$('#createGlobalActor').on('open', function () {
 			$('#createGlobalActor-teamId').loadItems(Data.createTeamItems());
 		});
-		$('#createGlobalActor').on('closed', function (event) {
+		$('#createGlobalActor').on('closed', function () {
 			$('#createGlobalActor-teamId').clear();
 		});
 	},

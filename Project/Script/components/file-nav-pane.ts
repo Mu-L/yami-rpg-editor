@@ -603,13 +603,13 @@ export class FileNavPane extends HTMLElement {
 		}
 	}
 
-	listSelect(event: Event): void {
+	listSelect(): void {
 		const { browser } = this.links;
 		browser.restoreDisplay();
 		browser.update();
 	}
 
-	dirchange(event: Event): void {
+	dirchange(): void {
 		const folders: any[] = [];
 		const { inoMap } = Directory as any;
 		for (const folder of this.getSelections()) {
@@ -688,7 +688,7 @@ export class FileNavPane extends HTMLElement {
 								throw new Error();
 							}
 						})
-						.catch((error: any) => {
+						.catch(() => {
 							item.textNode.nodeValue = file.name;
 						});
 				}

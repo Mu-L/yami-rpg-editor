@@ -122,14 +122,14 @@ File.get = function (descriptor) {
 					if (type === 'json') {
 						try {
 							resolve(JSON.parse(content));
-						} catch (parseError) {
+						} catch {
 							// 非 JSON 文件回退包装对象，避免 Object.defineProperty 对字符串抛错
 							resolve({ code: content });
 						}
 					} else {
 						resolve(content);
 					}
-				} catch (error: any) {
+				} catch {
 					reject(new URIError(path));
 				}
 			});
@@ -258,6 +258,7 @@ File.getFileName = (function IIFE() {
 		let path = `${dir}/${base}${ext}`;
 		let route = File.path(path);
 		if (FS.existsSync(route)) {
+			// eslint-disable-next-line eslint/no-constant-condition
 			for (let i = 1; true; i++) {
 				path = `${dir}/${base} ${i}${ext}`;
 				route = File.path(path);
@@ -307,7 +308,7 @@ File.openPath = function (path) {
 
 File.openURL = function (url) {
 	if (url) {
-		shell.openExternal(url);
+		void shell.openExternal(url);
 	}
 };
 

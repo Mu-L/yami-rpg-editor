@@ -93,7 +93,7 @@ Selector.loadFromProject = function (project) {
 	this.body.setViewIndex(view);
 };
 
-Selector.windowClosed = function (event) {
+Selector.windowClosed = function () {
 	const folder = Selector.nav.selections[0] ?? Selector.backupFolders[0];
 	Selector.lastDir = folder ? folder.path : 'Assets';
 	Selector.target = null;
@@ -107,7 +107,7 @@ Selector.windowClosed = function (event) {
 	}
 };
 
-Selector.windowResize = function (event) {
+Selector.windowResize = function () {
 	Selector.nav.resize();
 	Selector.body.computeGridProperties();
 	Selector.body.resize();
@@ -247,7 +247,7 @@ Selector.bodyPopup = function (event) {
 					{
 						label: get('copy-id'),
 						click: () => {
-							navigator.clipboard.writeText(file.meta.guid);
+							void navigator.clipboard.writeText(file.meta.guid);
 						}
 					},
 					{
@@ -272,7 +272,7 @@ Selector.bodyPopup = function (event) {
 	}
 };
 
-Selector.confirm = function (event) {
+Selector.confirm = function () {
 	if (Selector.dragging) {
 		return;
 	}

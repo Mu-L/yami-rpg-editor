@@ -117,7 +117,7 @@ export const Title: TitleShape = {
 };
 
 Title.initialize = function () {
-	ipcRenderer.invoke('update-max-min-icon').then((mode) => {
+	void ipcRenderer.invoke('update-max-min-icon').then((mode) => {
 		switch (mode) {
 			case 'maximize':
 				this.windowMaximize(event);
@@ -364,7 +364,7 @@ Title.playGame = async function () {
 
 		ipcRenderer.send('create-player-window', File.root);
 
-		ipcRenderer.once('player-window-closed', (event) => {
+		ipcRenderer.once('player-window-closed', () => {
 			element.removeClass('selected');
 		});
 	}
@@ -394,7 +394,7 @@ Title.loadFromConfig = function (config) {
 Title.saveToProject = function (project) {
 	const items = this.tabBar.data;
 	const length = items.length;
-	const tabs = new Array(length);
+	const tabs = Array(length);
 	for (let i = 0; i < length; i++) {
 		tabs[i] = items[i].meta.guid;
 	}
@@ -460,7 +460,7 @@ Title.loadFromProject = function (project) {
 	Layout.manager.switch('directory');
 };
 
-Title.windowBeforeClose = function (event) {
+Title.windowBeforeClose = function () {
 	if (Window.frames.length === 0) {
 		ipcRenderer.send('prevent-close-window');
 		Title.askWhetherToSave(() => {
@@ -469,22 +469,22 @@ Title.windowBeforeClose = function (event) {
 	}
 };
 
-Title.windowMaximize = function (event) {
+Title.windowMaximize = function () {
 	this.maximized = true;
 	this.updateBodyClass();
 }.bind(Title);
 
-Title.windowUnmaximize = function (event) {
+Title.windowUnmaximize = function () {
 	this.maximized = false;
 	this.updateBodyClass();
 }.bind(Title);
 
-Title.windowEnterFullScreen = function (event) {
+Title.windowEnterFullScreen = function () {
 	this.fullscreen = true;
 	this.updateBodyClass();
 }.bind(Title);
 
-Title.windowLeaveFullScreen = function (event) {
+Title.windowLeaveFullScreen = function () {
 	this.fullscreen = false;
 	this.updateBodyClass();
 }.bind(Title);
@@ -502,7 +502,7 @@ Title.windowDrop = function (event) {
 	}
 }.bind(Title);
 
-Title.windowDirchange = function (event) {
+Title.windowDirchange = function () {
 	const { tabBar } = Title;
 	for (const item of tabBar.data) {
 		if (item === tabBar.dirItem) continue;
@@ -516,14 +516,14 @@ Title.windowDirchange = function (event) {
 	}
 };
 
-Title.windowLocalize = function (event) {
+Title.windowLocalize = function () {
 	const text = Title.tabBar.dirItem?.tab?.text;
 	if (text instanceof HTMLElement) {
 		text.textContent = Local.get('common.directory');
 	}
 };
 
-Title.pointerenter = function (event) {
+Title.pointerenter = function () {
 	const { target } = this;
 	if (!target.active) {
 		target.active = true;
@@ -553,7 +553,7 @@ Title.pointermove = function (event) {
 	}
 }.bind(Title);
 
-Title.tabBarPointerdown = function (event) {
+Title.tabBarPointerdown = function () {
 	switch (this.read()?.type) {
 		case 'scene':
 			Layout.readyToFocus(Scene.screen);
@@ -672,18 +672,18 @@ Title.tabBarPopup = function (event) {
 	);
 };
 
-Title.playClick = function (event) {
+Title.playClick = function () {
 	Title.playGame();
 };
 
-Title.minimizeClick = function (event) {
+Title.minimizeClick = function () {
 	ipcRenderer.send('minimize-window');
 };
 
-Title.maximizeClick = function (event) {
+Title.maximizeClick = function () {
 	ipcRenderer.send('maximize-window');
 };
 
-Title.closeClick = function (event) {
+Title.closeClick = function () {
 	Title.windowBeforeClose();
 };

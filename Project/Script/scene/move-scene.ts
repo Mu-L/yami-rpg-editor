@@ -22,11 +22,11 @@ SceneShift.open = function (callback) {
 	$('#scene-shift-x').getFocus('all');
 };
 
-SceneShift.windowClosed = function (event) {
+SceneShift.windowClosed = function () {
 	SceneShift.callback = null;
 };
 
-SceneShift.confirm = function (event) {
+SceneShift.confirm = function () {
 	const x = $('#scene-shift-x').read();
 	const y = $('#scene-shift-y').read();
 	if (x === 0 && y === 0) {

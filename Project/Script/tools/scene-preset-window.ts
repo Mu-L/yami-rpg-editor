@@ -99,7 +99,7 @@ PresetObject.getDefaultPresetId = function (className = 'any') {
 	return '';
 };
 
-PresetObject.windowClosed = function (event) {
+PresetObject.windowClosed = function () {
 	PresetObject.target = null;
 	PresetObject.nodes = null;
 	PresetObject.searcher.write('');
@@ -120,7 +120,7 @@ PresetObject.sceneIdWrite = function (event) {
 	}
 };
 
-PresetObject.listOpen = function (event) {
+PresetObject.listOpen = function () {
 	PresetObject.confirm();
 };
 
@@ -157,7 +157,7 @@ PresetObject.searcherInput = function (event) {
 	}
 };
 
-PresetObject.confirm = function (event) {
+PresetObject.confirm = function () {
 	const node = this.list.read();
 	const presetId = node?.presetId;
 	if (!presetId) {

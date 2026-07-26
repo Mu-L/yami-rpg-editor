@@ -50,7 +50,7 @@ TilemapGetter.open = function (target) {
 	$('#tilemapGetter-type').getFocus();
 };
 
-TilemapGetter.confirm = function (event) {
+TilemapGetter.confirm = function () {
 	const read = getElementReader('tilemapGetter');
 	const type = read('type');
 	let getter;

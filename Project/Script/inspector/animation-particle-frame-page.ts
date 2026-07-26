@@ -117,7 +117,7 @@ import { Inspector } from './inspector.ts';
 		Animation.requestRendering();
 	};
 
-	AnimParticleFrame.paramInput = function (event) {
+	AnimParticleFrame.paramInput = function () {
 		AnimParticleFrame.update(AnimParticleFrame.target, Inspector.getKey(this), this.read());
 	};
 

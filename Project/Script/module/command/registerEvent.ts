@@ -48,7 +48,7 @@ Command.cases.registerEvent = new CommandSchema({
 		});
 		$('#registerEvent-type').on('write', () => this.switchPriority());
 	},
-	switchTypeAndTagInput(event: any) {
+	switchTypeAndTagInput() {
 		const show = (input) => {
 			input.previousElementSibling.show();
 			input.show();

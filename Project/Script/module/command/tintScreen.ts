@@ -13,16 +13,16 @@ Command.cases.tintScreen = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#tintScreen').on('open', function (event) {
+		$('#tintScreen').on('open', function () {
 			$('#tintScreen-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#tintScreen').on('closed', function (event) {
+		$('#tintScreen').on('closed', function () {
 			$('#tintScreen-easingId').clear();
 			$('#tintScreen-filter').clear();
 		});
 		$('#tintScreen-tint-0, #tintScreen-tint-1, #tintScreen-tint-2, #tintScreen-tint-3').on(
 			'input',
-			function (event) {
+			function () {
 				$('#tintScreen-filter').write([
 					$('#tintScreen-tint-0').read(),
 					$('#tintScreen-tint-1').read(),

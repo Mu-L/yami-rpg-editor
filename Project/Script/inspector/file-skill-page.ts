@@ -91,11 +91,11 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		}
 	};
 
-	FileSkill.paramInput = function (event) {
+	FileSkill.paramInput = function () {
 		FileSkill.update(FileSkill.target, Inspector.getKey(this), this.read());
 	};
 
-	FileSkill.listChange = function (event) {
+	FileSkill.listChange = function () {
 		File.planToSave(FileSkill.meta);
 	};
 

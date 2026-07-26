@@ -268,7 +268,7 @@ import { UI } from '@/ui/ui-window.ts';
 		}
 	}.bind(UIElement);
 
-	UIElement.alignmentClick = function (event) {
+	UIElement.alignmentClick = function () {
 		let x;
 		let y;
 		switch (this.getAttribute('value')) {
@@ -378,7 +378,7 @@ import { UI } from '@/ui/ui-window.ts';
 		}
 	};
 
-	UIElement.paramInput = function (event) {
+	UIElement.paramInput = function () {
 		UIElement.update(UIElement.target, Inspector.getKey(this), this.read());
 	};
 

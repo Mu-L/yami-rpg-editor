@@ -126,6 +126,7 @@ Command.cases.script = new CommandSchema({
 		try {
 			const currentLanguage = this.editor.getModel().getLanguageId();
 			if (currentLanguage === 'javascript') {
+				// eslint-disable-next-line typescript/no-implied-eval
 				new Function(script);
 			} else {
 				script = await ipcRenderer.invoke('tsc-file', script);
@@ -262,14 +263,14 @@ Command.cases.script = new CommandSchema({
 		text.textContent = code;
 		options.theme = Title.theme;
 		this.createTheme(Title.theme);
-		monaco.editor.colorizeElement(text, options);
+		void monaco.editor.colorizeElement(text, options);
 		let index = setInterval(() => {
 			if (text.children.length !== 0) {
 				clearInterval(index);
 				const nodes = text.childNodes;
 				const nLength = nodes.length;
 				const sLength = nLength >> 1;
-				const spans = new Array(sLength);
+				const spans = Array(sLength);
 				for (let i = 0; i < nLength; i += 2) {
 					spans[i >> 1] = nodes[i];
 				}

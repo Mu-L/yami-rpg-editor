@@ -27,7 +27,7 @@ export class AudioPlayer {
 			if (audio.path !== path || audio.readyState !== 4 || audio.ended === true) {
 				audio.src = File.route(path);
 				audio.path = path;
-				audio.play();
+				void audio.play();
 			}
 		} else {
 			this.stop();

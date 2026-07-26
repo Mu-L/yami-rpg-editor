@@ -311,7 +311,7 @@ Curve.stopRendering = function () {
 	Timer.removeUpdater('sharedRendering2', this.renderingFunction);
 };
 
-Curve.windowResize = function (event) {
+Curve.windowResize = function () {
 	if (this.page.clientWidth === 0) {
 		return this.suspend();
 	}

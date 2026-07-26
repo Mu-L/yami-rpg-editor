@@ -100,7 +100,7 @@ import { Inspector } from './inspector.ts';
 		Animation.requestRendering();
 	};
 
-	AnimParticleLayer.paramInput = function (event) {
+	AnimParticleLayer.paramInput = function () {
 		AnimParticleLayer.update(AnimParticleLayer.target, Inspector.getKey(this), this.read());
 	};
 

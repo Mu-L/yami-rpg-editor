@@ -31,7 +31,6 @@ import { GL } from '@/webgl/webgl-init.ts';
 type AnimationState = 'closed' | 'open';
 
 // 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
-type AnimationMethod = ((...args: any[]) => any) | null;
 
 interface AnimationShape {
 	state: AnimationState;
@@ -415,7 +414,7 @@ Animation.initialize = function () {
 
 	this.translationTimer = new Timer({
 		duration: Infinity,
-		update: (timer) => {
+		update: () => {
 			if (this.state === 'open' && this.dragging === null) {
 				const key = this.translationKey;
 				const step = (Timer.deltaTime * 1.5) / this.scale;
@@ -452,7 +451,7 @@ Animation.initialize = function () {
 
 	this.zoomTimer = new Timer({
 		duration: 80,
-		update: (timer) => {
+		update: () => {
 			if (this.state === 'open') {
 				const { elapsed, duration, start, end } = timer;
 				const time = elapsed / duration;
@@ -1286,7 +1285,7 @@ Animation.getNewMotionId = function (callback) {
 Animation.revealTarget = (function IIFE() {
 	const timer = new Timer({
 		duration: 200,
-		update: (timer) => {
+		update: () => {
 			const { target } = timer;
 			if (target === Animation.target) {
 				const easing = Easing.EasingMap.easeInOut;
@@ -1887,7 +1886,7 @@ Animation.getSpriteListItems = function (animationId) {
 	if (items === undefined) {
 		const length = sprites.length;
 		const digits = Number.computeIndexDigits(length);
-		items = new Array(length + 1);
+		items = Array(length + 1);
 		items[0] = { name: 'No Image', value: '' };
 		for (let i = 0; i < length; i++) {
 			const index = i.toString().padStart(digits, '0');
@@ -1998,12 +1997,16 @@ Animation.updatePointerArea = function () {
 	const list = this.outerTimelineList;
 	const area = this.outerPointerArea;
 	if (list.clientWidth !== 0) {
-		list.clientWidth < list.scrollWidth
-			? area.addClass('has-horiz-scrollbar')
-			: area.removeClass('has-horiz-scrollbar');
-		list.clientHeight < list.scrollHeight
-			? area.addClass('has-vert-scrollbar')
-			: area.removeClass('has-vert-scrollbar');
+		if (list.clientWidth < list.scrollWidth) {
+			area.addClass('has-horiz-scrollbar');
+		} else {
+			area.removeClass('has-horiz-scrollbar');
+		}
+		if (list.clientHeight < list.scrollHeight) {
+			area.addClass('has-vert-scrollbar');
+		} else {
+			area.removeClass('has-vert-scrollbar');
+		}
 	}
 };
 
@@ -3258,7 +3261,7 @@ Animation.extendFrame = function () {
 	if (marquee.y === -1 || !marquee.isExtendable()) {
 		return;
 	}
-	const { layer, x, y, length } = marquee;
+	const { layer, x, length } = marquee;
 	const ex = x + length;
 	const frames = layer.frames;
 	const fLength = frames.length;
@@ -3822,7 +3825,7 @@ Animation.requestRefreshingList = function () {
 		const list = this.list;
 		if (!list.refreshing) {
 			list.refreshing = true;
-			Promise.resolve().then(() => {
+			void Promise.resolve().then(() => {
 				list.refreshing = false;
 				list.refresh();
 			});
@@ -4011,13 +4014,13 @@ Animation.loadFromProject = function (project) {
 	this.setZoom(animation.zoom);
 };
 
-Animation.webglRestored = function (event) {
+Animation.webglRestored = function () {
 	if (Animation.state === 'open') {
 		Animation.requestRendering();
 	}
 };
 
-Animation.windowResize = function (event) {
+Animation.windowResize = function () {
 	this.updateHead();
 	if (this.state === 'open') {
 		this.resize();
@@ -4026,7 +4029,7 @@ Animation.windowResize = function (event) {
 	}
 }.bind(Animation);
 
-Animation.themechange = function (event) {
+Animation.themechange = function () {
 	this.requestRendering();
 }.bind(Animation);
 
@@ -4038,7 +4041,7 @@ Animation.datachange = function (event) {
 	}
 }.bind(Animation);
 
-Animation.enumchange = function (event) {
+Animation.enumchange = function () {
 	this.requestRefreshingList();
 }.bind(Animation);
 
@@ -4114,15 +4117,15 @@ Animation.switchPointerdown = function (event) {
 	}
 };
 
-Animation.speedInput = function (event) {
+Animation.speedInput = function () {
 	Animation.speed = this.read();
 };
 
-Animation.zoomFocus = function (event) {
+Animation.zoomFocus = function () {
 	Animation.screen.focus();
 };
 
-Animation.zoomInput = function (event) {
+Animation.zoomInput = function () {
 	Animation.setZoom(this.read());
 };
 
@@ -4264,7 +4267,7 @@ Animation.screenWheel = function (event) {
 	}
 }.bind(Animation);
 
-Animation.screenUserscroll = function (event) {
+Animation.screenUserscroll = function () {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
 		this.screen.rawScrollTop = this.screen.scrollTop;
@@ -4273,7 +4276,7 @@ Animation.screenUserscroll = function (event) {
 	}
 }.bind(Animation);
 
-Animation.screenBlur = function (event) {
+Animation.screenBlur = function () {
 	this.translationKeyup();
 	this.pointerup();
 	// this.marqueePointerleave()
@@ -4407,14 +4410,14 @@ Animation.marqueePointermove = function (event) {
 	}
 }.bind(Animation);
 
-Animation.marqueePointerleave = function (event) {
+Animation.marqueePointerleave = function () {
 	if (this.marquee.pointerevent) {
 		this.marquee.pointerevent = null;
 		this.setHover(null);
 	}
 }.bind(Animation);
 
-Animation.marqueeDoubleclick = function (event) {
+Animation.marqueeDoubleclick = function () {
 	if (this.target) {
 		this.screenBlur();
 		this.revealTarget();
@@ -4795,11 +4798,11 @@ Animation.listPopup = function (event) {
 	);
 };
 
-Animation.listChange = function (event) {
+Animation.listChange = function () {
 	Animation.planToSave();
 };
 
-Animation.listPageResize = function (event) {
+Animation.listPageResize = function () {
 	Animation.list.updateHead();
 	Animation.list.resize();
 };
@@ -4812,7 +4815,7 @@ Animation.dirListPointerdown = function (event) {
 	}
 };
 
-Animation.timelinePageResize = function (event) {
+Animation.timelinePageResize = function () {
 	Animation.updatePointerArea();
 	Animation.timeline.updateHead();
 	Animation.layerList.resize();
@@ -4850,7 +4853,7 @@ Animation.layerListWheel = function (event) {
 	}
 };
 
-Animation.layerListScroll = function (event) {
+Animation.layerListScroll = function () {
 	const { outerTimelineList } = Animation;
 	const { scrollTop } = this;
 	this.lastScrollTop = scrollTop;
@@ -5082,7 +5085,7 @@ Animation.layerListPopup = function (event) {
 	);
 };
 
-Animation.layerListChange = function (event) {
+Animation.layerListChange = function () {
 	Animation.planToSave();
 };
 
@@ -5175,7 +5178,7 @@ Animation.outerTimelineListWheel = function (event) {
 	}
 };
 
-Animation.outerTimelineListScroll = function (event) {
+Animation.outerTimelineListScroll = function () {
 	const { scrollLeft, scrollTop } = this;
 	if (this.lastScrollLeft !== scrollLeft) {
 		this.lastScrollLeft = scrollLeft;
@@ -5207,7 +5210,7 @@ Animation.outerTimelineListScroll = function (event) {
 	}
 };
 
-Animation.outerTimelineListBlur = function (event) {
+Animation.outerTimelineListBlur = function () {
 	Animation.outerTimelineListPointerup();
 };
 
@@ -5451,9 +5454,11 @@ Animation.outerTimelineListPointermove = function (event) {
 				const x = Math.clamp(coords.x, 0, right);
 				const y = Math.clamp(coords.y, 0, bottom);
 				Animation.updateMarqueeShift(x, y);
-				dragging.layer.class === marquee.layer?.class
-					? marquee.removeClass('disabled')
-					: marquee.addClass('disabled');
+				if (dragging.layer.class === marquee.layer?.class) {
+					marquee.removeClass('disabled');
+				} else {
+					marquee.addClass('disabled');
+				}
 				break;
 			}
 			case 'ready-to-scroll': {
@@ -5488,13 +5493,15 @@ Animation.innerTimelineListPointermove = function (event) {
 	const list = Animation.innerTimelineList;
 	const ex = Animation.frameMax;
 	const ey = list.childNodes.length;
-	x >= 0 && x < ex && y >= 0 && y < ey
-		? Animation.updateCursor(x, y)
-		: Animation.updateCursor(-1, -1);
+	if (x >= 0 && x < ex && y >= 0 && y < ey) {
+		Animation.updateCursor(x, y);
+	} else {
+		Animation.updateCursor(-1, -1);
+	}
 	Animation.timelineCursor.pointerevent = event;
 };
 
-Animation.innerTimelineListPointerleave = function (event) {
+Animation.innerTimelineListPointerleave = function () {
 	Animation.timelineCursor.pointerevent = null;
 	Animation.updateCursor(-1, -1);
 };
@@ -5581,7 +5588,7 @@ Animation.list.createIcon = function () {
 };
 
 // 列表 - 重写创建文本方法
-Animation.list.createText = function (item) {
+Animation.list.createText = function () {
 	const textNode = document.createElement('text');
 	textNode.style.pointerEvents = 'none';
 	return textNode;
@@ -5617,7 +5624,11 @@ Animation.list.updateLoopIcon = function (item) {
 		const loop = item.loop;
 		if (element.loop !== loop) {
 			element.loop = loop;
-			loop ? element.loopIcon.show() : element.loopIcon.hide();
+			if (loop) {
+				element.loopIcon.show();
+			} else {
+				element.loopIcon.hide();
+			}
 		}
 	}
 };

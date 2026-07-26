@@ -114,7 +114,7 @@ Variable.listPopup = function (event) {
 			label: `ID: ${item.id}`,
 			style: 'id',
 			click: () => {
-				navigator.clipboard.writeText(item.id);
+				void navigator.clipboard.writeText(item.id);
 			}
 		});
 		items.push({

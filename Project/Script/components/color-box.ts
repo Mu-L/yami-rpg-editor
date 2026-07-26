@@ -90,7 +90,7 @@ export class ColorBox extends HTMLElement {
 		}
 	}
 
-	mouseclick(event: Event): void {
+	mouseclick(): void {
 		Color.open(this);
 	}
 }

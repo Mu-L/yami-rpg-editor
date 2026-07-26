@@ -24,11 +24,11 @@ FrameGenerator.open = function (callback) {
 	$('#autoTile-generateFrames-strideX').getFocus('all');
 };
 
-FrameGenerator.windowClosed = function (event) {
+FrameGenerator.windowClosed = function () {
 	this.callback = null;
 }.bind(FrameGenerator);
 
-FrameGenerator.confirm = function (event) {
+FrameGenerator.confirm = function () {
 	const strideX = $('#autoTile-generateFrames-strideX').read();
 	const strideY = $('#autoTile-generateFrames-strideY').read();
 	const count = $('#autoTile-generateFrames-count').read();

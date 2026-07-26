@@ -73,7 +73,7 @@ export class KeyboardBox extends HTMLElement {
 			case 'focus':
 				if (!this.focusEventEnabled) {
 					this.focusEventEnabled = true;
-					this.input.on('focus', (event: Event) => {
+					this.input.on('focus', () => {
 						this.dispatchEvent(new FocusEvent('focus'));
 					});
 				}
@@ -81,7 +81,7 @@ export class KeyboardBox extends HTMLElement {
 			case 'blur':
 				if (!this.blurEventEnabled) {
 					this.blurEventEnabled = true;
-					this.input.on('blur', (event: Event) => {
+					this.input.on('blur', () => {
 						this.dispatchEvent(new FocusEvent('blur'));
 					});
 				}

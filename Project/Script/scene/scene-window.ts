@@ -22,9 +22,6 @@ import { GL } from '@/webgl/webgl-init.ts';
 
 type SceneState = 'closed' | 'open';
 
-// 通用可空方法契约（运行时挂载的具体方法签名各异，统一用宽类型）
-type SceneMethod = ((...args: any[]) => any) | null;
-
 // 列表运行时挂载的扩展方法（Scene.list / UI.list 共享，ui-window.ts:218-238 调用）
 interface SceneListExtensions {
 	// 列表基础方法（Scene.list.* 运行时挂载）
@@ -406,7 +403,7 @@ Scene.initialize = function () {
 
 	this.translationTimer = new Timer({
 		duration: Infinity,
-		update: (timer) => {
+		update: () => {
 			if (this.state === 'open' && this.dragging === null) {
 				const key = this.translationKey;
 				const meta = this.meta;
@@ -445,7 +442,7 @@ Scene.initialize = function () {
 
 	this.zoomTimer = new Timer({
 		duration: 80,
-		update: (timer) => {
+		update: () => {
 			if (this.state === 'open') {
 				const { elapsed, duration, start, end } = timer;
 				const time = elapsed / duration;
@@ -1095,7 +1092,7 @@ Scene.computeObjectShifting = function (ox, oy) {
 		length += this[key].length;
 	}
 	const clamp = Math.clamp;
-	const targets = new Array(length);
+	const targets = Array(length);
 	const posX = new Float64Array(length);
 	const posY = new Float64Array(length);
 	for (const key of keys) {

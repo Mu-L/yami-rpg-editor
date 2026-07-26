@@ -407,7 +407,7 @@ Attribute.unpackAttribute = (function IIFE() {
 	}
 	const clone = (items) => {
 		const length = items.length;
-		const copies = new Array(length);
+		const copies = Array(length);
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
 			Attribute.idMap[item.id] = true;
@@ -432,7 +432,7 @@ Attribute.unpackAttribute = (function IIFE() {
 Attribute.packAttribute = (function IIFE() {
 	const clone = (items) => {
 		const length = items.length;
-		const copies = new Array(length);
+		const copies = Array(length);
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
 			if (item.class !== 'folder') {
@@ -505,7 +505,7 @@ Attribute.windowClose = function (event) {
 	}
 }.bind(Attribute);
 
-Attribute.windowClosed = function (event) {
+Attribute.windowClosed = function () {
 	this.data = null;
 	this.idMap = null;
 	UndoManager.setActive(this._previousActive);
@@ -695,7 +695,7 @@ Attribute.listPopup = function (event) {
 			label: `ID: ${item.id}`,
 			style: 'id',
 			click: () => {
-				navigator.clipboard.writeText(item.id);
+				void navigator.clipboard.writeText(item.id);
 			}
 		});
 	}
@@ -828,7 +828,7 @@ Attribute.searcherInput = function (event) {
 	Attribute.list.searchNodesDebounced(text);
 };
 
-Attribute.confirm = function (event) {
+Attribute.confirm = function () {
 	switch (this.mode) {
 		case 'normal':
 			this.apply();
@@ -855,7 +855,7 @@ Attribute.confirm = function (event) {
 	Window.close('attribute');
 }.bind(Attribute);
 
-Attribute.apply = function (event) {
+Attribute.apply = function () {
 	if (this.changed) {
 		this.changed = false;
 
@@ -1083,7 +1083,11 @@ Attribute.list.updateNoteIcon = function (item) {
 		const annotated = item.note !== '';
 		if (element.annotated !== annotated) {
 			element.annotated = annotated;
-			annotated ? element.noteIcon.show() : element.noteIcon.hide();
+			if (annotated) {
+				element.noteIcon.show();
+			} else {
+				element.noteIcon.hide();
+			}
 		}
 	}
 };

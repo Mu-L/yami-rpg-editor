@@ -52,7 +52,7 @@ LightGetter.open = function (target) {
 	$('#lightGetter-type').getFocus();
 };
 
-LightGetter.confirm = function (event) {
+LightGetter.confirm = function () {
 	const read = getElementReader('lightGetter');
 	const type = read('type');
 	let getter;

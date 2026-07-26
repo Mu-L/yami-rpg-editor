@@ -33,7 +33,6 @@ Command.cases.downloadFile = new CommandSchema({
 		headers = [],
 		data = [],
 		callback = '',
-		rateCallback = '',
 		isBackground = false,
 		isBackgroundPath = ''
 	}) {
@@ -101,7 +100,6 @@ Command.cases.downloadFile = new CommandSchema({
 		headers = [],
 		data = [],
 		callback = '',
-		rateCallback = '',
 		isBackground = false,
 		isBackgroundPath = ''
 	}) {

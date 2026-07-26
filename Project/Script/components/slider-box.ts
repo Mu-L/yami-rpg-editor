@@ -86,6 +86,7 @@ export class SliderBox extends HTMLElement {
 	}
 
 	synchronize(target: any) {
+		// eslint-disable-next-line typescript/no-this-alias
 		const slider = this;
 		const number = target;
 		if (slider.synchronizer) {
@@ -102,12 +103,12 @@ export class SliderBox extends HTMLElement {
 
 			const sliderInput = (event?) => {
 				writeNumber.call(number, slider.read());
-				event && number.dispatchEvent(new Event('input'));
+				if (event) number.dispatchEvent(new Event('input'));
 			};
 
 			const numberInput = (event?) => {
 				writeSlider.call(slider, number.read());
-				event && slider.dispatchEvent(new Event('input'));
+				if (event) slider.dispatchEvent(new Event('input'));
 			};
 
 			slider.synchronizer = target;
@@ -138,7 +139,7 @@ export class SliderBox extends HTMLElement {
 			case 'focus':
 				if (!this.focusEventEnabled) {
 					this.focusEventEnabled = true;
-					this.input.on('focus', (event) => {
+					this.input.on('focus', () => {
 						this.dispatchEvent(new FocusEvent('focus'));
 					});
 				}
@@ -146,7 +147,7 @@ export class SliderBox extends HTMLElement {
 			case 'blur':
 				if (!this.blurEventEnabled) {
 					this.blurEventEnabled = true;
-					this.input.on('blur', (event) => {
+					this.input.on('blur', () => {
 						this.dispatchEvent(new FocusEvent('blur'));
 					});
 				}
@@ -154,7 +155,7 @@ export class SliderBox extends HTMLElement {
 		}
 	}
 
-	sliderInput(event: any) {
+	sliderInput() {
 		this.updateFiller();
 	}
 
@@ -162,6 +163,7 @@ export class SliderBox extends HTMLElement {
 		if (event.deltaY === 0) return;
 		if (this.parentNode.activeWheel) {
 			event.preventDefault();
+			// eslint-disable-next-line typescript/no-this-alias
 			const input = this;
 			const last = input.value;
 			input.value = String(

@@ -1622,12 +1622,14 @@ GL.createImageTexture = function (image, options: any = {}) {
 				texture.reply('error');
 			}
 		};
-		image instanceof Image
-			? initialize(image)
-			: File.get({
-					guid: guid,
-					type: 'image'
-				}).then(initialize);
+		if (image instanceof Image) {
+			initialize(image);
+		} else {
+			File.get({
+				guid: guid,
+				type: 'image'
+			}).then(initialize);
+		}
 	}
 	texture.refCount++;
 	return texture;

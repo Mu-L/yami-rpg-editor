@@ -52,7 +52,7 @@ ObjectGetter.open = function (target) {
 	$('#objectGetter-type').getFocus();
 };
 
-ObjectGetter.confirm = function (event) {
+ObjectGetter.confirm = function () {
 	const read = getElementReader('objectGetter');
 	const type = read('type');
 	let getter;

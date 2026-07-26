@@ -139,7 +139,7 @@ import { Scene } from '@/scene/scene-window.ts';
 		Scene.requestRendering();
 	};
 
-	FileTileset.paramInput = function (event) {
+	FileTileset.paramInput = function () {
 		FileTileset.update(FileTileset.target, Inspector.getKey(this), this.read());
 	};
 

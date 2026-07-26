@@ -110,7 +110,7 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	AnimMotion.paramInput = function (event) {
+	AnimMotion.paramInput = function () {
 		AnimMotion.update(AnimMotion.target, Inspector.getKey(this), this.read());
 	};
 

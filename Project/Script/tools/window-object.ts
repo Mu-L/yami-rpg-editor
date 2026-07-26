@@ -189,7 +189,7 @@ Window.confirm = (function IIFE() {
 	];
 	return function (options, items) {
 		const message = options.message ?? '';
-		const click = function (event) {
+		const click = function () {
 			Window.close('confirmation');
 			const index = buttons.indexOf(this);
 			const item = items[index];
@@ -212,7 +212,7 @@ Window.confirm = (function IIFE() {
 		elMessage.textContent = message;
 		elWindow.on(
 			'closed',
-			(event) => {
+			() => {
 				for (const button of buttons) {
 					button.off('click', click);
 				}

@@ -964,7 +964,7 @@ EventEditor.getGlobalEventName = function (id) {
 	return Data.manifest.guidMap[id]?.file.basename ?? '';
 };
 
-EventEditor.windowLocalize = function (event) {
+EventEditor.windowLocalize = function () {
 	const types = EventEditor.types;
 	const getType = Local.createGetter('eventTypes');
 	const getTip = Local.createGetter('eventTips');
@@ -1025,7 +1025,7 @@ EventEditor.windowClose = function (event) {
 	this.closing = false;
 }.bind(EventEditor);
 
-EventEditor.windowClosed = function (event) {
+EventEditor.windowClosed = function () {
 	this.clearAllEventClasses(...this.data);
 	this.packOpenEvents();
 	this.data = null;
@@ -1035,7 +1035,7 @@ EventEditor.windowClosed = function (event) {
 	window.off('keydown', this.windowKeydown);
 }.bind(EventEditor);
 
-EventEditor.windowResize = function (event) {
+EventEditor.windowResize = function () {
 	const { list, commandList } = EventEditor;
 	const parent = commandList.parentNode as HTMLElement;
 	const outerHeight = parent.clientHeight;
@@ -1192,7 +1192,7 @@ EventEditor.typeInput = function (event) {
 	EventEditor.list.updateItemName(item);
 };
 
-EventEditor.commandListChange = function (event) {
+EventEditor.commandListChange = function () {
 	if (EventEditor.closing) return;
 	const item = EventEditor.list.read();
 	if (!item.changed) {
@@ -1202,21 +1202,21 @@ EventEditor.commandListChange = function (event) {
 	}
 };
 
-EventEditor.commandListUpdate = function (event) {
+EventEditor.commandListUpdate = function () {
 	EventEditor.resizeGutter();
 	EventEditor.updateGutter(true);
 };
 
-EventEditor.commandListScroll = function (event) {
+EventEditor.commandListScroll = function () {
 	EventEditor.updateGutter(false);
 };
 
-EventEditor.confirm = function (event) {
+EventEditor.confirm = function () {
 	this.apply();
 	Window.close('event');
 }.bind(EventEditor);
 
-EventEditor.apply = function (event) {
+EventEditor.apply = function () {
 	for (const item of this.data) {
 		switch (item.class) {
 			case 'global':

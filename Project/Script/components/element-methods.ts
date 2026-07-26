@@ -51,6 +51,7 @@ HTMLElement.prototype.seek = function (
 	tagName: string,
 	count: number = 1
 ): HTMLElement {
+	// eslint-disable-next-line typescript/no-this-alias
 	let element: HTMLElement = this;
 	while (count-- > 0) {
 		if (
@@ -122,7 +123,6 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 	const capture = { capture: true };
 	let state: string = 'closed';
 	let target: HTMLElement | null = null;
-	let rect: DOMRect | null = null;
 	let timeStamp: number = 0;
 	let clientX: number = 0;
 	let clientY: number = 0;
@@ -155,7 +155,6 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 				const y = Math.min(clientY + 15, bottom);
 				tooltip.style.left = `${x}px`;
 				tooltip.style.top = `${y}px`;
-				rect = tooltip.rect();
 			}
 		}
 	});
@@ -165,7 +164,6 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 			case 'waiting':
 			case 'open':
 				state = 'closed';
-				rect = null;
 				timer.remove();
 				tooltip.removeClass('open');
 				window.off('keydown', close, capture);
@@ -183,6 +181,7 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 			case 'closed':
 				if (target !== this) {
 					state = 'waiting';
+					// eslint-disable-next-line typescript/no-this-alias
 					target = this;
 					timer.elapsed = 0;
 					timer.duration = 250;
@@ -219,7 +218,7 @@ HTMLElement.prototype.setTooltip = (function IIFE() {
 		}
 	};
 
-	tooltip.on('pointerleave', (event: PointerEvent) => {
+	tooltip.on('pointerleave', () => {
 		target = null;
 		close();
 	});

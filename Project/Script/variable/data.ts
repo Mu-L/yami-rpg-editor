@@ -26,7 +26,7 @@ Variable.unpackVariables = (function IIFE() {
 	}
 	const clone = (items) => {
 		const length = items.length;
-		const copies = new Array(length);
+		const copies = Array(length);
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
 			if (item.class !== 'folder') {
@@ -47,7 +47,7 @@ Variable.unpackVariables = (function IIFE() {
 Variable.packVariables = (function IIFE() {
 	const clone = (items) => {
 		const length = items.length;
-		const copies = new Array(length);
+		const copies = Array(length);
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
 			if (item.class !== 'folder') {

@@ -185,7 +185,7 @@ import { GL } from '@/webgl/webgl-init.ts';
 		}
 	};
 
-	FileScene.paramInput = function (event) {
+	FileScene.paramInput = function () {
 		FileScene.update(FileScene.target, Inspector.getKey(this), this.read());
 	};
 

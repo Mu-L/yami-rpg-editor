@@ -78,7 +78,7 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	AnimSoundFrame.paramInput = function (event) {
+	AnimSoundFrame.paramInput = function () {
 		AnimSoundFrame.update(AnimSoundFrame.target, Inspector.getKey(this), this.read());
 	};
 

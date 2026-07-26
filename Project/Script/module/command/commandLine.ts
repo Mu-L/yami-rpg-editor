@@ -71,7 +71,6 @@ Command.cases.commandLine = new CommandSchema({
 							]
 						: [])
 				);
-				break;
 			case 'has':
 			case 'rm':
 			case 'get':

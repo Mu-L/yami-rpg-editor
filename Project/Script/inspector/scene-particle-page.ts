@@ -176,7 +176,7 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	SceneParticle.paramInput = function (event) {
+	SceneParticle.paramInput = function () {
 		SceneParticle.update(SceneParticle.target, Inspector.getKey(this), this.read());
 	};
 

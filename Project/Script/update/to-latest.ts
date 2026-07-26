@@ -59,7 +59,7 @@ Updater.updateToLatest = function (version) {
 			if (FS.statSync(path).isFile()) {
 				FS.unlinkSync(path);
 			}
-		} catch (error: any) {}
+		} catch {}
 	}
 
 	FS.cpSync(srcScriptDir, dstScriptDir, { recursive: true });

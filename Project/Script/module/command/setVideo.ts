@@ -10,7 +10,7 @@ Command.cases.setVideo = new CommandSchema({
 	onInitialize() {
 		$('#setVideo-confirm').on('click', () => this.save());
 		$('#setVideo-properties').bind(VideoProperty);
-		$('#setVideo').on('closed', (event) => {
+		$('#setVideo').on('closed', () => {
 			$('#setVideo-properties').clear();
 		});
 	},

@@ -33,23 +33,26 @@
 		"Project/html/**"
 	],
 	"rules": {
-		"eslint/no-unused-vars": [
-			"warn",
-			{
-				"argsIgnorePattern": "^_",
-				"varsIgnorePattern": "^_",
-				"caughtErrorsIgnorePattern": "^_",
-				"destructuredArrayIgnorePattern": "^_",
-				"fix": {
-					"imports": "safe-fix"
-				}
-			}
-		],
-		"typescript/no-explicit-any": "off",
-		"typescript/no-namespace": "off",
-		"typescript/no-non-null-assertion": "off",
-		"eslint/no-console": "off",
-		"eslint/no-empty": ["warn", { "allowEmptyCatch": true }]
+	 "eslint/no-unused-vars": [
+	  "warn",
+	  {
+	   "argsIgnorePattern": "^_",
+	   "varsIgnorePattern": "^_",
+	   "caughtErrorsIgnorePattern": "^_",
+	   "destructuredArrayIgnorePattern": "^_",
+	   "fix": {
+	    "imports": "safe-fix"
+	   }
+	  }
+	 ],
+	 "typescript/no-explicit-any": "off",
+	 "typescript/no-namespace": "off",
+	 "typescript/no-non-null-assertion": "off",
+	 "eslint/no-console": "off",
+	 "eslint/no-empty": ["warn", { "allowEmptyCatch": true }],
+	 "typescript/no-useless-default-assignment": "off",
+	 "typescript/unbound-method": "off",
+	 "typescript/no-redundant-type-constituents": "off"
 	},
 	"overrides": [
 		{

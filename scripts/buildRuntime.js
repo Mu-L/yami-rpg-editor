@@ -54,6 +54,7 @@ async function splitArchive(zipPath, splitSizeMB) {
 		// 显示进度
 		showProgress(i + 1, totalParts, `分卷进度 (${i + 1}/${totalParts})`);
 
+		// eslint-disable-next-line eslint/no-await-in-loop
 		await fs.writeFile(partPath, chunk);
 	}
 
@@ -79,15 +80,18 @@ async function createArchive() {
 		let totalFiles = 0;
 		for (const folder of runtimeConfig.folders) {
 			const sourcePath = path.resolve(folder.sourceDir);
+			// eslint-disable-next-line eslint/no-await-in-loop
 			if (await fs.pathExists(sourcePath)) {
 				const countEntries = async (dir) => {
 					let count = 0;
 					const files = await fs.readdir(dir);
 					for (const file of files) {
 						const filePath = path.join(dir, file);
+						// eslint-disable-next-line eslint/no-await-in-loop
 						const stat = await fs.stat(filePath);
 						if (stat.isDirectory()) {
 							count++; // 计入目录
+							// eslint-disable-next-line eslint/no-await-in-loop
 							count += await countEntries(filePath);
 						} else {
 							count++; // 计入文件
@@ -95,6 +99,7 @@ async function createArchive() {
 					}
 					return count;
 				};
+				// eslint-disable-next-line eslint/no-await-in-loop
 				totalFiles += await countEntries(sourcePath);
 			}
 		}
@@ -130,6 +135,7 @@ async function createArchive() {
 		// 添加文件夹到压缩包
 		for (const folder of runtimeConfig.folders) {
 			const sourcePath = path.resolve(folder.sourceDir);
+			// eslint-disable-next-line eslint/no-await-in-loop
 			if (await fs.pathExists(sourcePath)) {
 				console.log(`正在添加: ${sourcePath}`);
 				archive.directory(sourcePath, folder.zipPath);
@@ -147,4 +153,4 @@ async function createArchive() {
 }
 
 // 执行打包
-createArchive();
+void createArchive();

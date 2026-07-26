@@ -110,7 +110,11 @@ export class Texture {
 				0
 			);
 			gl.readPixels(x, y, width, height, gl.RGBA, gl.UNSIGNED_BYTE, uint8);
-			gl.binding ? gl.bindFBO(gl.binding) : gl.unbindFBO();
+			if (gl.binding) {
+				gl.bindFBO(gl.binding);
+			} else {
+				gl.unbindFBO();
+			}
 			return imageData;
 		}
 		return null;

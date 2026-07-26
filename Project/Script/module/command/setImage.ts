@@ -14,7 +14,7 @@ Command.cases.setImage = new CommandSchema({
 	onInitialize() {
 		$('#setImage-confirm').on('click', () => this.save());
 		$('#setImage-properties').bind(ImageProperty);
-		$('#setImage').on('closed', (event) => {
+		$('#setImage').on('closed', () => {
 			$('#setImage-properties').clear();
 		});
 	},

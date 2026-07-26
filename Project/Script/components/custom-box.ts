@@ -348,7 +348,7 @@ export class CustomBox extends HTMLElement {
 		}
 	}
 
-	click(event?: Event): void {
+	click(): void {
 		switch (this.type) {
 			case 'file':
 				return (Selector as any).open(this);
@@ -429,7 +429,7 @@ export class CustomBox extends HTMLElement {
 		}
 	}
 
-	drop(event: DragEvent): void {
+	drop(): void {
 		const file = (Browser.body as any).activeFile;
 		if (file instanceof FileItem) {
 			this.focus();

@@ -45,7 +45,7 @@ Particle.Emitter = class ParticleEmitter {
 		let alwaysEmit = false;
 		const sLayers = data.layers;
 		const sLength = sLayers.length;
-		const dLayers = new Array(sLength);
+		const dLayers = Array(sLength);
 		for (let i = 0; i < sLength; i++) {
 			const sLayer = sLayers[i];
 			// 如果有一个粒子层的发射区域是屏幕边缘，设为总是发射和绘制
@@ -139,7 +139,7 @@ Particle.Emitter = class ParticleEmitter {
 		}
 		const sLayers = this.data.layers;
 		const sLength = sLayers.length;
-		const dLayers = new Array(sLength);
+		const dLayers = Array(sLength);
 		for (let i = 0; i < sLength; i++) {
 			const sLayer = sLayers[i];
 			let dLayer = map.get(sLayer);

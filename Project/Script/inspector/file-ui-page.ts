@@ -82,7 +82,7 @@ import { UI } from '@/ui/ui-window.ts';
 		}
 	};
 
-	FileUI.paramInput = function (event) {
+	FileUI.paramInput = function () {
 		FileUI.update(FileUI.target, Inspector.getKey(this), this.read());
 	};
 

@@ -40,7 +40,7 @@ export class TilemapShortcuts {
 			const element = elements[i];
 			const tilemap = this[i];
 			if (tilemap) {
-				tilemap === opening && element.addClass('selected');
+				if (tilemap === opening) element.addClass('selected');
 				element.show();
 			} else {
 				element.removeClass('selected');

@@ -214,6 +214,7 @@ Directory.readdir = (function IIFE() {
 		}
 		for (let i = 0; i < length; i++) {
 			try {
+				// eslint-disable-next-line eslint/no-await-in-loop
 				const stats = await statPromises[i];
 				const path = paths[i];
 				const name = Path.basename(path);
@@ -270,8 +271,8 @@ Directory.existFiles = (function IIFE() {
 	};
 	return function (dirPath, dir) {
 		return check(File.path(dirPath), dir).then(
-			(existed) => true,
-			(error) => false
+			() => true,
+			() => false
 		);
 	};
 })();
@@ -393,7 +394,7 @@ Directory.copyFiles = (function IIFE() {
 			existings[path] = true;
 			promises.push(
 				(existed ? Promise.resolve() : FSP.stat(path))
-					.then((stats) => {
+					.then(() => {
 						for (let i = 2; ; i++) {
 							path = `${dirPath}/${base}${suffix} (${i})${ext}`;
 							if (existings[path]) {
@@ -478,6 +479,6 @@ Directory.createInoMap = (function IIFE() {
 })();
 
 // 当外部正在重命名文件时点击编辑器窗口 会因为异步保存文件名而无法及时读取到 因此延时更新目录
-Directory.windowFocus = function (event) {
+Directory.windowFocus = function () {
 	setTimeout(() => Directory.update(), 100);
 };

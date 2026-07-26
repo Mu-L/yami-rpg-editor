@@ -145,7 +145,7 @@ export class TextBox extends HTMLElement {
 			case 'focus':
 				if (!this.focusEventEnabled) {
 					this.focusEventEnabled = true;
-					this.input.on('focus', (event: Event) => {
+					this.input.on('focus', () => {
 						this.dispatchEvent(new FocusEvent('focus'));
 					});
 				}
@@ -153,7 +153,7 @@ export class TextBox extends HTMLElement {
 			case 'blur':
 				if (!this.blurEventEnabled) {
 					this.blurEventEnabled = true;
-					this.input.on('blur', (event: Event) => {
+					this.input.on('blur', () => {
 						this.dispatchEvent(new FocusEvent('blur'));
 					});
 				}
@@ -181,14 +181,14 @@ export class TextBox extends HTMLElement {
 					break;
 			}
 		};
-		const input = function (this: TextBox, event: Event): void {
+		const input = function (this: TextBox): void {
 			updateCloseButton(this);
 		};
 		const closeButtonPointerdown = function (event: PointerEvent): void {
 			event.preventDefault();
 			event.stopPropagation();
 		};
-		const closeButtonClick = function (this: HTMLElement, event: Event): void {
+		const closeButtonClick = function (this: HTMLElement): void {
 			(this.parentNode as TextBox).deleteInputContent();
 		};
 		return (textBox: TextBox): void => {

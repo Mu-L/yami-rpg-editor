@@ -14,7 +14,7 @@ Command.cases.setWindow = new CommandSchema({
 	onInitialize() {
 		$('#setWindow-confirm').on('click', () => this.save());
 		$('#setWindow-properties').bind(WindowProperty);
-		$('#setWindow').on('closed', (event) => {
+		$('#setWindow').on('closed', () => {
 			$('#setWindow-properties').clear();
 		});
 	},

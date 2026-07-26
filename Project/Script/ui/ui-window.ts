@@ -288,7 +288,7 @@ UI.initialize = function () {
 
 	this.translationTimer = new Timer({
 		duration: Infinity,
-		update: (timer) => {
+		update: () => {
 			if (this.state === 'open' && this.dragging === null) {
 				const key = this.translationKey;
 				const step = (Timer.deltaTime * 1.5) / this.scale;
@@ -326,7 +326,7 @@ UI.initialize = function () {
 
 	this.zoomTimer = new Timer({
 		duration: 80,
-		update: (timer) => {
+		update: () => {
 			if (this.state === 'open') {
 				const { elapsed, duration, start, end } = timer;
 				const time = elapsed / duration;
@@ -824,7 +824,7 @@ UI.setTarget = function (target) {
 UI.revealTarget = (function IIFE() {
 	const timer = new Timer({
 		duration: 200,
-		update: (timer) => {
+		update: () => {
 			const { target } = timer;
 			if (target === UI.target) {
 				const easing = Easing.EasingMap.easeInOut;
@@ -1887,13 +1887,13 @@ UI.loadFromProject = function (project) {
 	this.setZoom(ui.zoom);
 };
 
-UI.webglRestored = function (event) {
+UI.webglRestored = function () {
 	if (UI.state === 'open') {
 		UI.requestRendering();
 	}
 };
 
-UI.windowResize = function (event) {
+UI.windowResize = function () {
 	this.updateHead();
 	if (this.state === 'open') {
 		this.resize();
@@ -1902,11 +1902,11 @@ UI.windowResize = function (event) {
 	}
 }.bind(UI);
 
-UI.themechange = function (event) {
+UI.themechange = function () {
 	this.requestRendering();
 }.bind(UI);
 
-UI.localizationchange = function (event) {
+UI.localizationchange = function () {
 	this.updateAllTexts();
 }.bind(UI);
 
@@ -1962,11 +1962,11 @@ UI.shortcutPointerdown = function (event) {
 	}
 };
 
-UI.zoomFocus = function (event) {
+UI.zoomFocus = function () {
 	UI.screen.focus();
 };
 
-UI.zoomInput = function (event) {
+UI.zoomInput = function () {
 	UI.setZoom(this.read());
 };
 
@@ -2137,7 +2137,7 @@ UI.screenWheel = function (event) {
 	}
 }.bind(UI);
 
-UI.screenUserscroll = function (event) {
+UI.screenUserscroll = function () {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
 		this.screen.rawScrollTop = this.screen.scrollTop;
@@ -2148,7 +2148,7 @@ UI.screenUserscroll = function (event) {
 	}
 }.bind(UI);
 
-UI.screenBlur = function (event) {
+UI.screenBlur = function () {
 	this.translationKeyup();
 	this.pointerup();
 	// this.marqueePointerleave()
@@ -2271,14 +2271,14 @@ UI.marqueePointermove = function (event) {
 	}
 }.bind(UI);
 
-UI.marqueePointerleave = function (event) {
+UI.marqueePointerleave = function () {
 	if (this.marquee.pointerevent) {
 		this.marquee.pointerevent = null;
 		this.setHover(null);
 	}
 }.bind(UI);
 
-UI.marqueeDoubleclick = function (event) {
+UI.marqueeDoubleclick = function () {
 	if (this.target) {
 		this.screenBlur();
 		this.revealTarget();
@@ -2651,7 +2651,7 @@ UI.menuPopup = function (event) {
 			label: get('copy-id'),
 			enabled: selected,
 			click: () => {
-				navigator.clipboard.writeText(target.presetId);
+				void navigator.clipboard.writeText(target.presetId);
 			}
 		},
 		{
@@ -2983,7 +2983,7 @@ UI.listPopup = function (event) {
 			label: get('copy-id'),
 			enabled: selected,
 			click: () => {
-				navigator.clipboard.writeText(item.presetId);
+				void navigator.clipboard.writeText(item.presetId);
 			}
 		}
 	);
@@ -3049,11 +3049,11 @@ UI.listRename = function (response) {
 	});
 };
 
-UI.listChange = function (event) {
+UI.listChange = function () {
 	UI.planToSave();
 };
 
-UI.listPageResize = function (event) {
+UI.listPageResize = function () {
 	UI.list.updateHead();
 	UI.list.resize();
 };

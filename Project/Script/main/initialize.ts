@@ -122,6 +122,7 @@ Editor.initialize = async function () {
 			const node = queue.shift();
 			const singleton = singletonMap[node];
 			// 用 .call(singleton) 绑定 this，否则严格模式裸调 initialize() 时 this === undefined，那些依赖 this.xxx 赋值的单例（如 Easing.initialize 设 this.startPoint）会炸
+			// eslint-disable-next-line eslint/no-useless-call
 			singleton.initialize.call(singleton);
 			initializedSet.add(node);
 			for (const next of graph.get(node)) {
@@ -134,6 +135,7 @@ Editor.initialize = async function () {
 				if (typeof Log !== 'undefined' && Log.warn) {
 					Log.warn(`初始化循环依赖：${name} 未被初始化`, singletonMap[name].dependsOn);
 				}
+				// eslint-disable-next-line eslint/no-useless-call
 				singletonMap[name].initialize.call(singletonMap[name]);
 				initializedSet.add(name);
 			}

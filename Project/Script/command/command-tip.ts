@@ -196,7 +196,7 @@ CommandSuggestion.select = function (item: CommandSuggestionItem): void {
 	Command.open!(item.value);
 };
 
-CommandSuggestion.windowLocalize = function (event: Event): void {
+CommandSuggestion.windowLocalize = function (): void {
 	// 用重置textContent代替clear来保留选中项
 	const { list, data } = CommandSuggestion;
 	if (list.initialized) {
@@ -206,7 +206,7 @@ CommandSuggestion.windowLocalize = function (event: Event): void {
 	}
 };
 
-CommandSuggestion.windowClose = function (event: Event): void {
+CommandSuggestion.windowClose = function (): void {
 	// 但是异步触发的scroll事件因为列表被隐藏而不会刷新列表项
 	CommandSuggestion.searcher.deleteInputContent();
 	CommandSuggestion.list.hide();
@@ -299,7 +299,7 @@ CommandSuggestion.listPointerdown = function (event: PointerEvent): void {
 	}
 };
 
-CommandSuggestion.listUpdate = function (event: Event): void {
+CommandSuggestion.listUpdate = function (): void {
 	const MAX_LINES = 30;
 	const { x, y } = CommandSuggestion.widget;
 	const space = window.innerHeight - y - 20;

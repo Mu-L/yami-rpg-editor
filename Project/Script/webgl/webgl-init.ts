@@ -30,7 +30,7 @@ export let GL;
 	});
 
 	// 侦听WebGL上下文恢复事件
-	canvas.on('webglcontextrestored', function (event) {
+	canvas.on('webglcontextrestored', function () {
 		console.log('webglcontextrestored');
 		GL.restore();
 	});
@@ -50,8 +50,6 @@ export let GL;
 	if (!GL) {
 		// 回退到WebGL1(Win7 DirectX9以及旧移动设备)
 		GL = canvas.getContext('webgl', options);
-
-		const element_index_uint = GL.getExtension('OES_element_index_uint');
 
 		const vertex_array_object = GL.getExtension('OES_vertex_array_object');
 		GL.createVertexArray = vertex_array_object.createVertexArrayOES.bind(vertex_array_object);

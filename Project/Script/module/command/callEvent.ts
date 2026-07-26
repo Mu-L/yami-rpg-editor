@@ -86,7 +86,11 @@ import { Selection } from '@/tools/text-capture.ts';
 				elEventType.write(eventTypes[0].value);
 			}
 			for (const element of $('.call-event-component')) {
-				type === 'global' ? element.show() : element.hide();
+				if (type === 'global') {
+					element.show();
+				} else {
+					element.hide();
+				}
 			}
 			this.resizeWindow();
 		});
@@ -110,7 +114,7 @@ import { Selection } from '@/tools/text-capture.ts';
 			this.resizeWindow();
 		});
 
-		$('#callEvent-eventId').on('input', (event) => {
+		$('#callEvent-eventId').on('input', () => {
 			this.writeEventArgs(this.eventArgs);
 		});
 	},

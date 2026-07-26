@@ -627,11 +627,9 @@ const createEditorWindow = function () {
 			cwd: projectDir
 		});
 		tscProcess.stdout.on('data', (data) => {
-			editor.send('tsc-log', data.toString());
 			if (!editor.isDestroyed()) editor.send('tsc-log', data.toString());
 		});
 		tscProcess.stderr.on('data', (data) => {
-			editor.send('tsc-log', data.toString());
 			if (!editor.isDestroyed()) editor.send('tsc-log', data.toString());
 		});
 	}

@@ -1,2 +1,2 @@
 #!/bin/bash
-pnpm dlx lint-staged --config lint-staged.config.js
+pnpm dlx lint-staged --config lint-staged.config.js --max-arg-length 4096

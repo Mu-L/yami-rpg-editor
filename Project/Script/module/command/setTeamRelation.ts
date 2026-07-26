@@ -18,12 +18,12 @@ Command.cases.setTeamRelation = new CommandSchema({
 			{ name: 'Enemy', value: 0 },
 			{ name: 'Friend', value: 1 }
 		]);
-		$('#setTeamRelation').on('open', function (event) {
+		$('#setTeamRelation').on('open', function () {
 			const items = Data.createTeamItems();
 			$('#setTeamRelation-teamId1').loadItems(items);
 			$('#setTeamRelation-teamId2').loadItems(items);
 		});
-		$('#setTeamRelation').on('closed', function (event) {
+		$('#setTeamRelation').on('closed', function () {
 			$('#setTeamRelation-teamId1').clear();
 			$('#setTeamRelation-teamId2').clear();
 		});

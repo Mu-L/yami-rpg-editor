@@ -220,7 +220,7 @@ export class WindowFrame extends HTMLElement {
 				break;
 			case 'resize':
 				this.resizeEventEnabled = true;
-				this.windowResize = (event: Event) => {
+				this.windowResize = () => {
 					this.dispatchEvent(new Event('resize'));
 				};
 				break;

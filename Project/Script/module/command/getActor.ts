@@ -72,12 +72,12 @@ Command.cases.getActor = new CommandSchema({
 				{ case: 'actor', targets: [$('#getActor-exclusionActor')] },
 				{ case: 'team', targets: [$('#getActor-exclusionTeamId')] }
 			]);
-		$('#getActor').on('open', function (event) {
+		$('#getActor').on('open', function () {
 			const items = Data.createTeamItems();
 			$('#getActor-teamId').loadItems(items);
 			$('#getActor-exclusionTeamId').loadItems(items);
 		});
-		$('#getActor').on('closed', function (event) {
+		$('#getActor').on('closed', function () {
 			$('#getActor-teamId').clear();
 			$('#getActor-exclusionTeamId').clear();
 		});

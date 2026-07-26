@@ -166,7 +166,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UIImage.paramInput = function (event) {
+	UIImage.paramInput = function () {
 		UIImage.update(UIImage.target, Inspector.getKey(this), this.read());
 	};
 

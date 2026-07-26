@@ -217,11 +217,11 @@ export class TextHistory implements IEditableHistory {
 			switch (event.code) {
 				case 'KeyZ':
 					if (!event.macRedoKey) {
-						this.history.canUndo() && this.history.restore('undo');
+						if (this.history.canUndo()) this.history.restore('undo');
 						break;
 					}
 				case 'KeyY':
-					this.history.canRedo() && this.history.restore('redo');
+					if (this.history.canRedo()) this.history.restore('redo');
 					break;
 			}
 		}
@@ -298,7 +298,7 @@ export class TextHistory implements IEditableHistory {
 		}
 	}
 
-	inputBlur(event: any) {
+	inputBlur() {
 		HistoryTimer.finish();
 	}
 

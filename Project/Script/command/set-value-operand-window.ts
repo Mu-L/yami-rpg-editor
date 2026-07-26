@@ -472,11 +472,11 @@ NumberOperand.initialize = function () {
 			}
 		]);
 
-	$('#setNumber-operand').on('open', (event) => {
+	$('#setNumber-operand').on('open', () => {
 		$('#setNumber-operand-other-teamId').loadItems(Data.createTeamItems());
 	});
 
-	$('#setNumber-operand').on('closed', (event) => {
+	$('#setNumber-operand').on('closed', () => {
 		$('#setNumber-operand-other-teamId').clear();
 		$('#setNumber-operation').restore();
 	});
@@ -1164,6 +1164,6 @@ NumberOperand.save = function () {
 	return operand;
 };
 
-NumberOperand.confirm = function (event) {
+NumberOperand.confirm = function () {
 	return NumberOperand.target.save();
 };

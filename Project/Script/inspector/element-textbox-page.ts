@@ -171,7 +171,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UITextBox.paramInput = function (event) {
+	UITextBox.paramInput = function () {
 		UITextBox.update(UITextBox.target, Inspector.getKey(this), this.read());
 	};
 

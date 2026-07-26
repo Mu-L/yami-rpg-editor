@@ -18,10 +18,10 @@ Command.cases.shakeScreen = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#shakeScreen').on('open', function (event) {
+		$('#shakeScreen').on('open', function () {
 			$('#shakeScreen-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#shakeScreen').on('closed', function (event) {
+		$('#shakeScreen').on('closed', function () {
 			$('#shakeScreen-easingId').clear();
 		});
 	},

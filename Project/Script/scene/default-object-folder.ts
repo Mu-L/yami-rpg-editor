@@ -25,7 +25,7 @@ ObjectFolder.open = function () {
 	write('parallax');
 };
 
-ObjectFolder.confirm = function (event) {
+ObjectFolder.confirm = function () {
 	const read = getElementReader('object-folder');
 	Editor.project.scene.defaultFolders = {
 		tilemap: read('tilemap'),

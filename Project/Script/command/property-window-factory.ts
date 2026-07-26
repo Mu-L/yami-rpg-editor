@@ -145,7 +145,7 @@ export function createPropertyWindow(config: PropertyWindowConfig): PropertyWind
 		return { key, value };
 	};
 
-	PropertyWindow.confirm = function (event) {
+	PropertyWindow.confirm = function () {
 		return PropertyWindow.target.save();
 	};
 

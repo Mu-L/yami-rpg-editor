@@ -10,7 +10,7 @@ Command.cases.setDialogBox = new CommandSchema({
 	onInitialize() {
 		$('#setDialogBox-confirm').on('click', () => this.save());
 		$('#setDialogBox-properties').bind(DialogBoxProperty);
-		$('#setDialogBox').on('closed', (event) => {
+		$('#setDialogBox').on('closed', () => {
 			$('#setDialogBox-properties').clear();
 		});
 	},

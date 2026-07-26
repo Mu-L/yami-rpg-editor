@@ -80,7 +80,3 @@ Command.WordList = class WordList {
 		for (let i = 0; i < this.count; i++) yield arr[i];
 	}
 };
-
-interface WordList {
-	[index: number]: string;
-}

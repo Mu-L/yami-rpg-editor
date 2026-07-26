@@ -24,7 +24,7 @@ export const measureText = (function IIFE() {
 			document.body.appendChild(container);
 			container.textContent = 'a';
 			lineHeight = container.offsetHeight;
-			Promise.resolve().then(() => {
+			void Promise.resolve().then(() => {
 				appended = false;
 				container.textContent = '';
 				container.remove();

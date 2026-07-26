@@ -62,11 +62,11 @@ SwitchBranch.save = function () {
 	}
 };
 
-SwitchBranch.windowClosed = function (event) {
+SwitchBranch.windowClosed = function () {
 	SwitchBranch.commands = null;
 	$('#switch-branch-conditions').clear();
 };
 
-SwitchBranch.confirm = function (event) {
+SwitchBranch.confirm = function () {
 	return SwitchBranch.target.save();
 };

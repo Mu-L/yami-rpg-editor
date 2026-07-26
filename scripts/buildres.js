@@ -91,7 +91,7 @@ const zipBuild = async (src, targetSrc) => {
 	}
 };
 
-(async () => {
+void (async () => {
 	const promiseArray = resArray.map(async (v) => {
 		console.log(`⌛ 开始处理: ${v.path}`);
 		await zipBuild(v.realPath, path.resolve('build', 'resources', `${v.path}_pack.zip`));
@@ -102,10 +102,10 @@ const zipBuild = async (src, targetSrc) => {
 	const packageArray = await Promise.all(
 		resArray.map(async (v) => {
 			const zipPath = path.resolve('build', 'resources', `${v.path}_pack.zip`);
-			return {
-				...v,
-				...(await calculateMultipleHashes(zipPath, ['md5', 'sha1', 'sha256']))
-			};
+			return Object.assign(
+				v,
+				await calculateMultipleHashes(zipPath, ['md5', 'sha1', 'sha256'])
+			);
 		})
 	);
 

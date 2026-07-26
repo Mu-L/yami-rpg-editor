@@ -208,7 +208,7 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		elMotion.write(elMotion.read() ?? items[0].value);
 	};
 
-	SceneAnimation.paramInput = function (event) {
+	SceneAnimation.paramInput = function () {
 		SceneAnimation.update(SceneAnimation.target, Inspector.getKey(this), this.read());
 	};
 

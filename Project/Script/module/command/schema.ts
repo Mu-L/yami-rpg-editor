@@ -307,7 +307,9 @@ export class CommandSchema {
 		target.save({ id, params });
 		const handler = CommandSchema._resolve(id);
 		if (handler !== undefined) {
-			handler.load && Window.close(id);
+			if (handler.load) {
+				Window.close(id);
+			}
 		} else {
 			Window.close('scriptCommand');
 		}

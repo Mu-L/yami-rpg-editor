@@ -512,7 +512,7 @@ Deployment.compressJavaScript = function (srcPath, dstPath) {
 	let uglifyJS;
 	try {
 		uglifyJS = uglifyJs;
-	} catch (e) {
+	} catch {
 		uglifyJS = null;
 	}
 
@@ -557,7 +557,7 @@ Deployment.compressJavaScript = function (srcPath, dstPath) {
 	});
 };
 
-Deployment.platformInput = function (event) {
+Deployment.platformInput = function () {
 	Deployment.check();
 };
 
@@ -571,7 +571,7 @@ Deployment.folderBeforeinput = function (event) {
 	}
 };
 
-Deployment.folderInput = function (event) {
+Deployment.folderInput = function () {
 	const regexp = /[\\/:*?"<>|"]/g;
 	const oldName = this.read();
 	const newName = oldName.replace(regexp, '');
@@ -581,11 +581,11 @@ Deployment.folderInput = function (event) {
 	Deployment.check();
 };
 
-Deployment.locationInput = function (event) {
+Deployment.locationInput = function () {
 	Deployment.check();
 };
 
-Deployment.chooseClick = function (event) {
+Deployment.chooseClick = function () {
 	const input = $('#deployment-location');
 	File.showOpenDialog({
 		defaultPath: input.read(),
@@ -598,7 +598,7 @@ Deployment.chooseClick = function (event) {
 	});
 };
 
-Deployment.confirm = function (event) {
+Deployment.confirm = function () {
 	const platform = $('#deployment-platform').read();
 	const location = $('#deployment-location').read();
 	const folder = $('#deployment-folder').read();
@@ -608,7 +608,7 @@ Deployment.confirm = function (event) {
 		path += '.app';
 	}
 	return FSP.mkdir(path, { recursive: true })
-		.then((done) => {
+		.then(() => {
 			return Deployment.copyFilesTo(path);
 		})
 		.finally(() => {

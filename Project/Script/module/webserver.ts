@@ -18,7 +18,7 @@ export const WebServer = new (class {
 		return ipcRenderer.sendSync('get-server-state');
 	}
 	start(path: any) {
-		ipcRenderer.invoke('start-server', {
+		void ipcRenderer.invoke('start-server', {
 			port: this.port,
 			path
 		});
@@ -33,7 +33,7 @@ export const WebServer = new (class {
 	}
 	stop() {
 		if (!this.enable) return;
-		ipcRenderer.invoke('stop-server');
+		void ipcRenderer.invoke('stop-server');
 		window.removeEventListener('beforeunload', this.stop);
 		this.load();
 	}
@@ -70,7 +70,7 @@ export const WebServer = new (class {
 		const path = Path.dirname(projectPath);
 		const location = Path.join(path, '.preview');
 		return FSP.mkdir(path, { recursive: true })
-			.then((done) => {
+			.then(() => {
 				$('#deployment-platform').write('web');
 				return Deployment.copyFilesTo(location);
 			})

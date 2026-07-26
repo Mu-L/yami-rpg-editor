@@ -140,7 +140,11 @@ export class FileBodyPane extends HTMLElement {
 				break;
 		}
 		if (this.viewMode !== viewMode) {
-			viewMode === 'list' ? this.addClass('horizontal') : this.removeClass('horizontal');
+			if (viewMode === 'list') {
+				this.addClass('horizontal');
+			} else {
+				this.removeClass('horizontal');
+			}
 			this.content.removeClass(this.viewMode!);
 			this.content.addClass(viewMode!);
 			this.resetContentStyle();
@@ -161,7 +165,7 @@ export class FileBodyPane extends HTMLElement {
 				length += folder.children.length;
 			}
 			let i = 0;
-			const items = new Array(length);
+			const items = Array(length);
 			for (const folder of folders) {
 				for (const item of folder.children) {
 					items[i++] = item;
@@ -661,7 +665,7 @@ export class FileBodyPane extends HTMLElement {
 				context.element?.removeClass('selected');
 			}
 		}
-		const pointerup = (event: PointerEvent) => {
+		const pointerup = () => {
 			if (this.pressing === pointerup) {
 				this.pressing = null;
 				this.selectActiveFile();
@@ -711,7 +715,7 @@ export class FileBodyPane extends HTMLElement {
 	selectAll(): void {
 		const { elements } = this;
 		const { count } = elements;
-		const files = new Array(count);
+		const files = Array(count);
 		for (let i = 0; i < count; i++) {
 			files[i] = elements[i].file;
 		}
@@ -897,7 +901,7 @@ export class FileBodyPane extends HTMLElement {
 		const dirname = this.getDirName();
 		if (dirname) {
 			const { path, route } = File.getFileName(dirname, 'New Folder');
-			FSP.mkdir(route, { recursive: true })
+			void FSP.mkdir(route, { recursive: true })
 				.then(() => {
 					return Directory.update();
 				})
@@ -1147,7 +1151,7 @@ export class FileBodyPane extends HTMLElement {
 						const dst = File.getFileName(dir, base, ext).route;
 						promises.push(FSP.copyFile(src, dst));
 					}
-					Promise.all(promises).then(() => {
+					void Promise.all(promises).then(() => {
 						return Directory.update();
 					});
 					dialogs.import = Path.slash(Path.dirname(filePaths[0]));
@@ -1591,7 +1595,7 @@ export class FileBodyPane extends HTMLElement {
 			}
 		});
 
-		textBox.on('input', function (this: TextBox, event: Event) {
+		textBox.on('input', function (this: TextBox) {
 			if (this.style.width !== '') {
 				this.fitContent();
 			}
@@ -1601,7 +1605,7 @@ export class FileBodyPane extends HTMLElement {
 			event.stopPropagation();
 		});
 
-		textBox.on('blur', function (this: TextBox, event: Event) {
+		textBox.on('blur', function (this: TextBox) {
 			const item = this.parentNode as any;
 			const file = item.file;
 			const name = this.read().trim();
@@ -1626,7 +1630,7 @@ export class FileBodyPane extends HTMLElement {
 							throw new Error('same file');
 						}
 					})
-					.catch((error: any) => {
+					.catch(() => {
 						return FSP.rename(File.path(file.path), path).then(() => {
 							item.nameBox.textContent = name;
 							return Directory.update();

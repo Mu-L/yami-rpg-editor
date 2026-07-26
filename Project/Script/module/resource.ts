@@ -51,9 +51,11 @@ export const Resources = new (class {
 	loaded = false;
 
 	constructor() {
-		this.updateFastGithubArray().then((data) => {
-			this._fastGithubArray = data;
-		});
+		this.updateFastGithubArray()
+			.then((data) => {
+				this._fastGithubArray = data;
+			})
+			.catch(() => {});
 	}
 
 	async updateFastGithubArray() {
@@ -375,7 +377,7 @@ export const Resources = new (class {
 				!NoResourceObj['arpg-ts-english'].check &&
 				!NoResourceObj['arpg-ts-chinese'].check
 			) {
-				Resources.open();
+				await Resources.open();
 			}
 
 			Window.confirm({ message: versionString }, [
@@ -384,7 +386,7 @@ export const Resources = new (class {
 				}
 			]);
 		}
-		this.checkEditorVersion();
+		void this.checkEditorVersion();
 	}
 
 	temp(val: any) {
@@ -621,7 +623,7 @@ export const Resources = new (class {
 
 	async open() {
 		Window.open('resource');
-		this.updateNodeInfo();
+		await this.updateNodeInfo();
 		this.load();
 	}
 })();

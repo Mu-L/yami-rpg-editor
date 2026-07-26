@@ -15,10 +15,10 @@ Command.cases.moveLight = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#moveLight').on('open', function (event) {
+		$('#moveLight').on('open', function () {
 			$('#moveLight-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#moveLight').on('closed', function (event) {
+		$('#moveLight').on('closed', function () {
 			$('#moveLight-properties').clear();
 			$('#moveLight-easingId').clear();
 		});

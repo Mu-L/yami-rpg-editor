@@ -363,7 +363,7 @@ Enum.unpackEnumeration = (function IIFE() {
 	}
 	const clone = (items) => {
 		const length = items.length;
-		const copies = new Array(length);
+		const copies = Array(length);
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
 			Enum.idMap[item.id] = true;
@@ -388,7 +388,7 @@ Enum.unpackEnumeration = (function IIFE() {
 Enum.packEnumeration = (function IIFE() {
 	const clone = (items) => {
 		const length = items.length;
-		const copies = new Array(length);
+		const copies = Array(length);
 		for (let i = 0; i < length; i++) {
 			const item = items[i];
 			if (item.class !== 'folder') {
@@ -457,7 +457,7 @@ Enum.windowClose = function (event) {
 	}
 }.bind(Enum);
 
-Enum.windowClosed = function (event) {
+Enum.windowClosed = function () {
 	this.data = null;
 	this.idMap = null;
 	this.settings = null;
@@ -646,7 +646,7 @@ Enum.listPopup = function (event) {
 			label: `ID: ${item.id}`,
 			style: 'id',
 			click: () => {
-				navigator.clipboard.writeText(item.id);
+				void navigator.clipboard.writeText(item.id);
 			}
 		});
 	}
@@ -749,7 +749,7 @@ Enum.searcherInput = function (event) {
 	Enum.list.searchNodesDebounced(text);
 };
 
-Enum.confirm = function (event) {
+Enum.confirm = function () {
 	switch (this.mode) {
 		case 'normal':
 			this.apply();
@@ -776,7 +776,7 @@ Enum.confirm = function (event) {
 	Window.close('enum');
 }.bind(Enum);
 
-Enum.apply = function (event) {
+Enum.apply = function () {
 	if (this.changed) {
 		this.changed = false;
 
@@ -983,7 +983,11 @@ Enum.list.updateNoteIcon = function (item) {
 		const annotated = item.note !== '';
 		if (element.annotated !== annotated) {
 			element.annotated = annotated;
-			annotated ? element.noteIcon.show() : element.noteIcon.hide();
+			if (annotated) {
+				element.noteIcon.show();
+			} else {
+				element.noteIcon.hide();
+			}
 		}
 	}
 };

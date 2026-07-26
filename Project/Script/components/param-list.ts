@@ -576,18 +576,23 @@ export class ParamList extends HTMLElement {
 		return this;
 	}
 
-	listFocus(event: Event): void {
+	listFocus(): void {
 		if (!this.focusing) {
 			this.focusing = true;
-			this.start !== null ? this.reselect() : this.select(0);
+			if (this.start !== null) {
+				this.reselect();
+			} else {
+				this.select(0);
+			}
 		}
 	}
 
-	listBlur(event: Event): void {
+	listBlur(): void {
 		if (this.dragging) {
 			this.windowPointerup(this.dragging);
 		}
 		if (this.focusing) {
+			// eslint-disable-next-line typescript/no-this-alias
 			let element: any = this;
 			while ((element = element.parentNode)) {
 				if (element instanceof WindowFrame) {
@@ -662,11 +667,19 @@ export class ParamList extends HTMLElement {
 					break;
 				case 'ArrowUp':
 					event.preventDefault();
-					event.shiftKey ? this.selectMultipleUp() : this.selectUp();
+					if (event.shiftKey) {
+						this.selectMultipleUp();
+					} else {
+						this.selectUp();
+					}
 					break;
 				case 'ArrowDown':
 					event.preventDefault();
-					event.shiftKey ? this.selectMultipleDown() : this.selectDown();
+					if (event.shiftKey) {
+						this.selectMultipleDown();
+					} else {
+						this.selectDown();
+					}
 					break;
 				default:
 					return;
@@ -853,7 +866,7 @@ export class ParamList extends HTMLElement {
 		}
 	}
 
-	doubleclick(event: Event): void {
+	doubleclick(): void {
 		if (this.start === this.end) {
 			this.edit();
 		}

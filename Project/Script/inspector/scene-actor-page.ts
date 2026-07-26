@@ -183,7 +183,7 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		}
 	}.bind(SceneActor);
 
-	SceneActor.paramInput = function (event) {
+	SceneActor.paramInput = function () {
 		SceneActor.update(SceneActor.target, Inspector.getKey(this), this.read());
 	};
 

@@ -53,19 +53,21 @@ import { Inspector } from './inspector.ts';
 					},
 					{ once: true }
 				);
-			}).then(() => {
-				if (this.symbol === symbol) {
-					this.symbol = null;
-					const duration = video.duration;
-					const width = video.videoWidth;
-					const height = video.videoHeight;
-					const bitrate = Math.round(size / 128 / duration);
-					const formatTime = Inspector.fileAudio.formatTime;
-					elDuration.textContent = formatTime(duration);
-					elResolution.textContent = `${width} x ${height}`;
-					elBitrate.textContent = `${bitrate}Kbps`;
-				}
-			});
+			})
+				.then(() => {
+					if (this.symbol === symbol) {
+						this.symbol = null;
+						const duration = video.duration;
+						const width = video.videoWidth;
+						const height = video.videoHeight;
+						const bitrate = Math.round(size / 128 / duration);
+						const formatTime = Inspector.fileAudio.formatTime;
+						elDuration.textContent = formatTime(duration);
+						elResolution.textContent = `${width} x ${height}`;
+						elBitrate.textContent = `${bitrate}Kbps`;
+					}
+				})
+				.catch(() => {});
 		}
 	};
 

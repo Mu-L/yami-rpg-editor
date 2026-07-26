@@ -84,7 +84,7 @@ ItemGetter.createDefaultForPlugin = function () {
 	return { getter: 'item', type: 'trigger' };
 };
 
-ItemGetter.confirm = function (event) {
+ItemGetter.confirm = function () {
 	const read = getElementReader('itemGetter');
 	const type = read('type');
 	let getter;

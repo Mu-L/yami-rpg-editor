@@ -163,14 +163,14 @@ TextSuggestion.createData = function (this: TextSuggestionShape): void {
 	}
 };
 
-TextSuggestion.textBoxFocus = function (this: TextSuggestionTarget, event: Event): void {
+TextSuggestion.textBoxFocus = function (this: TextSuggestionTarget): void {
 	const text = this.read().trim();
 	TextSuggestion.open(this);
 	TextSuggestion.list.searchNodes(text);
 	TextSuggestion.list.selectDefaultCommand!();
 };
 
-TextSuggestion.textBoxBlur = function (this: TextSuggestionTarget, event: Event): void {
+TextSuggestion.textBoxBlur = function (this: TextSuggestionTarget): void {
 	TextSuggestion.close!();
 };
 
@@ -239,7 +239,7 @@ TextSuggestion.listPointerdown = function (this: TextSuggestionList, event: Poin
 	}
 };
 
-TextSuggestion.listUpdate = function (this: TextSuggestionList, event: Event): void {
+TextSuggestion.listUpdate = function (this: TextSuggestionList): void {
 	const MAX_LINES = 30;
 	const rect = TextSuggestion.target!.rect();
 	const rl = rect.left;

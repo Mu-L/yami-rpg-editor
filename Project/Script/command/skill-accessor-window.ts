@@ -84,7 +84,7 @@ SkillGetter.createDefaultForPlugin = function () {
 	return { getter: 'skill', type: 'trigger' };
 };
 
-SkillGetter.confirm = function (event) {
+SkillGetter.confirm = function () {
 	const read = getElementReader('skillGetter');
 	const type = read('type');
 	let getter;

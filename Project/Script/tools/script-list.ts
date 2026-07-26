@@ -122,6 +122,7 @@ export class ScriptListInterface implements IScriptListInterface {
 	}
 
 	static listDragleave(event: any) {
+		// eslint-disable-next-line typescript/no-this-alias
 		const self: any = this;
 		if (!self.contains(event.relatedTarget)) {
 			self.removeClass('dragover');
@@ -139,11 +140,12 @@ export class ScriptListInterface implements IScriptListInterface {
 		}
 	}
 
-	static listDrop(event: any) {
+	static listDrop() {
 		const file = Browser.body.activeFile;
 		if (file instanceof FileItem) {
 			const script = PluginManager.createData();
 			script.id = file.meta.guid;
+			// eslint-disable-next-line typescript/no-this-alias
 			const self: any = this;
 			self.object.script = script;
 			self.inserting = true;

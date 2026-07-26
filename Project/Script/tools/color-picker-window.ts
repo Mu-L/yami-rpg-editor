@@ -162,7 +162,7 @@ Color.getRGBFromPalette = function () {
 	const y = Math.round(this.paletteY);
 	const canvas = $('#color-palette-canvas');
 	const context = canvas.getContext('2d');
-	const [r, g, b, a] = context.getImageData(x, y, 1, 1).data;
+	const [r, g, b] = context.getImageData(x, y, 1, 1).data;
 	return [r, g, b];
 };
 
@@ -170,7 +170,7 @@ Color.getRGBFromPillar = function () {
 	const y = Math.round(this.pillarY);
 	const canvas = $('#color-pillar-canvas');
 	const context = canvas.getContext('2d');
-	const [r, g, b, a] = context.getImageData(0, y, 1, 1).data;
+	const [r, g, b] = context.getImageData(0, y, 1, 1).data;
 	return [r, g, b];
 };
 
@@ -235,7 +235,7 @@ Color.simplifyHexColor = (function IIFE() {
 	};
 })();
 
-Color.windowClosed = function (event) {
+Color.windowClosed = function () {
 	$('#color-index').reset();
 	if (this.dragging) {
 		this.pointerup(this.dragging);
@@ -385,7 +385,7 @@ Color.hexBeforeinput = function (event) {
 	}
 };
 
-Color.hexInput = function (event) {
+Color.hexInput = function () {
 	const read = getElementReader('color');
 	const write = getElementWriter('color');
 	const oldHex = read('hex');
@@ -404,7 +404,7 @@ Color.hexInput = function (event) {
 	$('#color-index').reset();
 }.bind(Color);
 
-Color.rgbaInput = function (event) {
+Color.rgbaInput = function () {
 	const read = getElementReader('color');
 	const write = getElementWriter('color');
 	const r = read('r');
@@ -419,7 +419,7 @@ Color.rgbaInput = function (event) {
 	$('#color-index').reset();
 }.bind(Color);
 
-Color.confirm = function (event) {
+Color.confirm = function () {
 	const index = $('#color-index').read();
 	if (this.indexEnabled && index !== null) {
 		this.target.input(index);

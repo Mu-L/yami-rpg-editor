@@ -94,7 +94,7 @@ export class NumberBox extends HTMLElement {
 			case 'focus':
 				if (!this.focusEventEnabled) {
 					this.focusEventEnabled = true;
-					this.input.on('focus', (event) => {
+					this.input.on('focus', () => {
 						this.dispatchEvent(new FocusEvent('focus'));
 					});
 				}
@@ -102,7 +102,7 @@ export class NumberBox extends HTMLElement {
 			case 'blur':
 				if (!this.blurEventEnabled) {
 					this.blurEventEnabled = true;
-					this.input.on('blur', (event) => {
+					this.input.on('blur', () => {
 						this.dispatchEvent(new FocusEvent('blur'));
 					});
 				}
@@ -111,10 +111,12 @@ export class NumberBox extends HTMLElement {
 	}
 
 	inputKeydown(event: any) {
-		!NumberBox.whiteList.includes(event.code) && !event.cmdOrCtrlKey && event.preventDefault();
+		if (!NumberBox.whiteList.includes(event.code) && !event.cmdOrCtrlKey) {
+			event.preventDefault();
+		}
 	}
 
-	inputChange(event: any) {
+	inputChange() {
 		this.value = this.parentNode.read();
 	}
 

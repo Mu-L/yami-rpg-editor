@@ -94,11 +94,11 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		}
 	};
 
-	FileEquipment.paramInput = function (event) {
+	FileEquipment.paramInput = function () {
 		FileEquipment.update(FileEquipment.target, Inspector.getKey(this), this.read());
 	};
 
-	FileEquipment.listChange = function (event) {
+	FileEquipment.listChange = function () {
 		File.planToSave(FileEquipment.meta);
 	};
 

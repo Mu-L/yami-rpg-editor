@@ -11,7 +11,7 @@ Command.cases.setNumber = new CommandSchema({
 	onInitialize() {
 		$('#setNumber-confirm').on('click', () => this.save());
 		$('#setNumber-operands').bind(NumberOperand);
-		$('#setNumber').on('closed', (event) => {
+		$('#setNumber').on('closed', () => {
 			$('#setNumber-operands').clear();
 		});
 	},

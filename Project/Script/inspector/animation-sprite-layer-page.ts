@@ -92,7 +92,7 @@ import { Inspector } from './inspector.ts';
 		Animation.requestRendering();
 	};
 
-	AnimSpriteLayer.paramInput = function (event) {
+	AnimSpriteLayer.paramInput = function () {
 		AnimSpriteLayer.update(AnimSpriteLayer.target, Inspector.getKey(this), this.read());
 	};
 

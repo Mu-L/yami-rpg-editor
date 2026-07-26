@@ -133,7 +133,7 @@ export class FileBrowser extends HTMLElement {
 		return false;
 	}
 
-	dirchange(event: Event): void {
+	dirchange(): void {
 		switch (this.display) {
 			case 'normal':
 				break;
@@ -194,7 +194,7 @@ export class FileBrowser extends HTMLElement {
 		return { relativePaths, absolutePaths };
 	}
 
-	pointerdown(event: PointerEvent): void {
+	pointerdown(): void {
 		switch ((this.dragging as any)?.mode) {
 			case 'drag':
 				this.dragend();
@@ -249,7 +249,7 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	dragend(event?: DragEvent): void {
+	dragend(): void {
 		if (this.dragging) {
 			const { dropTarget, page } = this.dragging as any;
 			if (dropTarget instanceof HTMLElement) {
@@ -420,7 +420,7 @@ export class FileBrowser extends HTMLElement {
 		}
 	}
 
-	osDragend(event?: DragEvent): void {
+	osDragend(): void {
 		if (this.dragging) {
 			const { dropTarget } = this.dragging as any;
 			if (dropTarget instanceof HTMLElement) {

@@ -69,7 +69,7 @@ export class FolderItem {
 		const path = File.path(dir);
 		const files = await FSP.readdir(path, { withFileTypes: true });
 		const length = files.length;
-		const promises = new Array(length);
+		const promises = Array(length);
 		const children = [];
 		const subfolders = [];
 		const bigint = FolderItem.bigint;
@@ -100,6 +100,7 @@ export class FolderItem {
 		const { extnameToTypeMap } = FolderItem;
 		for (let i = 0; i < length; i++) {
 			const promise = promises[i];
+			// eslint-disable-next-line eslint/no-await-in-loop
 			const response = await promise;
 			if (promise?.path === undefined) {
 				continue;

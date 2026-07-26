@@ -58,7 +58,7 @@ export class GamepadBox extends HTMLElement {
 		}
 	}
 
-	inputFocus(event: any) {
+	inputFocus() {
 		let lastPad = null;
 
 		const inputKeyCode = () => {
@@ -91,7 +91,7 @@ export class GamepadBox extends HTMLElement {
 		GamepadBox.intervalIndex = setInterval(inputKeyCode);
 	}
 
-	inputBlur(event: any) {
+	inputBlur() {
 		clearInterval(GamepadBox.intervalIndex);
 		GamepadBox.intervalIndex = null;
 	}

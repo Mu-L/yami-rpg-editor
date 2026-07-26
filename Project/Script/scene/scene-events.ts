@@ -14,13 +14,13 @@ import { Scene } from './scene-window.ts';
 import { Title } from '@/title/title-bar.ts';
 import { Local } from '@/tools/localization.ts';
 import { Cursor } from '@/tools/pointer-object.ts';
-Scene.webglRestored = function (event) {
+Scene.webglRestored = function () {
 	if (Scene.state === 'open') {
 		Scene.requestRendering();
 	}
 };
 
-Scene.windowResize = function (event) {
+Scene.windowResize = function () {
 	this.updateHead();
 	if (this.state === 'open') {
 		this.resize();
@@ -28,11 +28,11 @@ Scene.windowResize = function (event) {
 	}
 }.bind(Scene);
 
-Scene.themechange = function (event) {
+Scene.themechange = function () {
 	this.requestRendering();
 }.bind(Scene);
 
-Scene.dprchange = function (event) {
+Scene.dprchange = function () {
 	if (this.state === 'open') {
 		this.updateFont();
 	}
@@ -68,9 +68,11 @@ Scene.keydown = function (event) {
 					Scene.closeTilemap();
 					break;
 				case 'Backquote':
-					Scene.layer !== 'object'
-						? Scene.switchLayer('object')
-						: Scene.switchLayer('terrain');
+					if (Scene.layer !== 'object') {
+						Scene.switchLayer('object');
+					} else {
+						Scene.switchLayer('terrain');
+					}
 					break;
 				case 'Digit1':
 					Scene.openTilemap(Scene.tilemaps.shortcuts[1]);
@@ -175,11 +177,11 @@ Scene.brushPointerdown = function (event) {
 	}
 };
 
-Scene.zoomFocus = function (event) {
+Scene.zoomFocus = function () {
 	Scene.screen.focus();
 };
 
-Scene.zoomInput = function (event) {
+Scene.zoomInput = function () {
 	Scene.setZoom(this.read());
 };
 
@@ -441,7 +443,7 @@ Scene.screenWheel = function (event) {
 	}
 }.bind(Scene);
 
-Scene.screenUserscroll = function (event) {
+Scene.screenUserscroll = function () {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
 		this.screen.rawScrollTop = this.screen.scrollTop;
@@ -452,7 +454,7 @@ Scene.screenUserscroll = function (event) {
 	}
 }.bind(Scene);
 
-Scene.screenBlur = function (event) {
+Scene.screenBlur = function () {
 	this.shiftKeyup();
 	this.translationKeyup();
 	this.pointerup();
@@ -495,7 +497,7 @@ Scene.screenDragover = function (event) {
 	}
 };
 
-Scene.screenDrop = function (event) {
+Scene.screenDrop = function () {
 	if (Scene.previewObject) {
 		const kind = Scene.previewObject.class;
 		const folder = Scene.getDefaultObjectFolder(kind);
@@ -724,7 +726,7 @@ Scene.marqueePointermove = function (event) {
 	}
 }.bind(Scene);
 
-Scene.marqueePointerleave = function (event) {
+Scene.marqueePointerleave = function () {
 	if (this.marquee.pointerevent !== null) {
 		this.marquee.pointerevent = null;
 		if (!this.dragging && !(this.layer === 'object' && this.target !== null)) {
@@ -1137,7 +1139,7 @@ Scene.menuPopup = function (event) {
 				label: get('copy-id'),
 				enabled: selected,
 				click: () => {
-					navigator.clipboard.writeText(target.presetId);
+					void navigator.clipboard.writeText(target.presetId);
 				}
 			},
 			{
@@ -1604,7 +1606,7 @@ Scene.listPopup = function (event) {
 			label: get('copy-id'),
 			enabled: !!item,
 			click: () => {
-				navigator.clipboard.writeText(item.presetId);
+				void navigator.clipboard.writeText(item.presetId);
 			}
 		}
 	);
@@ -1719,11 +1721,11 @@ Scene.listRename = function (response) {
 	}
 };
 
-Scene.listChange = function (event) {
+Scene.listChange = function () {
 	Scene.planToSave();
 };
 
-Scene.listPageResize = function (event) {
+Scene.listPageResize = function () {
 	Scene.list.updateHead();
 	Scene.list.resize();
 };

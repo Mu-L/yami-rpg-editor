@@ -203,7 +203,7 @@ Browser.loadFromProject = function (project) {
 	this.nav.load(...selections);
 };
 
-Browser.pageResize = function (event) {
+Browser.pageResize = function () {
 	Browser.updateNavVisibility();
 	Browser.updateHead();
 	Browser.nav.resize();
@@ -471,7 +471,7 @@ Browser.bodyPopup = function (event) {
 					{
 						label: get('copy-id'),
 						click: () => {
-							navigator.clipboard.writeText(file.meta.guid);
+							void navigator.clipboard.writeText(file.meta.guid);
 						}
 					},
 					{

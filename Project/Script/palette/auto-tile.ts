@@ -544,7 +544,7 @@ AutoTile.windowClose = function (event) {
 	}
 }.bind(AutoTile);
 
-AutoTile.windowClosed = function (event) {
+AutoTile.windowClosed = function () {
 	this.templates = null;
 	this.template = null;
 	this.nodes = null;
@@ -557,7 +557,7 @@ AutoTile.windowClosed = function (event) {
 	this.frameList.clear();
 }.bind(AutoTile);
 
-AutoTile.dprchange = function (event) {
+AutoTile.dprchange = function () {
 	if (this.nodes !== null) {
 		this.updateCanvas();
 		this.drawFrame();
@@ -597,7 +597,7 @@ AutoTile.templatesSelect = function (event) {
 	this.createNodeItems();
 }.bind(AutoTile);
 
-AutoTile.templatesChange = function (event) {
+AutoTile.templatesChange = function () {
 	this.changed = true;
 }.bind(AutoTile);
 
@@ -797,7 +797,7 @@ AutoTile.nodesKeydown = function (event) {
 	}
 };
 
-AutoTile.ruleNeighborInput = function (event) {
+AutoTile.ruleNeighborInput = function () {
 	const read = getElementReader('autoTile-rule');
 	const rule =
 		read('0') |
@@ -946,17 +946,17 @@ AutoTile.framesDoubleclick = function (event) {
 	}
 }.bind(AutoTile);
 
-AutoTile.canvasClick = function (event) {
+AutoTile.canvasClick = function () {
 	this.editFrame();
 }.bind(AutoTile);
 
-AutoTile.imageInput = function (event) {
+AutoTile.imageInput = function () {
 	AutoTile.imageId = this.read();
 	AutoTile.image = null;
 	AutoTile.drawFrame();
 };
 
-AutoTile.offsetXInput = function (event) {
+AutoTile.offsetXInput = function () {
 	const x = this.read();
 	if (AutoTile.offsetX !== x) {
 		AutoTile.offsetX = x;
@@ -964,7 +964,7 @@ AutoTile.offsetXInput = function (event) {
 	}
 };
 
-AutoTile.offsetYInput = function (event) {
+AutoTile.offsetYInput = function () {
 	const y = this.read();
 	if (AutoTile.offsetY !== y) {
 		AutoTile.offsetY = y;
@@ -972,7 +972,7 @@ AutoTile.offsetYInput = function (event) {
 	}
 };
 
-AutoTile.confirm = function (event) {
+AutoTile.confirm = function () {
 	if (this.changed) {
 		this.changed = false;
 		const templates = this.templates;

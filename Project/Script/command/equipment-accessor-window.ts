@@ -85,7 +85,7 @@ EquipmentGetter.createDefaultForPlugin = function () {
 	return { getter: 'equipment', type: 'trigger' };
 };
 
-EquipmentGetter.confirm = function (event) {
+EquipmentGetter.confirm = function () {
 	const read = getElementReader('equipmentGetter');
 	const type = read('type');
 	let getter;

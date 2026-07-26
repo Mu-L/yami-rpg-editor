@@ -128,6 +128,7 @@ UI.Reference = class ReferenceElement extends UI.Element {
 
 	lockTransform() {
 		if (this.prefab) {
+			// eslint-disable-next-line typescript/no-this-alias
 			const parent = this;
 			const transform = this.transform;
 			this.prefab.transform = new (class Transform {

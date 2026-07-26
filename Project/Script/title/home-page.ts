@@ -61,7 +61,7 @@ Home.updateCenterPosition = function () {
 	}
 };
 
-Home.windowResize = function (event) {
+Home.windowResize = function () {
 	// 不支持page(home):resize事件 先用window:resize代替
 	Home.updateCenterPosition();
 };
@@ -215,7 +215,11 @@ Home.removeRecentProject = function (index) {
 			for (const node of array) {
 				dNode.appendChild(node);
 			}
-			sNode.hasClass('disabled') ? dNode.addClass('disabled') : dNode.removeClass('disabled');
+			if (sNode.hasClass('disabled')) {
+				dNode.addClass('disabled');
+			} else {
+				dNode.removeClass('disabled');
+			}
 		}
 		nodes[items.length].hide();
 	}
@@ -369,7 +373,7 @@ Home.readFileList = (function IIFE() {
 	};
 })();
 
-Home.windowLocalize = function (event) {
+Home.windowLocalize = function () {
 	if (Layout.manager.index === 'home') {
 		Home.parseRecentProjects();
 	}

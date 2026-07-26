@@ -106,7 +106,7 @@ import { Inspector } from './inspector.ts';
 		Animation.requestRendering();
 	};
 
-	AnimJointFrame.paramInput = function (event) {
+	AnimJointFrame.paramInput = function () {
 		AnimJointFrame.update(AnimJointFrame.target, Inspector.getKey(this), this.read());
 	};
 

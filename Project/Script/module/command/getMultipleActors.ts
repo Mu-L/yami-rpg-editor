@@ -42,11 +42,11 @@ Command.cases.getMultipleActors = new CommandSchema({
 			{ name: 'Inactive', value: 'inactive' },
 			{ name: 'Either', value: 'either' }
 		]);
-		$('#getMultipleActors').on('open', function (event) {
+		$('#getMultipleActors').on('open', function () {
 			const items = Data.createTeamItems();
 			$('#getMultipleActors-teamId').loadItems(items);
 		});
-		$('#getMultipleActors').on('closed', function (event) {
+		$('#getMultipleActors').on('closed', function () {
 			$('#getMultipleActors-teamId').clear();
 		});
 	},

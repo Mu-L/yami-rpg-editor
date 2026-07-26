@@ -40,7 +40,7 @@ RegionGetter.open = function (target) {
 	$('#regionGetter-type').getFocus();
 };
 
-RegionGetter.confirm = function (event) {
+RegionGetter.confirm = function () {
 	const read = getElementReader('regionGetter');
 	const type = read('type');
 	let getter;

@@ -260,7 +260,7 @@ export class ConditionListInterface implements IListInterface {
 		});
 
 		// 确定按钮 - 鼠标点击事件
-		$('#condition-confirm').on('click', (event) => {
+		$('#condition-confirm').on('click', () => {
 			ConditionListInterface.target.save();
 		});
 	}

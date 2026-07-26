@@ -244,7 +244,7 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	SceneParallax.paramInput = function (event) {
+	SceneParallax.paramInput = function () {
 		SceneParallax.update(SceneParallax.target, Inspector.getKey(this), this.read());
 	};
 

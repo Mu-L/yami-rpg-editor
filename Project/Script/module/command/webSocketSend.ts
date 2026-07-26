@@ -1,4 +1,4 @@
-import { $, getElementReader } from '@/util/dom.ts';
+import { $ } from '@/util/dom.ts';
 import { Command } from '@/command/command-object.ts';
 import { VariableGetter } from '@/command/variable-accessor-window.ts';
 import { CommandSchema } from './schema.ts';
@@ -45,7 +45,6 @@ Command.cases.webSocketSend = new CommandSchema({
 		if (!data || VariableGetter.isNone(data)) {
 			return elData.getFocus();
 		}
-		const read = getElementReader('webSocketSend');
 		Command.save({
 			id: id,
 			data: data

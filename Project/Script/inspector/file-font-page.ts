@@ -51,16 +51,18 @@ import { Inspector } from './inspector.ts';
 				document.fonts.delete(this.font);
 			}
 			const symbol = (this.symbol = Symbol());
-			font.load().then(() => {
-				if (this.symbol === symbol) {
-					this.symbol = null;
-					this.font = font;
-					document.fonts.add(font);
-					for (const preview of previews) {
-						preview.show();
+			font.load()
+				.then(() => {
+					if (this.symbol === symbol) {
+						this.symbol = null;
+						this.font = font;
+						document.fonts.add(font);
+						for (const preview of previews) {
+							preview.show();
+						}
 					}
-				}
-			});
+				})
+				.catch(() => {});
 		}
 	};
 
@@ -77,7 +79,7 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	FileFont.windowResize = function (event) {
+	FileFont.windowResize = function () {
 		const previews = FileFont.previews;
 		const dpr = window.devicePixelRatio;
 		if (previews.dpr !== dpr) {

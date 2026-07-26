@@ -26,7 +26,7 @@
 		"verbatimModuleSyntax": false,
 		"types": ["node"]
 	},
-	"include": ["Project/Script/**/*.ts", "main/**/*.ts", "Project/global.d.ts"],
+	"include": ["Project/Script/**/*.ts", "main/**/*.ts", "types/global.d.ts"],
 	"exclude": [
 		"Project/Templates/**",
 		"node_modules/**",

@@ -74,7 +74,7 @@ ImportLanguage.parseLanguagePack = function (string) {
 	return map;
 };
 
-ImportLanguage.confirm = function (event) {
+ImportLanguage.confirm = function () {
 	const get = Local.createGetter('confirmation');
 	const filename = Path.basename(ImportLanguage.filePath);
 	const language = $('#importLanguage-language').read();

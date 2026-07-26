@@ -502,7 +502,7 @@ Sprite.loadFromProject = function (project) {
 	this.setZoom(sprite.zoom);
 };
 
-Sprite.windowResize = function (event) {
+Sprite.windowResize = function () {
 	if (this.body.clientWidth === 0) {
 		return this.suspend();
 	}
@@ -529,11 +529,11 @@ Sprite.themechange = function (event) {
 	this.requestRendering();
 }.bind(Sprite);
 
-Sprite.zoomFocus = function (event) {
+Sprite.zoomFocus = function () {
 	Sprite.screen.focus();
 };
 
-Sprite.zoomInput = function (event) {
+Sprite.zoomInput = function () {
 	Sprite.setZoom(this.read());
 };
 
@@ -592,7 +592,7 @@ Sprite.screenWheel = function (event) {
 	}
 }.bind(Sprite);
 
-Sprite.screenUserscroll = function (event) {
+Sprite.screenUserscroll = function () {
 	if (this.state === 'open') {
 		this.screen.rawScrollLeft = this.screen.scrollLeft;
 		this.screen.rawScrollTop = this.screen.scrollTop;

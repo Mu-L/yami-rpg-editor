@@ -12,15 +12,7 @@ Command.cases.webSocketConnect = new CommandSchema({
 		$('#webSocketConnect-protocols').write('');
 		$('#webSocketConnect-confirm').on('click', () => this.save());
 	},
-	customParse({
-		url = '',
-		id = '',
-		protocols = '',
-		onOpen = '',
-		onMessage = '',
-		onError = '',
-		onClose = ''
-	}) {
+	customParse({ url = '', id = '' }) {
 		return [
 			{ color: 'network' },
 			{ text: Local.get('command.webSocketConnect') },

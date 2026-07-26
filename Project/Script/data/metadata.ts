@@ -133,6 +133,7 @@ export const Meta = (function IIFE() {
 
 		tryFixGuid(data: any) {
 			if (data.guid === undefined) {
+				// guid 缺失时由下方 guidDescriptor.value 赋默认值
 			}
 			guidDescriptor.value = this.guid;
 			Object.defineProperty(data, 'guid', guidDescriptor);

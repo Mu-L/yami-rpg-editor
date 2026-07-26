@@ -124,6 +124,7 @@ Local.setLanguage = async function (language) {
 		if (this.active !== filename) {
 			try {
 				const path = Path.resolve(this.dirname, filename);
+				// eslint-disable-next-line eslint/no-await-in-loop
 				this.update(await File.get({ local: path, type: 'json' }));
 				this.active = filename;
 				this.language = language;

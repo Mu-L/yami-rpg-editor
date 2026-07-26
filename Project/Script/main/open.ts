@@ -30,7 +30,7 @@ Editor.open = async function (path, agreed = false) {
 		if (!FS.statSync(path).isFile()) {
 			throw new Error('Invalid project path');
 		}
-	} catch (error: any) {
+	} catch {
 		Layout.manager.switch('home');
 		return;
 	}
@@ -88,7 +88,7 @@ Editor.open = async function (path, agreed = false) {
 				Updater.backupProject();
 			}
 		}
-	} catch (error: any) {
+	} catch {
 		Log.throw(error);
 		return Window.confirm(
 			{
@@ -114,7 +114,7 @@ Editor.open = async function (path, agreed = false) {
 		await loadData;
 		await loadDir;
 		Data.inheritMetaData();
-	} catch (error: any) {
+	} catch {
 		Log.throw(error);
 		const type =
 			error instanceof URIError
@@ -144,11 +144,11 @@ Editor.open = async function (path, agreed = false) {
 
 		await this.checkForProjectUpdates();
 
-		Printer.loadDefault();
+		void Printer.loadDefault();
 		Command.custom.loadCommandList();
 		Animation.Player.updateStep();
 		this.loadProject();
-	} catch (error: any) {
+	} catch {
 		Log.throw(error);
 		const index = path.lastIndexOf('/') + 1;
 		const message = path.slice(index);

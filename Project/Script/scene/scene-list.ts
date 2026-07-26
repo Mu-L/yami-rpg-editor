@@ -432,7 +432,11 @@ Scene.list.updateEventIcon = function (item) {
 		const eventEnabled = item.events.length !== 0;
 		if (element.eventEnabled !== eventEnabled) {
 			element.eventEnabled = eventEnabled;
-			eventEnabled ? element.eventIcon.show() : element.eventIcon.hide();
+			if (eventEnabled) {
+				element.eventIcon.show();
+			} else {
+				element.eventIcon.hide();
+			}
 		}
 	}
 };
@@ -457,7 +461,11 @@ Scene.list.updateScriptIcon = function (item) {
 		const scriptEnabled = item.scripts.length !== 0;
 		if (element.scriptEnabled !== scriptEnabled) {
 			element.scriptEnabled = scriptEnabled;
-			scriptEnabled ? element.scriptIcon.show() : element.scriptIcon.hide();
+			if (scriptEnabled) {
+				element.scriptIcon.show();
+			} else {
+				element.scriptIcon.hide();
+			}
 		}
 	}
 };

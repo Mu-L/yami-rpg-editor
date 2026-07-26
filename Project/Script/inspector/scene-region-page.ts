@@ -124,7 +124,7 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	SceneRegion.paramInput = function (event) {
+	SceneRegion.paramInput = function () {
 		SceneRegion.update(SceneRegion.target, Inspector.getKey(this), this.read());
 	};
 

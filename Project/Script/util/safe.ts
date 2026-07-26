@@ -7,7 +7,11 @@ export function getVariable(id: string | number | null | undefined): any {
 }
 
 export function reportError(err: unknown, context?: string): void {
-	const message = `[Yami] ${context ?? '运行时错误'}: ${(err as Error)?.message ?? err}`;
+	let errStr: string;
+	if (err instanceof Error) errStr = err.message;
+	else if (typeof err === 'string') errStr = err;
+	else errStr = JSON.stringify(err);
+	const message = `[Yami] ${context ?? '运行时错误'}: ${errStr}`;
 	console.error(message, err);
 	if (typeof window !== 'undefined') {
 		window.dispatchEvent(new CustomEvent('yami:error', { detail: { message, error: err } }));

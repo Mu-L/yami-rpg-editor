@@ -227,7 +227,7 @@ import { ScriptListInterface } from '@/tools/script-list.ts';
 		Scene.requestRendering();
 	};
 
-	SceneLight.paramInput = function (event) {
+	SceneLight.paramInput = function () {
 		SceneLight.update(SceneLight.target, Inspector.getKey(this), this.read());
 	};
 

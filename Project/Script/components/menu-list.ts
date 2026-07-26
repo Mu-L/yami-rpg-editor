@@ -287,11 +287,11 @@ export class MenuList extends HTMLElement {
 		}
 	}
 
-	pointerenter(event: any) {
+	pointerenter() {
 		(this.parent as unknown as MenuList)?.select(this.parentMenuItem);
 	}
 
-	static windowBlur(this: MenuList, event: Event) {
+	static windowBlur(this: MenuList) {
 		this.close();
 	}
 
@@ -309,9 +309,14 @@ export class MenuList extends HTMLElement {
 						const node = this.selection.dataValue;
 						if (node.submenu) {
 							this.popupSubmenu(0);
-							this.submenu && this.submenu.reselect(1);
+							if (this.submenu) {
+								this.submenu.reselect(1);
+							}
 						} else {
-							node.click && node.click();
+							if (node.click) {
+								node.click();
+							}
+							// eslint-disable-next-line typescript/no-this-alias
 							let menu: MenuList | null = this;
 							while (menu.parent) {
 								menu = menu.parent as MenuList | null;
@@ -333,7 +338,9 @@ export class MenuList extends HTMLElement {
 					break;
 				case 'ArrowRight':
 					this.popupSubmenu(0);
-					this.submenu && this.submenu.reselect(1);
+					if (this.submenu) {
+						this.submenu.reselect(1);
+					}
 					break;
 			}
 		}
@@ -384,6 +391,7 @@ export class MenuList extends HTMLElement {
 								if (node.submenu) {
 									this.popupSubmenu(0);
 								} else if (node.click) {
+									// eslint-disable-next-line typescript/no-this-alias
 									let root: MenuList | null = this;
 									while (root.parent) {
 										root = root.parent as MenuList | null;

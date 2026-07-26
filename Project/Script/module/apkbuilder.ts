@@ -14,7 +14,7 @@ export const ApkBuilder = new (class {
 	build(cfg: any) {
 		$('#export-apk-content').clear();
 		const config = this.process(cfg);
-		ipcRenderer.invoke('build-apk', config);
+		void ipcRenderer.invoke('build-apk', config);
 	}
 	apkLog(log: any) {
 		const text = document.createElement('text');
@@ -36,7 +36,7 @@ export const ApkBuilder = new (class {
 		this.logs = [];
 	}
 	stopBuild() {
-		ipcRenderer.invoke('stop-build-apk').then(() => {
+		void ipcRenderer.invoke('stop-build-apk').then(() => {
 			this.reset();
 		});
 	}

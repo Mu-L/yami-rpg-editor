@@ -15,10 +15,10 @@ Command.cases.moveElement = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#moveElement').on('open', function (event) {
+		$('#moveElement').on('open', function () {
 			$('#moveElement-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#moveElement').on('closed', function (event) {
+		$('#moveElement').on('closed', function () {
 			$('#moveElement-properties').clear();
 			$('#moveElement-easingId').clear();
 		});

@@ -20,10 +20,10 @@ Command.cases.setAngle = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#setAngle').on('open', function (event) {
+		$('#setAngle').on('open', function () {
 			$('#setAngle-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#setAngle').on('closed', function (event) {
+		$('#setAngle').on('closed', function () {
 			$('#setAngle-easingId').clear();
 		});
 	},

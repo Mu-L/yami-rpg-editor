@@ -143,7 +143,7 @@ ElementGetter.createDefaultForPlugin = function (): {
 	return { getter: 'element', type: 'trigger' };
 };
 
-ElementGetter.confirm = function (this: ElementGetterShape, event: Event): void {
+ElementGetter.confirm = function (this: ElementGetterShape): void {
 	const read = getElementReader('elementGetter');
 	const type = read('type');
 	let getter: any;

@@ -254,7 +254,7 @@ CustomCommand.windowClose = function (this: CustomCommandShape, event: Event): v
 	}
 }.bind(CustomCommand);
 
-CustomCommand.windowClosed = function (this: CustomCommandShape, event: Event): void {
+CustomCommand.windowClosed = function (this: CustomCommandShape): void {
 	this.list.saveSelection!();
 	this.data = null;
 	this.list.clear();
@@ -302,7 +302,7 @@ CustomCommand.listKeydown = function (
 };
 
 CustomCommand.listSelect = function (event: Event & { value: CustomCommandData }): void {
-	CustomCommand.load!(event.value);
+	void CustomCommand.load!(event.value);
 };
 
 CustomCommand.listUnselect = function (): void {
@@ -390,10 +390,7 @@ CustomCommand.listOpen = function (
 	this.edit(event.value);
 };
 
-CustomCommand.paramInput = function (
-	this: HTMLElement & { id: string; read(): string },
-	event: Event
-): void {
+CustomCommand.paramInput = function (this: HTMLElement & { id: string; read(): string }): void {
 	CustomCommand.changed = true;
 	const data = CustomCommand.list.read()!;
 	switch (this.id) {

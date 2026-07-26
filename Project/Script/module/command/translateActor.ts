@@ -13,10 +13,10 @@ Command.cases.translateActor = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#translateActor').on('open', function (event) {
+		$('#translateActor').on('open', function () {
 			$('#translateActor-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#translateActor').on('closed', function (event) {
+		$('#translateActor').on('closed', function () {
 			$('#translateActor-easingId').clear();
 		});
 	},

@@ -101,7 +101,7 @@ export class CommandList extends HTMLElement {
 				value: new CommandHistory(this)
 			});
 		}
-		Promise.resolve().then(() => {
+		void Promise.resolve().then(() => {
 			this.scrollTop = 0;
 		});
 	}
@@ -127,7 +127,7 @@ export class CommandList extends HTMLElement {
 		this.resize();
 	}
 
-	resize(...args: any[]): void {
+	resize(): void {
 		CommonList.resize(this as unknown as CommonList);
 
 		this.scheduleCheckVariables();
@@ -302,7 +302,7 @@ export class CommandList extends HTMLElement {
 						}
 					}
 					const length = Math.min(lines, MAX_LINES + 1);
-					const items = new Array(length);
+					const items = Array(length);
 					items[0] = li;
 					for (let i = 1; i < length; i++) {
 						li = document.createElement('command-item');
@@ -931,7 +931,7 @@ export class CommandList extends HTMLElement {
 		}
 	}
 
-	edit(data?) {
+	edit() {
 		if (this.start !== null) {
 			const elements = this.elements;
 			const element = elements[this.start];
@@ -1163,7 +1163,7 @@ export class CommandList extends HTMLElement {
 				}
 				string += '\n';
 			}
-			navigator.clipboard.writeText(string.trim());
+			void navigator.clipboard.writeText(string.trim());
 		}
 	}
 
@@ -1194,7 +1194,7 @@ export class CommandList extends HTMLElement {
 			}
 
 			let jsCode = this.generateExecutableCode(commands);
-			navigator.clipboard.writeText(jsCode);
+			void navigator.clipboard.writeText(jsCode);
 		}
 	}
 
@@ -1597,18 +1597,23 @@ try {
 		return undefined;
 	}
 
-	listFocus(event: any) {
+	listFocus() {
 		if (!this.focusing) {
 			this.focusing = true;
-			this.start !== null ? this.reselect() : this.select(0);
+			if (this.start !== null) {
+				this.reselect();
+			} else {
+				this.select(0);
+			}
 		}
 	}
 
-	listBlur(event: any) {
+	listBlur() {
 		if (this.dragging) {
 			this.windowPointerup(this.dragging);
 		}
 		if (this.focusing) {
+			// eslint-disable-next-line typescript/no-this-alias
 			let element = this;
 			while ((element = element.parentNode as any)) {
 				if (element instanceof WindowFrame) {
@@ -1679,10 +1684,9 @@ try {
 				for (const item of buffer) {
 					if (item instanceof Array) {
 						const realNode = item.map((v) => v.buffer[0]);
-						const _subfind = this.findString(str, realNode, searchMode).map((v) => ({
-							...v,
-							sub: element
-						}));
+						const _subfind = this.findString(str, realNode, searchMode).map((v) =>
+							Object.assign(v, { sub: element })
+						);
 						findList.push(..._subfind);
 					} else if (searchMode.regex && str instanceof RegExp) {
 						if (str.test(item.textContent))
@@ -2185,7 +2189,7 @@ try {
 		}
 	}
 
-	static windowVariableChange(this: CommandList, event: Event) {
+	static windowVariableChange(this: CommandList) {
 		if (this.read()) {
 			this.scheduleCheckVariables();
 		}
@@ -2228,12 +2232,12 @@ try {
 		}
 	}
 
-	static textPointerenter(event: any) {
+	static textPointerenter() {
 		CommandList.unhighlightTexts();
 		CommandList.highlightTexts(this);
 	}
 
-	static textPointerleave(event: any) {
+	static textPointerleave() {
 		CommandList.unhighlightTexts();
 	}
 }

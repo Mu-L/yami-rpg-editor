@@ -244,7 +244,7 @@ Inspector.getKey = function (element) {
 
 Inspector.inspectorResize = (function IIFE() {
 	const resize = new Event('resize');
-	return function (event) {
+	return function () {
 		const page = Inspector.manager.active;
 		if (page instanceof HTMLElement) {
 			page.dispatchEvent(resize);
@@ -324,7 +324,7 @@ Inspector.scrollPointerdown = function (event) {
 	}
 };
 
-Inspector.inputFocus = function (event) {
+Inspector.inputFocus = function () {
 	if (Window.activeElement === null) {
 		const { manager } = Inspector;
 		if (manager.focusing !== null) {
@@ -338,7 +338,7 @@ Inspector.inputFocus = function (event) {
 };
 
 Inspector.inputBlur = function (editor, owner, callback = null) {
-	return function (event) {
+	return function () {
 		if (Window.activeElement === null) {
 			// 因此需要判断manager.focusing
 			const { manager } = Inspector;
@@ -382,14 +382,14 @@ Inspector.inputBlur = function (editor, owner, callback = null) {
 
 Inspector.sliderFocus = (function IIFE() {
 	const focus = new FocusEvent('focus');
-	return function (event) {
+	return function () {
 		this.synchronizer.dispatchEvent(focus);
 	};
 })();
 
 Inspector.sliderBlur = (function IIFE() {
 	const blur = new FocusEvent('blur');
-	return function (event) {
+	return function () {
 		this.synchronizer.dispatchEvent(blur);
 	};
 })();

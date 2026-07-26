@@ -309,6 +309,6 @@ SwitchCondition.save = function (): SwitchConditionData {
 	return condition!;
 };
 
-SwitchCondition.confirm = function (event: Event): SwitchConditionData {
+SwitchCondition.confirm = function (): SwitchConditionData {
 	return SwitchCondition.target!.save();
 };

@@ -75,7 +75,7 @@ export class RadioBox extends HTMLElement {
 		}
 	}
 
-	mouseclick(event: Event): void {
+	mouseclick(): void {
 		if (!this.hasClass('selected')) {
 			this.proxy.input(this.dataValue);
 		} else if (this.proxy.cancelable) {

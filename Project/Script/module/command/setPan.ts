@@ -26,10 +26,10 @@ Command.cases.setPan = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#setPan').on('open', function (event) {
+		$('#setPan').on('open', function () {
 			$('#setPan-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#setPan').on('closed', function (event) {
+		$('#setPan').on('closed', function () {
 			$('#setPan-easingId').clear();
 		});
 	},

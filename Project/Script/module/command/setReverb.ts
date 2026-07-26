@@ -27,10 +27,10 @@ Command.cases.setReverb = new CommandSchema({
 			{ name: 'Yes', value: true },
 			{ name: 'No', value: false }
 		]);
-		$('#setReverb').on('open', function (event) {
+		$('#setReverb').on('open', function () {
 			$('#setReverb-easingId').loadItems(Data.createEasingItems());
 		});
-		$('#setReverb').on('closed', function (event) {
+		$('#setReverb').on('closed', function () {
 			$('#setReverb-easingId').clear();
 		});
 	},

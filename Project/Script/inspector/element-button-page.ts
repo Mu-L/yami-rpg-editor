@@ -422,7 +422,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UIButton.paramInput = function (event) {
+	UIButton.paramInput = function () {
 		UIButton.update(UIButton.target, Inspector.getKey(this), this.read());
 	};
 

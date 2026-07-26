@@ -105,7 +105,6 @@ Command.custom = {
 			return wrap;
 		};
 
-		const parameterPane = this.parameterPane;
 		this.parameterPane.clear = function (this: ParameterPane): void {
 			this.metas = [];
 			const { wraps } = this;
@@ -123,7 +122,7 @@ Command.custom = {
 			window.off('script-change', this.scriptChange);
 		};
 
-		this.windowFrame.on('closed', (event: Event) => {
+		this.windowFrame.on('closed', () => {
 			this.loadedScript.parameters = null;
 			this.parameterPane.clear();
 		});
@@ -309,6 +308,7 @@ Command.custom = {
 			const id = command.id;
 			let meta = Data.scripts[id];
 			if (meta instanceof Promise) {
+				// eslint-disable-next-line eslint/no-await-in-loop
 				meta = await meta;
 			}
 			if (!meta || id in commandNameMap) {
@@ -333,7 +333,7 @@ Command.custom = {
 		TreeList.createParents(commands, this.customFolder);
 	},
 
-	windowLocalize: function (event: Event): void {
+	windowLocalize: function (): void {
 		if (Command.custom.commandNameMap) {
 			Command.custom.loadCommandList();
 		}

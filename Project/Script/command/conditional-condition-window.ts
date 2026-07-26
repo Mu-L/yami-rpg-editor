@@ -419,11 +419,11 @@ IfCondition.initialize = function () {
 		{ name: 'Running on a mobile platform', value: 'platform-mobile' }
 	]);
 
-	$('#if-condition').on('open', function (event) {
+	$('#if-condition').on('open', function () {
 		$('#if-condition-actor-teamId').loadItems(Data.createTeamItems());
 	});
 
-	$('#if-condition').on('closed', function (event) {
+	$('#if-condition').on('closed', function () {
 		$('#if-condition-actor-teamId').clear();
 	});
 
@@ -1193,6 +1193,6 @@ IfCondition.save = function () {
 	return condition;
 };
 
-IfCondition.confirm = function (event) {
+IfCondition.confirm = function () {
 	return IfCondition.target.save();
 };

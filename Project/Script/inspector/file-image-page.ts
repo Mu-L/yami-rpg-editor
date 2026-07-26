@@ -51,15 +51,17 @@ import { Inspector } from './inspector.ts';
 						reject();
 					}
 				});
-			}).then(() => {
-				if (this.symbol === symbol) {
-					this.symbol = null;
-					this.updateImage();
-					const width = image.naturalWidth;
-					const height = image.naturalHeight;
-					elResolution.textContent = `${width} x ${height}`;
-				}
-			});
+			})
+				.then(() => {
+					if (this.symbol === symbol) {
+						this.symbol = null;
+						this.updateImage();
+						const width = image.naturalWidth;
+						const height = image.naturalHeight;
+						elResolution.textContent = `${width} x ${height}`;
+					}
+				})
+				.catch(() => {});
 		}
 	};
 
@@ -107,7 +109,7 @@ import { Inspector } from './inspector.ts';
 		}
 	};
 
-	FileImage.windowResize = function (event) {
+	FileImage.windowResize = function () {
 		if (FileImage.target !== null && FileImage.symbol === null) {
 			FileImage.updateImage();
 		}

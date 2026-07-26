@@ -180,7 +180,7 @@ TileFrame.getDevicePixelClientBoxSize = function (element) {
 	return { width, height };
 };
 
-TileFrame.dprchange = function (event) {
+TileFrame.dprchange = function () {
 	if (this.hframes !== null) {
 		const marquee = this.marquee;
 		const { x, y, width, height } = marquee;
@@ -189,7 +189,7 @@ TileFrame.dprchange = function (event) {
 	}
 }.bind(TileFrame);
 
-TileFrame.windowClosed = function (event) {
+TileFrame.windowClosed = function () {
 	this.hframes = null;
 	this.vframes = null;
 	this.image.src = '';
@@ -294,7 +294,7 @@ TileFrame.marqueePointermove = function (event) {
 	}
 }.bind(TileFrame);
 
-TileFrame.marqueePointerleave = function (event) {
+TileFrame.marqueePointerleave = function () {
 	const info = this.info;
 	info.x = -1;
 	info.y = -1;

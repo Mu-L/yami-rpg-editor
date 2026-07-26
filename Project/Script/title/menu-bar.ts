@@ -690,14 +690,14 @@ Menubar.popupOpenYamiMenu = function (target) {
 				{
 					label: get('resource'),
 					click: () => {
-						Resources.open();
+						void Resources.open();
 					}
 				},
 				{
 					label: get('qr'),
 					enabled: open,
 					click: () => {
-						WebServer.open();
+						void WebServer.open();
 					}
 				},
 				{
@@ -734,17 +734,18 @@ Menubar.popupOpenYamiMenu = function (target) {
 							if (!FS.existsSync(Path.dirname(pConfig))) {
 								FS.mkdirSync(Path.dirname(pConfig));
 							}
-							FSP.writeFile(pConfig, JSON.stringify(config), {});
+							void FSP.writeFile(pConfig, JSON.stringify(config), {});
 						};
 						const InputEvent = (e, name) => {
 							config[name] = e.target.value;
 							apkConfigSave();
 						};
-						await new Promise(async (resolve, reject) => {
+						await new Promise((resolve) => {
 							if (FS.existsSync(pConfig)) {
-								resolve(
-									(config = JSON.parse((await FSP.readFile(pConfig)).toString()))
-								);
+								void FSP.readFile(pConfig).then((content) => {
+									config = JSON.parse(content.toString());
+									resolve();
+								});
 							} else {
 								// 配置不存在
 								if (!FS.existsSync(Path.dirname(pConfig))) {
@@ -758,7 +759,7 @@ Menubar.popupOpenYamiMenu = function (target) {
 							$('#export-apk-apkName').on('input', (e) => InputEvent(e, 'appName'));
 							$('#export-apk-apkIcon').write(config.iconPath);
 							$('#export-apk-apkIcon').on('input', (e) => InputEvent(e, 'iconPath'));
-							$('#export-apk-apkIcon').on('mouseenter', (e) =>
+							$('#export-apk-apkIcon').on('mouseenter', () =>
 								$('#export-apk-apkIcon').setTooltip(
 									ApkBuilder.processPathOnly(config.iconPath)
 								)
@@ -776,7 +777,7 @@ Menubar.popupOpenYamiMenu = function (target) {
 								InputEvent(e, 'versionCode')
 							);
 
-							$('#export-apk-button').on('click', (e) => {
+							$('#export-apk-button').on('click', () => {
 								$('#export-apk-button').disable();
 								apkConfigSave();
 								SettingConfig.load(); // 更新配置
@@ -956,7 +957,7 @@ Menubar.keydown = function (event) {
 				break;
 			case 'KeyS':
 				File.save();
-				WebServer.update(Editor.config.project);
+				void WebServer.update(Editor.config.project);
 				break;
 			case 'KeyT':
 				if (event.shiftKey) {

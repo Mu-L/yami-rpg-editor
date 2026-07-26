@@ -42,7 +42,7 @@ TriggerGetter.open = function (target) {
 	$('#triggerGetter-type').getFocus();
 };
 
-TriggerGetter.confirm = function (event) {
+TriggerGetter.confirm = function () {
 	const read = getElementReader('triggerGetter');
 	const type = read('type');
 	let getter;

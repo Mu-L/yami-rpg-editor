@@ -197,7 +197,7 @@ import { UI } from '@/ui/ui-window.ts';
 		UI.requestRendering();
 	};
 
-	UIProgressBar.paramInput = function (event) {
+	UIProgressBar.paramInput = function () {
 		UIProgressBar.update(UIProgressBar.target, Inspector.getKey(this), this.read());
 	};
 
