@@ -293,19 +293,20 @@ ipcMain.handle('wait-write-file', () => {
 	return Promise.allSettled(promises);
 });
 
-ipcMain.handle('clipboard-has', (_event, format: string) => {
+ipcMain.on('clipboard-has', (event, format: string) => {
 	const buffer = clipboard.readBuffer(format);
-	return buffer.length !== 0;
+	event.returnValue = buffer.length !== 0;
 });
-ipcMain.handle('clipboard-read', (_event, format: string) => {
+ipcMain.on('clipboard-read', (event, format: string) => {
 	const buffer = clipboard.readBuffer(format);
 	const string = buffer.toString();
-	return string ? JSON.parse(string) : null;
+	event.returnValue = string ? JSON.parse(string) : null;
 });
-ipcMain.handle('clipboard-write', (_event, format: string, object: any) => {
+ipcMain.on('clipboard-write', (event, format: string, object: any) => {
 	const string = JSON.stringify(object);
 	const buffer = Buffer.from(string);
 	clipboard.writeBuffer(format, buffer);
+	event.returnValue = undefined;
 });
 
 import { promises as FSP } from 'fs';
