@@ -614,82 +614,73 @@ IfCondition.parseOther = function ({ key }) {
 	return Local.get('command.if.other.' + key);
 };
 
-IfCondition.parse = function (condition, listData) {
-	let string;
-	switch (condition.type) {
-		case 'boolean': {
-			const variable = Command.parseVariable(condition.variable, 'boolean');
-			const operator = this.parseBooleanOperation(condition);
-			const value = this.parseBooleanOperand(condition);
-			string = `${variable} ${operator} ${value}`;
-			break;
-		}
-		case 'number': {
-			const variable = Command.parseVariable(condition.variable, 'number');
-			const operator = this.parseNumberOperation(condition);
-			const value = this.parseNumberOperand(condition);
-			string = `${variable} ${operator} ${value}`;
-			break;
-		}
-		case 'string': {
-			const variable = Command.parseVariable(condition.variable, 'string');
-			const operator = this.parseStringOperation(condition);
-			const value = this.parseStringOperand(condition);
-			string = `${variable} ${operator} ${value}`;
-			break;
-		}
-		case 'object': {
-			const variable = Command.parseVariable(condition.variable, 'object');
-			const operator = this.parseObjectOperation(condition);
-			const value = this.parseObjectOperand(condition);
-			string = `${variable} ${operator} ${value}`.trim();
-			break;
-		}
-		case 'actor': {
-			const actor = Command.parseActor(condition.actor);
-			const operation = this.parseActorOperation(condition);
-			string = `${actor} ${operation}`;
-			break;
-		}
-		case 'element': {
-			const element = Command.parseElement(condition.element);
-			const operation = this.parseElementOperation(condition);
-			string = `${element} ${operation}`;
-			break;
-		}
-		case 'keyboard': {
-			const key = condition.keycode;
-			const keyboard = Local.get('command.if.keyboard');
-			const state = this.parseKeyboardState(condition.state);
-			string = keyboard + Token('[') + Command.setStringColor(key) + Token(']') + ' ' + state;
-			break;
-		}
-		case 'gamepad': {
-			const button = GamepadBox.getButtonName(condition.button);
-			const gamepad = Local.get('command.if.gamepad');
-			const state = this.parseGamepadState(condition.state);
-			string =
-				gamepad + Token('[') + Command.setStringColor(button) + Token(']') + ' ' + state;
-			break;
-		}
-		case 'mouse': {
-			const button = this.parseMouseButton(condition.button);
-			const mouse = Local.get('command.if.mouse');
-			const state = this.parseMouseState(condition.state);
-			string = mouse + Token('[') + Command.setStringColor(button) + Token(']') + ' ' + state;
-			break;
-		}
-		case 'list': {
-			const list = Command.parseVariable(condition.list, 'object');
-			const operation = this.parseListOperation(condition);
-			const target = Command.parseVariable(condition.target, 'any');
-			string = `${list} ${operation} ${target}`;
-			break;
-		}
-		case 'other':
-			string = this.parseOther(condition);
-			break;
+const parseTypeHandlers: Record<string, (this: typeof IfCondition, condition: any) => string> = {
+	boolean: function (condition) {
+		const variable = Command.parseVariable(condition.variable, 'boolean');
+		const operator = this.parseBooleanOperation!(condition);
+		const value = this.parseBooleanOperand!(condition);
+		return `${variable} ${operator} ${value}`;
+	},
+	number: function (condition) {
+		const variable = Command.parseVariable(condition.variable, 'number');
+		const operator = this.parseNumberOperation!(condition);
+		const value = this.parseNumberOperand!(condition);
+		return `${variable} ${operator} ${value}`;
+	},
+	string: function (condition) {
+		const variable = Command.parseVariable(condition.variable, 'string');
+		const operator = this.parseStringOperation!(condition);
+		const value = this.parseStringOperand!(condition);
+		return `${variable} ${operator} ${value}`;
+	},
+	object: function (condition) {
+		const variable = Command.parseVariable(condition.variable, 'object');
+		const operator = this.parseObjectOperation!(condition);
+		const value = this.parseObjectOperand!(condition);
+		return `${variable} ${operator} ${value}`.trim();
+	},
+	actor: function (condition) {
+		const actor = Command.parseActor(condition.actor);
+		const operation = this.parseActorOperation!(condition);
+		return `${actor} ${operation}`;
+	},
+	element: function (condition) {
+		const element = Command.parseElement(condition.element);
+		const operation = this.parseElementOperation!(condition);
+		return `${element} ${operation}`;
+	},
+	keyboard: function (condition) {
+		const key = condition.keycode;
+		const keyboard = Local.get('command.if.keyboard');
+		const state = this.parseKeyboardState!(condition.state);
+		return keyboard + Token('[') + Command.setStringColor(key) + Token(']') + ' ' + state;
+	},
+	gamepad: function (condition) {
+		const button = GamepadBox.getButtonName(condition.button);
+		const gamepad = Local.get('command.if.gamepad');
+		const state = this.parseGamepadState!(condition.state);
+		return gamepad + Token('[') + Command.setStringColor(button) + Token(']') + ' ' + state;
+	},
+	mouse: function (condition) {
+		const button = this.parseMouseButton!(condition.button);
+		const mouse = Local.get('command.if.mouse');
+		const state = this.parseMouseState!(condition.state);
+		return mouse + Token('[') + Command.setStringColor(button) + Token(']') + ' ' + state;
+	},
+	list: function (condition) {
+		const list = Command.parseVariable(condition.list, 'object');
+		const operation = this.parseListOperation!(condition);
+		const target = Command.parseVariable(condition.target, 'any');
+		return `${list} ${operation} ${target}`;
+	},
+	other: function (condition) {
+		return this.parseOther!(condition);
 	}
+};
+
+IfCondition.parse = function (condition, listData) {
+	const handler = parseTypeHandlers[condition.type];
+	let string = handler ? handler.call(this, condition) : '';
 	if (listData) {
 		string = Command.removeTextTags(string);
 	}
