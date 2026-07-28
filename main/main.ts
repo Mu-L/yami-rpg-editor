@@ -490,8 +490,11 @@ const createEditorWindow = function () {
 	global.editor = editor;
 
 	ipcMain.handle('build-apk', (event, config) => {
+		const send = (data: any) => {
+			if (!editor.isDestroyed()) editor.send('apk-log', data);
+		};
 		if (apkProcessor.isBuilding()) {
-			editor.send('apk-log', {
+			send({
 				done: true,
 				msg: `当前已有构建任务正在进行中`
 			});
@@ -502,7 +505,7 @@ const createEditorWindow = function () {
 				config,
 				onProgress: (step: string, percentage: number, isError?: boolean) => {
 					if (isError) {
-						editor.send('apk-log', {
+						send({
 							done: true,
 							msg: `[${percentage}%] 错误: ${step}`
 						});
@@ -514,12 +517,12 @@ const createEditorWindow = function () {
 						if (Number(step) == 100) {
 							data.done = true;
 						}
-						editor.send('apk-log', data);
+						send(data);
 					}
 				}
 			});
 		} catch (err) {
-			editor.send('apk-log', {
+			send({
 				done: true,
 				msg: `错误: ${err}`
 			});
@@ -628,11 +631,9 @@ const createEditorWindow = function () {
 			cwd: projectDir
 		});
 		tscProcess.stdout.on('data', (data) => {
-			editor.send('tsc-log', data.toString());
 			if (!editor.isDestroyed()) editor.send('tsc-log', data.toString());
 		});
 		tscProcess.stderr.on('data', (data) => {
-			editor.send('tsc-log', data.toString());
 			if (!editor.isDestroyed()) editor.send('tsc-log', data.toString());
 		});
 	}

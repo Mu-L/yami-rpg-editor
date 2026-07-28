@@ -1,8 +1,16 @@
 /**
  * @type {import('lint-staged').Configuration}
  */
+const filterTemplates = (files) =>
+	files.filter((f) => !f.replace(/\\/g, '/').includes('Project/Templates/'));
+
 module.exports = {
-	'*.{js,ts,css}': ['oxfmt -c ./.oxfmtrc.json --write'],
-	'*.{js,ts}': ['oxlint -c ./.oxlintrc.json --fix'],
-	'!Project/Templates/**': []
+	'*.{js,ts,css}': (files) => {
+		const filtered = filterTemplates(files);
+		return filtered.length > 0 ? `oxfmt -c ./.oxfmtrc.json --write ${filtered.join(' ')}` : '';
+	},
+	'*.{js,ts}': (files) => {
+		const filtered = filterTemplates(files);
+		return filtered.length > 0 ? `oxlint -c ./.oxlintrc.json --fix ${filtered.join(' ')}` : '';
+	}
 };
