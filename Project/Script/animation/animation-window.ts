@@ -1609,7 +1609,7 @@ Animation.resetSoundContexts = function () {
 };
 
 Animation.stopPlayingSound = function () {
-	AudioManager.se.stop();
+	AudioManager.se?.stop();
 };
 
 Animation.updateControlPoints = function (context) {

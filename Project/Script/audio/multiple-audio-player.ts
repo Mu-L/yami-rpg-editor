@@ -46,4 +46,14 @@ export class MultipleAudioPlayer {
 		}
 		return undefined;
 	}
+
+	/** 停止播放 */
+	stop() {
+		const { audios } = this;
+		let i = audios.length;
+		while (--i >= 0) {
+			audios[i].src = '';
+			audios[i].onStop();
+		}
+	}
 }
