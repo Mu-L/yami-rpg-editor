@@ -17,6 +17,7 @@ import { Local } from '@/tools/localization.ts';
 import { Selection } from '@/tools/text-capture.ts';
 import { UndoManager } from '@/tools/undo-manager.ts';
 import { Window } from '@/tools/window-object.ts';
+import { bindListClipboardMethods } from '@/tools/list-clipboard-methods.ts';
 import { ipcRenderer } from 'electron';
 
 export const Localization = {
@@ -663,56 +664,11 @@ Localization.toExcel = function (event) {
 	});
 }.bind(Localization);
 
-// 列表 - 复制
-Localization.list.copy = function (item) {
-	if (item?.class !== 'folder') {
-		(Clipboard as any).write('yami.data.localization', item);
-	}
-};
-
-// 列表 - 粘贴
-Localization.list.paste = function (dItem) {
-	const copy = (Clipboard as any).read('yami.data.localization');
-	if (copy) {
-		// 只有冲突时进行更换ID 支持跨项目复制保留ID
-		if (Localization.idMap[copy.id]) {
-			copy.id = Localization.createId();
-			copy.name += ' - Copy';
-		}
-		this.addNodeTo(copy, dItem);
-	}
-};
-
-// 列表 - 删除
-Localization.list.delete = function (item) {
-	if (item) {
-		const get = Local.createGetter('confirmation');
-		Window.confirm(
-			{
-				message: get('deleteSingleFile').replace('<filename>', item.name)
-			},
-			[
-				{
-					label: get('yes'),
-					click: () => {
-						const elements = this.elements;
-						const index = elements.indexOf(item.element);
-						this.deleteNode(item);
-						Localization.closeContentPanel();
-						const last = elements.count - 1;
-						const element = elements[Math.min(index, last)];
-						if (element instanceof HTMLElement) {
-							this.select(element.item);
-						}
-					}
-				},
-				{
-					label: get('no')
-				}
-			]
-		);
-	}
-};
+bindListClipboardMethods({
+	module: Localization,
+	list: Localization.list,
+	clipboardKey: 'yami.data.localization'
+});
 
 // 列表 - 保存滚动状态
 Localization.list.saveScroll = function () {

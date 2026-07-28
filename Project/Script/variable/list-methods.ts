@@ -1,59 +1,14 @@
 import { Command } from '@/command/command-object.ts';
 import { Data } from '@/data/data-object.ts';
-import { Local } from '@/tools/localization.ts';
-import { Window } from '@/tools/window-object.ts';
+
+import { bindListClipboardMethods } from '@/tools/list-clipboard-methods.ts';
 import { Variable } from './variable.ts';
 
-// 列表 - 复制
-Variable.list.copy = function (item) {
-	if (item && item.class !== 'folder') {
-		(Clipboard as any).write('yami.data.variable', item);
-	}
-};
-
-// 列表 - 粘贴
-Variable.list.paste = function (dItem) {
-	const copy = (Clipboard as any).read('yami.data.variable');
-	if (copy) {
-		// 只有冲突时进行更换ID 支持跨项目复制保留ID
-		if (Variable.idMap[copy.id]) {
-			copy.id = Variable.createId();
-			copy.name += ' - Copy';
-		}
-		this.addNodeTo(copy, dItem);
-	}
-};
-
-// 列表 - 删除
-Variable.list.delete = function (item) {
-	if (item) {
-		const get = Local.createGetter('confirmation');
-		Window.confirm(
-			{
-				message: get('deleteSingleFile').replace('<filename>', item.name)
-			},
-			[
-				{
-					label: get('yes'),
-					click: () => {
-						const elements = this.elements;
-						const index = elements.indexOf(item.element);
-						this.deleteNode(item);
-						Variable.closePropertyPanel();
-						const last = elements.count - 1;
-						const element = elements[Math.min(index, last)];
-						if (element instanceof HTMLElement) {
-							this.select(element.item);
-						}
-					}
-				},
-				{
-					label: get('no')
-				}
-			]
-		);
-	}
-};
+bindListClipboardMethods({
+	module: Variable,
+	list: Variable.list,
+	clipboardKey: 'yami.data.variable'
+});
 
 // 列表 - 保存滚动状态
 Variable.list.saveScroll = function () {
