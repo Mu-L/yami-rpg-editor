@@ -1,0 +1,195 @@
+				<!-- 动画 - 精灵帧 -->
+				<page-frame id="animSpriteFrame" value="animSpriteFrame">
+					<detail-box id="animSpriteFrame-properties-detail" open>
+						<detail-summary>Frame</detail-summary>
+						<detail-grid id="animSpriteFrame-properties-grid">
+							<text>Anchor</text>
+							<box
+								id="animSpriteFrame-anchor-box"
+								class="uiElement-grid-box with-2-columns"
+							>
+								<number-box
+									id="animSpriteFrame-anchorX"
+									min="-10"
+									max="10"
+									step="0.1"
+									decimals="4"
+								></number-box>
+								<number-box
+									id="animSpriteFrame-anchorY"
+									min="-10"
+									max="10"
+									step="0.1"
+									decimals="4"
+								></number-box>
+							</box>
+							<text>Pivot</text>
+							<box
+								id="animSpriteFrame-pivot-box"
+								class="uiElement-grid-box with-2-columns"
+							>
+								<number-box
+									id="animSpriteFrame-pivotX"
+									min="-10000"
+									max="10000"
+									decimals="4"
+									unit="px"
+								></number-box>
+								<number-box
+									id="animSpriteFrame-pivotY"
+									min="-10000"
+									max="10000"
+									decimals="4"
+									unit="px"
+								></number-box>
+							</box>
+							<text>Position</text>
+							<box
+								id="animSpriteFrame-position-box"
+								class="uiElement-grid-box with-2-columns"
+							>
+								<number-box
+									id="animSpriteFrame-x"
+									min="-10000"
+									max="10000"
+									decimals="4"
+									unit="px"
+								></number-box>
+								<number-box
+									id="animSpriteFrame-y"
+									min="-10000"
+									max="10000"
+									decimals="4"
+									unit="px"
+								></number-box>
+							</box>
+							<text>Rotation</text>
+							<box
+								id="animSpriteFrame-rotation-box"
+								class="uiElement-grid-box with-2-columns"
+							>
+								<number-box
+									id="animSpriteFrame-rotation"
+									min="-36000"
+									max="36000"
+									decimals="4"
+									unit="deg"
+								></number-box>
+							</box>
+							<text>Scale</text>
+							<box
+								id="animSpriteFrame-scale-box"
+								class="uiElement-grid-box with-2-columns"
+							>
+								<number-box
+									id="animSpriteFrame-scaleX"
+									min="-100"
+									max="100"
+									step="0.1"
+									decimals="4"
+								></number-box>
+								<number-box
+									id="animSpriteFrame-scaleY"
+									min="-100"
+									max="100"
+									step="0.1"
+									decimals="4"
+								></number-box>
+							</box>
+							<text>Opacity</text>
+							<box
+								id="animSpriteFrame-opacity-box"
+								class="uiElement-grid-box with-2-columns"
+							>
+								<number-box
+									id="animSpriteFrame-opacity"
+									min="0"
+									max="1"
+									step="0.05"
+									decimals="4"
+								></number-box>
+							</box>
+							<text>Tint - Red</text>
+							<flex-box id="animSpriteFrame-tint-0-box">
+								<slider-box
+									id="animSpriteFrame-tint-0-slider"
+									min="-255"
+									max="255"
+									step="15"
+								></slider-box>
+								<number-box
+									id="animSpriteFrame-tint-0"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Tint - Green</text>
+							<flex-box id="animSpriteFrame-tint-1-box">
+								<slider-box
+									id="animSpriteFrame-tint-1-slider"
+									min="-255"
+									max="255"
+									step="15"
+								></slider-box>
+								<number-box
+									id="animSpriteFrame-tint-1"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Tint - Blue</text>
+							<flex-box id="animSpriteFrame-tint-2-box">
+								<slider-box
+									id="animSpriteFrame-tint-2-slider"
+									min="-255"
+									max="255"
+									step="15"
+								></slider-box>
+								<number-box
+									id="animSpriteFrame-tint-2"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Tint - Grayscale</text>
+							<flex-box id="animSpriteFrame-tint-3-box">
+								<slider-box
+									id="animSpriteFrame-tint-3-slider"
+									min="0"
+									max="255"
+									step="15"
+								></slider-box>
+								<number-box
+									id="animSpriteFrame-tint-3"
+									min="0"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box id="animSpriteFrame-sprite-detail" open>
+						<detail-summary id="animSpriteFrame-sprite-summary">
+							<text id="sprite-label">Sprite</text>
+							<box id="sprite-info"></box>
+							<slider-box
+								id="sprite-zoom"
+								name="zoom"
+								min="0"
+								max="4"
+								hotkey="-/+"
+							></slider-box>
+						</detail-summary>
+						<box id="sprite-body">
+							<box id="sprite-frame">
+								<canvas id="sprite-canvas" width="0" height="0"></canvas>
+								<box id="sprite-screen" tabindex="-1">
+									<marquee-area id="sprite-marquee"></marquee-area>
+								</box>
+							</box>
+						</box>
+					</detail-box>
+				</page-frame>

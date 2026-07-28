@@ -53,6 +53,7 @@
 <!-- 工作空间 -->
 <page-manager id="workspace-page-manager">
 	<!-- 主页面 -->
+	<!-- 主页面 -->
 	<page-frame id="home" value="home">
 		<box id="home-content">
 			<text id="home-title">YAMI RPG EDITOR (Open Yami)</text>
@@ -70,6 +71,7 @@
 			</box>
 		</box>
 	</page-frame>
+
 
 	<!-- 其他页面 -->
 	<page-frame value="directory"></page-frame>
@@ -128,10 +130,13 @@
 	</nav-bar>
 	<page-manager id="layout-page-manager">
 		<!-- 项目页面 -->
+		<!-- 项目页面 -->
 		<page-frame id="project" value="project">
 			<file-browser id="project-browser"></file-browser>
 		</page-frame>
 
+
+		<!-- 场景页面 -->
 		<!-- 场景页面 -->
 		<page-frame id="scene" value="scene">
 			<box id="scene-head">
@@ -249,6 +254,8 @@
 			</box>
 		</page-frame>
 
+
+		<!-- 场景对象列表页面 -->
 		<!-- 场景对象列表页面 -->
 		<page-frame id="scene-object" value="scene-object">
 			<box id="scene-list-head">
@@ -257,6 +264,8 @@
 			<node-list id="scene-list" padded></node-list>
 		</page-frame>
 
+
+		<!-- 界面页面 -->
 		<!-- 界面页面 -->
 		<page-frame id="ui" value="ui">
 			<box id="ui-head">
@@ -298,6 +307,8 @@
 			</box>
 		</page-frame>
 
+
+		<!-- 界面元素列表页面 -->
 		<!-- 界面元素列表页面 -->
 		<page-frame id="ui-element" value="ui-element">
 			<box id="ui-list-head">
@@ -306,6 +317,8 @@
 			<node-list id="ui-list" padded></node-list>
 		</page-frame>
 
+
+		<!-- 动画页面 -->
 		<!-- 动画页面 -->
 		<page-frame id="animation" value="animation">
 			<box id="animation-head">
@@ -353,6 +366,8 @@
 			</box>
 		</page-frame>
 
+
+		<!-- 动画动作列表页面 -->
 		<!-- 动画动作列表页面 -->
 		<page-frame id="animation-motion" value="animation-motion">
 			<box id="animation-list-head">
@@ -361,6 +376,8 @@
 			<node-list id="animation-list" padded></node-list>
 		</page-frame>
 
+
+		<!-- 动画时间轴页面 -->
 		<!-- 动画时间轴页面 -->
 		<page-frame id="animation-timeline" value="animation-timeline">
 			<box id="animation-timeline-head">
@@ -415,6 +432,8 @@
 			</box>
 		</page-frame>
 
+
+		<!-- 动画过渡页面 -->
 		<!-- 动画过渡页面 -->
 		<page-frame id="animation-easing" value="animation-easing">
 			<box id="animation-easing-head">
@@ -424,6 +443,8 @@
 			<canvas id="animation-easing-canvas" width="0" height="0"></canvas>
 		</page-frame>
 
+
+		<!-- 粒子页面 -->
 		<!-- 粒子页面 -->
 		<page-frame id="particle" value="particle">
 			<box id="particle-head">
@@ -473,15 +494,19 @@
 			</box>
 		</page-frame>
 
+
+		<!-- 粒子图层列表页面 -->
 		<!-- 粒子图层列表页面 -->
 		<page-frame id="particle-layer" value="particle-layer">
 			<node-list id="particle-list" padded></node-list>
 		</page-frame>
 
+
 		<!-- 检查器页面 -->
 		<page-frame id="inspector" value="inspector">
 			<page-manager id="inspector-page-manager" tabindex="-1">
 				<!-- 文件 - 场景 -->
+								<!-- 文件 - 场景 -->
 				<page-frame value="fileScene">
 					<detail-box open>
 						<detail-summary>Scene</detail-summary>
@@ -602,7 +627,9 @@
 					<parameter-pane id="fileScene-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 文件 - 界面 -->
+								<!-- 文件 - 界面 -->
 				<page-frame value="fileUI">
 					<detail-box open>
 						<detail-summary>Stage Foreground</detail-summary>
@@ -625,7 +652,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 文件 - 动画 -->
+								<!-- 文件 - 动画 -->
 				<page-frame value="fileAnimation">
 					<detail-box open>
 						<detail-summary>Sprites</detail-summary>
@@ -637,7 +666,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 文件 - 图块组 -->
+								<!-- 文件 - 图块组 -->
 				<page-frame id="fileTileset" value="fileTileset">
 					<box id="palette-head">
 						<box id="palette-head-start">
@@ -735,7 +766,8 @@
 						</detail-grid>
 					</detail-box>
 				</page-frame>
-				<page-frame value="fileActor">
+
+								<page-frame value="fileActor">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
 						<detail-grid id="fileActor-general-grid">
@@ -876,7 +908,9 @@
 					<parameter-pane id="fileActor-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 文件 - 技能 -->
+								<!-- 文件 - 技能 -->
 				<page-frame value="fileSkill">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -930,7 +964,9 @@
 					<parameter-pane id="fileSkill-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 文件 - 触发器 -->
+								<!-- 文件 - 触发器 -->
 				<page-frame value="fileTrigger">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1074,7 +1110,9 @@
 					<parameter-pane id="fileTrigger-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 文件 - 物品 -->
+								<!-- 文件 - 物品 -->
 				<page-frame value="fileItem">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1124,7 +1162,9 @@
 					<parameter-pane id="fileItem-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 文件 - 装备 -->
+								<!-- 文件 - 装备 -->
 				<page-frame value="fileEquipment">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1178,7 +1218,9 @@
 					<parameter-pane id="fileEquipment-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 文件 - 状态 -->
+								<!-- 文件 - 状态 -->
 				<page-frame value="fileState">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1232,7 +1274,9 @@
 					<parameter-pane id="fileState-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 文件 - 事件 -->
+								<!-- 文件 - 事件 -->
 				<page-frame value="fileEvent">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1260,7 +1304,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 文件 - 图像 -->
+								<!-- 文件 - 图像 -->
 				<page-frame id="fileImage" value="fileImage">
 					<detail-box open>
 						<detail-summary>File Info</detail-summary>
@@ -1278,7 +1324,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 文件 - 音频 -->
+								<!-- 文件 - 音频 -->
 				<page-frame id="fileAudio" value="fileAudio">
 					<detail-box open>
 						<detail-summary>File Info</detail-summary>
@@ -1351,7 +1399,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 文件 - 视频 -->
+								<!-- 文件 - 视频 -->
 				<page-frame id="fileVideo" value="fileVideo">
 					<detail-box open>
 						<detail-summary>File Info</detail-summary>
@@ -1369,7 +1419,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 文件 - 字体 -->
+								<!-- 文件 - 字体 -->
 				<page-frame id="fileFont" value="fileFont">
 					<detail-box open>
 						<detail-summary>File Info</detail-summary>
@@ -1393,7 +1445,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 文件 - 脚本 -->
+								<!-- 文件 - 脚本 -->
 				<page-frame id="fileScript" value="fileScript">
 					<detail-box open>
 						<detail-summary>File Info</detail-summary>
@@ -1408,7 +1462,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 场景 - 角色 -->
+								<!-- 场景 - 角色 -->
 				<page-frame value="sceneActor">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1501,7 +1557,9 @@
 					<parameter-pane id="sceneActor-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 场景 - 区域 -->
+								<!-- 场景 - 区域 -->
 				<page-frame value="sceneRegion">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1568,7 +1626,9 @@
 					<parameter-pane id="sceneRegion-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 场景 - 光源 -->
+								<!-- 场景 - 光源 -->
 				<page-frame value="sceneLight">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1800,7 +1860,9 @@
 					<parameter-pane id="sceneLight-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 场景 - 动画 -->
+								<!-- 场景 - 动画 -->
 				<page-frame value="sceneAnimation">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -1941,7 +2003,9 @@
 					<parameter-pane id="sceneAnimation-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 场景 - 粒子 -->
+								<!-- 场景 - 粒子 -->
 				<page-frame value="sceneParticle">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -2078,7 +2142,9 @@
 					<parameter-pane id="sceneParticle-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 场景 - 视差图 -->
+								<!-- 场景 - 视差图 -->
 				<page-frame value="sceneParallax">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -2300,7 +2366,9 @@
 					<parameter-pane id="sceneParallax-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 场景 - 瓦片地图 -->
+								<!-- 场景 - 瓦片地图 -->
 				<page-frame value="sceneTilemap">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -2427,7 +2495,9 @@
 					<parameter-pane id="sceneTilemap-parameter-pane"></parameter-pane>
 				</page-frame>
 
+
 				<!-- 界面 - 图像 -->
+								<!-- 界面 - 图像 -->
 				<page-frame value="uiImage">
 					<detail-box id="uiElement-general-group" open>
 						<detail-summary>General</detail-summary>
@@ -2775,7 +2845,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 文本 -->
+								<!-- 界面 - 文本 -->
 				<page-frame value="uiText">
 					<detail-box open>
 						<detail-summary>Text Properties</detail-summary>
@@ -2918,7 +2990,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 文本框 -->
+								<!-- 界面 - 文本框 -->
 				<page-frame value="uiTextBox">
 					<detail-box open>
 						<detail-summary>TextBox Properties</detail-summary>
@@ -2969,7 +3043,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 对话框 -->
+								<!-- 界面 - 对话框 -->
 				<page-frame value="uiDialogBox">
 					<detail-box open>
 						<detail-summary>DialogBox Properties</detail-summary>
@@ -3068,7 +3144,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 进度条 -->
+								<!-- 界面 - 进度条 -->
 				<page-frame value="uiProgressBar">
 					<detail-box open>
 						<detail-summary>ProgressBar Properties</detail-summary>
@@ -3198,7 +3276,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 按钮 -->
+								<!-- 界面 - 按钮 -->
 				<page-frame value="uiButton">
 					<detail-box open>
 						<detail-summary>Image Properties</detail-summary>
@@ -3532,7 +3612,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 动画 -->
+								<!-- 界面 - 动画 -->
 				<page-frame value="uiAnimation">
 					<detail-box open>
 						<detail-summary>Animation Properties</detail-summary>
@@ -3585,7 +3667,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 视频 -->
+								<!-- 界面 - 视频 -->
 				<page-frame value="uiVideo">
 					<detail-box open>
 						<detail-summary>Video Properties</detail-summary>
@@ -3606,7 +3690,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 窗口 -->
+								<!-- 界面 - 窗口 -->
 				<page-frame value="uiWindow">
 					<detail-box open>
 						<detail-summary>Window Properties</detail-summary>
@@ -3673,10 +3759,12 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 界面 - 容器 -->
 				<page-frame value="uiContainer"></page-frame>
 
 				<!-- 界面 - 引用 -->
+								<!-- 界面 - 引用 -->
 				<page-frame value="uiReference">
 					<detail-box open>
 						<detail-summary>Reference Properties</detail-summary>
@@ -3695,7 +3783,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 动画 - 动作 -->
+								<!-- 动画 - 动作 -->
 				<page-frame value="animMotion">
 					<detail-box open>
 						<detail-summary>Motion</detail-summary>
@@ -3711,7 +3801,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 动画 - 关节帧 -->
+								<!-- 动画 - 关节帧 -->
 				<page-frame id="animJointFrame" value="animJointFrame">
 					<detail-box open>
 						<detail-summary>Frame</detail-summary>
@@ -3786,7 +3878,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 动画 - 精灵层 -->
+								<!-- 动画 - 精灵层 -->
 				<page-frame value="animSpriteLayer">
 					<detail-box open>
 						<detail-summary>Sprite Layer</detail-summary>
@@ -3799,7 +3893,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 动画 - 精灵帧 -->
+								<!-- 动画 - 精灵帧 -->
 				<page-frame id="animSpriteFrame" value="animSpriteFrame">
 					<detail-box id="animSpriteFrame-properties-detail" open>
 						<detail-summary>Frame</detail-summary>
@@ -3995,7 +4091,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 动画 - 粒子层 -->
+								<!-- 动画 - 粒子层 -->
 				<page-frame value="animParticleLayer">
 					<detail-box open>
 						<detail-summary>Particle Layer</detail-summary>
@@ -4014,7 +4112,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 动画 - 粒子帧 -->
+								<!-- 动画 - 粒子帧 -->
 				<page-frame id="animParticleFrame" value="animParticleFrame">
 					<detail-box open>
 						<detail-summary>Frame</detail-summary>
@@ -4105,7 +4205,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 动画 - 音效层 -->
+								<!-- 动画 - 音效层 -->
 				<page-frame value="animSoundLayer">
 					<detail-box open>
 						<detail-summary>Sound Layer</detail-summary>
@@ -4116,7 +4218,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 动画 - 音效帧 -->
+								<!-- 动画 - 音效帧 -->
 				<page-frame id="animSoundFrame" value="animSoundFrame">
 					<detail-box open>
 						<detail-summary>Frame</detail-summary>
@@ -4139,7 +4243,9 @@
 					</detail-box>
 				</page-frame>
 
+
 				<!-- 粒子 - 图层 -->
+								<!-- 粒子 - 图层 -->
 				<page-frame value="particleLayer">
 					<detail-box open>
 						<detail-summary>General</detail-summary>
@@ -4947,11 +5053,13 @@
 						</detail-grid>
 					</detail-box>
 				</page-frame>
+
 			</page-manager>
 		</page-frame>
 	</page-manager>
 </box>
 
+<!-- Open设置窗口 -->
 <!-- Open设置窗口 -->
 <window-frame id="setting">
 	<title-bar id="setting-title"
@@ -4993,6 +5101,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 自动图块 -->
 <!-- 自动图块 -->
 <window-frame id="autoTile">
 	<title-bar>Auto Tile<close></close></title-bar>
@@ -5073,6 +5183,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 自动图块 - 生成动画帧窗口 -->
 <!-- 自动图块 - 生成动画帧窗口 -->
 <window-frame id="autoTile-generateFrames">
 	<title-bar>Generate Frames<close></close></title-bar>
@@ -5090,6 +5202,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 自动图块 - 动画帧索引窗口 -->
 <!-- 自动图块 - 动画帧索引窗口 -->
 <window-frame id="autoTile-frameIndex">
 	<title-bar>Tile Index<close></close></title-bar>
@@ -5105,6 +5219,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 自动图块 - 选择节点窗口 -->
 <!-- 自动图块 - 选择节点窗口 -->
 <window-frame id="autoTile-selectNode">
 	<title-bar>Tile Node<close></close></title-bar>
@@ -5116,6 +5232,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 移动场景 -->
 <!-- 移动场景 -->
 <window-frame id="scene-shift">
 	<title-bar>Shift<close></close></title-bar>
@@ -5129,6 +5247,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 默认对象文件夹 -->
 <!-- 默认对象文件夹 -->
 <window-frame id="object-folder">
 	<title-bar>Default Object Folders<close></close></title-bar>
@@ -5147,6 +5267,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 确认窗口 -->
 <!-- 确认窗口 -->
 <window-frame id="confirmation" mode="center">
 	<title-bar>
@@ -5162,6 +5284,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 新建项目窗口 -->
 <!-- 新建项目窗口 -->
 <window-frame id="newProject">
 	<title-bar>New Project<close></close></title-bar>
@@ -5181,6 +5305,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 部署项目窗口 -->
 <!-- 部署项目窗口 -->
 <window-frame id="deployment">
 	<title-bar>Deployment<close></close></title-bar>
@@ -5202,6 +5328,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 复制进度窗口 -->
 <!-- 复制进度窗口 -->
 <window-frame id="copyProgress">
 	<title-bar>New Project</title-bar>
@@ -5216,6 +5344,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 项目设置窗口 -->
 <!-- 项目设置窗口 -->
 <window-frame id="project-settings">
 	<title-bar>Project Settings<close></close></title-bar>
@@ -5458,6 +5588,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 过渡窗口 -->
 <!-- 过渡窗口 -->
 <window-frame id="easing">
 	<title-bar>Easing<close></close></title-bar>
@@ -5555,6 +5687,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 队伍窗口 -->
 <!-- 队伍窗口 -->
 <window-frame id="team">
 	<title-bar>Team<close></close></title-bar>
@@ -5567,6 +5701,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 对象属性窗口 -->
 <!-- 对象属性窗口 -->
 <window-frame id="object-attribute">
 	<title-bar>Attribute<close></close></title-bar>
@@ -5589,6 +5725,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 条件窗口 -->
 <!-- 条件窗口 -->
 <window-frame id="condition">
 	<title-bar>Condition<close></close></title-bar>
@@ -5615,6 +5753,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 动画精灵图窗口 -->
 <!-- 动画精灵图窗口 -->
 <window-frame id="fileAnimation-sprite">
 	<title-bar>Sprite<close></close></title-bar>
@@ -5632,6 +5772,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 动画精灵图窗口 -->
 <!-- 动画精灵图窗口 -->
 <window-frame id="fileActor-sprite">
 	<title-bar>Sprite<close></close></title-bar>
@@ -5645,6 +5787,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 角色技能窗口 -->
 <!-- 角色技能窗口 -->
 <window-frame id="fileActor-skill">
 	<title-bar>Skill<close></close></title-bar>
@@ -5659,6 +5803,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 角色装备窗口 -->
 <!-- 角色装备窗口 -->
 <window-frame id="fileActor-equipment">
 	<title-bar>Equipment<close></close></title-bar>
@@ -5673,6 +5819,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 角色库存窗口 -->
 <!-- 角色库存窗口 -->
 <window-frame id="fileActor-inventory-goods">
 	<title-bar>Inventory<close></close></title-bar>
@@ -5697,6 +5845,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 事件参数窗口 -->
 <!-- 事件参数窗口 -->
 <window-frame id="fileEvent-parameter">
 	<title-bar>Parameter<close></close></title-bar>
@@ -5711,6 +5861,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 变量窗口 -->
 <!-- 变量窗口 -->
 <window-frame id="variable" mode="center">
 	<title-bar>Variable<close></close></title-bar>
@@ -5820,6 +5972,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 属性窗口 -->
 <!-- 属性窗口 -->
 <window-frame id="attribute">
 	<title-bar>Attribute<close></close></title-bar>
@@ -5890,6 +6044,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 枚举窗口 -->
 <!-- 枚举窗口 -->
 <window-frame id="enum" mode="center">
 	<title-bar>Enumeration<close></close></title-bar>
@@ -5918,6 +6074,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 本地化窗口 -->
 <!-- 本地化窗口 -->
 <window-frame id="localization" mode="center">
 	<title-bar>Localization<close></close></title-bar>
@@ -5936,6 +6094,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 预设对象窗口 -->
 <!-- 预设对象窗口 -->
 <window-frame id="presetObject" mode="center">
 	<title-bar>Object<close></close></title-bar>
@@ -5948,6 +6108,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 预设元素窗口 -->
 <!-- 预设元素窗口 -->
 <window-frame id="presetElement" mode="center">
 	<title-bar>Element<close></close></title-bar>
@@ -5960,6 +6122,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 插件窗口 -->
 <!-- 插件窗口 -->
 <window-frame id="plugin">
 	<title-bar>Plugin<close></close></title-bar>
@@ -5986,6 +6150,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 自定义指令窗口 -->
 <!-- 自定义指令窗口 -->
 <window-frame id="command">
 	<title-bar>Custom Command<close></close></title-bar>
@@ -6013,6 +6179,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 日志窗口 -->
 <!-- 日志窗口 -->
 <window-frame id="log">
 	<title-bar>Log<close></close></title-bar>
@@ -6021,9 +6189,13 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 日志消息 -->
 <!-- 日志消息 -->
 <box id="log-message"></box>
 
+
+<!-- 公告窗口 -->
 <!-- 公告窗口 -->
 <window-frame id="update-log">
 	<title-bar>Update Log<close></close></title-bar>
@@ -6039,6 +6211,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 相关引用 -->
 <!-- 相关引用 -->
 <window-frame id="reference">
 	<title-bar>Reference<close></close></title-bar>
@@ -6047,6 +6221,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- QR Code窗口 -->
 <!-- QR Code窗口 -->
 <window-frame id="qr-code">
 	<title-bar>本地服务预览<close></close></title-bar>
@@ -6061,6 +6237,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 进度窗口 -->
 <!-- 进度窗口 -->
 <window-frame id="windowProgress">
 	<title-bar>进度</title-bar>
@@ -6071,6 +6249,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- export_apk 窗口 -->
 <!-- export_apk 窗口 -->
 <window-frame id="export-apk">
 	<title-bar>构建APK<close></close></title-bar>
@@ -6111,6 +6291,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 关于窗口 -->
 <!-- 关于窗口 -->
 <window-frame id="about">
 	<title-bar>Yami RPG Editor<close></close></title-bar>
@@ -6141,6 +6323,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 资源选择器 -->
 <!-- 资源选择器 -->
 <window-frame id="selector" mode="center">
 	<title-bar
@@ -6154,6 +6338,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 图像剪辑窗口 -->
 <!-- 图像剪辑窗口 -->
 <window-frame id="imageClip">
 	<title-bar
@@ -6184,6 +6370,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 拾色器 -->
 <!-- 拾色器 -->
 <window-frame id="color">
 	<title-bar>Color Picker<close></close></title-bar>
@@ -6229,6 +6417,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 设置字体 -->
 <!-- 设置字体 -->
 <window-frame id="font">
 	<title-bar>Set Font<close></close></title-bar>
@@ -6239,6 +6429,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 设置字体大小 -->
 <!-- 设置字体大小 -->
 <window-frame id="fontSize">
 	<title-bar>Set Font Size<close></close></title-bar>
@@ -6252,6 +6444,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 设置文字位置 -->
 <!-- 设置文字位置 -->
 <window-frame id="textPosition">
 	<title-bar>Set Text Position<close></close></title-bar>
@@ -6266,6 +6460,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 设置文字效果 -->
 <!-- 设置文字效果 -->
 <window-frame id="textEffect">
 	<title-bar>Set Text Effect<close></close></title-bar>
@@ -6284,6 +6480,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 插入图像 -->
 <!-- 插入图像 -->
 <window-frame id="insertImage">
 	<title-bar>Insert Image<close></close></title-bar>
@@ -6301,6 +6499,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 设置本地变量 -->
 <!-- 设置本地变量 -->
 <window-frame id="localVariable">
 	<title-bar>Set Local Variable<close></close></title-bar>
@@ -6313,6 +6513,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 缩放窗口 -->
 <!-- 缩放窗口 -->
 <window-frame id="zoom">
 	<title-bar>Zoom<close></close></title-bar>
@@ -6326,6 +6528,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 重命名窗口 -->
 <!-- 重命名窗口 -->
 <window-frame id="rename">
 	<title-bar>Rename<close></close></title-bar>
@@ -6336,6 +6540,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 语言窗口 -->
 <!-- 语言窗口 -->
 <window-frame id="language">
 	<title-bar>Language<close></close></title-bar>
@@ -6351,6 +6557,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 导出语言包窗口 -->
 <!-- 导出语言包窗口 -->
 <window-frame id="exportLanguage">
 	<title-bar>Export Language Pack<close></close></title-bar>
@@ -6364,6 +6572,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 导入语言包窗口 -->
 <!-- 导入语言包窗口 -->
 <window-frame id="importLanguage">
 	<title-bar>Import Language Pack<close></close></title-bar>
@@ -6376,6 +6586,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 选项窗口 -->
 <!-- 选项窗口 -->
 <window-frame id="choice">
 	<title-bar>Choice<close></close></title-bar>
@@ -6392,6 +6604,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 设置键窗口 -->
 <!-- 设置键窗口 -->
 <window-frame id="setKey">
 	<title-bar>Set Key<close></close></title-bar>
@@ -6402,6 +6616,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 设置数量窗口 -->
 <!-- 设置数量窗口 -->
 <window-frame id="setQuantity">
 	<title-bar>Set Quantity<close></close></title-bar>
@@ -6414,6 +6630,7 @@
 	</content-frame>
 </window-frame>
 
+
 <window-frame id="setTileTag">
 	<title-bar>Set Tile Tag<close></close></title-bar>
 	<content-frame>
@@ -6425,6 +6642,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 搜索字符串 -->
 <!-- 搜索字符串 -->
 <window-frame id="event-search-string">
 	<title-bar>Search String<close></close></title-bar>
@@ -6442,6 +6661,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 事件窗口 -->
 <!-- 事件窗口 -->
 <window-frame id="event" class="opaque">
 	<title-bar id="event-title"
@@ -6468,17 +6689,25 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 事件指令组件 -->
 <!-- 事件指令组件 -->
 <window-frame id="command-widget">
 	<text-box id="command-searcher"></text-box>
 </window-frame>
 
+
+<!-- 指令建议列表 -->
 <!-- 指令建议列表 -->
 <node-list id="command-suggestions" class="hidden"></node-list>
 
+
+<!-- 文本建议列表 -->
 <!-- 文本建议列表 -->
 <node-list id="text-suggestions" class="hidden"></node-list>
 
+
+<!-- 变量访问器窗口 -->
 <!-- 变量访问器窗口 -->
 <window-frame id="variableGetter">
 	<title-bar>Variable<close></close></title-bar>
@@ -6500,6 +6729,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 变量访问器窗口2 -->
 <!-- 变量访问器窗口2 -->
 <window-frame id="variableGetter2">
 	<title-bar>Variable<close></close></title-bar>
@@ -6516,6 +6747,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 角色访问器窗口 -->
 <!-- 角色访问器窗口 -->
 <window-frame id="actorGetter">
 	<title-bar>Actor<close></close></title-bar>
@@ -6535,6 +6768,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 技能访问器窗口 -->
 <!-- 技能访问器窗口 -->
 <window-frame id="skillGetter">
 	<title-bar>Actor<close></close></title-bar>
@@ -6552,6 +6787,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 状态访问器窗口 -->
 <!-- 状态访问器窗口 -->
 <window-frame id="stateGetter">
 	<title-bar>Actor<close></close></title-bar>
@@ -6568,6 +6805,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 装备访问器窗口 -->
 <!-- 装备访问器窗口 -->
 <window-frame id="equipmentGetter">
 	<title-bar>Actor<close></close></title-bar>
@@ -6589,6 +6828,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 物品访问器窗口 -->
 <!-- 物品访问器窗口 -->
 <window-frame id="itemGetter">
 	<title-bar>Actor<close></close></title-bar>
@@ -6606,6 +6847,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 位置访问器窗口 -->
 <!-- 位置访问器窗口 -->
 <window-frame id="positionGetter">
 	<title-bar>Position<close></close></title-bar>
@@ -6644,6 +6887,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 角度访问器窗口 -->
 <!-- 角度访问器窗口 -->
 <window-frame id="angleGetter">
 	<title-bar>Angle<close></close></title-bar>
@@ -6665,6 +6910,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 触发器访问器窗口 -->
 <!-- 触发器访问器窗口 -->
 <window-frame id="triggerGetter">
 	<title-bar>Trigger<close></close></title-bar>
@@ -6678,6 +6925,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 光源访问器窗口 -->
 <!-- 光源访问器窗口 -->
 <window-frame id="lightGetter">
 	<title-bar>Light<close></close></title-bar>
@@ -6693,6 +6942,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 区域访问器窗口 -->
 <!-- 区域访问器窗口 -->
 <window-frame id="regionGetter">
 	<title-bar>Region<close></close></title-bar>
@@ -6710,6 +6961,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 瓦片地图访问器窗口 -->
 <!-- 瓦片地图访问器窗口 -->
 <window-frame id="tilemapGetter">
 	<title-bar>Tilemap<close></close></title-bar>
@@ -6729,6 +6982,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 场景对象访问器窗口 -->
 <!-- 场景对象访问器窗口 -->
 <window-frame id="objectGetter">
 	<title-bar>Scene Object<close></close></title-bar>
@@ -6744,6 +6999,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 元素访问器窗口 -->
 <!-- 元素访问器窗口 -->
 <window-frame id="elementGetter">
 	<title-bar>Element<close></close></title-bar>
@@ -6762,6 +7019,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 祖先元素访问器窗口 -->
 <!-- 祖先元素访问器窗口 -->
 <window-frame id="ancestorGetter">
 	<title-bar>Element<close></close></title-bar>
@@ -6777,6 +7036,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 数组窗口 -->
 <!-- 数组窗口 -->
 <window-frame id="arrayList" mode="center">
 	<title-bar>Array<close></close></title-bar>
@@ -6787,6 +7048,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 数组窗口 - 数值 -->
 <!-- 数组窗口 - 数值 -->
 <window-frame id="arrayList-number">
 	<title-bar>Number<close></close></title-bar>
@@ -6802,6 +7065,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 数组窗口 - 字符串 -->
 <!-- 数组窗口 - 字符串 -->
 <window-frame id="arrayList-string">
 	<title-bar>String<close></close></title-bar>
@@ -6811,6 +7076,7 @@
 		<button id="arrayList-string-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
+
 
 <!-- 显示文本 -->
 
@@ -6822,6 +7088,7 @@
 
 <!-- 设置数值 -->
 
+<!-- 设置数值 - 操作数 -->
 <!-- 设置数值 - 操作数 -->
 <window-frame id="setNumber-operand">
 	<title-bar>Number Operand<close></close></title-bar>
@@ -6905,6 +7172,7 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 设置字符串 -->
 
 <!-- 设置对象 -->
@@ -6918,6 +7186,7 @@
 <!-- 设置对象属性 -->
 
 <!-- 操作对象属性 - 属性索引 -->
+<!-- 操作对象属性 - 属性索引 -->
 <window-frame id="ObjectProperty-index">
 	<title-bar>ObjectProperty-index<close></close></title-bar>
 	<content-frame>
@@ -6929,8 +7198,10 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 条件分支 -->
 
+<!-- 条件分支 - 分支 -->
 <!-- 条件分支 - 分支 -->
 <window-frame id="if-branch">
 	<title-bar>Branch<close></close></title-bar>
@@ -6944,6 +7215,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 条件分支 - 条件 -->
 <!-- 条件分支 - 条件 -->
 <window-frame id="if-condition">
 	<title-bar>Condition<close></close></title-bar>
@@ -7026,8 +7299,10 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 匹配 -->
 
+<!-- 匹配 - 分支 -->
 <!-- 匹配 - 分支 -->
 <window-frame id="switch-branch">
 	<title-bar>Branch<close></close></title-bar>
@@ -7040,6 +7315,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 匹配 - 条件 -->
 <!-- 匹配 - 条件 -->
 <window-frame id="switch-condition">
 	<title-bar>Condition<close></close></title-bar>
@@ -7074,6 +7351,7 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 循环 -->
 
 <!-- 遍历 -->
@@ -7102,6 +7380,7 @@
 
 <!-- 设置图像 -->
 
+<!-- 设置图像 - 属性 -->
 <!-- 设置图像 - 属性 -->
 <window-frame id="setImage-property">
 	<title-bar>Image Property<close></close></title-bar>
@@ -7140,12 +7419,14 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 加载图像 -->
 
 <!-- 改变图像色调 -->
 
 <!-- 设置文本 -->
 
+<!-- 设置文本 - 属性 -->
 <!-- 设置文本 - 属性 -->
 <window-frame id="setText-property">
 	<title-bar>Text Property<close></close></title-bar>
@@ -7204,8 +7485,10 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 设置文本框 -->
 
+<!-- 设置文本框 - 属性 -->
 <!-- 设置文本框 - 属性 -->
 <window-frame id="setTextBox-property">
 	<title-bar>Text Property<close></close></title-bar>
@@ -7244,8 +7527,10 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 设置对话框 -->
 
+<!-- 设置对话框 - 属性 -->
 <!-- 设置对话框 - 属性 -->
 <window-frame id="setDialogBox-property">
 	<title-bar>Dialog Box Property<close></close></title-bar>
@@ -7312,10 +7597,12 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 控制对话框 -->
 
 <!-- 设置进度条 -->
 
+<!-- 设置进度条 - 属性 -->
 <!-- 设置进度条 - 属性 -->
 <window-frame id="setProgressBar-property">
 	<title-bar>Image Property<close></close></title-bar>
@@ -7376,8 +7663,10 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 设置按钮 -->
 
+<!-- 设置按钮 - 属性 -->
 <!-- 设置按钮 - 属性 -->
 <window-frame id="setButton-property">
 	<title-bar>Set Button<close></close></title-bar>
@@ -7443,10 +7732,12 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 控制按钮 -->
 
 <!-- 设置动画 -->
 
+<!-- 设置动画 - 属性 -->
 <!-- 设置动画 - 属性 -->
 <window-frame id="setAnimation-property">
 	<title-bar>Set Animation<close></close></title-bar>
@@ -7473,8 +7764,10 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 设置视频 -->
 
+<!-- 设置视频 - 属性 -->
 <!-- 设置视频 - 属性 -->
 <window-frame id="setVideo-property">
 	<title-bar>Image Property<close></close></title-bar>
@@ -7499,6 +7792,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 资源窗口 -->
 <!-- 资源窗口 -->
 <window-frame id="resource">
 	<title-bar>
@@ -7544,8 +7839,10 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 设置窗口 -->
 
+<!-- 设置窗口 - 属性 -->
 <!-- 设置窗口 - 属性 -->
 <window-frame id="setWindow-property">
 	<title-bar>Window Property<close></close></title-bar>
@@ -7584,6 +7881,7 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 等待视频结束 -->
 
 <!-- 设置元素 -->
@@ -7592,6 +7890,7 @@
 
 <!-- 移动元素 -->
 
+<!-- 移动元素 - 属性 -->
 <!-- 移动元素 - 属性 -->
 <window-frame id="moveElement-property">
 	<title-bar>Transform Property<close></close></title-bar>
@@ -7736,6 +8035,7 @@
 	</content-frame>
 </window-frame>
 
+
 <!-- 删除元素 -->
 
 <!-- 设置指针事件根元素 -->
@@ -7746,6 +8046,7 @@
 
 <!-- 移动光源 -->
 
+<!-- 移动光源 - 属性 -->
 <!-- 移动光源 - 属性 -->
 <window-frame id="moveLight-property">
 	<title-bar>Point Light Property<close></close></title-bar>
@@ -7835,6 +8136,7 @@
 		<button id="moveLight-property-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
+
 
 <!-- 删除对象 -->
 
@@ -7993,6 +8295,7 @@
 <!-- 请求URL -->
 
 <!-- 请求 - keyValue -->
+<!-- 请求 - keyValue -->
 <window-frame id="request-keyValue">
 	<title-bar>Header<close></close></title-bar>
 	<content-frame>
@@ -8004,6 +8307,7 @@
 		<button id="request-keyValue-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
+
 
 <!-- 下载文件 -->
 
@@ -8028,6 +8332,7 @@
 <!-- 执行脚本 -->
 
 <!-- 编辑数据 -->
+<!-- 编辑数据 -->
 <window-frame id="edit-data">
 	<title-bar
 		>edit data<text id="edit-data-mark" class="hidden">✱</text>
@@ -8041,6 +8346,8 @@
 	</content-frame>
 </window-frame>
 
+
+<!-- 脚本指令 -->
 <!-- 脚本指令 -->
 <window-frame id="scriptCommand">
 	<title-bar>Custom Command<close></close></title-bar>
@@ -8054,6 +8361,7 @@
 		<button id="scriptCommand-cancel" name="cancel">Cancel</button>
 	</content-frame>
 </window-frame>
+
 
 <window-frame id="showText">
 	<title-bar>Show Text<close></close></title-bar>

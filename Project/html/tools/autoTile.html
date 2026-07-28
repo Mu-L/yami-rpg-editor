@@ -1,0 +1,79 @@
+<!-- 自动图块 -->
+<window-frame id="autoTile">
+	<title-bar>Auto Tile<close></close></title-bar>
+	<content-frame>
+		<field-set id="autoTile-general-fieldset">
+			<legend>General</legend>
+			<grid-box id="autoTile-general-grid">
+				<text>Image</text
+				><custom-box id="autoTile-image" type="file" filter="image"></custom-box>
+				<text>Offset X</text><number-box id="autoTile-x" min="0" max="255"></number-box>
+				<text>Offset Y</text><number-box id="autoTile-y" min="0" max="255"></number-box>
+			</grid-box>
+		</field-set>
+		<field-set id="autoTile-templates-fieldset" class="input pad">
+			<legend>Templates</legend>
+			<node-list id="autoTile-templates" padded></node-list>
+		</field-set>
+		<field-set id="autoTile-nodes-fieldset" class="input pad">
+			<legend>Tiles</legend>
+			<common-list id="autoTile-nodes"></common-list>
+		</field-set>
+		<field-set id="autoTile-canvas-fieldset">
+			<legend>View</legend>
+			<canvas id="autoTile-canvas" width="128" height="128"></canvas>
+		</field-set>
+		<field-set id="autoTile-rule-fieldset">
+			<legend>Neighbors</legend>
+			<grid-box id="autoTile-rule-grid">
+				<switch-item
+					id="autoTile-rule-1"
+					class="autoTile-switch autoTile-neighbor"
+					length="3"
+				></switch-item>
+				<switch-item
+					id="autoTile-rule-2"
+					class="autoTile-switch autoTile-neighbor"
+					length="3"
+				></switch-item>
+				<switch-item
+					id="autoTile-rule-3"
+					class="autoTile-switch autoTile-neighbor"
+					length="3"
+				></switch-item>
+				<switch-item
+					id="autoTile-rule-0"
+					class="autoTile-switch autoTile-neighbor"
+					length="3"
+				></switch-item>
+				<empty></empty>
+				<switch-item
+					id="autoTile-rule-4"
+					class="autoTile-switch autoTile-neighbor"
+					length="3"
+				></switch-item>
+				<switch-item
+					id="autoTile-rule-7"
+					class="autoTile-switch autoTile-neighbor"
+					length="3"
+				></switch-item>
+				<switch-item
+					id="autoTile-rule-6"
+					class="autoTile-switch autoTile-neighbor"
+					length="3"
+				></switch-item>
+				<switch-item
+					id="autoTile-rule-5"
+					class="autoTile-switch autoTile-neighbor"
+					length="3"
+				></switch-item>
+			</grid-box>
+		</field-set>
+		<field-set id="autoTile-frames-fieldset" class="input pad">
+			<legend>Frames</legend>
+			<common-list id="autoTile-frames"></common-list>
+		</field-set>
+		<button id="autoTile-confirm" name="confirm">Confirm</button>
+		<button id="autoTile-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

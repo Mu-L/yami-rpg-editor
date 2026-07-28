@@ -1,0 +1,37 @@
+<!-- 位置访问器窗口 -->
+<window-frame id="positionGetter">
+	<title-bar>Position<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="positionGetter-type"></select-box> <text>X</text
+			><number-var
+				id="positionGetter-common-x"
+				min="-512"
+				max="512"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Y</text
+			><number-var
+				id="positionGetter-common-y"
+				min="-512"
+				max="512"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Actor</text><custom-box id="positionGetter-actor" type="actor"></custom-box>
+			<text>Trigger</text><custom-box id="positionGetter-trigger" type="trigger"></custom-box>
+			<text>Light</text><custom-box id="positionGetter-light" type="light"></custom-box>
+			<text>Region</text><custom-box id="positionGetter-region" type="region"></custom-box>
+			<text>Mode</text><select-box id="positionGetter-region-mode"></select-box>
+			<text>Object</text
+			><custom-box
+				id="positionGetter-objectId"
+				type="preset-object"
+				filter="any"
+			></custom-box>
+		</grid-box>
+		<button id="positionGetter-confirm" name="confirm">Confirm</button>
+		<button id="positionGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

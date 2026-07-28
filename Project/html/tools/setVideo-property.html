@@ -1,0 +1,23 @@
+<!-- 设置视频 - 属性 -->
+<window-frame id="setVideo-property">
+	<title-bar>Image Property<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Property</text><select-box id="setVideo-property-key"></select-box>
+			<text>Video</text
+			><custom-box id="setVideo-property-video" type="file" filter="video"></custom-box>
+			<text>Playback Rate</text
+			><number-var
+				id="setVideo-property-playbackRate"
+				min="0"
+				max="4"
+				decimals="4"
+			></number-var>
+			<text>Loop</text><select-box id="setVideo-property-loop"></select-box> <text>Flip</text
+			><select-box id="setVideo-property-flip"></select-box> <text>Blend</text
+			><select-box id="setVideo-property-blend"></select-box>
+		</grid-box>
+		<button id="setVideo-property-confirm" name="confirm">Confirm</button>
+		<button id="setVideo-property-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

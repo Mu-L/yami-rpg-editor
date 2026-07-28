@@ -1,0 +1,21 @@
+<!-- 对象属性窗口 -->
+<window-frame id="object-attribute">
+	<title-bar>Attribute<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Key</text><select-box id="object-attribute-key"></select-box> <text>Boolean</text
+			><select-box id="object-attribute-boolean-value"></select-box> <text>Number</text
+			><number-box
+				id="object-attribute-number-value"
+				min="-1000000000"
+				max="1000000000"
+				decimals="6"
+			></number-box>
+			<text>String</text
+			><text-area id="object-attribute-string-value" menu="tag-localization"></text-area>
+			<text>Option</text><select-box id="object-attribute-enum-value"></select-box>
+		</grid-box>
+		<button id="object-attribute-confirm" name="confirm">Confirm</button>
+		<button id="object-attribute-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

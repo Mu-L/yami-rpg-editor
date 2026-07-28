@@ -1,0 +1,15 @@
+<!-- 状态访问器窗口 -->
+<window-frame id="stateGetter">
+	<title-bar>Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="stateGetter-type"></select-box> <text>Actor</text
+			><custom-box id="stateGetter-actor" type="actor"></custom-box> <text>State</text
+			><custom-box id="stateGetter-stateId" type="file" filter="state"></custom-box>
+			<text>Variable</text
+			><custom-box id="stateGetter-variable" type="variable" filter="object"></custom-box>
+		</grid-box>
+		<button id="stateGetter-confirm" name="confirm">Confirm</button>
+		<button id="stateGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

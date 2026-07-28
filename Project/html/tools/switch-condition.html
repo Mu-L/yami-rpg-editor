@@ -1,0 +1,33 @@
+<!-- 匹配 - 条件 -->
+<window-frame id="switch-condition">
+	<title-bar>Condition<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Condition Type</text><select-box id="switch-condition-type"></select-box>
+			<text>Boolean</text><select-box id="switch-condition-boolean-value"></select-box>
+			<text>Number</text
+			><number-box
+				id="switch-condition-number-value"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-box>
+			<text>String</text><text-area id="switch-condition-string-value"></text-area>
+			<text>Attribute Key</text
+			><custom-box id="switch-condition-attribute-attributeId" type="attribute"></custom-box>
+			<text>Enum String</text
+			><custom-box id="switch-condition-enum-stringId" type="enum-string"></custom-box>
+			<text>Key</text><keyboard-box id="switch-condition-keyboard-keycode"></keyboard-box>
+			<text>Button</text><gamepad-box id="switch-condition-gamepad-button"></gamepad-box>
+			<text>Button</text><select-box id="switch-condition-mouse-button"></select-box>
+			<text>Variable</text
+			><custom-box
+				id="switch-condition-variable-variable"
+				type="variable"
+				filter="all"
+			></custom-box>
+		</grid-box>
+		<button id="switch-condition-confirm" name="confirm">Confirm</button>
+		<button id="switch-condition-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

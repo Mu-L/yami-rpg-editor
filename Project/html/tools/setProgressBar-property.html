@@ -1,0 +1,59 @@
+<!-- 设置进度条 - 属性 -->
+<window-frame id="setProgressBar-property">
+	<title-bar>Image Property<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Property</text><select-box id="setProgressBar-property-key"></select-box>
+			<text>Image</text
+			><custom-box id="setProgressBar-property-image" type="file" filter="image"></custom-box>
+			<text>Display</text><select-box id="setProgressBar-property-display"></select-box>
+			<text>Blend</text><select-box id="setProgressBar-property-blend"></select-box>
+			<text>Progress</text
+			><number-var
+				id="setProgressBar-property-progress"
+				min="0"
+				max="1"
+				step="0.1"
+				decimals="4"
+			></number-var>
+			<text>Clip - X</text
+			><number-var
+				id="setProgressBar-property-clip-0"
+				min="0"
+				max="10000"
+				unit="px"
+			></number-var>
+			<text>Clip - Y</text
+			><number-var
+				id="setProgressBar-property-clip-1"
+				min="0"
+				max="10000"
+				unit="px"
+			></number-var>
+			<text>Clip - Width</text
+			><number-var
+				id="setProgressBar-property-clip-2"
+				min="0"
+				max="10000"
+				unit="px"
+			></number-var>
+			<text>Clip - Height</text
+			><number-var
+				id="setProgressBar-property-clip-3"
+				min="0"
+				max="10000"
+				unit="px"
+			></number-var>
+			<text>Color - Red</text
+			><number-var id="setProgressBar-property-color-0" min="0" max="255"></number-var>
+			<text>Color - Green</text
+			><number-var id="setProgressBar-property-color-1" min="0" max="255"></number-var>
+			<text>Color - Blue</text
+			><number-var id="setProgressBar-property-color-2" min="0" max="255"></number-var>
+			<text>Color - Alpha</text
+			><number-var id="setProgressBar-property-color-3" min="0" max="255"></number-var>
+		</grid-box>
+		<button id="setProgressBar-property-confirm" name="confirm">Confirm</button>
+		<button id="setProgressBar-property-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

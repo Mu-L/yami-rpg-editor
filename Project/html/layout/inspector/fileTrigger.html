@@ -1,0 +1,143 @@
+				<!-- 文件 - 触发器 -->
+				<page-frame value="fileTrigger">
+					<detail-box open>
+						<detail-summary>General</detail-summary>
+						<detail-grid id="fileTrigger-general-grid">
+							<text>Selector</text><select-box id="fileTrigger-selector"></select-box>
+							<text>On Hit Walls</text
+							><select-box id="fileTrigger-onHitWalls"></select-box>
+							<text>On Hit Actors</text
+							><select-box id="fileTrigger-onHitActors"></select-box>
+							<text>Hit Count</text
+							><number-box id="fileTrigger-hitCount" min="2" max="10000"></number-box>
+							<text>Shape</text><select-box id="fileTrigger-shape-type"></select-box>
+							<text>Width</text
+							><number-box
+								id="fileTrigger-shape-width"
+								min="0"
+								max="512"
+								decimals="4"
+								unit="tile"
+							></number-box>
+							<text>Height</text
+							><number-box
+								id="fileTrigger-shape-height"
+								min="0"
+								max="512"
+								decimals="4"
+								unit="tile"
+							></number-box>
+							<text>Anchor</text
+							><number-box
+								id="fileTrigger-shape-anchor"
+								min="-4"
+								max="5"
+								decimals="4"
+							></number-box>
+							<text>Radius</text
+							><number-box
+								id="fileTrigger-shape-radius"
+								min="0"
+								max="512"
+								decimals="4"
+								unit="tile"
+							></number-box>
+							<text>Central Angle</text
+							><number-box
+								id="fileTrigger-shape-centralAngle"
+								min="0"
+								max="360"
+								decimals="4"
+								unit="deg"
+							></number-box>
+							<text>Speed</text
+							><number-box
+								id="fileTrigger-speed"
+								min="0"
+								max="512"
+								decimals="4"
+								unit="t/s"
+							></number-box>
+							<text>Hit Mode</text><select-box id="fileTrigger-hitMode"></select-box>
+							<text>Hit Interval</text
+							><number-box
+								id="fileTrigger-hitInterval"
+								min="0"
+								max="10000"
+								unit="ms"
+							></number-box>
+							<text>Initial Delay</text
+							><number-box
+								id="fileTrigger-initialDelay"
+								min="0"
+								max="10000"
+								unit="ms"
+							></number-box>
+							<text>Effective Time</text
+							><number-box
+								id="fileTrigger-effectiveTime"
+								min="0"
+								max="10000"
+								unit="ms"
+							></number-box>
+							<text>Duration</text
+							><number-box
+								id="fileTrigger-duration"
+								min="0"
+								max="1000000000"
+								unit="ms"
+							></number-box>
+							<text>Inherit</text
+							><custom-box
+								id="fileTrigger-inherit"
+								type="file"
+								filter="trigger"
+							></custom-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Animation</detail-summary>
+						<detail-grid id="fileTrigger-animation-grid">
+							<text>Animation</text
+							><custom-box
+								id="fileTrigger-animationId"
+								type="file"
+								filter="animation"
+							></custom-box>
+							<text>Motion</text><select-box id="fileTrigger-motion"></select-box>
+							<text>Priority</text
+							><number-box
+								id="fileTrigger-priority"
+								min="-100"
+								max="100"
+							></number-box>
+							<text>Offset Y</text
+							><number-box
+								id="fileTrigger-offsetY"
+								min="-100"
+								max="100"
+								unit="px"
+							></number-box>
+							<text>Rotatable</text
+							><select-box id="fileTrigger-rotatable"></select-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Events</detail-summary>
+						<param-list
+							id="fileTrigger-events"
+							class="inspector-list"
+							filter="trigger"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Scripts</detail-summary>
+						<param-list
+							id="fileTrigger-scripts"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<parameter-pane id="fileTrigger-parameter-pane"></parameter-pane>
+				</page-frame>

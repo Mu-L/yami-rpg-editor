@@ -1,0 +1,65 @@
+<!-- 设置对话框 - 属性 -->
+<window-frame id="setDialogBox-property">
+	<title-bar>Dialog Box Property<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Property</text><select-box id="setDialogBox-property-key"></select-box>
+			<text>Content</text
+			><text-area-var
+				id="setDialogBox-property-content"
+				menu="tag-local-var tag-global-var tag-localization"
+			></text-area-var>
+			<text>Interval</text
+			><number-box
+				id="setDialogBox-property-interval"
+				min="0"
+				max="100"
+				unit="ms"
+			></number-box>
+			<text>Size</text
+			><number-box id="setDialogBox-property-size" min="10" max="400" unit="px"></number-box>
+			<text>Line Spacing</text
+			><number-box
+				id="setDialogBox-property-lineSpacing"
+				min="-10"
+				max="100"
+				unit="px"
+			></number-box>
+			<text>Letter Spacing</text
+			><number-box
+				id="setDialogBox-property-letterSpacing"
+				min="-10"
+				max="100"
+				unit="px"
+			></number-box>
+			<text>Color</text><color-box id="setDialogBox-property-color"></color-box>
+			<text>Font</text><text-box id="setDialogBox-property-font"></text-box>
+			<text>Effect</text><select-box id="setDialogBox-property-effect-type"></select-box>
+			<text>Shadow X</text
+			><number-box
+				id="setDialogBox-property-effect-shadowOffsetX"
+				min="-9"
+				max="9"
+				unit="px"
+			></number-box>
+			<text>Shadow Y</text
+			><number-box
+				id="setDialogBox-property-effect-shadowOffsetY"
+				min="-9"
+				max="9"
+				unit="px"
+			></number-box>
+			<text>Stroke Width</text
+			><number-box
+				id="setDialogBox-property-effect-strokeWidth"
+				min="1"
+				max="20"
+				unit="px"
+			></number-box>
+			<text>Effect Color</text><color-box id="setDialogBox-property-effect-color"></color-box>
+			<text>Blend</text><select-box id="setDialogBox-property-blend"></select-box>
+		</grid-box>
+		<button id="setDialogBox-property-confirm" name="confirm">Confirm</button>
+		<button id="setDialogBox-property-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

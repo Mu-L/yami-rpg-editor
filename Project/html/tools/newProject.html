@@ -1,0 +1,18 @@
+<!-- 新建项目窗口 -->
+<window-frame id="newProject">
+	<title-bar>New Project<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Template</text><select-box id="newProject-template"></select-box>
+			<text>Folder</text><text-box id="newProject-folder"></text-box>
+			<text>Location</text>
+			<flex-box id="newProject-location-box">
+				<text-box id="newProject-location"></text-box>
+				<button id="newProject-choose">…</button>
+			</flex-box>
+		</grid-box>
+		<text id="newProject-warning"></text>
+		<button id="newProject-confirm" name="confirm">Confirm</button>
+		<button id="newProject-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

@@ -1,0 +1,20 @@
+<!-- 装备访问器窗口 -->
+<window-frame id="equipmentGetter">
+	<title-bar>Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="equipmentGetter-type"></select-box> <text>Actor</text
+			><custom-box id="equipmentGetter-actor" type="actor"></custom-box> <text>Slot</text
+			><select-var id="equipmentGetter-slot"></select-var> <text>Equipment</text
+			><custom-box
+				id="equipmentGetter-equipmentId"
+				type="file"
+				filter="equipment"
+			></custom-box>
+			<text>Variable</text
+			><custom-box id="equipmentGetter-variable" type="variable" filter="object"></custom-box>
+		</grid-box>
+		<button id="equipmentGetter-confirm" name="confirm">Confirm</button>
+		<button id="equipmentGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

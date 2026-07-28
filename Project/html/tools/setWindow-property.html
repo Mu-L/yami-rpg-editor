@@ -1,0 +1,37 @@
+<!-- 设置窗口 - 属性 -->
+<window-frame id="setWindow-property">
+	<title-bar>Window Property<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Property</text><select-box id="setWindow-property-key"></select-box>
+			<text>Scroll X</text
+			><number-var id="setWindow-property-scrollX" min="0" max="10000" unit="px"></number-var>
+			<text>Scroll Y</text
+			><number-var id="setWindow-property-scrollY" min="0" max="10000" unit="px"></number-var>
+			<text>Grid Width</text
+			><number-var
+				id="setWindow-property-gridWidth"
+				min="0"
+				max="1000"
+				unit="px"
+			></number-var>
+			<text>Grid Height</text
+			><number-var
+				id="setWindow-property-gridHeight"
+				min="0"
+				max="1000"
+				unit="px"
+			></number-var>
+			<text>Grid Gap X</text
+			><number-var id="setWindow-property-gridGapX" min="0" max="1000" unit="px"></number-var>
+			<text>Grid Gap Y</text
+			><number-var id="setWindow-property-gridGapY" min="0" max="1000" unit="px"></number-var>
+			<text>Padding X</text
+			><number-var id="setWindow-property-paddingX" min="0" max="1000" unit="px"></number-var>
+			<text>Padding Y</text
+			><number-var id="setWindow-property-paddingY" min="0" max="1000" unit="px"></number-var>
+		</grid-box>
+		<button id="setWindow-property-confirm" name="confirm">Confirm</button>
+		<button id="setWindow-property-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

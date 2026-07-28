@@ -1,0 +1,17 @@
+<!-- 元素访问器窗口 -->
+<window-frame id="elementGetter">
+	<title-bar>Element<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="elementGetter-type"></select-box> <text>Ancestor</text
+			><custom-box id="elementGetter-ancestor" type="ancestor-element"></custom-box>
+			<text>Data ID</text
+			><custom-box id="elementGetter-presetId" type="preset-element"></custom-box>
+			<text>Index</text><number-var id="elementGetter-index" min="0" max="10000"></number-var>
+			<text>Variable</text
+			><custom-box id="elementGetter-variable" type="variable" filter="object"></custom-box>
+		</grid-box>
+		<button id="elementGetter-confirm" name="confirm">Confirm</button>
+		<button id="elementGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

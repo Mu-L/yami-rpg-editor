@@ -13,22 +13,28 @@ if (!fs.existsSync(srcFile)) {
 
 let html = fs.readFileSync(srcFile, 'utf-8');
 
-html = html.replace(/<!--#include file="([^"]+)"-->/g, (_, filePath) => {
-	const fullPath = path.resolve(projectDir, filePath);
-	if (!fs.existsSync(fullPath)) {
-		console.error(`[build-html] 文件不存在: ${fullPath}`);
-		return `<!-- MISSING: ${filePath} -->`;
-	}
-	let partial = fs.readFileSync(fullPath, 'utf-8');
+function processIncludes(content, baseDir) {
+	return content.replace(/<!--#include file="([^"]+)"-->/g, (_, filePath) => {
+		const fullPath = path.resolve(baseDir, filePath);
+		if (!fs.existsSync(fullPath)) {
+			console.error(`[build-html] 文件不存在: ${fullPath}`);
+			return `<!-- MISSING: ${filePath} -->`;
+		}
+		let partial = fs.readFileSync(fullPath, 'utf-8');
 
-	// 如果是 head.html，替换 Script/ 脚本为模块入口，保留 vs/ 和 monaco 脚本
-	if (filePath === 'html/head.html') {
-		partial = transformHead(partial);
-	}
-	// 去除 UTF-8 BOM
-	if (partial.charCodeAt(0) === 0xfeff) partial = partial.slice(1);
-	return partial;
-});
+		// 如果是 head.html，替换 Script/ 脚本为模块入口，保留 vs/ 和 monaco 脚本
+		if (filePath === 'html/head.html') {
+			partial = transformHead(partial);
+		}
+		// 去除 UTF-8 BOM
+		if (partial.charCodeAt(0) === 0xfeff) partial = partial.slice(1);
+		// 递归处理嵌套 include
+		partial = processIncludes(partial, baseDir);
+		return partial;
+	});
+}
+
+html = processIncludes(html, projectDir);
 
 const header =
 	'<!-- 此文件由 build-html.js 自动生成。请编辑 index.src.html 和 html/ 下的 partial 文件，不要直接编辑本文件。 -->\n';

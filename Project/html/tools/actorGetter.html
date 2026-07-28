@@ -1,0 +1,18 @@
+<!-- 角色访问器窗口 -->
+<window-frame id="actorGetter">
+	<title-bar>Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="actorGetter-type"></select-box> <text>Member ID</text
+			><number-var id="actorGetter-memberId" min="0" max="10000"></number-var>
+			<text>Actor</text
+			><custom-box id="actorGetter-actorId" type="file" filter="actor"></custom-box>
+			<text>Data ID</text
+			><custom-box id="actorGetter-presetId" type="preset-object" filter="actor"></custom-box>
+			<text>Variable</text
+			><custom-box id="actorGetter-variable" type="variable" filter="object"></custom-box>
+		</grid-box>
+		<button id="actorGetter-confirm" name="confirm">Confirm</button>
+		<button id="actorGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

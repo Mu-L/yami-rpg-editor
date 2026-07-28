@@ -1,0 +1,20 @@
+<!-- 角度访问器窗口 -->
+<window-frame id="angleGetter">
+	<title-bar>Angle<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="angleGetter-type"></select-box> <text>Position</text
+			><custom-box id="angleGetter-position-position" type="position"></custom-box>
+			<text>Degrees</text
+			><number-var
+				id="angleGetter-common-degrees"
+				min="-36000"
+				max="36000"
+				decimals="4"
+				unit="deg"
+			></number-var>
+		</grid-box>
+		<button id="angleGetter-confirm" name="confirm">Confirm</button>
+		<button id="angleGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

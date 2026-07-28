@@ -1,0 +1,20 @@
+<!-- 部署项目窗口 -->
+<window-frame id="deployment">
+	<title-bar>Deployment<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Platform</text><select-box id="deployment-platform"></select-box>
+			<text>Folder</text><text-box id="deployment-folder"></text-box>
+			<text>Output Location</text>
+			<flex-box id="deployment-location-box">
+				<text-box id="deployment-location"></text-box>
+				<button id="deployment-choose">…</button>
+			</flex-box>
+			<text>Compress Resources</text>
+			<check-box id="deployment-compress" class="standard"></check-box>
+		</grid-box>
+		<text id="deployment-warning"></text>
+		<button id="deployment-confirm" name="confirm">Confirm</button>
+		<button id="deployment-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

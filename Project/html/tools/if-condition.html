@@ -1,0 +1,81 @@
+<!-- 条件分支 - 条件 -->
+<window-frame id="if-condition">
+	<title-bar>Condition<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Condition Type</text><select-box id="if-condition-type"></select-box>
+			<text>Variable</text
+			><custom-box
+				id="if-condition-common-variable"
+				type="variable"
+				filter="all"
+			></custom-box>
+			<text>Operation</text><select-box id="if-condition-boolean-operation"></select-box>
+			<text>Operand Type</text
+			><select-box id="if-condition-boolean-operand-type"></select-box> <text>Constant</text
+			><select-box id="if-condition-boolean-constant-value"></select-box>
+			<text>Operation</text><select-box id="if-condition-number-operation"></select-box>
+			<text>Operand Type</text><select-box id="if-condition-number-operand-type"></select-box>
+			<text>Constant</text
+			><number-box
+				id="if-condition-number-constant-value"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-box>
+			<text>Operation</text><select-box id="if-condition-string-operation"></select-box>
+			<text>Operand Type</text><select-box id="if-condition-string-operand-type"></select-box>
+			<text>Constant</text><text-area id="if-condition-string-constant-value"></text-area>
+			<text>Enum String</text
+			><custom-box id="if-condition-string-enum-stringId" type="enum-string"></custom-box>
+			<text>Operation</text><select-box id="if-condition-object-operation"></select-box>
+			<text>Operand Type</text><select-box id="if-condition-object-operand-type"></select-box>
+			<text>Operation</text><select-box id="if-condition-list-operation"></select-box>
+			<text>Variable</text
+			><custom-box
+				id="if-condition-operand-variable"
+				type="variable"
+				filter="all"
+			></custom-box>
+			<text>Operation</text><select-box id="if-condition-actor-operation"></select-box>
+			<text>Actor</text><custom-box id="if-condition-common-actor" type="actor"></custom-box>
+			<text>Skill</text><custom-box id="if-condition-common-skill" type="skill"></custom-box>
+			<text>State</text><custom-box id="if-condition-common-state" type="state"></custom-box>
+			<text>Equipment</text
+			><custom-box id="if-condition-common-equipment" type="equipment"></custom-box>
+			<text>Item</text><custom-box id="if-condition-common-item" type="item"></custom-box>
+			<text>Trigger</text
+			><custom-box id="if-condition-common-trigger" type="trigger"></custom-box>
+			<text>Light</text><custom-box id="if-condition-common-light" type="light"></custom-box>
+			<text>Element</text
+			><custom-box id="if-condition-common-element" type="element"></custom-box>
+			<text>Skill</text
+			><custom-box id="if-condition-actor-skillId" type="file" filter="skill"></custom-box>
+			<text>State</text
+			><custom-box id="if-condition-actor-stateId" type="file" filter="state"></custom-box>
+			<text>Item</text
+			><custom-box id="if-condition-actor-itemId" type="file" filter="item"></custom-box>
+			<text>Equipment</text
+			><custom-box
+				id="if-condition-actor-equipmentId"
+				type="file"
+				filter="equipment"
+			></custom-box>
+			<text>Quantity</text
+			><number-box id="if-condition-actor-quantity" min="1" max="10000"></number-box>
+			<text>Shortcut Key</text><select-var id="if-condition-actor-shortcutKey"></select-var>
+			<text>Target</text><custom-box id="if-condition-actor-target" type="actor"></custom-box>
+			<text>Team</text><select-box id="if-condition-actor-teamId"></select-box>
+			<text>Operation</text><select-box id="if-condition-element-operation"></select-box>
+			<text>Key Code</text><keyboard-box id="if-condition-keyboard-keycode"></keyboard-box>
+			<text>State</text><select-box id="if-condition-keyboard-state"></select-box>
+			<text>Button</text><gamepad-box id="if-condition-gamepad-button"></gamepad-box>
+			<text>State</text><select-box id="if-condition-gamepad-state"></select-box>
+			<text>Button</text><select-box id="if-condition-mouse-button"></select-box>
+			<text>State</text><select-box id="if-condition-mouse-state"></select-box>
+			<text>Other</text><select-box id="if-condition-other-key"></select-box>
+		</grid-box>
+		<button id="if-condition-confirm" name="confirm">Confirm</button>
+		<button id="if-condition-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

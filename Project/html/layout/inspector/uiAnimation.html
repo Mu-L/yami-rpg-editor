@@ -1,0 +1,52 @@
+				<!-- 界面 - 动画 -->
+				<page-frame value="uiAnimation">
+					<detail-box open>
+						<detail-summary>Animation Properties</detail-summary>
+						<detail-grid id="uiAnimation-properties-grid">
+							<text>Animation</text
+							><custom-box
+								id="uiAnimation-animation"
+								type="file"
+								filter="animation"
+							></custom-box>
+							<text>Motion</text><select-box id="uiAnimation-motion"></select-box>
+							<text>Autoplay</text
+							><check-box
+								id="uiAnimation-autoplay"
+								class="standard large"
+							></check-box>
+							<text>Rotatable</text
+							><check-box
+								id="uiAnimation-rotatable"
+								class="standard large"
+							></check-box>
+							<text>Angle</text
+							><number-box
+								id="uiAnimation-angle"
+								min="0"
+								max="360"
+								unit="deg"
+							></number-box>
+							<text>Frame</text
+							><number-box id="uiAnimation-frame" min="0" max="10000"></number-box>
+							<text>Offset</text>
+							<box
+								id="uiAnimation-offset-box"
+								class="uiElement-grid-box with-2-columns"
+							>
+								<number-box
+									id="uiAnimation-offsetX"
+									min="-10000"
+									max="10000"
+									unit="px"
+								></number-box>
+								<number-box
+									id="uiAnimation-offsetY"
+									min="-10000"
+									max="10000"
+									unit="px"
+								></number-box>
+							</box>
+						</detail-grid>
+					</detail-box>
+				</page-frame>

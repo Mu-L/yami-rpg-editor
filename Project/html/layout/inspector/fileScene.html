@@ -1,0 +1,120 @@
+				<!-- 文件 - 场景 -->
+				<page-frame value="fileScene">
+					<detail-box open>
+						<detail-summary>Scene</detail-summary>
+						<detail-grid id="fileScene-general-grid">
+							<text>Width</text
+							><number-box
+								id="fileScene-width"
+								min="0"
+								max="512"
+								unit="tile"
+							></number-box>
+							<text>Height</text
+							><number-box
+								id="fileScene-height"
+								min="0"
+								max="512"
+								unit="tile"
+							></number-box>
+							<text>Tile Width</text
+							><number-box
+								id="fileScene-tileWidth"
+								min="16"
+								max="256"
+								unit="px"
+							></number-box>
+							<text>Tile Height</text
+							><number-box
+								id="fileScene-tileHeight"
+								min="16"
+								max="256"
+								unit="px"
+							></number-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Ambient Light</detail-summary>
+						<detail-grid id="fileScene-ambient-grid">
+							<text>Red</text>
+							<flex-box id="fileScene-ambient-red-box">
+								<slider-box
+									id="fileScene-ambient-red-slider"
+									min="0"
+									max="255"
+									step="5"
+								></slider-box>
+								<number-box
+									id="fileScene-ambient-red"
+									min="0"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Green</text>
+							<flex-box id="fileScene-ambient-green-box">
+								<slider-box
+									id="fileScene-ambient-green-slider"
+									min="0"
+									max="255"
+									step="5"
+								></slider-box>
+								<number-box
+									id="fileScene-ambient-green"
+									min="0"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Blue</text>
+							<flex-box id="fileScene-ambient-blue-box">
+								<slider-box
+									id="fileScene-ambient-blue-slider"
+									min="0"
+									max="255"
+									step="5"
+								></slider-box>
+								<number-box
+									id="fileScene-ambient-blue"
+									min="0"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Direct Light Ratio</text>
+							<flex-box id="fileScene-ambient-direct-box">
+								<slider-box
+									id="fileScene-ambient-direct-slider"
+									min="0"
+									max="1"
+									step="0.05"
+								></slider-box>
+								<number-box
+									id="fileScene-ambient-direct"
+									min="0"
+									max="1"
+									step="0.05"
+									decimals="4"
+								></number-box>
+							</flex-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Events</detail-summary>
+						<param-list
+							id="fileScene-events"
+							class="inspector-list"
+							filter="scene"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Scripts</detail-summary>
+						<param-list
+							id="fileScene-scripts"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<parameter-pane id="fileScene-parameter-pane"></parameter-pane>
+				</page-frame>

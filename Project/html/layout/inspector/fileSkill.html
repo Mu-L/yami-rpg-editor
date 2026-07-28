@@ -1,0 +1,53 @@
+				<!-- 文件 - 技能 -->
+				<page-frame value="fileSkill">
+					<detail-box open>
+						<detail-summary>General</detail-summary>
+						<detail-grid id="fileSkill-general-grid">
+							<text>Icon</text
+							><custom-box
+								id="fileSkill-icon"
+								type="file"
+								filter="image"
+							></custom-box>
+							<text>Clip</text
+							><custom-box
+								id="fileSkill-clip"
+								type="clip"
+								image="fileSkill-icon"
+							></custom-box>
+							<text>Inherit</text
+							><custom-box
+								id="fileSkill-inherit"
+								type="file"
+								filter="skill"
+							></custom-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Attributes</detail-summary>
+						<param-list
+							id="fileSkill-attributes"
+							class="inspector-list"
+							group="skill"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Events</detail-summary>
+						<param-list
+							id="fileSkill-events"
+							class="inspector-list"
+							filter="skill"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Scripts</detail-summary>
+						<param-list
+							id="fileSkill-scripts"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<parameter-pane id="fileSkill-parameter-pane"></parameter-pane>
+				</page-frame>

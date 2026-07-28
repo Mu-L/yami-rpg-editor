@@ -1,0 +1,25 @@
+<!-- 事件窗口 -->
+<window-frame id="event" class="opaque">
+	<title-bar id="event-title"
+		>Event<maximize></maximize>
+		<close></close>
+	</title-bar>
+	<content-frame>
+		<field-set id="event-open-fieldset" class="input pad">
+			<legend>Event</legend>
+			<node-list id="event-open-list"></node-list>
+		</field-set>
+		<field-set id="event-commands-fieldset" class="input pad">
+			<legend>Content</legend>
+			<box id="event-commands-gutter-background"></box>
+			<command-list id="event-commands"></command-list>
+			<box id="event-commands-gutter-outer">
+				<box id="event-commands-gutter-inner"></box>
+			</box>
+		</field-set>
+		<select-box id="event-type"></select-box>
+		<button id="event-confirm" name="confirm">Confirm</button>
+		<button id="event-cancel" name="cancel">Cancel</button>
+		<button id="event-apply" name="apply">Apply</button>
+	</content-frame>
+</window-frame>

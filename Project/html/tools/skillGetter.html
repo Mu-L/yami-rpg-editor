@@ -1,0 +1,16 @@
+<!-- 技能访问器窗口 -->
+<window-frame id="skillGetter">
+	<title-bar>Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="skillGetter-type"></select-box> <text>Actor</text
+			><custom-box id="skillGetter-actor" type="actor"></custom-box> <text>Shortcut Key</text
+			><select-var id="skillGetter-key"></select-var> <text>Skill</text
+			><custom-box id="skillGetter-skillId" type="file" filter="skill"></custom-box>
+			<text>Variable</text
+			><custom-box id="skillGetter-variable" type="variable" filter="object"></custom-box>
+		</grid-box>
+		<button id="skillGetter-confirm" name="confirm">Confirm</button>
+		<button id="skillGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

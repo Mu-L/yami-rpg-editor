@@ -1,0 +1,72 @@
+				<!-- 文件 - 音频 -->
+				<page-frame id="fileAudio" value="fileAudio">
+					<detail-box open>
+						<detail-summary>File Info</detail-summary>
+						<detail-grid id="fileAudio-info-grid">
+							<text>Name</text><text id="fileAudio-name"></text> <text>Size</text
+							><text id="fileAudio-size"></text> <text>Duration</text
+							><text id="fileAudio-duration"></text> <text>Bitrate</text
+							><text id="fileAudio-bitrate"></text>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Mixer</detail-summary>
+						<detail-grid id="fileAudio-mixer-grid">
+							<text>Volume</text>
+							<flex-box id="fileAudio-volume-box">
+								<slider-box
+									id="fileAudio-volume"
+									min="0"
+									max="1"
+									step="0.1"
+								></slider-box>
+								<text id="fileAudio-volume-info">100%</text>
+							</flex-box>
+							<text>Pan</text>
+							<flex-box id="fileAudio-pan-box">
+								<slider-box
+									id="fileAudio-pan"
+									min="-1"
+									max="1"
+									step="0.1"
+								></slider-box>
+								<text id="fileAudio-pan-info">0%</text>
+							</flex-box>
+							<text>Reverb - Dry</text>
+							<flex-box id="fileAudio-dry-box">
+								<slider-box
+									id="fileAudio-dry"
+									min="0"
+									max="1"
+									step="0.1"
+								></slider-box>
+								<text id="fileAudio-dry-info">100%</text>
+							</flex-box>
+							<text>Reverb - Wet</text>
+							<flex-box id="fileAudio-wet-box">
+								<slider-box
+									id="fileAudio-wet"
+									min="0"
+									max="1"
+									step="0.1"
+								></slider-box>
+								<text id="fileAudio-wet-info">0%</text>
+							</flex-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Progress</detail-summary>
+						<box id="fileAudio-progress-box">
+							<box id="fileAudio-progress">
+								<box id="fileAudio-progress-filler"></box>
+							</box>
+							<box id="fileAudio-progress-pointer"></box>
+							<text id="fileAudio-currentTime"></text>
+							<text id="fileAudio-pointerTime"></text>
+						</box>
+					</detail-box>
+					<detail-box id="fileAudio-frequency-detail" open>
+						<detail-summary>Frequency</detail-summary>
+						<canvas id="fileAudio-frequency-canvas" width="0" height="0"></canvas>
+					</detail-box>
+				</page-frame>

@@ -1,0 +1,82 @@
+<!-- 设置数值 - 操作数 -->
+<window-frame id="setNumber-operand">
+	<title-bar>Number Operand<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Operation</text><select-box id="setNumber-operation"></select-box
+			><select-box id="setNumber-operand-operation"></select-box> <text>Type</text
+			><select-box id="setNumber-operand-type"></select-box> <text>Constant</text
+			><number-box
+				id="setNumber-operand-constant-value"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-box>
+			<text>Math Method</text><select-box id="setNumber-operand-math-method"></select-box>
+			<text>String Method</text><select-box id="setNumber-operand-string-method"></select-box>
+			<text>Property</text><select-box id="setNumber-operand-object-property"></select-box>
+			<text>Property</text><select-box id="setNumber-operand-element-property"></select-box>
+			<text>Element</text
+			><custom-box id="setNumber-operand-element-element" type="element"></custom-box>
+			<text>Variable</text
+			><custom-box
+				id="setNumber-operand-common-variable"
+				type="variable"
+				filter="all"
+			></custom-box>
+			<text>Actor</text
+			><custom-box id="setNumber-operand-common-actor" type="actor"></custom-box>
+			<text>Skill</text
+			><custom-box id="setNumber-operand-common-skill" type="skill"></custom-box>
+			<text>State</text
+			><custom-box id="setNumber-operand-common-state" type="state"></custom-box>
+			<text>Equipment</text
+			><custom-box id="setNumber-operand-common-equipment" type="equipment"></custom-box>
+			<text>Item</text
+			><custom-box id="setNumber-operand-common-item" type="item"></custom-box>
+			<text>Trigger</text
+			><custom-box id="setNumber-operand-common-trigger" type="trigger"></custom-box>
+			<text>Tilemap</text
+			><custom-box id="setNumber-operand-common-tilemap" type="tilemap"></custom-box>
+			<text>Tilemap Position</text
+			><custom-box id="setNumber-operand-tilemapPosition" type="position"></custom-box>
+			<text>Item</text
+			><file-var id="setNumber-operand-object-itemId" type="file" filter="item"></file-var>
+			<text>Equipment</text
+			><file-var
+				id="setNumber-operand-object-equipmentId"
+				type="file"
+				filter="equipment"
+			></file-var>
+			<text>Search String</text><string-var id="setNumber-operand-string-search"></string-var>
+			<text>Decimal Places</text
+			><number-box id="setNumber-operand-math-decimals" min="0" max="10"></number-box>
+			<text>Min</text
+			><number-var
+				id="setNumber-operand-math-min"
+				min="-1000000000"
+				max="1000000000"
+			></number-var>
+			<text>Max</text
+			><number-var
+				id="setNumber-operand-math-max"
+				min="-1000000000"
+				max="1000000000"
+			></number-var>
+			<text>Start Position</text
+			><custom-box id="setNumber-operand-math-startPosition" type="position"></custom-box>
+			<text>End Position</text
+			><custom-box id="setNumber-operand-math-endPosition" type="position"></custom-box>
+			<text>Cooldown Key</text><select-var id="setNumber-operand-cooldown-key"></select-var>
+			<text>Index</text
+			><number-var id="setNumber-operand-list-index" min="0" max="1000000000"></number-var>
+			<text>Param Name</text><string-var id="setNumber-operand-parameter-key"></string-var>
+			<text>Script</text><text-box id="setNumber-operand-script"></text-box> <text>Data</text
+			><select-box id="setNumber-operand-other-data"></select-box> <text>Touch Id</text
+			><number-var id="setNumber-operand-other-touchId" min="0" max="10"></number-var>
+			<text>Team</text><select-box id="setNumber-operand-other-teamId"></select-box>
+		</grid-box>
+		<button id="setNumber-operand-confirm" name="confirm">Confirm</button>
+		<button id="setNumber-operand-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

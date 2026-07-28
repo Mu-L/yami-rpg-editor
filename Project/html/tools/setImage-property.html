@@ -1,0 +1,37 @@
+<!-- 设置图像 - 属性 -->
+<window-frame id="setImage-property">
+	<title-bar>Image Property<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Property</text><select-box id="setImage-property-key"></select-box>
+			<text>Image</text
+			><custom-box id="setImage-property-image" type="file" filter="image"></custom-box>
+			<text>Display</text><select-box id="setImage-property-display"></select-box>
+			<text>Flip</text><select-box id="setImage-property-flip"></select-box> <text>Blend</text
+			><select-box id="setImage-property-blend"></select-box> <text>Shift X</text
+			><number-var
+				id="setImage-property-shiftX"
+				min="-10000"
+				max="10000"
+				unit="px"
+			></number-var>
+			<text>Shift Y</text
+			><number-var
+				id="setImage-property-shiftY"
+				min="-10000"
+				max="10000"
+				unit="px"
+			></number-var>
+			<text>Clip - X</text
+			><number-var id="setImage-property-clip-0" min="0" max="10000" unit="px"></number-var>
+			<text>Clip - Y</text
+			><number-var id="setImage-property-clip-1" min="0" max="10000" unit="px"></number-var>
+			<text>Clip - Width</text
+			><number-var id="setImage-property-clip-2" min="0" max="10000" unit="px"></number-var>
+			<text>Clip - Height</text
+			><number-var id="setImage-property-clip-3" min="0" max="10000" unit="px"></number-var>
+		</grid-box>
+		<button id="setImage-property-confirm" name="confirm">Confirm</button>
+		<button id="setImage-property-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

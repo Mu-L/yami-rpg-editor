@@ -1,0 +1,16 @@
+<!-- 物品访问器窗口 -->
+<window-frame id="itemGetter">
+	<title-bar>Actor<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="itemGetter-type"></select-box> <text>Actor</text
+			><custom-box id="itemGetter-actor" type="actor"></custom-box> <text>Shortcut Key</text
+			><select-var id="itemGetter-key"></select-var> <text>Item</text
+			><custom-box id="itemGetter-itemId" type="file" filter="item"></custom-box>
+			<text>Variable</text
+			><custom-box id="itemGetter-variable" type="variable" filter="object"></custom-box>
+		</grid-box>
+		<button id="itemGetter-confirm" name="confirm">Confirm</button>
+		<button id="itemGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

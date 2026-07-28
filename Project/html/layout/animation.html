@@ -1,0 +1,46 @@
+		<!-- 动画页面 -->
+		<page-frame id="animation" value="animation">
+			<box id="animation-head">
+				<box id="animation-head-start">
+					<item id="animation-switch-mark" class="toolbar-item" value="mark"></item>
+					<item
+						id="animation-switch-onionskin"
+						class="toolbar-item"
+						value="onionskin"
+						hotkey="O"
+					></item>
+					<item
+						id="animation-switch-mirror"
+						class="toolbar-item"
+						value="mirror"
+						hotkey="M"
+					></item>
+					<item
+						id="animation-switch-settings"
+						class="toolbar-item"
+						value="settings"
+					></item>
+				</box>
+				<box id="animation-head-center">
+					<number-box id="animation-speed" min="0" max="4" step="0.05" decimals="2"
+						><text class="label">speed:</text></number-box
+					>
+				</box>
+				<box id="animation-head-end">
+					<slider-box
+						id="animation-zoom"
+						name="zoom-0-6"
+						min="0"
+						max="6"
+						hotkey="-/+"
+						active-wheel
+					></slider-box>
+				</box>
+			</box>
+			<box id="animation-body">
+				<box id="animation-screen" tabindex="-1">
+					<marquee-area id="animation-marquee"></marquee-area>
+				</box>
+				<box id="animation-dirList"></box>
+			</box>
+		</page-frame>

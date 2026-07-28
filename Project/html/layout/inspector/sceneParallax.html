@@ -1,0 +1,221 @@
+				<!-- 场景 - 视差图 -->
+				<page-frame value="sceneParallax">
+					<detail-box open>
+						<detail-summary>General</detail-summary>
+						<detail-grid id="sceneParallax-general-grid">
+							<text>Name</text><text-box id="sceneParallax-name"></text-box>
+							<text>Image</text
+							><custom-box
+								id="sceneParallax-image"
+								type="file"
+								filter="image"
+							></custom-box>
+							<text>Layer</text><select-box id="sceneParallax-layer"></select-box>
+							<text>Order</text
+							><number-box id="sceneParallax-order" min="0" max="100"></number-box>
+							<text>Light Sampling</text
+							><select-box id="sceneParallax-light"></select-box> <text>Blend</text
+							><select-box id="sceneParallax-blend"></select-box> <text>Opacity</text
+							><number-box
+								id="sceneParallax-opacity"
+								min="0"
+								max="1"
+								step="0.05"
+								decimals="4"
+							></number-box>
+							<text>X</text
+							><number-box
+								id="sceneParallax-x"
+								min="-128"
+								max="640"
+								step="0.1"
+								decimals="4"
+								unit="tile"
+							></number-box>
+							<text>Y</text
+							><number-box
+								id="sceneParallax-y"
+								min="-128"
+								max="640"
+								step="0.1"
+								decimals="4"
+								unit="tile"
+							></number-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Parallax</detail-summary>
+						<detail-grid id="sceneParallax-parallax-grid">
+							<text>Scale X</text
+							><number-box
+								id="sceneParallax-scaleX"
+								min="0.2"
+								max="32"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Scale Y</text
+							><number-box
+								id="sceneParallax-scaleY"
+								min="0.2"
+								max="32"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Repeat X</text
+							><number-box id="sceneParallax-repeatX" min="1" max="100"></number-box>
+							<text>Repeat Y</text
+							><number-box id="sceneParallax-repeatY" min="1" max="100"></number-box>
+							<text>Anchor X</text
+							><number-box
+								id="sceneParallax-anchorX"
+								min="0"
+								max="1"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Anchor Y</text
+							><number-box
+								id="sceneParallax-anchorY"
+								min="0"
+								max="1"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Offset X</text
+							><number-box
+								id="sceneParallax-offsetX"
+								min="-10000"
+								max="10000"
+								unit="px"
+							></number-box>
+							<text>Offset Y</text
+							><number-box
+								id="sceneParallax-offsetY"
+								min="-10000"
+								max="10000"
+								unit="px"
+							></number-box>
+							<text>Parallax Factor X</text
+							><number-box
+								id="sceneParallax-parallaxFactorX"
+								min="-4"
+								max="4"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Parallax Factor Y</text
+							><number-box
+								id="sceneParallax-parallaxFactorY"
+								min="-4"
+								max="4"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Shift Speed X</text
+							><number-box
+								id="sceneParallax-shiftSpeedX"
+								min="-10000"
+								max="10000"
+								step="5"
+								decimals="4"
+								unit="px/s"
+							></number-box>
+							<text>Shift Speed Y</text
+							><number-box
+								id="sceneParallax-shiftSpeedY"
+								min="-10000"
+								max="10000"
+								step="5"
+								decimals="4"
+								unit="px/s"
+							></number-box>
+							<text>Tint - Red</text>
+							<flex-box id="sceneParallax-tint-0-box">
+								<slider-box
+									id="sceneParallax-tint-0-slider"
+									min="-255"
+									max="255"
+									step="15"
+								></slider-box>
+								<number-box
+									id="sceneParallax-tint-0"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Tint - Green</text>
+							<flex-box id="sceneParallax-tint-1-box">
+								<slider-box
+									id="sceneParallax-tint-1-slider"
+									min="-255"
+									max="255"
+									step="15"
+								></slider-box>
+								<number-box
+									id="sceneParallax-tint-1"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Tint - Blue</text>
+							<flex-box id="sceneParallax-tint-2-box">
+								<slider-box
+									id="sceneParallax-tint-2-slider"
+									min="-255"
+									max="255"
+									step="15"
+								></slider-box>
+								<number-box
+									id="sceneParallax-tint-2"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+							<text>Tint - Grayscale</text>
+							<flex-box id="sceneParallax-tint-3-box">
+								<slider-box
+									id="sceneParallax-tint-3-slider"
+									min="0"
+									max="255"
+									step="15"
+								></slider-box>
+								<number-box
+									id="sceneParallax-tint-3"
+									min="0"
+									max="255"
+									step="5"
+								></number-box>
+							</flex-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Conditions</detail-summary>
+						<param-list
+							id="sceneParallax-conditions"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Events</detail-summary>
+						<param-list
+							id="sceneParallax-events"
+							class="inspector-list"
+							filter="parallax"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Scripts</detail-summary>
+						<param-list
+							id="sceneParallax-scripts"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<parameter-pane id="sceneParallax-parameter-pane"></parameter-pane>
+				</page-frame>

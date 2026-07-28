@@ -1,0 +1,333 @@
+				<!-- 界面 - 按钮 -->
+				<page-frame value="uiButton">
+					<detail-box open>
+						<detail-summary>Image Properties</detail-summary>
+						<detail-grid id="uiButton-image-properties-grid">
+							<text>Display</text><select-box id="uiButton-display"></select-box>
+							<text>Normal Image</text
+							><custom-box
+								id="uiButton-normalImage"
+								type="file"
+								filter="image"
+							></custom-box>
+							<text>Normal Clip</text
+							><custom-box
+								id="uiButton-normalClip"
+								type="clip"
+								image="uiButton-normalImage"
+							></custom-box>
+							<text>Hover Image</text
+							><custom-box
+								id="uiButton-hoverImage"
+								type="file"
+								filter="image"
+							></custom-box>
+							<text>Hover Clip</text
+							><custom-box
+								id="uiButton-hoverClip"
+								type="clip"
+								image="uiButton-hoverImage"
+							></custom-box>
+							<text>Active Image</text
+							><custom-box
+								id="uiButton-activeImage"
+								type="file"
+								filter="image"
+							></custom-box>
+							<text>Active Clip</text
+							><custom-box
+								id="uiButton-activeClip"
+								type="clip"
+								image="uiButton-activeImage"
+							></custom-box>
+							<text>Flip</text><select-box id="uiButton-flip"></select-box>
+							<text>Border</text
+							><number-box
+								id="uiButton-border"
+								min="1"
+								max="100"
+								unit="px"
+							></number-box>
+							<text>Padding</text>
+							<flex-box id="uiButton-imagePadding-box">
+								<slider-box
+									id="uiButton-imagePadding-slider"
+									min="0"
+									max="20"
+								></slider-box>
+								<number-box
+									id="uiButton-imagePadding"
+									min="0"
+									max="100"
+									unit="px"
+								></number-box>
+							</flex-box>
+							<text>Opacity</text>
+							<flex-box id="uiButton-imageOpacity-box">
+								<slider-box
+									id="uiButton-imageOpacity-slider"
+									min="0"
+									max="1"
+									step="0.05"
+								></slider-box>
+								<number-box
+									id="uiButton-imageOpacity"
+									min="0"
+									max="1"
+									step="0.05"
+									decimals="4"
+								></number-box>
+							</flex-box>
+							<text>Effect</text><select-box id="uiButton-imageEffect"></select-box>
+							<text>Normal Tint</text>
+							<box
+								id="uiButton-normalTint-box"
+								class="uiElement-grid-box with-4-columns"
+							>
+								<number-box
+									id="uiButton-normalTint-0"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-normalTint-1"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-normalTint-2"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-normalTint-3"
+									min="0"
+									max="255"
+									step="5"
+								></number-box>
+							</box>
+							<text>Hover Tint</text>
+							<box
+								id="uiButton-hoverTint-box"
+								class="uiElement-grid-box with-4-columns"
+							>
+								<number-box
+									id="uiButton-hoverTint-0"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-hoverTint-1"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-hoverTint-2"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-hoverTint-3"
+									min="0"
+									max="255"
+									step="5"
+								></number-box>
+							</box>
+							<text>Active Tint</text>
+							<box
+								id="uiButton-activeTint-box"
+								class="uiElement-grid-box with-4-columns"
+							>
+								<number-box
+									id="uiButton-activeTint-0"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-activeTint-1"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-activeTint-2"
+									min="-255"
+									max="255"
+									step="5"
+								></number-box>
+								<number-box
+									id="uiButton-activeTint-3"
+									min="0"
+									max="255"
+									step="5"
+								></number-box>
+							</box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Text Properties</detail-summary>
+						<detail-grid id="uiButton-text-properties-grid">
+							<text>Direction</text><select-box id="uiButton-direction"></select-box>
+							<text>Align</text>
+							<flex-box id="uiButton-align-box">
+								<radio-box
+									id="uiButton-align-left"
+									name="uiButton-horizontalAlign"
+									class="uiText-align"
+									value="left"
+									tabindex="0"
+									><text>&#xf036;</text></radio-box
+								>
+								<radio-box
+									id="uiButton-align-center"
+									name="uiButton-horizontalAlign"
+									class="uiText-align"
+									value="center"
+									tabindex="0"
+									><text>&#xf037;</text></radio-box
+								>
+								<radio-box
+									id="uiButton-align-right"
+									name="uiButton-horizontalAlign"
+									class="uiText-align"
+									value="right"
+									tabindex="0"
+									><text>&#xf038;</text></radio-box
+								>
+								<radio-box
+									id="uiButton-align-top"
+									name="uiButton-verticalAlign"
+									class="uiText-align rotated"
+									value="top"
+									tabindex="0"
+									><text>&#xf036;</text></radio-box
+								>
+								<radio-box
+									id="uiButton-align-middle"
+									name="uiButton-verticalAlign"
+									class="uiText-align rotated"
+									value="middle"
+									tabindex="0"
+									><text>&#xf037;</text></radio-box
+								>
+								<radio-box
+									id="uiButton-align-bottom"
+									name="uiButton-verticalAlign"
+									class="uiText-align rotated"
+									value="bottom"
+									tabindex="0"
+									><text>&#xf038;</text></radio-box
+								>
+							</flex-box>
+							<text>Content</text
+							><text-box
+								id="uiButton-content"
+								menu="tag-global-var tag-dynamic-global-var tag-localization"
+							></text-box>
+							<text>Size</text>
+							<flex-box id="uiButton-size-box">
+								<slider-box
+									id="uiButton-size-slider"
+									min="12"
+									max="52"
+									step="2"
+								></slider-box>
+								<number-box
+									id="uiButton-size"
+									min="10"
+									max="400"
+									step="1"
+									unit="px"
+								></number-box>
+							</flex-box>
+							<text>Letter Spacing</text>
+							<flex-box id="uiButton-letterSpacing-box">
+								<slider-box
+									id="uiButton-letterSpacing-slider"
+									min="0"
+									max="20"
+									step="1"
+								></slider-box>
+								<number-box
+									id="uiButton-letterSpacing"
+									min="-10"
+									max="100"
+									step="1"
+									unit="px"
+								></number-box>
+							</flex-box>
+							<text>Padding</text>
+							<flex-box id="uiButton-textPadding-box">
+								<slider-box
+									id="uiButton-textPadding-slider"
+									min="0"
+									max="40"
+									step="2"
+								></slider-box>
+								<number-box
+									id="uiButton-textPadding"
+									min="0"
+									max="100"
+									step="1"
+									unit="px"
+								></number-box>
+							</flex-box>
+							<text>Font</text><text-box id="uiButton-font"></text-box>
+							<text>Typeface</text><select-box id="uiButton-typeface"></select-box>
+							<text>Effect</text
+							><select-box id="uiButton-textEffect-type"></select-box>
+							<text>Shadow X</text
+							><number-box
+								id="uiButton-textEffect-shadowOffsetX"
+								min="-9"
+								max="9"
+								unit="px"
+							></number-box>
+							<text>Shadow Y</text
+							><number-box
+								id="uiButton-textEffect-shadowOffsetY"
+								min="-9"
+								max="9"
+								unit="px"
+							></number-box>
+							<text>Stroke Width</text
+							><number-box
+								id="uiButton-textEffect-strokeWidth"
+								min="1"
+								max="20"
+								unit="px"
+							></number-box>
+							<text>Effect Color</text
+							><color-box id="uiButton-textEffect-color"></color-box>
+							<text>Normal Color</text
+							><color-box id="uiButton-normalColor"></color-box>
+							<text>Hover Color</text><color-box id="uiButton-hoverColor"></color-box>
+							<text>Active Color</text
+							><color-box id="uiButton-activeColor"></color-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Sound Effects</detail-summary>
+						<detail-grid id="uiButton-sound-effects-grid">
+							<text>Hover SE</text
+							><custom-box
+								id="uiButton-hoverSound"
+								type="file"
+								filter="audio"
+							></custom-box>
+							<text>Click SE</text
+							><custom-box
+								id="uiButton-clickSound"
+								type="file"
+								filter="audio"
+							></custom-box>
+						</detail-grid>
+					</detail-box>
+				</page-frame>

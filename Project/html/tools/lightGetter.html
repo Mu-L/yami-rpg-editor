@@ -1,0 +1,14 @@
+<!-- 光源访问器窗口 -->
+<window-frame id="lightGetter">
+	<title-bar>Light<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="lightGetter-type"></select-box> <text>Light</text
+			><custom-box id="lightGetter-presetId" type="preset-object" filter="light"></custom-box>
+			<text>Variable</text
+			><custom-box id="lightGetter-variable" type="variable" filter="object"></custom-box>
+		</grid-box>
+		<button id="lightGetter-confirm" name="confirm">Confirm</button>
+		<button id="lightGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

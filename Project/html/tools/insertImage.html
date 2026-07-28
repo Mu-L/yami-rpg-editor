@@ -1,0 +1,16 @@
+<!-- 插入图像 -->
+<window-frame id="insertImage">
+	<title-bar>Insert Image<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Mode</text><select-box id="insertImage-mode"></select-box> <text>Image</text
+			><custom-box id="insertImage-image" type="file" filter="image"></custom-box>
+			<text>Clip</text
+			><custom-box id="insertImage-clip" type="clip" image="insertImage-image"></custom-box>
+			<text>Width</text><number-box id="insertImage-width" min="0" max="10000"></number-box>
+			<text>Height</text><number-box id="insertImage-height" min="0" max="10000"></number-box>
+		</grid-box>
+		<button id="insertImage-confirm" name="confirm">Confirm</button>
+		<button id="insertImage-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

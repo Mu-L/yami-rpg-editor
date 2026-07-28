@@ -1,0 +1,18 @@
+<!-- 瓦片地图访问器窗口 -->
+<window-frame id="tilemapGetter">
+	<title-bar>Tilemap<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Type</text><select-box id="tilemapGetter-type"></select-box> <text>Tilemap</text
+			><custom-box
+				id="tilemapGetter-presetId"
+				type="preset-object"
+				filter="tilemap"
+			></custom-box>
+			<text>Variable</text
+			><custom-box id="tilemapGetter-variable" type="variable" filter="object"></custom-box>
+		</grid-box>
+		<button id="tilemapGetter-confirm" name="confirm">Confirm</button>
+		<button id="tilemapGetter-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

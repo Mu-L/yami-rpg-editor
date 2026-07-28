@@ -1,0 +1,25 @@
+<!-- 条件窗口 -->
+<window-frame id="condition">
+	<title-bar>Condition<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Condition Type</text><select-box id="condition-type"></select-box>
+			<text>Variable</text
+			><custom-box id="condition-key" type="global-variable" filter="all"></custom-box>
+			<text>Operation</text><select-box id="condition-boolean-operation"></select-box>
+			<text>Boolean</text><select-box id="condition-boolean-value"></select-box>
+			<text>Operation</text><select-box id="condition-number-operation"></select-box>
+			<text>Number</text
+			><number-box
+				id="condition-number-value"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-box>
+			<text>Operation</text><select-box id="condition-string-operation"></select-box>
+			<text>String</text><text-area id="condition-string-value"></text-area>
+		</grid-box>
+		<button id="condition-confirm" name="confirm">Confirm</button>
+		<button id="condition-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

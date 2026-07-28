@@ -1,0 +1,66 @@
+				<!-- 场景 - 区域 -->
+				<page-frame value="sceneRegion">
+					<detail-box open>
+						<detail-summary>General</detail-summary>
+						<detail-grid id="sceneRegion-general-grid">
+							<text>Name</text><text-box id="sceneRegion-name"></text-box>
+							<text>Color</text><color-box id="sceneRegion-color"></color-box>
+							<text>X</text
+							><number-box
+								id="sceneRegion-x"
+								min="-128"
+								max="640"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Y</text
+							><number-box
+								id="sceneRegion-y"
+								min="-128"
+								max="640"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Width</text
+							><number-box
+								id="sceneRegion-width"
+								min="0"
+								max="512"
+								decimals="4"
+							></number-box>
+							<text>Height</text
+							><number-box
+								id="sceneRegion-height"
+								min="0"
+								max="512"
+								decimals="4"
+							></number-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Conditions</detail-summary>
+						<param-list
+							id="sceneRegion-conditions"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Events</detail-summary>
+						<param-list
+							id="sceneRegion-events"
+							class="inspector-list"
+							filter="region"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Scripts</detail-summary>
+						<param-list
+							id="sceneRegion-scripts"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<parameter-pane id="sceneRegion-parameter-pane"></parameter-pane>
+				</page-frame>

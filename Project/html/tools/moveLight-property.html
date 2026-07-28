@@ -1,0 +1,89 @@
+<!-- 移动光源 - 属性 -->
+<window-frame id="moveLight-property">
+	<title-bar>Point Light Property<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Property</text><select-box id="moveLight-property-key"></select-box> <text>X</text
+			><number-var
+				id="moveLight-property-x"
+				min="0"
+				max="512"
+				step="0.1"
+				decimals="4"
+			></number-var>
+			<text>Y</text
+			><number-var
+				id="moveLight-property-y"
+				min="0"
+				max="512"
+				step="0.1"
+				decimals="4"
+			></number-var>
+			<text>Range</text
+			><number-var
+				id="moveLight-property-range"
+				min="0"
+				max="128"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Intensity</text
+			><number-var
+				id="moveLight-property-intensity"
+				min="0"
+				max="1"
+				step="0.1"
+				decimals="4"
+			></number-var>
+			<text>Anchor X</text
+			><number-var
+				id="moveLight-property-anchorX"
+				min="0"
+				max="1"
+				step="0.1"
+				decimals="4"
+			></number-var>
+			<text>Anchor Y</text
+			><number-var
+				id="moveLight-property-anchorY"
+				min="0"
+				max="1"
+				step="0.1"
+				decimals="4"
+			></number-var>
+			<text>Width</text
+			><number-var
+				id="moveLight-property-width"
+				min="0"
+				max="128"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Height</text
+			><number-var
+				id="moveLight-property-height"
+				min="0"
+				max="128"
+				decimals="4"
+				unit="tile"
+			></number-var>
+			<text>Angle</text
+			><number-var
+				id="moveLight-property-angle"
+				min="-36000"
+				max="36000"
+				step="5"
+				decimals="4"
+				unit="deg"
+			></number-var>
+			<text>Red</text
+			><number-var id="moveLight-property-red" min="0" max="255" step="5"></number-var>
+			<text>Green</text
+			><number-var id="moveLight-property-green" min="0" max="255" step="5"></number-var>
+			<text>Blue</text
+			><number-var id="moveLight-property-blue" min="0" max="255" step="5"></number-var>
+		</grid-box>
+		<button id="moveLight-property-confirm" name="confirm">Confirm</button>
+		<button id="moveLight-property-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

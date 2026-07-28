@@ -1,0 +1,25 @@
+<!-- 设置动画 - 属性 -->
+<window-frame id="setAnimation-property">
+	<title-bar>Set Animation<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Property</text><select-box id="setAnimation-property-key"></select-box>
+			<text>Animation</text
+			><custom-box
+				id="setAnimation-property-animation"
+				type="file"
+				filter="animation"
+			></custom-box>
+			<text>Actor</text
+			><custom-box id="setAnimation-property-actor" type="actor"></custom-box>
+			<text>Motion</text
+			><custom-box id="setAnimation-property-motion" type="enum-string"></custom-box>
+			<text>Angle</text
+			><number-var id="setAnimation-property-angle" min="0" max="360" unit="deg"></number-var>
+			<text>Frame</text
+			><number-var id="setAnimation-property-frame" min="0" max="10000"></number-var>
+		</grid-box>
+		<button id="setAnimation-property-confirm" name="confirm">Confirm</button>
+		<button id="setAnimation-property-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

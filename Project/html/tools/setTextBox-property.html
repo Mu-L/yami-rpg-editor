@@ -1,0 +1,37 @@
+<!-- 设置文本框 - 属性 -->
+<window-frame id="setTextBox-property">
+	<title-bar>Text Property<close></close></title-bar>
+	<content-frame>
+		<grid-box>
+			<text>Property</text><select-box id="setTextBox-property-key"></select-box>
+			<text>Type</text><select-box id="setTextBox-property-type"></select-box>
+			<text>Text</text><string-var id="setTextBox-property-text"></string-var>
+			<text>Number</text
+			><number-var
+				id="setTextBox-property-number"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-var>
+			<text>Min</text
+			><number-var
+				id="setTextBox-property-min"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-var>
+			<text>Max</text
+			><number-var
+				id="setTextBox-property-max"
+				min="-1000000000"
+				max="1000000000"
+				decimals="10"
+			></number-var>
+			<text>Decimal Places</text
+			><number-box id="setTextBox-property-decimals" min="0" max="10"></number-box>
+			<text>Color</text><color-box id="setTextBox-property-color"></color-box>
+		</grid-box>
+		<button id="setTextBox-property-confirm" name="confirm">Confirm</button>
+		<button id="setTextBox-property-cancel" name="cancel">Cancel</button>
+	</content-frame>
+</window-frame>

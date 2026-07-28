@@ -1,0 +1,140 @@
+				<page-frame value="fileActor">
+					<detail-box open>
+						<detail-summary>General</detail-summary>
+						<detail-grid id="fileActor-general-grid">
+							<text>Portrait</text
+							><custom-box
+								id="fileActor-portrait"
+								type="file"
+								filter="image"
+							></custom-box>
+							<text>Clip</text
+							><custom-box
+								id="fileActor-clip"
+								type="clip"
+								image="fileActor-portrait"
+							></custom-box>
+							<text>Animation</text
+							><custom-box
+								id="fileActor-animationId"
+								type="file"
+								filter="animation"
+							></custom-box>
+							<text>Idle Motion</text
+							><select-box id="fileActor-idleMotion"></select-box>
+							<text>Move Motion</text
+							><select-box id="fileActor-moveMotion"></select-box>
+							<text>Rotatable</text><select-box id="fileActor-rotatable"></select-box>
+							<text>Passage Terrain</text
+							><select-box id="fileActor-passage"></select-box>
+							<text>Movement Speed</text
+							><number-box
+								id="fileActor-speed"
+								min="0"
+								max="32"
+								decimals="4"
+								unit="t/s"
+							></number-box>
+							<text>Collision Shape</text
+							><select-box id="fileActor-shape"></select-box>
+							<text>Collision Size</text
+							><number-box
+								id="fileActor-size"
+								min="0"
+								max="16"
+								step="0.1"
+								decimals="4"
+								unit="t"
+							></number-box>
+							<text>Collision Weight</text
+							><number-box
+								id="fileActor-weight"
+								min="0"
+								max="8"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Immovable</text><select-box id="fileActor-immovable"></select-box>
+							<text>Scale</text
+							><number-box
+								id="fileActor-scale"
+								min="0"
+								max="10"
+								step="0.1"
+								decimals="4"
+							></number-box>
+							<text>Priority</text
+							><number-box
+								id="fileActor-priority"
+								min="-512"
+								max="512"
+								decimals="4"
+							></number-box>
+							<text>Inherit</text
+							><custom-box
+								id="fileActor-inherit"
+								type="file"
+								filter="actor"
+							></custom-box>
+						</detail-grid>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Sprites</detail-summary>
+						<param-list
+							id="fileActor-sprites"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Attributes</detail-summary>
+						<param-list
+							id="fileActor-attributes"
+							class="inspector-list"
+							group="actor"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Skills</detail-summary>
+						<param-list
+							id="fileActor-skills"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Equipments</detail-summary>
+						<param-list
+							id="fileActor-equipments"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Inventory</detail-summary>
+						<param-list
+							id="fileActor-inventory"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Events</detail-summary>
+						<param-list
+							id="fileActor-events"
+							class="inspector-list"
+							filter="actor"
+							flexible
+						></param-list>
+					</detail-box>
+					<detail-box open>
+						<detail-summary>Scripts</detail-summary>
+						<param-list
+							id="fileActor-scripts"
+							class="inspector-list"
+							flexible
+						></param-list>
+					</detail-box>
+					<parameter-pane id="fileActor-parameter-pane"></parameter-pane>
+				</page-frame>

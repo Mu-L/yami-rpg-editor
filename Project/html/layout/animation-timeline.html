@@ -1,0 +1,53 @@
+		<!-- 动画时间轴页面 -->
+		<page-frame id="animation-timeline" value="animation-timeline">
+			<box id="animation-timeline-head">
+				<box id="animation-timeline-toolbar">
+					<item
+						id="animation-timeline-previousKey"
+						class="toolbar-item"
+						value="previousKey"
+						hotkey="Z"
+					></item>
+					<item
+						id="animation-timeline-previous"
+						class="toolbar-item"
+						value="previous"
+						hotkey="Q"
+					></item>
+					<item
+						id="animation-timeline-play"
+						class="toolbar-item"
+						value="play"
+						hotkey="R"
+					></item>
+					<item
+						id="animation-timeline-next"
+						class="toolbar-item"
+						value="next"
+						hotkey="E"
+					></item>
+					<item
+						id="animation-timeline-nextKey"
+						class="toolbar-item"
+						value="nextKey"
+						hotkey="X"
+					></item>
+					<item id="animation-timeline-loop" class="toolbar-item" value="loop"></item>
+				</box>
+				<box id="animation-timeline-ruler-outer">
+					<box id="animation-timeline-ruler-inner"></box>
+				</box>
+			</box>
+			<node-list id="animation-layer-list"></node-list>
+			<box id="animation-timeline-list-outer" tabindex="0">
+				<box id="animation-timeline-list-inner"></box>
+				<box id="animation-timeline-cursor"></box>
+				<box id="animation-timeline-marquee"></box>
+				<box id="animation-timeline-marquee-shift"></box>
+			</box>
+			<box id="animation-timeline-pointer-area-outer">
+				<box id="animation-timeline-pointer-area-inner">
+					<box id="animation-timeline-pointer"></box>
+				</box>
+			</box>
+		</page-frame>
