@@ -1,5 +1,12 @@
 # Yami rpg editor 社区分支
 
+
+> [!IMPORTANT]
+> 本项目进入维护状态，不再接收功能 PR（仅接收修复bug）  
+> 我将投入精力到基于该项目的重构版本中，请大家多多支持和等待...  
+> This project has entered maintenance mode and will no longer accept feature pull requests (only bug fixes will be accepted).  
+> I will focus my efforts on the refactored version based on this project. Please support and wait patiently...  
+
 [English](./README.en.md)
 
 ![](https://flat.badgen.net/github/license/Open-Yami-Community/yami-rpg-editor)
